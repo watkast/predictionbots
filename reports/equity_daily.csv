@@ -1,1 +1,5 @@
 run,day,realized_pnl,fees,net_pnl,cum_net_pnl,fills,contracts
+mm_crypto_twap_kxbtc15m,2026-10-16,-1.5604,0.0,-1.5604,-1.5604,40,493.02
+mm_inventory_kxhigh,2026-10-16,-16.7922,0.0,-16.7922,-16.7922,723,6142.64
+mm_weather_ladder_kxhighny,2026-10-16,0.0,0.0,0.0,0.0,6,55.0
+taker_lag_kxbtc15m,2026-10-16,0.0,0.5,-0.5,-0.5,50,50.0
