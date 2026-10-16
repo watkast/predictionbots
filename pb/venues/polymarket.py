@@ -413,7 +413,7 @@ class PolymarketClient:
     async def get_trades(self, condition_id: Optional[str] = None, limit: int = 500,
                          cursor: Optional[str] = None, token_id: Optional[str] = None,
                          offset: Optional[int] = None) -> dict:
-        params = {"condition": condition_id, "market": condition_id, "asset": token_id,
+        params = {"condition": condition_id, "asset": token_id,
                   "limit": limit, "cursor": cursor, "offset": offset}
         r = await self.data.request("GET", "/trades", params=params)
         if isinstance(r, list):
