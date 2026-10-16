@@ -1,0 +1,17 @@
+# Model 1: inventory-aware passive MM (any series). Blend a signal with fair_signal if available.
+mm_inventory:
+  size: 10
+  max_inventory: 50
+  min_half_spread: 0.01
+  vol_k: 1.5
+  gamma: 0.02
+  vpin_max: 0.6
+  pull_before_close: 180
+  min_touch_depth: 5
+  depth_frac_cap: 0.5
+grid:
+  min_half_spread: [0.01, 0.02]
+  gamma: [0.01, 0.03]
+sim:
+  order_latency: 0.3
+  cancel_latency: 0.3

@@ -137,6 +137,11 @@ class SimAPI:
     def schedule(self, delay: float, callback: Callable[[], None]) -> None:
         self._e.schedule(self._e.now + delay, callback)
 
+    def fee(self, market_id: str) -> FeeSchedule:
+        """Fee schedule the engine will charge for this market (so strategies can
+        require spread >= maker fee + edge, or price taker arbs net of fees)."""
+        return self._e.fee_for(market_id)
+
     def log(self, msg: str) -> None:
         self._e.logs.append((self._e.now, msg))
 
@@ -196,6 +201,10 @@ class Engine:
         self._last_mark = -math.inf
         self.mark_interval = 60.0
         self.settled: dict[str, float] = {}
+        # Reality bookkeeping (parallel to self.fills): was the maker fill an
+        # *assumed* fill from the book crossing our price without a print, and
+        # how deep was the touch on the side we interacted with at that moment.
+        self.fill_context: list[dict] = []
 
     # -- public --------------------------------------------------------------
     def add_strategy(self, s: Strategy) -> None:
@@ -388,10 +397,10 @@ class Engine:
             if o.market_id != book.market_id:
                 continue
             if o.action is Action.SELL and book.best_bid is not None and book.best_bid >= o.price - 1e-12:
-                self._fill(o, o.price, o.remaining, is_maker=True)
+                self._fill(o, o.price, o.remaining, is_maker=True, assumed_cross=True)
                 self.orders.pop(oid, None)
             elif o.action is Action.BUY and book.best_ask is not None and book.best_ask <= o.price + 1e-12:
-                self._fill(o, o.price, o.remaining, is_maker=True)
+                self._fill(o, o.price, o.remaining, is_maker=True, assumed_cross=True)
                 self.orders.pop(oid, None)
             else:
                 same = book.bids if o.action is Action.BUY else book.asks
@@ -399,7 +408,8 @@ class Engine:
                 o.queue_ahead = min(o.queue_ahead, lvl_size)
 
     # -- fills ---------------------------------------------------------------
-    def _fill(self, order: Order, price: float, qty: float, is_maker: bool) -> None:
+    def _fill(self, order: Order, price: float, qty: float, is_maker: bool,
+              assumed_cross: bool = False) -> None:
         sched = self.fee_for(order.market_id)
         fee = sched.fee(price, qty, is_maker)
         order.filled += qty
@@ -408,6 +418,15 @@ class Engine:
                  is_maker=is_maker, strategy=order.strategy)
         self.positions[order.market_id].apply(order.action, price, qty, fee)
         self.fills.append(f)
+        b = self.books.get(order.market_id)
+        touch = 0.0
+        if b is not None:
+            if is_maker:
+                same = b.bids if order.action is Action.BUY else b.asks
+            else:
+                same = b.asks if order.action is Action.BUY else b.bids
+            touch = same[0].size if same else 0.0
+        self.fill_context.append({"assumed_cross": assumed_cross, "touch_depth": touch})
         for s in self.strategies:
             s.on_fill(self.api, f)
 

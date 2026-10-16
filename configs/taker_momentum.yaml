@@ -1,0 +1,10 @@
+# Baseline T2: momentum taker after a 20c move. Expected to lose after fees.
+taker_momentum:
+  move: 0.20
+  window: 900
+  size: 10
+  hold: 3600
+  tp: 0.10
+  stop: 0.10
+grid:
+  move: [0.10, 0.20]

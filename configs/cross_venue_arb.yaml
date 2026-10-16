@@ -1,0 +1,12 @@
+# Model 8: Kalshi vs Polymarket on markets sharing meta.pair_id.
+cross_venue_arb:
+  mode: taker            # or maker_kalshi
+  min_edge: 0.005
+  max_size: 100
+  min_size: 5
+  depth_frac: 0.8
+  slippage_pad: 0.005
+  hedge_pad: 0.01
+  maker_size: 10
+grid:
+  mode: [taker, maker_kalshi]

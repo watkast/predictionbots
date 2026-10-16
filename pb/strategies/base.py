@@ -10,7 +10,7 @@ import math
 from collections import deque
 from dataclasses import dataclass
 
-from pb.core.types import Action, Book, Order, TIF, Trade
+from pb.core.types import Action, Book, Level, Order, TIF, Trade
 from pb.sim.engine import SimAPI, Strategy
 
 REGISTRY: dict[str, type[Strategy]] = {}
@@ -109,3 +109,68 @@ class QuoteManager:
     def pull_all(self) -> None:
         for m in list(self.live):
             self.pull(m)
+
+
+# ----------------------------------------------------------------------------
+# Shared helpers for the strategy suite
+# ----------------------------------------------------------------------------
+def norm_cdf(x: float) -> float:
+    return 0.5 * (1.0 + math.erf(x / math.sqrt(2.0)))
+
+
+class SignalCache:
+    """Latest (ts, value) per key with staleness checks."""
+
+    def __init__(self) -> None:
+        self.latest: dict[str, tuple[float, object]] = {}
+
+    def put(self, key: str, ts: float, value) -> None:
+        self.latest[key] = (ts, value)
+
+    def get(self, key: str, now: float, max_age: float = math.inf):
+        v = self.latest.get(key)
+        if v is None or now - v[0] > max_age:
+            return None
+        return v[1]
+
+    def age(self, key: str, now: float) -> float:
+        v = self.latest.get(key)
+        return math.inf if v is None else now - v[0]
+
+
+def secs_to_close(api: SimAPI, market_id: str) -> float:
+    m = api.market(market_id)
+    if m is None or not m.close_ts:
+        return math.inf
+    return m.close_ts - api.now
+
+
+def maker_fee_per_contract(api: SimAPI, market_id: str, p: float) -> float:
+    """Maker fee in price units for one contract at price p (0 on fee-free series)."""
+    sched = api.fee(market_id)
+    return sched.maker_rate * p * (1 - p) - sched.maker_rebate_frac * sched.taker_rate * p * (1 - p)
+
+
+def taker_fee_per_contract(api: SimAPI, market_id: str, p: float) -> float:
+    return api.fee(market_id).taker_rate * p * (1 - p)
+
+
+def walk_cost(levels: list[Level], qty: float) -> tuple[float, float]:
+    """Average price and fillable quantity when taking `qty` through `levels`
+    (best-first). Returns (avg_price, filled)."""
+    filled = 0.0
+    cost = 0.0
+    for lvl in levels:
+        if filled >= qty - 1e-12:
+            break
+        take = min(lvl.size, qty - filled)
+        if take <= 0:
+            continue
+        cost += take * lvl.price
+        filled += take
+    return (cost / filled if filled > 0 else float("nan")), filled
+
+
+def clamp_size(size: float, *caps: float, min_size: float = 1.0) -> float:
+    s = min([size, *[c for c in caps if c is not None]])
+    return s if s >= min_size else 0.0

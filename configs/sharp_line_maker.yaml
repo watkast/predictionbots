@@ -1,0 +1,13 @@
+# Model 6: sports; needs sharp_prob (de-vigged Pinnacle) and optional game_state from pb.data.feeds.
+sharp_line_maker:
+  size: 10
+  max_inventory: 50
+  half_spread: 0.02
+  edge_min: 0.005
+  gamma: 0.03
+  max_age: 180
+  allow_live: false
+  pull_before_close: 300
+  max_divergence: 0.06
+grid:
+  half_spread: [0.015, 0.02, 0.03]

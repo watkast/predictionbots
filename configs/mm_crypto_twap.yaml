@@ -1,0 +1,19 @@
+# Model 2: Kalshi KXBTC15M / KXETH15M (zero maker fee). Needs btc_index/eth_index signals (pb.data.feeds).
+mm_crypto_twap:
+  size: 10
+  max_inventory: 60
+  max_abs_delta: 40
+  min_half_spread: 0.02
+  unc_k: 0.5
+  gamma: 0.04
+  vol_window: 900
+  vol_floor: 0.00015
+  pull_before_close: 90
+  jump_k: 4.0
+  jump_cooldown: 20
+  signal_max_age: 10
+  twap_weight: 0.3
+  price_band: [0.06, 0.94]
+grid:
+  min_half_spread: [0.015, 0.02, 0.03]
+  pull_before_close: [60, 90, 150]

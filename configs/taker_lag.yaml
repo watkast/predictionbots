@@ -1,0 +1,10 @@
+# Baseline T1: taker on crypto windows when index-implied fair beats the ask by fee + edge. Expected to lose.
+taker_lag:
+  edge: 0.02
+  size: 10
+  depth_frac: 0.5
+  max_walk: 0.02
+  max_position: 50
+  no_trade_before_close: 60
+grid:
+  edge: [0.01, 0.02, 0.05]

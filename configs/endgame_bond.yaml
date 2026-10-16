@@ -1,0 +1,16 @@
+# Model 5: 95-99c bids in the last hours on low-dispute-risk series. Never takes.
+endgame_bond:
+  min_price: 0.95
+  max_price: 0.99
+  max_hours: 12
+  min_minutes: 10
+  prior_edge: 0.01
+  dispute_haircut: 0.003
+  hurdle_annual: 0.20
+  min_depth: 20
+  size: 50
+  max_per_market: 500
+  max_total: 3000
+grid:
+  max_hours: [6, 12, 24]
+  hurdle_annual: [0.1, 0.2, 0.5]

@@ -1,0 +1,8 @@
+# Model 7: same-venue complete sets (taker IOC). Needs markets sharing event_id with meta.mutually_exclusive.
+complete_set_arb:
+  min_edge: 0.005
+  max_size: 100
+  min_size: 5
+  depth_frac: 0.8
+  assume_exclusive: false
+  cooldown: 2

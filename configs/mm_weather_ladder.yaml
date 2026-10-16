@@ -1,0 +1,16 @@
+# Model 3: Kalshi KXHIGH* daily-high ladders (zero maker fee). Needs fcst_prob per rung (Open-Meteo ensemble feed).
+mm_weather_ladder:
+  size: 10
+  max_inventory: 40
+  max_group_short: 60
+  edge: 0.03
+  sum_margin: 0.02
+  gamma: 0.05
+  quote_bids: false
+  peak_window: 6
+  peak_offset_h: 6
+  favorite_thresh: 0.40
+  signal_max_age: 7200
+  pull_before_close: 600
+grid:
+  edge: [0.02, 0.03, 0.05]

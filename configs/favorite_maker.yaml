@@ -1,0 +1,16 @@
+# Model 4: rest bids on favourites (>=0.70) on non-sports series, capital-lock aware.
+favorite_maker:
+  min_price: 0.70
+  max_price: 0.97
+  edge: 0.015
+  slope_long: 1.32
+  long_horizon_days: 30
+  min_days: 1
+  hurdle_annual: 0.15
+  size: 10
+  max_position: 50
+  max_total_capital: 2000
+  pull_before_close: 3600
+grid:
+  edge: [0.01, 0.015, 0.03]
+  min_price: [0.70, 0.80]

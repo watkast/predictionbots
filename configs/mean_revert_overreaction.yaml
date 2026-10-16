@@ -1,0 +1,14 @@
+# Model 9: fade news overreactions as a maker; off on crypto.
+mean_revert_overreaction:
+  jump: 0.05
+  window: 600
+  print_rate_mult: 3.0
+  min_prints: 5
+  fade_frac: 0.3
+  tp_frac: 0.5
+  stop_mult: 1.0
+  max_hold: 14400
+  size: 10
+grid:
+  jump: [0.03, 0.05, 0.08]
+  fade_frac: [0.2, 0.3, 0.5]
