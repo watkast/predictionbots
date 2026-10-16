@@ -1,0 +1,72 @@
+# Nightly: replay everything recorded on the `data` branch plus Kalshi public
+# history (candles + full trade tape) through every strategy with a grid sweep
+# and walk-forward. Writes reports/ on main.
+name: backtest
+on:
+  schedule:
+    - cron: "41 9 * * *"
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+concurrency:
+  group: backtest-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  backtest:
+    runs-on: ubuntu-latest
+    timeout-minutes: 300
+    env:
+      KALSHI_KEY_ID: ${{ secrets.KALSHI_KEY_ID }}
+      KALSHI_PRIVATE_KEY_PEM: ${{ secrets.KALSHI_PRIVATE_KEY_PEM }}
+      BT_KALSHI_SERIES: ${{ vars.BT_KALSHI_SERIES || 'KXBTC15M,KXHIGHNY,KXHIGHMIA,KXHIGHCHI,KXNFLGAME' }}
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.13"
+          cache: pip
+      - run: pip install -e .
+      - name: Fetch recorded data
+        run: |
+          git fetch origin data && git worktree add ../datawt origin/data || true
+          mkdir -p data
+          [ -d ../datawt/recorded ] && cp -r ../datawt/recorded data/ || true
+          [ -d ../datawt/ledger ] && cp -r ../datawt/ledger data/ || true
+      - name: Backtests on recorded L2 (high fidelity)
+        continue-on-error: true
+        run: |
+          set +e
+          for cfg in configs/*.yaml; do
+            s=$(basename "$cfg" .yaml)
+            [ "$s" = "paper_matrix" ] && continue
+            python -c "from pb.strategies.base import REGISTRY; import pb.live.paper; assert '$s' in REGISTRY" 2>/dev/null || continue
+            python scripts/backtest.py --strategy "$s" --params "$cfg" --data data/recorded \
+              --walk-forward 3 --workers 4 --report-name "rec_$s" --title "$s on recorded L2" || true
+          done
+      - name: Backtests on Kalshi history (low fidelity, maker fills only when printed through)
+        continue-on-error: true
+        run: |
+          set +e
+          START=$(date -u -d '30 days ago' +%F); END=$(date -u +%F)
+          IFS=',' read -ra S <<< "$BT_KALSHI_SERIES"
+          for ser in "${S[@]}"; do
+            for s in mm_inventory favorite_maker endgame_bond taker_momentum taker_lag mm_crypto_twap; do
+              python scripts/backtest.py --strategy "$s" --params "configs/$s.yaml" --kalshi-series "$ser" \
+                --start "$START" --end "$END" --walk-forward 3 --workers 4 \
+                --report-name "hist_${ser}_${s}" --title "$s on $ser history" || true
+            done
+          done
+      - name: Aggregate + commit reports
+        run: |
+          python scripts/report.py
+          git add reports
+          git -c user.name=predictionbots-backtest -c user.email=bots@users.noreply.github.com \
+            commit -qm "reports: nightly backtest $(date -u +%F)" || exit 0
+          for i in 1 2 3 4 5; do
+            git push origin HEAD:main && break
+            git fetch origin main && git rebase origin/main || git rebase --abort
+            sleep $((RANDOM % 20 + 5))
+          done

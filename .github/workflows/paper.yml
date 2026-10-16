@@ -1,0 +1,129 @@
+# Paper-trades every entry of configs/paper_matrix.yaml against LIVE order
+# books with the no-fantasy-fills engine. Ledgers go to the `data` branch;
+# reports/README.md on main is regenerated each run. No real money anywhere.
+name: paper
+on:
+  schedule:
+    - cron: "23 */6 * * *"
+  workflow_dispatch:
+    inputs:
+      entry:
+        description: "matrix entry name (blank = all)"
+        default: ""
+      seconds:
+        description: "runtime seconds"
+        default: "20000"
+
+permissions:
+  contents: write
+
+concurrency:
+  group: paper-${{ github.ref }}
+  cancel-in-progress: false
+
+jobs:
+  entries:
+    runs-on: ubuntu-latest
+    outputs:
+      matrix: ${{ steps.m.outputs.matrix }}
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with: { python-version: "3.13" }
+      - run: pip install pyyaml
+      - id: m
+        run: |
+          python - <<'EOF' >> "$GITHUB_OUTPUT"
+          import json, yaml, os
+          m = yaml.safe_load(open("configs/paper_matrix.yaml"))
+          entries = m.get("runs") or m.get("entries") if isinstance(m, dict) else m
+          names = [e["name"] for e in entries]
+          want = "${{ github.event.inputs.entry }}".strip()
+          if want: names = [n for n in names if n == want]
+          print("matrix=" + json.dumps({"entry": names}))
+          EOF
+
+  paper:
+    needs: entries
+    runs-on: ubuntu-latest
+    timeout-minutes: 360
+    strategy:
+      fail-fast: false
+      max-parallel: 10
+      matrix: ${{ fromJson(needs.entries.outputs.matrix) }}
+    env:
+      KALSHI_KEY_ID: ${{ secrets.KALSHI_KEY_ID }}
+      KALSHI_PRIVATE_KEY_PEM: ${{ secrets.KALSHI_PRIVATE_KEY_PEM }}
+      ODDS_API_KEY: ${{ secrets.ODDS_API_KEY }}
+      RUN_SECONDS: ${{ github.event.inputs.seconds || '20000' }}
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.13"
+          cache: pip
+      - run: pip install -e .
+      - name: Paper trade ${{ matrix.entry }}
+        run: python scripts/paper_matrix.py --entry "${{ matrix.entry }}" --duration "$RUN_SECONDS"
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: ledger-${{ matrix.entry }}-${{ github.run_id }}
+          path: |
+            data/ledger
+            data/recorded
+          retention-days: 14
+          if-no-files-found: ignore
+
+  publish:
+    needs: paper
+    if: always()
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.13"
+          cache: pip
+      - run: pip install -e .
+      - uses: actions/download-artifact@v4
+        with:
+          pattern: ledger-*-${{ github.run_id }}
+          path: artifacts
+      - name: Merge ledgers into data branch
+        run: |
+          set -e
+          git config user.name "predictionbots-paper"
+          git config user.email "bots@users.noreply.github.com"
+          git fetch origin data || true
+          if git rev-parse --verify origin/data >/dev/null 2>&1; then
+            git worktree add ../datawt origin/data
+          else
+            git worktree add --orphan -b data ../datawt
+          fi
+          mkdir -p ../datawt/ledger ../datawt/recorded
+          for d in artifacts/*; do
+            [ -d "$d/ledger" ] && cp -r "$d/ledger/." ../datawt/ledger/
+            [ -d "$d/recorded" ] && cp -r "$d/recorded/." ../datawt/recorded/
+          done
+          cd ../datawt && git add -A && (git commit -qm "paper ledgers $(date -u +%FT%TZ)" || true)
+          for i in 1 2 3 4 5; do
+            git push origin HEAD:data && break
+            git fetch origin data && git rebase origin/data || git rebase --abort
+            sleep $((RANDOM % 20 + 5))
+          done
+      - name: Regenerate reports on main
+        run: |
+          mkdir -p data/ledger
+          cp -r ../datawt/ledger/. data/ledger/ 2>/dev/null || true
+          python scripts/report.py
+          git add reports
+          git -c user.name=predictionbots-paper -c user.email=bots@users.noreply.github.com \
+            commit -qm "reports: paper update $(date -u +%FT%TZ)" || exit 0
+          for i in 1 2 3 4 5; do
+            git push origin HEAD:main && break
+            git fetch origin main && git rebase origin/main || git rebase --abort
+            sleep $((RANDOM % 20 + 5))
+          done

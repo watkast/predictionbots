@@ -1,0 +1,36 @@
+name: ci
+on:
+  push:
+    branches: [main]
+  pull_request:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.13"
+          cache: pip
+      - run: pip install -e ".[dev]"
+      - run: python -m pytest -q
+      - name: Synthetic smoke (framework only, never for evaluation)
+        run: python scripts/backtest.py --strategy mm_inventory --synthetic --report-name ci_smoke
+      - name: Live API parser smoke (public endpoints; informational)
+        continue-on-error: true
+        env:
+          KALSHI_KEY_ID: ${{ secrets.KALSHI_KEY_ID }}
+          KALSHI_PRIVATE_KEY_PEM: ${{ secrets.KALSHI_PRIVATE_KEY_PEM }}
+        run: python scripts/smoke_live.py 2>&1 | tee smoke_live.log
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: smoke-live-log
+          path: smoke_live.log
+          if-no-files-found: ignore

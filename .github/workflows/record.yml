@@ -1,0 +1,90 @@
+# Records live order books, trades and reference signals to parquet on the
+# `data` branch (never main). Runs back-to-back ~6h jobs so coverage is
+# near-continuous. Paper-trading uses the same data in real time; backtests
+# replay it later with the no-fantasy-fills simulator.
+name: record
+on:
+  schedule:
+    - cron: "7 */6 * * *"
+  workflow_dispatch:
+    inputs:
+      seconds:
+        description: "runtime seconds"
+        default: "20400"
+
+permissions:
+  contents: write
+
+concurrency:
+  group: record-${{ github.ref }}
+  cancel-in-progress: false
+
+jobs:
+  record:
+    runs-on: ubuntu-latest
+    timeout-minutes: 360
+    strategy:
+      fail-fast: false
+      matrix:
+        venue: [kalshi, polymarket]
+    env:
+      KALSHI_KEY_ID: ${{ secrets.KALSHI_KEY_ID }}
+      KALSHI_PRIVATE_KEY_PEM: ${{ secrets.KALSHI_PRIVATE_KEY_PEM }}
+      RECORD_SECONDS: ${{ github.event.inputs.seconds || '20400' }}
+      RECORD_KALSHI_SERIES: ${{ vars.RECORD_KALSHI_SERIES || 'KXBTC15M,KXETH15M,KXHIGHNY,KXHIGHCHI,KXHIGHMIA,KXHIGHLAX,KXHIGHDEN,KXHIGHAUS,KXHIGHPHL,KXNFLGAME,KXNBA' }}
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.13"
+          cache: pip
+      - run: pip install -e .
+      - name: Record ${{ matrix.venue }}
+        run: |
+          mkdir -p data/recorded
+          if [ "${{ matrix.venue }}" = "kalshi" ]; then
+            IFS=',' read -ra S <<< "$RECORD_KALSHI_SERIES"
+            for s in "${S[@]}"; do
+              python scripts/record.py --venue kalshi --kalshi-series "$s" --top 4 \
+                --max-seconds "$RECORD_SECONDS" --out data/recorded &
+            done
+            wait
+          else
+            python scripts/record.py --venue polymarket --top 12 --max-seconds "$RECORD_SECONDS" --out data/recorded
+          fi
+      - name: Publish to data branch
+        if: always()
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          set -e
+          git config user.name "predictionbots-recorder"
+          git config user.email "bots@users.noreply.github.com"
+          git fetch origin data || true
+          if git rev-parse --verify origin/data >/dev/null 2>&1; then
+            git worktree add ../datawt origin/data
+          else
+            git worktree add --orphan -b data ../datawt
+          fi
+          mkdir -p ../datawt/recorded
+          cp -r data/recorded/. ../datawt/recorded/ 2>/dev/null || true
+          # rotate: keep 30 days of day-folders per venue
+          for v in ../datawt/recorded/*; do
+            [ -d "$v" ] || continue
+            ls -1d "$v"/20* 2>/dev/null | sort | head -n -30 | xargs -r rm -rf
+          done
+          cd ../datawt
+          git add -A
+          git commit -qm "record ${{ matrix.venue }} $(date -u +%FT%TZ)" || exit 0
+          for i in 1 2 3 4 5; do
+            git push origin HEAD:data && break
+            git fetch origin data && git rebase origin/data || git rebase --abort
+            sleep $((RANDOM % 20 + 5))
+          done
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: recorded-${{ matrix.venue }}-${{ github.run_id }}
+          path: data/recorded
+          retention-days: 7
+          if-no-files-found: ignore
