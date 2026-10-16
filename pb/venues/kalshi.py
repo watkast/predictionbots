@@ -529,6 +529,25 @@ class KalshiClient:
     async def market(self, ticker: str) -> Market:
         return to_market(await self.get_market(ticker))
 
+    async def enrich(self, markets: list[Market]) -> list[Market]:
+        """Fill meta `fee_type`/`category` from `/series` and `mutually_exclusive`
+        from `/events` for every distinct series/event among `markets`.
+        Lookup failures are logged and leave the meta untouched."""
+        for st in sorted({m.series for m in markets if m.series}):
+            try:
+                enrich_markets_with_series([m for m in markets if m.series == st], await self.get_series(st))
+            except Exception as e:  # pragma: no cover - network
+                log.warning("series lookup %s failed: %s", st, e)
+        for ev in sorted({m.event_id for m in markets if m.event_id}):
+            group = [m for m in markets if m.event_id == ev]
+            if all("mutually_exclusive" in m.meta for m in group):
+                continue
+            try:
+                enrich_markets_with_event(group, await self.get_event(ev))
+            except Exception as e:  # pragma: no cover - network
+                log.warning("event lookup %s failed: %s", ev, e)
+        return markets
+
 
 # ----------------------------------------------------------------------------
 # Order payloads
@@ -634,10 +653,75 @@ def to_market(m: dict) -> Market:
         "subtitle": _get(m, "subtitle", "yes_sub_title", default=""),
         "rules": _get(m, "rules_primary", default=""),
     }
-    return Market(venue=Venue.KALSHI, market_id=ticker, event_id=event, series=series,
-                  title=_get(m, "title", default=""), open_ts=open_ts, close_ts=close_ts,
-                  tick=_tick_from_market(m), min_size=min_size, result=result,
-                  settle_ts=settle_ts if (settle_ts and settle_ts > 0) else None, meta=meta)
+    # strategy-facing keys (see NOTES_FOR_INTEGRATION.md): strikes, category, fee type,
+    # ladder grouping, mutual exclusivity, crypto window bounds.
+    for src, dst in (("floor_strike", "floor_strike"), ("cap_strike", "cap_strike")):
+        v = _get(m, src)
+        if v is not None and str(v) != "":
+            try:
+                meta[dst] = float(v)
+            except (TypeError, ValueError):
+                pass
+    cat = _get(m, "category")
+    if cat:
+        meta["category"] = str(cat).lower()
+    for k in ("fee_type", "mutually_exclusive"):
+        v = _get(m, k)
+        if v is not None:
+            meta[k] = v
+    if series.upper().startswith(("KXHIGH", "KXLOW")) and event:
+        meta["ladder_group"] = event
+    market = Market(venue=Venue.KALSHI, market_id=ticker, event_id=event, series=series,
+                    title=_get(m, "title", default=""), open_ts=open_ts, close_ts=close_ts,
+                    tick=_tick_from_market(m), min_size=min_size, result=result,
+                    settle_ts=settle_ts if (settle_ts and settle_ts > 0) else None, meta=meta)
+    _add_crypto_window(market)
+    return market
+
+
+def _add_crypto_window(market: Market) -> None:
+    """Populate `window_open_ts`/`window_close_ts`/`window_secs`/`asset` for
+    short-horizon crypto series (KXBTC15M, KXETH15M, ...) from the ticker."""
+    if not market.series.upper().startswith(("KXBTC", "KXETH", "KXSOL", "KXXRP", "KXDOGE")):
+        return
+    from pb.data.feeds import KalshiCryptoWindow
+
+    w = KalshiCryptoWindow.from_market(market)
+    if not w.ok:
+        return
+    market.meta.setdefault("window_open_ts", w.open_ts)
+    market.meta.setdefault("window_close_ts", w.close_ts)
+    market.meta.setdefault("window_secs", w.duration)
+    if w.asset:
+        market.meta.setdefault("asset", w.asset)
+
+
+def enrich_markets_with_series(markets: list[Market], series_json: dict) -> None:
+    """Copy `fee_type` / `category` from a `/series/{ticker}` payload into every
+    market of that series whose meta lacks them."""
+    s = series_json.get("series", series_json) if isinstance(series_json, dict) else {}
+    fee_type, cat = _get(s, "fee_type"), _get(s, "category")
+    for m in markets:
+        if fee_type is not None:
+            m.meta.setdefault("fee_type", fee_type)
+        if cat:
+            m.meta.setdefault("category", str(cat).lower())
+
+
+def enrich_markets_with_event(markets: list[Market], event_json: dict) -> None:
+    """Copy `mutually_exclusive` (and `category`) from `/events/{ticker}` into
+    the markets of that event."""
+    e = event_json.get("event", event_json) if isinstance(event_json, dict) else {}
+    ticker = _get(e, "event_ticker", "ticker", default="")
+    me = _get(e, "mutually_exclusive")
+    cat = _get(e, "category")
+    for m in markets:
+        if ticker and m.event_id != ticker:
+            continue
+        if me is not None:
+            m.meta["mutually_exclusive"] = bool(me)
+        if cat:
+            m.meta.setdefault("category", str(cat).lower())
 
 
 def _book_sides(raw: dict) -> tuple[list[tuple[float, float]], list[tuple[float, float]]]:

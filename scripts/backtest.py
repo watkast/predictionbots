@@ -77,7 +77,8 @@ def main() -> int:
     ap.add_argument("--end")
     ap.add_argument("--synthetic", action="store_true")
     ap.add_argument("--seed", type=int, default=1)
-    ap.add_argument("--signals", help="parquet/CSV of signals (ts,name,market_id,value) to merge")
+    ap.add_argument("--signals", help="parquet/CSV of signals (ts,name,market_id,value|value_json) to merge "
+                                      "(recorded runs replay their own signals-*.parquet by default)")
     ap.add_argument("--grid", help="'a=1,2;b=x,y' parameter grid")
     ap.add_argument("--walk-forward", type=int, default=0, help="number of folds")
     ap.add_argument("--metric", default="net_pnl")
@@ -112,7 +113,9 @@ def main() -> int:
     if a.synthetic:
         data = DataSpec(kind="synthetic", synthetic_kwargs={"seed": a.seed}, signals=signals)
     elif a.data:
-        data = DataSpec(kind="recorded", path=a.data, markets=a.markets, signals=signals)
+        # an explicit --signals file replaces the signals the recorder captured
+        data = DataSpec(kind="recorded", path=a.data, markets=a.markets, signals=signals,
+                        recorded_signals=signals is None)
     elif a.kalshi_series or a.poly_token:
         data = DataSpec(kind="history", history=lambda: asyncio.run(_history(a)), signals=signals)
     else:
@@ -149,6 +152,8 @@ def _load_signals(path: str):
     out = []
     by_name: dict[str, list[dict]] = {}
     for r in rows:
+        if "value" not in r and "value_json" in r:
+            r["value"] = r["value_json"]
         by_name.setdefault(str(r["name"]), []).append(r)
     for name, rs in by_name.items():
         for r in rs:

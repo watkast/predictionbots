@@ -284,6 +284,46 @@ async def polymarket_twap(ws_factory: Callable[..., Any] | None = None) -> Async
             yield s
 
 
+async def merge_signals(*feeds: AsyncIterator[Signal], on_error: str = "log") -> AsyncIterator[Signal]:
+    """Fan-in: yield from several async signal generators as one stream.
+
+    Each feed is pumped by its own task into a queue; a feed that raises is
+    logged (and the others keep going); the merged stream ends when every
+    feed has ended. Cancelling the consumer cancels the pumps."""
+    q: asyncio.Queue = asyncio.Queue()
+    _END = object()
+
+    async def pump(gen: AsyncIterator[Signal]) -> None:
+        try:
+            async for s in gen:
+                await q.put(s)
+        except asyncio.CancelledError:
+            raise
+        except Exception as e:
+            if on_error == "raise":
+                await q.put(e)
+                return
+            log.warning("signal feed %r stopped: %s", getattr(gen, "__name__", gen), e)
+        finally:
+            await q.put(_END)
+
+    tasks = [asyncio.create_task(pump(f)) for f in feeds]
+    alive = len(tasks)
+    try:
+        while alive > 0:
+            item = await q.get()
+            if item is _END:
+                alive -= 1
+                continue
+            if isinstance(item, Exception):
+                raise item
+            yield item
+    finally:
+        for t in tasks:
+            t.cancel()
+        await asyncio.gather(*tasks, return_exceptions=True)
+
+
 async def index_with_fallback(primary: AsyncIterator[Signal], fallback_factory: Callable[[], AsyncIterator[Signal]],
                               stale_after: float = 15.0) -> AsyncIterator[Signal]:
     """Yield from `primary`; if it goes quiet for `stale_after` seconds switch to

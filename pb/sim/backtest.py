@@ -16,8 +16,10 @@ Data sources (`DataSpec.kind`):
 * "synthetic": `pb.sim.synthetic.synthetic_events` (CI only)
 * "events":    in-memory `(markets, events)` tuple
 
-Signals: extra `Signal` events (e.g. from pb.data.feeds helpers) are merged
-into the stream by timestamp via `DataSpec.signals`.
+Signals: recorded runs carry their own `signals-*.parquet` (replayed by
+default, `DataSpec.recorded_signals=False` to drop); extra `Signal` events
+(e.g. from pb.data.feeds helpers or `scripts/backtest.py --signals`) are
+merged into the stream by timestamp via `DataSpec.signals`.
 
 Fees: `DataSpec.fee_for` (market_id -> FeeSchedule); default infers from the
 market's venue/series (`pb.core.fees.kalshi_schedule` on the series prefix,
@@ -55,6 +57,7 @@ class DataSpec:
     synthetic_kwargs: dict = field(default_factory=dict)
     fee_for: Optional[Callable[[str], FeeSchedule]] = None
     low_fidelity: Optional[bool] = None             # override
+    recorded_signals: bool = True                   # replay signals-*.parquet from the recorder
 
 
 @dataclass
@@ -123,7 +126,7 @@ def load_data(d: DataSpec) -> tuple[list[Market], list[Event], bool]:
     if d.kind == "recorded":
         from pb.data.loaders import load_recorded
 
-        markets, events = load_recorded(d.path, d.markets)
+        markets, events = load_recorded(d.path, d.markets, signals=d.recorded_signals)
         events = list(events)
     elif d.kind == "history":
         h = d.history() if callable(d.history) else d.history

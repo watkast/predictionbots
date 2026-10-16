@@ -5,6 +5,7 @@ Output layout::
     data/recorded/{venue}/{YYYYMMDD}/books-{HHMMSS}-{n}.parquet
     data/recorded/{venue}/{YYYYMMDD}/trades-{HHMMSS}-{n}.parquet
     data/recorded/{venue}/{YYYYMMDD}/markets-{HHMMSS}-{n}.parquet
+    data/recorded/{venue}/{YYYYMMDD}/signals-{HHMMSS}-{n}.parquet
 
 Schemas (all timestamps epoch seconds, float64):
 
@@ -12,7 +13,12 @@ Schemas (all timestamps epoch seconds, float64):
            -- one row per level, top `max_levels` (default 20) per side per snapshot
 * trades:  ts, market_id, price, size, taker_action ("buy"|"sell")
 * markets: ts, market_id, venue, series, event_id, title, open_ts, close_ts,
-           result (nullable float), settle_ts (nullable), status
+           result (nullable float), settle_ts (nullable), status, meta_json
+           (strategy-facing `Market.meta` keys as JSON, so backtests see the
+           same window/strike/ladder metadata the paper run did)
+* signals: ts, name, market_id (nullable), value_json -- every reference
+           `Signal` the run received (`pb.data.feeds`), so a backtest can
+           replay the exact feed (`loaders.load_recorded` merges them back)
 
 The recorder is venue-agnostic: it consumes any async iterator of
 `Book | Trade` (plus ignored `RawMessage`s) as the primary feed, and when no
@@ -23,6 +29,7 @@ every `poll_secs` for REST book snapshots. Buffers are flushed every
 from __future__ import annotations
 
 import asyncio
+import json
 import logging
 import os
 import time
@@ -35,6 +42,7 @@ import pyarrow as pa
 import pyarrow.parquet as pq
 
 from pb.core.types import Action, Book, Market, Trade, Venue
+from pb.sim.engine import Signal
 
 log = logging.getLogger(__name__)
 
@@ -50,8 +58,16 @@ MARKET_SCHEMA = pa.schema([
     ("ts", pa.float64()), ("market_id", pa.string()), ("venue", pa.string()),
     ("series", pa.string()), ("event_id", pa.string()), ("title", pa.string()),
     ("open_ts", pa.float64()), ("close_ts", pa.float64()), ("result", pa.float64()),
-    ("settle_ts", pa.float64()), ("status", pa.string()),
+    ("settle_ts", pa.float64()), ("status", pa.string()), ("meta_json", pa.string()),
 ])
+SIGNAL_SCHEMA = pa.schema([
+    ("ts", pa.float64()), ("name", pa.string()), ("market_id", pa.string()), ("value_json", pa.string()),
+])
+# Market.meta keys worth persisting (the rest is volume/price noise at record time).
+META_KEYS = ("window_open_ts", "window_close_ts", "window_secs", "asset", "open_price", "floor_strike",
+             "cap_strike", "rung_lo", "rung_hi", "ladder_group", "peak_ts", "mutually_exclusive", "pair_id",
+             "category", "fee_type", "subtitle", "condition_id", "no_token", "neg_risk", "slug", "outcomes",
+             "fees_enabled", "sport")
 
 
 def book_rows(b: Book, max_levels: int = 20) -> list[dict]:
@@ -75,7 +91,14 @@ def market_row(m: Market, ts: float) -> dict:
             "event_id": m.event_id, "title": m.title, "open_ts": float(m.open_ts),
             "close_ts": float(m.close_ts), "result": None if m.result is None else float(m.result),
             "settle_ts": None if m.settle_ts is None else float(m.settle_ts),
-            "status": str(m.meta.get("status", "") or "")}
+            "status": str(m.meta.get("status", "") or ""),
+            "meta_json": json.dumps({k: m.meta[k] for k in META_KEYS if k in m.meta and m.meta[k] is not None},
+                                    default=str)}
+
+
+def signal_row(s: Signal) -> dict:
+    return {"ts": float(s.ts), "name": s.name, "market_id": s.market_id,
+            "value_json": json.dumps(s.value, default=str)}
 
 
 def write_parquet(rows: list[dict], schema: pa.Schema, path: Path) -> Optional[Path]:
@@ -95,6 +118,7 @@ class RecorderStats:
     books: int = 0
     trades: int = 0
     markets: int = 0
+    signals: int = 0
     flushes: int = 0
     ws_events: int = 0
     polls: int = 0
@@ -114,6 +138,8 @@ class Recorder:
     trade_poller: optional coroutine `(market_id, since_ts) -> list[Trade]`
     market_refresher: optional coroutine `(market_id) -> Market` to pick up
                  settlement results; called every `refresh_secs`
+    signals:     optional async iterator of `Signal` (e.g. `pb.data.feeds.merge_signals(...)`);
+                 persisted to signals-*.parquet
     """
 
     def __init__(self, venue: str, markets: Iterable[Market], out_dir: str | Path = "data/recorded",
@@ -123,8 +149,10 @@ class Recorder:
                  market_refresher: Optional[Callable[[str], Awaitable[Market]]] = None,
                  poll_secs: float = 5.0, flush_secs: float = 60.0, refresh_secs: float = 300.0,
                  max_seconds: Optional[float] = None, max_levels: int = 20,
-                 clock: Callable[[], float] = time.time, ws_stale_secs: float = 30.0):
+                 clock: Callable[[], float] = time.time, ws_stale_secs: float = 30.0,
+                 signals: Optional[AsyncIterator[Signal]] = None):
         self.venue = venue
+        self.signals = signals
         self.markets: dict[str, Market] = {m.market_id: m for m in markets}
         self.out_dir = Path(out_dir)
         self.feed = feed
@@ -141,6 +169,7 @@ class Recorder:
         self._books: list[dict] = []
         self._trades: list[dict] = []
         self._markets: list[dict] = []
+        self._signals: list[dict] = []
         self._seen_trades: set[tuple] = set()
         self._flush_n = 0
         self._last_ws_event = 0.0
@@ -174,31 +203,38 @@ class Recorder:
         self._markets.append(market_row(m, self.clock()))
         self.stats.markets += 1
 
+    def on_signal(self, s: Signal) -> None:
+        self._signals.append(signal_row(s))
+        self.stats.signals += 1
+
     def on_event(self, ev: Any) -> None:
         if isinstance(ev, Book):
             self.on_book(ev)
         elif isinstance(ev, Trade):
             self.on_trade(ev)
+        elif isinstance(ev, Signal):
+            self.on_signal(ev)
         # RawMessage etc. ignored
 
     # -- flushing ----------------------------------------------------------------
-    def _paths(self) -> tuple[Path, Path, Path]:
+    def _paths(self) -> tuple[Path, Path, Path, Path]:
         now = datetime.fromtimestamp(self.clock(), tz=timezone.utc)
         d = self.out_dir / self.venue / now.strftime("%Y%m%d")
         stamp = f"{now.strftime('%H%M%S')}-{self._flush_n:04d}"
-        return d / f"books-{stamp}.parquet", d / f"trades-{stamp}.parquet", d / f"markets-{stamp}.parquet"
+        return (d / f"books-{stamp}.parquet", d / f"trades-{stamp}.parquet", d / f"markets-{stamp}.parquet",
+                d / f"signals-{stamp}.parquet")
 
     def flush(self) -> list[Path]:
-        bp, tp, mp = self._paths()
+        bp, tp, mp, sp = self._paths()
         self._flush_n += 1
         out = []
         for rows, schema, path in ((self._books, BOOK_SCHEMA, bp), (self._trades, TRADE_SCHEMA, tp),
-                                   (self._markets, MARKET_SCHEMA, mp)):
+                                   (self._markets, MARKET_SCHEMA, mp), (self._signals, SIGNAL_SCHEMA, sp)):
             p = write_parquet(rows, schema, path)
             if p is not None:
                 out.append(p)
                 self.stats.files.append(str(p))
-        self._books, self._trades, self._markets = [], [], []
+        self._books, self._trades, self._markets, self._signals = [], [], [], []
         if out:
             self.stats.flushes += 1
             log.info("flushed %s", ", ".join(p.name for p in out))
@@ -216,6 +252,8 @@ class Recorder:
                  asyncio.create_task(self._refresh_loop())]
         if self.feed is not None:
             tasks.append(asyncio.create_task(self._feed_loop()))
+        if self.signals is not None:
+            tasks.append(asyncio.create_task(self._signal_loop()))
         if self.max_seconds is not None:
             tasks.append(asyncio.create_task(self._deadline(start)))
         try:
@@ -252,6 +290,16 @@ class Recorder:
         except Exception as e:
             log.warning("feed ended with %s; falling back to polling", e)
         self.feed_alive = False
+
+    async def _signal_loop(self) -> None:
+        try:
+            async for s in self.signals:  # type: ignore[union-attr]
+                if isinstance(s, Signal):
+                    self.on_signal(s)
+        except asyncio.CancelledError:
+            raise
+        except Exception as e:
+            log.warning("signal feed ended with %s", e)
 
     def _ws_healthy(self) -> bool:
         return self.feed_alive and (self.clock() - self._last_ws_event) < self.ws_stale_secs

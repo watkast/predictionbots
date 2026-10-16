@@ -12,6 +12,13 @@ resting size, maker fills only from prints / adverse crossings). The runner:
 * appends every fill to `data/ledger/{run_id}.jsonl` and writes
   `data/ledger/{run_id}.summary.json` every minute and at shutdown;
 * resumes positions from a prior ledger with the same `run_id`;
+* merges any number of reference `Signal` feeds (`signals=[...]`, see
+  `pb.data.feeds.merge_signals`) into the same event queue;
+* gates every strategy order through `pb.live.risk.RiskManager` (daily loss
+  limit, capital caps, order rate, kill file `data/KILL`, stale-data guard)
+  and reports `risk` in the summary;
+* optionally records every Signal it saw to `signals-*.parquet` via a
+  `pb.data.recorder.Recorder` (`recorder=`) so backtests replay the feed;
 * stops after `--duration` seconds or on SIGINT/SIGTERM.
 
 Market selection helpers (`select_kalshi_markets`, `select_polymarket_markets`)
@@ -30,6 +37,7 @@ from typing import Any, AsyncIterator, Awaitable, Callable, Iterable, Optional
 
 from pb.core.fees import FeeSchedule
 from pb.core.types import Action, Book, Fill, Market, Trade, Venue
+from pb.live.risk import RiskLimits, RiskManager
 from pb.sim.engine import Engine, Event, Settlement, Signal, SimConfig, Strategy
 
 log = logging.getLogger(__name__)
@@ -121,6 +129,7 @@ class PaperConfig:
     ledger_root: str = "data/ledger"
     sim: SimConfig = field(default_factory=SimConfig)
     resume: bool = True
+    risk: Optional[RiskLimits] = field(default_factory=RiskLimits)   # None disables the RiskManager
 
 
 class PaperRunner:
@@ -132,26 +141,39 @@ class PaperRunner:
     feeds:     async iterators of Book/Trade (venue WS). May be empty.
     pollers:   optional {market_id: coroutine() -> Book} used when no feed
                produced an event for that market within `poll_secs`
-    signals:   optional async iterator of `Signal`s (reference feeds)
+    signals:   one async iterator of `Signal`s, or a list of them (fanned in)
     settlement_checker: optional coroutine(market_id) -> Market with result
+    recorder:  optional `pb.data.recorder.Recorder`; every Signal (and Book/
+               Trade) processed is handed to `recorder.on_event` so the run's
+               exact feed lands in parquet. The caller runs/stops the recorder.
     clock:     wall clock (injectable for tests)
     """
 
     def __init__(self, markets: Iterable[Market], fee_for: Callable[[str], FeeSchedule],
                  strategies: Iterable[Strategy], feeds: Iterable[AsyncIterator[Any]] = (),
                  pollers: Optional[dict[str, Callable[[], Awaitable[Book]]]] = None,
-                 signals: Optional[AsyncIterator[Signal]] = None,
+                 signals: Optional[AsyncIterator[Signal] | Iterable[AsyncIterator[Signal]]] = None,
                  settlement_checker: Optional[Callable[[str], Awaitable[Optional[Market]]]] = None,
-                 config: Optional[PaperConfig] = None, clock: Callable[[], float] = time.time):
+                 config: Optional[PaperConfig] = None, clock: Callable[[], float] = time.time,
+                 recorder: Any = None):
         self.cfg = config or PaperConfig()
         self.clock = clock
         self.markets = list(markets)
         self.engine = LiveEngine(self.markets, fee_for, self.cfg.sim)
+        self.risk: Optional[RiskManager] = None
+        if self.cfg.risk is not None:
+            self.risk = RiskManager(self.engine, self.cfg.risk, clock=clock, name=self.cfg.run_id).install()
         for s in strategies:
             self.engine.add_strategy(s)
         self.feeds = list(feeds)
         self.pollers = pollers or {}
-        self.signals = signals
+        if signals is None:
+            self.signal_feeds: list[AsyncIterator[Signal]] = []
+        elif hasattr(signals, "__aiter__"):
+            self.signal_feeds = [signals]  # type: ignore[list-item]
+        else:
+            self.signal_feeds = list(signals)  # type: ignore[arg-type]
+        self.recorder = recorder
         self.settlement_checker = settlement_checker
         self.ledger = Ledger(self.cfg.run_id, self.cfg.ledger_root)
         self._queue: asyncio.Queue = asyncio.Queue()
@@ -194,8 +216,7 @@ class PaperRunner:
         self.ledger.append({"type": "start", "ts": self.started_at, "run_id": self.cfg.run_id,
                             "markets": [m.market_id for m in self.markets]})
         tasks = [asyncio.create_task(self._pump(f)) for f in self.feeds]
-        if self.signals is not None:
-            tasks.append(asyncio.create_task(self._pump(self.signals)))
+        tasks += [asyncio.create_task(self._pump(f)) for f in self.signal_feeds]
         tasks += [asyncio.create_task(self._poll_loop()),
                   asyncio.create_task(self._summary_loop()),
                   asyncio.create_task(self._settlement_loop())]
@@ -234,6 +255,8 @@ class PaperRunner:
                 ev = await asyncio.wait_for(self._queue.get(), timeout=self.cfg.heartbeat)
             except asyncio.TimeoutError:
                 self.engine.tick(self.clock())
+                if self.risk is not None:
+                    self.risk.check()
                 continue
             self.process(ev)
 
@@ -247,6 +270,13 @@ class PaperRunner:
             ev.ts = self.engine.now
         if isinstance(ev, (Book, Trade)):
             self._last_event[ev.market_id] = now
+        if self.risk is not None:
+            self.risk.on_event(ev)
+        if self.recorder is not None:
+            try:
+                self.recorder.on_event(ev)
+            except Exception as e:  # pragma: no cover
+                log.warning("recorder: %s", e)
         self.engine.step(ev)
         self._log_new_fills()
 
@@ -318,6 +348,9 @@ class PaperRunner:
                           for m, p in self.engine.positions.items() if p.contracts or p.realized},
             "markets": [m.market_id for m in self.markets],
             "last_event_age": {m: round(self.clock() - t, 1) for m, t in self._last_event.items()},
+            "risk": self.risk.status() if self.risk is not None else None,
+            "strategies": [getattr(st, "name", type(st).__name__) for st in self.engine.strategies],
+            "venue": self.markets[0].venue.value if self.markets else "",
         })
         return s
 
@@ -438,13 +471,18 @@ async def select_polymarket_markets(client: Any, top: int = 3, tag_id: Optional[
 # Venue wiring
 # ----------------------------------------------------------------------------
 async def build_kalshi_runner(markets: list[Market], strategies: list[Strategy], config: PaperConfig,
-                              demo: bool = False) -> tuple[PaperRunner, Any]:
+                              demo: bool = False, signals: Optional[list[AsyncIterator[Signal]]] = None,
+                              recorder: Any = None) -> tuple[PaperRunner, Any]:
     from pb.venues import kalshi as K
 
     client = K.KalshiClient.from_env(demo=demo)
     fees: dict[str, FeeSchedule] = {}
     for m in markets:
         fees[m.market_id] = await client.fee_schedule(m.series)
+    try:
+        await client.enrich(markets)
+    except Exception as e:  # pragma: no cover - network
+        log.warning("market enrichment failed: %s", e)
     feeds = []
     if client.auth is not None:
         ws = K.KalshiWS([m.market_id for m in markets], auth=client.auth,
@@ -456,12 +494,14 @@ async def build_kalshi_runner(markets: list[Market], strategies: list[Strategy],
         return await client.market(mid)
 
     runner = PaperRunner(markets, lambda mid: fees.get(mid, K.kalshi_schedule(mid.split("-")[0])),
-                         strategies, feeds=feeds, pollers=pollers, settlement_checker=check, config=config)
+                         strategies, feeds=feeds, pollers=pollers, settlement_checker=check, config=config,
+                         signals=signals, recorder=recorder)
     return runner, client
 
 
 async def build_polymarket_runner(markets: list[Market], strategies: list[Strategy],
-                                  config: PaperConfig) -> tuple[PaperRunner, Any]:
+                                  config: PaperConfig, signals: Optional[list[AsyncIterator[Signal]]] = None,
+                                  recorder: Any = None) -> tuple[PaperRunner, Any]:
     from pb.venues import polymarket as P
 
     client = P.PolymarketClient()
@@ -469,10 +509,114 @@ async def build_polymarket_runner(markets: list[Market], strategies: list[Strate
     ws = P.PolymarketWS([m.market_id for m in markets])
     pollers = {m.market_id: (lambda mid=m.market_id: client.book(mid)) for m in markets}
     runner = PaperRunner(markets, lambda mid: fees.get(mid, P.polymarket_schedule("other")), strategies,
-                         feeds=[ws.events()], pollers=pollers, config=config)
+                         feeds=[ws.events()], pollers=pollers, config=config, signals=signals, recorder=recorder)
     return runner, client
+
+
+# ----------------------------------------------------------------------------
+# Signal feed construction from CLI specs
+# ----------------------------------------------------------------------------
+SIGNAL_SPEC_HELP = (
+    "comma-separated feeds: coinbase | kraken | twap | openmeteo[:LAT,LON[,BIAS]] | nws:STATION | "
+    "odds[:SPORT] | espn[:SPORT]  (SPORT = nfl|nba|mlb|nhl; odds needs ODDS_API_KEY and is skipped without it)"
+)
+
+
+def parse_signal_specs(spec: str | None) -> list[tuple[str, list[str]]]:
+    """'coinbase,twap,openmeteo:40.78,-73.97,1.5' -> [('coinbase', []), ('twap', []), ('openmeteo', ['40.78','-73.97','1.5'])]"""
+    out: list[tuple[str, list[str]]] = []
+    if not spec:
+        return out
+    for part in spec.split(","):
+        part = part.strip()
+        if not part:
+            continue
+        # a numeric argument continues the previous spec (openmeteo:LAT,LON,BIAS)
+        if out and ":" not in part and _is_number(part):
+            out[-1][1].append(part)
+            continue
+        name, _, arg = part.partition(":")
+        out.append((name.strip().lower().replace("_", "").replace("-", ""), [arg] if arg else []))
+    return out
+
+
+def _is_number(s: str) -> bool:
+    try:
+        float(s)
+        return True
+    except ValueError:
+        return False
+
+
+def build_signal_feeds(spec: str | None, markets: list[Market], env: Optional[dict] = None,
+                       http_client: Any = None) -> tuple[list[AsyncIterator[Signal]], list[str]]:
+    """Instantiate `pb.data.feeds` generators for a `--signals` spec.
+    Returns (feeds, notes); notes explain skipped feeds (e.g. missing
+    ODDS_API_KEY or no linkable sports markets). Network only happens when the
+    returned generators are iterated."""
+    import os
+
+    from pb.data import feeds as F
+    from pb.data import odds_link as OL
+
+    env = os.environ if env is None else env
+    feeds: list[AsyncIterator[Signal]] = []
+    notes: list[str] = []
+    http = http_client
+
+    def _http():
+        nonlocal http
+        if http is None:
+            import httpx
+
+            http = httpx.AsyncClient(timeout=20.0)
+        return http
+
+    for name, args in parse_signal_specs(spec):
+        if name == "coinbase":
+            feeds.append(F.index_with_fallback(F.coinbase_index(), lambda: F.kraken_index()))
+        elif name == "kraken":
+            feeds.append(F.kraken_index())
+        elif name == "twap":
+            feeds.append(F.polymarket_twap())
+        elif name in ("openmeteo", "openmeteo"):
+            if len(args) < 2:
+                notes.append("openmeteo needs LAT,LON (e.g. openmeteo:40.78,-73.97[,BIAS])")
+                continue
+            lat, lon = float(args[0]), float(args[1])
+            bias = float(args[2]) if len(args) > 2 else 0.0
+            rung_markets = [m for m in markets if F.parse_rung(m) is not None]
+            if not rung_markets:
+                notes.append("openmeteo: no ladder markets with rung bounds; skipped")
+                continue
+            feeds.append(F.open_meteo_fcst_prob(_http(), rung_markets, lat, lon, bias=bias))
+        elif name == "nws":
+            if not args:
+                notes.append("nws needs a station id (nws:KNYC)")
+                continue
+            feeds.append(F.nws_observation_signal(_http(), args[0]))
+        elif name in ("odds", "espn"):
+            sport = (args[0] if args else OL.sport_for_markets(markets) or "").lower()
+            if not sport:
+                notes.append(f"{name}: could not infer the sport from the markets; pass {name}:nfl")
+                continue
+            links = OL.build_links(markets, sport=sport)
+            if not links:
+                notes.append(f"{name}: no market could be linked to a {sport} game; skipped")
+                continue
+            if name == "odds":
+                key = env.get("ODDS_API_KEY", "")
+                if not key:
+                    notes.append("odds: ODDS_API_KEY not set; skipped")
+                    continue
+                feeds.append(F.odds_api_sharp_prob(_http(), key, OL.ODDS_API_SPORT_KEYS.get(sport, sport), links))
+            else:
+                feeds.append(F.espn_game_state(_http(), OL.ESPN_SPORT_PATHS.get(sport, sport), links))
+        else:
+            notes.append(f"unknown signal feed {name!r}")
+    return feeds, notes
 
 
 __all__ = ["LiveEngine", "Ledger", "PaperConfig", "PaperRunner", "build_strategy", "load_params_yaml",
            "select_kalshi_markets", "select_polymarket_markets", "build_kalshi_runner",
-           "build_polymarket_runner"]
+           "build_polymarket_runner", "build_signal_feeds", "parse_signal_specs", "SIGNAL_SPEC_HELP"]

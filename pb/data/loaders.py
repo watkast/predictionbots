@@ -18,6 +18,7 @@ from __future__ import annotations
 import glob
 import heapq
 import itertools
+import json
 import logging
 from dataclasses import dataclass, field
 from pathlib import Path
@@ -26,7 +27,7 @@ from typing import Any, Iterable, Iterator, Optional
 import pyarrow.parquet as pq
 
 from pb.core.types import Action, Book, Level, Market, Trade, Venue
-from pb.sim.engine import Event, Settlement
+from pb.sim.engine import Event, Settlement, Signal
 
 log = logging.getLogger(__name__)
 
@@ -79,7 +80,8 @@ def _file_events(path: str, markets: Optional[set[str]]) -> Iterator[Event]:
     name = Path(path).name
     rows = _read_rows(path)
     if markets is not None:
-        rows = [r for r in rows if r["market_id"] in markets]
+        # signal rows with a null market_id are global (index prices etc.) and always kept
+        rows = [r for r in rows if r["market_id"] in markets or (name.startswith("signals") and not r["market_id"])]
     if name.startswith("books"):
         rows.sort(key=lambda r: (r["ts"], r["market_id"], r["side"], int(r.get("level", 0))))
         yield from _books_from_rows(rows)
@@ -88,16 +90,41 @@ def _file_events(path: str, markets: Optional[set[str]]) -> Iterator[Event]:
         for r in rows:
             yield Trade(ts=float(r["ts"]), market_id=r["market_id"], price=float(r["price"]),
                         size=float(r["size"]), taker_action=Action(r["taker_action"]))
+    elif name.startswith("signals"):
+        rows.sort(key=lambda r: r["ts"])
+        yield from signals_from_signal_rows(rows)
+
+
+def signals_from_signal_rows(rows: Iterable[dict]) -> Iterator[Signal]:
+    """recorder `signals-*.parquet` rows (ts, name, market_id, value_json) -> Signals.
+    Global signals (market_id null) are always kept; `_file_events` has already
+    filtered per-market rows when a market subset was requested."""
+    for r in rows:
+        v = r.get("value_json")
+        try:
+            val = json.loads(v) if isinstance(v, str) else v
+        except ValueError:
+            val = v
+        yield Signal(ts=float(r["ts"]), name=str(r["name"]), market_id=r.get("market_id") or None, value=val)
 
 
 def _market_from_row(r: dict) -> Market:
+    meta: dict = {"status": r.get("status") or ""}
+    mj = r.get("meta_json")
+    if isinstance(mj, str) and mj:
+        try:
+            extra = json.loads(mj)
+            if isinstance(extra, dict):
+                meta.update(extra)
+        except ValueError:
+            pass
     return Market(venue=Venue(r.get("venue") or "kalshi"), market_id=r["market_id"],
                   event_id=r.get("event_id") or "", series=r.get("series") or "",
                   title=r.get("title") or "", open_ts=float(r.get("open_ts") or 0.0),
                   close_ts=float(r.get("close_ts") or 0.0),
                   result=None if r.get("result") is None else float(r["result"]),
                   settle_ts=None if r.get("settle_ts") is None else float(r["settle_ts"]),
-                  meta={"status": r.get("status") or ""})
+                  meta=meta)
 
 
 def _merge(iters: list[Iterator[Event]]) -> Iterator[Event]:
@@ -126,16 +153,18 @@ def _tail_with_settlements(events: Iterator[Event], settlements: list[Settlement
     yield from pending
 
 
-def load_recorded(path_glob: str | Iterable[str], markets: Optional[Iterable[str]] = None
-                  ) -> tuple[list[Market], Iterator[Event]]:
+def load_recorded(path_glob: str | Iterable[str], markets: Optional[Iterable[str]] = None,
+                  signals: bool = True) -> tuple[list[Market], Iterator[Event]]:
     """Load recorder parquet files matching `path_glob` (a glob or list of globs;
     a directory is expanded to `<dir>/**/*.parquet`).
 
-    Returns `(markets, events)` where events are `Book | Trade | Settlement`
-    in ts order (files merged with heapq). Books are rebuilt from level rows.
-    Market metadata comes from `markets-*.parquet`; a market whose latest
-    metadata row carries a result gets a `Settlement` at `settle_ts` (or
-    `close_ts`, or after the last event)."""
+    Returns `(markets, events)` where events are `Book | Trade | Signal |
+    Settlement` in ts order (files merged with heapq). Books are rebuilt from
+    level rows; `signals-*.parquet` rows become `Signal`s (set `signals=False`
+    to drop them, e.g. when supplying a different feed via `--signals`).
+    Market metadata comes from `markets-*.parquet` (incl. `meta_json`); a
+    market whose latest metadata row carries a result gets a `Settlement` at
+    `settle_ts` (or `close_ts`, or after the last event)."""
     globs = [path_glob] if isinstance(path_glob, str) else list(path_glob)
     files: list[str] = []
     for g in globs:
@@ -155,7 +184,7 @@ def load_recorded(path_glob: str | Iterable[str], markets: Optional[Iterable[str
                 prev = market_rows.get(r["market_id"])
                 if prev is None or float(r["ts"]) >= float(prev["ts"]):
                     market_rows[r["market_id"]] = r
-        elif name.startswith(("books", "trades")):
+        elif name.startswith(("books", "trades")) or (signals and name.startswith("signals")):
             data_files.append(f)
     mkts = [_market_from_row(r) for r in market_rows.values()]
     if wanted is not None:

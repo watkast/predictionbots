@@ -25,6 +25,7 @@ from __future__ import annotations
 import asyncio
 import json
 import logging
+import re
 import time
 from dataclasses import dataclass
 from typing import Any, AsyncIterator, Awaitable, Callable, Iterable, Optional
@@ -171,11 +172,62 @@ def to_market(m: dict) -> Market:
     event_id = event_id or str(_get(m, "eventId", "event_id", default=""))
     tick = _num(_get(m, "orderPriceMinTickSize", "minimum_tick_size", "tick_size"), 0.01) or 0.01
     min_size = _num(_get(m, "orderMinSize", "minimum_order_size", "min_size"), 1.0) or 1.0
+    # multi-outcome neg-risk events are mutually exclusive & exhaustive (complete_set_arb)
+    if meta["neg_risk"]:
+        meta["mutually_exclusive"] = True
+    close_ts = _ts(_get(m, "endDate", "end_date_iso", "end_date"))
+    win = (crypto_window_from_slug(meta["slug"], close_ts)
+           or crypto_window_from_slug(_get(m, "question", default=""), close_ts))
+    if win is not None:
+        meta.update(win)
     return Market(venue=Venue.POLYMARKET, market_id=yes_tok, event_id=event_id, series=category,
                   title=_get(m, "question", "title", default=""),
                   open_ts=_ts(_get(m, "startDate", "start_date", "createdAt")),
-                  close_ts=_ts(_get(m, "endDate", "end_date_iso", "end_date")),
-                  tick=tick, min_size=min_size, result=result, meta=meta)
+                  close_ts=close_ts, tick=tick, min_size=min_size, result=result, meta=meta)
+
+
+_CRYPTO_WINDOW_RE = re.compile(
+    r"^(?P<asset>btc|eth|sol|xrp|doge|bitcoin|ethereum|solana)-(?:updown|up-or-down)-(?P<n>5|15|60)m-(?P<ts>\d{9,13})$", re.I)
+_CRYPTO_WINDOW_TITLE_RE = re.compile(
+    r"^(?P<asset>bitcoin|ethereum|solana|btc|eth|sol)\s+up\s+or\s+down\s*-\s*(?P<mon>[a-z]+)\s+(?P<dd>\d{1,2}),?\s+"
+    r"(?P<hh>\d{1,2}):(?P<mm>\d{2})\s*(?P<ampm>am|pm)?\s*-\s*(?P<hh2>\d{1,2}):(?P<mm2>\d{2})\s*(?P<ampm2>am|pm)?\s*(?P<tz>et|est|edt)?$",
+    re.I)
+_ASSET_CANON = {"bitcoin": "BTC", "ethereum": "ETH", "solana": "SOL", "btc": "BTC", "eth": "ETH", "sol": "SOL",
+                "xrp": "XRP", "doge": "DOGE"}
+
+
+def crypto_window_from_slug(slug: str, close_ts: float = 0.0) -> Optional[dict]:
+    """Polymarket 5/15-minute up-or-down markets: `btc-updown-15m-1792152000`
+    (slug ends in the window OPEN epoch) or the question "Bitcoin Up or Down -
+    October 16, 1:00PM-1:15PM ET". Returns the meta keys mm_crypto_twap needs
+    (`window_open_ts`, `window_close_ts`, `window_secs`, `asset`) or None."""
+    s = (slug or "").strip()
+    m = _CRYPTO_WINDOW_RE.match(s)
+    if m:
+        secs = int(m.group("n")) * 60
+        t = float(m.group("ts"))
+        if t > 1e11:
+            t /= 1000.0
+        asset = _ASSET_CANON.get(m.group("asset").lower(), m.group("asset").upper())
+        open_ts = t
+        # some slugs carry the close instead: trust endDate when it is within one window of t
+        if close_ts and abs(close_ts - t) < secs / 2:
+            open_ts = close_ts - secs
+        return {"window_open_ts": open_ts, "window_close_ts": open_ts + secs, "window_secs": float(secs),
+                "asset": asset}
+    m = _CRYPTO_WINDOW_TITLE_RE.match(s)
+    if m and close_ts:
+        h1, h2 = int(m.group("hh")), int(m.group("hh2"))
+        if (m.group("ampm") or "").lower() == "pm" and h1 < 12:
+            h1 += 12
+        if (m.group("ampm2") or m.group("ampm") or "").lower() == "pm" and h2 < 12:
+            h2 += 12
+        secs = (h2 * 60 + int(m.group("mm2"))) - (h1 * 60 + int(m.group("mm")))
+        secs = secs * 60 if secs > 0 else 900
+        asset = _ASSET_CANON.get(m.group("asset").lower(), m.group("asset").upper())
+        return {"window_open_ts": close_ts - secs, "window_close_ts": close_ts, "window_secs": float(secs),
+                "asset": asset}
+    return None
 
 
 def to_book(raw: dict, market_id: Optional[str] = None, ts: Optional[float] = None,
