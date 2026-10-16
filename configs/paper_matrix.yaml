@@ -1,0 +1,96 @@
+# Paper-trading matrix: one entry per (strategy, venue, market selector, signals).
+# `scripts/paper_matrix.py --entry <name> --duration 3300` runs one; `--all` runs them
+# sequentially. Every entry is paper-only. `requires_env` entries are skipped when the
+# variable is missing. `params_override` sets strategy params on top of the params file
+# (passed as `--set k=v`); `args` are extra scripts/paper.py flags.
+defaults:
+  duration: 3300          # seconds (fits a GitHub Actions hourly job)
+  max_position: 200
+  daily_loss_limit: 50
+  max_capital: 2000
+  max_capital_per_market: 500
+  record: true
+
+runs:
+  - name: mm_crypto_twap_kxbtc15m
+    strategy: mm_crypto_twap
+    venue: kalshi
+    select: {kalshi_series: [KXBTC15M], top: 2}
+    params: configs/mm_crypto_twap.yaml
+    signals: coinbase,twap
+    note: Model 2 on the two most-traded live 15-min BTC windows; needs btc_index + twap60.
+
+  - name: mm_inventory_kxhigh
+    strategy: mm_inventory
+    venue: kalshi
+    select: {kalshi_series: [KXHIGHNY, KXHIGHMIA, KXHIGHCHI], top: 3}
+    params: configs/mm_inventory.yaml
+    signals: ""
+    note: Model 1 passive MM across three daily-high ladders (zero maker fee).
+
+  - name: mm_weather_ladder_kxhighny
+    strategy: mm_weather_ladder
+    venue: kalshi
+    select: {kalshi_series: [KXHIGHNY], top: 8}
+    params: configs/mm_weather_ladder.yaml
+    signals: "openmeteo:40.7789,-73.9692"    # Central Park (KNYC) coordinates
+    note: Model 3; Open-Meteo ensemble -> fcst_prob per rung. Add nws:KNYC for the obs verdict.
+
+  - name: favorite_maker_kalshi_scan
+    strategy: favorite_maker
+    venue: kalshi
+    select: {kalshi_scan: nonsports, top: 20}
+    params: configs/favorite_maker.yaml
+    signals: ""
+    note: Model 4 on the 20 most active non-sports Kalshi markets.
+
+  - name: endgame_bond_kalshi
+    strategy: endgame_bond
+    venue: kalshi
+    select: {kalshi_scan: all, top: 30}
+    params: configs/endgame_bond.yaml
+    signals: ""
+    note: Model 5; the strategy itself filters to allowed series/categories and the final hours.
+
+  - name: sharp_line_maker_kxnflgame
+    strategy: sharp_line_maker
+    venue: kalshi
+    select: {kalshi_series: [KXNFLGAME], top: 6}
+    params: configs/sharp_line_maker.yaml
+    signals: odds:nfl,espn:nfl
+    requires_env: [ODDS_API_KEY]
+    note: Model 6; de-vigged Pinnacle/consensus sharp_prob via The Odds API, game_state via ESPN.
+
+  - name: complete_set_arb_polymarket
+    strategy: complete_set_arb
+    venue: polymarket
+    select: {poly_events: true, top: 5}
+    params: configs/complete_set_arb.yaml
+    signals: ""
+    note: Model 7 on the five highest-volume Polymarket events (neg-risk -> mutually_exclusive).
+
+  - name: mm_inventory_poly_crypto15m
+    strategy: mm_inventory
+    venue: polymarket
+    select: {poly_crypto_15m: true, top: 2}
+    params: configs/mm_inventory.yaml
+    signals: coinbase
+    note: Model 1 on Polymarket 5/15-min up-or-down markets (window bounds from the slug).
+
+  - name: taker_lag_kxbtc15m
+    strategy: taker_lag
+    venue: kalshi
+    select: {kalshi_series: [KXBTC15M], top: 2}
+    params: configs/taker_lag.yaml
+    signals: coinbase,twap
+    params_override: {size: 1}
+    note: Baseline T1 (expected to lose after fees); size 1.
+
+  - name: taker_momentum_kxbtc15m
+    strategy: taker_momentum
+    venue: kalshi
+    select: {kalshi_series: [KXBTC15M], top: 2}
+    params: configs/taker_momentum.yaml
+    signals: ""
+    params_override: {size: 1}
+    note: Baseline T2 (expected to lose after fees); size 1.

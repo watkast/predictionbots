@@ -16,9 +16,11 @@ pb/sim/engine.py      Engine, SimAPI, Strategy, Signal, Settlement, Result
 pb/sim/synthetic.py   synthetic generator (CI only, never for evaluation)
 pb/strategies/        one module per model; each class is @register'ed in base.REGISTRY
 pb/venues/            kalshi.py, polymarket.py: REST/WS clients, auth, normalisation to core types
-pb/data/              recorder (WS -> parquet), historical loaders (-> events), reference feeds
-pb/live/              paper runner (same Strategy interface, live books), risk manager, ledger
-scripts/              CLI entry points (record, backtest, paper, report)
+pb/data/              recorder (WS + signals -> parquet), historical loaders (-> events), reference feeds,
+                      odds_link (team-name matcher: Odds-API events <-> Kalshi/Polymarket markets)
+pb/live/              paper runner (same Strategy interface, live books), risk manager (risk.py), ledger
+scripts/              CLI entry points (record, backtest, paper, paper_matrix, report, dev.sh)
+configs/              per-strategy params YAML + paper_matrix.yaml (the paper runs)
 .github/workflows/    record.yml, paper.yml, backtest.yml, ci.yml
 data/                 parquet (recorded + downloaded), gitignored except small samples
 reports/              markdown/JSON results committed by workflows

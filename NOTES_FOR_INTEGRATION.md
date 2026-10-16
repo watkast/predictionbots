@@ -1,7 +1,29 @@
 # Notes for the integration layer (venues / recorder / loaders / paper runner / workflows)
 
-Written by the strategy-suite agent. None of the files below were edited; these
-are the interface expectations the new strategies and `pb/sim/backtest.py` have.
+Written by the strategy-suite agent; these were the interface expectations the
+strategies and `pb/sim/backtest.py` have. **Status (2026-10-16): every item below
+is resolved** except the workflows section (handled outside this repo's agent):
+
+* Market.meta keys: `kalshi.to_market` sets `window_open_ts`/`window_close_ts`/
+  `window_secs`/`asset` (crypto series, via `KalshiCryptoWindow`), `floor_strike`/
+  `cap_strike`, `category`, `fee_type`, `mutually_exclusive` (when present in the
+  market JSON), `ladder_group` (= event_ticker for KXHIGH*/KXLOW*).
+  `KalshiClient.enrich(markets)` fills `fee_type`/`category` from `/series` and
+  `mutually_exclusive` from `/events`. `polymarket.to_market` derives the window
+  keys from the slug (`btc-updown-15m-<open epoch>`) or the question + endDate and
+  sets `mutually_exclusive` for negRisk. `pair_id` and `peak_ts` remain manual.
+* Signals: `feeds.merge_signals(*gens)` fans in; `PaperRunner(signals=[...])`;
+  `scripts/paper.py --signals coinbase,twap,openmeteo:LAT,LON[,BIAS],nws:STATION,odds[:SPORT],espn[:SPORT]`
+  (`pb.live.paper.build_signal_feeds`). Coinbase has the Kraken failover.
+* OddsLink matcher: `pb/data/odds_link.py` (`build_links(markets, odds_events)`).
+* Recorder writes `signals-*.parquet` (ts, name, market_id, value_json) and
+  `meta_json` on market rows; `loaders.load_recorded` replays Signals and restores
+  meta; `DataSpec.recorded_signals`; `scripts/backtest.py --signals` overrides.
+* Risk: `pb/live/risk.py` RiskManager in front of `Engine.submit` (paper runner).
+* Reports: `scripts/report.py` -> `reports/README.md` + `reports/equity_daily.csv`.
+* Matrix: `configs/paper_matrix.yaml` + `scripts/paper_matrix.py`.
+
+Original notes follow for reference.
 
 ## Engine / SimAPI additions (done in pb/sim/engine.py, backwards compatible)
 

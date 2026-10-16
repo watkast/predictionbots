@@ -334,10 +334,15 @@ class PaperRunner:
                 log.warning("summary write failed: %s", e)
 
     def summary(self) -> dict:
+        from pb.sim.backtest import reality_flags
         from pb.sim.engine import Result
 
         s = Result(self.engine).summary()
+        s["net_pnl_on_max_capital"] = round(s["net_pnl"] / s["max_capital_at_risk"], 4) \
+            if s["max_capital_at_risk"] > 0 else 0.0
+        s["maker_pct"] = round(100.0 * s["maker_fills"] / s["fills"], 1) if s["fills"] else 0.0
         s.update({
+            "reality": reality_flags(self.engine),
             "run_id": self.cfg.run_id,
             "started_at": self.started_at,
             "updated_at": self.clock(),

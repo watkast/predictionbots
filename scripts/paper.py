@@ -50,6 +50,8 @@ def parse() -> argparse.Namespace:
     p.add_argument("--poly-events", action="store_true", help="Polymarket top events (all markets of each)")
     p.add_argument("--top", type=int, default=3)
     p.add_argument("--signals", default="", help=SIGNAL_SPEC_HELP)
+    p.add_argument("--set", action="append", default=[], metavar="PARAM=VALUE",
+                   help="override a strategy param (JSON value), e.g. --set size=1")
     p.add_argument("--duration", type=float, default=None, help="seconds")
     p.add_argument("--run-id", default=f"paper-{int(time.time())}")
     p.add_argument("--ledger", default="data/ledger")
@@ -141,6 +143,12 @@ async def main() -> int:
     cfg = PaperConfig(run_id=a.run_id, duration=a.duration, ledger_root=a.ledger, poll_secs=a.poll_secs,
                       resume=not a.no_resume, sim=SimConfig(max_position_per_market=a.max_position), risk=risk)
     params = load_params_yaml(a.params, a.strategy)
+    for kv in a.set:
+        k, _, v = kv.partition("=")
+        try:
+            params[k.strip()] = json.loads(v)
+        except ValueError:
+            params[k.strip()] = v
     if a.venue == "kalshi":
         from pb.venues.kalshi import KalshiClient
 
