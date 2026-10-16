@@ -1,0 +1,13 @@
+httpx>=0.27
+websockets>=12
+numpy
+pandas
+pyarrow
+cryptography
+pydantic>=2
+pyyaml
+
+[dev]
+pytest
+pytest-asyncio
+respx
