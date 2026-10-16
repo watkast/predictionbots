@@ -64,7 +64,12 @@ jobs:
           cache: pip
       - run: pip install -e .
       - name: Paper trade ${{ matrix.entry }}
-        run: python scripts/paper_matrix.py --entry "${{ matrix.entry }}" --duration "$RUN_SECONDS"
+        shell: bash
+        run: |
+          set -o pipefail
+          mkdir -p data/ledger
+          python scripts/paper_matrix.py --entry "${{ matrix.entry }}" --duration "$RUN_SECONDS" 2>&1 \
+            | tee "data/ledger/log-${{ matrix.entry }}-$(date -u +%Y%m%dT%H%M).txt"
       - uses: actions/upload-artifact@v4
         if: always()
         with:

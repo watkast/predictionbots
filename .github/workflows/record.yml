@@ -41,7 +41,8 @@ jobs:
       - run: pip install -e .
       - name: Record ${{ matrix.venue }}
         run: |
-          mkdir -p data/recorded
+          mkdir -p data/recorded/logs
+          exec > >(tee "data/recorded/logs/record-${{ matrix.venue }}-$(date -u +%Y%m%dT%H%M).txt") 2>&1
           if [ "${{ matrix.venue }}" = "kalshi" ]; then
             IFS=',' read -ra S <<< "$RECORD_KALSHI_SERIES"
             for s in "${S[@]}"; do
