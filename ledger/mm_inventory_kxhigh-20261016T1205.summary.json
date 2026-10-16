@@ -1,0 +1,127 @@
+{
+  "net_pnl": -17.8696,
+  "gross_pnl": -17.8696,
+  "fees": 0.0,
+  "fills": 723,
+  "maker_fills": 723,
+  "taker_fills": 0,
+  "contracts_traded": 6142.64,
+  "max_drawdown": 28.7587,
+  "max_capital_at_risk": 301.73,
+  "markets_traded": 5,
+  "market_win_rate": 0.4,
+  "sharpe_like": -0.64,
+  "net_pnl_on_max_capital": -0.0592,
+  "maker_pct": 100.0,
+  "reality": {
+    "cross_assumed_fill_frac": 1.0,
+    "cross_assumed_fills": 723,
+    "maker_frac": 1.0,
+    "max_fill_to_touch_depth": 33.333,
+    "top3_market_pnl_frac": 1.0,
+    "pnl_per_contract": -0.00291
+  },
+  "run_id": "mm_inventory_kxhigh-20261016T1205",
+  "started_at": 1792152344.0814722,
+  "updated_at": 1792172344.2856793,
+  "uptime_secs": 20000.2,
+  "open_orders": 122,
+  "positions": {
+    "KXHIGHNY-26OCT16-B75.5": {
+      "contracts": 2.0,
+      "avg_price": 0.04,
+      "realized": -3.66,
+      "fees": 0.0
+    },
+    "KXHIGHNY-26OCT16-T75": {
+      "contracts": -22.200000000000003,
+      "avg_price": 0.923,
+      "realized": -1.4293,
+      "fees": 0.0
+    },
+    "KXHIGHMIA-26OCT16-B90.5": {
+      "contracts": -15.05,
+      "avg_price": 0.8983,
+      "realized": 4.0771,
+      "fees": 0.0
+    },
+    "KXHIGHMIA-26OCT16-B88.5": {
+      "contracts": 50.0,
+      "avg_price": 0.1435,
+      "realized": -15.9627,
+      "fees": 0.0
+    },
+    "KXHIGHMIA-26OCT16-B92.5": {
+      "contracts": 14.795000000000002,
+      "avg_price": 0.0569,
+      "realized": 0.1828,
+      "fees": 0.0
+    }
+  },
+  "markets": [
+    "KXHIGHNY-26OCT16-B75.5",
+    "KXHIGHNY-26OCT16-T75",
+    "KXHIGHNY-26OCT16-B77.5",
+    "KXHIGHMIA-26OCT16-B92.5",
+    "KXHIGHMIA-26OCT16-B90.5",
+    "KXHIGHMIA-26OCT16-B88.5",
+    "KXHIGHCHI-26OCT16-T60",
+    "KXHIGHCHI-26OCT16-B62.5",
+    "KXHIGHCHI-26OCT16-B60.5"
+  ],
+  "last_event_age": {
+    "KXHIGHNY-26OCT16-B75.5": 1.9,
+    "KXHIGHNY-26OCT16-T75": 1.9,
+    "KXHIGHNY-26OCT16-B77.5": 1.9,
+    "KXHIGHMIA-26OCT16-B92.5": 1.9,
+    "KXHIGHMIA-26OCT16-B90.5": 1.8,
+    "KXHIGHMIA-26OCT16-B88.5": 1.8,
+    "KXHIGHCHI-26OCT16-T60": 1.8,
+    "KXHIGHCHI-26OCT16-B62.5": 1.8,
+    "KXHIGHCHI-26OCT16-B60.5": 1.8
+  },
+  "risk": {
+    "halted": false,
+    "halt_reason": "",
+    "halted_at": 0.0,
+    "stale": false,
+    "kill_file": "data/KILL",
+    "kill_file_present": false,
+    "pnl_today": -17.8696,
+    "daily_loss_limit": 50.0,
+    "capital_in_use": 812.95,
+    "capital_in_use_by_market": {
+      "KXHIGHNY-26OCT16-B75.5": 472.58,
+      "KXHIGHNY-26OCT16-T75": 110.53,
+      "KXHIGHMIA-26OCT16-B92.5": 10.64,
+      "KXHIGHMIA-26OCT16-B90.5": 117.03,
+      "KXHIGHMIA-26OCT16-B88.5": 102.18
+    },
+    "max_capital_total": 2000.0,
+    "max_capital_per_market": 500.0,
+    "orders_last_min": 0,
+    "max_orders_per_min": 120,
+    "accepted": 4062,
+    "rejected": 503,
+    "reject_reasons": {
+      "market_capital_cap": 503
+    },
+    "cancel_all_count": 0,
+    "last_book_age": {
+      "KXHIGHNY-26OCT16-B75.5": 1.9,
+      "KXHIGHNY-26OCT16-T75": 1.9,
+      "KXHIGHNY-26OCT16-B77.5": 1.9,
+      "KXHIGHMIA-26OCT16-B92.5": 1.9,
+      "KXHIGHMIA-26OCT16-B90.5": 1.8,
+      "KXHIGHMIA-26OCT16-B88.5": 1.8,
+      "KXHIGHCHI-26OCT16-T60": 1.8,
+      "KXHIGHCHI-26OCT16-B62.5": 1.8,
+      "KXHIGHCHI-26OCT16-B60.5": 1.8
+    },
+    "stale_secs": 60.0
+  },
+  "strategies": [
+    "mm_inventory"
+  ],
+  "venue": "kalshi"
+}
