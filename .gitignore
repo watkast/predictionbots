@@ -5,3 +5,4 @@ data/**/*.parquet
 data/raw/
 *.pem
 .env
+data/ledger/
