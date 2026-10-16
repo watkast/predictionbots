@@ -584,7 +584,7 @@ def build_signal_feeds(spec: str | None, markets: list[Market], env: Optional[di
             feeds.append(F.kraken_index())
         elif name == "twap":
             feeds.append(F.polymarket_twap())
-        elif name in ("openmeteo", "openmeteo"):
+        elif name == "openmeteo":
             if len(args) < 2:
                 notes.append("openmeteo needs LAT,LON (e.g. openmeteo:40.78,-73.97[,BIAS])")
                 continue
