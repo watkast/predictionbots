@@ -103,6 +103,22 @@ class WeatherLadderMM(Strategy):
         self.qm.pull(s.market_id)
         self.our_ask.pop(s.market_id, None)
 
+    def on_market_added(self, api: SimAPI, market: Market) -> None:
+        if self.markets:
+            self.markets.add(market.market_id)
+        self._group(api, market)
+
+    def on_market_removed(self, api: SimAPI, market_id: str) -> None:
+        if self.qm is not None:
+            self.qm.pull(market_id)
+        self.markets.discard(market_id)
+        self.our_ask.pop(market_id, None)
+        g = self.group_of.pop(market_id, None)
+        if g is not None:
+            self.groups.get(g, set()).discard(market_id)
+            if not self.groups.get(g):
+                self.groups.pop(g, None)
+
     def on_signal(self, api: SimAPI, sig: Signal) -> None:
         if sig.name == "fcst_prob" and sig.market_id:
             try:

@@ -156,6 +156,11 @@ class Strategy:
     def on_fill(self, api: SimAPI, fill: Fill) -> None: ...
     def on_settlement(self, api: SimAPI, s: Settlement) -> None: ...
     def on_end(self, api: SimAPI) -> None: ...
+    # The paper runner rolls markets while running (next 15-min window, next
+    # day's ladder). Strategies that cache per-market state or filter on a
+    # `markets` set override these; the defaults are no-ops.
+    def on_market_added(self, api: SimAPI, market: Market) -> None: ...
+    def on_market_removed(self, api: SimAPI, market_id: str) -> None: ...
 
 
 # ----------------------------------------------------------------------------
@@ -210,6 +215,29 @@ class Engine:
     # -- public --------------------------------------------------------------
     def add_strategy(self, s: Strategy) -> None:
         self.strategies.append(s)
+
+    def add_market(self, m: Market) -> bool:
+        """Register a market mid-run (paper market rolling). Returns False if known."""
+        if m.market_id in self.markets:
+            return False
+        self.markets[m.market_id] = m
+        for s in self.strategies:
+            s.on_market_added(self.api, m)
+        return True
+
+    def remove_market(self, market_id: str) -> bool:
+        """Forget a market: cancel its resting orders immediately, drop its book
+        and metadata. The position record stays (pnl history); a settled market
+        is flat anyway. Returns False if unknown."""
+        if market_id not in self.markets:
+            return False
+        for oid in [o for o, od in self.orders.items() if od.market_id == market_id]:
+            self.orders.pop(oid, None)
+        self.books.pop(market_id, None)
+        self.markets.pop(market_id, None)
+        for s in self.strategies:
+            s.on_market_removed(self.api, market_id)
+        return True
 
     def schedule(self, ts: float, cb: Callable[[], None]) -> None:
         heapq.heappush(self._timers, (ts, next(self._ids), cb))

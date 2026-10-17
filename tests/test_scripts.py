@@ -1,4 +1,5 @@
 """scripts/report.py and scripts/paper_matrix.py (pure, no network)."""
+import asyncio
 import importlib.util
 import json
 import sys
@@ -95,6 +96,9 @@ def test_paper_matrix_commands_and_env_gating(monkeypatch):
     assert "--venue kalshi --strategy mm_crypto_twap --run-id rid" in s
     assert "--kalshi-series KXBTC15M --top 2 --signals coinbase,twap --duration 42" in s
     assert "--daily-loss-limit 50" in s and "--max-capital 2000" in s and "--no-record" not in s
+    assert "--roll-secs 60" in s
+    cmd = pm.build_command(dict(by["mm_crypto_twap_kxbtc15m"], roll_secs=0), m["defaults"])
+    assert "--roll-secs 0" in " ".join(cmd)
     cmd = pm.build_command(by["taker_lag_kxbtc15m"], m["defaults"])
     assert "--set size=1" in " ".join(cmd) and "--duration 3300" in " ".join(cmd)
     cmd = pm.build_command(by["mm_inventory_kxhigh"], m["defaults"])
@@ -131,3 +135,111 @@ def test_paper_matrix_no_markets_is_skipped_not_failed(monkeypatch, capsys):
     assert "skipped: selector found no markets" in capsys.readouterr().out
     monkeypatch.setattr(pm.subprocess, "run", lambda cmd, cwd: R(1))
     assert pm.main() == 1
+
+
+def test_report_and_dashboard_void_runs(tmp_path):
+    report = _load("report")
+    led = tmp_path / "ledger"
+    led.mkdir()
+    day = 1792152000.0
+    base = {"fees": 0.0, "fills": 3, "maker_fills": 3, "max_capital_at_risk": 10.0, "started_at": day,
+            "updated_at": day + 100, "uptime_secs": 100, "strategies": ["mm_crypto_twap"], "venue": "kalshi",
+            "markets": ["KXBTC15M-A"], "reality": {}, "risk": {}}
+    good = dict(base, run_id="mm_crypto_twap_kxbtc15m-20261017T1200", net_pnl=1.0)
+    bad = dict(base, run_id="mm_crypto_twap_kxbtc15m-20261016T2316", net_pnl=222.9, fills=72)
+    glob_bad = dict(base, run_id="taker_lag_kxbtc15m-20261016T1205", net_pnl=-0.5, strategies=["taker_lag"])
+    for s in (good, bad, glob_bad):
+        (led / f"{s['run_id']}.summary.json").write_text(json.dumps(s))
+        (led / f"{s['run_id']}.jsonl").write_text(json.dumps(
+            {"type": "fill", "ts": day + 1, "market_id": "KXBTC15M-A", "order_id": "1", "action": "sell",
+             "price": 0.5, "size": 10, "fee": 0.0, "is_maker": True}) + "\n")
+    vy = tmp_path / "voided.yaml"
+    vy.write_text("voided:\n  - run_id: mm_crypto_twap_kxbtc15m-20261016T2316\n    reason: >-\n      audit: orphan\n"
+                  "      orders\n  - run_id: 'taker_lag_kxbtc15m-20261016T*'\n    reason: measurement bug\n")
+    voided = report.load_voided(vy)
+    assert voided["mm_crypto_twap_kxbtc15m-20261016T2316"] == "audit: orphan orders"
+    assert report.void_reason("taker_lag_kxbtc15m-20261016T1205", voided) == "measurement bug"
+    assert report.void_reason("taker_lag_kxbtc15m-20261017T1205", voided) is None
+    assert report.load_voided(tmp_path / "missing.yaml") == {}
+    summaries, fl = report.load_paper(led, voided)
+    rows = report.paper_leaderboard(summaries, fl)
+    assert [r["run"] for r in rows] == ["mm_crypto_twap_kxbtc15m"]
+    assert rows[0]["net_pnl"] == 1.0 and rows[0]["runs"] == 1          # the $222.90 is out of the total
+    assert set(fl) == {"mm_crypto_twap_kxbtc15m"} and len(fl["mm_crypto_twap_kxbtc15m"]) == 1
+    vrows = report.load_paper_voided(led, voided)
+    assert [v["run_id"] for v in vrows] == ["mm_crypto_twap_kxbtc15m-20261016T2316", "taker_lag_kxbtc15m-20261016T1205"]
+    md = report.render(rows, [], 1, "x.csv", vrows)
+    assert "### Voided runs" in md and "| mm_crypto_twap_kxbtc15m-20261016T2316 | mm_crypto_twap | 222.90 | 72 |" in md
+    assert "measurement bug" in md
+    # without a voided file nothing changes
+    summaries, fl = report.load_paper(led)
+    assert len(summaries) == 3 and "Voided" not in report.render(report.paper_leaderboard(summaries, fl), [], 1, "x")
+    # the repo's voided.yaml lists the audited 2026-10-16 runs
+    repo = report.load_voided(ROOT / "reports" / "voided.yaml")
+    assert "mm_crypto_twap_kxbtc15m-20261016T2316" in repo and "taker_lag_kxbtc15m-20261016T2316" in repo
+    assert all("AUDIT_mm_crypto_twap" in r for r in repo.values())
+    # dashboard: voided section rendered, totals exclude it
+    dash = _load("dashboard")
+    vent = tmp_path / "ventures.yaml"
+    vent.write_text("ventures: []\n")
+    html = dash.build(led, vent, tmp_path / "eq.csv", vy)
+    assert "Voided runs" in html and "mm_crypto_twap_kxbtc15m-20261016T2316" in html
+    assert "$1.00" in html and "$223.90" not in html
+    html2 = dash.build(led, vent, tmp_path / "eq.csv", tmp_path / "missing.yaml")
+    assert "Voided runs" not in html2
+
+
+async def test_replay_check_replays_ledger_with_and_without_risk(tmp_path, capsys):
+    """Record a tiny Kalshi-like window, write a ledger summary for it, replay."""
+    from pb.core.types import Action, Book, Level, Market, Trade, Venue
+    from pb.data.recorder import Recorder
+
+    now = 1792152000.0
+    mid = "KXBTC15M-26OCT161200-00"
+    m = Market(venue=Venue.KALSHI, market_id=mid, series="KXBTC15M", open_ts=now - 900, close_ts=now + 600,
+               meta={"window_open_ts": now - 900, "window_close_ts": now + 600, "window_secs": 900, "asset": "BTC"})
+
+    def bk(ts, bid, ask, sz=50):
+        return Book(ts=ts, market_id=mid, bids=[Level(bid, sz)], asks=[Level(ask, sz)])
+
+    class Feed:
+        def __init__(self, evs):
+            self.evs = list(evs)
+
+        def __aiter__(self):
+            return self
+
+        async def __anext__(self):
+            if self.evs:
+                await asyncio.sleep(0)
+                return self.evs.pop(0)
+            await asyncio.sleep(3600)
+
+    evs = [bk(now + i, 0.45 + 0.01 * (i % 3), 0.47 + 0.01 * (i % 3)) for i in range(40)]
+    evs += [Trade(now + 20.5, mid, 0.45, 5, Action.SELL)]
+    rec = Recorder("kalshi", [m], tmp_path / "recorded", feed=Feed(evs), flush_secs=100, max_seconds=0.2,
+                   clock=lambda: now)
+    await rec.run()
+    led = tmp_path / "ledger"
+    led.mkdir()
+    rid = "mm_inventory_kxhigh-20261016T1200"
+    (led / f"{rid}.summary.json").write_text(json.dumps({
+        "run_id": rid, "net_pnl": 0.5, "fills": 7, "contracts_traded": 70, "max_capital_at_risk": 9.0,
+        "started_at": now, "updated_at": now + 100, "strategies": ["mm_inventory"], "markets": [mid],
+        "reality": {"cross_assumed_fill_frac": 1.0, "max_fill_to_touch_depth": 1.0},
+        "risk": {"accepted": 10, "rejected": 2}}))
+    rc = _load("replay_check")
+    assert rc.main(["--run-id", rid, "--ledger", str(led), "--data", str(tmp_path / "recorded"),
+                    "--latency", "0.0", "--max-orders-per-min", "1"]) == 0
+    out = capsys.readouterr().out
+    assert "live ledger" in out and "replay no-risk" in out and "replay risk" in out and "delta net pnl" in out
+    rc.main(["--run-id", rid, "--ledger", str(led), "--data", str(tmp_path / "recorded"), "--latency", "0.0",
+             "--max-orders-per-min", "1", "--json"])
+    res = json.loads(capsys.readouterr().out)
+    rows = {r["source"]: r for r in res["rows"]}
+    assert res["strategy"] == "mm_inventory" and res["markets"] == [mid] and res["events"] > 40
+    assert rows["live ledger"]["net_pnl"] == 0.5 and rows["live ledger"]["fills"] == 7
+    assert rows["replay risk"]["risk_rejected"] > 0 >= 0           # the 1/min gate rejected re-quotes
+    assert rows["replay no-risk"]["fills"] >= rows["replay risk"]["fills"]
+    assert res["delta_risk_minus_no_risk"] == pytest.approx(rows["replay risk"]["net_pnl"] - rows["replay no-risk"]["net_pnl"])
+    assert res["delta_no_risk_minus_live"] == pytest.approx(rows["replay no-risk"]["net_pnl"] - 0.5)

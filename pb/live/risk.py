@@ -9,8 +9,12 @@ Checks, in order, on every submitted order:
 1. **Kill switch**: if `kill_file` (default `data/KILL`) exists, halt: cancel
    everything and reject all orders until the file is removed (then auto-resume
    only if `auto_resume=True`; default False, a halt is sticky).
-2. **Daily loss limit**: net pnl since the local-day start (`engine.equity()`
-   minus the day's opening equity) below `-daily_loss_limit` -> halt + cancel all.
+2. **Daily loss limit**: net pnl since the local-day start below
+   `-daily_loss_limit` -> halt + cancel all. The pnl is marked at the
+   *conservative* side of the book (`equity_conservative()`: bid for a long
+   YES position, ask for a short one) whenever a two-sided book exists, so a
+   position that could only be unwound at a loss trips the limit before the
+   mid says so; one-sided / absent books fall back to `Engine.mark`.
 3. **Stale data**: no `Book` update on any traded market for `stale_secs` ->
    cancel all open orders and reject new ones until a fresh book arrives
    (not sticky).
@@ -105,10 +109,36 @@ class RiskManager:
 
     def _reset_day(self, now: float) -> None:
         self.state.day_start = self._day_key(now)
-        self.state.day_open_equity = self.engine.equity()
+        self.state.day_open_equity = self.equity_conservative()
+
+    def mark_conservative(self, market_id: str) -> float:
+        """Liquidation mark: bid for a long YES position, ask for a short one,
+        when both sides exist; otherwise the engine's mark (settlement / mid /
+        the one side / avg price)."""
+        if market_id in self.engine.settled:
+            return self.engine.settled[market_id]
+        pos = self.engine.positions.get(market_id)
+        b = self.engine.books.get(market_id)
+        if pos is not None and pos.contracts != 0 and b is not None \
+                and b.best_bid is not None and b.best_ask is not None:
+            return b.best_bid if pos.contracts > 0 else b.best_ask
+        return self.engine.mark(market_id)
+
+    def equity_conservative(self) -> float:
+        total = 0.0
+        for mid, pos in self.engine.positions.items():
+            total += pos.realized - pos.fees
+            if pos.contracts != 0:
+                total += pos.contracts * (self.mark_conservative(mid) - pos.avg_price)
+        return total
 
     def pnl_today(self) -> float:
-        return self.engine.equity() - self.state.day_open_equity
+        return self.equity_conservative() - self.state.day_open_equity
+
+    def forget_market(self, market_id: str) -> None:
+        """The runner dropped a market (settled / closed): stop the stale guard
+        from watching it."""
+        self._last_book.pop(market_id, None)
 
     # -- guards ------------------------------------------------------------------
     def halt(self, reason: str) -> None:

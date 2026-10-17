@@ -40,7 +40,7 @@ from __future__ import annotations
 import math
 from dataclasses import dataclass
 
-from pb.core.types import Book, Fill, Trade
+from pb.core.types import Book, Fill, Market, Trade
 from pb.sim.engine import Settlement, Signal, SimAPI, Strategy
 from pb.strategies.base import (Quote, QuoteManager, SignalCache, Toxicity, clamp_size,
                                 maker_fee_per_contract, register, round_tick, secs_to_close)
@@ -82,6 +82,17 @@ class SharpLineMaker(Strategy):
 
     def on_settlement(self, api: SimAPI, s: Settlement) -> None:
         self.qm.pull(s.market_id)
+
+    def on_market_added(self, api: SimAPI, market: Market) -> None:
+        if self.markets:
+            self.markets.add(market.market_id)
+
+    def on_market_removed(self, api: SimAPI, market_id: str) -> None:
+        if self.qm is not None:
+            self.qm.pull(market_id)
+        self.markets.discard(market_id)
+        self.state.pop(market_id, None)
+        self.tox.pop(market_id, None)
 
     def on_trade(self, api: SimAPI, t: Trade) -> None:
         self.tox.setdefault(t.market_id, Toxicity()).on_trade(t)

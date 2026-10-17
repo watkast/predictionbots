@@ -19,11 +19,11 @@ pb/venues/            kalshi.py, polymarket.py: REST/WS clients, auth, normalisa
 pb/data/              recorder (WS + signals -> parquet), historical loaders (-> events), reference feeds,
                       odds_link (team-name matcher: Odds-API events <-> Kalshi/Polymarket markets)
 pb/live/              paper runner (same Strategy interface, live books), risk manager (risk.py), ledger
-scripts/              CLI entry points (record, backtest, paper, paper_matrix, report, dev.sh)
+scripts/              CLI entry points (record, backtest, paper, paper_matrix, report, dashboard, replay_check, dev.sh)
 configs/              per-strategy params YAML + paper_matrix.yaml (the paper runs)
 .github/workflows/    record.yml, paper.yml, backtest.yml, ci.yml
 data/                 parquet (recorded + downloaded), gitignored except small samples
-reports/              markdown/JSON results committed by workflows
+reports/              markdown/JSON results committed by workflows; voided.yaml = runs excluded from totals
 ```
 
 ## Conventions (do not break)
@@ -36,6 +36,10 @@ reports/              markdown/JSON results committed by workflows
 * A strategy implements `pb.sim.engine.Strategy` and only uses `SimAPI`
   (`book`, `market`, `position`, `open_orders`, `place`, `cancel`, `cancel_all`,
   `schedule`, `log`, `now`). The live paper runner exposes the same API.
+  The paper runner rolls markets mid-run (`Engine.add_market` / `remove_market`);
+  a strategy that filters on a `markets` set or caches per-market state
+  overrides `on_market_added(api, market)` / `on_market_removed(api, market_id)`
+  (no-op defaults on the base class).
 * Orders default `post_only=True` for maker strategies. Taker strategies use
   `TIF.IOC` and must size against `Book.depth_within`.
 * Events for the Engine: `Book | Trade | Signal | Settlement`, replayed in ts order.
@@ -58,6 +62,7 @@ reports/              markdown/JSON results committed by workflows
 * Maker: fills only from prints at/through our price after queue-ahead is consumed;
   book crossing our price without a print = assumed filled (adverse).
   `maker_requires_through=True` for low-fidelity (candle+tape) datasets.
-* Cancel latency; position caps; settlement at result; mark at mid.
+* Cancel latency; position caps; settlement at result; mark at mid
+  (`RiskManager` marks the daily-loss check at bid/ask against the position).
 * `Result.summary()` → net/gross pnl, fees, fills, maker ratio, drawdown,
   max capital at risk, per-market win rate.

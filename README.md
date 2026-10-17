@@ -6,10 +6,11 @@ no live-money path in this repo. DraftKings / Betr have no trading APIs; they en
 only as reference odds (via The Odds API) that sports strategies quote around.
 
 ```
-pip install -e .[dev] && pytest                    # 130 tests, no network
+pip install -e .[dev] && pytest                    # 155 tests, no network
 python scripts/backtest.py --strategy mm_inventory --synthetic   # CI smoke
 python scripts/paper_matrix.py --list              # the paper runs
 python scripts/report.py                           # -> reports/README.md
+python scripts/replay_check.py --run-id <run_id>  # replay a paper run's recording with/without the RiskManager
 ```
 
 See `ARCHITECTURE.md` for the package layout and conventions (YES-leg prices,
@@ -29,6 +30,9 @@ never more generous than a backtest fill:
   through our price only).
 * Cancels have latency; positions and total collateral are capped; unresolved positions
   are marked at mid; settlements pay at the result.
+* The RiskManager's daily-loss check marks at the *conservative* side (bid for longs, ask
+  for shorts) whenever the book is two-sided, so a position that could only be unwound at
+  a loss halts the run before the mid admits it.
 * Every report carries **reality flags**: cross-assumed fill share, max fill / touch depth,
   pnl concentration in the top-3 markets, pnl per contract.
 * The paper runner adds a `RiskManager` (`pb/live/risk.py`): daily loss halt (cancel all),
@@ -57,7 +61,9 @@ matrix entry) and `reports/*.json` (backtests) into one page plus `reports/equit
 (one row per run-day: realized pnl, fees, cumulative net).
 
 * **Paper leaderboard**: net pnl, return on peak collateral, fills, maker %, days and hours
-  running, and `flags`. A strategy only counts with multiple L2 paper days, positive net pnl,
+  running, and `flags`. Runs listed in `reports/voided.yaml` (run_id or glob + reason, e.g. the
+  2026-10-16 runs audited in `reports/AUDIT_mm_crypto_twap.md`) are excluded from every total and
+  shown in a "Voided runs" section instead. A strategy only counts with multiple L2 paper days, positive net pnl,
   high maker % for maker models, no `fill>touch` / high cross-assumed flags, and pnl not
   concentrated in 3 markets. `HALTED` means the RiskManager tripped.
 * **Backtests**: `oos<k>` rows (walk-forward out-of-sample) matter; in-sample grid rows do not.
@@ -69,7 +75,21 @@ matrix entry) and `reports/*.json` (backtests) into one page plus `reports/equit
 `configs/paper_matrix.yaml` lists the runs; `scripts/paper_matrix.py --entry <name> --duration 3300`
 runs one, `--all` runs them sequentially. Each run writes `data/ledger/<entry>-<stamp>.{jsonl,summary.json}`
 and records every book, trade and reference signal to `data/recorded/<venue>/<day>/{books,trades,markets,signals}-*.parquet`,
-so `scripts/backtest.py --data data/recorded` replays exactly what the paper run saw.
+so `scripts/backtest.py --data data/recorded` replays exactly what the paper run saw, and
+`scripts/replay_check.py --run-id <run_id>` replays it with and without the RiskManager and prints the
+delta against the live ledger (one command per audit).
+
+**Market rolling.** The selector is re-run every `roll_secs` (default 60, `--roll-secs`): newly listed
+markets (the next KXBTC15M window, the next day's weather ladder) are wired (fees, pollers, WS
+subscription), handed to the recorder and to every strategy (`on_market_added`), and quoted; a market
+stays until its settlement has been applied, then leaves (`on_market_removed`). So an hour-long
+run is continuous instead of one 15-minute window. The ledger logs `market_added` / `market_removed`
+and the summary carries `markets` (every market the run touched), `active_markets` and `last_roll`.
+
+Polymarket 5/15-minute up-or-down markets are not in Gamma's top pages by 24h volume; the
+`poly_crypto_15m` selector probes the deterministic slugs (`btc-updown-15m-<window open epoch>`, also
+`eth`, `5m`) through `/events?slug=` and `/markets?slug=`, falls back to a `startDate`-ordered scan,
+and logs what it tried and found. Polymarket US (separate API) is a TODO in `pb/venues/polymarket.py`.
 
 Signal feeds (`--signals`): `coinbase` (Coinbase trades with Kraken failover -> `btc_index`/`eth_index`),
 `twap` (Polymarket 60 s TWAP relay -> `twap60`), `openmeteo:LAT,LON[,BIAS]` (ensemble -> `fcst_prob` per rung),

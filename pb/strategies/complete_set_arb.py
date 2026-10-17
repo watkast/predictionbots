@@ -76,6 +76,24 @@ class CompleteSetArb(Strategy):
     def on_settlement(self, api: SimAPI, s: Settlement) -> None:
         pass
 
+    def on_market_added(self, api: SimAPI, market: Market) -> None:
+        if self.markets:
+            self.markets.add(market.market_id)
+        if market.event_id:
+            self.events.setdefault(market.event_id, set()).add(market.market_id)
+            self.expected.setdefault(market.event_id, set()).add(market.market_id)
+
+    def on_market_removed(self, api: SimAPI, market_id: str) -> None:
+        self.markets.discard(market_id)
+        self.last_try.pop("bin:" + market_id, None)
+        for ev, mids in list(self.events.items()):
+            mids.discard(market_id)
+            self.expected.get(ev, set()).discard(market_id)
+            if not mids:
+                self.events.pop(ev, None)
+                self.expected.pop(ev, None)
+                self.pending.pop(ev, None)
+
     def on_book(self, api: SimAPI, b: Book) -> None:
         if self.markets and b.market_id not in self.markets:
             return

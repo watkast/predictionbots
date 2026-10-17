@@ -28,7 +28,7 @@ import math
 from collections import deque
 from dataclasses import dataclass, field
 
-from pb.core.types import Book, Fill, Trade
+from pb.core.types import Book, Fill, Market, Trade
 from pb.sim.engine import Settlement, Signal, SimAPI
 from pb.sim.engine import Strategy
 from pb.strategies.base import Quote, QuoteManager, Toxicity, register, round_tick
@@ -81,6 +81,17 @@ class InventoryMM(Strategy):
 
     def on_settlement(self, api: SimAPI, s: Settlement) -> None:
         self.qm.pull(s.market_id)
+
+    def on_market_added(self, api: SimAPI, market: Market) -> None:
+        if self.markets:
+            self.markets.add(market.market_id)
+
+    def on_market_removed(self, api: SimAPI, market_id: str) -> None:
+        if self.qm is not None:
+            self.qm.pull(market_id)
+        self.markets.discard(market_id)
+        for d in (self.tox, self.mids, self.signals):
+            d.pop(market_id, None)
 
     def on_fill(self, api: SimAPI, f: Fill) -> None:
         b = api.book(f.market_id)

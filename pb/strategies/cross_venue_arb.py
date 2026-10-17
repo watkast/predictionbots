@@ -79,6 +79,20 @@ class CrossVenueArb(Strategy):
         if o is not None:
             api.cancel(o.order_id)
 
+    def on_market_added(self, api: SimAPI, market: Market) -> None:
+        if self.markets:
+            self.markets.add(market.market_id)
+        self._register(api, market)
+
+    def on_market_removed(self, api: SimAPI, market_id: str) -> None:
+        self.on_settlement(api, Settlement(ts=api.now, market_id=market_id, result=0.0))
+        self.markets.discard(market_id)
+        pid = self.pair_of.pop(market_id, None)
+        if pid is not None:
+            self.pairs.get(pid, set()).discard(market_id)
+            if not self.pairs.get(pid):
+                self.pairs.pop(pid, None)
+
     def _register(self, api: SimAPI, m: Market) -> str | None:
         pid = (m.meta or {}).get("pair_id")
         if not pid:

@@ -23,7 +23,7 @@ import math
 from collections import deque
 from dataclasses import dataclass
 
-from pb.core.types import Action, Book, Order, TIF
+from pb.core.types import Action, Book, Market, Order, TIF
 from pb.sim.engine import Fill, Settlement, SimAPI, Strategy
 from pb.strategies.base import clamp_size, register, secs_to_close
 
@@ -59,6 +59,15 @@ class TakerMomentum(Strategy):
 
     def on_settlement(self, api: SimAPI, s: Settlement) -> None:
         self.entries.pop(s.market_id, None)
+
+    def on_market_added(self, api: SimAPI, market: Market) -> None:
+        if self.markets:
+            self.markets.add(market.market_id)
+
+    def on_market_removed(self, api: SimAPI, market_id: str) -> None:
+        self.markets.discard(market_id)
+        for d in (self.mids, self.entries, self.last):
+            d.pop(market_id, None)
 
     def enabled(self, api: SimAPI, mid: str) -> bool:
         m = api.market(mid)

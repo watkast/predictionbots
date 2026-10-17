@@ -2,9 +2,12 @@
 # `scripts/paper_matrix.py --entry <name> --duration 3300` runs one; `--all` runs them
 # sequentially. Every entry is paper-only. `requires_env` entries are skipped when the
 # variable is missing. `params_override` sets strategy params on top of the params file
-# (passed as `--set k=v`); `args` are extra scripts/paper.py flags.
+# (passed as `--set k=v`); `args` are extra scripts/paper.py flags. `roll_secs` is how
+# often the market selector is re-run during the run so newly listed markets (the next
+# KXBTC15M window, the next day's weather ladder) join and settled ones leave.
 defaults:
   duration: 3300          # seconds (fits a GitHub Actions hourly job)
+  roll_secs: 60
   max_position: 200
   daily_loss_limit: 50
   max_capital: 2000
@@ -18,7 +21,7 @@ runs:
     select: {kalshi_series: [KXBTC15M], top: 2}
     params: configs/mm_crypto_twap.yaml
     signals: coinbase,twap
-    note: Model 2 on the two most-traded live 15-min BTC windows; needs btc_index + twap60.
+    note: Model 2 on the two most-traded live 15-min BTC windows (rolls to the next window); needs btc_index + twap60.
 
   - name: mm_inventory_kxhigh
     strategy: mm_inventory
@@ -75,7 +78,7 @@ runs:
     select: {poly_crypto_15m: true, top: 2}
     params: configs/mm_inventory.yaml
     signals: coinbase
-    note: Model 1 on Polymarket 5/15-min up-or-down markets (window bounds from the slug).
+    note: Model 1 on Polymarket 5/15-min up-or-down markets found by slug (btc-updown-15m-<epoch>), rolling.
 
   - name: taker_lag_kxbtc15m
     strategy: taker_lag

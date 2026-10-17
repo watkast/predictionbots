@@ -22,7 +22,8 @@ import yaml
 
 ROOT = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(ROOT))
-from scripts.report import load_paper, paper_leaderboard, run_group, _realized_by_day  # noqa: E402
+from scripts.report import (load_paper, load_paper_voided, load_voided, paper_leaderboard,  # noqa: E402
+                            run_group, _realized_by_day)
 
 TRUST_RULES = [
     ("cross-assumed", "fills inferred from book crossing, no prints"),
@@ -97,9 +98,11 @@ def svg_curve(points: list[tuple[str, float]], w=220, h=48) -> str:
             f'<polyline points="{pts}" fill="none" stroke="{color}" stroke-width="2" stroke-linejoin="round"/></svg>')
 
 
-def build(ledger: Path, ventures_yaml: Path, equity_csv: Path) -> str:
-    summaries, fills = load_paper(ledger)
+def build(ledger: Path, ventures_yaml: Path, equity_csv: Path, voided_yaml: Path | None = None) -> str:
+    voided = load_voided(voided_yaml)
+    summaries, fills = load_paper(ledger, voided)
     rows = paper_leaderboard(summaries, fills)
+    vrows = load_paper_voided(ledger, voided)
     eq = load_equity(equity_csv)
     ventures = yaml.safe_load(ventures_yaml.read_text()).get("ventures", []) if ventures_yaml.exists() else []
 
@@ -131,15 +134,26 @@ def build(ledger: Path, ventures_yaml: Path, equity_csv: Path) -> str:
             f"<td><span class='pill {cls}'>{esc(v)}</span><div class='trust'>trust {t}/100</div>"
             f"<div class='why'>{esc('; '.join(why)) if why else 'no flags'}</div></td></tr>")
 
-    vrows = []
+    vrows_html = []
     for v in ventures:
         vc = {"edge": "good", "promising": "warn", "unproven": "muted", "artifact": "serious", "losing": "critical"}.get(v.get("verdict", "unproven"), "muted")
-        vrows.append(
+        vrows_html.append(
             f"<div class='card'><div class='card-head'><span class='pill {vc}'>{esc(v.get('verdict', ''))}</span>"
             f"<span class='status'>{esc(v.get('status', ''))}</span><span class='cap'>${fmt(v.get('capital_usd', 0), 0)} at risk</span></div>"
             f"<h3>{esc(v.get('name', v.get('id')))}</h3><div class='market'>{esc(v.get('market', ''))}</div>"
             f"<dl><dt>Evidence</dt><dd>{esc(v.get('evidence', ''))}</dd>"
             f"<dt>Risk</dt><dd>{esc(v.get('risk', ''))}</dd><dt>Next</dt><dd>{esc(v.get('next', ''))}</dd></dl></div>")
+
+    void_rows = "".join(
+        f"<tr><td class='name'>{esc(v['run_id'])}<div class='sub'>{esc(v['strategy'])}</div></td>"
+        f"<td class='num {'pos' if v['net_pnl'] > 0 else 'neg' if v['net_pnl'] < 0 else ''}'>{fmt(v['net_pnl'])}</td>"
+        f"<td class='num'>{v['fills']}</td><td>{esc(v['day'])}</td><td class='why'>{esc(v['reason'])}</td></tr>"
+        for v in vrows)
+    voided_html = ("" if not vrows else
+                   f"<h2>Voided runs</h2><div class='sub' style='margin-bottom:8px'>Excluded from every total above "
+                   f"(reports/voided.yaml); kept visible so nothing disappears silently.</div>"
+                   f"<div class='wrap'><table><thead><tr><th>Run</th><th class='num'>Net $</th><th class='num'>Fills</th>"
+                   f"<th>Day</th><th>Reason</th></tr></thead><tbody>{void_rows}</tbody></table></div>")
 
     tiles = [
         ("Real money deployed", f"${fmt(live_capital, 0)}", "none yet — every number below is paper"),
@@ -183,7 +197,8 @@ dl{{margin:10px 0 0;font-size:13px}}dt{{color:var(--ink2);font-size:11px;text-tr
 <div class="tiles">{tiles_html}</div>
 <h2>Paper runs</h2><div class="wrap"><table><thead><tr><th>Run</th><th class="num">Net $</th><th class="num">Peak cap $</th><th class="num">Return</th><th class="num">Fills</th><th class="num">Maker</th><th class="num">Time</th><th>Cum. P&amp;L by day</th><th>Verdict</th></tr></thead>
 <tbody>{''.join(run_rows) or '<tr><td colspan=9>No paper runs yet.</td></tr>'}</tbody></table></div>
-<h2>Ventures</h2><div class="cards">{''.join(vrows)}</div>
+{voided_html}
+<h2>Ventures</h2><div class="cards">{''.join(vrows_html)}</div>
 </main></body></html>"""
 
 
@@ -193,10 +208,11 @@ def main() -> int:
     ap.add_argument("--ventures", default=str(ROOT / "configs/ventures.yaml"))
     ap.add_argument("--equity", default=str(ROOT / "reports/equity_daily.csv"))
     ap.add_argument("--out", default=str(ROOT / "reports/dashboard.html"))
+    ap.add_argument("--voided", default=str(ROOT / "reports/voided.yaml"))
     a = ap.parse_args()
     out = Path(a.out)
     out.parent.mkdir(parents=True, exist_ok=True)
-    out.write_text(build(Path(a.ledger), Path(a.ventures), Path(a.equity)))
+    out.write_text(build(Path(a.ledger), Path(a.ventures), Path(a.equity), Path(a.voided)))
     print(f"wrote {out}")
     return 0
 

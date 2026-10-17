@@ -1,0 +1,28 @@
+# Paper runs excluded from the leaderboard totals (scripts/report.py, scripts/dashboard.py).
+# Each entry: run_id (exact, or a glob such as "mm_crypto_twap_kxbtc15m-20261016T*"), reason.
+# Voided runs are still listed in a "Voided runs" section so nothing silently disappears.
+voided:
+  - run_id: mm_crypto_twap_kxbtc15m-20261016T1205
+    reason: >-
+      reports/AUDIT_mm_crypto_twap.md: pre-fix QuoteManager left untracked (orphan) resting orders
+      and the engine's position cap ignored resting orders; fills are artifacts of that bug, not edge.
+  - run_id: mm_crypto_twap_kxbtc15m-20261016T1740
+    reason: >-
+      reports/AUDIT_mm_crypto_twap.md: same pre-fix code; the selected window closed 5 min after start
+      and the runner never rolled to the next one (0 fills over 5.5 h).
+  - run_id: mm_crypto_twap_kxbtc15m-20261016T2316
+    reason: >-
+      reports/AUDIT_mm_crypto_twap.md: the +$222.90 is one NO settlement on a 440-contract short built by
+      orphan orders (max_inventory was 60); replay of the recorded window on fixed code gives +$0.49.
+  - run_id: taker_lag_kxbtc15m-20261016T1205
+    reason: >-
+      reports/AUDIT_mm_crypto_twap.md: fill>touch measurement bug (touch depth read after the take consumed
+      the level -> ratio inf); pre-fix engine; one window per run.
+  - run_id: taker_lag_kxbtc15m-20261016T1740
+    reason: >-
+      reports/AUDIT_mm_crypto_twap.md: fill>touch measurement bug (touch depth read after the take);
+      pre-fix engine; one window per run.
+  - run_id: taker_lag_kxbtc15m-20261016T2316
+    reason: >-
+      reports/AUDIT_mm_crypto_twap.md: fill>touch measurement bug (touch depth read after the take);
+      pre-fix engine; one window per run.

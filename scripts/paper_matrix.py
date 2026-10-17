@@ -39,7 +39,7 @@ def build_command(entry: dict, defaults: dict, duration: float | None = None, ru
                   python: str = sys.executable) -> list[str]:
     d = dict(defaults)
     d.update({k: v for k, v in entry.items() if k in ("duration", "max_position", "daily_loss_limit", "max_capital",
-                                                      "max_capital_per_market", "record")})
+                                                      "max_capital_per_market", "record", "roll_secs")})
     if duration is not None:
         d["duration"] = duration
     rid = run_id or f"{entry['name']}-{time.strftime('%Y%m%dT%H%M', time.gmtime())}"
@@ -69,7 +69,8 @@ def build_command(entry: dict, defaults: dict, duration: float | None = None, ru
     if d.get("duration") is not None:
         cmd += ["--duration", str(d["duration"])]
     for key, flag in (("max_position", "--max-position"), ("daily_loss_limit", "--daily-loss-limit"),
-                      ("max_capital", "--max-capital"), ("max_capital_per_market", "--max-capital-per-market")):
+                      ("max_capital", "--max-capital"), ("max_capital_per_market", "--max-capital-per-market"),
+                      ("roll_secs", "--roll-secs")):
         if d.get(key) is not None:
             cmd += [flag, str(d[key])]
     if d.get("record") is False:

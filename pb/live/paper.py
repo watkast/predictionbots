@@ -19,6 +19,13 @@ resting size, maker fills only from prints / adverse crossings). The runner:
   and reports `risk` in the summary;
 * optionally records every Signal it saw to `signals-*.parquet` via a
   `pb.data.recorder.Recorder` (`recorder=`) so backtests replay the feed;
+* **rolls markets**: every `roll_secs` (default 60) it re-runs the
+  `market_selector` coroutine, wires and adds every market it has not seen
+  (next KXBTC15M window, tomorrow's weather ladder...), keeps a closed market
+  only until its settlement has been applied and then drops it (cancelling
+  nothing that could still fill, because nothing can fill after close). The
+  recorder, the risk manager and every strategy (`on_market_added` /
+  `on_market_removed`) follow the same list;
 * stops after `--duration` seconds or on SIGINT/SIGTERM.
 
 Market selection helpers (`select_kalshi_markets`, `select_polymarket_markets`)
@@ -130,6 +137,10 @@ class PaperConfig:
     sim: SimConfig = field(default_factory=SimConfig)
     resume: bool = True
     risk: Optional[RiskLimits] = field(default_factory=RiskLimits)   # None disables the RiskManager
+    roll_secs: float = 60.0               # re-run the market selector this often (0 = never)
+    # a closed market that never settles (venue lag) is dropped this long after close
+    # once it is flat with no resting orders; a market with a position is kept
+    drop_unsettled_after: float = 3600.0
 
 
 class PaperRunner:
@@ -151,6 +162,11 @@ class PaperRunner:
     recorder:  optional `pb.data.recorder.Recorder`; every Signal (and Book/
                Trade) processed is handed to `recorder.on_event` so the run's
                exact feed lands in parquet. The caller runs/stops the recorder.
+    market_selector: optional coroutine() -> list[Market]; re-run every
+               `config.roll_secs` to discover newly listed markets (rolling)
+    market_wiring: optional coroutine(market) -> None called once per NEW
+               market before it is added: venue builders use it to register
+               fee schedules, REST pollers and WS subscriptions
     clock:     wall clock (injectable for tests)
     """
 
@@ -161,10 +177,17 @@ class PaperRunner:
                  settlement_checker: Optional[Callable[[str], Awaitable[Optional[Market]]]] = None,
                  config: Optional[PaperConfig] = None, clock: Callable[[], float] = time.time,
                  recorder: Any = None,
-                 trade_pollers: Optional[dict[str, Callable[[float], Awaitable[list[Trade]]]]] = None):
+                 trade_pollers: Optional[dict[str, Callable[[float], Awaitable[list[Trade]]]]] = None,
+                 market_selector: Optional[Callable[[], Awaitable[list[Market]]]] = None,
+                 market_wiring: Optional[Callable[[Market], Awaitable[None]]] = None):
         self.cfg = config or PaperConfig()
         self.clock = clock
         self.markets = list(markets)
+        self.market_selector = market_selector
+        self.market_wiring = market_wiring
+        self.markets_seen: list[str] = [m.market_id for m in self.markets]   # every market this run traded
+        self.rolls = 0
+        self.last_roll: dict[str, Any] = {}
         self.engine = LiveEngine(self.markets, fee_for, self.cfg.sim)
         self.risk: Optional[RiskManager] = None
         if self.cfg.risk is not None:
@@ -185,6 +208,7 @@ class PaperRunner:
         self.recorder = recorder
         self.settlement_checker = settlement_checker
         self.ledger = Ledger(self.cfg.run_id, self.cfg.ledger_root)
+        self._venue_hint = self.markets[0].venue.value if self.markets else ""
         self._queue: asyncio.Queue = asyncio.Queue()
         self._stop = asyncio.Event()
         self._last_event: dict[str, float] = {}
@@ -228,7 +252,8 @@ class PaperRunner:
         tasks += [asyncio.create_task(self._pump(f)) for f in self.signal_feeds]
         tasks += [asyncio.create_task(self._poll_loop()),
                   asyncio.create_task(self._summary_loop()),
-                  asyncio.create_task(self._settlement_loop())]
+                  asyncio.create_task(self._settlement_loop()),
+                  asyncio.create_task(self._roll_loop())]
         if self.cfg.duration is not None:
             tasks.append(asyncio.create_task(self._deadline()))
         try:
@@ -288,6 +313,101 @@ class PaperRunner:
                 log.warning("recorder: %s", e)
         self.engine.step(ev)
         self._log_new_fills()
+        if isinstance(ev, Settlement):
+            # settlement applied (position flat, strategies notified): the market is done
+            self.remove_market(ev.market_id, reason=f"settled {ev.result:g}")
+
+    # -- market rolling ------------------------------------------------------------
+    def add_market(self, m: Market) -> bool:
+        """Register a market discovered mid-run. Idempotent. Synchronous: wiring
+        (fees / pollers / WS) must already have happened (`market_wiring`)."""
+        if not self.engine.add_market(m):
+            return False
+        self.markets.append(m)
+        if m.market_id not in self.markets_seen:
+            self.markets_seen.append(m.market_id)
+        if self.recorder is not None:
+            try:
+                self.recorder.on_market(m)
+            except Exception as e:  # pragma: no cover
+                log.warning("recorder: %s", e)
+        self.ledger.append({"type": "market_added", "ts": self.clock(), "market_id": m.market_id,
+                            "close_ts": m.close_ts, "title": m.title})
+        log.info("market added: %s (closes %s)", m.market_id, _fmt_ts(m.close_ts))
+        return True
+
+    def remove_market(self, market_id: str, reason: str = "") -> bool:
+        if not self.engine.remove_market(market_id):
+            return False
+        self.markets = [m for m in self.markets if m.market_id != market_id]
+        self.pollers.pop(market_id, None)
+        self.trade_pollers.pop(market_id, None)
+        self._trade_since.pop(market_id, None)
+        self._trade_seen.pop(market_id, None)
+        self._last_event.pop(market_id, None)
+        if self.risk is not None:
+            self.risk.forget_market(market_id)
+        self.ledger.append({"type": "market_removed", "ts": self.clock(), "market_id": market_id, "reason": reason})
+        log.info("market removed: %s (%s)", market_id, reason)
+        return True
+
+    async def roll_markets(self) -> dict:
+        """One selector pass: add unseen markets (after wiring), drop stale closed
+        ones. Returns a small report (also kept as `last_roll`)."""
+        rep: dict[str, Any] = {"ts": self.clock(), "selected": 0, "added": [], "dropped": [], "error": ""}
+        if self.market_selector is not None:
+            try:
+                fresh = list(await self.market_selector())
+            except asyncio.CancelledError:
+                raise
+            except Exception as e:
+                rep["error"] = f"{type(e).__name__}: {e}"
+                log.warning("market roll: selector failed: %s", e)
+                fresh = []
+            rep["selected"] = len(fresh)
+            for m in fresh:
+                if m.market_id in self.engine.markets or m.market_id in self.engine.settled:
+                    continue
+                if self.market_wiring is not None:
+                    try:
+                        await self.market_wiring(m)
+                    except asyncio.CancelledError:
+                        raise
+                    except Exception as e:
+                        log.warning("market roll: wiring %s failed: %s", m.market_id, e)
+                        continue
+                if self.add_market(m):
+                    rep["added"].append(m.market_id)
+        # closed markets that never settled: drop once flat and quiet
+        now = self.clock()
+        for m in list(self.markets):
+            if not m.close_ts or now - m.close_ts < self.cfg.drop_unsettled_after:
+                continue
+            pos = self.engine.positions.get(m.market_id)
+            if pos is not None and pos.contracts != 0:
+                continue
+            if any(o.market_id == m.market_id for o in self.engine.orders.values()):
+                continue
+            if self.remove_market(m.market_id, reason="closed, no settlement"):
+                rep["dropped"].append(m.market_id)
+        self.rolls += 1
+        self.last_roll = rep
+        if rep["added"] or rep["dropped"] or rep["error"]:
+            log.info("market roll #%d: selected=%d added=%s dropped=%s %s", self.rolls, rep["selected"],
+                     rep["added"], rep["dropped"], rep["error"])
+        return rep
+
+    async def _roll_loop(self) -> None:
+        if self.market_selector is None or self.cfg.roll_secs <= 0:
+            return
+        while True:
+            await asyncio.sleep(self.cfg.roll_secs)
+            try:
+                await self.roll_markets()
+            except asyncio.CancelledError:
+                raise
+            except Exception as e:  # pragma: no cover
+                log.warning("market roll failed: %s", e)
 
     def _log_new_fills(self) -> None:
         new = self.engine.fills[self._fills_logged:]
@@ -396,13 +516,30 @@ class PaperRunner:
             "positions": {m: {"contracts": p.contracts, "avg_price": round(p.avg_price, 4),
                               "realized": round(p.realized, 4), "fees": round(p.fees, 4)}
                           for m, p in self.engine.positions.items() if p.contracts or p.realized},
-            "markets": [m.market_id for m in self.markets],
+            "markets": list(self.markets_seen),
+            "active_markets": [m.market_id for m in self.markets],
+            "rolls": self.rolls,
+            "last_roll": self.last_roll,
             "last_event_age": {m: round(self.clock() - t, 1) for m, t in self._last_event.items()},
             "risk": self.risk.status() if self.risk is not None else None,
             "strategies": [getattr(st, "name", type(st).__name__) for st in self.engine.strategies],
-            "venue": self.markets[0].venue.value if self.markets else "",
+            "venue": self._venue,
         })
         return s
+
+    @property
+    def _venue(self) -> str:
+        if self.markets:
+            return self.markets[0].venue.value
+        for m in self.engine.markets.values():
+            return m.venue.value
+        return getattr(self, "_venue_hint", "")
+
+
+def _fmt_ts(ts: float | None) -> str:
+    if not ts:
+        return "?"
+    return time.strftime("%Y-%m-%dT%H:%M:%SZ", time.gmtime(float(ts)))
 
 
 # ----------------------------------------------------------------------------
@@ -517,54 +654,180 @@ async def select_polymarket_markets(client: Any, top: int = 3, tag_id: Optional[
     return ms[:top]
 
 
+CRYPTO_WINDOW_ASSETS = ("btc", "eth")
+CRYPTO_WINDOW_MINUTES = (15, 5)
+
+
+def crypto_window_slugs(now: float, assets: Iterable[str] = CRYPTO_WINDOW_ASSETS,
+                        minutes: Iterable[int] = CRYPTO_WINDOW_MINUTES, lookahead: int = 2,
+                        lookback: int = 0) -> list[str]:
+    """Deterministic Polymarket slugs for the current and next `lookahead`
+    windows: `btc-updown-15m-<epoch of the window open, aligned to 15 min>`."""
+    out: list[str] = []
+    for a in assets:
+        for n in minutes:
+            secs = int(n) * 60
+            base = int(now // secs) * secs
+            for k in range(-lookback, lookahead + 1):
+                out.append(f"{a.lower()}-updown-{int(n)}m-{base + k * secs}")
+    return out
+
+
+async def select_polymarket_crypto_windows(client: Any, top: int = 2, assets: Iterable[str] = CRYPTO_WINDOW_ASSETS,
+                                           minutes: Iterable[int] = CRYPTO_WINDOW_MINUTES, lookahead: int = 2,
+                                           min_secs_to_close: float = 60.0, now: Optional[float] = None,
+                                           fallback_scan: bool = True) -> list[Market]:
+    """Polymarket 5/15-minute up-or-down markets, soonest-closing first.
+
+    1. Probe `/events?slug=` then `/markets?slug=` for every deterministic slug
+       (`crypto_window_slugs`), since these markets are not in the top-N by
+       24h volume (each window lives minutes).
+    2. If nothing came back, scan Gamma by `startDate` desc and by `volume24hr`
+       and keep what `crypto_window_from_slug` recognises.
+    Every step logs what it tried and found so a failing run explains itself."""
+    from pb.venues import polymarket as P
+
+    now = time.time() if now is None else now
+    found: dict[str, Market] = {}
+    slugs = crypto_window_slugs(now, assets, minutes, lookahead)
+    hits: list[str] = []
+    errors = 0
+    for slug in slugs:
+        raws: list[dict] = []
+        for fn in (client.get_events_by_slug, client.get_markets_by_slug):
+            try:
+                res = await fn(slug)
+            except Exception as e:
+                errors += 1
+                log.debug("poly crypto selector: %s(%s) failed: %s", getattr(fn, "__name__", fn), slug, e)
+                continue
+            for item in res:
+                if "markets" in item and isinstance(item.get("markets"), list):
+                    for raw in item["markets"]:
+                        if isinstance(raw, dict):
+                            raws.append(dict(raw, events=[{k: v for k, v in item.items() if k != "markets"}]))
+                else:
+                    raws.append(item)
+            if raws:
+                break
+        for raw in raws:
+            m = P.to_market(raw)
+            if m.market_id and m.meta.get("window_close_ts"):
+                if m.market_id not in found:
+                    found[m.market_id] = m
+                    hits.append(slug)
+    log.info("poly crypto selector: probed %d slugs (%s..), %d hits%s: %s", len(slugs),
+             slugs[0] if slugs else "-", len(hits), f", {errors} errors" if errors else "", hits or "-")
+    if not found and fallback_scan:
+        for kw in ({"order": "startDate", "ascending": False}, {"order": "volume24hr", "ascending": False}):
+            try:
+                raw = await client.get_markets(limit=300, closed=False, active=True, **kw)
+            except Exception as e:
+                log.warning("poly crypto selector: scan %s failed: %s", kw, e)
+                continue
+            n = 0
+            for r in raw:
+                m = P.to_market(r)
+                if m.market_id and m.meta.get("window_close_ts") and m.market_id not in found:
+                    found[m.market_id] = m
+                    n += 1
+            log.info("poly crypto selector: scan order=%s -> %d markets, %d crypto windows", kw["order"], len(raw), n)
+            if found:
+                break
+    ms = [m for m in found.values() if m.meta["window_close_ts"] > now + min_secs_to_close]
+    ms.sort(key=lambda m: (m.meta["window_close_ts"], -m.meta.get("volume_24h", 0.0)))
+    log.info("poly crypto selector: %d tradable windows, taking %s", len(ms),
+             [m.meta.get("slug") or m.market_id for m in ms[:top]] or "-")
+    return ms[:top]
+
+
 # ----------------------------------------------------------------------------
 # Venue wiring
 # ----------------------------------------------------------------------------
 async def build_kalshi_runner(markets: list[Market], strategies: list[Strategy], config: PaperConfig,
                               demo: bool = False, signals: Optional[list[AsyncIterator[Signal]]] = None,
-                              recorder: Any = None) -> tuple[PaperRunner, Any]:
+                              recorder: Any = None,
+                              selector: Optional[Callable[[Any], Awaitable[list[Market]]]] = None,
+                              client: Any = None) -> tuple[PaperRunner, Any]:
+    """`selector(client) -> list[Market]` (optional) is re-run every
+    `config.roll_secs` so new windows / ladders join the run."""
     from pb.venues import kalshi as K
 
-    client = K.KalshiClient.from_env(demo=demo)
+    client = client or K.KalshiClient.from_env(demo=demo)
     fees: dict[str, FeeSchedule] = {}
+    pollers: dict[str, Callable[[], Awaitable[Book]]] = {}
+    trade_pollers: dict[str, Callable[[float], Awaitable[list[Trade]]]] = {}
+    ws = None
+    if client.auth is not None:
+        ws = K.KalshiWS([m.market_id for m in markets], auth=client.auth,
+                        url=K.DEMO_WS if demo else K.PROD_WS)
+
+    async def wire(m: Market, enrich: bool = True) -> None:
+        try:
+            fees[m.market_id] = await client.fee_schedule(m.series)
+        except Exception as e:  # pragma: no cover - network
+            log.warning("fee schedule %s: %s", m.series, e)
+        if enrich:
+            try:
+                await client.enrich([m])
+            except Exception as e:  # pragma: no cover - network
+                log.warning("market enrichment failed: %s", e)
+        pollers[m.market_id] = (lambda mid=m.market_id: client.book(mid))
+        if client.auth is None:
+            # no WS tape without auth: poll the public trade tape so maker fills come from prints
+            trade_pollers[m.market_id] = (lambda since, mid=m.market_id: client.trades_since(mid, since))
+        elif ws is not None:
+            await ws.subscribe_more([m.market_id])
+
     for m in markets:
-        fees[m.market_id] = await client.fee_schedule(m.series)
+        await wire(m, enrich=False)
     try:
         await client.enrich(markets)
     except Exception as e:  # pragma: no cover - network
         log.warning("market enrichment failed: %s", e)
-    feeds = []
-    if client.auth is not None:
-        ws = K.KalshiWS([m.market_id for m in markets], auth=client.auth,
-                        url=K.DEMO_WS if demo else K.PROD_WS)
-        feeds.append(ws.events())
-    pollers = {m.market_id: (lambda mid=m.market_id: client.book(mid)) for m in markets}
-    trade_pollers = None
-    if client.auth is None:
-        # no WS tape without auth: poll the public trade tape so maker fills come from prints
-        trade_pollers = {m.market_id: (lambda since, mid=m.market_id: client.trades_since(mid, since))
-                         for m in markets}
 
     async def check(mid: str) -> Optional[Market]:
         return await client.market(mid)
 
     runner = PaperRunner(markets, lambda mid: fees.get(mid, K.kalshi_schedule(mid.split("-")[0])),
-                         strategies, feeds=feeds, pollers=pollers, settlement_checker=check, config=config,
-                         signals=signals, recorder=recorder, trade_pollers=trade_pollers)
+                         strategies, feeds=[ws.events()] if ws is not None else [], pollers=pollers,
+                         settlement_checker=check, config=config, signals=signals, recorder=recorder,
+                         trade_pollers=trade_pollers if client.auth is None else None,
+                         market_selector=(lambda: selector(client)) if selector is not None else None,
+                         market_wiring=wire)
     return runner, client
 
 
 async def build_polymarket_runner(markets: list[Market], strategies: list[Strategy],
                                   config: PaperConfig, signals: Optional[list[AsyncIterator[Signal]]] = None,
-                                  recorder: Any = None) -> tuple[PaperRunner, Any]:
+                                  recorder: Any = None,
+                                  selector: Optional[Callable[[Any], Awaitable[list[Market]]]] = None,
+                                  client: Any = None) -> tuple[PaperRunner, Any]:
     from pb.venues import polymarket as P
 
-    client = P.PolymarketClient()
+    client = client or P.PolymarketClient()
     fees = {m.market_id: P.fee_schedule_for(m) for m in markets}
     ws = P.PolymarketWS([m.market_id for m in markets])
     pollers = {m.market_id: (lambda mid=m.market_id: client.book(mid)) for m in markets}
+
+    async def settled(mid: str) -> Optional[Market]:
+        m = runner.engine.markets.get(mid)
+        gid = (m.meta or {}).get("gamma_id") if m is not None else None
+        if not gid:
+            return None
+        fresh = P.to_market(await client.get_market(str(gid)))
+        return fresh if fresh.result is not None else None
+
+    async def wire(m: Market) -> None:
+        fees[m.market_id] = P.fee_schedule_for(m)
+        pollers[m.market_id] = (lambda mid=m.market_id: client.book(mid))
+        await ws.subscribe_more([m.market_id])
+
     runner = PaperRunner(markets, lambda mid: fees.get(mid, P.polymarket_schedule("other")), strategies,
-                         feeds=[ws.events()], pollers=pollers, config=config, signals=signals, recorder=recorder)
+                         feeds=[ws.events()], pollers=pollers, config=config, signals=signals, recorder=recorder,
+                         settlement_checker=settled,
+                         market_selector=(lambda: selector(client)) if selector is not None else None,
+                         market_wiring=wire)
     return runner, client
 
 
@@ -673,5 +936,6 @@ def build_signal_feeds(spec: str | None, markets: list[Market], env: Optional[di
 
 
 __all__ = ["LiveEngine", "Ledger", "PaperConfig", "PaperRunner", "build_strategy", "load_params_yaml",
-           "select_kalshi_markets", "select_polymarket_markets", "build_kalshi_runner",
+           "select_kalshi_markets", "select_polymarket_markets", "select_polymarket_crypto_windows",
+           "crypto_window_slugs", "build_kalshi_runner",
            "build_polymarket_runner", "build_signal_feeds", "parse_signal_specs", "SIGNAL_SPEC_HELP"]

@@ -51,7 +51,7 @@ import math
 from collections import deque
 from dataclasses import dataclass
 
-from pb.core.types import Book, Fill, Trade
+from pb.core.types import Book, Fill, Market, Trade
 from pb.data.feeds import KalshiCryptoWindow, signal_price
 from pb.sim.engine import Settlement, Signal, SimAPI, Strategy
 from pb.strategies.base import (Quote, QuoteManager, Toxicity, clamp_size, norm_cdf,
@@ -106,6 +106,18 @@ class CryptoTwapMM(Strategy):
         self.qm.pull(s.market_id)
         self.windows.pop(s.market_id, None)
         self.open_px.pop(s.market_id, None)
+
+    def on_market_added(self, api: SimAPI, market: Market) -> None:
+        if self.markets:
+            self.markets.add(market.market_id)
+        self.windows.pop(market.market_id, None)   # (re)derive the window from fresh meta
+
+    def on_market_removed(self, api: SimAPI, market_id: str) -> None:
+        if self.qm is not None:
+            self.qm.pull(market_id)
+        self.markets.discard(market_id)
+        for d in (self.windows, self.open_px, self.jump_until, self.tox, self.last_fair):
+            d.pop(market_id, None)
 
     def on_trade(self, api: SimAPI, t: Trade) -> None:
         self.tox.setdefault(t.market_id, Toxicity()).on_trade(t)

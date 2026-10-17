@@ -922,6 +922,20 @@ class KalshiWS:
             except Exception:
                 pass
 
+    async def subscribe_more(self, tickers: Iterable[str]) -> list[str]:
+        """Add tickers mid-run (paper market rolling): remembered for reconnects
+        and, when a socket is up, subscribed right away. Returns the new ones."""
+        new = [t for t in tickers if t not in self.books]
+        for t in new:
+            self.tickers.append(t)
+            self.books[t] = BookState(t)
+        if new and self._sock is not None and not self.stopped:
+            try:
+                await self._sock.send(json.dumps(self.subscribe_payload(tickers=new)))
+            except Exception as e:  # pragma: no cover - socket races; reconnect resubscribes everything
+                log.warning("Kalshi WS late subscribe failed (%s); will resubscribe on reconnect", e)
+        return new
+
     async def events(self) -> AsyncIterator[Book | Trade | RawMessage]:
         """Connect (reconnecting on failure) and yield normalised events forever
         until `stop()`."""

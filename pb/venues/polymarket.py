@@ -17,6 +17,14 @@ Conventions
 * Trading needs `py_clob_client_v2` (optional dep, not installed in CI);
   `PolymarketTrader` raises `TradingUnavailable` with a clear message when
   it is missing.
+* Gamma lookups by slug: `GET /events?slug=<event slug>` and
+  `GET /markets?slug=<market slug>` return a list (one element or empty).
+  The 5/15-minute crypto up-or-down markets are NOT in the top pages of
+  `/markets?order=volume24hr` (each window lives ~15 min), so
+  `pb.live.paper.select_polymarket_crypto_windows` probes the deterministic
+  slugs `<asset>-updown-<n>m-<window open epoch>` directly.
+* TODO(polymarket-us): Polymarket US (the CFTC-regulated venue for US users)
+  has a separate API and auth; no stub here yet.
 
 No network I/O happens at import time; tests use respx and fake sockets.
 """
@@ -398,6 +406,20 @@ class PolymarketClient:
     async def get_market(self, gamma_id: str) -> dict:
         return await self.gamma.request("GET", f"/markets/{gamma_id}")
 
+    async def get_markets_by_slug(self, slug: str) -> list[dict]:
+        """`GET /markets?slug=` -> [] or [market]."""
+        r = await self.gamma.request("GET", "/markets", params={"slug": slug})
+        if isinstance(r, dict):
+            r = r.get("markets", r.get("data", [r] if r.get("slug") else []))
+        return [m for m in (r or []) if isinstance(m, dict)]
+
+    async def get_events_by_slug(self, slug: str) -> list[dict]:
+        """`GET /events?slug=` -> [] or [event] (each with its `markets`)."""
+        r = await self.gamma.request("GET", "/events", params={"slug": slug})
+        if isinstance(r, dict):
+            r = r.get("events", r.get("data", [r] if r.get("slug") else []))
+        return [e for e in (r or []) if isinstance(e, dict)]
+
     async def get_events(self, limit: int = 50, offset: int = 0, closed: Optional[bool] = None,
                          tag_id: Optional[int] = None, order: Optional[str] = None,
                          ascending: Optional[bool] = None, **extra) -> list[dict]:
@@ -586,8 +608,26 @@ class PolymarketWS:
         for no_tok, yes_tok in (no_tokens or {}).items():
             self.books[no_tok] = PolyBookState(no_tok, yes_tok, is_no=True)
 
-    def subscribe_payload(self) -> dict:
-        return {"assets_ids": list(self.books.keys()), "type": "market"}
+    def subscribe_payload(self, asset_ids: Optional[Iterable[str]] = None) -> dict:
+        return {"assets_ids": list(asset_ids if asset_ids is not None else self.books.keys()), "type": "market"}
+
+    async def subscribe_more(self, asset_ids: Iterable[str], no_tokens: Optional[dict[str, str]] = None) -> list[str]:
+        """Add YES token ids (and optional {no_token: yes_token}) mid-run; see
+        `KalshiWS.subscribe_more`."""
+        new = [a for a in asset_ids if a not in self.books]
+        for a in new:
+            self.asset_ids.append(a)
+            self.books[a] = PolyBookState(a, a)
+        for no_tok, yes_tok in (no_tokens or {}).items():
+            if no_tok not in self.books:
+                self.books[no_tok] = PolyBookState(no_tok, yes_tok, is_no=True)
+                new.append(no_tok)
+        if new and self._sock is not None and not self.stopped:
+            try:
+                await self._sock.send(json.dumps(self.subscribe_payload(new)))
+            except Exception as e:  # pragma: no cover
+                log.warning("Polymarket WS late subscribe failed (%s); will resubscribe on reconnect", e)
+        return new
 
     async def stop(self) -> None:
         self.stopped = True

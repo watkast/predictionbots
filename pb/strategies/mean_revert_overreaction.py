@@ -39,7 +39,7 @@ import math
 from collections import deque
 from dataclasses import dataclass, field
 
-from pb.core.types import Action, Book, Fill, Order, TIF, Trade
+from pb.core.types import Action, Book, Fill, Market, Order, TIF, Trade
 from pb.sim.engine import Settlement, SimAPI, Strategy
 from pb.strategies.base import Toxicity, clamp_size, register, round_tick, secs_to_close
 
@@ -100,6 +100,16 @@ class OverreactionFade(Strategy):
             api.cancel(tr.entry_order.order_id)
             if tr.exit_order is not None:
                 api.cancel(tr.exit_order.order_id)
+
+    def on_market_added(self, api: SimAPI, market: Market) -> None:
+        if self.markets:
+            self.markets.add(market.market_id)
+
+    def on_market_removed(self, api: SimAPI, market_id: str) -> None:
+        self.on_settlement(api, Settlement(ts=api.now, market_id=market_id, result=0.0))
+        self.markets.discard(market_id)
+        for d in (self.mids, self.tox, self.last_fade):
+            d.pop(market_id, None)
 
     def enabled(self, api: SimAPI, mid: str) -> bool:
         m = api.market(mid)

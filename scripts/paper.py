@@ -17,6 +17,10 @@ Signal the run sees is recorded to data/recorded/<venue>/.../signals-*.parquet
 (`--no-record` to skip) so `scripts/backtest.py --data data/recorded` replays it.
 A RiskManager gates every order (`--daily-loss-limit`, `--max-capital`,
 `--max-capital-per-market`, kill file data/KILL).
+
+The market selector is re-run every `--roll-secs` (default 60): newly listed
+markets (the next KXBTC15M window, the next day's weather ladder) join the run,
+settled ones leave it, so an hour-long run is continuous instead of one window.
 """
 from __future__ import annotations
 
@@ -58,6 +62,8 @@ def parse() -> argparse.Namespace:
     p.add_argument("--record-dir", default="data/recorded")
     p.add_argument("--no-record", action="store_true")
     p.add_argument("--poll-secs", type=float, default=2.0)
+    p.add_argument("--roll-secs", type=float, default=60.0,
+                   help="re-run the market selector this often to pick up new markets (0 = never)")
     p.add_argument("--no-resume", action="store_true")
     p.add_argument("--demo", action="store_true")
     p.add_argument("--max-position", type=float, default=200.0)
@@ -106,12 +112,9 @@ async def select_polymarket(a, c) -> list:
         by_tok = {m.market_id: m for m in map(to_market, raw)}
         return [by_tok[t] for t in a.tokens if t in by_tok]
     if a.poly_crypto_15m:
-        raw = await c.get_markets(limit=300, closed=False, active=True, order="volume24hr", ascending=False)
-        ms = [to_market(m) for m in raw]
-        now = time.time()
-        ms = [m for m in ms if m.meta.get("window_close_ts") and m.meta["window_close_ts"] > now + 60]
-        ms.sort(key=lambda m: (m.meta["window_close_ts"], -m.meta.get("volume_24h", 0.0)))
-        return ms[: a.top]
+        from pb.live.paper import select_polymarket_crypto_windows
+
+        return await select_polymarket_crypto_windows(c, top=a.top)
     if a.poly_events:
         evs = await c.get_events(limit=a.top, closed=False, order="volume24hr", ascending=False)
         out = []
@@ -141,7 +144,8 @@ async def main() -> int:
                                              max_orders_per_min=a.max_orders_per_min, stale_secs=a.stale_secs,
                                              kill_file=a.kill_file)
     cfg = PaperConfig(run_id=a.run_id, duration=a.duration, ledger_root=a.ledger, poll_secs=a.poll_secs,
-                      resume=not a.no_resume, sim=SimConfig(max_position_per_market=a.max_position), risk=risk)
+                      resume=not a.no_resume, sim=SimConfig(max_position_per_market=a.max_position), risk=risk,
+                      roll_secs=a.roll_secs)
     params = load_params_yaml(a.params, a.strategy)
     for kv in a.set:
         k, _, v = kv.partition("=")
@@ -149,22 +153,27 @@ async def main() -> int:
             params[k.strip()] = json.loads(v)
         except ValueError:
             params[k.strip()] = v
+    # one client for the whole run: the selector is re-run on it every --roll-secs
     if a.venue == "kalshi":
         from pb.venues.kalshi import KalshiClient
 
-        async with KalshiClient.from_env(demo=a.demo) as c:
-            markets = await select_kalshi(a, c)
-            if markets:
-                await c.enrich(markets)
+        client = KalshiClient.from_env(demo=a.demo)
+        selector = lambda c: select_kalshi(a, c)  # noqa: E731
     else:
         from pb.venues.polymarket import PolymarketClient
 
-        async with PolymarketClient() as c:
-            markets = await select_polymarket(a, c)
+        client = PolymarketClient()
+        selector = lambda c: select_polymarket(a, c)  # noqa: E731
+    try:
+        markets = await selector(client)
+    except Exception:
+        await client.aclose()
+        raise
     if not markets:
         # exit 3 = nothing to trade right now (selector found no market); the matrix
         # runner reports it as skipped rather than failing the whole workflow
         print("no markets", file=sys.stderr)
+        await client.aclose()
         return 3
     strat = build_strategy(a.strategy, params, [m.market_id for m in markets])
     feeds, notes = build_signal_feeds(a.signals, markets)
@@ -175,12 +184,15 @@ async def main() -> int:
         from pb.data.recorder import Recorder
 
         recorder = Recorder(a.venue, markets, a.record_dir, flush_secs=60.0)
+    roll = selector if a.roll_secs > 0 else None
     if a.venue == "kalshi":
         runner, client = await build_kalshi_runner(markets, [strat], cfg, demo=a.demo, signals=feeds,
-                                                   recorder=recorder)
+                                                   recorder=recorder, selector=roll, client=client)
     else:
-        runner, client = await build_polymarket_runner(markets, [strat], cfg, signals=feeds, recorder=recorder)
-    print(f"paper run {a.run_id}: {a.strategy} on {[m.market_id for m in markets]} signals={a.signals or '-'}")
+        runner, client = await build_polymarket_runner(markets, [strat], cfg, signals=feeds, recorder=recorder,
+                                                       selector=roll, client=client)
+    print(f"paper run {a.run_id}: {a.strategy} on {[m.market_id for m in markets]} signals={a.signals or '-'} "
+          f"roll_secs={a.roll_secs}")
     rec_task = asyncio.create_task(recorder.run()) if recorder is not None else None
     try:
         summary = await runner.run()

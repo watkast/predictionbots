@@ -25,7 +25,7 @@ from __future__ import annotations
 import math
 from dataclasses import dataclass
 
-from pb.core.types import Action, Book, Order, TIF
+from pb.core.types import Action, Book, Market, Order, TIF
 from pb.sim.engine import Fill, Settlement, Signal, SimAPI, Strategy
 from pb.strategies.base import clamp_size, register, taker_fee_per_contract
 from pb.strategies.mm_crypto_twap import CryptoMMParams, CryptoTwapMM
@@ -74,6 +74,16 @@ class TakerLag(Strategy):
 
     def on_settlement(self, api: SimAPI, s: Settlement) -> None:
         self.model.on_settlement(api, s)
+
+    def on_market_added(self, api: SimAPI, market: Market) -> None:
+        if self.markets:
+            self.markets.add(market.market_id)
+        self.model.on_market_added(api, market)
+
+    def on_market_removed(self, api: SimAPI, market_id: str) -> None:
+        self.markets.discard(market_id)
+        self.last.pop(market_id, None)
+        self.model.on_market_removed(api, market_id)
 
     def on_book(self, api: SimAPI, b: Book) -> None:
         if self.markets and b.market_id not in self.markets:

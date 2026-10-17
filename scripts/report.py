@@ -6,6 +6,8 @@ Inputs
 * data/ledger/*.summary.json   (PaperRunner summaries; run_id = <entry>-<date> by convention)
 * data/ledger/*.jsonl          (fill ledgers; used for the per-day equity CSV)
 * reports/*.json               (scripts/backtest.py results)
+* reports/voided.yaml          run_ids (exact or glob) + reason: excluded from every total,
+                               listed in a "Voided runs" section
 
 Outputs
 -------
@@ -16,11 +18,13 @@ Runs are grouped by `run_group` = run_id with a trailing `-<digits>` / `-<date>`
 stripped, so repeated GitHub-Actions runs of the same matrix entry roll up.
 
     python scripts/report.py [--ledger data/ledger] [--reports reports] [--out reports/README.md]
+                             [--voided reports/voided.yaml]
 """
 from __future__ import annotations
 
 import argparse
 import csv
+import fnmatch
 import glob
 import json
 import re
@@ -56,8 +60,39 @@ def _day(ts: float) -> str:
     return datetime.fromtimestamp(float(ts), tz=timezone.utc).strftime("%Y-%m-%d")
 
 
-def load_paper(ledger_dir: Path) -> tuple[list[dict], dict[str, list[dict]]]:
-    """-> (summaries, fills_by_group)"""
+def load_voided(path: str | Path | None) -> dict[str, str]:
+    """reports/voided.yaml -> {run_id or glob: reason}. Missing file -> {}."""
+    if not path or not Path(path).exists():
+        return {}
+    import yaml
+
+    data = yaml.safe_load(Path(path).read_text()) or {}
+    rows = data.get("voided", data) if isinstance(data, dict) else data
+    out: dict[str, str] = {}
+    for r in rows or []:
+        if isinstance(r, dict) and r.get("run_id"):
+            out[str(r["run_id"])] = " ".join(str(r.get("reason", "")).split())
+        elif isinstance(r, str):
+            out[r] = ""
+    return out
+
+
+def void_reason(run_id: str, voided: dict[str, str] | None) -> str | None:
+    """Reason if `run_id` is voided (exact match first, then glob), else None."""
+    if not voided:
+        return None
+    if run_id in voided:
+        return voided[run_id]
+    for pat, reason in voided.items():
+        if any(c in pat for c in "*?[") and fnmatch.fnmatchcase(run_id, pat):
+            return reason
+    return None
+
+
+def load_paper(ledger_dir: Path, voided: dict[str, str] | None = None
+               ) -> tuple[list[dict], dict[str, list[dict]]]:
+    """-> (summaries, fills_by_group). Voided run_ids are dropped from both;
+    their summaries are returned separately by `load_paper_voided`."""
     summaries = []
     fills: dict[str, list[dict]] = defaultdict(list)
     for sp in sorted(ledger_dir.glob("*.summary.json")):
@@ -65,10 +100,14 @@ def load_paper(ledger_dir: Path) -> tuple[list[dict], dict[str, list[dict]]]:
         if not isinstance(s, dict):
             continue
         s.setdefault("run_id", sp.name.replace(".summary.json", ""))
+        if void_reason(s["run_id"], voided) is not None:
+            continue
         s["_group"] = run_group(s["run_id"])
         s["_file"] = sp.name
         summaries.append(s)
     for lp in sorted(ledger_dir.glob("*.jsonl")):
+        if void_reason(lp.stem, voided) is not None:
+            continue
         grp = run_group(lp.stem)
         with lp.open() as f:
             for line in f:
@@ -79,6 +118,26 @@ def load_paper(ledger_dir: Path) -> tuple[list[dict], dict[str, list[dict]]]:
                 if d.get("type") == "fill":
                     fills[grp].append(d)
     return summaries, fills
+
+
+def load_paper_voided(ledger_dir: Path, voided: dict[str, str] | None) -> list[dict]:
+    """Rows for the "Voided runs" section: one per voided summary file."""
+    rows = []
+    if not voided:
+        return rows
+    for sp in sorted(ledger_dir.glob("*.summary.json")):
+        s = _load_json(sp)
+        if not isinstance(s, dict):
+            continue
+        rid = s.get("run_id") or sp.name.replace(".summary.json", "")
+        reason = void_reason(rid, voided)
+        if reason is None:
+            continue
+        rows.append({"run_id": rid, "group": run_group(rid),
+                     "strategy": ",".join(s.get("strategies") or []) or s.get("strategy", "?"),
+                     "net_pnl": round(float(s.get("net_pnl", 0.0)), 2), "fills": int(s.get("fills", 0)),
+                     "day": _day(s.get("started_at", 0)) if s.get("started_at") else "", "reason": reason})
+    return rows
 
 
 def _realized_by_day(fills: list[dict]) -> dict[str, dict]:
@@ -203,7 +262,8 @@ def _f(v, nd=2) -> str:
     return str(v)
 
 
-def render(paper: list[dict], backtests: list[dict], n_days: int, equity_csv: str) -> str:
+def render(paper: list[dict], backtests: list[dict], n_days: int, equity_csv: str,
+           voided: list[dict] | None = None) -> str:
     L = [f"# Results", "", f"Updated {time.strftime('%Y-%m-%d %H:%M UTC', time.gmtime())}. "
          "All numbers are PAPER (simulated fills against live books; no fantasy fills: takers only eat "
          "resting size, makers only fill on prints through / at the price after queue, or on adverse crossings). "
@@ -222,6 +282,14 @@ def render(paper: list[dict], backtests: list[dict], n_days: int, equity_csv: st
               "checks (cross-assumed fills = maker fills inferred from the book crossing us without a print; "
               "fill>touch = a fill larger than the resting size at the touch; top3 = pnl concentrated in 3 markets) "
               "and from the RiskManager (HALTED = daily-loss / kill file).", ""]
+    if voided:
+        L += ["### Voided runs", "",
+              "Excluded from every total above (`reports/voided.yaml`); listed so nothing disappears silently.", "",
+              "| run_id | strategy | net pnl $ | fills | day | reason |", "|---|---|---:|---:|---|---|"]
+        for v in voided:
+            L.append(f"| {v['run_id']} | {v['strategy']} | {_f(v['net_pnl'])} | {v['fills']} | {v['day']} | "
+                     f"{v['reason'].replace('|', '/')} |")
+        L.append("")
     L += ["## Backtests", ""]
     if not backtests:
         L += ["_No backtest reports yet (reports/*.json from scripts/backtest.py)._", ""]
@@ -249,16 +317,20 @@ def main() -> int:
     ap.add_argument("--reports", default="reports")
     ap.add_argument("--out", default="reports/README.md")
     ap.add_argument("--equity-csv", default="reports/equity_daily.csv")
+    ap.add_argument("--voided", default="reports/voided.yaml", help="YAML of voided run_ids (+ reason)")
     a = ap.parse_args()
-    summaries, fills = load_paper(Path(a.ledger))
+    voided = load_voided(a.voided)
+    summaries, fills = load_paper(Path(a.ledger), voided)
     paper = paper_leaderboard(summaries, fills)
     backtests = load_backtests(Path(a.reports))
+    vrows = load_paper_voided(Path(a.ledger), voided)
     n_days = write_equity_csv(fills, Path(a.equity_csv))
     out = Path(a.out)
     out.parent.mkdir(parents=True, exist_ok=True)
-    out.write_text(render(paper, backtests, n_days, a.equity_csv))
+    out.write_text(render(paper, backtests, n_days, a.equity_csv, vrows))
     print(out.read_text())
-    print(f"wrote {out} and {a.equity_csv}: {len(paper)} paper groups, {len(backtests)} backtest rows")
+    print(f"wrote {out} and {a.equity_csv}: {len(paper)} paper groups, {len(backtests)} backtest rows, "
+          f"{len(vrows)} voided runs")
     return 0
 
 
