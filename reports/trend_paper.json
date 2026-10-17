@@ -1,0 +1,48 @@
+{
+ "entries": {
+  "ensemble": {
+   "ticks": 1,
+   "rebalances": 1,
+   "first": "2026-10-16",
+   "last": "2026-10-16",
+   "nav": 9997.600575999999,
+   "pnl": -2.3994240000010905,
+   "costs": 2.399424,
+   "max_drawdown": 0.0,
+   "last_weights": {
+    "DBC": 0.066667,
+    "EEM": 0.066667,
+    "EFA": 0.066667,
+    "GLD": 0.033333,
+    "IWM": 0.066667,
+    "QQQ": 0.066667,
+    "SPY": 0.4,
+    "VNQ": 0.033333
+   },
+   "last_target": {
+    "SPY": 0.4,
+    "QQQ": 0.066667,
+    "IWM": 0.066667,
+    "EFA": 0.066667,
+    "EEM": 0.066667,
+    "GLD": 0.033333,
+    "DBC": 0.066667,
+    "VNQ": 0.033333
+   },
+   "last_drift": 0.7999999999999999,
+   "stale_days": 1,
+   "sources": {
+    "SPY": "yfinance",
+    "QQQ": "yfinance",
+    "IWM": "yfinance",
+    "EFA": "yfinance",
+    "EEM": "yfinance",
+    "TLT": "yfinance",
+    "IEF": "yfinance",
+    "GLD": "yfinance",
+    "DBC": "yfinance",
+    "VNQ": "yfinance"
+   }
+  }
+ }
+}
