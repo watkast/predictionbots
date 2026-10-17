@@ -1,0 +1,16 @@
+ok   kalshi /markets parse
+ok   kalshi close_ts sane (KXMVECROSSCATEGORY-S2026CNXNWYFCP52P64JE-5ZY6AXDPH)
+ok   kalshi series fee schedule KXMVECROSSCATEGORY: FeeSchedule(taker_rate=0.07, maker_rate=0.0175, maker_rebate_frac=0.0, round_up_cents=True)
+ok   kalshi orderbook parse
+ok   kalshi trades parse (0)
+ok   kalshi candlesticks parse (0)
+     historical cutoff: {"market_positions_last_updated_ts": "2026-08-17T00:00:00Z", "market_settled_ts": "2026-08-17T00:00:00Z", "orders_updated_ts": "2026-10-02T00:00:00Z", "trades_created_ts": "2026-08-17T00:00:00Z"}
+ok   gamma /markets parse
+ok   clobTokenIds parsed (Will the Tesla Roadster's 0-60 time be l)
+ok   clob /book parse
+ok   clob midpoint 0.9995
+ok   clob prices-history (24)
+ok   data-api trades parse (20)
+ok   polymarket WS book (2 events)
+
+ALL OK
