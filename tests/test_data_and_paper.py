@@ -327,3 +327,56 @@ def test_build_strategy_from_registry_and_yaml(tmp_path):
     with pytest.raises(KeyError):
         build_strategy(name, {"not_a_param": 1})
     assert load_params_yaml(None) == {}
+
+
+class RestAsk(Strategy):
+    """Rests one ask at 0.47 (joins the touch) and never requotes."""
+    name = "rest_ask"
+
+    def __init__(self):
+        self.done = False
+
+    def on_book(self, api, b):
+        if not self.done:
+            self.done = True
+            api.place(Order(b.market_id, Action.SELL, 0.47, 5, strategy=self.name))
+
+
+async def test_paper_runner_polls_trade_tape_so_maker_fills_come_from_prints(tmp_path):
+    now = [1792152000.0]
+    asked: list[float] = []
+
+    async def poll():
+        return mkbook(now[0])                      # 0.45 / 0.47 x 8, never crosses our ask
+
+    async def tpoll(since):
+        asked.append(since)
+        # one new print per poll, and the REST page repeats it (overlap at min_ts)
+        ts = now[0] - 0.5 + 0.001 * len(asked)
+        return [Trade(ts, "M", 0.47, 20, Action.BUY), Trade(ts, "M", 0.47, 20, Action.BUY)]
+
+    m = Market(venue=Venue.KALSHI, market_id="M")
+    cfg = PaperConfig(run_id="t-tape", duration=0.15, heartbeat=0.01, poll_secs=0.01, ledger_root=tmp_path,
+                      summary_secs=100, sim=SimConfig(order_latency=0.0))
+    r = PaperRunner([m], lambda mid: KALSHI_DEFAULT, [RestAsk()], pollers={"M": poll}, trade_pollers={"M": tpoll},
+                    config=cfg, clock=lambda: now[0])
+    summary = await r.run()
+    assert asked and asked[0] == r.started_at
+    # queue ahead (8) consumed, then our 5 filled by one print; the book never crossed us
+    assert summary["fills"] == 1 and summary["maker_fills"] == 1 and summary["contracts_traded"] == 5
+    assert summary["reality"]["cross_assumed_fills"] == 0
+    assert r.engine.fill_context[0]["touch_depth"] == 20
+
+
+def test_new_trades_dedupes_and_advances_watermark(tmp_path):
+    r = PaperRunner([Market(venue=Venue.KALSHI, market_id="M")], lambda mid: KALSHI_DEFAULT, [],
+                    config=PaperConfig(run_id="t-dd", ledger_root=tmp_path, risk=None), clock=lambda: 1000.0)
+    r.started_at = 900.0
+    a = Trade(950.0, "M", 0.5, 1, Action.BUY)
+    b = Trade(951.0, "M", 0.5, 1, Action.SELL)
+    assert [t.ts for t in r._new_trades("M", [b, a])] == [950.0, 951.0]
+    assert r._trade_since["M"] == 951.0
+    assert r._new_trades("M", [a, b]) == []                                  # overlap page
+    c = Trade(951.0, "M", 0.5, 2, Action.SELL)                                # same second, different print
+    assert r._new_trades("M", [b, c]) == [c]
+    assert r._new_trades("M", [Trade(100.0, "M", 0.5, 1, Action.BUY)]) == []  # before the watermark

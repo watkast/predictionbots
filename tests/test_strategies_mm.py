@@ -5,8 +5,8 @@ import math
 import pytest
 
 from pb.core.fees import KALSHI_DEFAULT, KALSHI_WITH_MAKER_FEES
-from pb.core.types import Action, TIF, Venue
-from pb.sim.engine import SimConfig
+from pb.core.types import Action, Order, TIF, Venue
+from pb.sim.engine import Engine, SimConfig, Strategy
 from pb.strategies.mm_crypto_twap import CryptoMMParams, CryptoTwapMM
 from pb.strategies.mm_weather_ladder import WeatherLadderMM, WeatherLadderParams
 from pb.strategies.sharp_line_maker import SharpLineMaker, SharpLineParams
@@ -267,3 +267,54 @@ def test_sharp_sizes_capped_by_depth():
     e, _, _ = run(s, [nfl_market()], ev)
     for o in resting(e, NFL):
         assert o.size <= (4 if o.action is Action.BUY else 3)
+
+
+def test_quote_manager_no_orphans_under_latency():
+    """Requotes inside the order-latency window used to place duplicates that were
+    never cancelled (the 2026-10-16 KXBTC15M run rested 23 bids for one quote)."""
+    from pb.strategies.base import Quote, QuoteManager
+
+    class S(Strategy):
+        name = "qm"
+
+        def on_start(self, api):
+            self.qm = QuoteManager(api, self.name)
+
+        def on_book(self, api, b):
+            for _ in range(4):                      # several index prints per book tick
+                self.qm.set("M", Quote(0.48, 0.52, 10, 10))
+
+    e = Engine([mk()], lambda m: KALSHI_DEFAULT, SimConfig(order_latency=0.3, cancel_latency=0.3))
+    e.add_strategy(S())
+    e.run([book(t, [(0.47, 100)], [(0.53, 100)]) for t in range(1, 11)])
+    assert len(e.orders) == 2 and sum(o.remaining for o in e.orders.values()) == 20
+
+
+def test_quote_manager_sweeps_orphans_and_forgets_rejected():
+    from pb.strategies.base import Quote, QuoteManager
+
+    class S(Strategy):
+        name = "qm"
+
+        def on_start(self, api):
+            self.qm = QuoteManager(api, self.name)
+            self.n = 0
+
+        def on_book(self, api, b):
+            self.n += 1
+            if self.n == 1:   # an untracked order of ours (e.g. from a resumed run)
+                api.place(Order("M", Action.BUY, 0.30, 5, strategy=self.name))
+            self.qm.set("M", Quote(0.48, None, 10, 0))
+
+    e = Engine([mk()], lambda m: KALSHI_DEFAULT, SimConfig(order_latency=0.0, cancel_latency=0.0))
+    e.add_strategy(S())
+    e.run([book(t, [(0.47, 100)], [(0.53, 100)]) for t in range(1, 4)])
+    assert [o.price for o in e.orders.values()] == [0.48]
+    # a risk-rejected id is dropped immediately and re-placed on the next quote
+    qm = e.strategies[0].qm
+    rejected = Order("M", Action.BUY, 0.48, 10, order_id="rejected-1", strategy="qm")
+    qm.live["M"]["bid"] = rejected
+    qm.set("M", Quote(0.48, None, 10, 0))
+    e._advance(e.now + 1.0)                     # let the replacement land and the orphan sweep run
+    assert qm.live["M"]["bid"] is not rejected
+    assert [o.order_id for o in e.orders.values()] == [qm.live["M"]["bid"].order_id]

@@ -341,3 +341,21 @@ def test_ws_delta_before_snapshot_ignored_and_auth_headers(rsa_key):
     out = ws.handle_raw({"type": "orderbook_delta", "msg": {"market_ticker": "T", "price": 50, "delta": 1, "side": "yes"}})
     assert out == []
     assert ws.handle_raw("not json") == []
+
+
+@respx.mock
+async def test_client_trades_since_pages_oldest_first():
+    base = K.PROD_BASE
+    route = respx.get(f"{base}/markets/trades").mock(side_effect=[
+        httpx.Response(200, json={"trades": [
+            {"ticker": "T", "yes_price_dollars": "0.46", "count_fp": "2", "taker_outcome_side": "no",
+             "created_time": "2026-10-16T12:00:05Z"}], "cursor": "c1"}),
+        httpx.Response(200, json={"trades": [
+            {"ticker": "T", "yes_price_dollars": "0.45", "count_fp": "1", "taker_outcome_side": "yes",
+             "created_time": "2026-10-16T12:00:01Z"}], "cursor": ""}),
+    ])
+    async with K.KalshiClient() as c:
+        trades = await c.trades_since("T", 1792152000.7)
+    assert [t.price for t in trades] == [0.45, 0.46] and trades[0].taker_action is Action.BUY
+    assert route.calls[0].request.url.params["min_ts"] == "1792152000"
+    assert route.calls[0].request.url.params["ticker"] == "T"

@@ -162,8 +162,10 @@ async def main() -> int:
         async with PolymarketClient() as c:
             markets = await select_polymarket(a, c)
     if not markets:
+        # exit 3 = nothing to trade right now (selector found no market); the matrix
+        # runner reports it as skipped rather than failing the whole workflow
         print("no markets", file=sys.stderr)
-        return 2
+        return 3
     strat = build_strategy(a.strategy, params, [m.market_id for m in markets])
     feeds, notes = build_signal_feeds(a.signals, markets)
     for n in notes:

@@ -529,6 +529,15 @@ class KalshiClient:
     async def market(self, ticker: str) -> Market:
         return to_market(await self.get_market(ticker))
 
+    async def trades_since(self, ticker: str, since_ts: float, max_pages: int = 3) -> list[Trade]:
+        """Public tape (`GET /markets/trades?ticker=&min_ts=`) since `since_ts`
+        (epoch seconds; the API takes whole seconds so the caller de-duplicates
+        the overlap). Oldest first."""
+        raw = await self.iter_trades(ticker, min_ts=int(max(0.0, since_ts)), max_pages=max_pages)
+        out = [t for t in to_trades({"trades": raw}, ticker) if t.ts > 0]
+        out.sort(key=lambda t: t.ts)
+        return out
+
     async def enrich(self, markets: list[Market]) -> list[Market]:
         """Fill meta `fee_type`/`category` from `/series` and `mutually_exclusive`
         from `/events` for every distinct series/event among `markets`.

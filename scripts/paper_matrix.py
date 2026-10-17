@@ -22,6 +22,7 @@ import time
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[1]
+NO_MARKETS_EXIT = 3   # scripts/paper.py: selector found nothing to trade (not a failure)
 sys.path.insert(0, str(ROOT))
 
 
@@ -122,6 +123,9 @@ def main() -> int:
         if a.dry_run:
             continue
         r = subprocess.run(cmd, cwd=ROOT)
+        if r.returncode == NO_MARKETS_EXIT:
+            print(f"[{n}] skipped: selector found no markets")
+            continue
         if r.returncode != 0:
             print(f"[{n}] exit {r.returncode}", file=sys.stderr)
             rc = rc or r.returncode

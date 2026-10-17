@@ -141,6 +141,11 @@ class PaperRunner:
     feeds:     async iterators of Book/Trade (venue WS). May be empty.
     pollers:   optional {market_id: coroutine() -> Book} used when no feed
                produced an event for that market within `poll_secs`
+    trade_pollers: optional {market_id: coroutine(since_ts: float) -> list[Trade]}
+               polled every `poll_secs` (before the book) when there is no WS
+               tape, so maker fills come from REAL prints and the
+               book-crossed-us assumption becomes the exception. Prints are
+               de-duplicated on (ts, price, size, side) and replayed in order.
     signals:   one async iterator of `Signal`s, or a list of them (fanned in)
     settlement_checker: optional coroutine(market_id) -> Market with result
     recorder:  optional `pb.data.recorder.Recorder`; every Signal (and Book/
@@ -155,7 +160,8 @@ class PaperRunner:
                  signals: Optional[AsyncIterator[Signal] | Iterable[AsyncIterator[Signal]]] = None,
                  settlement_checker: Optional[Callable[[str], Awaitable[Optional[Market]]]] = None,
                  config: Optional[PaperConfig] = None, clock: Callable[[], float] = time.time,
-                 recorder: Any = None):
+                 recorder: Any = None,
+                 trade_pollers: Optional[dict[str, Callable[[float], Awaitable[list[Trade]]]]] = None):
         self.cfg = config or PaperConfig()
         self.clock = clock
         self.markets = list(markets)
@@ -167,6 +173,9 @@ class PaperRunner:
             self.engine.add_strategy(s)
         self.feeds = list(feeds)
         self.pollers = pollers or {}
+        self.trade_pollers = trade_pollers or {}
+        self._trade_since: dict[str, float] = {}
+        self._trade_seen: dict[str, set[tuple]] = {}
         if signals is None:
             self.signal_feeds: list[AsyncIterator[Signal]] = []
         elif hasattr(signals, "__aiter__"):
@@ -287,12 +296,26 @@ class PaperRunner:
         self._fills_logged = len(self.engine.fills)
 
     async def _poll_loop(self) -> None:
-        if not self.pollers:
+        if not self.pollers and not self.trade_pollers:
             return
         while True:
             await asyncio.sleep(self.cfg.poll_secs)
             now = self.clock()
+            # prints first: a print that hit us is credited at its size (queue model)
+            # before the book snapshot can turn the same move into an assumed cross
+            for mid, tpoll in list(self.trade_pollers.items()):
+                if mid in self.engine.settled:
+                    continue
+                try:
+                    for tr in self._new_trades(mid, await tpoll(self._trade_since.get(mid, self.started_at))):
+                        await self._queue.put(tr)
+                except asyncio.CancelledError:
+                    raise
+                except Exception as e:
+                    log.warning("trade poll %s: %s", mid, e)
             for mid, poll in list(self.pollers.items()):
+                if mid in self.engine.settled:
+                    continue
                 if now - self._last_event.get(mid, 0.0) < self.cfg.poll_secs:
                     continue
                 try:
@@ -304,6 +327,28 @@ class PaperRunner:
                     raise
                 except Exception as e:
                     log.warning("poll %s: %s", mid, e)
+
+    def _new_trades(self, mid: str, trades: Iterable[Trade]) -> list[Trade]:
+        """Drop prints already seen (REST tape pages overlap at `min_ts`
+        second granularity) and advance the per-market watermark."""
+        seen = self._trade_seen.setdefault(mid, set())
+        since = self._trade_since.get(mid, self.started_at)
+        out: list[Trade] = []
+        for tr in sorted(trades, key=lambda t: t.ts):
+            if tr.market_id != mid or tr.size <= 0 or tr.ts < since - 1.0:
+                continue
+            key = (round(tr.ts, 3), round(tr.price, 6), round(tr.size, 6), tr.taker_action.value)
+            if key in seen:
+                continue
+            seen.add(key)
+            out.append(tr)
+        if out:
+            newest = max(t.ts for t in out)
+            if newest > since:
+                self._trade_since[mid] = newest
+                # keep only keys that can still collide with the next page
+                self._trade_seen[mid] = {k for k in seen if k[0] >= newest - 2.0}
+        return out
 
     async def _settlement_loop(self) -> None:
         if self.settlement_checker is None:
@@ -494,13 +539,18 @@ async def build_kalshi_runner(markets: list[Market], strategies: list[Strategy],
                         url=K.DEMO_WS if demo else K.PROD_WS)
         feeds.append(ws.events())
     pollers = {m.market_id: (lambda mid=m.market_id: client.book(mid)) for m in markets}
+    trade_pollers = None
+    if client.auth is None:
+        # no WS tape without auth: poll the public trade tape so maker fills come from prints
+        trade_pollers = {m.market_id: (lambda since, mid=m.market_id: client.trades_since(mid, since))
+                         for m in markets}
 
     async def check(mid: str) -> Optional[Market]:
         return await client.market(mid)
 
     runner = PaperRunner(markets, lambda mid: fees.get(mid, K.kalshi_schedule(mid.split("-")[0])),
                          strategies, feeds=feeds, pollers=pollers, settlement_checker=check, config=config,
-                         signals=signals, recorder=recorder)
+                         signals=signals, recorder=recorder, trade_pollers=trade_pollers)
     return runner, client
 
 

@@ -205,6 +205,7 @@ class Engine:
         # *assumed* fill from the book crossing our price without a print, and
         # how deep was the touch on the side we interacted with at that moment.
         self.fill_context: list[dict] = []
+        self._cancelled: set[str] = set()
 
     # -- public --------------------------------------------------------------
     def add_strategy(self, s: Strategy) -> None:
@@ -223,8 +224,14 @@ class Engine:
         return oid
 
     def cancel(self, order_id: str) -> None:
-        self.schedule(self.now + self.cfg.cancel_latency,
-                      lambda: self.orders.pop(order_id, None))
+        # remembered so an order still in flight does not rest after its cancel landed
+        self._cancelled.add(order_id)
+
+        def _land() -> None:
+            if self.orders.pop(order_id, None) is not None:
+                self._cancelled.discard(order_id)   # it had rested; else arrival will drop it
+
+        self.schedule(self.now + self.cfg.cancel_latency, _land)
 
     def run(self, events: Iterable[Event]) -> "Result":
         for s in self.strategies:
@@ -263,15 +270,28 @@ class Engine:
 
     def _on_book(self, book: Book) -> None:
         self.books[book.market_id] = book
-        if self.cfg.fill_through_on_cross:
+        if self.cfg.fill_through_on_cross and self._tradable(book.market_id, book.ts):
             self._check_cross_fills(book)
         for s in self.strategies:
             s.on_book(self.api, book)
 
     def _on_trade(self, tr: Trade) -> None:
-        self._maker_fills_from_print(tr)
+        if self._tradable(tr.market_id, tr.ts):
+            self._maker_fills_from_print(tr)
         for s in self.strategies:
             s.on_trade(self.api, tr)
+
+    def _tradable(self, market_id: str, ts: float | None = None) -> bool:
+        """False once a market is settled or past its trading close: nothing can
+        fill us there (a book/print after close is a venue artefact, not liquidity)."""
+        if market_id in self.settled:
+            return False
+        m = self.markets.get(market_id)
+        if m is not None and m.close_ts:
+            t = self.now if ts is None else max(ts, self.now)
+            if t > m.close_ts + 1e-9:
+                return False
+        return True
 
     def _on_settlement(self, st: Settlement) -> None:
         pos = self.positions[st.market_id]
@@ -291,7 +311,10 @@ class Engine:
 
     # -- order arrival ---------------------------------------------------------
     def _arrive(self, order: Order) -> None:
-        if order.market_id in self.settled:
+        if order.order_id in self._cancelled:
+            self._cancelled.discard(order.order_id)
+            return
+        if not self._tradable(order.market_id):
             return
         book = self.books.get(order.market_id)
         if book is None:
@@ -322,6 +345,8 @@ class Engine:
         takeable = min(order.remaining, cap) if cap > 0 else 0.0
         if order.tif is TIF.FOK and takeable + 1e-9 < order.size:
             return
+        # reality bookkeeping: depth at the touch BEFORE we consume it
+        touch_before = levels[0].size if levels else 0.0
         for lvl in levels:
             if takeable <= 1e-9:
                 break
@@ -332,7 +357,7 @@ class Engine:
             qty = min(lvl.size, takeable)
             lvl.size -= qty
             takeable -= qty
-            self._fill(order, lvl.price, qty, is_maker=False)
+            self._fill(order, lvl.price, qty, is_maker=False, touch_depth=touch_before)
         # drop empty levels
         if order.action is Action.BUY:
             book.asks = [l for l in book.asks if l.size > 1e-9]
@@ -352,9 +377,15 @@ class Engine:
         self.orders[order.order_id] = order
 
     def _allowed(self, order: Order) -> bool:
+        """Position cap counts the position PLUS every resting order on the same
+        side (otherwise N resting orders of size <= cap can fill into N x cap)."""
         pos = self.positions[order.market_id]
         signed = order.remaining if order.action is Action.BUY else -order.remaining
-        if abs(pos.contracts + signed) > self.cfg.max_position_per_market + 1e-9:
+        resting = sum(o.remaining for o in self.orders.values()
+                      if o.market_id == order.market_id and o.action is order.action
+                      and o.order_id != order.order_id)
+        resting_signed = resting if order.action is Action.BUY else -resting
+        if abs(pos.contracts + resting_signed + signed) > self.cfg.max_position_per_market + 1e-9:
             return False
         return True
 
@@ -386,21 +417,29 @@ class Engine:
             if qty <= 1e-9:
                 continue
             printed -= qty
-            self._fill(o, o.price, qty, is_maker=True)
+            self._fill(o, o.price, qty, is_maker=True, touch_depth=tr.size)
             if o.remaining <= 1e-9:
                 self.orders.pop(oid, None)
 
+    @staticmethod
+    def _crossing_depth(book: Book, o: Order) -> float:
+        """Resting size on the OPPOSITE side at or through our price, counting
+        only levels with real size. 0 => nothing could have traded with us."""
+        if o.action is Action.BUY:
+            return sum(l.size for l in book.asks if l.size > 1e-9 and l.price <= o.price + 1e-12)
+        return sum(l.size for l in book.bids if l.size > 1e-9 and l.price >= o.price - 1e-12)
+
     def _check_cross_fills(self, book: Book) -> None:
         """Book moved through our resting price without a print we saw -> assume
-        filled (adverse). Also refresh queue_ahead downward if level shrank."""
+        filled (adverse). Only a level with non-zero size can cross us; the
+        caller has already excluded settled / closed markets. Also refresh
+        queue_ahead downward if our level shrank."""
         for oid, o in list(self.orders.items()):
             if o.market_id != book.market_id:
                 continue
-            if o.action is Action.SELL and book.best_bid is not None and book.best_bid >= o.price - 1e-12:
-                self._fill(o, o.price, o.remaining, is_maker=True, assumed_cross=True)
-                self.orders.pop(oid, None)
-            elif o.action is Action.BUY and book.best_ask is not None and book.best_ask <= o.price + 1e-12:
-                self._fill(o, o.price, o.remaining, is_maker=True, assumed_cross=True)
+            depth = self._crossing_depth(book, o)
+            if depth > 1e-9:
+                self._fill(o, o.price, o.remaining, is_maker=True, assumed_cross=True, touch_depth=depth)
                 self.orders.pop(oid, None)
             else:
                 same = book.bids if o.action is Action.BUY else book.asks
@@ -409,7 +448,7 @@ class Engine:
 
     # -- fills ---------------------------------------------------------------
     def _fill(self, order: Order, price: float, qty: float, is_maker: bool,
-              assumed_cross: bool = False) -> None:
+              assumed_cross: bool = False, touch_depth: float | None = None) -> None:
         sched = self.fee_for(order.market_id)
         fee = sched.fee(price, qty, is_maker)
         order.filled += qty
@@ -418,15 +457,20 @@ class Engine:
                  is_maker=is_maker, strategy=order.strategy)
         self.positions[order.market_id].apply(order.action, price, qty, fee)
         self.fills.append(f)
-        b = self.books.get(order.market_id)
-        touch = 0.0
-        if b is not None:
-            if is_maker:
-                same = b.bids if order.action is Action.BUY else b.asks
-            else:
-                same = b.asks if order.action is Action.BUY else b.bids
-            touch = same[0].size if same else 0.0
-        self.fill_context.append({"assumed_cross": assumed_cross, "touch_depth": touch})
+        # touch_depth = the liquidity this fill was measured against, BEFORE the
+        # fill: taker -> resting size at the touch we hit; maker from a print ->
+        # the print size; assumed cross -> opposite-side size at/through our
+        # price. Callers pass it; the fallback below is only for direct calls.
+        if touch_depth is None:
+            b = self.books.get(order.market_id)
+            touch_depth = 0.0
+            if b is not None:
+                if is_maker:
+                    touch_depth = self._crossing_depth(b, order)
+                else:
+                    same = b.asks if order.action is Action.BUY else b.bids
+                    touch_depth = same[0].size if same else 0.0
+        self.fill_context.append({"assumed_cross": assumed_cross, "touch_depth": float(touch_depth)})
         for s in self.strategies:
             s.on_fill(self.api, f)
 
@@ -436,10 +480,24 @@ class Engine:
         for mid, pos in self.positions.items():
             total += pos.realized - pos.fees
             if pos.contracts != 0:
-                b = self.books.get(mid)
-                mark = b.mid if (b and b.mid is not None) else pos.avg_price
-                total += pos.contracts * (mark - pos.avg_price)
+                total += pos.contracts * (self.mark(mid) - pos.avg_price)
         return total
+
+    def mark(self, market_id: str) -> float:
+        """Mark price: settlement result if settled, else mid, else the one
+        side that exists (a one-sided book near expiry is still information),
+        else our average price."""
+        if market_id in self.settled:
+            return self.settled[market_id]
+        b = self.books.get(market_id)
+        if b is not None:
+            if b.mid is not None:
+                return b.mid
+            if b.best_bid is not None:
+                return b.best_bid
+            if b.best_ask is not None:
+                return b.best_ask
+        return self.positions[market_id].avg_price
 
     def capital_at_risk(self) -> float:
         return sum(p.capital_at_risk() for p in self.positions.values())

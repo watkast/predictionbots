@@ -115,3 +115,19 @@ def test_paper_matrix_commands_and_env_gating(monkeypatch):
         monkeypatch.setattr(sys, "argv", ["paper.py", *argv])
         a = paper.parse()
         assert a.strategy == r["strategy"] and a.venue == r["venue"]
+
+
+def test_paper_matrix_no_markets_is_skipped_not_failed(monkeypatch, capsys):
+    pm = _load("paper_matrix")
+
+    class R:
+        def __init__(self, rc):
+            self.returncode = rc
+
+    calls = []
+    monkeypatch.setattr(pm.subprocess, "run", lambda cmd, cwd: (calls.append(cmd), R(pm.NO_MARKETS_EXIT))[1])
+    monkeypatch.setattr(sys, "argv", ["paper_matrix.py", "--entry", "mm_inventory_poly_crypto15m"])
+    assert pm.main() == 0 and calls
+    assert "skipped: selector found no markets" in capsys.readouterr().out
+    monkeypatch.setattr(pm.subprocess, "run", lambda cmd, cwd: R(1))
+    assert pm.main() == 1

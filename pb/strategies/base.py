@@ -70,27 +70,66 @@ class Quote:
 
 class QuoteManager:
     """Keeps at most one bid and one ask resting per market; replaces only when
-    the desired quote moved by >= `requote_tick` to limit churn."""
+    the desired quote moved by >= `requote_tick` to limit churn.
+
+    An order just placed is *in flight* for the engine's order latency and is
+    not yet in `open_orders`; it is still ours. Treating it as gone (the old
+    behaviour) placed a duplicate on every requote inside the latency window,
+    and the duplicates were never cancelled (orphans). We therefore keep an
+    order until it has been SEEN resting and then disappears (filled/cancelled),
+    or until `inflight_grace` seconds pass without it ever appearing (rejected,
+    e.g. by the risk gate, whose ids start with "rejected-"). Any resting order
+    on the market carrying our strategy name that we do not track is an orphan
+    and gets cancelled."""
 
     def __init__(self, api: SimAPI, strategy_name: str, tick: float = 0.01,
-                 requote_tick: float = 0.01):
+                 requote_tick: float = 0.01, inflight_grace: float = 5.0):
         self.api = api
         self.name = strategy_name
         self.tick = tick
         self.requote = requote_tick
+        self.grace = inflight_grace
         self.live: dict[str, dict[str, Order]] = {}
+        self._placed_at: dict[str, float] = {}
+        self._seen: set[str] = set()
+
+    def _alive(self, o: Order, open_ids: set[str]) -> bool:
+        oid = o.order_id or ""
+        if oid in open_ids:
+            self._seen.add(oid)
+            return True
+        if oid in self._seen or oid.startswith("rejected-"):
+            return False            # was resting and is gone: filled or cancelled
+        placed = self._placed_at.get(oid)
+        if placed is None:
+            return False
+        return self.api.now - placed <= self.grace   # still in flight
+
+    def _forget(self, o: Order) -> None:
+        oid = o.order_id or ""
+        self._placed_at.pop(oid, None)
+        self._seen.discard(oid)
 
     def set(self, market_id: str, q: Quote) -> None:
         cur = self.live.setdefault(market_id, {})
+        open_orders = self.api.open_orders(market_id)
+        open_ids = {x.order_id for x in open_orders}
+        tracked = {o.order_id for o in cur.values()}
+        # orphans: resting orders of ours on this market that we no longer track
+        for x in open_orders:
+            if x.strategy == self.name and x.order_id not in tracked:
+                self.api.cancel(x.order_id)
         for side, px, sz, act in (("bid", q.bid, q.bid_size, Action.BUY),
                                   ("ask", q.ask, q.ask_size, Action.SELL)):
             o = cur.get(side)
-            if o is not None and (o.order_id not in {x.order_id for x in self.api.open_orders(market_id)}):
+            if o is not None and not self._alive(o, open_ids):
+                self._forget(o)
                 cur.pop(side, None)
                 o = None
             if px is None or sz <= 0:
                 if o is not None:
                     self.api.cancel(o.order_id)
+                    self._forget(o)
                     cur.pop(side, None)
                 continue
             px = round_tick(px, self.tick)
@@ -98,13 +137,21 @@ class QuoteManager:
                 if abs(o.price - px) < self.requote - 1e-9 and o.remaining >= sz * 0.5:
                     continue
                 self.api.cancel(o.order_id)
+                self._forget(o)
             new = Order(market_id, act, px, sz, tif=TIF.GTC, post_only=True, strategy=self.name)
-            self.api.place(new)
+            oid = self.api.place(new)
+            new.order_id = new.order_id or oid
+            self._placed_at[new.order_id or ""] = self.api.now
             cur[side] = new
 
     def pull(self, market_id: str) -> None:
         for o in self.live.pop(market_id, {}).values():
             self.api.cancel(o.order_id)
+            self._forget(o)
+        # orphans too
+        for x in self.api.open_orders(market_id):
+            if x.strategy == self.name:
+                self.api.cancel(x.order_id)
 
     def pull_all(self) -> None:
         for m in list(self.live):
