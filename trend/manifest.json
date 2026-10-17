@@ -1,0 +1,18 @@
+{
+ "updated_at": "2026-10-17T07:08:27.482036+00:00",
+ "files": {
+  "SPY": "/home/runner/work/predictionbots/predictionbots/data/trend/prices-SPY.parquet",
+  "QQQ": "/home/runner/work/predictionbots/predictionbots/data/trend/prices-QQQ.parquet",
+  "IWM": "/home/runner/work/predictionbots/predictionbots/data/trend/prices-IWM.parquet",
+  "EFA": "/home/runner/work/predictionbots/predictionbots/data/trend/prices-EFA.parquet",
+  "EEM": "/home/runner/work/predictionbots/predictionbots/data/trend/prices-EEM.parquet",
+  "TLT": "/home/runner/work/predictionbots/predictionbots/data/trend/prices-TLT.parquet",
+  "IEF": "/home/runner/work/predictionbots/predictionbots/data/trend/prices-IEF.parquet",
+  "GLD": "/home/runner/work/predictionbots/predictionbots/data/trend/prices-GLD.parquet",
+  "DBC": "/home/runner/work/predictionbots/predictionbots/data/trend/prices-DBC.parquet",
+  "VNQ": "/home/runner/work/predictionbots/predictionbots/data/trend/prices-VNQ.parquet",
+  "SHY": "/home/runner/work/predictionbots/predictionbots/data/trend/prices-SHY.parquet",
+  "BIL": "/home/runner/work/predictionbots/predictionbots/data/trend/prices-BIL.parquet",
+  "fred": "/home/runner/work/predictionbots/predictionbots/data/trend/fred-DGS3MO.parquet"
+ }
+}
