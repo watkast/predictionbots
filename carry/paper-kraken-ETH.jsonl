@@ -2,3 +2,4 @@
 {"in_pos": false, "interval_ts": 1792224000.0, "mark": 12149.0, "rate": 0.0001, "signal": null, "ts": 1792237541.754518, "type": "tick"}
 {"in_pos": false, "interval_ts": 1792224000.0, "mark": 12149.0, "rate": 0.0001, "signal": null, "ts": 1792252651.4983916, "type": "tick"}
 {"in_pos": false, "interval_ts": 1792252800.0, "mark": 12119.0, "rate": 0.0001, "signal": null, "ts": 1792263096.6810253, "type": "tick"}
+{"in_pos": false, "interval_ts": 1792252800.0, "mark": 12119.0, "rate": 0.0001, "signal": null, "ts": 1792273556.425205, "type": "tick"}
