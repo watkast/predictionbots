@@ -1,0 +1,101 @@
+{
+  "net_pnl": -11.1,
+  "gross_pnl": -11.1,
+  "fees": 0.0,
+  "fills": 8,
+  "maker_fills": 8,
+  "taker_fills": 0,
+  "contracts_traded": 70.0,
+  "max_drawdown": 12.85,
+  "max_capital_at_risk": 36.05,
+  "markets_traded": 5,
+  "market_win_rate": 0.0,
+  "sharpe_like": -1.42,
+  "net_pnl_on_max_capital": -0.3079,
+  "maker_pct": 100.0,
+  "reality": {
+    "cross_assumed_fill_frac": 1.0,
+    "cross_assumed_fills": 8,
+    "maker_frac": 1.0,
+    "max_fill_to_touch_depth": 5.0,
+    "top3_market_pnl_frac": 0.0,
+    "pnl_per_contract": -0.15857
+  },
+  "run_id": "mm_weather_ladder_kxhighny-20261017T0451",
+  "started_at": 1792212703.4792366,
+  "updated_at": 1792232703.6863139,
+  "uptime_secs": 20000.2,
+  "open_orders": 2,
+  "positions": {
+    "KXHIGHNY-26OCT17-T62": {
+      "contracts": -20.0,
+      "avg_price": 0.5,
+      "realized": 0.0,
+      "fees": 0.0
+    },
+    "KXHIGHNY-26OCT17-B62.5": {
+      "contracts": -50.0,
+      "avg_price": 0.479,
+      "realized": 0.0,
+      "fees": 0.0
+    }
+  },
+  "markets": [
+    "KXHIGHNY-26OCT16-B75.5",
+    "KXHIGHNY-26OCT16-T75",
+    "KXHIGHNY-26OCT17-T62",
+    "KXHIGHNY-26OCT17-B62.5",
+    "KXHIGHNY-26OCT17-B64.5",
+    "KXHIGHNY-26OCT16-B77.5",
+    "KXHIGHNY-26OCT17-B66.5",
+    "KXHIGHNY-26OCT17-T69"
+  ],
+  "last_event_age": {
+    "KXHIGHNY-26OCT16-B75.5": 0.4,
+    "KXHIGHNY-26OCT16-T75": 0.4,
+    "KXHIGHNY-26OCT17-T62": 0.4,
+    "KXHIGHNY-26OCT17-B62.5": 0.3,
+    "KXHIGHNY-26OCT17-B64.5": 0.3,
+    "KXHIGHNY-26OCT16-B77.5": 0.3,
+    "KXHIGHNY-26OCT17-B66.5": 0.3,
+    "KXHIGHNY-26OCT17-T69": 0.3
+  },
+  "risk": {
+    "halted": false,
+    "halt_reason": "",
+    "halted_at": 0.0,
+    "stale": false,
+    "kill_file": "data/KILL",
+    "kill_file_present": false,
+    "pnl_today": -11.1,
+    "daily_loss_limit": 50.0,
+    "capital_in_use": 45.85,
+    "capital_in_use_by_market": {
+      "KXHIGHNY-26OCT17-T62": 19.8,
+      "KXHIGHNY-26OCT17-B62.5": 26.05
+    },
+    "max_capital_total": 2000.0,
+    "max_capital_per_market": 500.0,
+    "orders_last_min": 0,
+    "max_orders_per_min": 120,
+    "accepted": 18,
+    "rejected": 0,
+    "reject_reasons": {},
+    "cancel_all_count": 0,
+    "last_book_age": {
+      "KXHIGHNY-26OCT16-B75.5": 0.4,
+      "KXHIGHNY-26OCT16-T75": 0.4,
+      "KXHIGHNY-26OCT17-T62": 0.4,
+      "KXHIGHNY-26OCT17-B62.5": 0.3,
+      "KXHIGHNY-26OCT17-B64.5": 0.3,
+      "KXHIGHNY-26OCT16-B77.5": 0.3,
+      "KXHIGHNY-26OCT17-B66.5": 0.3,
+      "KXHIGHNY-26OCT17-T69": 0.3
+    },
+    "stale_secs": 60.0
+  },
+  "strategies": [
+    "mm_weather_ladder"
+  ],
+  "venue": "kalshi"
+}
