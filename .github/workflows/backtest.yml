@@ -62,6 +62,7 @@ jobs:
       - name: Aggregate + commit reports
         run: |
           python scripts/report.py
+          python scripts/dashboard.py
           git add reports
           git -c user.name=predictionbots-backtest -c user.email=bots@users.noreply.github.com \
             commit -qm "reports: nightly backtest $(date -u +%F)" || exit 0

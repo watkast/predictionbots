@@ -124,6 +124,7 @@ jobs:
           mkdir -p data/ledger
           cp -r ../datawt/ledger/. data/ledger/ 2>/dev/null || true
           python scripts/report.py
+          python scripts/dashboard.py
           git add reports
           git -c user.name=predictionbots-paper -c user.email=bots@users.noreply.github.com \
             commit -qm "reports: paper update $(date -u +%FT%TZ)" || exit 0

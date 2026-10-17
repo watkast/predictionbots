@@ -1,0 +1,41 @@
+# Registry of every venture the bots are pursuing. The dashboard renders this
+# file verbatim, so the verdicts here must stay brutally honest.
+# status: idea | research | building | paper | live | retired
+# verdict: unproven | artifact | promising | edge | losing
+ventures:
+  - id: pm_kalshi_mm
+    name: Kalshi passive market making (crypto 15-min, weather ladders, single-name)
+    market: prediction markets
+    status: paper
+    verdict: unproven
+    capital_usd: 0
+    evidence: "Large-sample: makers +1.9c/contract single-name, +0.8c crypto (Bartlett & O'Hara 2026). Zero maker fee on KXBTC15M / weather."
+    risk: "Adverse selection on news gaps; settlement sniping in last minutes; Kalshi outages; state geofencing."
+    next: "Clean paper days with real trade prints (needs Kalshi API key for WS); walk-forward backtests on historical candles+tape."
+  - id: pm_poly_mm
+    name: Polymarket maker (crypto 5/15-min, neg-risk sets)
+    market: prediction markets
+    status: paper
+    verdict: unproven
+    capital_usd: 0
+    evidence: "~70% of active makers profitable (TUM 2025); maker rebates 15-25% of taker fees; liquidity rewards pools."
+    risk: "US close-only geoblock on main exchange (Polymarket US is the legal path, separate API); UMA resolution tail risk."
+    next: "Paper on Polymarket US API once keys exist; neg-risk complete-set scanner live."
+  - id: pm_sharp_sports
+    name: Sports maker quoting around de-vigged DraftKings/Pinnacle lines
+    market: prediction markets / sports
+    status: building
+    verdict: unproven
+    capital_usd: 0
+    evidence: "Kalshi/Polymarket mids track de-vigged Pinnacle within 0.1-0.75pt; makers only profitable cohort; Kalshi maker fee 0.44c at 50c on game series."
+    risk: "Thin top-of-book ($221 median Polymarket); in-game latency vs feeds; state geofences for sports contracts."
+    next: "Needs ODDS_API_KEY secret (free tier) to start paper."
+  - id: pm_taker_baselines
+    name: Taker baselines (index-lag, momentum) — expected to lose
+    market: prediction markets
+    status: paper
+    verdict: losing
+    capital_usd: 0
+    evidence: "Every public taker backtest in 15-min crypto loses after the 7c fee; these runs calibrate the fee drag."
+    risk: "If these show profit, suspect the data, not the strategy."
+    next: "Keep running as control group."
