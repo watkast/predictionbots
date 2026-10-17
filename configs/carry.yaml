@@ -20,7 +20,7 @@ backtest:
     exit_ann: 0.02            # exit below this, or on a negative print
     lookback: 3
     min_hold: 1
-    perp_collateral_frac: 0.5 # 50% collateral on the short perp (2x on that leg); notional = capital/1.5
+    perp_collateral_frac: 0.8 # 80% collateral on the short perp: 50% was liquidated 5-10x in the 2020-26 backtest
     spot_maker: false
     perp_maker: false
     slippage_bps: 2.0

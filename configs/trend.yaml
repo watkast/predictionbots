@@ -1,0 +1,42 @@
+# Venture #3: monthly ETF trend + cross-sectional momentum (GEM-style). No orders anywhere.
+# Signals and accounting: pb/trend/backtest.py. Data: pb/trend/data.py (Stooq / yfinance / FRED).
+universe: [SPY, QQQ, IWM, EFA, EEM, TLT, IEF, GLD, DBC, VNQ]
+
+data:
+  cash_symbols: [SHY, BIL]    # downloaded for reference; the cash sleeve accrues FRED DGS3MO
+  prefer_yfinance: true       # dividend-adjusted "Adj Close" when the package imports (installed in trend.yml)
+  fred_series: DGS3MO
+
+backtest:
+  params:
+    capital: 10000
+    tsmom_lookback: 12        # TSMOM 12-1: 12-month return skipping the last month, vs T-bills
+    tsmom_skip: 1
+    sma_months: 10            # close above 10-month SMA
+    gem_lookback: 12          # GEM: best of SPY/EFA if its 12m return beats T-bills, else IEF
+    gem_equity: [SPY, EFA]
+    gem_bond: IEF
+    target_vol: 0.10          # ensemble scaled down (never up) to 10 % trailing vol
+    vol_lookback_days: 63
+    max_gross: 1.0            # cash account: no leverage
+    spread_bps: 1.0           # per trade on traded notional
+    slippage_bps: 2.0
+    commission_usd: 0.0
+    exec_lag_days: 1          # signal at month-end close, trade at the next close
+    bench_bond: IEF           # 60/40 benchmark bond leg
+  grid:                       # walk-forward chooses from these on the prior train_years, scores year k
+    tsmom_lookback: [6, 9, 12]
+    sma_months: [8, 10, 12]
+    target_vol: [0.08, 0.10, 0.12]
+  walk_forward:
+    train_years: 10
+    objective: sharpe
+    strategy: ensemble
+  decay_haircut: 0.5          # post-publication Sharpe decay applied in the "reality" row
+  synthetic_years: 30
+
+paper:
+  strategy: ensemble
+  capital: 10000
+  params: {}                  # overrides of backtest.params for the paper book
+  stale_days: 7               # do not rebalance on prices older than this

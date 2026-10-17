@@ -97,3 +97,18 @@ runs:
     signals: ""
     params_override: {size: 1}
     note: Baseline T2 (expected to lose after fees); size 1.
+
+  - name: sharp_line_maker_novig_nfl
+    strategy: sharp_line_maker
+    venue: novig
+    select: {top: 6}
+    args: {novig_league: NFL, novig_market_type: MONEY}
+    params: configs/sharp_line_maker.yaml
+    signals: odds:nfl,espn:nfl
+    params_override: {tick: 0.005}
+    requires_env: [ODDS_API_KEY, NOVIG_API_KEY, NOVIG_SECRET]
+    note: >-
+      Model 6 on Novig (paper env, api.paper.novig.com; NOVIG_HOST overrides): the six soonest NFL
+      moneylines, quoted pregame around sharp_prob. Maker pays zero on Novig; pregame fills are free
+      for both sides, live taker c=0.06 (2026-10-15). Every GOLIVE voids resting orders, so
+      pull_before_close (close_ts = kickoff) matters. Needs a Novig trading key for the signed WS.

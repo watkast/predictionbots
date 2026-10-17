@@ -47,4 +47,22 @@ ventures:
     capital_usd: 0
     evidence: "BIS WP1087: carry >10%/yr avg but high carry predicts crashes; BitMEX Q3-25: 92-96% of 8h intervals positive. Kraken Derivatives US perps cost $0.0113/contract/side; Coinbase CDE $0.15/contract + bps. 2026 regime compressed (CME basis ~ T-bill)."
     risk: "Spot-leg fees (Kraken 0.38% taker <$10k; Coinbase Advanced 0.75%+) eat months of funding per round trip; negative-funding stretches; short-perp liquidation on rallies (50% collateral); US perps are months old so history is a Binance proxy; Bitnomial/Coinbase API churn (INTX perps via Advanced Trade ended 2026-10-01)."
-    next: "Nightly backtest (reports/carry_backtest.md) must show walk-forward excess over T-bills; hourly paper ticks (data branch carry/) must show US-venue funding tracks the Binance proxy before any sizing."
+    next: "First real backtest 2020-26 (reports/carry_backtest.md): always-in ~5%/yr over T-bills, maxDD 4-5%, but 5-10 liquidations at 50% collateral (raised to 80%); thresholded walk-forward +10-13% excess in 2021, ~0 since. Only maker-only spot on Kraken is positive; Coinbase small-account fees make it -20%/yr. Paper ticks must show US-venue funding tracks Binance before sizing."
+  - id: sports_exchange_maker_novig
+    name: Novig sports exchange maker (NFL moneylines, pregame, quoted off de-vigged sharp lines)
+    market: CFTC sports exchange (Novig DCM, API v3 Oct-2026)
+    status: building
+    verdict: unproven
+    capital_usd: 0
+    evidence: "Verified from docs.novig.com 2026-10-17: maker pays ZERO; taker c*P*(1-P) with c=0.06 live only (pregame free both sides); maker credit 50% of live taker fee (70% NFL/NCAAF futures); free paper env with $10k play money; 279-price grid (0.5c mid-band). No book-depth or print data yet; no track record for anyone quoting there."
+    risk: "Liquidity unknown (new exchange; thin books likely); every GOLIVE voids all resting orders; AZ/MI/NV excluded and device geolocation needed within 3 days for live placements; trade tape has no taker side (fill attribution assumed); WS frame envelope undocumented until checked on paper; adverse selection vs faster sharps."
+    next: "Create a paper.novig.com key (NOVIG_API_KEY/NOVIG_SECRET), run sharp_line_maker_novig_nfl, confirm WS envelope + book depth from recordings, then compare quoted-edge vs Kalshi KXNFLGAME on the same games before any real-money thought."
+  - id: etf_trend_momentum
+    name: Monthly ETF trend + dual momentum (TSMOM 12-1, 10m SMA, GEM; vol-targeted ensemble)
+    market: US ETFs (SPY QQQ IWM EFA EEM TLT IEF GLD DBC VNQ, cash at T-bill)
+    status: building
+    verdict: unproven
+    capital_usd: 0
+    evidence: "SG Trend index CAGR 5.3 % / MDD 20.6 % since 2000; GEM and 10-month SMA published with Sharpe ~0.5-0.8 in-sample, ~50 % decay after publication (McLean & Pontiff; arxiv 2105.01380). Weekly walk-forward in reports/trend_backtest.md is the only number that counts."
+    risk: "Whipsaw in sideways years (several flat/negative years in a row are normal); -20-30 % drawdowns; full ETF universe only since 2006 so OOS history is ~10 years; Stooq closes are not dividend-adjusted (yfinance preferred); on $10k the haircut excess is tens to low hundreds of dollars a year."
+    next: "Weekly backtest must show chained OOS Sharpe > 0.3 and max DD < SPY's; daily paper book (data branch trend/) must track the backtest's month-end targets for 3+ rebalances before any sizing at a PDT-exempt cash broker (IBKR cash account)."
