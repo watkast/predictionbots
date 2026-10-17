@@ -1,0 +1,53 @@
+# Venture #2: BTC/ETH funding-rate carry (long spot + short perp). No orders anywhere.
+# Venue facts and fee sources: pb/carry/venues.py (every number cites its URL).
+assets: [BTC, ETH]
+
+data:
+  start_month: "2020-01"      # Binance Vision monthly zips (funding since 2019-09)
+  bybit: true
+  okx: true
+  bitnomial: true             # Kraken Derivatives US perps (public funding API)
+  coinbase_candles: true
+  coinbase_candle_days: 120   # public candles, 350/hour-call -> keep it short
+
+backtest:
+  venue: kraken               # kraken (Pro spot + Kraken Derivatives US/Bitnomial perp) | coinbase
+  # fee_overrides: {"spot.taker_bps": 80, "spot.maker_bps": 40}   # e.g. Kraken $0 tier
+  funding_source: binance     # proxy for the young US perps; bybit/okx also downloadable
+  params:
+    capital: 10000
+    entry_ann: 0.08           # trailing-3 annualized funding to enter
+    exit_ann: 0.02            # exit below this, or on a negative print
+    lookback: 3
+    min_hold: 1
+    perp_collateral_frac: 0.5 # 50% collateral on the short perp (2x on that leg); notional = capital/1.5
+    spot_maker: false
+    perp_maker: false
+    slippage_bps: 2.0
+    tbill_rate: 0.04
+    collateral_yield: 0.0
+    topup_from_idle: true
+    liq_penalty_bps: 50
+    exit_on_negative_print: true
+  grid:                       # walk-forward chooses from these on year k-1, scores year k
+    entry_ann: [0.05, 0.08, 0.12, 0.20]
+    exit_ann: [0.0, 0.02, 0.05]
+  variants:                   # extra full-period rows in the report
+    - {name: maker_spot, spot_maker: true}
+    - {name: coinbase_fees, venue: coinbase}
+    - {name: no_tbill, tbill_rate: 0.0}
+    - {name: always_in, entry_ann: -1.0, exit_ann: -1.0, exit_on_negative_print: false}
+
+paper:
+  sources:                    # polled hourly by scripts/carry_paper.py (all public, no auth)
+    coinbase: {}              # BIP-20DEC30-CDE hourly funding; ETH id discovered from the product list
+    bitnomial: {}             # Kraken Derivatives US perps, 8h
+    binance: {}
+    bybit: {}
+    okx: {}
+  entries:
+    - {name: kraken-BTC, source: bitnomial, asset: BTC, fee_venue: kraken, notional: 1000, entry_ann: 0.08, exit_ann: 0.02, lookback: 3}
+    - {name: kraken-ETH, source: bitnomial, asset: ETH, fee_venue: kraken, notional: 1000, entry_ann: 0.08, exit_ann: 0.02, lookback: 3}
+    - {name: coinbase-BTC, source: coinbase, asset: BTC, fee_venue: coinbase, notional: 1000, entry_ann: 0.08, exit_ann: 0.02, lookback: 24}
+    - {name: coinbase-ETH, source: coinbase, asset: ETH, fee_venue: coinbase, notional: 1000, entry_ann: 0.08, exit_ann: 0.02, lookback: 24}
+    - {name: binance-ref-BTC, source: binance, asset: BTC, fee_venue: kraken, notional: 1000, entry_ann: 0.08, exit_ann: 0.02, lookback: 3}

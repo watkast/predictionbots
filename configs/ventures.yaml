@@ -39,3 +39,12 @@ ventures:
     evidence: "Every public taker backtest in 15-min crypto loses after the 7c fee; these runs calibrate the fee drag."
     risk: "If these show profit, suspect the data, not the strategy."
     next: "Keep running as control group."
+  - id: crypto_funding_carry
+    name: BTC/ETH funding-rate carry (long spot + short US-regulated perp)
+    market: crypto derivatives (CFTC-regulated US perps)
+    status: building
+    verdict: unproven
+    capital_usd: 0
+    evidence: "BIS WP1087: carry >10%/yr avg but high carry predicts crashes; BitMEX Q3-25: 92-96% of 8h intervals positive. Kraken Derivatives US perps cost $0.0113/contract/side; Coinbase CDE $0.15/contract + bps. 2026 regime compressed (CME basis ~ T-bill)."
+    risk: "Spot-leg fees (Kraken 0.38% taker <$10k; Coinbase Advanced 0.75%+) eat months of funding per round trip; negative-funding stretches; short-perp liquidation on rallies (50% collateral); US perps are months old so history is a Binance proxy; Bitnomial/Coinbase API churn (INTX perps via Advanced Trade ended 2026-10-01)."
+    next: "Nightly backtest (reports/carry_backtest.md) must show walk-forward excess over T-bills; hourly paper ticks (data branch carry/) must show US-venue funding tracks the Binance proxy before any sizing."
