@@ -108,10 +108,10 @@ jobs:
           else
             git worktree add --orphan -b data ../datawt
           fi
-          mkdir -p ../datawt/ledger ../datawt/recorded
+          mkdir -p ../datawt/ledger ../datawt/recorded ../datawt/logs
           for d in artifacts/*; do
-            [ -d "$d/ledger" ] && cp -r "$d/ledger/." ../datawt/ledger/
-            [ -d "$d/recorded" ] && cp -r "$d/recorded/." ../datawt/recorded/
+            if [ -d "$d/ledger" ]; then cp -r "$d/ledger/." ../datawt/ledger/; fi
+            if [ -d "$d/recorded" ]; then cp -r "$d/recorded/." ../datawt/recorded/; fi
           done
           cd ../datawt && git add -A && (git commit -qm "paper ledgers $(date -u +%FT%TZ)" || true)
           for i in 1 2 3 4 5; do
@@ -123,8 +123,9 @@ jobs:
         run: |
           mkdir -p data/ledger
           cp -r ../datawt/ledger/. data/ledger/ 2>/dev/null || true
-          python scripts/report.py
-          python scripts/dashboard.py
+          python scripts/report.py 2>&1 | tee ../datawt/logs/publish-$(date -u +%Y%m%dT%H%M).log
+          python scripts/dashboard.py 2>&1 | tee -a ../datawt/logs/publish-$(date -u +%Y%m%dT%H%M).log
+          (cd ../datawt && git add -A && (git commit -qm "publish log" || true) && git push origin HEAD:data || true)
           git add reports
           git -c user.name=predictionbots-paper -c user.email=bots@users.noreply.github.com \
             commit -qm "reports: paper update $(date -u +%FT%TZ)" || exit 0

@@ -1,6 +1,9 @@
 run,day,realized_pnl,fees,net_pnl,cum_net_pnl,fills,contracts
-mm_crypto_twap_kxbtc15m,2026-10-16,-0.3604,0.0,-0.3604,-0.3604,112,1413.02
+complete_set_arb_polymarket,2026-10-17,-23.4798,9.1371,-32.6168,-32.6168,20,905.75
+mm_crypto_twap_kxbtc15m,2026-10-17,1.2,0.0,1.2,1.2,48,450.0
 mm_inventory_kxhigh,2026-10-16,-16.7922,0.0,-16.7922,-16.7922,726,6172.64
+mm_inventory_kxhigh,2026-10-17,-14.2876,0.0,-14.2876,-31.0797,231,1787.01
+mm_inventory_poly_crypto15m,2026-10-17,-19.1949,0.0,-19.1949,-19.1949,241,2182.09
 mm_weather_ladder_kxhighny,2026-10-16,0.0,0.0,0.0,0.0,16,105.0
-mm_weather_ladder_kxhighny,2026-10-17,0.0,0.0,0.0,0.0,9,65.0
-taker_lag_kxbtc15m,2026-10-16,6.3534,2.14,4.2134,4.2134,145,143.0
+mm_weather_ladder_kxhighny,2026-10-17,0.0,0.0,0.0,0.0,42,254.68
+taker_lag_kxbtc15m,2026-10-17,53.8564,12.08,41.7764,41.7764,686,678.0
