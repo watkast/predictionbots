@@ -407,13 +407,21 @@ def download_all(cfg: dict, out_dir: Path, client: httpx.Client | None = None) -
     try:
         for a in assets:
             sym = ASSET_SYMBOLS["binance"][a]
+            frames = []
             try:
-                hist = binance_vision_funding(sym, months, a, client)
-                live = binance_live_funding(sym, a, client=client)
-                _save(f"funding-binance-{a}", pd.concat([hist, live], ignore_index=True)
-                      .sort_values("ts").drop_duplicates("ts").reset_index(drop=True))
+                frames.append(binance_vision_funding(sym, months, a, client))
             except Exception as e:  # noqa: BLE001
-                log.error("binance funding %s: %s", a, e)
+                log.error("binance vision funding %s: %s", a, e)
+            try:
+                # fapi.binance.com answers HTTP 451 from US IPs (GitHub runners);
+                # the Vision archive still works, so never let the live call
+                # discard the history.
+                frames.append(binance_live_funding(sym, a, client=client))
+            except Exception as e:  # noqa: BLE001
+                log.warning("binance live funding %s (expected from US IPs): %s", a, e)
+            if frames:
+                _save(f"funding-binance-{a}", pd.concat(frames, ignore_index=True)
+                      .sort_values("ts").drop_duplicates("ts").reset_index(drop=True))
             for kind in ("spot", "um"):
                 try:
                     _save(f"candles-binance-{kind}-{a}", binance_vision_klines(sym, months, kind, "1h", client))

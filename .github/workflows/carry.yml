@@ -47,11 +47,14 @@ jobs:
           cp -r ../datawt/carry/. data/carry/ 2>/dev/null || true
       - name: Paper tick
         if: env.JOB == 'paper' || env.JOB == 'both'
-        run: python scripts/carry_paper.py
+        run: |
+          mkdir -p data/carry/logs
+          python scripts/carry_paper.py 2>&1 | tee data/carry/logs/paper-$(date -u +%Y%m%dT%H%M).log
       - name: Download + backtest
         if: env.JOB == 'backtest' || env.JOB == 'both'
         run: |
-          python scripts/carry_backtest.py --download
+          mkdir -p data/carry/logs
+          python scripts/carry_backtest.py --download 2>&1 | tee data/carry/logs/backtest-$(date -u +%Y%m%dT%H%M).log
           python scripts/carry_paper.py --summary
       - name: Push data branch
         run: |
