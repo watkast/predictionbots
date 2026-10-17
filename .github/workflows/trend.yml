@@ -1,0 +1,75 @@
+# Venture #3: monthly ETF trend / momentum. Daily (after the US close): refresh
+# prices and tick the paper book (no orders). Weekly: refresh data and rerun the
+# backtest + walk-forward. Data lives on the `data` branch under trend/; reports on main.
+name: trend
+on:
+  schedule:
+    - cron: "23 22 * * 1-5"   # daily paper tick, 22:23 UTC (after the 20:00 UTC close; Stooq/Yahoo EOD by then)
+    - cron: "37 4 * * 6"      # weekly data refresh + backtest (Saturday)
+  workflow_dispatch:
+    inputs:
+      job:
+        description: "paper | backtest | both"
+        default: "both"
+
+permissions:
+  contents: write
+
+concurrency:
+  group: trend-${{ github.ref }}
+  cancel-in-progress: false
+
+jobs:
+  trend:
+    runs-on: ubuntu-latest
+    timeout-minutes: 45
+    env:
+      JOB: ${{ github.event.inputs.job || (github.event.schedule == '37 4 * * 6' && 'backtest') || 'paper' }}
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.13"
+          cache: pip
+      - run: pip install -e . yfinance
+      - name: Pull trend data from the data branch
+        run: |
+          set -e
+          git config user.name "predictionbots-trend"
+          git config user.email "bots@users.noreply.github.com"
+          git fetch origin data || true
+          if git rev-parse --verify origin/data >/dev/null 2>&1; then
+            git worktree add ../datawt origin/data
+          else
+            git worktree add --orphan -b data ../datawt
+          fi
+          mkdir -p ../datawt/trend data/trend
+          cp -r ../datawt/trend/. data/trend/ 2>/dev/null || true
+      - name: Paper tick (refresh prices first)
+        if: env.JOB == 'paper' || env.JOB == 'both'
+        run: python scripts/trend_paper.py --download
+      - name: Download + backtest
+        if: env.JOB == 'backtest' || env.JOB == 'both'
+        run: |
+          python scripts/trend_backtest.py --download
+          python scripts/trend_paper.py --summary
+      - name: Push data branch
+        run: |
+          set -e
+          cp -r data/trend/. ../datawt/trend/
+          cd ../datawt && git add -A && (git commit -qm "trend data $(date -u +%FT%TZ)" || true)
+          for i in 1 2 3 4 5; do
+            git push origin HEAD:data && break
+            git fetch origin data && git rebase origin/data || git rebase --abort
+            sleep $((RANDOM % 20 + 5))
+          done
+      - name: Commit reports on main
+        run: |
+          git add reports
+          git -c user.name=predictionbots-trend -c user.email=bots@users.noreply.github.com \
+            commit -qm "reports: trend update $(date -u +%FT%TZ)" || exit 0
+          for i in 1 2 3 4 5; do
+            git push origin HEAD:main && break
+            git fetch origin main && git rebase origin/main || git rebase --abort
+            sleep $((RANDOM % 20 + 5))
+          done
