@@ -1,6 +1,6 @@
 # predictionbots
 
-Automated trading research for **Kalshi** and **Polymarket**, evaluated only with a
+Automated trading research for **Kalshi**, **Polymarket** and **Novig**, evaluated only with a
 liquidity-realistic simulator and then **paper-traded** against live books. There is
 no live-money path in this repo. DraftKings / Betr have no trading APIs; they enter
 only as reference odds (via The Odds API) that sports strategies quote around.
@@ -104,6 +104,30 @@ Signal feeds (`--signals`): `coinbase` (Coinbase trades with Kraken failover -> 
 | `KALSHI_KEY_ID`, `KALSHI_PRIVATE_KEY_PEM` (or `KALSHI_PRIVATE_KEY_B64`) | Kalshi WebSocket books and `/historical` endpoints; public REST polling works without them |
 | `ODDS_API_KEY` | optional; `sharp_line_maker` paper entry is skipped without it |
 | `POLY_PRIVATE_KEY`, `POLY_FUNDER` | not used by paper trading (only by the unused Polymarket order adapter) |
+| `NOVIG_API_KEY`, `NOVIG_SECRET` (or `NOVIG_SECRET_B64`) | Novig key id + PKCS#8 Ed25519 private-key PEM of a **trading** key (`\n`-escaped PEM is fine). Needed for the signed WebSocket (books + tape) and the `sharp_line_maker_novig_nfl` entry; the public `/v3/public/catalog` routes poll without them. `NOVIG_HOST` picks the environment (default `https://api.paper.novig.com`, play money; production `https://api.novig.com`) — keys are per environment |
+
+## Novig (venue 3, paper only)
+
+`pb/venues/novig.py` adapts Novig's v3 API (CFTC-regulated sports exchange; docs read 2026-10-17, every
+fact cited in the module docstring). What matters for the strategies:
+
+* Prices are **probabilities** (`"0.665"`) on a 279-price grid (0.001 steps below 0.05 / above 0.95,
+  0.005 in between); `qty` is in 1-cent units (100 = one $1 contract). The adapter converts to the
+  YES-leg `Book` (every resting order is a *buy* of one outcome, so a NO-outcome bid at p is a YES ask
+  at 1-p) and sizes in $1 contracts.
+* **Maker pays zero.** Taker fee = `c * P * (1-P) * N`, `c = 0.06` on game markets since 2026-10-15
+  (0.03 before), charged **only while the event is live**; pregame fills are free for both sides.
+  Makers get a cash credit of 50% of the live taker fee (70% on NFL/NCAAF futures) — ignored by
+  default (`include_credit=False`), like Polymarket rebates.
+* Every `GOLIVE` voids all resting orders, so `close_ts` is kickoff and `pull_before_close` applies.
+* Free **paper environment** (`paper.novig.com`, $10k play money, same API, no location check).
+  Production needs KYC + a device geolocation from the Novig app within 3 days (AZ/MI/NV excluded).
+* The YES outcome is the home team (from "Away at Home" descriptions), "Over" or "Yes";
+  `meta["outcomes"]`/`meta["sport"]` let `pb.data.odds_link` link markets to The Odds API.
+* Undocumented and to be verified on the paper WS before trusting a recording: the WS frame envelope
+  (how the market id rides on `book`/`trades` objects) and whether a tape row names the taker's outcome.
+
+`python scripts/paper.py --venue novig --strategy sharp_line_maker --novig-league NFL --top 6 --signals odds:nfl,espn:nfl`
 
 DraftKings and Betr: no API, no trading; they only appear as `book_prob_draftkings` etc. in the
 odds signal when The Odds API returns them.

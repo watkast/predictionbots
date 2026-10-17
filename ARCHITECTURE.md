@@ -15,7 +15,7 @@ pb/core/fees.py       Kalshi & Polymarket fee schedules (maker/taker, rebates)
 pb/sim/engine.py      Engine, SimAPI, Strategy, Signal, Settlement, Result
 pb/sim/synthetic.py   synthetic generator (CI only, never for evaluation)
 pb/strategies/        one module per model; each class is @register'ed in base.REGISTRY
-pb/venues/            kalshi.py, polymarket.py: REST/WS clients, auth, normalisation to core types
+pb/venues/            kalshi.py, polymarket.py, novig.py: REST/WS clients, auth, normalisation to core types
 pb/data/              recorder (WS + signals -> parquet), historical loaders (-> events), reference feeds,
                       odds_link (team-name matcher: Odds-API events <-> Kalshi/Polymarket markets)
 pb/live/              paper runner (same Strategy interface, live books), risk manager (risk.py), ledger
@@ -53,8 +53,9 @@ reports/              markdown/JSON results committed by workflows; voided.yaml 
   `scripts/smoke_live.py` that the `ci.yml` workflow runs on GitHub (which has
   internet), never locally.
 * Secrets via env: `KALSHI_KEY_ID`, `KALSHI_PRIVATE_KEY_PEM` (or `KALSHI_PRIVATE_KEY_B64`),
-  `POLY_PRIVATE_KEY`, `POLY_FUNDER`, `ODDS_API_KEY`. Paper mode needs none for
-  public data (Kalshi public REST works unauthenticated for market data; WS needs auth).
+  `POLY_PRIVATE_KEY`, `POLY_FUNDER`, `ODDS_API_KEY`, `NOVIG_API_KEY` + `NOVIG_SECRET`
+  (+ `NOVIG_HOST`, default paper env). Paper mode needs none for public data (Kalshi
+  and Novig public REST work unauthenticated for market data; both WS feeds need auth).
 
 ## Simulator guarantees (pb/sim/engine.py)
 

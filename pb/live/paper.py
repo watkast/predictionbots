@@ -831,6 +831,50 @@ async def build_polymarket_runner(markets: list[Market], strategies: list[Strate
     return runner, client
 
 
+async def build_novig_runner(markets: list[Market], strategies: list[Strategy], config: PaperConfig,
+                             signals: Optional[list[AsyncIterator[Signal]]] = None, recorder: Any = None,
+                             selector: Optional[Callable[[Any], Awaitable[list[Market]]]] = None,
+                             client: Any = None) -> tuple[PaperRunner, Any]:
+    """Novig (paper env by default, `NOVIG_HOST` overrides). With a trading
+    key the signed WS streams books + tape; without one the public REST
+    catalog is polled (books) and the public tape feeds maker fills."""
+    from pb.venues import novig as N
+
+    client = client or N.NovigClient.from_env()
+    fees: dict[str, FeeSchedule] = {}
+    pollers: dict[str, Callable[[], Awaitable[Book]]] = {}
+    trade_pollers: dict[str, Callable[[float], Awaitable[list[Trade]]]] = {}
+    ws = N.NovigWS(markets, auth=client.auth, url=client.ws_url) if client.auth is not None else None
+
+    async def wire(m: Market) -> None:
+        client._markets[m.market_id] = m
+        try:
+            fees[m.market_id] = await client.fee_schedule(m.market_id)
+        except Exception as e:  # pragma: no cover - network
+            log.warning("fee schedule %s: %s", m.market_id, e)
+            fees[m.market_id] = N.fee_schedule_for(m)
+        pollers[m.market_id] = (lambda mid=m.market_id: client.book(mid))
+        if ws is None:
+            trade_pollers[m.market_id] = (lambda since, mid=m.market_id: client.trades_since(mid, since))
+        else:
+            await ws.subscribe_more([m])
+
+    for m in markets:
+        await wire(m)
+
+    async def check(mid: str) -> Optional[Market]:
+        fresh = await client.market(mid)
+        return fresh if fresh.result is not None else None
+
+    runner = PaperRunner(markets, lambda mid: fees.get(mid, N.novig_schedule()), strategies,
+                         feeds=[ws.events()] if ws is not None else [], pollers=pollers,
+                         settlement_checker=check, config=config, signals=signals, recorder=recorder,
+                         trade_pollers=trade_pollers if ws is None else None,
+                         market_selector=(lambda: selector(client)) if selector is not None else None,
+                         market_wiring=wire)
+    return runner, client
+
+
 # ----------------------------------------------------------------------------
 # Signal feed construction from CLI specs
 # ----------------------------------------------------------------------------
@@ -938,4 +982,4 @@ def build_signal_feeds(spec: str | None, markets: list[Market], env: Optional[di
 __all__ = ["LiveEngine", "Ledger", "PaperConfig", "PaperRunner", "build_strategy", "load_params_yaml",
            "select_kalshi_markets", "select_polymarket_markets", "select_polymarket_crypto_windows",
            "crypto_window_slugs", "build_kalshi_runner",
-           "build_polymarket_runner", "build_signal_feeds", "parse_signal_specs", "SIGNAL_SPEC_HELP"]
+           "build_polymarket_runner", "build_novig_runner", "build_signal_feeds", "parse_signal_specs", "SIGNAL_SPEC_HELP"]

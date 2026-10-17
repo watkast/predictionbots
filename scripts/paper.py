@@ -43,7 +43,7 @@ def parse() -> argparse.Namespace:
     from pb.live.paper import SIGNAL_SPEC_HELP
 
     p = argparse.ArgumentParser(description=__doc__, formatter_class=argparse.RawDescriptionHelpFormatter)
-    p.add_argument("--venue", choices=["kalshi", "polymarket"], required=True)
+    p.add_argument("--venue", choices=["kalshi", "polymarket", "novig"], required=True)
     p.add_argument("--strategy", required=True, help="name in pb.strategies.base.REGISTRY")
     p.add_argument("--params", help="YAML file with strategy params ({strategy: {...}} or flat)")
     p.add_argument("--tickers", nargs="*", default=[])
@@ -52,6 +52,8 @@ def parse() -> argparse.Namespace:
     p.add_argument("--tokens", nargs="*", default=[])
     p.add_argument("--poly-crypto-15m", action="store_true", help="Polymarket 5/15-min up-or-down markets")
     p.add_argument("--poly-events", action="store_true", help="Polymarket top events (all markets of each)")
+    p.add_argument("--novig-league", nargs="*", default=[], help="Novig league(s), e.g. NFL NBA")
+    p.add_argument("--novig-market-type", default="MONEY", help="Novig marketType filter (MONEY, SPREAD, TOTAL)")
     p.add_argument("--top", type=int, default=3)
     p.add_argument("--signals", default="", help=SIGNAL_SPEC_HELP)
     p.add_argument("--set", action="append", default=[], metavar="PARAM=VALUE",
@@ -130,12 +132,27 @@ async def select_polymarket(a, c) -> list:
     return await select_polymarket_markets(c, top=a.top)
 
 
+async def select_novig(a, c) -> list:
+    """`--tickers` are Novig market ids; `--novig-league` picks the soonest-starting
+    open pregame markets of that league (orders are voided at GOLIVE)."""
+    markets = [await c.market(t) for t in a.tickers]
+    for lg in a.novig_league or ([] if a.tickers else ["NFL"]):
+        markets += await c.select_markets(league=lg, top=a.top, market_type=a.novig_market_type)
+    seen: set[str] = set()
+    out = []
+    for m in markets:
+        if m.market_id not in seen:
+            seen.add(m.market_id)
+            out.append(m)
+    return out
+
+
 async def main() -> int:
     a = parse()
     logging.basicConfig(level=logging.DEBUG if a.verbose else logging.INFO,
                         format="%(asctime)s %(levelname)s %(name)s: %(message)s")
-    from pb.live.paper import (PaperConfig, build_kalshi_runner, build_polymarket_runner, build_signal_feeds,
-                               build_strategy, load_params_yaml)
+    from pb.live.paper import (PaperConfig, build_kalshi_runner, build_novig_runner, build_polymarket_runner,
+                               build_signal_feeds, build_strategy, load_params_yaml)
     from pb.live.risk import RiskLimits
     from pb.sim.engine import SimConfig
 
@@ -159,6 +176,11 @@ async def main() -> int:
 
         client = KalshiClient.from_env(demo=a.demo)
         selector = lambda c: select_kalshi(a, c)  # noqa: E731
+    elif a.venue == "novig":
+        from pb.venues.novig import NovigClient
+
+        client = NovigClient.from_env()
+        selector = lambda c: select_novig(a, c)  # noqa: E731
     else:
         from pb.venues.polymarket import PolymarketClient
 
@@ -188,6 +210,9 @@ async def main() -> int:
     if a.venue == "kalshi":
         runner, client = await build_kalshi_runner(markets, [strat], cfg, demo=a.demo, signals=feeds,
                                                    recorder=recorder, selector=roll, client=client)
+    elif a.venue == "novig":
+        runner, client = await build_novig_runner(markets, [strat], cfg, signals=feeds, recorder=recorder,
+                                                  selector=roll, client=client)
     else:
         runner, client = await build_polymarket_runner(markets, [strat], cfg, signals=feeds, recorder=recorder,
                                                        selector=roll, client=client)

@@ -15,6 +15,7 @@ class Venue(str, Enum):
     KALSHI = "kalshi"
     POLYMARKET = "polymarket"
     POLYMARKET_US = "polymarket_us"
+    NOVIG = "novig"
 
 
 class Side(str, Enum):
