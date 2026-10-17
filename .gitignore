@@ -6,3 +6,4 @@ data/raw/
 *.pem
 .env
 data/ledger/
+data/
