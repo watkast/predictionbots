@@ -1,0 +1,4 @@
+2026-10-16 23:16:57,568 INFO httpx: HTTP Request: GET https://gamma-api.polymarket.com/markets?limit=300&offset=0&closed=false&order=volume24hr&ascending=false&active=true "HTTP/1.1 200 OK"
+no markets
+[mm_inventory_poly_crypto15m] exit 2
+[mm_inventory_poly_crypto15m] /opt/hostedtoolcache/Python/3.13.16/x64/bin/python /home/runner/work/predictionbots/predictionbots/scripts/paper.py --venue polymarket --strategy mm_inventory --run-id mm_inventory_poly_crypto15m-20261016T2316 --params configs/mm_inventory.yaml --poly-crypto-15m --top 2 --signals coinbase --duration 20000.0 --max-position 200 --daily-loss-limit 50 --max-capital 2000 --max-capital-per-market 500

@@ -1,0 +1,73 @@
+{
+  "net_pnl": 222.9,
+  "gross_pnl": 222.9,
+  "fees": 0.0,
+  "fills": 72,
+  "maker_fills": 72,
+  "taker_fills": 0,
+  "contracts_traded": 920.0,
+  "max_drawdown": 198.82,
+  "max_capital_at_risk": 218.3,
+  "markets_traded": 1,
+  "market_win_rate": 1.0,
+  "sharpe_like": 0.66,
+  "net_pnl_on_max_capital": 1.0211,
+  "maker_pct": 100.0,
+  "reality": {
+    "cross_assumed_fill_frac": 1.0,
+    "cross_assumed_fills": 72,
+    "maker_frac": 1.0,
+    "max_fill_to_touch_depth": 0.076,
+    "top3_market_pnl_frac": 1.0,
+    "pnl_per_contract": 0.24228
+  },
+  "run_id": "mm_crypto_twap_kxbtc15m-20261016T2316",
+  "started_at": 1792192607.6623554,
+  "updated_at": 1792212607.8817718,
+  "uptime_secs": 20000.2,
+  "open_orders": 0,
+  "positions": {
+    "KXBTC15M-26OCT161930-30": {
+      "contracts": 0.0,
+      "avg_price": 0.0,
+      "realized": 222.9,
+      "fees": 0.0
+    }
+  },
+  "markets": [
+    "KXBTC15M-26OCT161930-30"
+  ],
+  "last_event_age": {
+    "KXBTC15M-26OCT161930-30": 1.9
+  },
+  "risk": {
+    "halted": false,
+    "halt_reason": "",
+    "halted_at": 0.0,
+    "stale": false,
+    "kill_file": "data/KILL",
+    "kill_file_present": false,
+    "pnl_today": 0.0,
+    "daily_loss_limit": 50.0,
+    "capital_in_use": 0.0,
+    "capital_in_use_by_market": {},
+    "max_capital_total": 2000.0,
+    "max_capital_per_market": 500.0,
+    "orders_last_min": 0,
+    "max_orders_per_min": 120,
+    "accepted": 1332,
+    "rejected": 2398,
+    "reject_reasons": {
+      "rate_limit": 2398
+    },
+    "cancel_all_count": 0,
+    "last_book_age": {
+      "KXBTC15M-26OCT161930-30": 1.9
+    },
+    "stale_secs": 60.0
+  },
+  "strategies": [
+    "mm_crypto_twap"
+  ],
+  "venue": "kalshi"
+}
