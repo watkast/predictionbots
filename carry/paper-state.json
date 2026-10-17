@@ -1,0 +1,61 @@
+{
+ "_meta": {
+  "errors": {
+   "binance/BTC": "HTTPStatusError(\"Client error '451 ' for url 'https://fapi.binance.com/fapi/v1/fundingRate?symbol=BTCUSDT&limit=3'\\nFor more information check: https://developer.mozilla.org/en-US/docs/Web/HTTP/Status/451\")",
+   "binance/ETH": "HTTPStatusError(\"Client error '451 ' for url 'https://fapi.binance.com/fapi/v1/fundingRate?symbol=ETHUSDT&limit=3'\\nFor more information check: https://developer.mozilla.org/en-US/docs/Web/HTTP/Status/451\")",
+   "bybit/BTC": "HTTPStatusError(\"Client error '403 Forbidden' for url 'https://api.bybit.com/v5/market/funding/history?category=linear&symbol=BTCUSDT&limit=3'\\nFor more information check: https://developer.mozilla.org/en-US/docs/Web/HTTP/Status/403\")",
+   "bybit/ETH": "HTTPStatusError(\"Client error '403 Forbidden' for url 'https://api.bybit.com/v5/market/funding/history?category=linear&symbol=ETHUSDT&limit=3'\\nFor more information check: https://developer.mozilla.org/en-US/docs/Web/HTTP/Status/403\")"
+  },
+  "updated_at": 1792220119.6114893
+ },
+ "binance-ref-BTC": {
+  "fees": 0.0,
+  "funding": 0.0,
+  "in_pos": false,
+  "intervals": 0,
+  "last_interval_ts": null,
+  "notional": 1000.0,
+  "realized": 0.0,
+  "trades": 0
+ },
+ "coinbase-BTC": {
+  "fees": 0.0,
+  "funding": 0.0,
+  "in_pos": false,
+  "intervals": 0,
+  "last_interval_ts": null,
+  "notional": 1000.0,
+  "realized": 0.0,
+  "trades": 0
+ },
+ "coinbase-ETH": {
+  "fees": 0.0,
+  "funding": 0.0,
+  "in_pos": false,
+  "intervals": 0,
+  "last_interval_ts": null,
+  "notional": 1000.0,
+  "realized": 0.0,
+  "trades": 0
+ },
+ "kraken-BTC": {
+  "fees": 0.0,
+  "funding": 0.0,
+  "in_pos": false,
+  "intervals": 0,
+  "last_interval_ts": null,
+  "notional": 1000.0,
+  "realized": 0.0,
+  "trades": 0
+ },
+ "kraken-ETH": {
+  "fees": 0.0,
+  "funding": 0.0,
+  "in_pos": false,
+  "intervals": 0,
+  "last_interval_ts": null,
+  "notional": 1000.0,
+  "realized": 0.0,
+  "trades": 0
+ }
+}
