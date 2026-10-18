@@ -7,3 +7,5 @@ Each memo ends with a ranked shortlist; `configs/ventures.yaml` is updated from 
 - `equities_fx_commodities_sports.md` — ETF trend, overnight effect, SPAC arb, options selling, VIX, FX, metals, US sports exchanges (Novig API), ML predictors (2026-10-17)
 - `non_trading_ventures.md` — P2E/Upland, DePIN, online arbitrage, content/SaaS, bounties, Numerai, churning, rentals, signal economies (2026-10-17)
 - `../ventures/saas/PLAN.md` — micro-SaaS / data-API portfolio: selection criteria, 10 ranked candidates with pricing evidence, channel fees, free hosting limits, legal minimums, kill rules; product #1 `oddsmath` scaffolded (2026-10-17)
+- `../ventures/bounty/PLAN.md` — bug-bounty venture plan: platform APIs/policies on AI reports, 2026 program closures, scope rules, ranked niches, human steps, metrics (2026-10-17)
+- `yield_vehicles.md` — risk-tiered yield ladder for $1k–$50k (T-bills/TIPS/I-bonds, HYSA/MMF/CDs, IG/HY/CLO/BDC/private credit, covered-call/REIT/CEF, stablecoin/staking, tax wrappers) with current numbers, after-tax yields, automation surface and a bot-managed $10k/$50k safe-base sketch (2026-10-17)
