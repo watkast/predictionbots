@@ -8,7 +8,7 @@ dependencies = ["httpx>=0.27", "websockets>=12", "numpy", "pandas", "pyarrow", "
 dev = ["pytest", "pytest-asyncio", "respx"]
 
 [tool.pytest.ini_options]
-testpaths = ["tests"]
+testpaths = ["tests", "ventures/saas"]
 asyncio_mode = "auto"
 
 [build-system]
