@@ -1,0 +1,121 @@
+# OSS projects whose code is covered by a *currently paying* bounty program that
+# the pipeline may scan. Evidence was checked 2026-10-17 from the URLs given; the
+# program's own page is the source of truth and must be re-read before any report.
+#
+# Only repos listed under `scope.repos` are ever cloned (pipeline/scan.py refuses
+# anything else via scope.py). `scan.enabled: false` keeps a target in the plan
+# without cloning it (too large for a runner, or the program forbids tooling).
+#
+# Not listed on purpose (2026 closures): Internet Bug Bounty (paused Apr-2026),
+# Google OSS VRP product reports (paused 2026-10-01), huntr OSS program (ended
+# 2026-06-30), GitHub Security Lab CodeQL bounty (closed), curl (no rewards since
+# 2026-01-26), Node.js (reports accepted, no rewards; Signal >= 1.0 required).
+checked_on: 2026-10-17
+targets:
+  - id: kubernetes
+    project: Kubernetes
+    platform: hackerone
+    program_url: https://hackerone.com/kubernetes
+    evidence: "Public since 2020, CNCF-funded, $100-$10,000 by CVSS (https://codenote.net/en/posts/oss-bug-bounty-program-cases/)"
+    payout_usd: [100, 10000]
+    scope:
+      repos: [github.com/kubernetes/kubernetes]
+    scan: {enabled: true, languages: [go], paths: [pkg, cmd, staging/src/k8s.io/apiserver], depth: 1}
+    reporting_notes: "Read https://kubernetes.io/docs/reference/issues-security/security/ first; CVSS-rated; PoC against a kind/minikube cluster you run."
+  - id: gitlab
+    project: GitLab CE
+    platform: hackerone
+    program_url: https://hackerone.com/gitlab
+    evidence: "Public since Dec-2018, $100-$35,000+ (https://codenote.net/en/posts/oss-bug-bounty-program-cases/, https://devclass.com/2018/12/13/gitlab-offers-hackers-12000-in-bug-bounty-programme/)"
+    payout_usd: [100, 35000]
+    scope:
+      repos: [gitlab.com/gitlab-org/gitlab]
+    scan: {enabled: true, languages: [ruby, javascript], paths: [app, lib], depth: 1}
+    reporting_notes: "Reproduce on a self-hosted GDK/omnibus instance only; never against gitlab.com user data."
+  - id: nextcloud
+    project: Nextcloud server + first-party apps
+    platform: yeswehack
+    program_url: https://yeswehack.com/programs/nextcloud
+    evidence: "EUR 500 / 1,500 / 5,000 / 10,000 by severity; 25 GitHub repos in scope; 'submission from automated tools won't be considered and may lead to sanctions (code analysis tools, AI)'; LLM use must be disclosed and local-only (https://yeswehack.com/programs/nextcloud read 2026-10-17)"
+    payout_usd: [550, 11000]
+    scope:
+      repos:
+        - github.com/nextcloud/server
+        - github.com/nextcloud/text
+        - github.com/nextcloud/user_saml
+        - github.com/nextcloud/twofactor_totp
+    scan: {enabled: true, languages: [php, javascript], paths: [lib, apps, core], depth: 1}
+    reporting_notes: "Test only your own instance. Every finding must be re-derived and re-written by a human; disclose any LLM use; automated-tool output alone is sanctionable."
+  - id: grafana
+    project: Grafana OSS
+    platform: intigriti
+    program_url: https://app.intigriti.com/company/programs/grafanalabs/grafanaossbbp/detail
+    evidence: "Launched May-2023 on Intigriti, CVSS-tiered, no NDA (https://grafana.com/blog/2024/07/24/grafana-labs-bug-bounty-what-you-need-to-know-about-our-new-partnership-with-intigriti)"
+    payout_usd: [100, 10000]
+    scope:
+      repos: [github.com/grafana/grafana]
+    scan: {enabled: true, languages: [go, typescript], paths: [pkg, public/app], depth: 1}
+    reporting_notes: "Intigriti requires human verification of all findings and AI disclosure under its Code of Conduct."
+  - id: mattermost
+    project: Mattermost server
+    platform: bugcrowd
+    program_url: https://bugcrowd.com/engagements/mattermost-mbb-public
+    evidence: "Open-source code bases on GitHub + community test server in scope; ack within 2 business days, bounty decision within 5 of validation (https://mattermost.com/security-vulnerability-report/)"
+    payout_usd: [100, 5000]
+    scope:
+      repos: [github.com/mattermost/mattermost]
+    scan: {enabled: true, languages: [go, typescript], paths: [server/channels, server/platform], depth: 1}
+    reporting_notes: "Install your own copy; non-disruptive testing only on the community server. Bugcrowd: 10 invalid reports -> ID verification; farming -> permanent ban."
+  - id: firefox
+    project: Mozilla Firefox (gecko-dev)
+    platform: direct
+    program_url: https://www.mozilla.org/en-US/security/bug-bounty/
+    evidence: "Critical $3,000-$20,000; High $3,000-$10,000; Medium/Low $500-$3,000; running since 2004 (https://www.mozilla.org/en-US/security/bug-bounty/)"
+    payout_usd: [500, 20000]
+    scope:
+      repos: [github.com/mozilla/gecko-dev]
+    scan: {enabled: false, languages: [cpp, javascript], paths: [dom, netwerk], depth: 1}
+    reporting_notes: "Repo is too large for a hosted runner; fuzz/scan a sparse checkout on a self-hosted box. Report via Bugzilla with the security flag."
+  - id: wordpress
+    project: WordPress core
+    platform: hackerone
+    program_url: https://hackerone.com/wordpress
+    evidence: "On HackerOne since 2017, Automattic-sponsored, $150-$1,337+ (https://wptavern.com/wordpress-is-now-on-hackerone-launches-bug-bounties); AI guidelines let maintainers close 'AI slop' (https://make.wordpress.org/ai/handbook/ai-guidelines/)"
+    payout_usd: [150, 1337]
+    scope:
+      repos: [github.com/wordpress/wordpress-develop]
+    scan: {enabled: true, languages: [php], paths: [src/wp-includes, src/wp-admin], depth: 1}
+    reporting_notes: "Core only; plugins and themes are out of scope. Low payouts, high duplicate rate."
+  - id: dotnet
+    project: .NET runtime / ASP.NET Core
+    platform: direct
+    program_url: https://www.microsoft.com/en-us/msrc/bounty-dot-net-core
+    evidence: ".NET bounty raised to up to $40,000 in Jul-2025 (https://www.microsoft.com/en-us/msrc/blog/2025/07/net-bounty-program-now-offers-up-to-40000-in-awards)"
+    payout_usd: [500, 40000]
+    scope:
+      repos: [github.com/dotnet/aspnetcore, github.com/dotnet/runtime]
+    scan: {enabled: true, languages: [csharp], paths: [src/Http, src/Security, src/Middleware], depth: 1}
+    reporting_notes: "Submit through MSRC Researcher Portal; only the current supported releases qualify; MSRC asks for a working PoC."
+  - id: chromium
+    project: Chromium
+    platform: direct
+    program_url: https://bughunters.google.com/about/rules/5745167867576320/chrome-vulnerability-reward-program-rules
+    evidence: "Chrome VRP: memory-safety base $500 with multipliers, full chain up to $250,000; standard payouts cut in 2026 and 'concise reports with a reproducer' preferred because of AI write-ups (https://securityaffairs.com/191600/security/google-revamps-bug-bounty-programs-android-rewards-rise-chrome-payouts-drop-in-the-age-of-ai.html)"
+    payout_usd: [500, 250000]
+    scope:
+      repos: [github.com/chromium/chromium]
+    scan: {enabled: false, languages: [cpp], paths: [third_party/blink/renderer, net], depth: 1}
+    reporting_notes: "Mirror-only repo, far too large for a hosted runner; fuzzing on a self-hosted box is the only realistic path. Reproducer mandatory."
+  - id: huntr_model_formats
+    project: huntr Model File Format program (ML model parsers)
+    platform: huntr
+    program_url: https://huntr.com/guidelines
+    evidence: "Huntr 2.0 FAQ: the OSS repo program stopped new submissions 2026-06-30, but 'the Model File Format Vulnerability program remains open for standard submissions for now' (https://blog.huntr.com/huntr-2-0-faq); prior base bounties $1,500 for frameworks (https://codenote.net/en/posts/oss-bug-bounty-program-cases/)"
+    payout_usd: [500, 3000]
+    scope:
+      repos:
+        - github.com/keras-team/keras
+        - github.com/huggingface/safetensors
+        - github.com/onnx/onnx
+    scan: {enabled: true, languages: [python, cpp], paths: [keras/src/saving, bindings/python, onnx], depth: 1}
+    reporting_notes: "Only deserialization / model-file parsing bugs qualify; check the live scope on huntr.com before cloning since this program may move to challenge format."

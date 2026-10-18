@@ -1,0 +1,63 @@
+# Venture: bug bounty, stage 1 only. Weekly: clone ONLY the repos listed in
+# ventures/bounty/targets.yaml (scope-checked by ventures/bounty/scope.py), run
+# Semgrep security rulesets, and push raw findings to the `data` branch under
+# bounty/. This workflow never contacts a bounty platform and never submits
+# anything; see ventures/bounty/pipeline/TRIAGE.md and submit.md for the
+# human-gated stages.
+name: bounty-scan
+on:
+  schedule:
+    - cron: "19 6 * * 2"      # Tuesdays 06:19 UTC
+  workflow_dispatch:
+    inputs:
+      only:
+        description: "comma-separated target ids from targets.yaml (empty = all enabled)"
+        default: ""
+
+permissions:
+  contents: write
+
+concurrency:
+  group: bounty-scan-${{ github.ref }}
+  cancel-in-progress: false
+
+jobs:
+  scan:
+    runs-on: ubuntu-latest
+    timeout-minutes: 180
+    env:
+      SEMGREP_SEND_METRICS: "off"
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.13"
+          cache: pip
+      - run: pip install -e . semgrep
+      - name: Scope check (refuses any repo not listed in targets.yaml)
+        run: python ventures/bounty/pipeline/scan.py --out data/bounty --dry-run --only "${{ github.event.inputs.only }}"
+      - name: Pull existing bounty data from the data branch
+        run: |
+          set -e
+          git config user.name "predictionbots-bounty"
+          git config user.email "bots@users.noreply.github.com"
+          git fetch origin data || true
+          if git rev-parse --verify origin/data >/dev/null 2>&1; then
+            git worktree add ../datawt origin/data
+          else
+            git worktree add --orphan -b data ../datawt
+          fi
+          mkdir -p ../datawt/bounty data/bounty
+          cp -r ../datawt/bounty/. data/bounty/ 2>/dev/null || true
+      - name: Semgrep scan of in-scope repos
+        run: python ventures/bounty/pipeline/scan.py --out data/bounty --only "${{ github.event.inputs.only }}"
+      - name: Push findings to the data branch (never to a platform)
+        run: |
+          set -e
+          cp -r data/bounty/. ../datawt/bounty/
+          cd ../datawt && git add -A && (git commit -qm "bounty scan $(date -u +%FT%TZ)" || true)
+          for i in 1 2 3 4 5; do
+            git push origin HEAD:data && break
+            git fetch origin data && git rebase origin/data || git rebase --abort
+            sleep $((RANDOM % 20 + 5))
+          done

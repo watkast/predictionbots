@@ -1,0 +1,29 @@
+# Example program scope for ventures/bounty/scope.py. One file per program; the
+# pipeline refuses any target that is not listed under in_scope. Fill this from
+# the program's own scope page (HackerOne "structured scopes", Bugcrowd target
+# groups, YesWeHack "scopes") and record the date you copied it.
+program: example
+platform: hackerone
+url: https://hackerone.com/example
+copied_on: 2026-10-17
+in_scope:
+  repos:
+    - github.com/example/server
+  domains:
+    - "*.example.com"        # subdomains only; the apex must be listed explicitly
+    - example.com
+  cidrs:
+    - 203.0.113.0/24
+out_of_scope:
+  repos: []
+  domains:
+    - legacy.example.com
+    - "*.corp.example.com"
+  cidrs:
+    - 203.0.113.250/32
+rules:
+  no_dos: true
+  no_social_engineering: true
+  no_production_data: true
+  max_requests_per_second: 5
+  allowed_methods: [static_analysis, local_reproduction]

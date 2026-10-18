@@ -1,0 +1,7 @@
+{
+  "schema_version": 1,
+  "updated": "2026-10-17T00:00:00Z",
+  "notes": "Hand-maintained ledger of every report the pipeline produced. One entry per report, state machine in metrics.py (STATES). bounty_usd is the amount actually received, not promised. Scan counts come from data branch bounty/index.json and are filled by metrics.py --scans.",
+  "reports": [],
+  "scans": {"runs": 0, "repos_scanned": 0, "raw_findings": 0, "last_run": null}
+}
