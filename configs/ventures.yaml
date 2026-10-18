@@ -102,3 +102,30 @@ ventures:
     evidence: "Owned hardware; 5 W idle / ~65 W under LLM load = $0.5-7/mo at 15 c/kWh (Apple spec + owner measurement). M4 Pro 48 GB runs Qwen3.6-35B-A3B at ~71 tok/s, GPT-OSS-20B ~54 tok/s (hardware-corner.net, Aug-2026); local Qwen3-Coder scored 12.4/15 vs Claude 13.2/15 on 50 dev tasks, parity on single-file/unit tests, -16% on multi-file refactors. No marketplace rents out a home Mac and Apple-silicon DePIN pays ~$0, so the value is avoided spend ($5-30/mo VPS, 50-70% of routine-task token spend) plus the residential Colorado IP and 24/7 state that live Kalshi/Novig runs need. See research/hardware_income.md."
     risk: "Zero direct income; home power/ISP outages (needs UPS + launchd restarts + the existing stale-data halt); Colorado->Ohio latency ~40-60 ms is worse than a GitHub runner, so paper stays on Actions; local models are not good enough for multi-file code, so frontier API spend does not go to zero; Novig/Kalshi geolocation needs a phone app, not the Mac."
     next: "Owner: install Ollama/MLX + launchd service for scripts/paper.py, Cloudflare Tunnel for the recorder/LLM endpoint, UPS. Agents: route bounty-scan triage, odds_link entity matching and embeddings to the local endpoint behind a feature flag and log token-spend before/after for one month; promote to the live-venue host only when a strategy earns a live allocation."
+  - id: brokerage_bonus_roll
+    name: Brokerage transfer-bonus roll (ACATS a USFR/SGOV sleeve between brokers; bot tracks offers, hold clocks, clawbacks)
+    market: US brokerages (Robinhood, Moomoo, Public, Tastytrade, Webull/Firstrade IRA, E*Trade)
+    status: research
+    verdict: promising
+    capital_usd: 0
+    evidence: "DoC list 2026-10-19: Robinhood 1% / 2% with Gold (unlimited, 5-yr withdrawal chargeback), Moomoo 3% to $600 at $20k (12-mo), Public 1% unlimited (5-yr hold), Tastytrade $50-2,000, Webull IRA 3-3.5%, E*Trade tiers. Assets stay in a T-bill ETF so the roll is yield-neutral; $1-3k/yr on a $50k roll, $300-600/yr on $20k. See research/niche_edges.md."
+    risk: "Clawbacks on withdrawal inside hold windows; new-customer-only and 'offer may end any time' terms; $75 ACATS fees; bonus is ordinary income; every transfer and KYC is human time."
+    next: "Agent: scheduled scraper of DoC brokerage-bonus page + issuer terms into data/bonus_offers.json, per-account hold-clock tracker and alert when a >=1% offer is live and a clock has cleared. Owner: pick the first hop (Robinhood Gold 2% or Moomoo 3%) once the safe-yield sleeve exists."
+  - id: oddlot_tender_scanner
+    name: Odd-lot tender scanner (EDGAR full-text 'odd lot' in SC TO-I/SC TO-T/S-4; buy <=99 sh, tender all)
+    market: US equities corporate actions
+    status: research
+    verdict: promising
+    capital_usd: 0
+    evidence: "Rule 13e-4 odd-lot priority: <100-share holders accepted without proration. JNJ/Kenvue 2023 ~+$1,000-1,350 per account on $17k; OPTU Jul-2026 $1.05->$2.50 ~$145; mymoneyblog/DoC logs since 2008; aggregators oddlotarbitrage.com, oddlottender.com. Expect 5-15 usable events/yr, $300-2k/yr, one person only (duplicate accounts at one broker were prorated). See research/niche_edges.md."
+    risk: "Deal cancellation/extension leaves you long a falling stock; odd-lot clause can be removed; $20-50 corporate-action fees at some brokers; short-term ordinary-income tax; tiny capacity."
+    next: "Agent: 6-hourly EDGAR efts full-text poll for 'odd lot' in tender forms, parse price/expiry/clause, compare to last trade, alert when expected $ >= 75 after fees. Owner: buy 99 sh and submit the tender election by hand."
+  - id: stablecoin_depeg_catcher
+    name: Stablecoin depeg catcher (resting USDC/USD and USDT/USD bids on Kraken at 0.93-0.97, sell 0.995+)
+    market: crypto spot (Kraken US fiat pairs)
+    status: research
+    verdict: unproven
+    capital_usd: 0
+    evidence: "USDC printed $0.87-0.88 on Mar 11 2023 and repegged within ~72 h once redemptions were confirmed; S&P: USDC/DAI depeg more often than USDT. A resting bid ladder costs nothing while unfilled and returns 3-7% on parked cash per episode (0-1 per year). See research/niche_edges.md."
+    risk: "A real collapse (Terra-style) fills the ladder on the way to zero; Kraken halts or thin books; capital idles on-exchange unless it is also the maker-bot collateral; issuer-halt rule must cancel all bids automatically."
+    next: "Agent: add a Kraken limit-order ladder module with a Circle/Tether status-page poll that cancels on redemption halts; paper it against the existing Kraken recorder. Owner: decide how much maker collateral may sit on Kraken."
