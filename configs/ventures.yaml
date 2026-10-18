@@ -147,3 +147,39 @@ ventures:
     evidence: "27 US states with adult-site age-verification laws in force or scheduled (LA 2023 -> IA Jul-2026), SCOTUS upheld TX HB 1181 in FSC v. Paxton (Jun-2025), private rights of action, LA fines $5-10k/day; Aylo blocks 17 states rather than comply. Vendor checks cost $0.10-2.50 each and SMB 3-yr TCO is $45-75k, so the unserved layer is the rules engine, not verification. No evidence yet that anyone pays a solo vendor for it. See research/taboo_legal.md."
     risk: "Zero demand evidence (hypothesis only); customers are high-risk merchants so Stripe underwriting may balk at the customer list (keep Paddle/CCBill ready); legal-accuracy liability if a state entry is wrong (disclaimer + lawyer review); laws change monthly."
     next: "Agent: build data/av_laws.json from the AVPA tracker + statute texts, publish free JSON + paid IP-to-obligation endpoint on Apify/RapidAPI, draft 20 outreach emails. Owner: send them; kill if zero paid calls by month 3."
+  - id: hemp_thc_transition_feed
+    name: Hemp-THC transition feed + COA go/no-go checker (state adoption matrix for the Nov-12 / Dec-11 2026 federal redefinition; total-THC and 0.4 mg/container math on lab COAs)
+    market: hemp / cannabinoid B2B compliance data
+    status: research
+    verdict: unproven
+    capital_usd: 0
+    evidence: "H.R. 6500 (Sep-2026) set Nov 12 2026 (synthetic cannabinoid ban) and Dec 11 2026 (total-THC 0.3% + 0.4 mg/container) cliffs with state-by-state variation; Whitney Economics 2026: ~50k operators, $38.7B TAM, $28.3B revenue and ~226k jobs projected lost, only 8.5% of products remain saleable; cannabis SaaS vendors do not serve hemp. See research/missing_layers.md #1."
+    risk: "Window closes at the cliff (feed becomes a kratom/kava/nicotine module afterwards); legal-accuracy liability (lawyer review + disclaimer); Stripe treats >limit-THC products as marijuana so bill via Paddle; customers are failing businesses so churn is the business model."
+    next: "Agent: data/hemp_rules.json from Vicente/DLA/Foley alerts + 50 state agency pages, scripts/coa_check.py, free state map, weekly diff bot, 20 outreach drafts (hemp beverage brands, edible makers, CO/TX/FL/MN retailers, trade groups). Owner: send them week 1. Kill if <4 paid by Dec 11 2026."
+  - id: ncii_takedown_kit
+    name: TAKE IT DOWN Act notice-and-removal kit for small UGC platforms (hosted intake, 48-h SLA queue, perceptual-hash duplicate finder, 2-year audit log; bundled with av_compliance_feed)
+    market: small-platform trust & safety compliance SaaS
+    status: research
+    verdict: unproven
+    capital_usd: 0
+    evidence: "Notice-and-removal duties in force since May 19 2026: 48-h removal incl. identical copies, civil penalties up to $53,088/violation, FTC letters to >12 companies and a public complaint portal, no small-business exemption; SMB guides name no vendor and advise staffing two people; enterprise T&S vendors (Hive, Thorn, StopNCII) gate for large platforms. See research/missing_layers.md #2."
+    risk: "Never store reported imagery (hash + metadata only); customer list includes adult sites so Stripe underwriting may balk (Paddle/Lemon Squeezy, CCBill fallback); low tech moat; FTC guidance may change what counts as reasonable duplicate search."
+    next: "Agent: Workers+D1 intake/queue, PDQ hashing worker, Discourse/XenForo/WordPress hooks, audit export, covered-platform analysis template; 20 outreach drafts to forum admins, small dating/creator sites, T&S consultants. Owner: send. Pass = 5/20 would pay >=$29/mo."
+  - id: highrisk_processor_watch
+    name: High-risk-merchant processor watch (nightly AUP diff across 11 processors, termination-report tracker, neutral fee/acceptance matrix for adult B2B, CBD/hemp, kratom/kava, firearms accessories, vape, psychedelics)
+    market: cross-vertical merchant data / alerts
+    status: research
+    verdict: unproven
+    capital_usd: 0
+    evidence: "Stripe prohibits adult, gambling, marijuana, timeshare, debt relief, bail and restricts CBD, firearms, tobacco/vape (stripe.com/legal/restricted-businesses); CCBill publishes no rates and adult MIDs run 10-15% all-in; high-risk ISOs monetize opacity and nobody publishes diffed AUP history or termination incidence. See research/missing_layers.md #3."
+    risk: "Willingness to pay unproven ($19-49/mo guess); referral-fee conflicts (disclose or refuse); processors may object to scraping terms pages (public legal pages, low risk); the corpus of termination reports is the moat and starts empty."
+    next: "Agent: nightly diff of Stripe/PayPal/Square/Shopify/Authorize.net/Adyen/Paddle/Lemon Squeezy/CCBill/Segpay/Epoch AUPs into data/processor_aup/, classifier for vertical tags, public changelog, report form, free alerts. Owner: 20 contacts drawn from hemp/adult/kratom/firearms-accessory outreach. Pass = 6 free subscribers + 3 paid."
+  - id: pm_tax_ledger
+    name: Prediction-market tax ledger (Kalshi/Polymarket US/Novig fills -> gain/loss ledger, other-income vs gambling-with-90%-rule vs 1256 scenarios, preparer summary)
+    market: retail prediction-market traders / CPAs (saas_portfolio lane)
+    status: research
+    verdict: unproven
+    capital_usd: 0
+    evidence: "Kalshi issues 1099-MISC only for >=$600 bonuses and 1099-INT for interest, contract P&L arrives on no form; Polymarket issues nothing; no IRS guidance on characterization; from 2026 only 90% of wagering losses deductible; crypto-tax vendors (Awaken, CoinLedger) cover Polymarket wallets but nothing covers Kalshi/Novig. See research/missing_layers.md #4."
+    risk: "Seasonal demand (Jan-Apr); 'not tax advice' disclaimer and scenario framing only; Kalshi may start issuing 1099-B and erase the gap; small ticket ($29-79/yr) so needs volume from r/Kalshi and newsletters."
+    next: "Agent: ledger module in oddsmath (Kalshi fills import first, reuse recorder code), free 90%-rule calculator as Jan-2027 lead magnet, 20 posts/DMs drafted. Owner: post them. Pass = 10 pre-orders at $29."
