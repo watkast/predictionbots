@@ -1,0 +1,120 @@
+# Micro-SaaS / data-API portfolio candidates (machine-readable twin of PLAN.md §b).
+# score = demand * ease * defensibility / support_load, each 1-5 (see PLAN.md for the evidence).
+# status: idea | building | live | sunset.  est_build_hours = agent hours incl. tests + listing.
+# Evidence URLs live in PLAN.md; this file only carries the verdicts.
+as_of: 2026-10-17
+scoring: "demand * ease * defensibility / support_load (1-5 each)"
+products:
+  - id: oddsmath
+    name: oddsmath — betting & prediction-market math API + MCP server
+    one_line: "Odds conversion, 4-method devig, EV + fractional Kelly, Kalshi/Polymarket/Novig fee models, cross-book arb and complete-set checks. Stateless, no PII."
+    channel: [rapidapi, stripe_payment_link, mcp_registry]
+    price: "free 100 req/day; $9/mo Basic 20k req; $29/mo Pro 200k req"
+    est_build_hours: 6
+    status: building
+    needs_secrets_to_build: false
+    scores: {demand: 2, ease: 5, defensibility: 3, support: 1}
+    score: 30
+    rank: 1
+  - id: pm_odds_feed
+    name: Prediction-market odds feed — Kalshi + Polymarket + Novig normalised, live + history
+    one_line: "One schema for YES-prob books, prints and settlements across venues, served from the repo's existing recorder (data branch) via Workers + R2; MCP + REST."
+    channel: [stripe_payment_link, rapidapi, mcp_registry]
+    price: "free 1k req/day delayed; $19/mo live; $49/mo history bulk"
+    est_build_hours: 20
+    status: idea
+    needs_secrets_to_build: false
+    scores: {demand: 3, ease: 3, defensibility: 4, support: 2}
+    score: 18
+    rank: 2
+  - id: bizdays
+    name: bizdays — holidays + business-day arithmetic API
+    one_line: "Public holidays for 100+ countries/subdivisions and working-day add/diff/next, bundled data, zero upstream calls."
+    channel: [rapidapi, stripe_payment_link]
+    price: "free 1k req/mo; $7/mo 50k; $19/mo 500k"
+    est_build_hours: 8
+    status: idea
+    needs_secrets_to_build: false
+    scores: {demand: 4, ease: 4, defensibility: 1, support: 1}
+    score: 16
+    rank: 3
+  - id: weatherprob
+    name: weatherprob — threshold probabilities at NWS settlement stations
+    one_line: "P(high temp >= X) from Open-Meteo ensembles for the stations Kalshi KXHIGH* settles on, with the repo's bias calibration; for weather-market traders."
+    channel: [stripe_payment_link, mcp_registry]
+    price: "$15/mo"
+    est_build_hours: 14
+    status: idea
+    needs_secrets_to_build: false
+    scores: {demand: 2, ease: 3, defensibility: 4, support: 2}
+    score: 12
+    rank: 4
+  - id: cronsense
+    name: cronsense — cron parse / describe / next-runs / jitter API + MCP
+    one_line: "Explain any cron expression in English, list next N runs in a timezone, suggest jittered minutes; stateless."
+    channel: [rapidapi, mcp_registry]
+    price: "free 500 req/day; $5/mo unlimited"
+    est_build_hours: 5
+    status: idea
+    needs_secrets_to_build: false
+    scores: {demand: 2, ease: 5, defensibility: 1, support: 1}
+    score: 10
+    rank: 5
+  - id: tzsolar
+    name: tzsolar — timezone for coordinates + sunrise/sunset/solar noon
+    one_line: "Offline tz-boundary lookup and NOAA solar maths for any lat/lon/date; no upstream calls."
+    channel: [rapidapi, stripe_payment_link]
+    price: "free 1k req/mo; $7/mo 100k"
+    est_build_hours: 10
+    status: idea
+    needs_secrets_to_build: false
+    scores: {demand: 3, ease: 3, defensibility: 1, support: 1}
+    score: 9
+    rank: 6
+  - id: idcheck
+    name: idcheck — IBAN / BIC / EU-VAT / US-EIN format + checksum validator
+    one_line: "Offline checksum and structure validation (no VIES/bank lookups, no storage); the cheap tier under iban.com's EUR 530/yr."
+    channel: [rapidapi, stripe_payment_link]
+    price: "free 500 req/mo; $9/mo 50k"
+    est_build_hours: 8
+    status: idea
+    needs_secrets_to_build: false
+    scores: {demand: 3, ease: 4, defensibility: 1, support: 2}
+    score: 6
+    rank: 7
+    caveat: "bank identifiers are PII-adjacent; log nothing, state it in the privacy policy"
+  - id: mailhygiene
+    name: mailhygiene — email syntax + disposable-domain + typo-suggestion check
+    one_line: "Bundled disposable list and RFC parsing, optional MX check; no sending, no storage."
+    channel: [rapidapi]
+    price: "free 300 req/mo; $9/mo 50k"
+    est_build_hours: 8
+    status: idea
+    needs_secrets_to_build: false
+    scores: {demand: 4, ease: 4, defensibility: 1, support: 3}
+    score: 5.3
+    rank: 8
+    caveat: "email addresses are PII (GDPR requests); 40+ clones on every marketplace"
+  - id: feedjson
+    name: feedjson — RSS/Atom/JSON-feed to JSON with filters and webhooks
+    one_line: "Parse any feed, dedupe, filter by regex, push new items to a webhook; Workers cron."
+    channel: [rapidapi, stripe_payment_link]
+    price: "free 5 feeds; $6/mo 100 feeds"
+    est_build_hours: 12
+    status: idea
+    needs_secrets_to_build: false
+    scores: {demand: 3, ease: 3, defensibility: 1, support: 2}
+    score: 4.5
+    rank: 9
+  - id: linkmeta
+    name: linkmeta — OpenGraph / link-preview metadata API
+    one_line: "Fetch + parse OG/Twitter/oEmbed/favicon for a URL with edge caching."
+    channel: [rapidapi, stripe_payment_link]
+    price: "free 100 req/day; $9/mo 20k; $29/mo 100k"
+    est_build_hours: 10
+    status: idea
+    needs_secrets_to_build: false
+    scores: {demand: 4, ease: 3, defensibility: 1, support: 3}
+    score: 4
+    rank: 10
+    caveat: "sites block fetchers; 'why does X not render' tickets; microlink already at $49/mo for 46k"

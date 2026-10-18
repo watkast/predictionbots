@@ -1,0 +1,15 @@
+# Cloudflare Workers config for oddsmath (Python Worker).
+# Deploy: `npx wrangler deploy` from this directory (see deploy.md).
+name = "oddsmath"
+main = "oddsmath/worker.py"
+compatibility_date = "2026-10-01"
+compatibility_flags = ["python_workers"]
+
+# Secrets are NOT stored here. Set them with:
+#   npx wrangler secret put PROXY_SECRET   # RapidAPI proxy secret (paid tier)
+#   npx wrangler secret put API_KEYS       # comma-separated keys for Stripe customers
+[vars]
+SERVICE = "oddsmath"
+
+[observability]
+enabled = true

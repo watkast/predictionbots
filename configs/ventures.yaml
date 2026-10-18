@@ -66,3 +66,12 @@ ventures:
     evidence: "SG Trend index CAGR 5.3 % / MDD 20.6 % since 2000; GEM and 10-month SMA published with Sharpe ~0.5-0.8 in-sample, ~50 % decay after publication (McLean & Pontiff; arxiv 2105.01380). Weekly walk-forward in reports/trend_backtest.md is the only number that counts."
     risk: "Whipsaw in sideways years (several flat/negative years in a row are normal); -20-30 % drawdowns; full ETF universe only since 2006 so OOS history is ~10 years; Stooq closes are not dividend-adjusted (yfinance preferred); on $10k the haircut excess is tens to low hundreds of dollars a year."
     next: "Weekly backtest must show chained OOS Sharpe > 0.3 and max DD < SPY's; daily paper book (data branch trend/) must track the backtest's month-end targets for 3+ rebalances before any sizing at a PDT-exempt cash broker (IBKR cash account)."
+  - id: saas_portfolio
+    name: Micro-SaaS / data-API portfolio built and run by agents (ventures/saas/)
+    market: developer tools / API marketplaces
+    status: building
+    verdict: unproven
+    capital_usd: 0
+    evidence: "Base rate: 67.8% of Stripe-verified indie businesses earn <$1k lifetime, ~30% ever pass $1k MRR (TrustMRR via mean.ceo). Apify paid devs $1.7M/mo but the earners are social scrapers outside our criteria; the Kalshi/Polymarket odds Actors we found have 6-13 users. Fees: RapidAPI 25%, Apify 20%, Stripe ~3.6%+0.7% Billing. Product #1 oddsmath (odds math + fee models + MCP) scaffolded with 24 offline tests; zero revenue."
+    risk: "Marketplace saturation (89k Apify Actors); demand for pure-math APIs is thin (free calculators exist); Stripe KYC and RapidAPI PayPal setup need the owner; Vercel Hobby and GitHub Pages forbid commercial use so hosting is Workers Free only."
+    next: "Owner does PLAN.md section g (Stripe, Cloudflare, RapidAPI, UptimeRobot); agents add a saas_deploy workflow, deploy oddsmath, list it, then run metrics.py monthly and apply the kill rules (<$20 MRR at 60 days -> sunset)."

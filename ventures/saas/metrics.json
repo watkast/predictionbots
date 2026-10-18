@@ -1,0 +1,22 @@
+{
+  "as_of": "2026-10-17",
+  "products": [
+    {
+      "id": "oddsmath",
+      "name": "oddsmath — betting & prediction-market math API + MCP",
+      "status": "building",
+      "channel": "rapidapi+stripe+mcp",
+      "launched": null,
+      "mrr_usd": 0,
+      "revenue_30d_usd": 0,
+      "subscribers": 0,
+      "churn_pct_30d": 0,
+      "cost_usd_30d": 0,
+      "uptime_pct_30d": 100,
+      "requests_30d": 0,
+      "support_tickets_30d": 0,
+      "support_minutes_30d": 0,
+      "note": "scaffold only; not deployed, not listed, no revenue. Numbers here are placeholders until a GitHub Action pulls Stripe/RapidAPI/Cloudflare stats."
+    }
+  ]
+}

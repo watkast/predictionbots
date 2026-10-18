@@ -1,0 +1,191 @@
+openapi: 3.0.3
+info:
+  title: oddsmath
+  version: 0.1.0
+  description: |
+    Betting and prediction-market math: odds conversion, de-vigging (4 methods),
+    expected value + fractional Kelly, venue fee models (Kalshi, Polymarket, Novig),
+    cross-book arbitrage and complete-set checks. Stateless, no PII, no auth on
+    the free tier; paid tiers via RapidAPI (X-RapidAPI-Proxy-Secret) or an
+    X-API-Key issued after a Stripe payment link checkout.
+  license:
+    name: MIT
+servers:
+  - url: https://oddsmath.<your-subdomain>.workers.dev
+security:
+  - {}
+  - ApiKey: []
+  - RapidApiProxy: []
+components:
+  securitySchemes:
+    ApiKey:
+      type: apiKey
+      in: header
+      name: X-API-Key
+    RapidApiProxy:
+      type: apiKey
+      in: header
+      name: X-RapidAPI-Proxy-Secret
+  schemas:
+    Error:
+      type: object
+      properties: { error: { type: string } }
+    OddsFormat:
+      type: string
+      enum: [american, decimal, fractional, prob, cents]
+    ConvertRequest:
+      type: object
+      properties:
+        value: { oneOf: [{ type: number }, { type: string }], description: single value }
+        odds: { type: array, items: { oneOf: [{ type: number }, { type: string }] } }
+        fmt: { $ref: "#/components/schemas/OddsFormat" }
+    Formats:
+      type: object
+      properties:
+        probability: { type: number }
+        american: { type: number }
+        decimal: { type: number }
+        fractional: { type: string }
+        cents: { type: number }
+    DevigRequest:
+      type: object
+      required: [odds]
+      properties:
+        odds: { type: array, items: { oneOf: [{ type: number }, { type: string }] } }
+        fmt: { $ref: "#/components/schemas/OddsFormat" }
+        method: { type: string, enum: [multiplicative, additive, power, shin, all], default: power }
+        labels: { type: array, items: { type: string } }
+    EvRequest:
+      type: object
+      required: [fair_prob, offered]
+      properties:
+        fair_prob: { type: number, minimum: 0, maximum: 1, exclusiveMinimum: true, exclusiveMaximum: true }
+        offered: { oneOf: [{ type: number }, { type: string }] }
+        fmt: { $ref: "#/components/schemas/OddsFormat" }
+        stake: { type: number, default: 1 }
+        kelly_mult: { type: number, default: 0.25 }
+        bankroll: { type: number }
+        venue: { type: string, enum: [kalshi, polymarket, novig, none] }
+        side: { type: string, enum: [taker, maker], default: taker }
+        category: { type: string, description: Polymarket category for the fee rate }
+        maker_fees: { type: boolean, description: Kalshi series carries maker fees }
+        live: { type: boolean, description: Novig event is live (taker fee applies) }
+    FeesRequest:
+      type: object
+      required: [venue, price]
+      properties:
+        venue: { type: string, enum: [kalshi, polymarket, novig, none] }
+        price: { type: number, description: YES probability in (0,1) }
+        contracts: { type: number, default: 1 }
+        side: { type: string, enum: [taker, maker], default: taker }
+        category: { type: string }
+        maker_fees: { type: boolean }
+        live: { type: boolean }
+    ArbRequest:
+      type: object
+      required: [outcomes]
+      properties:
+        bankroll: { type: number, default: 100 }
+        fmt: { $ref: "#/components/schemas/OddsFormat" }
+        outcomes:
+          type: array
+          items:
+            type: object
+            required: [quotes]
+            properties:
+              label: { type: string }
+              quotes:
+                type: array
+                items:
+                  type: object
+                  required: [odds]
+                  properties:
+                    book: { type: string }
+                    odds: { oneOf: [{ type: number }, { type: string }] }
+                    fmt: { $ref: "#/components/schemas/OddsFormat" }
+    CompleteSetRequest:
+      type: object
+      required: [yes_price, no_price]
+      properties:
+        yes_price: { type: number }
+        no_price: { type: number }
+        venue: { type: string, default: kalshi }
+        contracts: { type: number, default: 100 }
+        category: { type: string }
+        live: { type: boolean }
+    ParlayRequest:
+      type: object
+      required: [probs]
+      properties:
+        probs: { type: array, items: { type: number } }
+        offered_decimal: { type: number }
+paths:
+  /v1/health:
+    get:
+      summary: Liveness + endpoint list
+      responses:
+        "200": { description: ok }
+  /v1/convert:
+    post:
+      summary: Convert odds between formats
+      requestBody: { required: true, content: { application/json: { schema: { $ref: "#/components/schemas/ConvertRequest" } } } }
+      responses:
+        "200": { description: ok, content: { application/json: { schema: { type: object } } } }
+        "400": { description: bad input, content: { application/json: { schema: { $ref: "#/components/schemas/Error" } } } }
+    get:
+      summary: Convert odds (query-string form)
+      parameters:
+        - { name: value, in: query, schema: { type: string } }
+        - { name: fmt, in: query, schema: { $ref: "#/components/schemas/OddsFormat" } }
+      responses:
+        "200": { description: ok }
+  /v1/devig:
+    post:
+      summary: Fair probabilities from a full set of outcome odds
+      requestBody: { required: true, content: { application/json: { schema: { $ref: "#/components/schemas/DevigRequest" } } } }
+      responses:
+        "200": { description: ok }
+        "400": { description: bad input }
+  /v1/ev:
+    post:
+      summary: Expected value, edge and fractional Kelly (fees optional)
+      requestBody: { required: true, content: { application/json: { schema: { $ref: "#/components/schemas/EvRequest" } } } }
+      responses:
+        "200": { description: ok }
+        "400": { description: bad input }
+    get:
+      summary: EV (query-string form)
+      responses:
+        "200": { description: ok }
+  /v1/fees:
+    post:
+      summary: Venue fee for N contracts at a price
+      requestBody: { required: true, content: { application/json: { schema: { $ref: "#/components/schemas/FeesRequest" } } } }
+      responses:
+        "200": { description: ok }
+        "400": { description: bad input }
+    get:
+      summary: Venue fee (query-string form)
+      responses:
+        "200": { description: ok }
+  /v1/arb:
+    post:
+      summary: Cross-book arbitrage finder and stake split
+      requestBody: { required: true, content: { application/json: { schema: { $ref: "#/components/schemas/ArbRequest" } } } }
+      responses:
+        "200": { description: ok }
+        "400": { description: bad input }
+  /v1/complete-set:
+    post:
+      summary: Prediction-market YES+NO complete-set check net of fees
+      requestBody: { required: true, content: { application/json: { schema: { $ref: "#/components/schemas/CompleteSetRequest" } } } }
+      responses:
+        "200": { description: ok }
+        "400": { description: bad input }
+  /v1/parlay:
+    post:
+      summary: Parlay fair odds and EV
+      requestBody: { required: true, content: { application/json: { schema: { $ref: "#/components/schemas/ParlayRequest" } } } }
+      responses:
+        "200": { description: ok }
+        "400": { description: bad input }
