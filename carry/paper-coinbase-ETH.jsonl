@@ -7,3 +7,4 @@
 {"in_pos": false, "interval_ts": 1792299600.0, "mark": 2411.0, "rate": 5e-06, "signal": null, "ts": 1792300223.9928868, "type": "tick"}
 {"in_pos": false, "interval_ts": 1792314000.0, "mark": 2425.0, "rate": 3e-06, "signal": null, "ts": 1792317275.5890625, "type": "tick"}
 {"in_pos": false, "interval_ts": 1792332000.0, "mark": 2388.0, "rate": 1e-06, "signal": null, "ts": 1792332654.8077314, "type": "tick"}
+{"in_pos": false, "interval_ts": 1792342800.0, "mark": 2370.5, "rate": 6e-06, "signal": null, "ts": 1792344876.2724688, "type": "tick"}
