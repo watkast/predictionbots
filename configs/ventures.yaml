@@ -129,3 +129,21 @@ ventures:
     evidence: "USDC printed $0.87-0.88 on Mar 11 2023 and repegged within ~72 h once redemptions were confirmed; S&P: USDC/DAI depeg more often than USDT. A resting bid ladder costs nothing while unfilled and returns 3-7% on parked cash per episode (0-1 per year). See research/niche_edges.md."
     risk: "A real collapse (Terra-style) fills the ladder on the way to zero; Kraken halts or thin books; capital idles on-exchange unless it is also the maker-bot collateral; issuer-halt rule must cancel all bids automatically."
     next: "Agent: add a Kraken limit-order ladder module with a Circle/Tether status-page poll that cancels on redemption halts; paper it against the existing Kraken recorder. Owner: decide how much maker collateral may sit on Kraken."
+  - id: combat_maker_kalshi
+    name: UFC/MMA maker on Kalshi (KXUFCFIGHT / KXUFCMOV / KXUFCROUNDS) and Polymarket US, quoted off de-vigged sharp MMA lines
+    market: prediction markets / combat sports
+    status: research
+    verdict: unproven
+    capital_usd: 0
+    evidence: "Kalshi UFC averaged $2.9M/day Jan-Apr 2026, $45M on the UFC 327 day; UFC 328 winner market $51.8M notional / $19M cash / 280k trades; Polymarket main-card fights $1-4.5M each. Miller & Nichols 2026 and Robbins (6,190 bouts): no significant OOS taker edge in MMA, i.e. the market is efficient at the close and retail-heavy intraday, which is the maker's cohort. The Odds API covers MMA h2h/totals. See research/taboo_legal.md."
+    risk: "Fight-time latency (over $1M traded in the last four minutes of a main event) and walk-out news gaps; thin method/round books with no sharp reference line; state geofencing for sports contracts; Polymarket US API still unverified."
+    next: "Agent: extend sharp_line_maker with the Odds API mma_mixed_martial_arts feed, paper-quote winner markets on three cards, record Kalshi tape + Polymarket mids, compare realised maker P&L vs the NFL run. Owner: ODDS_API_KEY secret (free tier)."
+  - id: av_compliance_feed
+    name: Age-verification compliance rules feed (state-law matrix API + IP-to-obligation endpoint + vendor router) for small adult, dating, creator and gaming sites
+    market: B2B compliance data / micro-SaaS
+    status: research
+    verdict: unproven
+    capital_usd: 0
+    evidence: "27 US states with adult-site age-verification laws in force or scheduled (LA 2023 -> IA Jul-2026), SCOTUS upheld TX HB 1181 in FSC v. Paxton (Jun-2025), private rights of action, LA fines $5-10k/day; Aylo blocks 17 states rather than comply. Vendor checks cost $0.10-2.50 each and SMB 3-yr TCO is $45-75k, so the unserved layer is the rules engine, not verification. No evidence yet that anyone pays a solo vendor for it. See research/taboo_legal.md."
+    risk: "Zero demand evidence (hypothesis only); customers are high-risk merchants so Stripe underwriting may balk at the customer list (keep Paddle/CCBill ready); legal-accuracy liability if a state entry is wrong (disclaimer + lawyer review); laws change monthly."
+    next: "Agent: build data/av_laws.json from the AVPA tracker + statute texts, publish free JSON + paid IP-to-obligation endpoint on Apify/RapidAPI, draft 20 outreach emails. Owner: send them; kill if zero paid calls by month 3."
