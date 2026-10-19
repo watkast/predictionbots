@@ -1,0 +1,204 @@
+//@version=5
+// Polymarket US Alpha Engine v5 — portrait HUD, alerts, time-based round clock, settlement-style anchor,
+// fair-value readout. Drop-in replacement for v4 (same BUY UP / BUY DOWN semantics).
+indicator("Polymarket US Alpha Engine v5", shorttitle="Alpha v5", overlay=true, max_labels_count=50)
+
+// ───────────────────────────── 1. Inputs ─────────────────────────────
+grpR   = "Round & signal"
+roundMin   = input.int(15,  "Round length (min)", minval=5, maxval=60, group=grpR)
+twapLen    = input.int(15,  "TWAP window (1-min bars)", minval=3, group=grpR)
+buffer     = input.float(20.0, "TWAP buffer vs anchor ($)", step=1, group=grpR)
+chopBand   = input.float(10.0, "Chop band: no trade if |spot-anchor| < ($)", step=1, group=grpR)
+entryFrom  = input.float(10.0, "Entry window opens (min elapsed)", step=0.25, group=grpR)
+entryTo    = input.float(13.75, "Entry window closes (min elapsed)", step=0.25, group=grpR)
+killSecs   = input.int(45,  "No new buys in the last (sec)", group=grpR)
+anchorMode = input.string("Settlement-style (prev-minute average)", "Anchor",
+     options=["Settlement-style (prev-minute average)", "Round open (v4 behaviour)"], group=grpR)
+anchorAdj  = input.float(0.0, "Anchor offset ($) — set to Polymarket target minus plotted anchor if they differ", step=0.5, group=grpR)
+
+grpF   = "Filters"
+atrLen     = input.int(14, "ATR length", group=grpF)
+atrMult    = input.float(2.5, "Abort if ATR > x · ATR avg(100)", step=0.1, group=grpF)
+vetoRed    = input.bool(true,  "Veto on 'Reversal expected soon'", group=grpF)
+vetoYellow = input.bool(false, "Veto on 'Possible reversal'", group=grpF)
+slopeBars  = input.int(3, "Slope lookback (bars)", minval=1, group=grpF)
+
+grpP   = "Price guide"
+maxAsk     = input.float(0.75, "Max ask you will pay", step=0.01, minval=0.05, maxval=0.99, group=grpP)
+volLen     = input.int(60, "Realised-vol window (1-min bars)", group=grpP)
+
+grpU   = "HUD"
+hudPos     = input.string("Top center", "HUD position",
+     options=["Top center", "Top left", "Top right", "Bottom center", "Bottom left", "Bottom right", "Middle right"], group=grpU)
+hudSize    = input.string("Normal", "HUD text size", options=["Small", "Normal", "Large"], group=grpU)
+showZones  = input.bool(true, "Shade entry window / signal on chart", group=grpU)
+showBands  = input.bool(true, "Draw anchor ± buffer band", group=grpU)
+
+// ───────────────────────────── 2. Round clock (time-based, not bar-count) ─────────────────────────────
+roundMs    = roundMin * 60 * 1000
+roundStart = math.floor(time / roundMs) * roundMs
+roundEnd   = roundStart + roundMs
+isNewRound = ta.change(roundStart) != 0
+// live bar: use the wall clock so the HUD counts seconds like the Polymarket timer
+nowMs      = barstate.isrealtime ? timenow : time + 60000
+secsElapsed = math.max(0.0, (nowMs - roundStart) / 1000.0)
+secsLeft    = math.max(0.0, (roundEnd - nowMs) / 1000.0)
+minsElapsed = secsElapsed / 60.0
+
+// ───────────────────────────── 3. Anchor & TWAP ─────────────────────────────
+// Polymarket US "price to beat" = average of the 60 one-second BRTI prices in the minute BEFORE the
+// round opens. The best 1-min proxy is the previous bar's OHLC average, not this bar's open.
+var float anchorRaw = na
+if isNewRound
+    anchorRaw := anchorMode == "Round open (v4 behaviour)" ? open : (open[1] + high[1] + low[1] + close[1]) / 4
+anchor   = anchorRaw + anchorAdj
+twap     = ta.sma(close, twapLen)
+twapSlope  = twap - twap[slopeBars]
+priceSlope = close - close[slopeBars]
+dev      = close - anchor
+
+// ───────────────────────────── 4. Volatility & risk profile ─────────────────────────────
+atr      = ta.atr(atrLen)
+atrAvg   = ta.sma(atr, 100)
+volDanger = atr > atrAvg * atrMult
+// v4 compared two SMAs with ==, which is never true on floats; use a tolerance of 1/10 ATR
+flatCross = math.abs(ta.sma(close, 5) - ta.sma(close, 20)) < atr * 0.1
+string risk = "Awaiting data"
+color  riskCol = color.gray
+int    riskLvl = 0        // 0 ok, 1 yellow, 2 red, 3 orange(chop)
+if not na(anchor) and not na(twap[slopeBars])
+    if volDanger or (atr > atrAvg * 1.6 and flatCross)
+        risk := "Choppy — ups & downs imminent"
+        riskCol := color.orange
+        riskLvl := 3
+    else if (twapSlope > 0 and priceSlope > 0 and close > twap) or (twapSlope < 0 and priceSlope < 0 and close < twap)
+        risk := "Clean run
+        no reversal expected"
+        riskCol := color.green
+        riskLvl := 0
+    else if (twapSlope > 0 and priceSlope < 0 and close > twap) or (twapSlope < 0 and priceSlope > 0 and close < twap)
+        risk := "Possible reversal — stay focused"
+        riskCol := color.yellow
+        riskLvl := 1
+    else if (twapSlope > 0 and close < twap) or (twapSlope < 0 and close > twap)
+        risk := "Reversal expected soon"
+        riskCol := color.red
+        riskLvl := 2
+    else
+        risk := "Neutral"
+        riskCol := color.gray
+        riskLvl := 0
+
+// ───────────────────────────── 5. Fair value (what the contract is actually worth) ─────────────────────────────
+// Settlement is close-vs-open, not TWAP. P(up at close) ≈ Φ( dev / (σ·√minutes left) ) with σ = realised
+// 1-min $-volatility. The last 60 s are averaged, so the effective horizon is minutes left minus 0.5.
+r1       = math.log(close / close[1])
+sigmaPct = ta.stdev(r1, volLen)
+sigmaUsd = sigmaPct * close
+tauMin   = math.max(secsLeft / 60.0 - 0.5, 0.25)
+z        = sigmaUsd > 0 ? dev / (sigmaUsd * math.sqrt(tauMin)) : 0.0
+// Φ via Abramowitz-Stegun 7.1.26
+fPhi(x) =>
+    t = 1.0 / (1.0 + 0.3275911 * math.abs(x))
+    y = 1.0 - (((((1.061405429 * t - 1.453152027) * t) + 1.421413741) * t - 0.284496736) * t + 0.254829592) * t * math.exp(-x * x / 2.0)
+    x >= 0 ? 0.5 + 0.5 * y : 0.5 - 0.5 * y
+pUp   = fPhi(z)
+pDown = 1.0 - pUp
+
+// ───────────────────────────── 6. Execution state machine ─────────────────────────────
+inWindow  = minsElapsed >= entryFrom and minsElapsed < entryTo
+lateKill  = secsLeft <= killSecs
+vetoed    = (vetoRed and riskLvl == 2) or (vetoYellow and riskLvl == 1)
+inChop    = math.abs(dev) < chopBand
+rawUp     = close > anchor and twap > anchor + buffer
+rawDown   = close < anchor and twap < anchor - buffer
+
+string cmd = "OBSERVING"
+color  cmdCol = color.new(color.gray, 20)
+int    sig = 0      // +1 up, -1 down
+if not na(anchor)
+    if volDanger
+        cmd := "ABORT — volatility lock"
+        cmdCol := color.new(color.maroon
+        10)
+    else if lateKill
+        cmd := "ROUND CLOSING — no new buys"
+        cmdCol := color.new(color.purple
+        20)
+    else if minsElapsed < entryFrom
+        cmd := "ACCUMULATING — " + str.tostring(math.ceil(entryFrom * 60 - secsElapsed)) + "s to window"
+        cmdCol := color.new(color.gray, 20)
+    else if not inWindow
+        cmd := "WINDOW CLOSED — pause"
+        cmdCol := color.new(color.purple
+        20)
+    else if inChop
+        cmd := "CHOP — too close to anchor"
+        cmdCol := color.new(color.orange
+        15)
+    else if vetoed
+        cmd := "STAND DOWN — reversal risk"
+        cmdCol := color.new(color.orange
+        15)
+    else if rawUp
+        cmd := "BUY UP NOW ▲"
+        cmdCol := color.new(color.green
+        10)
+        sig := 1
+    else if rawDown
+        cmd := "BUY DOWN NOW ▼"
+        cmdCol := color.new(color.red
+        10)
+        sig := -1
+    else
+        cmd := "NO EDGE — stay out"
+        cmdCol := color.new(color.orange
+        15)
+
+// price guide for the signalled side
+pSide    = sig > 0 ? pUp : sig < 0 ? pDown : na
+fairC    = na(pSide) ? na : math.round(pSide * 100)
+// buying at `maxAsk` needs the true probability to beat it; show the edge you'd have at your max ask
+edgeAtMax = na(pSide) ? na : math.round((pSide - maxAsk) * 100)
+
+// ───────────────────────────── 7. Chart layers ─────────────────────────────
+plot(twap,   "TWAP",   color=color.new(color.green, 0), linewidth=2)
+pA = plot(anchor, "Anchor", color=color.new(color.gray, 0), linewidth=1)
+pU = plot(showBands ? anchor + buffer : na, "Buffer +", color=color.new(color.green, 70))
+pD = plot(showBands ? anchor - buffer : na, "Buffer -", color=color.new(color.red, 70))
+fill(pU, pA, color=color.new(color.green, 92))
+fill(pA, pD, color=color.new(color.red, 92))
+bgcolor(showZones and inWindow and sig == 0 ? color.new(color.blue, 94) : na)
+bgcolor(showZones and sig == 1 ? color.new(color.green, 85) : showZones and sig == -1 ? color.new(color.red, 85) : na)
+plotshape(sig == 1 and sig[1] != 1, "Up signal", shape.triangleup, location.belowbar, color.green, size=size.small)
+plotshape(sig == -1 and sig[1] != -1, "Down signal", shape.triangledown, location.abovebar, color.red, size=size.small)
+
+// ───────────────────────────── 8. Portrait HUD (single column, big status cell) ─────────────────────────────
+posOf(s) =>
+    s == "Top center" ? position.top_center : s == "Top left" ? position.top_left : s == "Top right" ? position.top_right :
+     s == "Bottom center" ? position.bottom_center : s == "Bottom left" ? position.bottom_left :
+     s == "Bottom right" ? position.bottom_right : position.middle_right
+txtSize = hudSize == "Small" ? size.small : hudSize == "Large" ? size.large : size.normal
+var table hud = table.new(posOf(hudPos), 1, 6, bgcolor=color.new(color.black, 15), border_width=1, border_color=color.new(color.white, 80))
+if barstate.islast
+    mm = str.tostring(math.floor(secsLeft / 60), "0")
+    ss = str.tostring(math.floor(secsLeft % 60), "00")
+    table.cell(hud, 0, 0, cmd, bgcolor=cmdCol, text_color=color.white, text_size=txtSize)
+    table.cell(hud, 0, 1, "⏱ " + mm + ":" + ss + " left  ·  min " + str.tostring(minsElapsed, "0.0") + "/" + str.tostring(roundMin),
+         text_color=color.yellow, text_size=txtSize)
+    table.cell(hud, 0, 2, (dev >= 0 ? "▲ +" : "▼ ") + str.tostring(dev, "0") + " vs anchor " + str.tostring(anchor, "#,###.00"),
+         text_color=dev >= 0 ? color.lime : color.red, text_size=txtSize)
+    table.cell(hud, 0, 3, risk, bgcolor=color.new(riskCol, 60), text_color=color.white, text_size=txtSize)
+    guide = na(pSide) ? "Fair: Up " + str.tostring(math.round(pUp * 100)) + "¢ / Down " + str.tostring(math.round(pDown * 100)) + "¢" :
+         "Fair " + str.tostring(fairC) + "¢ · pay ≤ " + str.tostring(math.round(maxAsk * 100)) + "¢ → edge " + (edgeAtMax >= 0 ? "+" : "") + str.tostring(edgeAtMax) + "¢"
+    table.cell(hud, 0, 4, guide, text_color=na(pSide) ? color.silver : edgeAtMax >= 5 ? color.lime : edgeAtMax >= 0 ? color.yellow : color.red, text_size=txtSize)
+    table.cell(hud, 0, 5, (volDanger ? "⚠ VOL DANGEROUS" : "✓ vol stable") + "  ·  σ " + str.tostring(sigmaUsd, "0") + "$/min",
+         text_color=volDanger ? color.red : color.green, text_size=size.small)
+
+// ───────────────────────────── 9. Alerts (phone push — no need to watch the chart) ─────────────────────────────
+alertcondition(sig == 1 and sig[1] != 1,  "BUY UP",   "Alpha v5: BUY UP — {{ticker}} {{close}}")
+alertcondition(sig == -1 and sig[1] != -1, "BUY DOWN", "Alpha v5: BUY DOWN — {{ticker}} {{close}}")
+alertcondition(sig != 0 and riskLvl == 2 and riskLvl[1] != 2, "Reversal while in signal", "Alpha v5: reversal risk — consider selling")
+alertcondition(minsElapsed >= entryFrom and minsElapsed[1] < entryFrom, "Window open", "Alpha v5: entry window open")
+if barstate.isrealtime and sig != 0 and sig[1] != sig
+    alert((sig == 1 ? "BUY UP" : "BUY DOWN") + " · " + (dev >= 0 ? "+" : "") + str.tostring(dev, "0") + "$ · fair " + str.tostring(fairC) + "¢", alert.freq_once_per_bar)
