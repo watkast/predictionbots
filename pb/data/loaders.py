@@ -49,7 +49,11 @@ class HistoryEvents:
 # Recorded parquet
 # ----------------------------------------------------------------------------
 def _read_rows(path: str | Path, columns: Optional[list[str]] = None) -> list[dict]:
-    t = pq.read_table(str(path), columns=columns)
+    try:
+        t = pq.read_table(str(path), columns=columns)
+    except Exception as e:  # a truncated file from a killed recorder run; skip, don't abort the replay
+        log.warning("skipping unreadable parquet %s: %s", path, e)
+        return []
     return t.to_pylist()
 
 

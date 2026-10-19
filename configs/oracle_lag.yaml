@@ -1,0 +1,23 @@
+# ORACLE-LAG v4 (15_Min_BTC_Automation.docx + Pine "Alpha Engine v4"): taker on the signalled
+# side at minute 10-13:45 of a 15-min BTC window when spot and the 15-min TWAP both sit
+# $20 past the window-open anchor; $300 IOC capped at 0.85, resting sell at 0.88.
+# Backtest on recorded books (reports/oracle_lag_backtest.md): expected to lose.
+oracle_lag:
+  size_usd: 300
+  buffer: 20
+  chop_band: 10
+  entry_from: 600
+  entry_to: 825
+  kill_secs: 45
+  cap: 0.85
+  ceasefire: 0.93
+  target: 0.88
+  twap: pine
+  anchor: spot
+  atr_guard: true
+  atr_mult: 2.5
+  v4_veto: true
+  depth_frac: 1.0
+grid:
+  chop_band: [10, 25]
+  cap: [0.85, 0.95]

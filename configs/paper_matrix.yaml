@@ -112,3 +112,25 @@ runs:
       moneylines, quoted pregame around sharp_prob. Maker pays zero on Novig; pregame fills are free
       for both sides, live taker c=0.06 (2026-10-15). Every GOLIVE voids resting orders, so
       pull_before_close (close_ts = kickoff) matters. Needs a Novig trading key for the signed WS.
+
+  - name: oracle_lag_poly_btc15m
+    strategy: oracle_lag
+    venue: polymarket
+    select: {poly_crypto_15m: true, top: 2}
+    params: configs/oracle_lag.yaml
+    signals: coinbase
+    max_position: 400
+    max_capital_per_market: 400
+    daily_loss_limit: 300
+    note: ORACLE-LAG v4 (user's docx/Pine rule) on Polymarket btc-updown-15m, $300 IOC at <=0.85 then rest a sell at 0.88. Expected to lose (reports/oracle_lag_backtest.md).
+
+  - name: oracle_lag_kxbtc15m
+    strategy: oracle_lag
+    venue: kalshi
+    select: {kalshi_series: [KXBTC15M], top: 2}
+    params: configs/oracle_lag.yaml
+    signals: coinbase
+    max_position: 400
+    max_capital_per_market: 400
+    daily_loss_limit: 300
+    note: Same rule on Kalshi KXBTC15M (taker fee 7c*p*(1-p)).

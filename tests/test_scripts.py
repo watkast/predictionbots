@@ -81,7 +81,7 @@ def test_paper_matrix_commands_and_env_gating(monkeypatch):
     m = pm.load_matrix(ROOT / "configs" / "paper_matrix.yaml")
     names = [r["name"] for r in m["runs"]]
     assert "mm_crypto_twap_kxbtc15m" in names and "sharp_line_maker_kxnflgame" in names
-    assert len(names) == len(set(names)) == 11
+    assert len(names) == len(set(names)) == 13
     from pb.live.paper import _import_all_strategies
     from pb.strategies.base import REGISTRY
 
