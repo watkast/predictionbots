@@ -1,0 +1,27 @@
+  /v1/market/slug/cpc-btc-updown-15m-2026-10-15-1145z None -> 404 {"code":5,"message":"The server was unable to process your request.","details":[]}
+  /v1/market/slug/cpc-btc-updown-15m-2026-10-15-1130z None -> 404 {"code":5,"message":"The server was unable to process your request.","details":[]}
+  /v1/market/slug/cpc-btc-updown-15m-2026-10-15-1115z None -> 404 {"code":5,"message":"The server was unable to process your request.","details":[]}
+  slug walk: 957 markets fetched
+  price history: 50 so far
+  price history: 100 so far
+  price history: 150 so far
+  price history: 200 so far
+  price history: 250 so far
+  price history: 300 so far
+  price history: 350 so far
+  price history: 400 so far
+  price history: 450 so far
+  price history: 500 so far
+  price history: 550 so far
+  price history: 600 so far
+  price history: 650 so far
+  price history: 700 so far
+  price history: 750 so far
+  price history: 800 so far
+  price history: 850 so far
+  price history: 900 so far
+  price history: 950 so far
+markets: 957 fetched, 957 total
+price history: 957 markets fetched
+BRTI 1m candles: 4576
+BRTI 1s candles: 3786
