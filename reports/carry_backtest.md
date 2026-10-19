@@ -1,6 +1,6 @@
 # Carry backtest (long spot + short perp)
 
-generated 2026-10-18T08:07:09.839497+00:00  synthetic=False
+generated 2026-10-19T08:59:08.366054+00:00  synthetic=False
 
 Funding/candles are **Binance proxies** for the US perps (Coinbase `BIP-20DEC30-CDE`, Kraken Derivatives US `PBTCUC`); fees from `pb/carry/venues.py`. `oos<year>` rows pick thresholds on the prior year and score the named year; they are the ones that count.
 
