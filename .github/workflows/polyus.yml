@@ -1,0 +1,57 @@
+# Polymarket US public data (15-min BTC up/down markets, 1-min Yes/No price history, BRTI
+# index candles) -> `data` branch under polyus/. Public endpoints, no key. Hourly so the
+# 1-second BRTI window (last hour only) is never lost.
+name: polyus
+on:
+  schedule:
+    - cron: "7 * * * *"
+  workflow_dispatch:
+    inputs:
+      days:
+        description: "BRTI 1-minute backfill in days"
+        default: "14"
+
+permissions:
+  contents: write
+
+concurrency:
+  group: polyus-${{ github.ref }}
+  cancel-in-progress: false
+
+jobs:
+  fetch:
+    runs-on: ubuntu-latest
+    timeout-minutes: 50
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with: { python-version: "3.13" }
+      - run: pip install httpx
+      - name: Pull existing polyus data
+        run: |
+          git fetch origin data || true
+          mkdir -p data
+          if git rev-parse --verify origin/data >/dev/null 2>&1; then
+            git worktree add ../datawt origin/data
+            [ -d ../datawt/polyus ] && cp -r ../datawt/polyus data/ || true
+          else
+            git worktree add --orphan -b data ../datawt
+          fi
+      - name: Fetch
+        run: python scripts/polyus_fetch.py --out data/polyus --days "${{ github.event.inputs.days || '14' }}" 2>&1 | tail -50
+      - name: Publish to data branch
+        if: always()
+        run: |
+          set -e
+          git config user.name "predictionbots-polyus"
+          git config user.email "bots@users.noreply.github.com"
+          mkdir -p ../datawt/polyus
+          cp -r data/polyus/. ../datawt/polyus/
+          cd ../datawt
+          git add -A
+          git commit -qm "polyus $(date -u +%FT%TZ)" || exit 0
+          for i in 1 2 3 4 5; do
+            git push origin HEAD:data && break
+            git fetch origin data && git rebase origin/data || git rebase --abort
+            sleep $((RANDOM % 20 + 5))
+          done
