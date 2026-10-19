@@ -51,41 +51,36 @@ def is_btc_15m(m: dict) -> bool:
     return (sym == "btc" or "btc" in slug) and (hz in ("15m", "horizon_15m", "asset_price_horizon_15m") or "15m" in slug)
 
 
-def fetch_markets(client: httpx.Client, max_pages: int = 40) -> list[dict]:
-    out: dict[str, dict] = {}
-    seen_any = False
-    for closed in (False, True):
-        for page in range(max_pages):
-            params = {"limit": 500, "offset": page * 500, "closed": str(closed).lower(), "includeHidden": "true",
-                      "marketTypes": "ASSET_PRICE_MARKET_TYPE_UP_DOWN"}
-            j = get(client, "/v1/markets", params)
-            if not j:
-                # the marketTypes filter may not be accepted; fall back to an unfiltered scan
-                params.pop("marketTypes")
-                j = get(client, "/v1/markets", params)
-            ms = (j or {}).get("markets") or []
-            print(f"  markets closed={closed} page={page}: {len(ms)} rows, {sum(is_btc_15m(m) for m in ms)} btc15m",
-                  file=sys.stderr)
-            if not ms or time.time() > DEADLINE[0]:
+def slug_for(ts: int) -> str:
+    from datetime import datetime, timezone
+    d = datetime.fromtimestamp(ts, timezone.utc)
+    return f"cpc-btc-updown-15m-{d:%Y-%m-%d-%H%M}z"
+
+
+def fetch_markets(client: httpx.Client, days: float, known: dict) -> list[dict]:
+    """Walk the deterministic slugs (window start, UTC) back `days`; 404 = never listed."""
+    now = int(time.time())
+    t = now - (now % 900)
+    out = []
+    misses = 0
+    while t > now - days * 86400 and time.time() < DEADLINE[0]:
+        slug = slug_for(t)
+        t -= 900
+        if slug in known and (known[slug].get("assetPriceTerms") or {}).get("settlementPrice"):
+            continue  # resolved and stored
+        j = get(client, f"/v1/market/slug/{slug}")
+        m = (j or {}).get("market") or j
+        if not m or not isinstance(m, dict) or not m.get("slug"):
+            misses += 1
+            if misses > 12:
+                print(f"  12 consecutive unlisted windows before {slug}; stopping", file=sys.stderr)
                 break
-            seen_any = True
-            for m in ms:
-                if is_btc_15m(m):
-                    out[str(m.get("slug") or m.get("id"))] = m
-            if len(ms) < 500:
-                break
-    if not seen_any:
-        print("markets endpoint returned nothing", file=sys.stderr)
-    # also try the event-series route in case the market scan is capped
-    for path in ("/v1/events/slug/btc-updown-15m", "/v1/events?slug=btc-updown-15m"):
-        j = get(client, path)
-        if isinstance(j, dict):
-            evs = j.get("events") or ([j.get("event")] if j.get("event") else [j])
-            for ev in evs:
-                for m in (ev or {}).get("markets") or []:
-                    if is_btc_15m(m):
-                        out.setdefault(str(m.get("slug") or m.get("id")), m)
-    return list(out.values())
+            continue
+        misses = 0
+        out.append(m)
+        time.sleep(0.1)
+    print(f"  slug walk: {len(out)} markets fetched", file=sys.stderr)
+    return out
 
 
 def window(m: dict) -> tuple[float | None, float | None]:
@@ -113,14 +108,11 @@ def main() -> int:
     out.mkdir(parents=True, exist_ok=True)
     client = httpx.Client(headers={"User-Agent": "predictionbots/0.1 (paper research)"})
     DEADLINE[0] = time.time() + a.budget_min * 60
-    # a probe so the log shows the raw shape of one market
-    probe = get(client, "/v1/markets", {"limit": 2, "marketTypes": "ASSET_PRICE_MARKET_TYPE_UP_DOWN"})
-    print("probe:", json.dumps(probe)[:1500], file=sys.stderr)
 
     # 1. markets
     mk_path = out / "markets.json"
     markets = {m["slug"]: m for m in json.loads(mk_path.read_text())} if mk_path.exists() else {}
-    fresh = fetch_markets(client)
+    fresh = fetch_markets(client, a.days, markets)
     for m in fresh:
         markets[str(m.get("slug") or m.get("id"))] = m
     mk_path.write_text(json.dumps(list(markets.values())))
@@ -144,8 +136,6 @@ def main() -> int:
             print(f"  price history: {n} so far", file=sys.stderr)
         j = get(client, "/v1/price-history", {"symbol": slug, "timestamp.startTimestamp": int(ws) - 120,
                                               "timestamp.endTimestamp": int(min(we + 60, now)), "fidelity": 1})
-        if j is None:
-            j = get(client, "/v1/price-history", {"symbol": slug, "fixedInterval": "INTERVAL_6H", "fidelity": 1})
         if j is not None:
             f.write_text(json.dumps({"slug": slug, "windowStart": ws, "windowEnd": we,
                                      "priceToBeat": (m.get("assetPriceTerms") or {}).get("priceToBeat"),
@@ -162,15 +152,17 @@ def main() -> int:
     if cand:
         start = max(start, max(cand) - 3600)
     t0 = start
-    while t0 < now and time.time() < DEADLINE[0]:
+    while t0 < int(now) - 60 and time.time() < DEADLINE[0]:
         t1 = min(int(now), t0 + 3600 * 60)
+        if t1 <= t0:
+            break
         j = get(client, "/v1/asset-prices/history", [("assets", "crypto:btc"), ("from", t0), ("to", t1),
                                                      ("bucket", "ASSET_PRICE_BUCKET_1M")])
         for s in (j or {}).get("series") or []:
             for c in s.get("candles") or []:
                 if c.get("tickCount", 1) != 0:
                     cand[int(c["timestamp"])] = c
-        t0 = t1
+        t0 = max(t1, t0 + 60)
         time.sleep(0.2)
     br_path.write_text(json.dumps([cand[k] for k in sorted(cand)]))
     print(f"BRTI 1m candles: {len(cand)}")
