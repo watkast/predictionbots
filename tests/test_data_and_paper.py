@@ -312,8 +312,12 @@ def test_build_strategy_from_registry_and_yaml(tmp_path):
     from pb.live.paper import _import_all_strategies
     from pb.strategies.base import REGISTRY
 
+    import dataclasses
     _import_all_strategies()
-    name = next(iter(REGISTRY))
+    # any registered strategy whose params dataclass has a `size` field (registry order
+    # depends on test-collection import order, so don't rely on the first entry)
+    name = next(n for n, c in REGISTRY.items()
+                if any(f.name == "size" for f in dataclasses.fields(build_strategy(n, {}, ["M"]).p)))
     s = build_strategy(name, {}, ["M"])
     assert isinstance(s, Strategy)
     with pytest.raises(KeyError):
