@@ -38,7 +38,10 @@ jobs:
             git worktree add --orphan -b data ../datawt
           fi
       - name: Fetch
-        run: python scripts/polyus_fetch.py --out data/polyus --days "${{ github.event.inputs.days || '14' }}" 2>&1 | tail -50
+        run: |
+          mkdir -p data/polyus
+          python scripts/polyus_fetch.py --out data/polyus --days "${{ github.event.inputs.days || '14' }}" \
+            --budget-min 35 2>&1 | tee "data/polyus/fetch-$(date -u +%Y%m%dT%H%M).log" | tail -60
       - name: Publish to data branch
         if: always()
         run: |

@@ -20,8 +20,13 @@ import httpx
 BASE = "https://gateway.polymarket.us"
 
 
-def get(client: httpx.Client, path: str, params=None, tries: int = 4):
+DEADLINE = [float("inf")]
+
+
+def get(client: httpx.Client, path: str, params=None, tries: int = 3):
     for i in range(tries):
+        if time.time() > DEADLINE[0]:
+            return None
         try:
             r = client.get(BASE + path, params=params, timeout=30)
             if r.status_code == 200:
@@ -29,7 +34,7 @@ def get(client: httpx.Client, path: str, params=None, tries: int = 4):
             if r.status_code in (404, 400):
                 print(f"  {path} {params} -> {r.status_code} {r.text[:200]}", file=sys.stderr)
                 return None
-            print(f"  {path} -> {r.status_code}, retry", file=sys.stderr)
+            print(f"  {path} -> {r.status_code} {r.text[:120]}, retry", file=sys.stderr)
         except Exception as e:  # network blip
             print(f"  {path} -> {e!r}, retry", file=sys.stderr)
         time.sleep(1.5 * (i + 1))
@@ -59,7 +64,9 @@ def fetch_markets(client: httpx.Client, max_pages: int = 40) -> list[dict]:
                 params.pop("marketTypes")
                 j = get(client, "/v1/markets", params)
             ms = (j or {}).get("markets") or []
-            if not ms:
+            print(f"  markets closed={closed} page={page}: {len(ms)} rows, {sum(is_btc_15m(m) for m in ms)} btc15m",
+                  file=sys.stderr)
+            if not ms or time.time() > DEADLINE[0]:
                 break
             seen_any = True
             for m in ms:
@@ -100,10 +107,15 @@ def main() -> int:
     ap.add_argument("--out", default="data/polyus")
     ap.add_argument("--days", type=float, default=14.0, help="BRTI 1-minute history to backfill (<= 60 h per call)")
     ap.add_argument("--max-history", type=int, default=3000, help="max markets to pull price history for per run")
+    ap.add_argument("--budget-min", type=float, default=35.0, help="stop issuing requests after this many minutes")
     a = ap.parse_args()
     out = Path(a.out)
     out.mkdir(parents=True, exist_ok=True)
     client = httpx.Client(headers={"User-Agent": "predictionbots/0.1 (paper research)"})
+    DEADLINE[0] = time.time() + a.budget_min * 60
+    # a probe so the log shows the raw shape of one market
+    probe = get(client, "/v1/markets", {"limit": 2, "marketTypes": "ASSET_PRICE_MARKET_TYPE_UP_DOWN"})
+    print("probe:", json.dumps(probe)[:1500], file=sys.stderr)
 
     # 1. markets
     mk_path = out / "markets.json"
@@ -126,8 +138,10 @@ def main() -> int:
         f = ph_dir / f"{slug}.json"
         if f.exists() and we < now - 120:
             continue  # closed and already stored
-        if n >= a.max_history:
+        if n >= a.max_history or time.time() > DEADLINE[0]:
             break
+        if n and n % 50 == 0:
+            print(f"  price history: {n} so far", file=sys.stderr)
         j = get(client, "/v1/price-history", {"symbol": slug, "timestamp.startTimestamp": int(ws) - 120,
                                               "timestamp.endTimestamp": int(min(we + 60, now)), "fidelity": 1})
         if j is None:
@@ -148,7 +162,7 @@ def main() -> int:
     if cand:
         start = max(start, max(cand) - 3600)
     t0 = start
-    while t0 < now:
+    while t0 < now and time.time() < DEADLINE[0]:
         t1 = min(int(now), t0 + 3600 * 60)
         j = get(client, "/v1/asset-prices/history", [("assets", "crypto:btc"), ("from", t0), ("to", t1),
                                                      ("bucket", "ASSET_PRICE_BUCKET_1M")])
