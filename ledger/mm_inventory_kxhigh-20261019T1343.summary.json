@@ -1,0 +1,157 @@
+{
+  "net_pnl": 3.4807,
+  "gross_pnl": 3.4807,
+  "fees": 0.0,
+  "fills": 15,
+  "maker_fills": 15,
+  "taker_fills": 0,
+  "contracts_traded": 83.86,
+  "max_drawdown": 1.7738,
+  "max_capital_at_risk": 31.15,
+  "markets_traded": 7,
+  "market_win_rate": 0.143,
+  "sharpe_like": 1.09,
+  "net_pnl_on_max_capital": 0.1117,
+  "maker_pct": 100.0,
+  "reality": {
+    "cross_assumed_fill_frac": 0.2,
+    "cross_assumed_fills": 3,
+    "maker_frac": 1.0,
+    "max_fill_to_touch_depth": 2.5,
+    "top3_market_pnl_frac": 1.0,
+    "pnl_per_contract": 0.04151
+  },
+  "run_id": "mm_inventory_kxhigh-20261019T1343",
+  "started_at": 1792417430.632766,
+  "updated_at": 1792437430.7360709,
+  "uptime_secs": 20000.1,
+  "open_orders": 0,
+  "positions": {
+    "KXHIGHNY-26OCT19-B64.5": {
+      "contracts": -10.0,
+      "avg_price": 0.11,
+      "realized": 0.0,
+      "fees": 0.0
+    },
+    "KXHIGHNY-26OCT19-B60.5": {
+      "contracts": -14.0,
+      "avg_price": 0.355,
+      "realized": 0.0,
+      "fees": 0.0
+    },
+    "KXHIGHCHI-26OCT19-B69.5": {
+      "contracts": -6.275,
+      "avg_price": 0.16,
+      "realized": 0.0,
+      "fees": 0.0
+    },
+    "KXHIGHCHI-26OCT19-B67.5": {
+      "contracts": -10.0,
+      "avg_price": 0.58,
+      "realized": 0.0,
+      "fees": 0.0
+    },
+    "KXHIGHMIA-26OCT19-B87.5": {
+      "contracts": -2.58,
+      "avg_price": 0.36,
+      "realized": 0.2,
+      "fees": 0.0
+    },
+    "KXHIGHCHI-26OCT19-B65.5": {
+      "contracts": 0.0,
+      "avg_price": 0.0,
+      "realized": -0.0,
+      "fees": 0.0
+    },
+    "KXHIGHMIA-26OCT19-B85.5": {
+      "contracts": -1.0,
+      "avg_price": 0.68,
+      "realized": 0.0,
+      "fees": 0.0
+    }
+  },
+  "markets": [
+    "KXHIGHNY-26OCT19-B64.5",
+    "KXHIGHNY-26OCT19-B66.5",
+    "KXHIGHNY-26OCT19-B60.5",
+    "KXHIGHMIA-26OCT19-B87.5",
+    "KXHIGHMIA-26OCT19-B83.5",
+    "KXHIGHMIA-26OCT19-B85.5",
+    "KXHIGHCHI-26OCT19-B69.5",
+    "KXHIGHCHI-26OCT19-B65.5",
+    "KXHIGHCHI-26OCT19-B67.5"
+  ],
+  "active_markets": [
+    "KXHIGHNY-26OCT19-B64.5",
+    "KXHIGHNY-26OCT19-B66.5",
+    "KXHIGHNY-26OCT19-B60.5",
+    "KXHIGHMIA-26OCT19-B87.5",
+    "KXHIGHMIA-26OCT19-B83.5",
+    "KXHIGHMIA-26OCT19-B85.5",
+    "KXHIGHCHI-26OCT19-B69.5",
+    "KXHIGHCHI-26OCT19-B65.5",
+    "KXHIGHCHI-26OCT19-B67.5"
+  ],
+  "rolls": 331,
+  "last_roll": {
+    "ts": 1792437381.7550528,
+    "selected": 9,
+    "added": [],
+    "dropped": [],
+    "error": ""
+  },
+  "last_event_age": {
+    "KXHIGHNY-26OCT19-B64.5": 1.9,
+    "KXHIGHNY-26OCT19-B66.5": 1.9,
+    "KXHIGHNY-26OCT19-B60.5": 1.9,
+    "KXHIGHMIA-26OCT19-B87.5": 1.8,
+    "KXHIGHMIA-26OCT19-B83.5": 1.8,
+    "KXHIGHMIA-26OCT19-B85.5": 1.8,
+    "KXHIGHCHI-26OCT19-B69.5": 1.8,
+    "KXHIGHCHI-26OCT19-B65.5": 1.8,
+    "KXHIGHCHI-26OCT19-B67.5": 1.8
+  },
+  "risk": {
+    "halted": false,
+    "halt_reason": "",
+    "halted_at": 0.0,
+    "stale": false,
+    "kill_file": "data/KILL",
+    "kill_file_present": false,
+    "pnl_today": 2.8294,
+    "daily_loss_limit": 50.0,
+    "capital_in_use": 29.37,
+    "capital_in_use_by_market": {
+      "KXHIGHNY-26OCT19-B64.5": 8.9,
+      "KXHIGHNY-26OCT19-B60.5": 9.03,
+      "KXHIGHMIA-26OCT19-B87.5": 1.65,
+      "KXHIGHMIA-26OCT19-B85.5": 0.32,
+      "KXHIGHCHI-26OCT19-B69.5": 5.27,
+      "KXHIGHCHI-26OCT19-B67.5": 4.2
+    },
+    "max_capital_total": 2000.0,
+    "max_capital_per_market": 500.0,
+    "orders_last_min": 0,
+    "max_orders_per_min": 120,
+    "accepted": 130,
+    "rejected": 0,
+    "reject_reasons": {},
+    "cancel_all_count": 0,
+    "last_book_age": {
+      "KXHIGHNY-26OCT19-B64.5": 1.9,
+      "KXHIGHNY-26OCT19-B66.5": 1.9,
+      "KXHIGHNY-26OCT19-B60.5": 1.9,
+      "KXHIGHMIA-26OCT19-B87.5": 1.8,
+      "KXHIGHMIA-26OCT19-B83.5": 1.8,
+      "KXHIGHMIA-26OCT19-B85.5": 1.8,
+      "KXHIGHCHI-26OCT19-B69.5": 1.8,
+      "KXHIGHCHI-26OCT19-B65.5": 1.8,
+      "KXHIGHCHI-26OCT19-B67.5": 1.8
+    },
+    "stale_secs": 60.0
+  },
+  "strategies": [
+    "mm_inventory"
+  ],
+  "venue": "kalshi"
+}
