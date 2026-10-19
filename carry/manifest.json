@@ -1,18 +1,16 @@
 {
- "updated_at": "2026-10-18T08:07:09.839126+00:00",
+ "updated_at": "2026-10-19T08:59:08.365693+00:00",
  "files": {
   "funding-binance-BTC": "/home/runner/work/predictionbots/predictionbots/data/carry/funding-binance-BTC.parquet",
   "candles-binance-spot-BTC": "/home/runner/work/predictionbots/predictionbots/data/carry/candles-binance-spot-BTC.parquet",
   "candles-binance-um-BTC": "/home/runner/work/predictionbots/predictionbots/data/carry/candles-binance-um-BTC.parquet",
   "funding-okx-BTC": "/home/runner/work/predictionbots/predictionbots/data/carry/funding-okx-BTC.parquet",
-  "funding-bitnomial-BTC": "/home/runner/work/predictionbots/predictionbots/data/carry/funding-bitnomial-BTC.parquet",
   "candles-coinbase-spot-BTC": "/home/runner/work/predictionbots/predictionbots/data/carry/candles-coinbase-spot-BTC.parquet",
   "candles-coinbase-perp-BTC": "/home/runner/work/predictionbots/predictionbots/data/carry/candles-coinbase-perp-BTC.parquet",
   "funding-binance-ETH": "/home/runner/work/predictionbots/predictionbots/data/carry/funding-binance-ETH.parquet",
   "candles-binance-spot-ETH": "/home/runner/work/predictionbots/predictionbots/data/carry/candles-binance-spot-ETH.parquet",
   "candles-binance-um-ETH": "/home/runner/work/predictionbots/predictionbots/data/carry/candles-binance-um-ETH.parquet",
   "funding-okx-ETH": "/home/runner/work/predictionbots/predictionbots/data/carry/funding-okx-ETH.parquet",
-  "funding-bitnomial-ETH": "/home/runner/work/predictionbots/predictionbots/data/carry/funding-bitnomial-ETH.parquet",
   "candles-coinbase-spot-ETH": "/home/runner/work/predictionbots/predictionbots/data/carry/candles-coinbase-spot-ETH.parquet",
   "candles-coinbase-perp-ETH": "/home/runner/work/predictionbots/predictionbots/data/carry/candles-coinbase-perp-ETH.parquet"
  }
