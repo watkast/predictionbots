@@ -250,6 +250,7 @@ def run(args):
                 if len(hit):
                     exit_ts = float(hit.ts.iloc[0])
                     exit_px = args.target
+            stop_hit = None
             for t2 in later_ts:
                 if exit_ts is not None and t2 >= exit_ts:
                     break
@@ -262,6 +263,17 @@ def run(args):
                 if not np.isnan(bb) and bb >= args.target:
                     exit_ts, exit_px = float(t2), args.target
                     break
+                # discretionary "sell for less": the move is coming back (spot re-enters the chop band
+                # or crosses the anchor) or the side's bid has dropped `stop` below our entry
+                if args.revert_exit or args.stop > 0:
+                    s_now = spot_at(t2)
+                    revert = args.revert_exit and s_now is not None and (
+                        (sig == "UP" and s_now - anchor < args.chop_band) or (sig == "DOWN" and anchor - s_now < args.chop_band))
+                    stopped = args.stop > 0 and not np.isnan(bb) and bb <= avg - args.stop
+                    if (revert or stopped) and not np.isnan(bb) and bb > 0:
+                        exit_ts, exit_px = float(t2), float(bb)
+                        stop_hit = "revert" if revert else "stop"
+                        break
             # settlement
             last = snaps[snap_ts[-1]]
             bid = last[last.side == "bid"].price.max()
@@ -278,7 +290,8 @@ def run(args):
             rec.update(settle_book=settle_book, settle_spot=settle_spot, close_spot=close_spot)
             if exit_px is not None:
                 pnl = filled * (exit_px - avg) - fee
-                rec.update(exit="target", exit_ts=exit_ts, exit_min=round((exit_ts - w.open) / 60, 2), pnl=pnl)
+                rec.update(exit=stop_hit or "target", exit_px=exit_px, exit_ts=exit_ts,
+                           exit_min=round((exit_ts - w.open) / 60, 2), pnl=pnl)
             elif settle is not None:
                 pay = filled * (1.0 if settle == sig else 0.0)
                 rec.update(exit="settle", won=(settle == sig), pnl=pay - cost - fee)
@@ -297,9 +310,10 @@ def run(args):
     if len(ent):
         for v, g in ent.groupby("venue"):
             tgt = (g.exit == "target").sum()
+            early = g[g.exit.isin(["revert", "stop"])]
             st = g[g.exit == "settle"]
             print(f"[{v}] entries {len(g)}  avg entry {g.entry_px.mean():.3f}  hit 0.88 target: {tgt}  "
-                  f"settled: {len(st)} (won {int(st.won.sum()) if len(st) else 0})  "
+                  f"settled: {len(st)} (won {int(st.won.sum()) if len(st) else 0})  early exits: {len(early)} (${early.pnl.sum():.2f})  "
                   f"net pnl ${g.pnl.sum():.2f}  per trade ${g.pnl.mean():.2f}  fees ${g.fee.sum():.2f}")
         # signal accuracy regardless of entry
     sg = df[df.signal.notna() & df.settle_spot.notna()] if "settle_spot" in df else df.iloc[0:0]
@@ -335,6 +349,8 @@ if __name__ == "__main__":
     ap.add_argument("--retry-until-cap", type=int, default=1,
                     help="keep evaluating later seconds of the window if the ask is above the cap")
     ap.add_argument("--max-spot-age", type=float, default=30.0)
+    ap.add_argument("--stop", type=float, default=0.0, help="exit at the bid once it is this far below entry (0 = off)")
+    ap.add_argument("--revert-exit", type=int, default=0, help="exit at the bid when spot comes back inside the chop band")
     ap.add_argument("--v4", type=int, default=1, help="apply the v4 'Reversal expected soon' veto")
     ap.add_argument("--out", default="")
     run(ap.parse_args())
