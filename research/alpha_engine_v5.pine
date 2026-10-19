@@ -17,7 +17,7 @@ anchorAdj  = input.float(0.0, "Anchor offset ($) - set to Polymarket target minu
 
 grpF   = "Filters"
 atrLen     = input.int(14, "ATR length", group=grpF)
-atrMult    = input.float(2.5, "Abort if ATR > x | ATR avg(100)", step=0.1, group=grpF)
+atrMult    = input.float(2.5, "Abort if ATR > x * ATR avg(100)", step=0.1, group=grpF)
 vetoRed    = input.bool(true,  "Veto on 'Reversal expected soon'", group=grpF)
 vetoYellow = input.bool(false, "Veto on 'Possible reversal'", group=grpF)
 slopeBars  = input.int(3, "Slope lookback (bars)", minval=1, group=grpF)
@@ -87,7 +87,7 @@ if not na(anchor) and not na(twap[slopeBars])
         riskLvl := 0
 
 // ===== 5. Fair value (what the contract is actually worth) =====
-// Settlement is close-vs-open, not TWAP. P(up at close) ~ Phi( dev / (sigma|sqrtminutes left) ) with sigma = realised
+// Settlement is close-vs-open, not TWAP. P(up at close) ~ Phi( dev / (sigma*sqrt(minutes left)) ) with sigma = realised
 // 1-min $-volatility. The last 60 s are averaged, so the effective horizon is minutes left minus 0.5.
 r1       = math.log(close / close[1])
 sigmaPct = ta.stdev(r1, volLen)
@@ -116,41 +116,33 @@ int    sig = 0      // +1 up, -1 down
 if not na(anchor)
     if volDanger
         cmd := "ABORT - volatility lock"
-        cmdCol := color.new(color.maroon
-        10)
+        cmdCol := color.new(color.maroon, 10)
     else if lateKill
         cmd := "ROUND CLOSING - no new buys"
-        cmdCol := color.new(color.purple
-        20)
+        cmdCol := color.new(color.purple, 20)
     else if minsElapsed < entryFrom
         cmd := "ACCUMULATING - " + str.tostring(math.ceil(entryFrom * 60 - secsElapsed)) + "s to window"
         cmdCol := color.new(color.gray, 20)
     else if not inWindow
         cmd := "WINDOW CLOSED - pause"
-        cmdCol := color.new(color.purple
-        20)
+        cmdCol := color.new(color.purple, 20)
     else if inChop
         cmd := "CHOP - too close to anchor"
-        cmdCol := color.new(color.orange
-        15)
+        cmdCol := color.new(color.orange, 15)
     else if vetoed
         cmd := "STAND DOWN - reversal risk"
-        cmdCol := color.new(color.orange
-        15)
+        cmdCol := color.new(color.orange, 15)
     else if rawUp
-        cmd := "BUY UP NOW UP"
-        cmdCol := color.new(color.green
-        10)
+        cmd := "BUY UP NOW"
+        cmdCol := color.new(color.green, 10)
         sig := 1
     else if rawDown
-        cmd := "BUY DOWN NOW DN"
-        cmdCol := color.new(color.red
-        10)
+        cmd := "BUY DOWN NOW"
+        cmdCol := color.new(color.red, 10)
         sig := -1
     else
         cmd := "NO EDGE - stay out"
-        cmdCol := color.new(color.orange
-        15)
+        cmdCol := color.new(color.orange, 15)
 
 // price guide for the signalled side
 pSide    = sig > 0 ? pUp : sig < 0 ? pDown : na
