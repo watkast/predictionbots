@@ -120,17 +120,22 @@ jobs:
             sleep $((RANDOM % 20 + 5))
           done
       - name: Regenerate reports on main
+        shell: bash {0}
         run: |
-          mkdir -p data/ledger
+          set +e
+          LOG=../datawt/logs/publish-$(date -u +%Y%m%dT%H%M%S).log
+          mkdir -p data/ledger ../datawt/logs
           cp -r ../datawt/ledger/. data/ledger/ 2>/dev/null || true
-          python scripts/report.py 2>&1 | tee ../datawt/logs/publish-$(date -u +%Y%m%dT%H%M).log
-          python scripts/dashboard.py 2>&1 | tee -a ../datawt/logs/publish-$(date -u +%Y%m%dT%H%M).log
-          (cd ../datawt && git add -A && (git commit -qm "publish log" || true) && git push origin HEAD:data || true)
-          git add reports
-          git -c user.name=predictionbots-paper -c user.email=bots@users.noreply.github.com \
-            commit -qm "reports: paper update $(date -u +%FT%TZ)" || exit 0
-          for i in 1 2 3 4 5; do
-            git push origin HEAD:main && break
-            git fetch origin main && git rebase origin/main || git rebase --abort
-            sleep $((RANDOM % 20 + 5))
-          done
+          {
+            python scripts/report.py && python scripts/dashboard.py
+            git add reports
+            git -c user.name=predictionbots-paper -c user.email=bots@users.noreply.github.com \
+              commit -qm "reports: paper update $(date -u +%FT%TZ)" || echo "nothing to commit"
+            for i in 1 2 3 4 5; do
+              git push origin HEAD:main && { echo "pushed main"; break; }
+              git fetch origin main && git rebase origin/main || git rebase --abort
+              sleep $((RANDOM % 20 + 5))
+            done
+          } > "$LOG" 2>&1
+          cat "$LOG"
+          (cd ../datawt && git add -A && (git commit -qm "publish log" || true) && git push origin HEAD:data) || true

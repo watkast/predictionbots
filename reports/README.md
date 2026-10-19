@@ -1,22 +1,22 @@
 # Results
 
-Updated 2026-10-17 23:47 UTC. All numbers are PAPER (simulated fills against live books; no fantasy fills: takers only eat resting size, makers only fill on prints through / at the price after queue, or on adverse crossings). Positive pnl here is necessary, not sufficient.
+Updated 2026-10-19 11:16 UTC. All numbers are PAPER (simulated fills against live books; no fantasy fills: takers only eat resting size, makers only fill on prints through / at the price after queue, or on adverse crossings). Positive pnl here is necessary, not sufficient.
 
 ## Paper leaderboard
 
 | run | strategy | venue | net pnl $ | ret / max cap | max cap $ | fills | maker % | days | hours | flags |
 |---|---|---|---:|---:|---:|---:|---:|---:|---:|---|
-| endgame_bond_kalshi | endgame_bond | kalshi | 0.00 | 0.0% | 0.00 | 0 | 0 | 2 | 33.3 | - |
-| favorite_maker_kalshi_scan | favorite_maker | kalshi | 0.00 | 0.0% | 0.00 | 0 | 0 | 2 | 33.3 | - |
+| endgame_bond_kalshi | endgame_bond | kalshi | 0.00 | 0.0% | 0.00 | 0 | 0 | 3 | 38.9 | - |
+| favorite_maker_kalshi_scan | favorite_maker | kalshi | 0.00 | 0.0% | 0.00 | 0 | 0 | 3 | 38.9 | risk-rejected > accepted |
 | taker_momentum_kxbtc15m | taker_momentum | kalshi | 0.00 | 0.0% | 0.00 | 0 | 0 | 2 | 27.8 | - |
-| mm_weather_ladder_kxhighny | mm_weather_ladder | kalshi | -13.72 | -38.0% | 36.05 | 58 | 100 | 2 | 33.3 | - |
-| mm_inventory_kxhigh | mm_inventory | kalshi | -21.19 | -7.0% | 301.73 | 957 | 100 | 2 | 33.3 | fill>touch 5.0; top3 concentrated |
+| mm_weather_ladder_kxhighny | mm_weather_ladder | kalshi | -16.36 | -45.4% | 36.05 | 71 | 100 | 3 | 38.9 | fill>touch 3.333 |
+| mm_inventory_kxhigh | mm_inventory | kalshi | -18.67 | -6.2% | 301.73 | 972 | 100 | 3 | 38.9 | - |
 | mm_crypto_twap_kxbtc15m | mm_crypto_twap | kalshi | -40.70 | -99.0% | 41.10 | 48 | 100 | 1 | 11.1 | top3 concentrated |
 | taker_lag_kxbtc15m | taker_lag | kalshi | -58.96 | -322.5% | 18.28 | 686 | 0 | 1 | 11.1 | fill>touch 49.0; top3 concentrated; HALTED daily_loss -50.09 < -50.00; risk-rejected > accepted |
-| complete_set_arb_polymarket | complete_set_arb | polymarket | -77.48 | -36.3% | 213.32 | 20 | 0 | 2 | 33.3 | risk-rejected > accepted |
-| mm_inventory_poly_crypto15m | mm_inventory | polymarket | -87.86 | -195.0% | 45.05 | 241 | 100 | 1 | 11.1 | cross-assumed 100%; fill>touch 1.429; HALTED daily_loss -50.06 < -50.00; risk-rejected > accepted |
+| complete_set_arb_polymarket | complete_set_arb | polymarket | -77.48 | -36.3% | 213.32 | 20 | 0 | 3 | 38.9 | - |
+| mm_inventory_poly_crypto15m | mm_inventory | polymarket | -140.77 | -312.5% | 45.05 | 320 | 100 | 2 | 16.7 | cross-assumed 100%; fill>touch 1.429; HALTED daily_loss -50.30 < -50.00; risk-rejected > accepted |
 
-Per-day equity: `reports/equity_daily.csv` (8 run-days). `ret / max cap` = net pnl over the peak collateral locked. `flags` come from the simulator's reality checks (cross-assumed fills = maker fills inferred from the book crossing us without a print; fill>touch = a fill larger than the resting size at the touch; top3 = pnl concentrated in 3 markets) and from the RiskManager (HALTED = daily-loss / kill file).
+Per-day equity: `reports/equity_daily.csv` (11 run-days). `ret / max cap` = net pnl over the peak collateral locked. `flags` come from the simulator's reality checks (cross-assumed fills = maker fills inferred from the book crossing us without a print; fill>touch = a fill larger than the resting size at the touch; top3 = pnl concentrated in 3 markets) and from the RiskManager (HALTED = daily-loss / kill file).
 
 ### Voided runs
 
