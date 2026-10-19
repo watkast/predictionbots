@@ -72,8 +72,7 @@ if not na(anchor) and not na(twap[slopeBars])
         riskCol := color.orange
         riskLvl := 3
     else if (twapSlope > 0 and priceSlope > 0 and close > twap) or (twapSlope < 0 and priceSlope < 0 and close < twap)
-        risk := "Clean run
-        no reversal expected"
+        risk := "Clean run, no reversal expected"
         riskCol := color.green
         riskLvl := 0
     else if (twapSlope > 0 and priceSlope < 0 and close > twap) or (twapSlope < 0 and priceSlope > 0 and close < twap)
