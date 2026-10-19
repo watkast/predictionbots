@@ -168,15 +168,22 @@ posOf(s) =>
 txtSize = hudSize == "Small" ? size.small : hudSize == "Large" ? size.large : size.normal
 var table hud = table.new(posOf(hudPos), 1, 6, bgcolor=color.new(color.black, 15), border_width=1, border_color=color.new(color.white, 80))
 if barstate.islast
-    mm = str.tostring(math.floor(secsLeft / 60), "0")
-    ss = str.tostring(math.floor(secsLeft % 60), "00")
-    table.cell(hud, 0, 0, cmd, bgcolor=cmdCol, text_color=color.white, text_size=txtSize)
-    table.cell(hud, 0, 1, "T " + mm + ":" + ss + " left  |  min " + str.tostring(minsElapsed, "0.0") + "/" + str.tostring(roundMin), text_color=color.yellow, text_size=txtSize)
-    table.cell(hud, 0, 2, (dev >= 0 ? "UP +" : "DN ") + str.tostring(dev, "0") + " vs anchor " + str.tostring(anchor, "#,###.00"), text_color=dev >= 0 ? color.lime : color.red, text_size=txtSize)
-    table.cell(hud, 0, 3, risk, bgcolor=color.new(riskCol, 60), text_color=color.white, text_size=txtSize)
-    guide = na(pSide) ? "Fair: Up " + str.tostring(math.round(pUp * 100)) + "c / Down " + str.tostring(math.round(pDown * 100)) + "c" : "Fair " + str.tostring(fairC) + "c | pay <= " + str.tostring(math.round(maxAsk * 100)) + "c -> edge " + (edgeAtMax >= 0 ? "+" : "") + str.tostring(edgeAtMax) + "c"
-    table.cell(hud, 0, 4, guide, text_color=na(pSide) ? color.silver : edgeAtMax >= 5 ? color.lime : edgeAtMax >= 0 ? color.yellow : color.red, text_size=txtSize)
-    table.cell(hud, 0, 5, (volDanger ? "!! VOL DANGEROUS" : "OK vol stable") + "  |  sigma " + str.tostring(sigmaUsd, "0") + "$/min", text_color=volDanger ? color.red : color.green, text_size=size.small)
+    int mLeft = int(math.floor(secsLeft / 60.0))
+    int sLeft = int(math.floor(secsLeft - mLeft * 60.0))
+    string clockTxt = "T " + str.tostring(mLeft) + ":" + (sLeft < 10 ? "0" : "") + str.tostring(sLeft) + " left  |  min " + str.tostring(minsElapsed, "0.0") + "/" + str.tostring(roundMin)
+    string devTxt = (dev >= 0 ? "UP +" : "DN ") + str.tostring(dev, "0") + " vs anchor " + str.tostring(anchor, "#,###.00")
+    string guideTxt = "Fair: Up " + str.tostring(math.round(pUp * 100)) + "c / Down " + str.tostring(math.round(pDown * 100)) + "c"
+    color guideCol = color.silver
+    if not na(pSide)
+        guideTxt := "Fair " + str.tostring(fairC) + "c | pay <= " + str.tostring(math.round(maxAsk * 100)) + "c -> edge " + (edgeAtMax >= 0 ? "+" : "") + str.tostring(edgeAtMax) + "c"
+        guideCol := edgeAtMax >= 5 ? color.lime : edgeAtMax >= 0 ? color.yellow : color.red
+    string volTxt = (volDanger ? "!! VOL DANGEROUS" : "OK vol stable") + "  |  sigma " + str.tostring(sigmaUsd, "0") + "$/min"
+    table.cell(table_id=hud, column=0, row=0, text=cmd, text_color=color.white, text_size=txtSize, bgcolor=cmdCol)
+    table.cell(table_id=hud, column=0, row=1, text=clockTxt, text_color=color.yellow, text_size=txtSize)
+    table.cell(table_id=hud, column=0, row=2, text=devTxt, text_color=dev >= 0 ? color.lime : color.red, text_size=txtSize)
+    table.cell(table_id=hud, column=0, row=3, text=risk, text_color=color.white, text_size=txtSize, bgcolor=color.new(riskCol, 60))
+    table.cell(table_id=hud, column=0, row=4, text=guideTxt, text_color=guideCol, text_size=txtSize)
+    table.cell(table_id=hud, column=0, row=5, text=volTxt, text_color=volDanger ? color.red : color.green, text_size=size.small)
 
 // ===== 9. Alerts (phone push - no need to watch the chart) =====
 alertcondition(sig == 1 and sig[1] != 1,  "BUY UP",   "Alpha v5: BUY UP - {{ticker}} {{close}}")
