@@ -6,7 +6,7 @@
    "bybit/BTC": "HTTPStatusError(\"Client error '403 Forbidden' for url 'https://api.bybit.com/v5/market/funding/history?category=linear&symbol=BTCUSDT&limit=3'\\nFor more information check: https://developer.mozilla.org/en-US/docs/Web/HTTP/Status/403\")",
    "bybit/ETH": "HTTPStatusError(\"Client error '403 Forbidden' for url 'https://api.bybit.com/v5/market/funding/history?category=linear&symbol=ETHUSDT&limit=3'\\nFor more information check: https://developer.mozilla.org/en-US/docs/Web/HTTP/Status/403\")"
   },
-  "updated_at": 1792408673.0178678
+  "updated_at": 1792432058.7703567
  },
  "binance-ref-BTC": {
   "fees": 0.0,
@@ -42,10 +42,10 @@
   "entry_mark": 16323.0,
   "entry_ts": 1792317275.5890625,
   "fees": 4.269227470440483,
-  "funding": 0.2,
+  "funding": 0.30000000000000004,
   "in_pos": true,
-  "intervals": 2,
-  "last_interval_ts": 1792368000.0,
+  "intervals": 3,
+  "last_interval_ts": 1792425600.0,
   "notional": 1000.0,
   "realized": -4.269227470440483,
   "trades": 1
@@ -54,10 +54,10 @@
   "entry_mark": 12039.0,
   "entry_ts": 1792317275.5890625,
   "fees": 4.2018772323282665,
-  "funding": 0.2,
+  "funding": 0.30000000000000004,
   "in_pos": true,
-  "intervals": 2,
-  "last_interval_ts": 1792368000.0,
+  "intervals": 3,
+  "last_interval_ts": 1792425600.0,
   "notional": 1000.0,
   "realized": -4.2018772323282665,
   "trades": 1
