@@ -1,0 +1,234 @@
+//@version=5
+// Polymarket US Alpha Engine v6 - decision HUD: UP/DOWN fair prices (lit on the leaning side), conviction
+// gate, adverse-velocity cushion, time-to-safety clock, in-position HOLD / CUT / SELL instruction.
+indicator("Polymarket US Alpha Engine v6", shorttitle="Alpha v6", overlay=true, max_lines_count=50)
+
+// ===== 1. Inputs =====
+grpR = "Round & signal"
+roundMin  = input.int(15, "Round length (min)", minval=5, maxval=60, group=grpR)
+twapLen   = input.int(15, "TWAP window (1-min bars)", minval=3, group=grpR)
+buffer    = input.float(20.0, "TWAP buffer vs anchor ($)", step=1, group=grpR)
+chopBand  = input.float(10.0, "Chop band ($)", step=1, group=grpR)
+entryFrom = input.float(10.0, "Entry window opens (min elapsed)", step=0.25, group=grpR)
+entryTo   = input.float(13.75, "Entry window closes (min elapsed)", step=0.25, group=grpR)
+killSecs  = input.int(45, "No new buys in the last (sec)", group=grpR)
+anchorAdj = input.float(0.0, "Anchor offset ($) = Polymarket target minus plotted anchor", step=0.5, group=grpR)
+
+grpC = "Conviction gate"
+minConv   = input.int(4, "Lights needed for GO (of 5)", minval=1, maxval=5, group=grpC)
+safeP     = input.float(0.80, "Light 5: adverse-vol P(win) at least", step=0.05, minval=0.5, maxval=0.99, group=grpC)
+atrLen    = input.int(14, "ATR length", group=grpC)
+atrMult   = input.float(2.5, "Abort if ATR > x * ATR avg(100)", step=0.1, group=grpC)
+volLen    = input.int(60, "Realised-vol window (1-min bars)", group=grpC)
+
+grpM = "Market (type what Polymarket shows, optional)"
+mktUp     = input.float(0.0, "Polymarket UP ask (cents, 0 = off)", step=1, minval=0, maxval=100, group=grpM)
+mktDn     = input.float(0.0, "Polymarket DOWN ask (cents, 0 = off)", step=1, minval=0, maxval=100, group=grpM)
+maxAsk    = input.float(0.80, "Max you will pay", step=0.01, minval=0.05, maxval=0.99, group=grpM)
+
+grpP = "In position (set after you buy)"
+posSide   = input.string("None", "Side", options=["None", "Up", "Down"], group=grpP)
+posEntry  = input.float(78.0, "Entry price (cents)", step=1, minval=1, maxval=99, group=grpP)
+posUsd    = input.float(290.0, "Dollars in", step=10, group=grpP)
+tpCents   = input.float(92.0, "Take-profit sell (cents)", step=1, group=grpP)
+cutBuf    = input.float(5.0, "Cut line: this many $ before the anchor", step=1, group=grpP)
+
+grpU = "HUD"
+hudPos    = input.string("Middle right", "HUD position", options=["Top center", "Top left", "Top right", "Bottom center", "Bottom left", "Bottom right", "Middle right", "Middle left"], group=grpU)
+hudSize   = input.string("Normal", "HUD text size", options=["Small", "Normal", "Large"], group=grpU)
+showZones = input.bool(true, "Shade signal / entry window", group=grpU)
+
+// ===== 2. Round clock =====
+roundMs    = roundMin * 60 * 1000
+roundStart = math.floor(time / roundMs) * roundMs
+roundEnd   = roundStart + roundMs
+isNewRound = ta.change(roundStart) != 0
+nowMs      = barstate.isrealtime ? timenow : time + 60000
+secsElapsed = math.max(0.0, (nowMs - roundStart) / 1000.0)
+secsLeft    = math.max(0.0, (roundEnd - nowMs) / 1000.0)
+minsElapsed = secsElapsed / 60.0
+
+// ===== 3. Anchor, TWAP, deviation =====
+var float anchorRaw = na
+if isNewRound
+    anchorRaw := (open[1] + high[1] + low[1] + close[1]) / 4
+anchor = anchorRaw + anchorAdj
+twap   = ta.sma(close, twapLen)
+dev    = close - anchor
+lean    = dev >= 0 ? 1 : -1
+lead   = math.abs(dev)
+
+// ===== 4. Volatility, split by direction (drops run faster than rallies) =====
+r1     = math.log(close / close[1])
+up1    = r1 > 0 ? r1 : 0.0
+dn1    = r1 < 0 ? r1 : 0.0
+sigAll = ta.stdev(r1, volLen) * close
+sigUp  = math.sqrt(ta.sma(up1 * up1, volLen)) * math.sqrt(2.0) * close
+sigDn  = math.sqrt(ta.sma(dn1 * dn1, volLen)) * math.sqrt(2.0) * close
+// adverse volatility for the side we lean to: an UP lead is attacked by down-moves, and vice versa
+sigAdv = lean > 0 ? sigDn : sigUp
+atr    = ta.atr(atrLen)
+atrAvg = ta.sma(atr, 100)
+volDanger = atr > atrAvg * atrMult
+range3 = ta.highest(high, 3) - ta.lowest(low, 3)
+
+// ===== 5. Fair value =====
+fPhi(x) =>
+    t = 1.0 / (1.0 + 0.3275911 * math.abs(x))
+    y = 1.0 - (((((1.061405429 * t - 1.453152027) * t) + 1.421413741) * t - 0.284496736) * t + 0.254829592) * t * math.exp(-x * x / 2.0)
+    x >= 0 ? 0.5 + 0.5 * y : 0.5 - 0.5 * y
+tauMin = math.max(secsLeft / 60.0 - 0.5, 0.25)
+zSym   = sigAll > 0 ? dev / (sigAll * math.sqrt(tauMin)) : 0.0
+pUp    = fPhi(zSym)
+pDown  = 1.0 - pUp
+// conservative: probability the lead survives, using the adverse-side vol
+zAdv   = sigAdv > 0 ? lead / (sigAdv * math.sqrt(tauMin)) : 0.0
+pSafe  = fPhi(zAdv)
+// minutes-left at which the lead becomes 95% safe (z = 1.65); then seconds until we get there
+tauSafe  = sigAdv > 0 ? math.pow(lead / (1.65 * sigAdv), 2) : 0.0
+secsToSafe = math.max(0.0, secsLeft - (tauSafe * 60.0 + 30.0))
+
+// ===== 6. Trend quality on CLOSED bars (no flicker from the forming candle) =====
+twapC  = twap[1]
+slopeT = twapC - twap[4]
+slopeP = close[1] - close[4]
+cleanRun = (slopeT > 0 and slopeP > 0 and close[1] > twapC) or (slopeT < 0 and slopeP < 0 and close[1] < twapC)
+revRisk  = (slopeT > 0 and close[1] < twapC) or (slopeT < 0 and close[1] > twapC)
+
+// ===== 7. Conviction lights =====
+l1 = lead >= buffer                                            // lead beyond the buffer
+l2 = lean > 0 ? twap > anchor + buffer : twap < anchor - buffer // TWAP agrees
+l3 = cleanRun                                                  // clean run on closed bars
+l4 = not volDanger and range3 < lead                            // calm, and 3-min range cannot erase the lead
+l5 = pSafe >= safeP                                            // adverse-vol survival probability
+conv = (l1 ? 1 : 0) + (l2 ? 1 : 0) + (l3 ? 1 : 0) + (l4 ? 1 : 0) + (l5 ? 1 : 0)
+inWindow = minsElapsed >= entryFrom and minsElapsed < entryTo
+lateKill = secsLeft <= killSecs
+inChop   = lead < chopBand
+
+string cmd = "OBSERVING"
+color  cmdCol = color.new(color.gray, 20)
+int    sig = 0
+if volDanger
+    cmd := "ABORT - volatility lock"
+    cmdCol := color.new(color.maroon, 10)
+else if lateKill
+    cmd := "ROUND CLOSING - no new buys"
+    cmdCol := color.new(color.purple, 20)
+else if minsElapsed < entryFrom
+    cmd := "WAIT - window in " + str.tostring(math.ceil(entryFrom * 60 - secsElapsed)) + "s"
+    cmdCol := color.new(color.gray, 20)
+else if not inWindow
+    cmd := "WINDOW CLOSED"
+    cmdCol := color.new(color.purple, 20)
+else if inChop
+    cmd := "NO - inside chop band"
+    cmdCol := color.new(color.orange, 15)
+else if conv >= minConv
+    cmd := (lean > 0 ? "GO UP" : "GO DOWN") + "  " + str.tostring(conv) + "/5"
+    cmdCol := lean > 0 ? color.new(color.green, 10) : color.new(color.red, 10)
+    sig := lean
+else if conv >= 2
+    cmd := "WAIT - " + str.tostring(conv) + "/5 lit"
+    cmdCol := color.new(color.orange, 15)
+else
+    cmd := "NO - " + str.tostring(conv) + "/5 lit"
+    cmdCol := color.new(color.gray, 20)
+
+// ===== 8. In-position instruction =====
+posDir  = posSide == "Up" ? 1 : posSide == "Down" ? -1 : 0
+cutLine = posDir != 0 ? anchor + posDir * cutBuf : na
+posFair = posDir > 0 ? pUp : posDir < 0 ? pDown : na
+posLead = posDir != 0 ? posDir * dev : na
+estVal  = posDir != 0 ? posUsd / (posEntry / 100.0) * posFair : na
+estPnl  = posDir != 0 ? estVal - posUsd : na
+string posCmd = ""
+color  posCol = color.gray
+if posDir != 0
+    if posLead <= cutBuf
+        posCmd := "CUT NOW - lead gone (" + (posLead >= 0 ? "+" : "") + str.tostring(posLead, "0") + "$)"
+        posCol := color.new(color.red, 0)
+    else if posFair * 100 >= tpCents and secsToSafe <= 0
+        posCmd := "SELL at " + str.tostring(tpCents, "0") + "c+ (safe, fair " + str.tostring(math.round(posFair * 100)) + "c)"
+        posCol := color.new(color.lime, 0)
+    else if posFair * 100 >= tpCents
+        posCmd := "HOLD / SELL at " + str.tostring(tpCents, "0") + "c if offered"
+        posCol := color.new(color.green, 20)
+    else if posLead < chopBand
+        posCmd := "CAUTION - near cut line"
+        posCol := color.new(color.orange, 0)
+    else
+        posCmd := "HOLD - lead " + (posLead >= 0 ? "+" : "") + str.tostring(posLead, "0") + "$, cushion " + str.tostring(posLead - cutBuf, "0") + "$"
+        posCol := color.new(color.green, 30)
+
+// ===== 9. Chart layers =====
+plot(twap, "TWAP", color=color.new(color.green, 0), linewidth=2)
+plot(anchor, "Anchor", color=color.new(color.gray, 0), linewidth=1)
+plot(anchor + buffer, "Buffer +", color=color.new(color.green, 75))
+plot(anchor - buffer, "Buffer -", color=color.new(color.red, 75))
+plot(cutLine, "Cut line", color=color.new(color.red, 0), linewidth=2, style=plot.style_circles)
+bgcolor(showZones and inWindow and sig == 0 ? color.new(color.blue, 94) : na)
+bgcolor(showZones and sig == 1 ? color.new(color.green, 85) : showZones and sig == -1 ? color.new(color.red, 85) : na)
+bgcolor(posDir != 0 and posLead <= cutBuf ? color.new(color.red, 70) : na)
+
+// ===== 10. HUD =====
+posOf(s) =>
+    s == "Top center" ? position.top_center : s == "Top left" ? position.top_left : s == "Top right" ? position.top_right : s == "Bottom center" ? position.bottom_center : s == "Bottom left" ? position.bottom_left : s == "Bottom right" ? position.bottom_right : s == "Middle left" ? position.middle_left : position.middle_right
+txtSize = hudSize == "Small" ? size.small : hudSize == "Large" ? size.large : size.normal
+var table hud = table.new(posOf(hudPos), 2, 8, bgcolor=color.new(color.black, 10), border_width=1, border_color=color.new(color.white, 75))
+if barstate.islast
+    // row 0: command
+    table.cell(table_id=hud, column=0, row=0, text=cmd, text_color=color.white, text_size=txtSize, bgcolor=cmdCol)
+    table.merge_cells(hud, 0, 0, 1, 0)
+    // row 1: UP / DOWN fair prices, lit on the leaning side, brighter with confidence
+    int upC = int(math.round(pUp * 100))
+    int dnC = int(math.round(pDown * 100))
+    int glowUp = lean > 0 ? int(math.max(0, 80 - conv * 15)) : 90
+    int glowDn = lean < 0 ? int(math.max(0, 80 - conv * 15)) : 90
+    string upTxt = "UP " + str.tostring(upC) + "c"
+    string dnTxt = "DOWN " + str.tostring(dnC) + "c"
+    if mktUp > 0
+        upTxt := upTxt + " | mkt " + str.tostring(mktUp, "0") + " (" + (upC - mktUp >= 0 ? "+" : "") + str.tostring(upC - mktUp, "0") + ")"
+    if mktDn > 0
+        dnTxt := dnTxt + " | mkt " + str.tostring(mktDn, "0") + " (" + (dnC - mktDn >= 0 ? "+" : "") + str.tostring(dnC - mktDn, "0") + ")"
+    table.cell(table_id=hud, column=0, row=1, text=upTxt, text_color=color.white, text_size=size.large, bgcolor=color.new(color.green, glowUp))
+    table.cell(table_id=hud, column=1, row=1, text=dnTxt, text_color=color.white, text_size=size.large, bgcolor=color.new(color.red, glowDn))
+    // row 2: clock + lead
+    int mL = int(math.floor(secsLeft / 60.0))
+    int sL = int(math.floor(secsLeft - mL * 60.0))
+    string clockTxt = str.tostring(mL) + ":" + (sL < 10 ? "0" : "") + str.tostring(sL) + " left"
+    string leadTxt = (dev >= 0 ? "+" : "") + str.tostring(dev, "0") + "$ vs " + str.tostring(anchor, "#,###.00")
+    table.cell(table_id=hud, column=0, row=2, text=clockTxt, text_color=color.yellow, text_size=txtSize)
+    table.cell(table_id=hud, column=1, row=2, text=leadTxt, text_color=dev >= 0 ? color.lime : color.red, text_size=txtSize)
+    // row 3: lights
+    string lights = (l1 ? "[x]" : "[ ]") + " lead  " + (l2 ? "[x]" : "[ ]") + " twap  " + (l3 ? "[x]" : "[ ]") + " clean  " + (l4 ? "[x]" : "[ ]") + " calm  " + (l5 ? "[x]" : "[ ]") + " safe"
+    table.cell(table_id=hud, column=0, row=3, text=lights, text_color=conv >= minConv ? color.lime : color.silver, text_size=size.small)
+    table.merge_cells(hud, 0, 3, 1, 3)
+    // row 4: cushion / time to safety (adverse-vol based)
+    string safeTxt = secsToSafe <= 0 ? "SAFE NOW (" + str.tostring(math.round(pSafe * 100)) + "% survive)" : "safe in " + str.tostring(int(secsToSafe / 60)) + ":" + (int(secsToSafe % 60) < 10 ? "0" : "") + str.tostring(int(secsToSafe % 60)) + " (" + str.tostring(math.round(pSafe * 100)) + "% survive)"
+    string velTxt = "3-min range " + str.tostring(range3, "0") + "$ | adverse vol " + str.tostring(sigAdv, "0") + "$/min"
+    table.cell(table_id=hud, column=0, row=4, text=safeTxt, text_color=secsToSafe <= 0 ? color.lime : color.yellow, text_size=txtSize)
+    table.cell(table_id=hud, column=1, row=4, text=velTxt, text_color=range3 < lead ? color.silver : color.orange, text_size=size.small)
+    // row 5: position instruction (if set)
+    if posDir != 0
+        table.cell(table_id=hud, column=0, row=5, text=posCmd, text_color=color.white, text_size=txtSize, bgcolor=posCol)
+        table.merge_cells(hud, 0, 5, 1, 5)
+        string plTxt = "worth ~$" + str.tostring(estVal, "0") + " (" + (estPnl >= 0 ? "+" : "") + str.tostring(estPnl, "0") + ") | max loss -$" + str.tostring(posUsd, "0") + " | cut line " + str.tostring(cutLine, "#,###")
+        table.cell(table_id=hud, column=0, row=6, text=plTxt, text_color=estPnl >= 0 ? color.lime : color.red, text_size=size.small)
+        table.merge_cells(hud, 0, 6, 1, 6)
+    else
+        table.cell(table_id=hud, column=0, row=5, text="not in a position (set Side in settings after you buy)", text_color=color.gray, text_size=size.small)
+        table.merge_cells(hud, 0, 5, 1, 5)
+        table.cell(table_id=hud, column=0, row=6, text="", text_size=size.small)
+        table.merge_cells(hud, 0, 6, 1, 6)
+    // row 7: regime
+    string regTxt = (volDanger ? "!! VOL DANGEROUS" : "vol ok") + " | " + (cleanRun ? "clean run" : revRisk ? "reversal risk" : "mixed")
+    table.cell(table_id=hud, column=0, row=7, text=regTxt, text_color=volDanger ? color.red : cleanRun ? color.green : color.orange, text_size=size.small)
+    table.merge_cells(hud, 0, 7, 1, 7)
+
+// ===== 11. Alerts =====
+alertcondition(sig == 1 and sig[1] != 1, "GO UP", "Alpha v6: GO UP - {{ticker}} {{close}}")
+alertcondition(sig == -1 and sig[1] != -1, "GO DOWN", "Alpha v6: GO DOWN - {{ticker}} {{close}}")
+alertcondition(posDir != 0 and posLead <= cutBuf and posLead[1] > cutBuf, "CUT NOW", "Alpha v6: CUT - lead gone")
+alertcondition(posDir != 0 and secsToSafe <= 0 and secsToSafe[1] > 0, "Position safe", "Alpha v6: position is 95% safe - sell into strength")
+alertcondition(minsElapsed >= entryFrom and minsElapsed[1] < entryFrom, "Window open", "Alpha v6: entry window open")
