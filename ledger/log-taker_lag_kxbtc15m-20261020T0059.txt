@@ -1,0 +1,4 @@
+2026-10-20 00:59:56,907 INFO httpx: HTTP Request: GET https://external-api.kalshi.com/trade-api/v2/markets?series_ticker=KXBTC15M&status=open&limit=200 "HTTP/1.1 200 OK"
+no markets
+[taker_lag_kxbtc15m] /opt/hostedtoolcache/Python/3.13.16/x64/bin/python /home/runner/work/predictionbots/predictionbots/scripts/paper.py --venue kalshi --strategy taker_lag --run-id taker_lag_kxbtc15m-20261020T0059 --params configs/taker_lag.yaml --kalshi-series KXBTC15M --top 2 --signals coinbase,twap --set size=1 --duration 20000.0 --max-position 200 --daily-loss-limit 50 --max-capital 2000 --max-capital-per-market 500 --roll-secs 60
+[taker_lag_kxbtc15m] skipped: selector found no markets
