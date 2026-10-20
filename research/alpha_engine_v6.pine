@@ -17,6 +17,7 @@ anchorAdj = input.float(0.0, "Anchor offset ($) = Polymarket target minus plotte
 grpC = "Conviction gate"
 minConv   = input.int(4, "Lights needed for GO (of 5)", minval=1, maxval=5, group=grpC)
 safeP     = input.float(0.80, "Light 5: adverse-vol P(win) at least", step=0.05, minval=0.5, maxval=0.99, group=grpC)
+lateFair  = input.int(92, "Too late to buy when fair >= (cents)", minval=70, maxval=99, group=grpC)
 atrLen    = input.int(14, "ATR length", group=grpC)
 atrMult   = input.float(2.5, "Abort if ATR > x * ATR avg(100)", step=0.1, group=grpC)
 volLen    = input.int(60, "Realised-vol window (1-min bars)", group=grpC)
@@ -31,7 +32,7 @@ posSide   = input.string("None", "Side", options=["None", "Up", "Down"], group=g
 posEntry  = input.float(78.0, "Entry price (cents)", step=1, minval=1, maxval=99, group=grpP)
 posUsd    = input.float(290.0, "Dollars in", step=10, group=grpP)
 tpCents   = input.float(92.0, "Take-profit sell (cents)", step=1, group=grpP)
-cutBuf    = input.float(5.0, "Cut line: this many $ before the anchor", step=1, group=grpP)
+cutBuf    = input.float(15.0, "Cut line: this many $ before the anchor", step=1, group=grpP)
 
 grpU = "HUD"
 hudPos    = input.string("Middle right", "HUD position", options=["Top center", "Top left", "Top right", "Bottom center", "Bottom left", "Bottom right", "Middle right", "Middle left"], group=grpU)
@@ -125,6 +126,9 @@ else if not inWindow
 else if inChop
     cmd := "NO chop band"
     cmdCol := color.new(color.orange, 15)
+else if conv >= minConv and math.max(pUp, pDown) * 100 >= lateFair
+    cmd := "LEAD SAFE, too late (" + str.tostring(math.round(math.max(pUp, pDown) * 100)) + "c)"
+    cmdCol := color.new(color.teal, 20)
 else if conv >= minConv
     cmd := (lean > 0 ? "GO UP" : "GO DOWN") + "  " + str.tostring(conv) + "/5"
     cmdCol := lean > 0 ? color.new(color.green, 10) : color.new(color.red, 10)
