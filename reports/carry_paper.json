@@ -1,65 +1,65 @@
 {
  "entries": {
   "binance-ref-BTC": {
-   "ticks": 21,
+   "ticks": 22,
    "enters": 0,
    "exits": 0,
    "funding": 0,
    "costs": 0,
    "net": 0,
    "first_ts": 1792220119.6114893,
-   "last_ts": 1792517714.9840312,
+   "last_ts": 1792529703.2531676,
    "in_pos_frac": 0.0,
    "last_signal": null
   },
   "coinbase-BTC": {
-   "ticks": 21,
+   "ticks": 22,
    "enters": 0,
    "exits": 0,
    "funding": 0,
    "costs": 0,
    "net": 0,
    "first_ts": 1792220119.6114893,
-   "last_ts": 1792517714.9840312,
+   "last_ts": 1792529703.2531676,
    "in_pos_frac": 0.0,
    "last_signal": null
   },
   "coinbase-ETH": {
-   "ticks": 21,
+   "ticks": 22,
    "enters": 0,
    "exits": 0,
    "funding": 0,
    "costs": 0,
    "net": 0,
    "first_ts": 1792220119.6114893,
-   "last_ts": 1792517714.9840312,
+   "last_ts": 1792529703.2531676,
    "in_pos_frac": 0.0,
    "last_signal": null
   },
   "kraken-BTC": {
-   "ticks": 21,
+   "ticks": 22,
    "enters": 1,
    "exits": 0,
    "funding": 0.5,
    "costs": 4.269227470440483,
    "net": -3.769227470440483,
    "first_ts": 1792220119.6114893,
-   "last_ts": 1792517714.9840312,
-   "in_pos_frac": 0.6190476190476191,
+   "last_ts": 1792529703.2531676,
+   "in_pos_frac": 0.6363636363636364,
    "last_signal": 0.1095
   },
   "kraken-ETH": {
-   "ticks": 21,
+   "ticks": 22,
    "enters": 1,
    "exits": 0,
    "funding": 0.5,
    "costs": 4.2018772323282665,
    "net": -3.7018772323282665,
    "first_ts": 1792220119.6114893,
-   "last_ts": 1792517714.9840312,
-   "in_pos_frac": 0.6190476190476191,
+   "last_ts": 1792529703.2531676,
+   "in_pos_frac": 0.6363636363636364,
    "last_signal": 0.1095
   }
  },
- "live_rows": 82
+ "live_rows": 84
 }
