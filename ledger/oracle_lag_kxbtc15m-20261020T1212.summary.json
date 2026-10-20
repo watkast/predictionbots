@@ -1,0 +1,128 @@
+{
+  "net_pnl": -141.48,
+  "gross_pnl": -120.44,
+  "fees": 21.04,
+  "fills": 38,
+  "maker_fills": 32,
+  "taker_fills": 6,
+  "contracts_traded": 3375.0,
+  "max_drawdown": 303.24,
+  "max_capital_at_risk": 299.88,
+  "markets_traded": 23,
+  "market_win_rate": 0.217,
+  "sharpe_like": -0.57,
+  "net_pnl_on_max_capital": -0.4718,
+  "maker_pct": 84.2,
+  "reality": {
+    "cross_assumed_fill_frac": 0.0526,
+    "cross_assumed_fills": 2,
+    "maker_frac": 0.8421,
+    "max_fill_to_touch_depth": 1.0,
+    "top3_market_pnl_frac": 0.9502,
+    "pnl_per_contract": -0.04192
+  },
+  "run_id": "oracle_lag_kxbtc15m-20261020T1212",
+  "started_at": 1792498357.3870559,
+  "updated_at": 1792518357.5227993,
+  "uptime_secs": 20000.1,
+  "open_orders": 0,
+  "positions": {
+    "KXBTC15M-26OCT200900-00": {
+      "contracts": 0.0,
+      "avg_price": 0.0,
+      "realized": 128.0,
+      "fees": 6.9
+    },
+    "KXBTC15M-26OCT200930-30": {
+      "contracts": 0.0,
+      "avg_price": 0.0,
+      "realized": -299.88,
+      "fees": 3.36
+    },
+    "KXBTC15M-26OCT201045-45": {
+      "contracts": 0.0,
+      "avg_price": 0.0,
+      "realized": 18.05,
+      "fees": 3.57
+    },
+    "KXBTC15M-26OCT201215-15": {
+      "contracts": 0.0,
+      "avg_price": 0.0,
+      "realized": 10.56,
+      "fees": 3.15
+    },
+    "KXBTC15M-26OCT201330-30": {
+      "contracts": 0.0,
+      "avg_price": 0.0,
+      "realized": 0.93,
+      "fees": 0.28
+    },
+    "KXBTC15M-26OCT201345-45": {
+      "contracts": 0.0,
+      "avg_price": 0.0,
+      "realized": 21.9,
+      "fees": 3.78
+    }
+  },
+  "markets": [
+    "KXBTC15M-26OCT200815-15",
+    "KXBTC15M-26OCT200830-30",
+    "KXBTC15M-26OCT200845-45",
+    "KXBTC15M-26OCT200900-00",
+    "KXBTC15M-26OCT200915-15",
+    "KXBTC15M-26OCT200930-30",
+    "KXBTC15M-26OCT200945-45",
+    "KXBTC15M-26OCT201000-00",
+    "KXBTC15M-26OCT201015-15",
+    "KXBTC15M-26OCT201030-30",
+    "KXBTC15M-26OCT201045-45",
+    "KXBTC15M-26OCT201100-00",
+    "KXBTC15M-26OCT201115-15",
+    "KXBTC15M-26OCT201130-30",
+    "KXBTC15M-26OCT201145-45",
+    "KXBTC15M-26OCT201200-00",
+    "KXBTC15M-26OCT201215-15",
+    "KXBTC15M-26OCT201230-30",
+    "KXBTC15M-26OCT201245-45",
+    "KXBTC15M-26OCT201300-00",
+    "KXBTC15M-26OCT201315-15",
+    "KXBTC15M-26OCT201330-30",
+    "KXBTC15M-26OCT201345-45"
+  ],
+  "active_markets": [],
+  "rolls": 332,
+  "last_roll": {
+    "ts": 1792518300.5639563,
+    "selected": 0,
+    "added": [],
+    "dropped": [],
+    "error": ""
+  },
+  "last_event_age": {},
+  "risk": {
+    "halted": false,
+    "halt_reason": "",
+    "halted_at": 0.0,
+    "stale": false,
+    "kill_file": "data/KILL",
+    "kill_file_present": false,
+    "pnl_today": -141.48,
+    "daily_loss_limit": 300.0,
+    "capital_in_use": 0.0,
+    "capital_in_use_by_market": {},
+    "max_capital_total": 2000.0,
+    "max_capital_per_market": 400.0,
+    "orders_last_min": 0,
+    "max_orders_per_min": 120,
+    "accepted": 12,
+    "rejected": 0,
+    "reject_reasons": {},
+    "cancel_all_count": 0,
+    "last_book_age": {},
+    "stale_secs": 60.0
+  },
+  "strategies": [
+    "oracle_lag"
+  ],
+  "venue": "kalshi"
+}
