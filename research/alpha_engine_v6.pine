@@ -1,7 +1,7 @@
 //@version=5
 // Polymarket US Alpha Engine v6 - decision HUD: UP/DOWN fair prices (lit on the leaning side), conviction
 // gate, adverse-velocity cushion, time-to-safety clock, in-position HOLD / CUT / SELL instruction.
-indicator("Polymarket US Alpha Engine v6.3", shorttitle="Alpha v6.3", overlay=true, max_lines_count=50)
+indicator("Polymarket US Alpha Engine v6.4", shorttitle="Alpha v6.4", overlay=true, max_lines_count=50)
 
 // ===== 1. Inputs =====
 grpR = "Round & signal"
@@ -15,7 +15,7 @@ killSecs  = input.int(45, "No new buys in the last (sec)", group=grpR)
 anchorAdj = input.float(0.0, "Anchor offset ($) = Polymarket target minus plotted anchor", step=0.5, group=grpR)
 
 grpC = "Conviction gate"
-minConv   = input.int(4, "Lights needed for GO (of 5)", minval=1, maxval=5, group=grpC)
+minConv   = input.int(5, "Conditions needed to buy (of 6)", minval=1, maxval=6, group=grpC)
 safeP     = input.float(0.80, "Light 5: adverse-vol P(win) at least", step=0.05, minval=0.5, maxval=0.99, group=grpC)
 lateFair  = input.int(92, "Too late to buy when fair >= (cents)", minval=70, maxval=99, group=grpC)
 atrLen    = input.int(14, "ATR length", group=grpC)
@@ -25,7 +25,7 @@ volLen    = input.int(60, "Realised-vol window (1-min bars)", group=grpC)
 grpM = "Market (type what Polymarket shows, optional)"
 mktUp     = input.float(0.0, "Polymarket UP ask (cents, 0 = off)", step=1, minval=0, maxval=100, group=grpM)
 mktDn     = input.float(0.0, "Polymarket DOWN ask (cents, 0 = off)", step=1, minval=0, maxval=100, group=grpM)
-maxAsk    = input.float(0.80, "Max you will pay", step=0.01, minval=0.05, maxval=0.99, group=grpM)
+maxAsk    = input.float(0.85, "Headroom: max price you will pay", step=0.01, minval=0.05, maxval=0.99, group=grpM)
 
 grpP = "In position (set after you buy)"
 posSide   = input.string("None", "Side", options=["None", "Up", "Down"], group=grpP)
@@ -103,7 +103,11 @@ l2 = lean > 0 ? twap > anchor + buffer : twap < anchor - buffer // TWAP agrees
 l3 = cleanRun                                                  // clean run on closed bars
 l4 = not volDanger and range3 < lead                            // calm, and 3-min range cannot erase the lead
 l5 = pSafe >= safeP                                            // adverse-vol survival probability
-conv = (l1 ? 1 : 0) + (l2 ? 1 : 0) + (l3 ? 1 : 0) + (l4 ? 1 : 0) + (l5 ? 1 : 0)
+// headroom: the side's price (Polymarket ask if typed in, else model fair) is at or under your max
+float sidePx = lean > 0 ? (mktUp > 0 ? mktUp / 100.0 : pUp) : (mktDn > 0 ? mktDn / 100.0 : pDown)
+bool  sideMkt = lean > 0 ? mktUp > 0 : mktDn > 0
+l6 = sidePx <= maxAsk
+conv = (l1 ? 1 : 0) + (l2 ? 1 : 0) + (l3 ? 1 : 0) + (l4 ? 1 : 0) + (l5 ? 1 : 0) + (l6 ? 1 : 0)
 inWindow = minsElapsed >= entryFrom and minsElapsed < entryTo
 lateKill = secsLeft <= killSecs
 inChop   = lead < chopBand
@@ -130,14 +134,14 @@ else if conv >= minConv and math.max(pUp, pDown) * 100 >= lateFair
     cmd := "TOO LATE - already priced in at " + str.tostring(math.round(math.max(pUp, pDown) * 100)) + "c"
     cmdCol := color.new(color.teal, 20)
 else if conv >= minConv
-    cmd := (lean > 0 ? "BUY UP NOW" : "BUY DOWN NOW") + " - " + str.tostring(conv) + " of 5 checks pass"
+    cmd := (lean > 0 ? "BUY UP NOW" : "BUY DOWN NOW") + " - " + str.tostring(conv) + " of 6 conditions met"
     cmdCol := lean > 0 ? color.new(color.green, 10) : color.new(color.red, 10)
     sig := lean
 else if conv >= 2
-    cmd := "WAIT - only " + str.tostring(conv) + " of 5 checks pass"
+    cmd := "WAIT - only " + str.tostring(conv) + " of 6 conditions met"
     cmdCol := color.new(color.orange, 15)
 else
-    cmd := "NO TRADE - " + str.tostring(conv) + " of 5 checks pass"
+    cmd := "NO TRADE - " + str.tostring(conv) + " of 6 conditions met"
     cmdCol := color.new(color.gray, 20)
 
 // ===== 8. In-position instruction =====
@@ -180,7 +184,7 @@ bgcolor(posDir != 0 and posLead <= cutBuf ? color.new(color.red, 70) : na)
 posOf(s) =>
     s == "Top center" ? position.top_center : s == "Top left" ? position.top_left : s == "Top right" ? position.top_right : s == "Bottom center" ? position.bottom_center : s == "Bottom left" ? position.bottom_left : s == "Bottom right" ? position.bottom_right : s == "Middle left" ? position.middle_left : position.middle_right
 txtSize = hudSize == "Small" ? size.small : hudSize == "Large" ? size.large : size.normal
-var table hud = table.new(posOf(hudPos), 2, 12, bgcolor=color.new(color.black, 10), border_width=1, border_color=color.new(color.white, 75))
+var table hud = table.new(posOf(hudPos), 2, 13, bgcolor=color.new(color.black, 10), border_width=1, border_color=color.new(color.white, 75))
 var bool hudMerged = false
 if barstate.islast
     int upC = int(math.round(pUp * 100))
@@ -199,12 +203,13 @@ if barstate.islast
     string dirWord = lean > 0 ? "UP" : "DOWN"
     string clockTxt = str.tostring(mL) + ":" + (sL < 10 ? "0" : "") + str.tostring(sL) + " left  |  target " + str.tostring(anchor, "#,###.00")
     float twapGap = lean > 0 ? twap - anchor : anchor - twap
-    string hdr = str.tostring(conv) + " of 5 conditions met:"
+    string hdr = str.tostring(conv) + " of 6 conditions met:"
     string c1 = (l1 ? "OK " : "X  ") + "Lead - price $" + str.tostring(close, "#,###") + " is $" + str.tostring(lead, "0") + " " + sideWord + " the target (need $" + str.tostring(buffer, "0") + ")"
     string c2 = (l2 ? "OK " : "X  ") + "Trend - 15-min average $" + str.tostring(twap, "#,###") + " is $" + str.tostring(twapGap, "0") + (twapGap >= 0 ? " past" : " short of") + " the target (need $" + str.tostring(buffer, "0") + ")"
     string c3 = (l3 ? "OK " : "X  ") + "Momentum - last 3 candles " + (l3 ? "still pushing " + dirWord + ", price on the right side of the average" : "stalling or turning back")
     string c4 = (l4 ? "OK " : "X  ") + "Calm - last 3 min moved $" + str.tostring(range3, "0") + (range3 < lead ? ", less than" : ", MORE than") + " the $" + str.tostring(lead, "0") + " lead" + (volDanger ? "; volatility SPIKING" : "; volatility normal")
     string c5 = (l5 ? "OK " : "X  ") + "Safe - " + str.tostring(math.round(pSafe * 100)) + "% chance the lead holds to the close (need " + str.tostring(math.round(safeP * 100)) + "%)" + (secsToSafe <= 0 ? ", safe now" : ", safe in " + str.tostring(int(secsToSafe / 60)) + ":" + (int(secsToSafe % 60) < 10 ? "0" : "") + str.tostring(int(secsToSafe % 60)))
+    string c6 = (l6 ? "OK " : "X  ") + "Headroom - " + dirWord + " costs " + str.tostring(math.round(sidePx * 100)) + "c" + (sideMkt ? " on Polymarket" : " (estimate)") + ", " + (l6 ? "at or under" : "OVER") + " your " + str.tostring(math.round(maxAsk * 100)) + "c max"
     string posA = posDir != 0 ? "In " + (posDir > 0 ? "UP" : "DOWN") + " at " + str.tostring(posEntry, "0") + "c: " + posCmd : "No position yet - set Side in settings after you buy"
     string posB = posDir != 0 ? "Worth about $" + str.tostring(estVal, "0") + " (" + (estPnl >= 0 ? "+" : "-") + "$" + str.tostring(math.abs(estPnl), "0") + ")  |  max loss $" + str.tostring(posUsd, "0") + "  |  cut line " + str.tostring(cutLine, "0") : ""
     color posBg = posDir != 0 ? posCol : color.new(color.black, 100)
@@ -228,14 +233,16 @@ if barstate.islast
     table.cell(table_id=hud, column=1, row=7, text="", width=cellW)
     table.cell(table_id=hud, column=0, row=8, text=c5, text_color=l5 ? okCol : noCol, text_size=size.small, text_halign=text.align_left, width=cellW)
     table.cell(table_id=hud, column=1, row=8, text="", width=cellW)
-    table.cell(table_id=hud, column=0, row=9, text=posA, text_color=posDir != 0 ? color.white : color.gray, text_size=txtSize, bgcolor=posBg, width=cellW)
+    table.cell(table_id=hud, column=0, row=9, text=c6, text_color=l6 ? okCol : noCol, text_size=size.small, text_halign=text.align_left, width=cellW)
     table.cell(table_id=hud, column=1, row=9, text="", width=cellW)
-    table.cell(table_id=hud, column=0, row=10, text=posB, text_color=posDir != 0 and estPnl >= 0 ? color.lime : posDir != 0 ? color.red : color.gray, text_size=size.small, width=cellW)
+    table.cell(table_id=hud, column=0, row=10, text=posA, text_color=posDir != 0 ? color.white : color.gray, text_size=txtSize, bgcolor=posBg, width=cellW)
     table.cell(table_id=hud, column=1, row=10, text="", width=cellW)
-    table.cell(table_id=hud, column=0, row=11, text="typical swing against you $" + str.tostring(sigAdv, "0") + "/min  |  " + (volDanger ? "market is wild" : cleanRun ? "clean trend" : revRisk ? "trend may be turning" : "mixed trend"), text_color=color.silver, text_size=size.small, width=cellW)
+    table.cell(table_id=hud, column=0, row=11, text=posB, text_color=posDir != 0 and estPnl >= 0 ? color.lime : posDir != 0 ? color.red : color.gray, text_size=size.small, width=cellW)
     table.cell(table_id=hud, column=1, row=11, text="", width=cellW)
+    table.cell(table_id=hud, column=0, row=12, text="typical swing against you $" + str.tostring(sigAdv, "0") + "/min  |  " + (volDanger ? "market is wild" : cleanRun ? "clean trend" : revRisk ? "trend may be turning" : "mixed trend"), text_color=color.silver, text_size=size.small, width=cellW)
+    table.cell(table_id=hud, column=1, row=12, text="", width=cellW)
     if not hudMerged
-        for r = 0 to 11
+        for r = 0 to 12
             if r != 1
                 table.merge_cells(hud, 0, r, 1, r)
         hudMerged := true
