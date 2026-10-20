@@ -176,12 +176,8 @@ bgcolor(posDir != 0 and posLead <= cutBuf ? color.new(color.red, 70) : na)
 posOf(s) =>
     s == "Top center" ? position.top_center : s == "Top left" ? position.top_left : s == "Top right" ? position.top_right : s == "Bottom center" ? position.bottom_center : s == "Bottom left" ? position.bottom_left : s == "Bottom right" ? position.bottom_right : s == "Middle left" ? position.middle_left : position.middle_right
 txtSize = hudSize == "Small" ? size.small : hudSize == "Large" ? size.large : size.normal
-var table hud = table.new(posOf(hudPos), 2, 8, bgcolor=color.new(color.black, 10), border_width=1, border_color=color.new(color.white, 75))
+var table hud = table.new(posOf(hudPos), 2, 7, bgcolor=color.new(color.black, 10), border_width=1, border_color=color.new(color.white, 75))
 if barstate.islast
-    // row 0: command
-    table.cell(table_id=hud, column=0, row=0, text=cmd, text_color=color.white, text_size=txtSize, bgcolor=cmdCol)
-    table.merge_cells(hud, 0, 0, 1, 0)
-    // row 1: UP / DOWN fair prices, lit on the leaning side, brighter with confidence
     int upC = int(math.round(pUp * 100))
     int dnC = int(math.round(pDown * 100))
     int glowUp = lean > 0 ? int(math.max(0, 80 - conv * 15)) : 90
@@ -192,40 +188,35 @@ if barstate.islast
         upTxt := upTxt + " | mkt " + str.tostring(mktUp, "0") + " (" + (upC - mktUp >= 0 ? "+" : "") + str.tostring(upC - mktUp, "0") + ")"
     if mktDn > 0
         dnTxt := dnTxt + " | mkt " + str.tostring(mktDn, "0") + " (" + (dnC - mktDn >= 0 ? "+" : "") + str.tostring(dnC - mktDn, "0") + ")"
-    table.cell(table_id=hud, column=0, row=1, text=upTxt, text_color=color.white, text_size=size.large, bgcolor=color.new(color.green, glowUp), width=cellW)
-    table.cell(table_id=hud, column=1, row=1, text=dnTxt, text_color=color.white, text_size=size.large, bgcolor=color.new(color.red, glowDn), width=cellW)
-    // row 2: clock + lead
     int mL = int(math.floor(secsLeft / 60.0))
     int sL = int(math.floor(secsLeft - mL * 60.0))
     string clockTxt = str.tostring(mL) + ":" + (sL < 10 ? "0" : "") + str.tostring(sL) + " left"
     string leadTxt = (dev >= 0 ? "+" : "") + str.tostring(dev, "0") + "$ vs " + str.tostring(anchor, "#,###.00")
-    table.cell(table_id=hud, column=0, row=2, text=clockTxt, text_color=color.yellow, text_size=txtSize)
-    table.cell(table_id=hud, column=1, row=2, text=leadTxt, text_color=dev >= 0 ? color.lime : color.red, text_size=txtSize)
-    // row 3: lights
-    string lights = (l1 ? "[x]" : "[ ]") + " lead  " + (l2 ? "[x]" : "[ ]") + " twap  " + (l3 ? "[x]" : "[ ]") + " clean  " + (l4 ? "[x]" : "[ ]") + " calm  " + (l5 ? "[x]" : "[ ]") + " safe"
-    table.cell(table_id=hud, column=0, row=3, text=lights, text_color=conv >= minConv ? color.lime : color.silver, text_size=size.small)
-    table.merge_cells(hud, 0, 3, 1, 3)
-    // row 4: cushion / time to safety (adverse-vol based)
-    string safeTxt = secsToSafe <= 0 ? "SAFE NOW (" + str.tostring(math.round(pSafe * 100)) + "% survive)" : "safe in " + str.tostring(int(secsToSafe / 60)) + ":" + (int(secsToSafe % 60) < 10 ? "0" : "") + str.tostring(int(secsToSafe % 60)) + " (" + str.tostring(math.round(pSafe * 100)) + "% survive)"
+    string lightsA = (l1 ? "[x]" : "[ ]") + " lead  " + (l2 ? "[x]" : "[ ]") + " twap  " + (l3 ? "[x]" : "[ ]") + " clean"
+    string lightsB = (l4 ? "[x]" : "[ ]") + " calm  " + (l5 ? "[x]" : "[ ]") + " safe"
+    int sm = int(secsToSafe / 60)
+    int ss = int(secsToSafe - sm * 60)
+    string safeTxt = secsToSafe <= 0 ? "SAFE NOW (" + str.tostring(math.round(pSafe * 100)) + "% survive)" : "safe in " + str.tostring(sm) + ":" + (ss < 10 ? "0" : "") + str.tostring(ss) + " (" + str.tostring(math.round(pSafe * 100)) + "% survive)"
     string velTxt = "3-min range " + str.tostring(range3, "0") + "$ | adverse vol " + str.tostring(sigAdv, "0") + "$/min"
-    table.cell(table_id=hud, column=0, row=4, text=safeTxt, text_color=secsToSafe <= 0 ? color.lime : color.yellow, text_size=txtSize)
-    table.cell(table_id=hud, column=1, row=4, text=velTxt, text_color=range3 < lead ? color.silver : color.orange, text_size=size.small)
-    // row 5: position instruction (if set)
-    if posDir != 0
-        table.cell(table_id=hud, column=0, row=5, text=posCmd, text_color=color.white, text_size=txtSize, bgcolor=posCol)
-        table.merge_cells(hud, 0, 5, 1, 5)
-        string plTxt = "worth ~$" + str.tostring(estVal, "0") + " (" + (estPnl >= 0 ? "+" : "") + str.tostring(estPnl, "0") + ") | max loss -$" + str.tostring(posUsd, "0") + " | cut line " + str.tostring(cutLine, "#,###")
-        table.cell(table_id=hud, column=0, row=6, text=plTxt, text_color=estPnl >= 0 ? color.lime : color.red, text_size=size.small)
-        table.merge_cells(hud, 0, 6, 1, 6)
-    else
-        table.cell(table_id=hud, column=0, row=5, text="not in a position (set Side in settings after you buy)", text_color=color.gray, text_size=size.small)
-        table.merge_cells(hud, 0, 5, 1, 5)
-        table.cell(table_id=hud, column=0, row=6, text="", text_size=size.small)
-        table.merge_cells(hud, 0, 6, 1, 6)
-    // row 7: regime
     string regTxt = (volDanger ? "!! VOL DANGEROUS" : "vol ok") + " | " + (cleanRun ? "clean run" : revRisk ? "reversal risk" : "mixed")
-    table.cell(table_id=hud, column=0, row=7, text=regTxt, text_color=volDanger ? color.red : cleanRun ? color.green : color.orange, text_size=size.small)
-    table.merge_cells(hud, 0, 7, 1, 7)
+    string posA = posDir != 0 ? posCmd : "not in a position"
+    string posB = posDir != 0 ? "worth ~$" + str.tostring(estVal, "0") + " (" + (estPnl >= 0 ? "+" : "") + str.tostring(estPnl, "0") + ")" : "set Side in settings after you buy"
+    string posC = posDir != 0 ? "max loss -$" + str.tostring(posUsd, "0") + " | cut " + str.tostring(cutLine, "#,###") : ""
+    color posBg = posDir != 0 ? posCol : color.new(color.black, 100)
+    table.cell(table_id=hud, column=0, row=0, text=cmd, text_color=color.white, text_size=txtSize, bgcolor=cmdCol, width=cellW)
+    table.cell(table_id=hud, column=1, row=0, text=regTxt, text_color=volDanger ? color.red : cleanRun ? color.green : color.orange, text_size=size.small, width=cellW)
+    table.cell(table_id=hud, column=0, row=1, text=upTxt, text_color=color.white, text_size=size.large, bgcolor=color.new(color.green, glowUp), width=cellW)
+    table.cell(table_id=hud, column=1, row=1, text=dnTxt, text_color=color.white, text_size=size.large, bgcolor=color.new(color.red, glowDn), width=cellW)
+    table.cell(table_id=hud, column=0, row=2, text=clockTxt, text_color=color.yellow, text_size=txtSize, width=cellW)
+    table.cell(table_id=hud, column=1, row=2, text=leadTxt, text_color=dev >= 0 ? color.lime : color.red, text_size=txtSize, width=cellW)
+    table.cell(table_id=hud, column=0, row=3, text=lightsA, text_color=conv >= minConv ? color.lime : color.silver, text_size=size.small, width=cellW)
+    table.cell(table_id=hud, column=1, row=3, text=lightsB, text_color=conv >= minConv ? color.lime : color.silver, text_size=size.small, width=cellW)
+    table.cell(table_id=hud, column=0, row=4, text=safeTxt, text_color=secsToSafe <= 0 ? color.lime : color.yellow, text_size=txtSize, width=cellW)
+    table.cell(table_id=hud, column=1, row=4, text=velTxt, text_color=range3 < lead ? color.silver : color.orange, text_size=size.small, width=cellW)
+    table.cell(table_id=hud, column=0, row=5, text=posA, text_color=posDir != 0 ? color.white : color.gray, text_size=txtSize, bgcolor=posBg, width=cellW)
+    table.cell(table_id=hud, column=1, row=5, text=posB, text_color=posDir != 0 and estPnl >= 0 ? color.lime : posDir != 0 ? color.red : color.gray, text_size=size.small, width=cellW)
+    table.cell(table_id=hud, column=0, row=6, text=posC, text_color=color.silver, text_size=size.small, width=cellW)
+    table.cell(table_id=hud, column=1, row=6, text="", text_size=size.small, width=cellW)
 
 // ===== 11. Alerts =====
 alertcondition(sig == 1 and sig[1] != 1, "GO UP", "Alpha v6.1: GO UP - {{ticker}} {{close}}")
