@@ -1,7 +1,7 @@
 //@version=5
 // Polymarket US Alpha Engine v6 - decision HUD: UP/DOWN fair prices (lit on the leaning side), conviction
 // gate, adverse-velocity cushion, time-to-safety clock, in-position HOLD / CUT / SELL instruction.
-indicator("Polymarket US Alpha Engine v6", shorttitle="Alpha v6", overlay=true, max_lines_count=50)
+indicator("Polymarket US Alpha Engine v6.1", shorttitle="Alpha v6.1", overlay=true, max_lines_count=50)
 
 // ===== 1. Inputs =====
 grpR = "Round & signal"
@@ -9,7 +9,7 @@ roundMin  = input.int(15, "Round length (min)", minval=5, maxval=60, group=grpR)
 twapLen   = input.int(15, "TWAP window (1-min bars)", minval=3, group=grpR)
 buffer    = input.float(20.0, "TWAP buffer vs anchor ($)", step=1, group=grpR)
 chopBand  = input.float(10.0, "Chop band ($)", step=1, group=grpR)
-entryFrom = input.float(10.0, "Entry window opens (min elapsed)", step=0.25, group=grpR)
+entryFrom = input.float(3.0, "Entry window opens (min elapsed)", step=0.25, group=grpR)
 entryTo   = input.float(13.75, "Entry window closes (min elapsed)", step=0.25, group=grpR)
 killSecs  = input.int(45, "No new buys in the last (sec)", group=grpR)
 anchorAdj = input.float(0.0, "Anchor offset ($) = Polymarket target minus plotted anchor", step=0.5, group=grpR)
@@ -37,6 +37,7 @@ grpU = "HUD"
 hudPos    = input.string("Middle right", "HUD position", options=["Top center", "Top left", "Top right", "Bottom center", "Bottom left", "Bottom right", "Middle right", "Middle left"], group=grpU)
 hudSize   = input.string("Normal", "HUD text size", options=["Small", "Normal", "Large"], group=grpU)
 showZones = input.bool(true, "Shade signal / entry window", group=grpU)
+cellW     = input.int(22, "HUD column width (% of chart)", minval=10, maxval=45, group=grpU)
 
 // ===== 2. Round clock =====
 roundMs    = roundMin * 60 * 1000
@@ -152,13 +153,13 @@ if posDir != 0
         posCmd := "SELL at " + str.tostring(tpCents, "0") + "c+ (safe, fair " + str.tostring(math.round(posFair * 100)) + "c)"
         posCol := color.new(color.lime, 0)
     else if posFair * 100 >= tpCents
-        posCmd := "HOLD / SELL at " + str.tostring(tpCents, "0") + "c if offered"
+        posCmd := "HOLD / SELL at " + str.tostring(tpCents, "0") + "c+ (book overprices from min 10)"
         posCol := color.new(color.green, 20)
     else if posLead < chopBand
         posCmd := "CAUTION - near cut line"
         posCol := color.new(color.orange, 0)
     else
-        posCmd := "HOLD - lead " + (posLead >= 0 ? "+" : "") + str.tostring(posLead, "0") + "$, cushion " + str.tostring(posLead - cutBuf, "0") + "$"
+        posCmd := "HOLD - lead " + (posLead >= 0 ? "+" : "") + str.tostring(posLead, "0") + "$, cushion " + str.tostring(posLead - cutBuf, "0") + "$" + (minsElapsed >= 10 ? " - offer " + str.tostring(tpCents, "0") + "c+" : "")
         posCol := color.new(color.green, 30)
 
 // ===== 9. Chart layers =====
@@ -191,8 +192,8 @@ if barstate.islast
         upTxt := upTxt + " | mkt " + str.tostring(mktUp, "0") + " (" + (upC - mktUp >= 0 ? "+" : "") + str.tostring(upC - mktUp, "0") + ")"
     if mktDn > 0
         dnTxt := dnTxt + " | mkt " + str.tostring(mktDn, "0") + " (" + (dnC - mktDn >= 0 ? "+" : "") + str.tostring(dnC - mktDn, "0") + ")"
-    table.cell(table_id=hud, column=0, row=1, text=upTxt, text_color=color.white, text_size=size.large, bgcolor=color.new(color.green, glowUp))
-    table.cell(table_id=hud, column=1, row=1, text=dnTxt, text_color=color.white, text_size=size.large, bgcolor=color.new(color.red, glowDn))
+    table.cell(table_id=hud, column=0, row=1, text=upTxt, text_color=color.white, text_size=size.large, bgcolor=color.new(color.green, glowUp), width=cellW)
+    table.cell(table_id=hud, column=1, row=1, text=dnTxt, text_color=color.white, text_size=size.large, bgcolor=color.new(color.red, glowDn), width=cellW)
     // row 2: clock + lead
     int mL = int(math.floor(secsLeft / 60.0))
     int sL = int(math.floor(secsLeft - mL * 60.0))
@@ -227,7 +228,7 @@ if barstate.islast
     table.merge_cells(hud, 0, 7, 1, 7)
 
 // ===== 11. Alerts =====
-alertcondition(sig == 1 and sig[1] != 1, "GO UP", "Alpha v6: GO UP - {{ticker}} {{close}}")
+alertcondition(sig == 1 and sig[1] != 1, "GO UP", "Alpha v6.1: GO UP - {{ticker}} {{close}}")
 alertcondition(sig == -1 and sig[1] != -1, "GO DOWN", "Alpha v6: GO DOWN - {{ticker}} {{close}}")
 alertcondition(posDir != 0 and posLead <= cutBuf and posLead[1] > cutBuf, "CUT NOW", "Alpha v6: CUT - lead gone")
 alertcondition(posDir != 0 and secsToSafe <= 0 and secsToSafe[1] > 0, "Position safe", "Alpha v6: position is 95% safe - sell into strength")
