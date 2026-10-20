@@ -1,7 +1,7 @@
 //@version=5
 // Polymarket US Alpha Engine v6 - decision HUD: UP/DOWN fair prices (lit on the leaning side), conviction
 // gate, adverse-velocity cushion, time-to-safety clock, in-position HOLD / CUT / SELL instruction.
-indicator("Polymarket US Alpha Engine v6.2", shorttitle="Alpha v6.2", overlay=true, max_lines_count=50)
+indicator("Polymarket US Alpha Engine v6.3", shorttitle="Alpha v6.3", overlay=true, max_lines_count=50)
 
 // ===== 1. Inputs =====
 grpR = "Round & signal"
@@ -180,7 +180,7 @@ bgcolor(posDir != 0 and posLead <= cutBuf ? color.new(color.red, 70) : na)
 posOf(s) =>
     s == "Top center" ? position.top_center : s == "Top left" ? position.top_left : s == "Top right" ? position.top_right : s == "Bottom center" ? position.bottom_center : s == "Bottom left" ? position.bottom_left : s == "Bottom right" ? position.bottom_right : s == "Middle left" ? position.middle_left : position.middle_right
 txtSize = hudSize == "Small" ? size.small : hudSize == "Large" ? size.large : size.normal
-var table hud = table.new(posOf(hudPos), 2, 7, bgcolor=color.new(color.black, 10), border_width=1, border_color=color.new(color.white, 75))
+var table hud = table.new(posOf(hudPos), 2, 12, bgcolor=color.new(color.black, 10), border_width=1, border_color=color.new(color.white, 75))
 var bool hudMerged = false
 if barstate.islast
     int upC = int(math.round(pUp * 100))
@@ -195,37 +195,49 @@ if barstate.islast
         dnTxt := dnTxt + "  (market " + str.tostring(mktDn, "0") + ", edge " + (dnC - mktDn >= 0 ? "+" : "") + str.tostring(dnC - mktDn, "0") + ")"
     int mL = int(math.floor(secsLeft / 60.0))
     int sL = int(math.floor(secsLeft - mL * 60.0))
-    string clockTxt = str.tostring(mL) + ":" + (sL < 10 ? "0" : "") + str.tostring(sL) + " left  |  BTC is $" + str.tostring(lead, "0") + (dev >= 0 ? " above" : " below") + " the target (" + str.tostring(anchor, "0") + ")"
-    string checks = "Lead " + (l1 ? "ok" : "no") + "  |  Trend " + (l2 ? "ok" : "no") + "  |  Momentum " + (l3 ? "ok" : "no") + "  |  Calm " + (l4 ? "ok" : "no") + "  |  Safe " + (l5 ? "ok" : "no")
-    int sm = int(secsToSafe / 60)
-    int ss = int(secsToSafe - sm * 60)
-    string pct = str.tostring(math.round(pSafe * 100))
-    string safeTxt = secsToSafe <= 0 ? "Safe now - " + pct + "% chance this lead holds" : "Safe in " + str.tostring(sm) + ":" + (ss < 10 ? "0" : "") + str.tostring(ss) + " - " + pct + "% chance this lead holds"
-    string velTxt = "Last 3 min moved $" + str.tostring(range3, "0") + "  |  typical swing against you $" + str.tostring(sigAdv, "0") + "/min  |  " + (volDanger ? "market is wild" : cleanRun ? "clean trend" : revRisk ? "trend may be turning" : "mixed trend")
+    string sideWord = dev >= 0 ? "OVER" : "UNDER"
+    string dirWord = lean > 0 ? "UP" : "DOWN"
+    string clockTxt = str.tostring(mL) + ":" + (sL < 10 ? "0" : "") + str.tostring(sL) + " left  |  target " + str.tostring(anchor, "#,###.00")
+    float twapGap = lean > 0 ? twap - anchor : anchor - twap
+    string hdr = str.tostring(conv) + " of 5 conditions met:"
+    string c1 = (l1 ? "OK " : "X  ") + "Lead - price $" + str.tostring(close, "#,###") + " is $" + str.tostring(lead, "0") + " " + sideWord + " the target (need $" + str.tostring(buffer, "0") + ")"
+    string c2 = (l2 ? "OK " : "X  ") + "Trend - 15-min average $" + str.tostring(twap, "#,###") + " is $" + str.tostring(twapGap, "0") + (twapGap >= 0 ? " past" : " short of") + " the target (need $" + str.tostring(buffer, "0") + ")"
+    string c3 = (l3 ? "OK " : "X  ") + "Momentum - last 3 candles " + (l3 ? "still pushing " + dirWord + ", price on the right side of the average" : "stalling or turning back")
+    string c4 = (l4 ? "OK " : "X  ") + "Calm - last 3 min moved $" + str.tostring(range3, "0") + (range3 < lead ? ", less than" : ", MORE than") + " the $" + str.tostring(lead, "0") + " lead" + (volDanger ? "; volatility SPIKING" : "; volatility normal")
+    string c5 = (l5 ? "OK " : "X  ") + "Safe - " + str.tostring(math.round(pSafe * 100)) + "% chance the lead holds to the close (need " + str.tostring(math.round(safeP * 100)) + "%)" + (secsToSafe <= 0 ? ", safe now" : ", safe in " + str.tostring(int(secsToSafe / 60)) + ":" + (int(secsToSafe % 60) < 10 ? "0" : "") + str.tostring(int(secsToSafe % 60)))
     string posA = posDir != 0 ? "In " + (posDir > 0 ? "UP" : "DOWN") + " at " + str.tostring(posEntry, "0") + "c: " + posCmd : "No position yet - set Side in settings after you buy"
     string posB = posDir != 0 ? "Worth about $" + str.tostring(estVal, "0") + " (" + (estPnl >= 0 ? "+" : "-") + "$" + str.tostring(math.abs(estPnl), "0") + ")  |  max loss $" + str.tostring(posUsd, "0") + "  |  cut line " + str.tostring(cutLine, "0") : ""
     color posBg = posDir != 0 ? posCol : color.new(color.black, 100)
+    color okCol = color.new(color.lime, 0)
+    color noCol = color.new(color.silver, 30)
     table.cell(table_id=hud, column=0, row=0, text=cmd, text_color=color.white, text_size=txtSize, bgcolor=cmdCol, width=cellW)
     table.cell(table_id=hud, column=1, row=0, text="", width=cellW)
     table.cell(table_id=hud, column=0, row=1, text=upTxt, text_color=color.white, text_size=size.large, bgcolor=color.new(color.green, glowUp), width=cellW)
     table.cell(table_id=hud, column=1, row=1, text=dnTxt, text_color=color.white, text_size=size.large, bgcolor=color.new(color.red, glowDn), width=cellW)
     table.cell(table_id=hud, column=0, row=2, text=clockTxt, text_color=color.yellow, text_size=txtSize, width=cellW)
     table.cell(table_id=hud, column=1, row=2, text="", width=cellW)
-    table.cell(table_id=hud, column=0, row=3, text=checks, text_color=conv >= minConv ? color.lime : color.silver, text_size=size.small, width=cellW)
+    table.cell(table_id=hud, column=0, row=3, text=hdr, text_color=conv >= minConv ? color.lime : color.white, text_size=txtSize, text_halign=text.align_left, width=cellW)
     table.cell(table_id=hud, column=1, row=3, text="", width=cellW)
-    table.cell(table_id=hud, column=0, row=4, text=safeTxt + "\n" + velTxt, text_color=secsToSafe <= 0 ? color.lime : color.yellow, text_size=size.small, width=cellW)
+    table.cell(table_id=hud, column=0, row=4, text=c1, text_color=l1 ? okCol : noCol, text_size=size.small, text_halign=text.align_left, width=cellW)
     table.cell(table_id=hud, column=1, row=4, text="", width=cellW)
-    table.cell(table_id=hud, column=0, row=5, text=posA, text_color=posDir != 0 ? color.white : color.gray, text_size=txtSize, bgcolor=posBg, width=cellW)
+    table.cell(table_id=hud, column=0, row=5, text=c2, text_color=l2 ? okCol : noCol, text_size=size.small, text_halign=text.align_left, width=cellW)
     table.cell(table_id=hud, column=1, row=5, text="", width=cellW)
-    table.cell(table_id=hud, column=0, row=6, text=posB, text_color=posDir != 0 and estPnl >= 0 ? color.lime : posDir != 0 ? color.red : color.gray, text_size=size.small, width=cellW)
+    table.cell(table_id=hud, column=0, row=6, text=c3, text_color=l3 ? okCol : noCol, text_size=size.small, text_halign=text.align_left, width=cellW)
     table.cell(table_id=hud, column=1, row=6, text="", width=cellW)
+    table.cell(table_id=hud, column=0, row=7, text=c4, text_color=l4 ? okCol : noCol, text_size=size.small, text_halign=text.align_left, width=cellW)
+    table.cell(table_id=hud, column=1, row=7, text="", width=cellW)
+    table.cell(table_id=hud, column=0, row=8, text=c5, text_color=l5 ? okCol : noCol, text_size=size.small, text_halign=text.align_left, width=cellW)
+    table.cell(table_id=hud, column=1, row=8, text="", width=cellW)
+    table.cell(table_id=hud, column=0, row=9, text=posA, text_color=posDir != 0 ? color.white : color.gray, text_size=txtSize, bgcolor=posBg, width=cellW)
+    table.cell(table_id=hud, column=1, row=9, text="", width=cellW)
+    table.cell(table_id=hud, column=0, row=10, text=posB, text_color=posDir != 0 and estPnl >= 0 ? color.lime : posDir != 0 ? color.red : color.gray, text_size=size.small, width=cellW)
+    table.cell(table_id=hud, column=1, row=10, text="", width=cellW)
+    table.cell(table_id=hud, column=0, row=11, text="typical swing against you $" + str.tostring(sigAdv, "0") + "/min  |  " + (volDanger ? "market is wild" : cleanRun ? "clean trend" : revRisk ? "trend may be turning" : "mixed trend"), text_color=color.silver, text_size=size.small, width=cellW)
+    table.cell(table_id=hud, column=1, row=11, text="", width=cellW)
     if not hudMerged
-        table.merge_cells(hud, 0, 0, 1, 0)
-        table.merge_cells(hud, 0, 2, 1, 2)
-        table.merge_cells(hud, 0, 3, 1, 3)
-        table.merge_cells(hud, 0, 4, 1, 4)
-        table.merge_cells(hud, 0, 5, 1, 5)
-        table.merge_cells(hud, 0, 6, 1, 6)
+        for r = 0 to 11
+            if r != 1
+                table.merge_cells(hud, 0, r, 1, r)
         hudMerged := true
 
 // ===== 11. Alerts =====
