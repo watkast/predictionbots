@@ -1,7 +1,7 @@
 //@version=5
 // Polymarket US Alpha Engine v6 - decision HUD: UP/DOWN fair prices (lit on the leaning side), conviction
 // gate, adverse-velocity cushion, time-to-safety clock, in-position HOLD / CUT / SELL instruction.
-indicator("Polymarket US Alpha Engine v6.1", shorttitle="Alpha v6.1", overlay=true, max_lines_count=50)
+indicator("Polymarket US Alpha Engine v6.2", shorttitle="Alpha v6.2", overlay=true, max_lines_count=50)
 
 // ===== 1. Inputs =====
 grpR = "Round & signal"
