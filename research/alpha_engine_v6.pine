@@ -37,7 +37,7 @@ grpU = "HUD"
 hudPos    = input.string("Middle right", "HUD position", options=["Top center", "Top left", "Top right", "Bottom center", "Bottom left", "Bottom right", "Middle right", "Middle left"], group=grpU)
 hudSize   = input.string("Normal", "HUD text size", options=["Small", "Normal", "Large"], group=grpU)
 showZones = input.bool(true, "Shade signal / entry window", group=grpU)
-cellW     = input.int(22, "HUD column width (% of chart)", minval=10, maxval=45, group=grpU)
+cellW     = input.int(30, "HUD column width (% of chart)", minval=10, maxval=48, group=grpU)
 
 // ===== 2. Round clock =====
 roundMs    = roundMin * 60 * 1000
@@ -111,29 +111,29 @@ string cmd = "OBSERVING"
 color  cmdCol = color.new(color.gray, 20)
 int    sig = 0
 if volDanger
-    cmd := "ABORT - volatility lock"
+    cmd := "ABORT vol lock"
     cmdCol := color.new(color.maroon, 10)
 else if lateKill
-    cmd := "ROUND CLOSING - no new buys"
+    cmd := "CLOSING no buys"
     cmdCol := color.new(color.purple, 20)
 else if minsElapsed < entryFrom
-    cmd := "WAIT - window in " + str.tostring(math.ceil(entryFrom * 60 - secsElapsed)) + "s"
+    cmd := "WAIT " + str.tostring(math.ceil(entryFrom * 60 - secsElapsed)) + "s"
     cmdCol := color.new(color.gray, 20)
 else if not inWindow
     cmd := "WINDOW CLOSED"
     cmdCol := color.new(color.purple, 20)
 else if inChop
-    cmd := "NO - inside chop band"
+    cmd := "NO chop band"
     cmdCol := color.new(color.orange, 15)
 else if conv >= minConv
     cmd := (lean > 0 ? "GO UP" : "GO DOWN") + "  " + str.tostring(conv) + "/5"
     cmdCol := lean > 0 ? color.new(color.green, 10) : color.new(color.red, 10)
     sig := lean
 else if conv >= 2
-    cmd := "WAIT - " + str.tostring(conv) + "/5 lit"
+    cmd := "WAIT " + str.tostring(conv) + "/5"
     cmdCol := color.new(color.orange, 15)
 else
-    cmd := "NO - " + str.tostring(conv) + "/5 lit"
+    cmd := "NO " + str.tostring(conv) + "/5"
     cmdCol := color.new(color.gray, 20)
 
 // ===== 8. In-position instruction =====
@@ -147,19 +147,19 @@ string posCmd = ""
 color  posCol = color.gray
 if posDir != 0
     if posLead <= cutBuf
-        posCmd := "CUT NOW - lead gone (" + (posLead >= 0 ? "+" : "") + str.tostring(posLead, "0") + "$)"
+        posCmd := "CUT NOW (" + (posLead >= 0 ? "+" : "") + str.tostring(posLead, "0") + "$)"
         posCol := color.new(color.red, 0)
     else if posFair * 100 >= tpCents and secsToSafe <= 0
-        posCmd := "SELL at " + str.tostring(tpCents, "0") + "c+ (safe, fair " + str.tostring(math.round(posFair * 100)) + "c)"
+        posCmd := "SELL " + str.tostring(tpCents, "0") + "c+ (safe)"
         posCol := color.new(color.lime, 0)
     else if posFair * 100 >= tpCents
-        posCmd := "HOLD / SELL at " + str.tostring(tpCents, "0") + "c+ (book overprices from min 10)"
+        posCmd := "HOLD, offer " + str.tostring(tpCents, "0") + "c+"
         posCol := color.new(color.green, 20)
     else if posLead < chopBand
-        posCmd := "CAUTION - near cut line"
+        posCmd := "CAUTION near cut"
         posCol := color.new(color.orange, 0)
     else
-        posCmd := "HOLD - lead " + (posLead >= 0 ? "+" : "") + str.tostring(posLead, "0") + "$, cushion " + str.tostring(posLead - cutBuf, "0") + "$" + (minsElapsed >= 10 ? " - offer " + str.tostring(tpCents, "0") + "c+" : "")
+        posCmd := "HOLD +" + str.tostring(posLead, "0") + "$ cush " + str.tostring(posLead - cutBuf, "0") + "$" + (minsElapsed >= 10 ? " offer " + str.tostring(tpCents, "0") + "c" : "")
         posCol := color.new(color.green, 30)
 
 // ===== 9. Chart layers =====
@@ -185,23 +185,23 @@ if barstate.islast
     string upTxt = "UP " + str.tostring(upC) + "c"
     string dnTxt = "DOWN " + str.tostring(dnC) + "c"
     if mktUp > 0
-        upTxt := upTxt + " | mkt " + str.tostring(mktUp, "0") + " (" + (upC - mktUp >= 0 ? "+" : "") + str.tostring(upC - mktUp, "0") + ")"
+        upTxt := upTxt + " m" + str.tostring(mktUp, "0") + (upC - mktUp >= 0 ? "+" : "") + str.tostring(upC - mktUp, "0")
     if mktDn > 0
-        dnTxt := dnTxt + " | mkt " + str.tostring(mktDn, "0") + " (" + (dnC - mktDn >= 0 ? "+" : "") + str.tostring(dnC - mktDn, "0") + ")"
+        dnTxt := dnTxt + " m" + str.tostring(mktDn, "0") + (dnC - mktDn >= 0 ? "+" : "") + str.tostring(dnC - mktDn, "0")
     int mL = int(math.floor(secsLeft / 60.0))
     int sL = int(math.floor(secsLeft - mL * 60.0))
     string clockTxt = str.tostring(mL) + ":" + (sL < 10 ? "0" : "") + str.tostring(sL) + " left"
-    string leadTxt = (dev >= 0 ? "+" : "") + str.tostring(dev, "0") + "$ vs " + str.tostring(anchor, "#,###.00")
-    string lightsA = (l1 ? "[x]" : "[ ]") + " lead  " + (l2 ? "[x]" : "[ ]") + " twap  " + (l3 ? "[x]" : "[ ]") + " clean"
-    string lightsB = (l4 ? "[x]" : "[ ]") + " calm  " + (l5 ? "[x]" : "[ ]") + " safe"
+    string leadTxt = (dev >= 0 ? "+" : "") + str.tostring(dev, "0") + "$ vs " + str.tostring(anchor, "0")
+    string lightsA = "lead:" + (l1 ? "x" : "-") + " twap:" + (l2 ? "x" : "-") + " clean:" + (l3 ? "x" : "-")
+    string lightsB = "calm:" + (l4 ? "x" : "-") + " safe:" + (l5 ? "x" : "-")
     int sm = int(secsToSafe / 60)
     int ss = int(secsToSafe - sm * 60)
-    string safeTxt = secsToSafe <= 0 ? "SAFE NOW (" + str.tostring(math.round(pSafe * 100)) + "% survive)" : "safe in " + str.tostring(sm) + ":" + (ss < 10 ? "0" : "") + str.tostring(ss) + " (" + str.tostring(math.round(pSafe * 100)) + "% survive)"
-    string velTxt = "3-min range " + str.tostring(range3, "0") + "$ | adverse vol " + str.tostring(sigAdv, "0") + "$/min"
-    string regTxt = (volDanger ? "!! VOL DANGEROUS" : "vol ok") + " | " + (cleanRun ? "clean run" : revRisk ? "reversal risk" : "mixed")
-    string posA = posDir != 0 ? posCmd : "not in a position"
-    string posB = posDir != 0 ? "worth ~$" + str.tostring(estVal, "0") + " (" + (estPnl >= 0 ? "+" : "") + str.tostring(estPnl, "0") + ")" : "set Side in settings after you buy"
-    string posC = posDir != 0 ? "max loss -$" + str.tostring(posUsd, "0") + " | cut " + str.tostring(cutLine, "#,###") : ""
+    string safeTxt = secsToSafe <= 0 ? "SAFE NOW " + str.tostring(math.round(pSafe * 100)) + "%" : "safe in " + str.tostring(sm) + ":" + (ss < 10 ? "0" : "") + str.tostring(ss) + " (" + str.tostring(math.round(pSafe * 100)) + "%)"
+    string velTxt = "3m rng " + str.tostring(range3, "0") + "$ | vol " + str.tostring(sigAdv, "0") + "$/m"
+    string regTxt = (volDanger ? "!! VOL HIGH" : "vol ok") + " | " + (cleanRun ? "clean" : revRisk ? "reversal?" : "mixed")
+    string posA = posDir != 0 ? posCmd : "no position"
+    string posB = posDir != 0 ? "~$" + str.tostring(estVal, "0") + " (" + (estPnl >= 0 ? "+" : "") + str.tostring(estPnl, "0") + ")" : "set Side after buy"
+    string posC = posDir != 0 ? "max -$" + str.tostring(posUsd, "0") + " | cut " + str.tostring(cutLine, "0") : ""
     color posBg = posDir != 0 ? posCol : color.new(color.black, 100)
     table.cell(table_id=hud, column=0, row=0, text=cmd, text_color=color.white, text_size=txtSize, bgcolor=cmdCol, width=cellW)
     table.cell(table_id=hud, column=1, row=0, text=regTxt, text_color=volDanger ? color.red : cleanRun ? color.green : color.orange, text_size=size.small, width=cellW)
