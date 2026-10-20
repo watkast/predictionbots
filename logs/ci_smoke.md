@@ -1,6 +1,6 @@
 # mm_inventory backtest
 
-Generated 2026-10-20 00:16:21 UTC
+Generated 2026-10-20 00:37:25 UTC
 
 | strategy | label | net pnl | fees | fills | maker % | max DD | max capital | ret/maxcap | markets | win rate | params |
 |---|---|---|---|---|---|---|---|---|---|---|---|
