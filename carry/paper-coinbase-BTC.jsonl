@@ -21,3 +21,5 @@
 {"in_pos": false, "interval_ts": 1792515600.0, "mark": 82670.0, "rate": 8e-06, "signal": null, "ts": 1792517714.9840312, "type": "tick"}
 {"in_pos": false, "interval_ts": 1792526400.0, "mark": 82695.0, "rate": 5e-06, "signal": null, "ts": 1792529703.2531676, "type": "tick"}
 {"in_pos": false, "interval_ts": 1792540800.0, "mark": 82925.0, "rate": 5e-06, "signal": null, "ts": 1792541408.969407, "type": "tick"}
+{"in_pos": false, "interval_ts": 1792558800.0, "mark": 82775.0, "rate": 0.0, "signal": 0.11278500000000001, "ts": 1792560139.853849, "type": "tick"}
+{"cost": 8.281214134702507, "mark": 82775.0, "notional": 1000.0, "rate": 0.0, "signal": 0.11278500000000001, "ts": 1792560139.853849, "type": "enter"}
