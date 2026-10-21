@@ -1,0 +1,111 @@
+{
+  "net_pnl": -5.0,
+  "gross_pnl": -5.0,
+  "fees": 0.0,
+  "fills": 4,
+  "maker_fills": 4,
+  "taker_fills": 0,
+  "contracts_traded": 20.0,
+  "max_drawdown": 5.65,
+  "max_capital_at_risk": 3.5,
+  "markets_traded": 22,
+  "market_win_rate": 0.0,
+  "sharpe_like": -0.94,
+  "net_pnl_on_max_capital": -1.4286,
+  "maker_pct": 100.0,
+  "reality": {
+    "cross_assumed_fill_frac": 0.0,
+    "cross_assumed_fills": 0,
+    "maker_frac": 1.0,
+    "max_fill_to_touch_depth": 1.0,
+    "top3_market_pnl_frac": 0.0,
+    "pnl_per_contract": -0.25
+  },
+  "run_id": "mm_crypto_twap_kxbtc15m-20261020T1751",
+  "started_at": 1792518691.3049119,
+  "updated_at": 1792538691.4913094,
+  "uptime_secs": 20000.2,
+  "open_orders": 0,
+  "positions": {
+    "KXBTC15M-26OCT201500-00": {
+      "contracts": 0.0,
+      "avg_price": 0.0,
+      "realized": -1.5,
+      "fees": 0.0
+    },
+    "KXBTC15M-26OCT201730-30": {
+      "contracts": 0.0,
+      "avg_price": 0.0,
+      "realized": -3.5,
+      "fees": 0.0
+    }
+  },
+  "markets": [
+    "KXBTC15M-26OCT201400-00",
+    "KXBTC15M-26OCT201415-15",
+    "KXBTC15M-26OCT201430-30",
+    "KXBTC15M-26OCT201445-45",
+    "KXBTC15M-26OCT201500-00",
+    "KXBTC15M-26OCT201515-15",
+    "KXBTC15M-26OCT201530-30",
+    "KXBTC15M-26OCT201545-45",
+    "KXBTC15M-26OCT201600-00",
+    "KXBTC15M-26OCT201615-15",
+    "KXBTC15M-26OCT201630-30",
+    "KXBTC15M-26OCT201645-45",
+    "KXBTC15M-26OCT201700-00",
+    "KXBTC15M-26OCT201715-15",
+    "KXBTC15M-26OCT201730-30",
+    "KXBTC15M-26OCT201745-45",
+    "KXBTC15M-26OCT201800-00",
+    "KXBTC15M-26OCT201815-15",
+    "KXBTC15M-26OCT201830-30",
+    "KXBTC15M-26OCT201845-45",
+    "KXBTC15M-26OCT201900-00",
+    "KXBTC15M-26OCT201915-15",
+    "KXBTC15M-26OCT201930-30"
+  ],
+  "active_markets": [
+    "KXBTC15M-26OCT201930-30"
+  ],
+  "rolls": 332,
+  "last_roll": {
+    "ts": 1792538642.6072757,
+    "selected": 1,
+    "added": [],
+    "dropped": [],
+    "error": ""
+  },
+  "last_event_age": {
+    "KXBTC15M-26OCT201845-45": 2358.1,
+    "KXBTC15M-26OCT201930-30": 1.8
+  },
+  "risk": {
+    "halted": false,
+    "halt_reason": "",
+    "halted_at": 0.0,
+    "stale": false,
+    "kill_file": "data/KILL",
+    "kill_file_present": false,
+    "pnl_today": -5.0,
+    "daily_loss_limit": 50.0,
+    "capital_in_use": 0.0,
+    "capital_in_use_by_market": {},
+    "max_capital_total": 2000.0,
+    "max_capital_per_market": 500.0,
+    "orders_last_min": 0,
+    "max_orders_per_min": 120,
+    "accepted": 20,
+    "rejected": 0,
+    "reject_reasons": {},
+    "cancel_all_count": 0,
+    "last_book_age": {
+      "KXBTC15M-26OCT201930-30": 1.8
+    },
+    "stale_secs": 60.0
+  },
+  "strategies": [
+    "mm_crypto_twap"
+  ],
+  "venue": "kalshi"
+}
