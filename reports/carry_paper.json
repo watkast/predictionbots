@@ -1,65 +1,65 @@
 {
  "entries": {
   "binance-ref-BTC": {
-   "ticks": 26,
+   "ticks": 27,
    "enters": 0,
    "exits": 0,
    "funding": 0,
    "costs": 0,
    "net": 0,
    "first_ts": 1792220119.6114893,
-   "last_ts": 1792597228.8254457,
+   "last_ts": 1792611706.4105074,
    "in_pos_frac": 0.0,
    "last_signal": null
   },
   "coinbase-BTC": {
-   "ticks": 26,
+   "ticks": 27,
    "enters": 1,
    "exits": 0,
-   "funding": 0.020999999999999998,
+   "funding": 0.031,
    "costs": 8.281214134702507,
-   "net": -8.260214134702506,
+   "net": -8.250214134702507,
    "first_ts": 1792220119.6114893,
-   "last_ts": 1792597228.8254457,
-   "in_pos_frac": 0.07692307692307693,
-   "last_signal": 0.109865
+   "last_ts": 1792611706.4105074,
+   "in_pos_frac": 0.1111111111111111,
+   "last_signal": 0.10658000000000001
   },
   "coinbase-ETH": {
-   "ticks": 26,
+   "ticks": 27,
    "enters": 0,
    "exits": 0,
    "funding": 0,
    "costs": 0,
    "net": 0,
    "first_ts": 1792220119.6114893,
-   "last_ts": 1792597228.8254457,
+   "last_ts": 1792611706.4105074,
    "in_pos_frac": 0.0,
-   "last_signal": 0.063145
+   "last_signal": 0.06570000000000001
   },
   "kraken-BTC": {
-   "ticks": 26,
+   "ticks": 27,
    "enters": 1,
    "exits": 0,
-   "funding": 0.7000000000000001,
+   "funding": 0.8,
    "costs": 4.269227470440483,
-   "net": -3.5692274704404827,
+   "net": -3.469227470440483,
    "first_ts": 1792220119.6114893,
-   "last_ts": 1792597228.8254457,
-   "in_pos_frac": 0.6923076923076923,
+   "last_ts": 1792611706.4105074,
+   "in_pos_frac": 0.7037037037037037,
    "last_signal": 0.1095
   },
   "kraken-ETH": {
-   "ticks": 26,
+   "ticks": 27,
    "enters": 1,
    "exits": 0,
-   "funding": 0.7000000000000001,
+   "funding": 0.8,
    "costs": 4.2018772323282665,
-   "net": -3.5018772323282663,
+   "net": -3.4018772323282667,
    "first_ts": 1792220119.6114893,
-   "last_ts": 1792597228.8254457,
-   "in_pos_frac": 0.6923076923076923,
+   "last_ts": 1792611706.4105074,
+   "in_pos_frac": 0.7037037037037037,
    "last_signal": 0.1095
   }
  },
- "live_rows": 100
+ "live_rows": 106
 }
