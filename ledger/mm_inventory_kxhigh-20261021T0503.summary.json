@@ -1,0 +1,146 @@
+{
+  "net_pnl": -0.65,
+  "gross_pnl": -0.65,
+  "fees": 0.0,
+  "fills": 4,
+  "maker_fills": 4,
+  "taker_fills": 0,
+  "contracts_traded": 30.0,
+  "max_drawdown": 1.35,
+  "max_capital_at_risk": 14.8,
+  "markets_traded": 6,
+  "market_win_rate": 0.0,
+  "sharpe_like": -0.6,
+  "net_pnl_on_max_capital": -0.0439,
+  "maker_pct": 100.0,
+  "reality": {
+    "cross_assumed_fill_frac": 0.25,
+    "cross_assumed_fills": 1,
+    "maker_frac": 1.0,
+    "max_fill_to_touch_depth": 11.905,
+    "top3_market_pnl_frac": 0.0,
+    "pnl_per_contract": -0.02167
+  },
+  "run_id": "mm_inventory_kxhigh-20261021T0503",
+  "started_at": 1792558988.1673098,
+  "updated_at": 1792578988.1766875,
+  "uptime_secs": 20000.0,
+  "open_orders": 0,
+  "positions": {
+    "KXHIGHNY-26OCT21-B63.5": {
+      "contracts": -10.0,
+      "avg_price": 0.33,
+      "realized": 0.0,
+      "fees": 0.0
+    },
+    "KXHIGHMIA-26OCT21-B85.5": {
+      "contracts": -10.0,
+      "avg_price": 0.67,
+      "realized": 0.0,
+      "fees": 0.0
+    },
+    "KXHIGHNY-26OCT21-B61.5": {
+      "contracts": -10.0,
+      "avg_price": 0.52,
+      "realized": 0.0,
+      "fees": 0.0
+    }
+  },
+  "markets": [
+    "KXHIGHNY-26OCT21-B65.5",
+    "KXHIGHNY-26OCT21-B63.5",
+    "KXHIGHNY-26OCT21-B61.5",
+    "KXHIGHMIA-26OCT21-B83.5",
+    "KXHIGHMIA-26OCT21-B85.5",
+    "KXHIGHMIA-26OCT21-B87.5",
+    "KXHIGHCHI-26OCT20-B69.5",
+    "KXHIGHCHI-26OCT20-B67.5",
+    "KXHIGHCHI-26OCT20-B65.5",
+    "KXHIGHCHI-26OCT20-B71.5",
+    "KXHIGHCHI-26OCT21-B68.5",
+    "KXHIGHCHI-26OCT21-B72.5",
+    "KXHIGHCHI-26OCT21-T68",
+    "KXHIGHNY-26OCT21-B59.5",
+    "KXHIGHCHI-26OCT21-B74.5",
+    "KXHIGHCHI-26OCT21-B70.5"
+  ],
+  "active_markets": [
+    "KXHIGHNY-26OCT21-B65.5",
+    "KXHIGHNY-26OCT21-B63.5",
+    "KXHIGHNY-26OCT21-B61.5",
+    "KXHIGHMIA-26OCT21-B83.5",
+    "KXHIGHMIA-26OCT21-B85.5",
+    "KXHIGHMIA-26OCT21-B87.5",
+    "KXHIGHCHI-26OCT21-B68.5",
+    "KXHIGHCHI-26OCT21-B72.5",
+    "KXHIGHCHI-26OCT21-T68",
+    "KXHIGHNY-26OCT21-B59.5",
+    "KXHIGHCHI-26OCT21-B74.5",
+    "KXHIGHCHI-26OCT21-B70.5"
+  ],
+  "rolls": 331,
+  "last_roll": {
+    "ts": 1792578981.5460026,
+    "selected": 9,
+    "added": [],
+    "dropped": [],
+    "error": ""
+  },
+  "last_event_age": {
+    "KXHIGHNY-26OCT21-B65.5": 0.1,
+    "KXHIGHNY-26OCT21-B63.5": 0.1,
+    "KXHIGHNY-26OCT21-B61.5": 0.0,
+    "KXHIGHMIA-26OCT21-B83.5": 3.4,
+    "KXHIGHMIA-26OCT21-B85.5": 3.4,
+    "KXHIGHMIA-26OCT21-B87.5": 3.3,
+    "KXHIGHCHI-26OCT21-B68.5": 3.2,
+    "KXHIGHCHI-26OCT21-B72.5": 0.5,
+    "KXHIGHCHI-26OCT21-T68": 3.1,
+    "KXHIGHNY-26OCT21-B59.5": 3.1,
+    "KXHIGHCHI-26OCT21-B74.5": 3.8,
+    "KXHIGHCHI-26OCT21-B70.5": 3.0
+  },
+  "risk": {
+    "halted": false,
+    "halt_reason": "",
+    "halted_at": 0.0,
+    "stale": false,
+    "kill_file": "data/KILL",
+    "kill_file_present": false,
+    "pnl_today": -0.8,
+    "daily_loss_limit": 50.0,
+    "capital_in_use": 14.8,
+    "capital_in_use_by_market": {
+      "KXHIGHNY-26OCT21-B63.5": 6.7,
+      "KXHIGHNY-26OCT21-B61.5": 4.8,
+      "KXHIGHMIA-26OCT21-B85.5": 3.3
+    },
+    "max_capital_total": 2000.0,
+    "max_capital_per_market": 500.0,
+    "orders_last_min": 0,
+    "max_orders_per_min": 120,
+    "accepted": 60,
+    "rejected": 0,
+    "reject_reasons": {},
+    "cancel_all_count": 0,
+    "last_book_age": {
+      "KXHIGHNY-26OCT21-B65.5": 0.1,
+      "KXHIGHNY-26OCT21-B63.5": 0.1,
+      "KXHIGHNY-26OCT21-B61.5": 0.0,
+      "KXHIGHMIA-26OCT21-B83.5": 3.4,
+      "KXHIGHMIA-26OCT21-B85.5": 3.4,
+      "KXHIGHMIA-26OCT21-B87.5": 3.3,
+      "KXHIGHCHI-26OCT21-T68": 3.1,
+      "KXHIGHCHI-26OCT21-B68.5": 3.2,
+      "KXHIGHCHI-26OCT21-B72.5": 3.2,
+      "KXHIGHNY-26OCT21-B59.5": 3.1,
+      "KXHIGHCHI-26OCT21-B74.5": 7.1,
+      "KXHIGHCHI-26OCT21-B70.5": 3.0
+    },
+    "stale_secs": 60.0
+  },
+  "strategies": [
+    "mm_inventory"
+  ],
+  "venue": "kalshi"
+}
