@@ -1,72 +1,72 @@
 [
  {
-  "path": "/v1/markets/cpc-btc-updown-15m-2026-10-22-1200z/book",
+  "path": "/v1/markets/cpc-btc-updown-15m-2026-10-22-1600z/book",
   "status": 200,
-  "body": "{\"marketData\":{\"marketSlug\":\"cpc-btc-updown-15m-2026-10-22-1200z\",\"bids\":[{\"px\":{\"value\":\"0.6500\",\"currency\":\"USD\"},\"qty\":\"1456.0000\"},{\"px\":{\"value\":\"0.6400\",\"currency\":\"USD\"},\"qty\":\"1785.0000\"},{\"px\":{\"value\":\"0.6300\",\"currency\":\"USD\"},\"qty\":\"1737.0000\"},{\"px\":{\"value\":\"0.6200\",\"currency\":\"USD\"},\"qty\":\"1524.0000\"},{\"px\":{\"value\":\"0.6100\",\"currency\":\"USD\"},\"qty\":\"1642.0000\"},{\"px\":{\"value\":\"0.6000\",\"currency\":\"USD\"},\"qty\":\"40.0000\"},{\"px\":{\"value\":\"0.5900\",\"currency\":\"USD\"},\"qty\":\"340.0000\"},{\"px\":{\"value\":\"0.5800\",\"currency\":\"USD\"},\"qty\":\"40.0000\"},{\"px\":{\"value\":\"0.5700\",\"currency\":\"USD\"},\"qty\":\"40.0000\"},{\"px\":{\"value\":\"0.5600\",\"currency\":\"USD\"},\"qty\":\"800.0000\"},{\"px\":{\"value\":\"0.5500\",\"currency\":\"USD\"},\"qty\":\"1600.0000\"},{\"px\":{\"value\":\"0.4500\",\"currency\":\"USD\"},\"qty\":\"2000.0000\"},{\"px\":{\"value\":\"0.3000\",\"currency\":\"USD\"},\"qty\":\"600.0000\"},{\"px\":{\"value\":\"0.2900\",\"currency\":\"USD\"},\"qty\":\"98.8000\"},{\"px\":{\"value\":\"0.2700\",\"currency\":\"USD\"},\"qty\":\"3000.0000\"},{\"px\":{\"value\":\"0.2500\",\"currency\":\"USD\"},\"qty\":\"160.0000\"},{\"px\":{\"value\":\"0.2100\",\"currency\":\"USD\"},\"qty\":\"55.0000\"},{\"px\":{\"value\":\"0.2000\",\"currency\":\"USD\"},\"qty\":\"763.3000\"},{\"px\":{\"value\":\"0.1900\",\"currency\":\"USD\"},\"qty\":\"263.1600\"},{\"px\":{\"value\":\"0.1800\",\"currency\":\"USD\"},\"qty\":\"277.7800\"},{\"px\":{\"value\":\"0.1700\",\"currency\":\"USD\"},\"qty\":\"294.1200\"},{\"px\":{\"value\":\"0.1600\",\"currency\":\"USD\"},\"qty\":\"328.2700\"},{\"px\":{\"value\":\"0.1500\",\"currency\":\"USD\"},\"qty\":\"833.3300\"},{\"px\":{\"value\":\"0.1400\",\"currency\":\"USD\"},\""
+  "body": "{\"marketData\":{\"marketSlug\":\"cpc-btc-updown-15m-2026-10-22-1600z\",\"bids\":[{\"px\":{\"value\":\"0.5200\",\"currency\":\"USD\"},\"qty\":\"2412.6500\"},{\"px\":{\"value\":\"0.5100\",\"currency\":\"USD\"},\"qty\":\"2146.5100\"},{\"px\":{\"value\":\"0.5000\",\"currency\":\"USD\"},\"qty\":\"1483.1600\"},{\"px\":{\"value\":\"0.4900\",\"currency\":\"USD\"},\"qty\":\"162.0000\"},{\"px\":{\"value\":\"0.4800\",\"currency\":\"USD\"},\"qty\":\"156.7200\"},{\"px\":{\"value\":\"0.4700\",\"currency\":\"USD\"},\"qty\":\"1121.9000\"},{\"px\":{\"value\":\"0.4600\",\"currency\":\"USD\"},\"qty\":\"801.0200\"},{\"px\":{\"value\":\"0.4500\",\"currency\":\"USD\"},\"qty\":\"5127.4400\"},{\"px\":{\"value\":\"0.4400\",\"currency\":\"USD\"},\"qty\":\"18.0000\"},{\"px\":{\"value\":\"0.4300\",\"currency\":\"USD\"},\"qty\":\"12.0000\"},{\"px\":{\"value\":\"0.4200\",\"currency\":\"USD\"},\"qty\":\"192.6800\"},{\"px\":{\"value\":\"0.4100\",\"currency\":\"USD\"},\"qty\":\"22.0000\"},{\"px\":{\"value\":\"0.4000\",\"currency\":\"USD\"},\"qty\":\"116.0000\"},{\"px\":{\"value\":\"0.3900\",\"currency\":\"USD\"},\"qty\":\"16.0000\"},{\"px\":{\"value\":\"0.3800\",\"currency\":\"USD\"},\"qty\":\"2220.3100\"},{\"px\":{\"value\":\"0.3700\",\"currency\":\"USD\"},\"qty\":\"15.8600\"},{\"px\":{\"value\":\"0.3500\",\"currency\":\"USD\"},\"qty\":\"163.8200\"},{\"px\":{\"value\":\"0.3400\",\"currency\":\"USD\"},\"qty\":\"26.0600\"},{\"px\":{\"value\":\"0.3300\",\"currency\":\"USD\"},\"qty\":\"110.7600\"},{\"px\":{\"value\":\"0.3200\",\"currency\":\"USD\"},\"qty\":\"71.5800\"},{\"px\":{\"value\":\"0.3000\",\"currency\":\"USD\"},\"qty\":\"702.0000\"},{\"px\":{\"value\":\"0.2600\",\"currency\":\"USD\"},\"qty\":\"84.0600\"},{\"px\":{\"value\":\"0.2500\",\"currency\":\"USD\"},\"qty\":\"11.0000\"},{\"px\":{\"value\":\"0.2400\",\"currency\":\"USD\"},\"qty\":\""
  },
  {
-  "path": "/v1/markets/cpc-btc-updown-15m-2026-10-22-1200z/bbo",
+  "path": "/v1/markets/cpc-btc-updown-15m-2026-10-22-1600z/bbo",
   "status": 200,
-  "body": "{\"marketData\":{\"marketSlug\":\"cpc-btc-updown-15m-2026-10-22-1200z\",\"currentPx\":{\"value\":\"0.7100\",\"currency\":\"USD\"},\"lastTradePx\":{\"value\":\"0.7000\",\"currency\":\"USD\"},\"settlementPx\":{\"value\":\"0.0000\",\"currency\":\"USD\"},\"sharesTraded\":\"96683.1900\",\"openInterest\":\"21790.9100\",\"bestAsk\":{\"value\":\"0.7200\",\"currency\":\"USD\"},\"bestBid\":{\"value\":\"0.7000\",\"currency\":\"USD\"},\"askDepth\":26,\"bidDepth\":34,\"lastPriceSample\":{\"longPx\":{\"value\":\"0.7000\",\"currency\":\"USD\"},\"shortPx\":{\"value\":\"0.3\",\"currency\":\"USD\"},\"ts\":\"2026-10-22T12:10:22.042875495Z\"},\"longQuote\":{\"value\":\"0.7200\",\"currency\":\"USD\"},\"shortQuote\":{\"value\":\"0.3\",\"currency\":\"USD\"},\"state\":\"MARKET_STATE_OPEN\",\"bidShares\":\"54000\",\"askShares\":\"56000\"}}"
+  "body": "{\"marketData\":{\"marketSlug\":\"cpc-btc-updown-15m-2026-10-22-1600z\",\"currentPx\":{\"value\":\"0.5650\",\"currency\":\"USD\"},\"lastTradePx\":{\"value\":\"0.5700\",\"currency\":\"USD\"},\"settlementPx\":{\"value\":\"0.0000\",\"currency\":\"USD\"},\"sharesTraded\":\"56774.1700\",\"openInterest\":\"24879.2900\",\"bestAsk\":{\"value\":\"0.5700\",\"currency\":\"USD\"},\"bestBid\":{\"value\":\"0.5600\",\"currency\":\"USD\"},\"askDepth\":36,\"bidDepth\":52,\"lastPriceSample\":{\"longPx\":{\"value\":\"0.5700\",\"currency\":\"USD\"},\"shortPx\":{\"value\":\"0.43\",\"currency\":\"USD\"},\"ts\":\"2026-10-22T16:02:05.896884263Z\"},\"longQuote\":{\"value\":\"0.5700\",\"currency\":\"USD\"},\"shortQuote\":{\"value\":\"0.44\",\"currency\":\"USD\"},\"state\":\"MARKET_STATE_OPEN\",\"bidShares\":\"100000\",\"askShares\":\"110000\"}}"
  },
  {
-  "path": "/v1/market/slug/cpc-btc-updown-15m-2026-10-22-1200z/book",
+  "path": "/v1/market/slug/cpc-btc-updown-15m-2026-10-22-1600z/book",
   "status": 404,
   "body": "{\"code\":5,\"message\":\"The server was unable to process your request.\",\"details\":[]}"
  },
  {
-  "path": "/v1/markets/book/cpc-btc-updown-15m-2026-10-22-1200z",
+  "path": "/v1/markets/book/cpc-btc-updown-15m-2026-10-22-1600z",
   "status": 404,
   "body": "{\"code\":5,\"message\":\"The server was unable to process your request.\",\"details\":[]}"
  },
  {
-  "path": "/v1/book/cpc-btc-updown-15m-2026-10-22-1200z",
+  "path": "/v1/book/cpc-btc-updown-15m-2026-10-22-1600z",
   "status": 404,
   "body": "{\"code\":5,\"message\":\"The server was unable to process your request.\",\"details\":[]}"
  },
  {
-  "path": "/v1/markets/cpc-btc-updown-15m-2026-10-22-1200z",
+  "path": "/v1/markets/cpc-btc-updown-15m-2026-10-22-1600z",
   "status": 404,
   "body": "{\"code\":5,\"message\":\"The server was unable to process your request.\",\"details\":[]}"
  },
  {
-  "path": "/v1/market/slug/cpc-btc-updown-15m-2026-10-22-1200z",
+  "path": "/v1/market/slug/cpc-btc-updown-15m-2026-10-22-1600z",
   "status": 200,
-  "body": "{\"market\":{\"id\":\"1665936\",\"question\":\"BTC Up or Down 15m\",\"slug\":\"cpc-btc-updown-15m-2026-10-22-1200z\",\"endDate\":\"2026-10-22T12:45:00Z\",\"category\":\"crypto\",\"startDate\":\"2026-10-22T00:00:14Z\",\"description\":\"This market will settle to Up if the Bitcoin price at 8:15AM ET on Oct 22, 2026 is greater than or equal to the price at 8:00AM ET on Oct 22, 2026. Otherwise, this market will settle to Down. Outcome sourced from CF Benchmarks' Bitcoin Real-Time Index (BRTI), available at https://www.cfbenchmarks.com/data/indices/BRTI. The price at the beginning and at the end of the time range is determined the same way: in the last minute before each of those two times, 60 BRTI prices are collected. The official value for that time is the simple average of these prices, rounded to the nearest 2 decimal places. Please note that this market is about the price according to CF Benchmarks' BRTI, not according to other sources or spot markets.\",\"active\":true,\"marketType\":\"\",\"closed\":false,\"createdAt\":\"2026-10-22T00:08:03Z\",\"updatedAt\":\"2026-10-22T12:04:31Z\",\"archived\":false,\"orderPriceMinTickSize\":0.01,\"gameStartTime\":\"2026-10-22T12:00:00Z\",\"manualActivation\":false,\"sportsMarketType\":\"\",\"marketSides\":[{\"id\":\"3331346\",\"marketSideType\":\"MARKET_SIDE_TYPE_INSTRUMENT\",\"identifier\":\"cpc-btc-updown-15m-2026-10-22-1200z\",\"createdAt\":\"2026-10-22T00:08:03Z\",\"updatedAt\":\"2026-10-22T00:08:03Z\",\"description\":\"Yes\",\"price\":\"0.8200\",\"marketId\":1665936,\"long\":true,\"quote\":{\"value\":\"0.8200\",\"currency\":\"USD\"},\"t"
+  "body": "{\"market\":{\"id\":\"1671123\",\"question\":\"BTC Up or Down 15m\",\"slug\":\"cpc-btc-updown-15m-2026-10-22-1600z\",\"endDate\":\"2026-10-22T16:45:00Z\",\"category\":\"crypto\",\"startDate\":\"2026-10-22T04:00:13Z\",\"description\":\"This market will settle to Up if the Bitcoin price at 12:15PM ET on Oct 22, 2026 is greater than or equal to the price at 12:00PM ET on Oct 22, 2026. Otherwise, this market will settle to Down. Outcome sourced from CF Benchmarks' Bitcoin Real-Time Index (BRTI), available at https://www.cfbenchmarks.com/data/indices/BRTI. The price at the beginning and at the end of the time range is determined the same way: in the last minute before each of those two times, 60 BRTI prices are collected. The official value for that time is the simple average of these prices, rounded to the nearest 2 decimal places. Please note that this market is about the price according to CF Benchmarks' BRTI, not according to other sources or spot markets.\",\"active\":true,\"marketType\":\"\",\"closed\":false,\"createdAt\":\"2026-10-22T04:20:11Z\",\"updatedAt\":\"2026-10-22T16:00:00Z\",\"archived\":false,\"orderPriceMinTickSize\":0.01,\"gameStartTime\":\"2026-10-22T16:00:00Z\",\"manualActivation\":false,\"sportsMarketType\":\"\",\"marketSides\":[{\"id\":\"3341720\",\"marketSideType\":\"MARKET_SIDE_TYPE_INSTRUMENT\",\"identifier\":\"cpc-btc-updown-15m-2026-10-22-1600z\",\"createdAt\":\"2026-10-22T04:20:11Z\",\"updatedAt\":\"2026-10-22T04:20:11Z\",\"description\":\"Yes\",\"price\":\"0.6000\",\"marketId\":1671123,\"long\":true,\"quote\":{\"value\":\"0.6000\",\"currency\":\"USD\"},"
  },
  {
-  "path": "/v1/markets/cpc-btc-updown-15m-2026-10-22-1145z/book",
+  "path": "/v1/markets/cpc-btc-updown-15m-2026-10-22-1545z/book",
+  "status": 200,
+  "body": "{\"marketData\":{\"marketSlug\":\"cpc-btc-updown-15m-2026-10-22-1545z\",\"bids\":[],\"offers\":[],\"state\":\"MARKET_STATE_EXPIRED\",\"stats\":{\"openPx\":{\"value\":\"0.5000\",\"currency\":\"USD\"},\"closePx\":{\"value\":\"0.9900\",\"currency\":\"USD\"},\"lowPx\":{\"value\":\"0.3200\",\"currency\":\"USD\"},\"highPx\":{\"value\":\"0.9900\",\"currency\":\"USD\"},\"lastTradePx\":{\"value\":\"0.9900\",\"currency\":\"USD\"},\"settlementPx\":{\"value\":\"1.0000\",\"currency\":\"USD\"},\"sharesTraded\":\"457730.3300\",\"notionalTraded\":{\"value\":\"314281.7607\",\"currency\":\"USD\"},\"lastTradeQty\":\"374.0000\",\"openInterest\":\"0.0000\",\"openSetTime\":\"2026-10-22T15:45:05.025709940Z\",\"closeSetTime\":\"2026-10-22T16:00:00.013989269Z\",\"highSetTime\":\"2026-10-22T15:56:00.316137499Z\",\"lowSetTime\":\"2026-10-22T15:46:40.006188419Z\",\"lastTradeSetTime\":\"2026-10-22T15:59:51.151950597Z\",\"settlementSetTime\":\"2026-10-22T16:00:14.455231877Z\",\"openInterestSetTime\":\"2026-10-22T16:00:12.689098189Z\",\"notionalSetTime\":\"2026-10-22T15:59:51.151950597Z\",\"settlementPriceCalculationMethod\":\"SETTLEMENT_PRICE_CALCULATION_METHOD_EVENT_TIER_1\",\"currentPx\":{\"value\":\"0.9900\",\"currency\":\"USD\"},\"lastPriceSample\":{\"longPx\":{\"value\":\"0.9900\",\"currency\":\"USD\"},\"shortPx\":{\"value\":\"0.01\",\"currency\":\"USD\"},\"ts\":\"2026-10-22T16:00:14.455231877Z\"}},\"transactTime\":\"2026-10-22T16:00:14.455231877Z\"}}"
+ },
+ {
+  "path": "/v1/markets/cpc-btc-updown-15m-2026-10-22-1545z/bbo",
+  "status": 200,
+  "body": "{\"marketData\":{\"marketSlug\":\"cpc-btc-updown-15m-2026-10-22-1545z\",\"currentPx\":{\"value\":\"0.9900\",\"currency\":\"USD\"},\"lastTradePx\":{\"value\":\"0.9900\",\"currency\":\"USD\"},\"settlementPx\":{\"value\":\"1.0000\",\"currency\":\"USD\"},\"sharesTraded\":\"457730.3300\",\"openInterest\":\"0.0000\",\"bestAsk\":null,\"bestBid\":null,\"askDepth\":0,\"bidDepth\":0,\"lastPriceSample\":{\"longPx\":{\"value\":\"0.9900\",\"currency\":\"USD\"},\"shortPx\":{\"value\":\"0.01\",\"currency\":\"USD\"},\"ts\":\"2026-10-22T16:00:14.455231877Z\"},\"state\":\"MARKET_STATE_EXPIRED\",\"bidShares\":\"0\",\"askShares\":\"0\"}}"
+ },
+ {
+  "path": "/v1/market/slug/cpc-btc-updown-15m-2026-10-22-1545z/book",
   "status": 404,
   "body": "{\"code\":5,\"message\":\"The server was unable to process your request.\",\"details\":[]}"
  },
  {
-  "path": "/v1/markets/cpc-btc-updown-15m-2026-10-22-1145z/bbo",
+  "path": "/v1/markets/book/cpc-btc-updown-15m-2026-10-22-1545z",
   "status": 404,
   "body": "{\"code\":5,\"message\":\"The server was unable to process your request.\",\"details\":[]}"
  },
  {
-  "path": "/v1/market/slug/cpc-btc-updown-15m-2026-10-22-1145z/book",
+  "path": "/v1/book/cpc-btc-updown-15m-2026-10-22-1545z",
   "status": 404,
   "body": "{\"code\":5,\"message\":\"The server was unable to process your request.\",\"details\":[]}"
  },
  {
-  "path": "/v1/markets/book/cpc-btc-updown-15m-2026-10-22-1145z",
+  "path": "/v1/markets/cpc-btc-updown-15m-2026-10-22-1545z",
   "status": 404,
   "body": "{\"code\":5,\"message\":\"The server was unable to process your request.\",\"details\":[]}"
  },
  {
-  "path": "/v1/book/cpc-btc-updown-15m-2026-10-22-1145z",
-  "status": 404,
-  "body": "{\"code\":5,\"message\":\"The server was unable to process your request.\",\"details\":[]}"
- },
- {
-  "path": "/v1/markets/cpc-btc-updown-15m-2026-10-22-1145z",
-  "status": 404,
-  "body": "{\"code\":5,\"message\":\"The server was unable to process your request.\",\"details\":[]}"
- },
- {
-  "path": "/v1/market/slug/cpc-btc-updown-15m-2026-10-22-1145z",
-  "status": 404,
-  "body": "{\"code\":5,\"message\":\"The server was unable to process your request.\",\"details\":[]}"
+  "path": "/v1/market/slug/cpc-btc-updown-15m-2026-10-22-1545z",
+  "status": 200,
+  "body": "{\"market\":{\"id\":\"1671127\",\"question\":\"BTC Up or Down 15m\",\"slug\":\"cpc-btc-updown-15m-2026-10-22-1545z\",\"endDate\":\"2026-10-22T16:00:10Z\",\"category\":\"crypto\",\"startDate\":\"2026-10-22T03:45:11Z\",\"description\":\"This market will settle to Up if the Bitcoin price at 12:00PM ET on Oct 22, 2026 is greater than or equal to the price at 11:45AM ET on Oct 22, 2026. Otherwise, this market will settle to Down. Outcome sourced from CF Benchmarks' Bitcoin Real-Time Index (BRTI), available at https://www.cfbenchmarks.com/data/indices/BRTI. The price at the beginning and at the end of the time range is determined the same way: in the last minute before each of those two times, 60 BRTI prices are collected. The official value for that time is the simple average of these prices, rounded to the nearest 2 decimal places. Please note that this market is about the price according to CF Benchmarks' BRTI, not according to other sources or spot markets.\",\"active\":true,\"marketType\":\"\",\"closed\":true,\"createdAt\":\"2026-10-22T04:20:12Z\",\"updatedAt\":\"2026-10-22T16:00:14Z\",\"archived\":false,\"orderPriceMinTickSize\":0.01,\"gameStartTime\":\"2026-10-22T15:45:00Z\",\"manualActivation\":false,\"sportsMarketType\":\"\",\"marketSides\":[{\"id\":\"3341728\",\"marketSideType\":\"MARKET_SIDE_TYPE_INSTRUMENT\",\"identifier\":\"cpc-btc-updown-15m-2026-10-22-1545z\",\"createdAt\":\"2026-10-22T04:20:12Z\",\"updatedAt\":\"2026-10-22T04:20:12Z\",\"description\":\"Yes\",\"price\":\"1\",\"marketId\":1671127,\"long\":true,\"tradable\":true},{\"id\":\"3341729\",\"marketSideType\":"
  }
 ]
