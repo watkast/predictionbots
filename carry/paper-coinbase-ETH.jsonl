@@ -28,3 +28,4 @@
 {"in_pos": false, "interval_ts": 1792620000.0, "mark": 2485.5, "rate": 1.3e-05, "signal": 0.06716000000000001, "ts": 1792623031.3116226, "type": "tick"}
 {"in_pos": false, "interval_ts": 1792630800.0, "mark": 2451.5, "rate": 1.2e-05, "signal": 0.06643, "ts": 1792634125.0593567, "type": "tick"}
 {"in_pos": false, "interval_ts": 1792656000.0, "mark": 2428.0, "rate": 1.4e-05, "signal": 0.06935000000000001, "ts": 1792656095.1576283, "type": "tick"}
+{"in_pos": false, "interval_ts": 1792677600.0, "mark": 2403.0, "rate": 1.6e-05, "signal": 0.073365, "ts": 1792678222.2926593, "type": "tick"}
