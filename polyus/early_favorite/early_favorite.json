@@ -12,25 +12,25 @@
   "hold": "settlement"
  },
  "forward_start": "2026-10-22T08:30:00Z",
- "generated": "2026-10-22T18:31:40Z",
- "rounds_scored": 10,
- "rounds_skipped_rule_not_met": 21,
+ "generated": "2026-10-22T22:17:56Z",
+ "rounds_scored": 14,
+ "rounds_skipped_rule_not_met": 32,
  "rounds_pending": 2,
- "wins": 9,
- "win_rate": 0.9,
- "avg_ask": 0.85,
- "breakeven_win_rate": 0.8589,
- "net_usd": 56.63,
- "per_round_pct": 5.66,
+ "wins": 13,
+ "win_rate": 0.9286,
+ "avg_ask": 0.8436,
+ "breakeven_win_rate": 0.8527,
+ "net_usd": 135.37,
+ "per_round_pct": 9.67,
  "max_drawdown_usd": -100.76,
  "longest_losing_streak": 1,
  "days": [
   {
    "day": "2026-10-22",
-   "net_usd": 56.63
+   "net_usd": 135.37
   }
  ],
- "z_vs_backtest_win_rate": 0.11,
+ "z_vs_backtest_win_rate": 0.47,
  "backtest": {
   "period": "2026-10-06 to 2026-10-22",
   "rounds": 371,
@@ -40,7 +40,7 @@
   "net_usd_per_100": 1649,
   "max_drawdown_usd": -498
  },
- "verdict": "Too early to judge: 10 of the ~150 rounds (about a week) needed.",
+ "verdict": "Too early to judge: 14 of the ~150 rounds (about a week) needed.",
  "pending": [
   {
    "slug": "cpc-btc-updown-15m-2026-10-22-0930z",
@@ -48,8 +48,8 @@
    "reason": "minute 2-3 prices not stored yet"
   },
   {
-   "slug": "cpc-btc-updown-15m-2026-10-22-1830z",
-   "window_start": "2026-10-22T18:30:00Z",
+   "slug": "cpc-btc-updown-15m-2026-10-22-2215z",
+   "window_start": "2026-10-22T22:15:00Z",
    "reason": "minute 2-3 prices not stored yet"
   }
  ]
