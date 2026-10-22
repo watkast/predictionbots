@@ -41,6 +41,7 @@ RULE = {
     "fee_coef_default": 0.0695,
 }
 ROUND_S = 900
+BOOK_PATH = "/v1/markets/{slug}/book"
 
 
 # ---------- pure helpers (unit-tested) ----------
@@ -157,16 +158,19 @@ def run(out: Path, minutes: float):
     import httpx
     client = httpx.Client(base_url=BASE, headers={"User-Agent": "predictionbots/0.1 (paper research)"}, timeout=10)
 
+    errors = []
+
     def get(path):
         for i in range(2):
             try:
                 r = client.get(path)
                 if r.status_code == 200:
                     return r.json()
-                if r.status_code == 404:
+                errors.append({"t": iso(time.time()), "path": path, "status": r.status_code, "body": r.text[:300]})
+                if r.status_code in (400, 404):
                     return None
             except Exception as e:  # network blip
-                print(f"  {path}: {e!r}", file=sys.stderr)
+                errors.append({"t": iso(time.time()), "path": path, "error": repr(e)[:300]})
             time.sleep(0.5)
         return None
 
@@ -188,7 +192,7 @@ def run(out: Path, minutes: float):
             while time.time() < t_chk:
                 time.sleep(min(0.2, t_chk - time.time()) if t_chk > time.time() else 0)
             t0 = time.time()
-            j = get(f"/v1/markets/{slug}/book")
+            j = get(BOOK_PATH.format(slug=slug))
             book = parse_book(j) if j else None
             if book and not first_book_logged:
                 (out / "sample_book.json").parent.mkdir(parents=True, exist_ok=True)
@@ -210,6 +214,8 @@ def run(out: Path, minutes: float):
             print(f"{iso(t0)} {slug} check@{chk}s -> {c.get('fav')} {c.get('fav_ask')} "
                   f"{'ENTRY ' + json.dumps(rec['entry']['fills']['100']) if rec['entry'] else 'no entry'}", flush=True)
             save(out, led)
+            if errors:
+                (out / "errors.json").write_text(json.dumps(errors[-50:], indent=1))
         settle(out, led, get)
         # sleep until the next checkpoint in this or the next round
         nxt = ws + ROUND_S + RULE["checks_elapsed_s"][0]
@@ -318,14 +324,38 @@ def report(out: Path, history: Path | None):
     print("\n".join(lines[:30]))
 
 
+def probe(out: Path):
+    """Try candidate book/BBO paths for the current round and save raw responses."""
+    import httpx
+    c = httpx.Client(base_url=BASE, headers={"User-Agent": "predictionbots/0.1 (paper research)"}, timeout=10)
+    ws = int(time.time() // ROUND_S * ROUND_S)
+    res = []
+    for slug in [slug_for(ws), slug_for(ws - ROUND_S)]:
+        for path in ["/v1/markets/{s}/book", "/v1/markets/{s}/bbo", "/v1/market/slug/{s}/book",
+                     "/v1/markets/book/{s}", "/v1/book/{s}", "/v1/markets/{s}", "/v1/market/slug/{s}"]:
+            p = path.format(s=slug)
+            try:
+                r = c.get(p)
+                res.append({"path": p, "status": r.status_code, "body": r.text[:1500]})
+            except Exception as e:
+                res.append({"path": p, "error": repr(e)[:300]})
+    out.mkdir(parents=True, exist_ok=True)
+    (out / "probe.json").write_text(json.dumps(res, indent=1))
+    for x in res:
+        print(x.get("status"), x["path"], (x.get("body") or x.get("error", ""))[:120])
+
+
 def main() -> int:
     ap = argparse.ArgumentParser()
-    ap.add_argument("cmd", choices=["run", "report"])
+    ap.add_argument("cmd", choices=["run", "report", "probe"])
     ap.add_argument("--out", default="data/polyus/ef_autobuyer")
     ap.add_argument("--minutes", type=float, default=170)
     ap.add_argument("--history", default="data/polyus/price_history")
     a = ap.parse_args()
     out = Path(a.out)
+    if a.cmd == "probe":
+        probe(out)
+        return 0
     if a.cmd == "run":
         run(out, a.minutes)
     report(out, Path(a.history))

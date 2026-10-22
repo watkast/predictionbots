@@ -34,6 +34,8 @@ jobs:
           git worktree add ../datawt origin/data
           mkdir -p data/polyus/ef_autobuyer
           cp -r ../datawt/polyus/ef_autobuyer/. data/polyus/ef_autobuyer/ 2>/dev/null || true
+      - name: Probe book endpoints
+        run: python scripts/ef_autobuyer.py probe --out data/polyus/ef_autobuyer || true
       - name: Watch rounds (paper)
         run: python scripts/ef_autobuyer.py run --out data/polyus/ef_autobuyer --minutes "${{ github.event.inputs.minutes || '170' }}" --history ../datawt/polyus/price_history
       - name: Publish to data branch
