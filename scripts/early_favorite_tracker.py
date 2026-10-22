@@ -4,8 +4,13 @@ The rule was found on Oct 6-22 2026 data (scripts in this repo, see reports) and
 Nothing below may be tuned on forward results; change RULE only by starting a new forward test
 with a new FORWARD_START.
 
+TIMING NOTE (v2): each price_history point is labeled with the START of its 1-minute bucket but holds the
+price at the END of that bucket (verified against BRTI candles: best match is +60 s after the label). So the
+point labeled ws+60*k is the book at k+1 minutes elapsed. v1 read labels 2 and 3, which is really 3:00 and
+4:00 elapsed (12:00 / 11:00 left), not the 13:00 / 12:00 left the playbook trades. v2 fixes that with LABEL_LAG.
+
 RULE (paper only, no orders):
-  At minute 2, else minute 3, of a round: find the leading side (Up if Up mid >= 0.50, else Down).
+  At 2:00 elapsed (13:00 left), else 3:00 elapsed (12:00 left): find the leading side (Up if Up mid >= 0.50, else Down).
   If that side's ask is in [0.80, 0.95): buy $100 of it at the ask. One entry per round.
   Hold to settlement. Pay the Polymarket US taker fee 0.0695 * p * (1 - p) per contract.
 
@@ -26,17 +31,19 @@ from datetime import datetime, timezone
 from pathlib import Path
 
 RULE = {
-    "name": "Early Favorite v1",
-    "minutes": [2, 3],
+    "name": "Early Favorite v2",
+    "minutes": [2, 3],        # minutes ELAPSED at the check (13:00 and 12:00 left)
+    "label_lag": 1,           # history label = elapsed minutes - 1 (label is the bucket start)
     "ask_min": 0.80,
     "ask_max": 0.95,
     "stake_usd": 100.0,
     "fee_coef": 0.0695,
     "hold": "settlement",
 }
-FORWARD_START = "2026-10-22T08:30:00Z"   # first round scored = first windowStart at/after this
-BACKTEST = {"period": "2026-10-06 to 2026-10-22", "rounds": 371, "win_rate": 0.889, "avg_ask": 0.842,
-            "edge_pct_per_round": 4.44, "net_usd_per_100": 1649, "max_drawdown_usd": -498}
+FORWARD_START = "2026-10-23T00:00:00Z"   # v2 forward test; v1 (wrong minutes) ran 2026-10-22T08:30Z to 10-23T00:00Z
+# Re-tested at the true 2:00/3:00-elapsed timing on 2026-10-06 .. 2026-10-22 (1590 settled rounds)
+BACKTEST = {"period": "2026-10-06 to 2026-10-22", "rounds": 272, "win_rate": 0.893, "avg_ask": 0.838,
+            "edge_pct_per_round": 5.46, "net_usd_per_100": 1486, "max_drawdown_usd": -403}
 
 
 def amount(v):
@@ -64,9 +71,10 @@ def score(root: Path, start_ts: float):
         terms = (markets.get(d["slug"]) or {}).get("assetPriceTerms") or {}
         ptb, sp = amount(terms.get("priceToBeat")), amount(terms.get("settlementPrice"))
         entry = None
-        have_minutes = all((ws + 60 * m) in hist for m in RULE["minutes"])
+        lag = RULE["label_lag"]
+        have_minutes = all((ws + 60 * (m - lag)) in hist for m in RULE["minutes"])
         for m in RULE["minutes"]:
-            h = hist.get(ws + 60 * m)
+            h = hist.get(ws + 60 * (m - lag))
             if h is None:
                 continue
             ua, da = float(h["longPrice"]), float(h["shortPrice"])
@@ -159,7 +167,7 @@ def write(out: Path, ledger, pending, s):
     lines = [
         f"# {RULE['name']} - forward test",
         "",
-        f"Rule (frozen): at minute 2, else 3, buy the leading side if its ask is {RULE['ask_min']:.2f}-{RULE['ask_max']:.2f}; "
+        f"Rule (frozen): at 2:00 elapsed (13:00 left), else 3:00, buy the leading side if its ask is {RULE['ask_min']:.2f}-{RULE['ask_max']:.2f}; "
         f"${RULE['stake_usd']:.0f} per round; hold to settlement; taker fee {RULE['fee_coef']}*p*(1-p). Paper only.",
         f"Forward test started {s['forward_start']}. Updated {s['generated']}.",
         "",
@@ -175,6 +183,7 @@ def write(out: Path, ledger, pending, s):
         f"| Per round | {per_txt} | +{BACKTEST['edge_pct_per_round']}% |",
         f"| Max drawdown | ${s['max_drawdown_usd']:,.2f} | ${BACKTEST['max_drawdown_usd']:,} |",
         f"| Longest losing streak | {s['longest_losing_streak']} | 2 |",
+        "| Entry timing | 13:00 / 12:00 left | same |",
         "",
         f"Rounds where the rule did not trigger: {s['rounds_skipped_rule_not_met']}. Pending (not settled or not fetched yet): {s['rounds_pending']}.",
         "",

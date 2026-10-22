@@ -7,7 +7,8 @@ WS = 1_792_600_000
 
 
 def _round(tmp, slug, ws, prices, ptb=None, sp=None):
-    hist = [{"timestamp": ws + 60 * m, "longPrice": ua, "shortPrice": da} for m, (ua, da) in prices.items()]
+    # prices keyed by ELAPSED minute; history labels run one minute behind (label = elapsed - 1)
+    hist = [{"timestamp": ws + 60 * (m - 1), "longPrice": ua, "shortPrice": da} for m, (ua, da) in prices.items()]
     (tmp / "price_history" / f"{slug}.json").write_text(json.dumps(
         {"slug": slug, "windowStart": ws, "windowEnd": ws + 900, "history": hist}))
     terms = {"priceToBeat": {"value": str(ptb)} if ptb else None, "settlementPrice": {"value": str(sp)} if sp else None}
