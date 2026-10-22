@@ -1,0 +1,28 @@
+{
+"cpc-btc-updown-15m-2026-10-22-1130z": {
+"slug": "cpc-btc-updown-15m-2026-10-22-1130z",
+"window_start": 1792668600,
+"checks": [],
+"entry": null,
+"settled": "no_entry"
+},
+"cpc-btc-updown-15m-2026-10-22-1145z": {
+"slug": "cpc-btc-updown-15m-2026-10-22-1145z",
+"window_start": 1792669500,
+"checks": [
+{
+"at": 120,
+"t": 120.0,
+"latency_s": 0.124,
+"ok": false
+},
+{
+"at": 180,
+"t": 180.0,
+"latency_s": 0.068,
+"ok": false
+}
+],
+"entry": null
+}
+}
