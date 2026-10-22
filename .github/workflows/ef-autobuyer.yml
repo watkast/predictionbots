@@ -1,0 +1,56 @@
+# Early Favorite auto-buyer, PAPER mode: reads the live Polymarket US book at 13:00 / 12:00 left
+# of every 15-min BTC round, records what a real limit order would fill, scores it at settlement.
+# No orders, no key. Each run watches ~170 min; hourly schedule + queued concurrency keeps it
+# near-continuous. Results -> data branch, polyus/ef_autobuyer/README.md.
+name: ef-autobuyer
+on:
+  schedule:
+    - cron: "41 * * * *"
+  workflow_dispatch:
+    inputs:
+      minutes:
+        description: "Minutes to watch"
+        default: "170"
+
+permissions:
+  contents: write
+
+concurrency:
+  group: ef-autobuyer-${{ github.ref }}
+  cancel-in-progress: false
+
+jobs:
+  watch:
+    runs-on: ubuntu-latest
+    timeout-minutes: 190
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with: { python-version: "3.13" }
+      - run: pip install httpx
+      - name: Pull existing ledger
+        run: |
+          git fetch origin data || true
+          git worktree add ../datawt origin/data
+          mkdir -p data/polyus/ef_autobuyer
+          cp -r ../datawt/polyus/ef_autobuyer/. data/polyus/ef_autobuyer/ 2>/dev/null || true
+      - name: Watch rounds (paper)
+        run: python scripts/ef_autobuyer.py run --out data/polyus/ef_autobuyer --minutes "${{ github.event.inputs.minutes || '170' }}" --history ../datawt/polyus/price_history
+      - name: Publish to data branch
+        if: always()
+        run: |
+          set -e
+          git config user.name "predictionbots-ef"
+          git config user.email "bots@users.noreply.github.com"
+          cd ../datawt
+          for i in 1 2 3 4 5; do
+            git fetch -q origin data && git reset -q --hard origin/data
+            mkdir -p polyus/ef_autobuyer
+            cp -r "$GITHUB_WORKSPACE/data/polyus/ef_autobuyer/." polyus/ef_autobuyer/
+            python "$GITHUB_WORKSPACE/scripts/ef_autobuyer.py" report --out polyus/ef_autobuyer --history polyus/price_history || true
+            git add -A polyus/ef_autobuyer
+            git commit -qm "ef-autobuyer $(date -u +%FT%TZ)" || exit 0
+            git push -q origin HEAD:data && exit 0
+            sleep $((RANDOM % 20 + 5))
+          done
+          exit 1
