@@ -902,7 +902,8 @@
 "up_ask": 0.41
 }
 ],
-"entry": null
+"entry": null,
+"settled": "no_entry"
 },
 "cpc-btc-updown-15m-2026-10-22-2115z": {
 "slug": "cpc-btc-updown-15m-2026-10-22-2115z",
@@ -920,8 +921,69 @@
 "short_px": 0.22,
 "up_bid": 0.78,
 "up_ask": 0.79
+},
+{
+"at": 180,
+"t": 180.0,
+"latency_s": 0.073,
+"ok": true,
+"state": "MARKET_STATE_OPEN",
+"fav": "Up",
+"fav_ask": 0.84,
+"long_px": 0.84,
+"short_px": 0.16,
+"up_bid": 0.83,
+"up_ask": 0.84
 }
 ],
-"entry": null
+"entry": {
+"side": "Up",
+"ask": 0.84,
+"limit": 0.85,
+"depth_at_best": 200.0,
+"top5": [
+[
+0.84,
+200.0
+],
+[
+0.85,
+2270.59
+],
+[
+0.86,
+4911.0
+],
+[
+0.87,
+201.86
+],
+[
+0.88,
+140.0
+]
+],
+"fills": {
+"50": {
+"shares": 59.5238,
+"spent": 50.0,
+"vwap": 0.84,
+"fill_frac": 1.0
+},
+"100": {
+"shares": 119.0476,
+"spent": 100.0,
+"vwap": 0.84,
+"fill_frac": 1.0
+},
+"250": {
+"shares": 296.4706,
+"spent": 250.0,
+"vwap": 0.8433,
+"fill_frac": 1.0
+}
+},
+"check": 180
+}
 }
 }
