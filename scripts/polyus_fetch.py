@@ -129,7 +129,14 @@ def main() -> int:
             continue
         f = ph_dir / f"{slug}.json"
         if f.exists() and we < now - 120:
-            continue  # closed and already stored
+            try:
+                old = json.loads(f.read_text())
+                last = max((int(h["timestamp"]) for h in old.get("history") or []), default=0)
+            except Exception:
+                last = 0
+            if last >= we - 60:
+                continue  # closed and stored with the whole window
+            # stored mid-window (partial history): fetch again
         if n >= a.max_history or time.time() > DEADLINE[0]:
             break
         if n and n % 50 == 0:
