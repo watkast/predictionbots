@@ -1,0 +1,40 @@
+{
+ "rule": {
+  "name": "Early Favorite v1",
+  "minutes": [
+   2,
+   3
+  ],
+  "ask_min": 0.8,
+  "ask_max": 0.95,
+  "stake_usd": 100.0,
+  "fee_coef": 0.0695,
+  "hold": "settlement"
+ },
+ "forward_start": "2026-10-22T08:30:00Z",
+ "generated": "2026-10-22T08:28:47Z",
+ "rounds_scored": 0,
+ "rounds_skipped_rule_not_met": 0,
+ "rounds_pending": 0,
+ "wins": 0,
+ "win_rate": null,
+ "avg_ask": null,
+ "breakeven_win_rate": null,
+ "net_usd": 0.0,
+ "per_round_pct": null,
+ "max_drawdown_usd": 0.0,
+ "longest_losing_streak": 0,
+ "days": [],
+ "z_vs_backtest_win_rate": null,
+ "backtest": {
+  "period": "2026-10-06 to 2026-10-22",
+  "rounds": 371,
+  "win_rate": 0.889,
+  "avg_ask": 0.842,
+  "edge_pct_per_round": 4.44,
+  "net_usd_per_100": 1649,
+  "max_drawdown_usd": -498
+ },
+ "verdict": "Too early to judge: 0 of the ~150 rounds (about a week) needed.",
+ "pending": []
+}
