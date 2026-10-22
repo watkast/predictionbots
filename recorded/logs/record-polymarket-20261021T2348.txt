@@ -1,0 +1,991 @@
+2026-10-21 23:48:24,850 INFO httpx: HTTP Request: GET https://gamma-api.polymarket.com/markets?limit=200&offset=0&closed=false&order=volume24hr&ascending=false&active=true "HTTP/1.1 200 OK"
+2026-10-21 23:49:25,496 INFO pb.data.recorder: flushed books-234924-0000.parquet, trades-234924-0000.parquet, markets-234924-0000.parquet
+2026-10-21 23:50:25,725 INFO pb.data.recorder: flushed books-235025-0001.parquet, trades-235025-0001.parquet
+2026-10-21 23:51:25,932 INFO pb.data.recorder: flushed books-235125-0002.parquet, trades-235125-0002.parquet
+2026-10-21 23:52:26,091 INFO pb.data.recorder: flushed books-235225-0003.parquet, trades-235225-0003.parquet
+2026-10-21 23:53:26,304 INFO pb.data.recorder: flushed books-235326-0004.parquet, trades-235326-0004.parquet
+2026-10-21 23:54:26,432 INFO pb.data.recorder: flushed books-235426-0005.parquet, trades-235426-0005.parquet
+2026-10-21 23:55:26,540 INFO pb.data.recorder: flushed books-235526-0006.parquet, trades-235526-0006.parquet
+2026-10-21 23:56:26,773 INFO pb.data.recorder: flushed books-235626-0007.parquet, trades-235626-0007.parquet
+2026-10-21 23:57:27,126 INFO pb.data.recorder: flushed books-235726-0008.parquet, trades-235726-0008.parquet
+2026-10-21 23:58:27,407 INFO pb.data.recorder: flushed books-235827-0009.parquet, trades-235827-0009.parquet
+2026-10-21 23:59:27,633 INFO pb.data.recorder: flushed books-235927-0010.parquet, trades-235927-0010.parquet
+2026-10-22 00:00:27,929 INFO pb.data.recorder: flushed books-000027-0011.parquet, trades-000027-0011.parquet
+2026-10-22 00:01:28,193 INFO pb.data.recorder: flushed books-000127-0012.parquet, trades-000127-0012.parquet
+2026-10-22 00:02:28,457 INFO pb.data.recorder: flushed books-000228-0013.parquet, trades-000228-0013.parquet
+2026-10-22 00:03:28,671 INFO pb.data.recorder: flushed books-000328-0014.parquet, trades-000328-0014.parquet
+2026-10-22 00:04:28,784 INFO pb.data.recorder: flushed books-000428-0015.parquet, trades-000428-0015.parquet
+2026-10-22 00:05:28,936 INFO pb.data.recorder: flushed books-000528-0016.parquet, trades-000528-0016.parquet
+2026-10-22 00:06:29,151 INFO pb.data.recorder: flushed books-000628-0017.parquet, trades-000628-0017.parquet
+2026-10-22 00:07:29,565 INFO pb.data.recorder: flushed books-000729-0018.parquet, trades-000729-0018.parquet
+2026-10-22 00:08:29,796 INFO pb.data.recorder: flushed books-000829-0019.parquet, trades-000829-0019.parquet
+2026-10-22 00:09:29,927 INFO pb.data.recorder: flushed books-000929-0020.parquet, trades-000929-0020.parquet
+2026-10-22 00:10:30,218 INFO pb.data.recorder: flushed books-001029-0021.parquet, trades-001029-0021.parquet
+2026-10-22 00:11:30,638 INFO pb.data.recorder: flushed books-001130-0022.parquet, trades-001130-0022.parquet
+2026-10-22 00:12:30,919 INFO pb.data.recorder: flushed books-001230-0023.parquet, trades-001230-0023.parquet
+2026-10-22 00:13:31,184 INFO pb.data.recorder: flushed books-001330-0024.parquet, trades-001330-0024.parquet
+2026-10-22 00:14:31,424 INFO pb.data.recorder: flushed books-001431-0025.parquet, trades-001431-0025.parquet
+2026-10-22 00:15:31,707 INFO pb.data.recorder: flushed books-001531-0026.parquet, trades-001531-0026.parquet
+2026-10-22 00:16:31,976 INFO pb.data.recorder: flushed books-001631-0027.parquet, trades-001631-0027.parquet
+2026-10-22 00:17:32,379 INFO pb.data.recorder: flushed books-001731-0028.parquet, trades-001731-0028.parquet
+2026-10-22 00:18:32,755 INFO pb.data.recorder: flushed books-001832-0029.parquet, trades-001832-0029.parquet
+2026-10-22 00:19:33,121 INFO pb.data.recorder: flushed books-001932-0030.parquet, trades-001932-0030.parquet
+2026-10-22 00:20:33,501 INFO pb.data.recorder: flushed books-002033-0031.parquet, trades-002033-0031.parquet
+2026-10-22 00:21:33,757 INFO pb.data.recorder: flushed books-002133-0032.parquet, trades-002133-0032.parquet
+2026-10-22 00:22:34,080 INFO pb.data.recorder: flushed books-002233-0033.parquet, trades-002233-0033.parquet
+2026-10-22 00:23:34,347 INFO pb.data.recorder: flushed books-002334-0034.parquet, trades-002334-0034.parquet
+2026-10-22 00:24:34,621 INFO pb.data.recorder: flushed books-002434-0035.parquet, trades-002434-0035.parquet
+2026-10-22 00:25:34,912 INFO pb.data.recorder: flushed books-002534-0036.parquet, trades-002534-0036.parquet
+2026-10-22 00:26:35,228 INFO pb.data.recorder: flushed books-002634-0037.parquet, trades-002634-0037.parquet
+2026-10-22 00:27:35,563 INFO pb.data.recorder: flushed books-002735-0038.parquet, trades-002735-0038.parquet
+2026-10-22 00:28:35,744 INFO pb.data.recorder: flushed books-002835-0039.parquet, trades-002835-0039.parquet
+2026-10-22 00:29:35,904 INFO pb.data.recorder: flushed books-002935-0040.parquet, trades-002935-0040.parquet
+2026-10-22 00:30:36,117 INFO pb.data.recorder: flushed books-003035-0041.parquet, trades-003035-0041.parquet
+2026-10-22 00:31:36,330 INFO pb.data.recorder: flushed books-003136-0042.parquet, trades-003136-0042.parquet
+2026-10-22 00:32:36,674 INFO pb.data.recorder: flushed books-003236-0043.parquet, trades-003236-0043.parquet
+2026-10-22 00:33:37,077 INFO pb.data.recorder: flushed books-003336-0044.parquet, trades-003336-0044.parquet
+2026-10-22 00:34:37,431 INFO pb.data.recorder: flushed books-003437-0045.parquet, trades-003437-0045.parquet
+2026-10-22 00:35:37,635 INFO pb.data.recorder: flushed books-003537-0046.parquet, trades-003537-0046.parquet
+2026-10-22 00:36:37,845 INFO pb.data.recorder: flushed books-003637-0047.parquet, trades-003637-0047.parquet
+2026-10-22 00:37:38,105 INFO pb.data.recorder: flushed books-003737-0048.parquet, trades-003737-0048.parquet
+2026-10-22 00:38:38,497 INFO pb.data.recorder: flushed books-003838-0049.parquet, trades-003838-0049.parquet
+2026-10-22 00:39:38,916 INFO pb.data.recorder: flushed books-003938-0050.parquet, trades-003938-0050.parquet
+2026-10-22 00:40:39,328 INFO pb.data.recorder: flushed books-004038-0051.parquet, trades-004038-0051.parquet
+2026-10-22 00:41:39,661 INFO pb.data.recorder: flushed books-004139-0052.parquet, trades-004139-0052.parquet
+2026-10-22 00:42:40,037 INFO pb.data.recorder: flushed books-004239-0053.parquet, trades-004239-0053.parquet
+2026-10-22 00:43:40,352 INFO pb.data.recorder: flushed books-004340-0054.parquet, trades-004340-0054.parquet
+2026-10-22 00:44:40,786 INFO pb.data.recorder: flushed books-004440-0055.parquet, trades-004440-0055.parquet
+2026-10-22 00:45:41,121 INFO pb.data.recorder: flushed books-004540-0056.parquet, trades-004540-0056.parquet
+2026-10-22 00:46:41,358 INFO pb.data.recorder: flushed books-004641-0057.parquet, trades-004641-0057.parquet
+2026-10-22 00:47:41,655 INFO pb.data.recorder: flushed books-004741-0058.parquet, trades-004741-0058.parquet
+2026-10-22 00:48:41,916 INFO pb.data.recorder: flushed books-004841-0059.parquet, trades-004841-0059.parquet
+2026-10-22 00:49:42,340 INFO pb.data.recorder: flushed books-004941-0060.parquet, trades-004941-0060.parquet
+2026-10-22 00:50:42,657 INFO pb.data.recorder: flushed books-005042-0061.parquet, trades-005042-0061.parquet
+2026-10-22 00:51:42,939 INFO pb.data.recorder: flushed books-005142-0062.parquet, trades-005142-0062.parquet
+2026-10-22 00:52:43,116 INFO pb.data.recorder: flushed books-005242-0063.parquet, trades-005242-0063.parquet
+2026-10-22 00:53:43,396 INFO pb.data.recorder: flushed books-005343-0064.parquet, trades-005343-0064.parquet
+2026-10-22 00:54:43,673 INFO pb.data.recorder: flushed books-005443-0065.parquet, trades-005443-0065.parquet
+2026-10-22 00:55:43,932 INFO pb.data.recorder: flushed books-005543-0066.parquet, trades-005543-0066.parquet
+2026-10-22 00:56:44,113 INFO pb.data.recorder: flushed books-005643-0067.parquet, trades-005643-0067.parquet
+2026-10-22 00:57:44,335 INFO pb.data.recorder: flushed books-005744-0068.parquet, trades-005744-0068.parquet
+2026-10-22 00:58:44,670 INFO pb.data.recorder: flushed books-005844-0069.parquet, trades-005844-0069.parquet
+2026-10-22 00:59:44,902 INFO pb.data.recorder: flushed books-005944-0070.parquet, trades-005944-0070.parquet
+2026-10-22 01:00:45,253 INFO pb.data.recorder: flushed books-010044-0071.parquet, trades-010044-0071.parquet
+2026-10-22 01:01:45,459 INFO pb.data.recorder: flushed books-010145-0072.parquet, trades-010145-0072.parquet
+2026-10-22 01:02:45,805 INFO pb.data.recorder: flushed books-010245-0073.parquet, trades-010245-0073.parquet
+2026-10-22 01:03:46,080 INFO pb.data.recorder: flushed books-010345-0074.parquet, trades-010345-0074.parquet
+2026-10-22 01:04:46,282 INFO pb.data.recorder: flushed books-010446-0075.parquet, trades-010446-0075.parquet
+2026-10-22 01:05:46,536 INFO pb.data.recorder: flushed books-010546-0076.parquet, trades-010546-0076.parquet
+2026-10-22 01:06:46,869 INFO pb.data.recorder: flushed books-010646-0077.parquet, trades-010646-0077.parquet
+2026-10-22 01:07:47,275 INFO pb.data.recorder: flushed books-010746-0078.parquet, trades-010746-0078.parquet
+2026-10-22 01:08:47,719 INFO pb.data.recorder: flushed books-010847-0079.parquet, trades-010847-0079.parquet
+2026-10-22 01:09:48,212 INFO pb.data.recorder: flushed books-010947-0080.parquet, trades-010947-0080.parquet
+2026-10-22 01:10:48,605 INFO pb.data.recorder: flushed books-011048-0081.parquet, trades-011048-0081.parquet
+2026-10-22 01:11:49,285 INFO pb.data.recorder: flushed books-011148-0082.parquet, trades-011148-0082.parquet
+2026-10-22 01:12:49,798 INFO pb.data.recorder: flushed books-011249-0083.parquet, trades-011249-0083.parquet
+2026-10-22 01:13:50,031 INFO pb.data.recorder: flushed books-011349-0084.parquet, trades-011349-0084.parquet
+2026-10-22 01:14:50,260 INFO pb.data.recorder: flushed books-011450-0085.parquet, trades-011450-0085.parquet
+2026-10-22 01:15:50,459 INFO pb.data.recorder: flushed books-011550-0086.parquet, trades-011550-0086.parquet
+2026-10-22 01:16:50,747 INFO pb.data.recorder: flushed books-011650-0087.parquet, trades-011650-0087.parquet
+2026-10-22 01:17:51,139 INFO pb.data.recorder: flushed books-011750-0088.parquet, trades-011750-0088.parquet
+2026-10-22 01:18:51,715 INFO pb.data.recorder: flushed books-011851-0089.parquet, trades-011851-0089.parquet
+2026-10-22 01:19:52,240 INFO pb.data.recorder: flushed books-011951-0090.parquet, trades-011951-0090.parquet
+2026-10-22 01:20:52,675 INFO pb.data.recorder: flushed books-012052-0091.parquet, trades-012052-0091.parquet
+2026-10-22 01:21:53,267 INFO pb.data.recorder: flushed books-012152-0092.parquet, trades-012152-0092.parquet
+2026-10-22 01:22:53,842 INFO pb.data.recorder: flushed books-012253-0093.parquet, trades-012253-0093.parquet
+2026-10-22 01:23:54,343 INFO pb.data.recorder: flushed books-012353-0094.parquet, trades-012353-0094.parquet
+2026-10-22 01:24:54,596 INFO pb.data.recorder: flushed books-012454-0095.parquet, trades-012454-0095.parquet
+2026-10-22 01:25:54,967 INFO pb.data.recorder: flushed books-012554-0096.parquet, trades-012554-0096.parquet
+2026-10-22 01:26:55,482 INFO pb.data.recorder: flushed books-012654-0097.parquet, trades-012654-0097.parquet
+2026-10-22 01:27:56,030 INFO pb.data.recorder: flushed books-012755-0098.parquet, trades-012755-0098.parquet
+2026-10-22 01:28:56,693 INFO pb.data.recorder: flushed books-012856-0099.parquet, trades-012856-0099.parquet
+2026-10-22 01:29:57,207 INFO pb.data.recorder: flushed books-012956-0100.parquet, trades-012956-0100.parquet
+2026-10-22 01:30:57,430 INFO pb.data.recorder: flushed books-013057-0101.parquet, trades-013057-0101.parquet
+2026-10-22 01:31:57,597 INFO pb.data.recorder: flushed books-013157-0102.parquet, trades-013157-0102.parquet
+2026-10-22 01:32:57,900 INFO pb.data.recorder: flushed books-013257-0103.parquet, trades-013257-0103.parquet
+2026-10-22 01:33:58,456 INFO pb.data.recorder: flushed books-013357-0104.parquet, trades-013357-0104.parquet
+2026-10-22 01:34:59,155 INFO pb.data.recorder: flushed books-013458-0105.parquet, trades-013458-0105.parquet
+2026-10-22 01:35:59,911 INFO pb.data.recorder: flushed books-013559-0106.parquet, trades-013559-0106.parquet
+2026-10-22 01:37:00,195 INFO pb.data.recorder: flushed books-013659-0107.parquet, trades-013659-0107.parquet
+2026-10-22 01:38:00,643 INFO pb.data.recorder: flushed books-013800-0108.parquet, trades-013800-0108.parquet
+2026-10-22 01:39:01,097 INFO pb.data.recorder: flushed books-013900-0109.parquet, trades-013900-0109.parquet
+2026-10-22 01:40:01,632 INFO pb.data.recorder: flushed books-014001-0110.parquet, trades-014001-0110.parquet
+2026-10-22 01:41:02,225 INFO pb.data.recorder: flushed books-014101-0111.parquet, trades-014101-0111.parquet
+2026-10-22 01:42:03,119 INFO pb.data.recorder: flushed books-014202-0112.parquet, trades-014202-0112.parquet
+2026-10-22 01:43:03,946 INFO pb.data.recorder: flushed books-014303-0113.parquet, trades-014303-0113.parquet
+2026-10-22 01:44:04,864 INFO pb.data.recorder: flushed books-014403-0114.parquet, trades-014403-0114.parquet
+2026-10-22 01:45:05,949 INFO pb.data.recorder: flushed books-014504-0115.parquet, trades-014504-0115.parquet
+2026-10-22 01:46:06,314 INFO pb.data.recorder: flushed books-014605-0116.parquet, trades-014605-0116.parquet
+2026-10-22 01:47:06,552 INFO pb.data.recorder: flushed books-014706-0117.parquet, trades-014706-0117.parquet
+2026-10-22 01:48:06,806 INFO pb.data.recorder: flushed books-014806-0118.parquet, trades-014806-0118.parquet
+2026-10-22 01:49:07,115 INFO pb.data.recorder: flushed books-014906-0119.parquet, trades-014906-0119.parquet
+2026-10-22 01:50:07,494 INFO pb.data.recorder: flushed books-015007-0120.parquet, trades-015007-0120.parquet
+2026-10-22 01:51:07,654 INFO pb.data.recorder: flushed books-015107-0121.parquet, trades-015107-0121.parquet
+2026-10-22 01:52:07,897 INFO pb.data.recorder: flushed books-015207-0122.parquet, trades-015207-0122.parquet
+2026-10-22 01:53:08,027 INFO pb.data.recorder: flushed books-015307-0123.parquet, trades-015307-0123.parquet
+2026-10-22 01:54:08,481 INFO pb.data.recorder: flushed books-015408-0124.parquet, trades-015408-0124.parquet
+2026-10-22 01:55:08,784 INFO pb.data.recorder: flushed books-015508-0125.parquet, trades-015508-0125.parquet
+2026-10-22 01:56:09,191 INFO pb.data.recorder: flushed books-015608-0126.parquet, trades-015608-0126.parquet
+2026-10-22 01:57:09,498 INFO pb.data.recorder: flushed books-015709-0127.parquet, trades-015709-0127.parquet
+2026-10-22 01:58:09,586 INFO pb.data.recorder: flushed books-015809-0128.parquet, trades-015809-0128.parquet
+2026-10-22 01:59:09,614 INFO pb.data.recorder: flushed books-015909-0129.parquet, trades-015909-0129.parquet
+2026-10-22 02:00:09,707 INFO pb.data.recorder: flushed books-020009-0130.parquet, trades-020009-0130.parquet
+2026-10-22 02:01:09,954 INFO pb.data.recorder: flushed books-020109-0131.parquet, trades-020109-0131.parquet
+2026-10-22 02:02:10,122 INFO pb.data.recorder: flushed books-020209-0132.parquet, trades-020209-0132.parquet
+2026-10-22 02:03:10,307 INFO pb.data.recorder: flushed books-020310-0133.parquet, trades-020310-0133.parquet
+2026-10-22 02:04:10,364 INFO pb.data.recorder: flushed books-020410-0134.parquet, trades-020410-0134.parquet
+2026-10-22 02:05:10,479 INFO pb.data.recorder: flushed books-020510-0135.parquet, trades-020510-0135.parquet
+2026-10-22 02:06:10,549 INFO pb.data.recorder: flushed books-020610-0136.parquet, trades-020610-0136.parquet
+2026-10-22 02:07:10,732 INFO pb.data.recorder: flushed books-020710-0137.parquet, trades-020710-0137.parquet
+2026-10-22 02:08:10,825 INFO pb.data.recorder: flushed books-020810-0138.parquet, trades-020810-0138.parquet
+2026-10-22 02:09:10,878 INFO pb.data.recorder: flushed books-020910-0139.parquet, trades-020910-0139.parquet
+2026-10-22 02:10:11,046 INFO pb.data.recorder: flushed books-021010-0140.parquet, trades-021010-0140.parquet
+2026-10-22 02:11:11,170 INFO pb.data.recorder: flushed books-021111-0141.parquet, trades-021111-0141.parquet
+2026-10-22 02:12:11,225 INFO pb.data.recorder: flushed books-021211-0142.parquet, trades-021211-0142.parquet
+2026-10-22 02:13:11,276 INFO pb.data.recorder: flushed books-021311-0143.parquet, trades-021311-0143.parquet
+2026-10-22 02:14:11,358 INFO pb.data.recorder: flushed books-021411-0144.parquet, trades-021411-0144.parquet
+2026-10-22 02:15:11,407 INFO pb.data.recorder: flushed books-021511-0145.parquet, trades-021511-0145.parquet
+2026-10-22 02:16:11,513 INFO pb.data.recorder: flushed books-021611-0146.parquet, trades-021611-0146.parquet
+2026-10-22 02:17:11,551 INFO pb.data.recorder: flushed books-021711-0147.parquet, trades-021711-0147.parquet
+2026-10-22 02:18:11,579 INFO pb.data.recorder: flushed books-021811-0148.parquet, trades-021811-0148.parquet
+2026-10-22 02:19:11,654 INFO pb.data.recorder: flushed books-021911-0149.parquet, trades-021911-0149.parquet
+2026-10-22 02:20:11,706 INFO pb.data.recorder: flushed books-022011-0150.parquet, trades-022011-0150.parquet
+2026-10-22 02:21:11,740 INFO pb.data.recorder: flushed books-022111-0151.parquet, trades-022111-0151.parquet
+2026-10-22 02:22:11,771 INFO pb.data.recorder: flushed books-022211-0152.parquet, trades-022211-0152.parquet
+2026-10-22 02:23:11,795 INFO pb.data.recorder: flushed books-022311-0153.parquet, trades-022311-0153.parquet
+2026-10-22 02:24:11,832 INFO pb.data.recorder: flushed books-022411-0154.parquet, trades-022411-0154.parquet
+2026-10-22 02:25:11,880 INFO pb.data.recorder: flushed books-022511-0155.parquet, trades-022511-0155.parquet
+2026-10-22 02:26:11,905 INFO pb.data.recorder: flushed books-022611-0156.parquet, trades-022611-0156.parquet
+2026-10-22 02:27:11,947 INFO pb.data.recorder: flushed books-022711-0157.parquet, trades-022711-0157.parquet
+2026-10-22 02:28:11,980 INFO pb.data.recorder: flushed books-022811-0158.parquet, trades-022811-0158.parquet
+2026-10-22 02:29:12,002 INFO pb.data.recorder: flushed books-022911-0159.parquet, trades-022911-0159.parquet
+2026-10-22 02:30:12,027 INFO pb.data.recorder: flushed books-023012-0160.parquet, trades-023012-0160.parquet
+2026-10-22 02:31:12,049 INFO pb.data.recorder: flushed books-023112-0161.parquet, trades-023112-0161.parquet
+2026-10-22 02:32:12,073 INFO pb.data.recorder: flushed books-023212-0162.parquet, trades-023212-0162.parquet
+2026-10-22 02:33:12,091 INFO pb.data.recorder: flushed books-023312-0163.parquet, trades-023312-0163.parquet
+2026-10-22 02:34:12,115 INFO pb.data.recorder: flushed books-023412-0164.parquet, trades-023412-0164.parquet
+2026-10-22 02:35:12,137 INFO pb.data.recorder: flushed books-023512-0165.parquet, trades-023512-0165.parquet
+2026-10-22 02:36:12,155 INFO pb.data.recorder: flushed books-023612-0166.parquet, trades-023612-0166.parquet
+2026-10-22 02:37:12,174 INFO pb.data.recorder: flushed books-023712-0167.parquet, trades-023712-0167.parquet
+2026-10-22 02:38:12,209 INFO pb.data.recorder: flushed books-023812-0168.parquet, trades-023812-0168.parquet
+2026-10-22 02:39:12,239 INFO pb.data.recorder: flushed books-023912-0169.parquet, trades-023912-0169.parquet
+2026-10-22 02:40:12,260 INFO pb.data.recorder: flushed books-024012-0170.parquet, trades-024012-0170.parquet
+2026-10-22 02:41:12,274 INFO pb.data.recorder: flushed books-024112-0171.parquet, trades-024112-0171.parquet
+2026-10-22 02:42:12,291 INFO pb.data.recorder: flushed books-024212-0172.parquet, trades-024212-0172.parquet
+2026-10-22 02:43:12,311 INFO pb.data.recorder: flushed books-024312-0173.parquet, trades-024312-0173.parquet
+2026-10-22 02:44:12,345 INFO pb.data.recorder: flushed books-024412-0174.parquet, trades-024412-0174.parquet
+2026-10-22 02:45:12,370 INFO pb.data.recorder: flushed books-024512-0175.parquet, trades-024512-0175.parquet
+2026-10-22 02:46:12,397 INFO pb.data.recorder: flushed books-024612-0176.parquet, trades-024612-0176.parquet
+2026-10-22 02:47:12,420 INFO pb.data.recorder: flushed books-024712-0177.parquet, trades-024712-0177.parquet
+2026-10-22 02:48:12,455 INFO pb.data.recorder: flushed books-024812-0178.parquet, trades-024812-0178.parquet
+2026-10-22 02:49:12,479 INFO pb.data.recorder: flushed books-024912-0179.parquet, trades-024912-0179.parquet
+2026-10-22 02:50:12,502 INFO pb.data.recorder: flushed books-025012-0180.parquet, trades-025012-0180.parquet
+2026-10-22 02:51:12,538 INFO pb.data.recorder: flushed books-025112-0181.parquet, trades-025112-0181.parquet
+2026-10-22 02:52:12,561 INFO pb.data.recorder: flushed books-025212-0182.parquet, trades-025212-0182.parquet
+2026-10-22 02:53:12,577 INFO pb.data.recorder: flushed books-025312-0183.parquet, trades-025312-0183.parquet
+2026-10-22 02:54:12,595 INFO pb.data.recorder: flushed books-025412-0184.parquet, trades-025412-0184.parquet
+2026-10-22 02:55:12,609 INFO pb.data.recorder: flushed books-025512-0185.parquet, trades-025512-0185.parquet
+2026-10-22 02:56:12,633 INFO pb.data.recorder: flushed books-025612-0186.parquet, trades-025612-0186.parquet
+2026-10-22 02:57:12,652 INFO pb.data.recorder: flushed books-025712-0187.parquet, trades-025712-0187.parquet
+2026-10-22 02:58:12,667 INFO pb.data.recorder: flushed books-025812-0188.parquet, trades-025812-0188.parquet
+2026-10-22 02:59:12,690 INFO pb.data.recorder: flushed books-025912-0189.parquet, trades-025912-0189.parquet
+2026-10-22 03:00:12,709 INFO pb.data.recorder: flushed books-030012-0190.parquet, trades-030012-0190.parquet
+2026-10-22 03:01:12,731 INFO pb.data.recorder: flushed books-030112-0191.parquet, trades-030112-0191.parquet
+2026-10-22 03:02:12,750 INFO pb.data.recorder: flushed books-030212-0192.parquet, trades-030212-0192.parquet
+2026-10-22 03:03:12,772 INFO pb.data.recorder: flushed books-030312-0193.parquet, trades-030312-0193.parquet
+2026-10-22 03:04:12,795 INFO pb.data.recorder: flushed books-030412-0194.parquet, trades-030412-0194.parquet
+2026-10-22 03:05:12,819 INFO pb.data.recorder: flushed books-030512-0195.parquet, trades-030512-0195.parquet
+2026-10-22 03:06:12,847 INFO pb.data.recorder: flushed books-030612-0196.parquet, trades-030612-0196.parquet
+2026-10-22 03:07:12,871 INFO pb.data.recorder: flushed books-030712-0197.parquet, trades-030712-0197.parquet
+2026-10-22 03:08:12,892 INFO pb.data.recorder: flushed books-030812-0198.parquet, trades-030812-0198.parquet
+2026-10-22 03:09:12,916 INFO pb.data.recorder: flushed books-030912-0199.parquet, trades-030912-0199.parquet
+2026-10-22 03:10:12,936 INFO pb.data.recorder: flushed books-031012-0200.parquet, trades-031012-0200.parquet
+2026-10-22 03:11:12,954 INFO pb.data.recorder: flushed books-031112-0201.parquet, trades-031112-0201.parquet
+2026-10-22 03:12:12,976 INFO pb.data.recorder: flushed books-031212-0202.parquet, trades-031212-0202.parquet
+2026-10-22 03:13:12,993 INFO pb.data.recorder: flushed books-031312-0203.parquet, trades-031312-0203.parquet
+2026-10-22 03:14:13,011 INFO pb.data.recorder: flushed books-031412-0204.parquet, trades-031412-0204.parquet
+2026-10-22 03:15:13,026 INFO pb.data.recorder: flushed books-031513-0205.parquet, trades-031513-0205.parquet
+2026-10-22 03:16:13,052 INFO pb.data.recorder: flushed books-031613-0206.parquet, trades-031613-0206.parquet
+2026-10-22 03:17:13,076 INFO pb.data.recorder: flushed books-031713-0207.parquet, trades-031713-0207.parquet
+2026-10-22 03:18:13,103 INFO pb.data.recorder: flushed books-031813-0208.parquet, trades-031813-0208.parquet
+2026-10-22 03:19:13,131 INFO pb.data.recorder: flushed books-031913-0209.parquet, trades-031913-0209.parquet
+2026-10-22 03:20:13,144 INFO pb.data.recorder: flushed books-032013-0210.parquet, trades-032013-0210.parquet
+2026-10-22 03:21:13,163 INFO pb.data.recorder: flushed books-032113-0211.parquet, trades-032113-0211.parquet
+2026-10-22 03:22:13,184 INFO pb.data.recorder: flushed books-032213-0212.parquet, trades-032213-0212.parquet
+2026-10-22 03:23:13,204 INFO pb.data.recorder: flushed books-032313-0213.parquet, trades-032313-0213.parquet
+2026-10-22 03:24:13,222 INFO pb.data.recorder: flushed books-032413-0214.parquet, trades-032413-0214.parquet
+2026-10-22 03:25:13,236 INFO pb.data.recorder: flushed books-032513-0215.parquet, trades-032513-0215.parquet
+2026-10-22 03:26:13,254 INFO pb.data.recorder: flushed books-032613-0216.parquet, trades-032613-0216.parquet
+2026-10-22 03:27:13,274 INFO pb.data.recorder: flushed books-032713-0217.parquet, trades-032713-0217.parquet
+2026-10-22 03:28:13,286 INFO pb.data.recorder: flushed books-032813-0218.parquet, trades-032813-0218.parquet
+2026-10-22 03:29:13,303 INFO pb.data.recorder: flushed books-032913-0219.parquet, trades-032913-0219.parquet
+2026-10-22 03:30:13,323 INFO pb.data.recorder: flushed books-033013-0220.parquet, trades-033013-0220.parquet
+2026-10-22 03:31:13,382 INFO pb.data.recorder: flushed books-033113-0221.parquet, trades-033113-0221.parquet
+2026-10-22 03:32:13,405 INFO pb.data.recorder: flushed books-033213-0222.parquet, trades-033213-0222.parquet
+2026-10-22 03:33:13,416 INFO pb.data.recorder: flushed books-033313-0223.parquet, trades-033313-0223.parquet
+2026-10-22 03:34:13,425 INFO pb.data.recorder: flushed books-033413-0224.parquet, trades-033413-0224.parquet
+2026-10-22 03:35:13,436 INFO pb.data.recorder: flushed books-033513-0225.parquet, trades-033513-0225.parquet
+2026-10-22 03:36:13,458 INFO pb.data.recorder: flushed books-033613-0226.parquet, trades-033613-0226.parquet
+2026-10-22 03:37:13,473 INFO pb.data.recorder: flushed books-033713-0227.parquet, trades-033713-0227.parquet
+2026-10-22 03:38:13,488 INFO pb.data.recorder: flushed books-033813-0228.parquet, trades-033813-0228.parquet
+2026-10-22 03:39:13,500 INFO pb.data.recorder: flushed books-033913-0229.parquet, trades-033913-0229.parquet
+2026-10-22 03:40:13,520 INFO pb.data.recorder: flushed books-034013-0230.parquet, trades-034013-0230.parquet
+2026-10-22 03:41:13,549 INFO pb.data.recorder: flushed books-034113-0231.parquet, trades-034113-0231.parquet
+2026-10-22 03:42:13,571 INFO pb.data.recorder: flushed books-034213-0232.parquet, trades-034213-0232.parquet
+2026-10-22 03:43:13,607 INFO pb.data.recorder: flushed books-034313-0233.parquet, trades-034313-0233.parquet
+2026-10-22 03:44:13,630 INFO pb.data.recorder: flushed books-034413-0234.parquet, trades-034413-0234.parquet
+2026-10-22 03:45:13,651 INFO pb.data.recorder: flushed books-034513-0235.parquet, trades-034513-0235.parquet
+2026-10-22 03:46:13,680 INFO pb.data.recorder: flushed books-034613-0236.parquet, trades-034613-0236.parquet
+2026-10-22 03:47:13,705 INFO pb.data.recorder: flushed books-034713-0237.parquet, trades-034713-0237.parquet
+2026-10-22 03:48:13,725 INFO pb.data.recorder: flushed books-034813-0238.parquet, trades-034813-0238.parquet
+2026-10-22 03:49:13,747 INFO pb.data.recorder: flushed books-034913-0239.parquet, trades-034913-0239.parquet
+2026-10-22 03:50:13,765 INFO pb.data.recorder: flushed books-035013-0240.parquet, trades-035013-0240.parquet
+2026-10-22 03:51:13,782 INFO pb.data.recorder: flushed books-035113-0241.parquet, trades-035113-0241.parquet
+2026-10-22 03:52:13,807 INFO pb.data.recorder: flushed books-035213-0242.parquet, trades-035213-0242.parquet
+2026-10-22 03:53:13,824 INFO pb.data.recorder: flushed books-035313-0243.parquet, trades-035313-0243.parquet
+2026-10-22 03:54:13,842 INFO pb.data.recorder: flushed books-035413-0244.parquet, trades-035413-0244.parquet
+2026-10-22 03:55:13,859 INFO pb.data.recorder: flushed books-035513-0245.parquet, trades-035513-0245.parquet
+2026-10-22 03:56:13,896 INFO pb.data.recorder: flushed books-035613-0246.parquet, trades-035613-0246.parquet
+2026-10-22 03:57:13,921 INFO pb.data.recorder: flushed books-035713-0247.parquet, trades-035713-0247.parquet
+2026-10-22 03:58:13,949 INFO pb.data.recorder: flushed books-035813-0248.parquet, trades-035813-0248.parquet
+2026-10-22 03:59:13,968 INFO pb.data.recorder: flushed books-035913-0249.parquet, trades-035913-0249.parquet
+2026-10-22 04:00:13,982 INFO pb.data.recorder: flushed books-040013-0250.parquet, trades-040013-0250.parquet
+2026-10-22 04:01:13,999 INFO pb.data.recorder: flushed books-040113-0251.parquet, trades-040113-0251.parquet
+2026-10-22 04:02:14,023 INFO pb.data.recorder: flushed books-040214-0252.parquet, trades-040214-0252.parquet
+2026-10-22 04:03:14,066 INFO pb.data.recorder: flushed books-040314-0253.parquet, trades-040314-0253.parquet
+2026-10-22 04:04:14,103 INFO pb.data.recorder: flushed books-040414-0254.parquet, trades-040414-0254.parquet
+2026-10-22 04:05:14,140 INFO pb.data.recorder: flushed books-040514-0255.parquet, trades-040514-0255.parquet
+2026-10-22 04:06:14,175 INFO pb.data.recorder: flushed books-040614-0256.parquet, trades-040614-0256.parquet
+2026-10-22 04:07:14,208 INFO pb.data.recorder: flushed books-040714-0257.parquet, trades-040714-0257.parquet
+2026-10-22 04:08:14,247 INFO pb.data.recorder: flushed books-040814-0258.parquet, trades-040814-0258.parquet
+2026-10-22 04:09:14,264 INFO pb.data.recorder: flushed books-040914-0259.parquet, trades-040914-0259.parquet
+2026-10-22 04:10:14,284 INFO pb.data.recorder: flushed books-041014-0260.parquet, trades-041014-0260.parquet
+2026-10-22 04:11:14,296 INFO pb.data.recorder: flushed books-041114-0261.parquet, trades-041114-0261.parquet
+2026-10-22 04:12:14,314 INFO pb.data.recorder: flushed books-041214-0262.parquet, trades-041214-0262.parquet
+2026-10-22 04:13:14,335 INFO pb.data.recorder: flushed books-041314-0263.parquet, trades-041314-0263.parquet
+2026-10-22 04:14:14,362 INFO pb.data.recorder: flushed books-041414-0264.parquet, trades-041414-0264.parquet
+2026-10-22 04:15:14,391 INFO pb.data.recorder: flushed books-041514-0265.parquet, trades-041514-0265.parquet
+2026-10-22 04:16:14,409 INFO pb.data.recorder: flushed books-041614-0266.parquet, trades-041614-0266.parquet
+2026-10-22 04:17:14,431 INFO pb.data.recorder: flushed books-041714-0267.parquet, trades-041714-0267.parquet
+2026-10-22 04:18:14,475 INFO pb.data.recorder: flushed books-041814-0268.parquet, trades-041814-0268.parquet
+2026-10-22 04:19:14,508 INFO pb.data.recorder: flushed books-041914-0269.parquet, trades-041914-0269.parquet
+2026-10-22 04:20:14,538 INFO pb.data.recorder: flushed books-042014-0270.parquet, trades-042014-0270.parquet
+2026-10-22 04:21:14,555 INFO pb.data.recorder: flushed books-042114-0271.parquet, trades-042114-0271.parquet
+2026-10-22 04:22:14,582 INFO pb.data.recorder: flushed books-042214-0272.parquet, trades-042214-0272.parquet
+2026-10-22 04:23:14,613 INFO pb.data.recorder: flushed books-042314-0273.parquet, trades-042314-0273.parquet
+2026-10-22 04:24:14,629 INFO pb.data.recorder: flushed books-042414-0274.parquet, trades-042414-0274.parquet
+2026-10-22 04:25:14,663 INFO pb.data.recorder: flushed books-042514-0275.parquet, trades-042514-0275.parquet
+2026-10-22 04:26:14,692 INFO pb.data.recorder: flushed books-042614-0276.parquet, trades-042614-0276.parquet
+2026-10-22 04:27:14,732 INFO pb.data.recorder: flushed books-042714-0277.parquet, trades-042714-0277.parquet
+2026-10-22 04:28:14,755 INFO pb.data.recorder: flushed books-042814-0278.parquet, trades-042814-0278.parquet
+2026-10-22 04:29:14,777 INFO pb.data.recorder: flushed books-042914-0279.parquet, trades-042914-0279.parquet
+2026-10-22 04:30:14,790 INFO pb.data.recorder: flushed books-043014-0280.parquet, trades-043014-0280.parquet
+2026-10-22 04:31:14,817 INFO pb.data.recorder: flushed books-043114-0281.parquet, trades-043114-0281.parquet
+2026-10-22 04:32:14,851 INFO pb.data.recorder: flushed books-043214-0282.parquet, trades-043214-0282.parquet
+2026-10-22 04:33:14,871 INFO pb.data.recorder: flushed books-043314-0283.parquet, trades-043314-0283.parquet
+2026-10-22 04:34:14,887 INFO pb.data.recorder: flushed books-043414-0284.parquet, trades-043414-0284.parquet
+2026-10-22 04:35:14,904 INFO pb.data.recorder: flushed books-043514-0285.parquet, trades-043514-0285.parquet
+2026-10-22 04:36:14,919 INFO pb.data.recorder: flushed books-043614-0286.parquet, trades-043614-0286.parquet
+2026-10-22 04:37:14,930 INFO pb.data.recorder: flushed books-043714-0287.parquet, trades-043714-0287.parquet
+2026-10-22 04:38:14,940 INFO pb.data.recorder: flushed books-043814-0288.parquet, trades-043814-0288.parquet
+2026-10-22 04:39:14,960 INFO pb.data.recorder: flushed books-043914-0289.parquet, trades-043914-0289.parquet
+2026-10-22 04:40:14,978 INFO pb.data.recorder: flushed books-044014-0290.parquet, trades-044014-0290.parquet
+2026-10-22 04:41:15,003 INFO pb.data.recorder: flushed books-044114-0291.parquet, trades-044114-0291.parquet
+2026-10-22 04:42:15,020 INFO pb.data.recorder: flushed books-044215-0292.parquet, trades-044215-0292.parquet
+2026-10-22 04:43:15,059 INFO pb.data.recorder: flushed books-044315-0293.parquet, trades-044315-0293.parquet
+2026-10-22 04:44:15,088 INFO pb.data.recorder: flushed books-044415-0294.parquet, trades-044415-0294.parquet
+2026-10-22 04:45:15,114 INFO pb.data.recorder: flushed books-044515-0295.parquet, trades-044515-0295.parquet
+2026-10-22 04:46:15,134 INFO pb.data.recorder: flushed books-044615-0296.parquet, trades-044615-0296.parquet
+2026-10-22 04:47:15,164 INFO pb.data.recorder: flushed books-044715-0297.parquet, trades-044715-0297.parquet
+2026-10-22 04:48:15,189 INFO pb.data.recorder: flushed books-044815-0298.parquet, trades-044815-0298.parquet
+2026-10-22 04:49:15,205 INFO pb.data.recorder: flushed books-044915-0299.parquet, trades-044915-0299.parquet
+2026-10-22 04:50:15,222 INFO pb.data.recorder: flushed books-045015-0300.parquet, trades-045015-0300.parquet
+2026-10-22 04:51:15,237 INFO pb.data.recorder: flushed books-045115-0301.parquet, trades-045115-0301.parquet
+2026-10-22 04:52:15,253 INFO pb.data.recorder: flushed books-045215-0302.parquet, trades-045215-0302.parquet
+2026-10-22 04:53:15,284 INFO pb.data.recorder: flushed books-045315-0303.parquet, trades-045315-0303.parquet
+2026-10-22 04:54:15,314 INFO pb.data.recorder: flushed books-045415-0304.parquet, trades-045415-0304.parquet
+2026-10-22 04:55:15,341 INFO pb.data.recorder: flushed books-045515-0305.parquet, trades-045515-0305.parquet
+2026-10-22 04:56:15,369 INFO pb.data.recorder: flushed books-045615-0306.parquet, trades-045615-0306.parquet
+2026-10-22 04:57:15,381 INFO pb.data.recorder: flushed books-045715-0307.parquet, trades-045715-0307.parquet
+2026-10-22 04:58:15,392 INFO pb.data.recorder: flushed books-045815-0308.parquet, trades-045815-0308.parquet
+2026-10-22 04:59:15,408 INFO pb.data.recorder: flushed books-045915-0309.parquet, trades-045915-0309.parquet
+2026-10-22 05:00:15,434 INFO pb.data.recorder: flushed books-050015-0310.parquet, trades-050015-0310.parquet
+2026-10-22 05:01:15,454 INFO pb.data.recorder: flushed books-050115-0311.parquet, trades-050115-0311.parquet
+2026-10-22 05:02:15,475 INFO pb.data.recorder: flushed books-050215-0312.parquet, trades-050215-0312.parquet
+2026-10-22 05:03:15,493 INFO pb.data.recorder: flushed books-050315-0313.parquet, trades-050315-0313.parquet
+2026-10-22 05:04:15,507 INFO pb.data.recorder: flushed books-050415-0314.parquet, trades-050415-0314.parquet
+2026-10-22 05:04:15,742 INFO httpx: HTTP Request: GET https://clob.polymarket.com/book?token_id=58802458597374928740225519735423162012398763515664846118442539672822667668833 "HTTP/1.1 404 Not Found"
+2026-10-22 05:04:15,743 WARNING pb.data.recorder: poll 58802458597374928740225519735423162012398763515664846118442539672822667668833 failed: Polymarket 404 on /book: {'error': 'No orderbook exists for the requested token id'}
+2026-10-22 05:04:15,914 INFO httpx: HTTP Request: GET https://clob.polymarket.com/book?token_id=103704141773947678931823410030956181918562062788486034785782641603149828893320 "HTTP/1.1 200 OK"
+2026-10-22 05:04:16,307 INFO httpx: HTTP Request: GET https://data-api.polymarket.com/v2/trades?condition=0xc5eae79d1ffe716572353962eb926b1e3964c500a4880a7a94f58408218ee76b&limit=200 "HTTP/1.1 200 OK"
+2026-10-22 05:04:16,479 INFO httpx: HTTP Request: GET https://clob.polymarket.com/book?token_id=7685158848984498977390071784341171138992058973607044422044852725107513658437 "HTTP/1.1 404 Not Found"
+2026-10-22 05:04:16,480 WARNING pb.data.recorder: poll 7685158848984498977390071784341171138992058973607044422044852725107513658437 failed: Polymarket 404 on /book: {'error': 'No orderbook exists for the requested token id'}
+2026-10-22 05:04:16,644 INFO httpx: HTTP Request: GET https://clob.polymarket.com/book?token_id=107102793637680157985081124002726182334464514298802794132890893773707404215371 "HTTP/1.1 404 Not Found"
+2026-10-22 05:04:16,645 WARNING pb.data.recorder: poll 107102793637680157985081124002726182334464514298802794132890893773707404215371 failed: Polymarket 404 on /book: {'error': 'No orderbook exists for the requested token id'}
+2026-10-22 05:04:16,817 INFO httpx: HTTP Request: GET https://clob.polymarket.com/book?token_id=18246296022868501258060085368606280205967114341141276439803424448463050819498 "HTTP/1.1 200 OK"
+2026-10-22 05:04:17,031 INFO httpx: HTTP Request: GET https://data-api.polymarket.com/v2/trades?condition=0xde5d75ab7702875623ba509bc923241e1211da74a113521b3b70ddac930d7316&limit=200 "HTTP/1.1 200 OK"
+2026-10-22 05:04:17,448 INFO httpx: HTTP Request: GET https://clob.polymarket.com/book?token_id=11703355753646866721510451780813586747644200170798817311988936815535980370261 "HTTP/1.1 200 OK"
+2026-10-22 05:04:17,673 INFO httpx: HTTP Request: GET https://data-api.polymarket.com/v2/trades?condition=0x04fb634139d4654febf4b62c425b209806e06d9eff93ac2e7c5301ecdaf5e4ca&limit=200 "HTTP/1.1 200 OK"
+2026-10-22 05:04:18,052 INFO httpx: HTTP Request: GET https://clob.polymarket.com/book?token_id=33268510350568915228897273528353467773422190590579607471427765079749830445947 "HTTP/1.1 200 OK"
+2026-10-22 05:04:18,275 INFO httpx: HTTP Request: GET https://data-api.polymarket.com/v2/trades?condition=0x9cf563d7b55aa9aa876d5d7e55126347eee473f0ae56d799e325fdef2bf25297&limit=200 "HTTP/1.1 200 OK"
+2026-10-22 05:04:18,447 INFO httpx: HTTP Request: GET https://clob.polymarket.com/book?token_id=33339798372916037220786136133406478491116150628220441951753426683441228279665 "HTTP/1.1 200 OK"
+2026-10-22 05:04:18,657 INFO httpx: HTTP Request: GET https://data-api.polymarket.com/v2/trades?condition=0xefa17dee3af09f69f9ddf245b969aa4efbe7c71cdf06ee49d694408bc33e2ed2&limit=200 "HTTP/1.1 200 OK"
+2026-10-22 05:04:18,834 INFO httpx: HTTP Request: GET https://clob.polymarket.com/book?token_id=44887259505946660799050523095589383516895296837192507586209222338540683060118 "HTTP/1.1 404 Not Found"
+2026-10-22 05:04:18,835 WARNING pb.data.recorder: poll 44887259505946660799050523095589383516895296837192507586209222338540683060118 failed: Polymarket 404 on /book: {'error': 'No orderbook exists for the requested token id'}
+2026-10-22 05:04:19,005 INFO httpx: HTTP Request: GET https://clob.polymarket.com/book?token_id=30630994248667897740988010928640156931882346081873066002335460180076741328029 "HTTP/1.1 200 OK"
+2026-10-22 05:04:19,222 INFO httpx: HTTP Request: GET https://data-api.polymarket.com/v2/trades?condition=0xdf8e2dc5860027decbe6164555c3c1c9645c3bd33e16b9dc57ca87125047d4a8&limit=200 "HTTP/1.1 200 OK"
+2026-10-22 05:04:19,381 INFO httpx: HTTP Request: GET https://clob.polymarket.com/book?token_id=34722410608062854697106861099776685947172185964394483545370684749662285977831 "HTTP/1.1 200 OK"
+2026-10-22 05:04:19,602 INFO httpx: HTTP Request: GET https://data-api.polymarket.com/v2/trades?condition=0x16c63b7cc37f012b9f59ee164ec03877914c701d06d48291ae8d6fc08a088b0d&limit=200 "HTTP/1.1 200 OK"
+2026-10-22 05:04:19,766 INFO httpx: HTTP Request: GET https://clob.polymarket.com/book?token_id=21265207456609426291246075480390336499088453711419597084147957999650569091884 "HTTP/1.1 200 OK"
+2026-10-22 05:04:19,984 INFO httpx: HTTP Request: GET https://data-api.polymarket.com/v2/trades?condition=0x94521176f57d2ce81dde01e0b7699ca4279423042d37ed53908f0c8bfefe7e14&limit=200 "HTTP/1.1 200 OK"
+2026-10-22 05:04:25,178 INFO httpx: HTTP Request: GET https://clob.polymarket.com/book?token_id=58802458597374928740225519735423162012398763515664846118442539672822667668833 "HTTP/1.1 404 Not Found"
+2026-10-22 05:04:25,179 WARNING pb.data.recorder: poll 58802458597374928740225519735423162012398763515664846118442539672822667668833 failed: Polymarket 404 on /book: {'error': 'No orderbook exists for the requested token id'}
+2026-10-22 05:04:25,361 INFO httpx: HTTP Request: GET https://clob.polymarket.com/book?token_id=103704141773947678931823410030956181918562062788486034785782641603149828893320 "HTTP/1.1 200 OK"
+2026-10-22 05:04:25,435 INFO httpx: HTTP Request: GET https://data-api.polymarket.com/v2/trades?condition=0xc5eae79d1ffe716572353962eb926b1e3964c500a4880a7a94f58408218ee76b&limit=200 "HTTP/1.1 200 OK"
+2026-10-22 05:04:25,637 INFO httpx: HTTP Request: GET https://clob.polymarket.com/book?token_id=7685158848984498977390071784341171138992058973607044422044852725107513658437 "HTTP/1.1 404 Not Found"
+2026-10-22 05:04:25,638 WARNING pb.data.recorder: poll 7685158848984498977390071784341171138992058973607044422044852725107513658437 failed: Polymarket 404 on /book: {'error': 'No orderbook exists for the requested token id'}
+2026-10-22 05:04:25,814 INFO httpx: HTTP Request: GET https://clob.polymarket.com/book?token_id=107102793637680157985081124002726182334464514298802794132890893773707404215371 "HTTP/1.1 404 Not Found"
+2026-10-22 05:04:25,815 WARNING pb.data.recorder: poll 107102793637680157985081124002726182334464514298802794132890893773707404215371 failed: Polymarket 404 on /book: {'error': 'No orderbook exists for the requested token id'}
+2026-10-22 05:04:25,972 INFO httpx: HTTP Request: GET https://clob.polymarket.com/book?token_id=18246296022868501258060085368606280205967114341141276439803424448463050819498 "HTTP/1.1 200 OK"
+2026-10-22 05:04:26,018 INFO httpx: HTTP Request: GET https://data-api.polymarket.com/v2/trades?condition=0xde5d75ab7702875623ba509bc923241e1211da74a113521b3b70ddac930d7316&limit=200 "HTTP/1.1 200 OK"
+2026-10-22 05:04:26,197 INFO httpx: HTTP Request: GET https://clob.polymarket.com/book?token_id=11703355753646866721510451780813586747644200170798817311988936815535980370261 "HTTP/1.1 200 OK"
+2026-10-22 05:04:26,234 INFO httpx: HTTP Request: GET https://data-api.polymarket.com/v2/trades?condition=0x04fb634139d4654febf4b62c425b209806e06d9eff93ac2e7c5301ecdaf5e4ca&limit=200 "HTTP/1.1 200 OK"
+2026-10-22 05:04:26,400 INFO httpx: HTTP Request: GET https://clob.polymarket.com/book?token_id=33268510350568915228897273528353467773422190590579607471427765079749830445947 "HTTP/1.1 200 OK"
+2026-10-22 05:04:26,441 INFO httpx: HTTP Request: GET https://data-api.polymarket.com/v2/trades?condition=0x9cf563d7b55aa9aa876d5d7e55126347eee473f0ae56d799e325fdef2bf25297&limit=200 "HTTP/1.1 200 OK"
+2026-10-22 05:04:26,602 INFO httpx: HTTP Request: GET https://clob.polymarket.com/book?token_id=33339798372916037220786136133406478491116150628220441951753426683441228279665 "HTTP/1.1 200 OK"
+2026-10-22 05:04:26,654 INFO httpx: HTTP Request: GET https://data-api.polymarket.com/v2/trades?condition=0xefa17dee3af09f69f9ddf245b969aa4efbe7c71cdf06ee49d694408bc33e2ed2&limit=200 "HTTP/1.1 200 OK"
+2026-10-22 05:04:26,818 INFO httpx: HTTP Request: GET https://clob.polymarket.com/book?token_id=44887259505946660799050523095589383516895296837192507586209222338540683060118 "HTTP/1.1 404 Not Found"
+2026-10-22 05:04:26,819 WARNING pb.data.recorder: poll 44887259505946660799050523095589383516895296837192507586209222338540683060118 failed: Polymarket 404 on /book: {'error': 'No orderbook exists for the requested token id'}
+2026-10-22 05:04:26,987 INFO httpx: HTTP Request: GET https://clob.polymarket.com/book?token_id=30630994248667897740988010928640156931882346081873066002335460180076741328029 "HTTP/1.1 200 OK"
+2026-10-22 05:04:27,026 INFO httpx: HTTP Request: GET https://data-api.polymarket.com/v2/trades?condition=0xdf8e2dc5860027decbe6164555c3c1c9645c3bd33e16b9dc57ca87125047d4a8&limit=200 "HTTP/1.1 200 OK"
+2026-10-22 05:04:27,188 INFO httpx: HTTP Request: GET https://clob.polymarket.com/book?token_id=34722410608062854697106861099776685947172185964394483545370684749662285977831 "HTTP/1.1 200 OK"
+2026-10-22 05:04:27,234 INFO httpx: HTTP Request: GET https://data-api.polymarket.com/v2/trades?condition=0x16c63b7cc37f012b9f59ee164ec03877914c701d06d48291ae8d6fc08a088b0d&limit=200 "HTTP/1.1 200 OK"
+2026-10-22 05:04:27,399 INFO httpx: HTTP Request: GET https://clob.polymarket.com/book?token_id=21265207456609426291246075480390336499088453711419597084147957999650569091884 "HTTP/1.1 200 OK"
+2026-10-22 05:04:27,446 INFO httpx: HTTP Request: GET https://data-api.polymarket.com/v2/trades?condition=0x94521176f57d2ce81dde01e0b7699ca4279423042d37ed53908f0c8bfefe7e14&limit=200 "HTTP/1.1 200 OK"
+2026-10-22 05:04:32,647 INFO httpx: HTTP Request: GET https://clob.polymarket.com/book?token_id=58802458597374928740225519735423162012398763515664846118442539672822667668833 "HTTP/1.1 404 Not Found"
+2026-10-22 05:04:32,647 WARNING pb.data.recorder: poll 58802458597374928740225519735423162012398763515664846118442539672822667668833 failed: Polymarket 404 on /book: {'error': 'No orderbook exists for the requested token id'}
+2026-10-22 05:04:32,819 INFO httpx: HTTP Request: GET https://clob.polymarket.com/book?token_id=103704141773947678931823410030956181918562062788486034785782641603149828893320 "HTTP/1.1 200 OK"
+2026-10-22 05:04:32,877 INFO httpx: HTTP Request: GET https://data-api.polymarket.com/v2/trades?condition=0xc5eae79d1ffe716572353962eb926b1e3964c500a4880a7a94f58408218ee76b&limit=200 "HTTP/1.1 200 OK"
+2026-10-22 05:04:33,037 INFO httpx: HTTP Request: GET https://clob.polymarket.com/book?token_id=7685158848984498977390071784341171138992058973607044422044852725107513658437 "HTTP/1.1 404 Not Found"
+2026-10-22 05:04:33,037 WARNING pb.data.recorder: poll 7685158848984498977390071784341171138992058973607044422044852725107513658437 failed: Polymarket 404 on /book: {'error': 'No orderbook exists for the requested token id'}
+2026-10-22 05:04:33,213 INFO httpx: HTTP Request: GET https://clob.polymarket.com/book?token_id=107102793637680157985081124002726182334464514298802794132890893773707404215371 "HTTP/1.1 404 Not Found"
+2026-10-22 05:04:33,213 WARNING pb.data.recorder: poll 107102793637680157985081124002726182334464514298802794132890893773707404215371 failed: Polymarket 404 on /book: {'error': 'No orderbook exists for the requested token id'}
+2026-10-22 05:04:33,383 INFO httpx: HTTP Request: GET https://clob.polymarket.com/book?token_id=18246296022868501258060085368606280205967114341141276439803424448463050819498 "HTTP/1.1 200 OK"
+2026-10-22 05:04:33,419 INFO httpx: HTTP Request: GET https://data-api.polymarket.com/v2/trades?condition=0xde5d75ab7702875623ba509bc923241e1211da74a113521b3b70ddac930d7316&limit=200 "HTTP/1.1 200 OK"
+2026-10-22 05:04:33,585 INFO httpx: HTTP Request: GET https://clob.polymarket.com/book?token_id=11703355753646866721510451780813586747644200170798817311988936815535980370261 "HTTP/1.1 200 OK"
+2026-10-22 05:04:33,613 INFO httpx: HTTP Request: GET https://data-api.polymarket.com/v2/trades?condition=0x04fb634139d4654febf4b62c425b209806e06d9eff93ac2e7c5301ecdaf5e4ca&limit=200 "HTTP/1.1 200 OK"
+2026-10-22 05:04:33,783 INFO httpx: HTTP Request: GET https://clob.polymarket.com/book?token_id=33268510350568915228897273528353467773422190590579607471427765079749830445947 "HTTP/1.1 200 OK"
+2026-10-22 05:04:33,824 INFO httpx: HTTP Request: GET https://data-api.polymarket.com/v2/trades?condition=0x9cf563d7b55aa9aa876d5d7e55126347eee473f0ae56d799e325fdef2bf25297&limit=200 "HTTP/1.1 200 OK"
+2026-10-22 05:04:34,003 INFO httpx: HTTP Request: GET https://clob.polymarket.com/book?token_id=33339798372916037220786136133406478491116150628220441951753426683441228279665 "HTTP/1.1 200 OK"
+2026-10-22 05:04:34,032 INFO httpx: HTTP Request: GET https://data-api.polymarket.com/v2/trades?condition=0xefa17dee3af09f69f9ddf245b969aa4efbe7c71cdf06ee49d694408bc33e2ed2&limit=200 "HTTP/1.1 200 OK"
+2026-10-22 05:04:34,200 INFO httpx: HTTP Request: GET https://clob.polymarket.com/book?token_id=44887259505946660799050523095589383516895296837192507586209222338540683060118 "HTTP/1.1 404 Not Found"
+2026-10-22 05:04:34,200 WARNING pb.data.recorder: poll 44887259505946660799050523095589383516895296837192507586209222338540683060118 failed: Polymarket 404 on /book: {'error': 'No orderbook exists for the requested token id'}
+2026-10-22 05:04:34,366 INFO httpx: HTTP Request: GET https://clob.polymarket.com/book?token_id=30630994248667897740988010928640156931882346081873066002335460180076741328029 "HTTP/1.1 200 OK"
+2026-10-22 05:04:34,397 INFO httpx: HTTP Request: GET https://data-api.polymarket.com/v2/trades?condition=0xdf8e2dc5860027decbe6164555c3c1c9645c3bd33e16b9dc57ca87125047d4a8&limit=200 "HTTP/1.1 200 OK"
+2026-10-22 05:04:34,588 INFO httpx: HTTP Request: GET https://clob.polymarket.com/book?token_id=34722410608062854697106861099776685947172185964394483545370684749662285977831 "HTTP/1.1 200 OK"
+2026-10-22 05:04:34,629 INFO httpx: HTTP Request: GET https://data-api.polymarket.com/v2/trades?condition=0x16c63b7cc37f012b9f59ee164ec03877914c701d06d48291ae8d6fc08a088b0d&limit=200 "HTTP/1.1 200 OK"
+2026-10-22 05:04:34,804 INFO httpx: HTTP Request: GET https://clob.polymarket.com/book?token_id=21265207456609426291246075480390336499088453711419597084147957999650569091884 "HTTP/1.1 200 OK"
+2026-10-22 05:04:34,832 INFO httpx: HTTP Request: GET https://data-api.polymarket.com/v2/trades?condition=0x94521176f57d2ce81dde01e0b7699ca4279423042d37ed53908f0c8bfefe7e14&limit=200 "HTTP/1.1 200 OK"
+2026-10-22 05:04:40,030 INFO httpx: HTTP Request: GET https://clob.polymarket.com/book?token_id=58802458597374928740225519735423162012398763515664846118442539672822667668833 "HTTP/1.1 404 Not Found"
+2026-10-22 05:04:40,030 WARNING pb.data.recorder: poll 58802458597374928740225519735423162012398763515664846118442539672822667668833 failed: Polymarket 404 on /book: {'error': 'No orderbook exists for the requested token id'}
+2026-10-22 05:04:40,204 INFO httpx: HTTP Request: GET https://clob.polymarket.com/book?token_id=103704141773947678931823410030956181918562062788486034785782641603149828893320 "HTTP/1.1 200 OK"
+2026-10-22 05:04:40,269 INFO httpx: HTTP Request: GET https://data-api.polymarket.com/v2/trades?condition=0xc5eae79d1ffe716572353962eb926b1e3964c500a4880a7a94f58408218ee76b&limit=200 "HTTP/1.1 200 OK"
+2026-10-22 05:04:40,443 INFO httpx: HTTP Request: GET https://clob.polymarket.com/book?token_id=7685158848984498977390071784341171138992058973607044422044852725107513658437 "HTTP/1.1 404 Not Found"
+2026-10-22 05:04:40,444 WARNING pb.data.recorder: poll 7685158848984498977390071784341171138992058973607044422044852725107513658437 failed: Polymarket 404 on /book: {'error': 'No orderbook exists for the requested token id'}
+2026-10-22 05:04:40,614 INFO httpx: HTTP Request: GET https://clob.polymarket.com/book?token_id=107102793637680157985081124002726182334464514298802794132890893773707404215371 "HTTP/1.1 404 Not Found"
+2026-10-22 05:04:40,614 WARNING pb.data.recorder: poll 107102793637680157985081124002726182334464514298802794132890893773707404215371 failed: Polymarket 404 on /book: {'error': 'No orderbook exists for the requested token id'}
+2026-10-22 05:04:40,775 INFO httpx: HTTP Request: GET https://clob.polymarket.com/book?token_id=18246296022868501258060085368606280205967114341141276439803424448463050819498 "HTTP/1.1 200 OK"
+2026-10-22 05:04:40,808 INFO httpx: HTTP Request: GET https://data-api.polymarket.com/v2/trades?condition=0xde5d75ab7702875623ba509bc923241e1211da74a113521b3b70ddac930d7316&limit=200 "HTTP/1.1 200 OK"
+2026-10-22 05:04:40,967 INFO httpx: HTTP Request: GET https://clob.polymarket.com/book?token_id=11703355753646866721510451780813586747644200170798817311988936815535980370261 "HTTP/1.1 200 OK"
+2026-10-22 05:04:41,004 INFO httpx: HTTP Request: GET https://data-api.polymarket.com/v2/trades?condition=0x04fb634139d4654febf4b62c425b209806e06d9eff93ac2e7c5301ecdaf5e4ca&limit=200 "HTTP/1.1 200 OK"
+2026-10-22 05:04:41,170 INFO httpx: HTTP Request: GET https://clob.polymarket.com/book?token_id=33268510350568915228897273528353467773422190590579607471427765079749830445947 "HTTP/1.1 200 OK"
+2026-10-22 05:04:41,198 INFO httpx: HTTP Request: GET https://data-api.polymarket.com/v2/trades?condition=0x9cf563d7b55aa9aa876d5d7e55126347eee473f0ae56d799e325fdef2bf25297&limit=200 "HTTP/1.1 200 OK"
+2026-10-22 05:04:41,374 INFO httpx: HTTP Request: GET https://clob.polymarket.com/book?token_id=33339798372916037220786136133406478491116150628220441951753426683441228279665 "HTTP/1.1 200 OK"
+2026-10-22 05:04:41,418 INFO httpx: HTTP Request: GET https://data-api.polymarket.com/v2/trades?condition=0xefa17dee3af09f69f9ddf245b969aa4efbe7c71cdf06ee49d694408bc33e2ed2&limit=200 "HTTP/1.1 200 OK"
+2026-10-22 05:04:41,583 INFO httpx: HTTP Request: GET https://clob.polymarket.com/book?token_id=44887259505946660799050523095589383516895296837192507586209222338540683060118 "HTTP/1.1 404 Not Found"
+2026-10-22 05:04:41,583 WARNING pb.data.recorder: poll 44887259505946660799050523095589383516895296837192507586209222338540683060118 failed: Polymarket 404 on /book: {'error': 'No orderbook exists for the requested token id'}
+2026-10-22 05:04:41,738 INFO httpx: HTTP Request: GET https://clob.polymarket.com/book?token_id=30630994248667897740988010928640156931882346081873066002335460180076741328029 "HTTP/1.1 200 OK"
+2026-10-22 05:04:41,770 INFO httpx: HTTP Request: GET https://data-api.polymarket.com/v2/trades?condition=0xdf8e2dc5860027decbe6164555c3c1c9645c3bd33e16b9dc57ca87125047d4a8&limit=200 "HTTP/1.1 200 OK"
+2026-10-22 05:04:41,936 INFO httpx: HTTP Request: GET https://clob.polymarket.com/book?token_id=34722410608062854697106861099776685947172185964394483545370684749662285977831 "HTTP/1.1 200 OK"
+2026-10-22 05:04:41,982 INFO httpx: HTTP Request: GET https://data-api.polymarket.com/v2/trades?condition=0x16c63b7cc37f012b9f59ee164ec03877914c701d06d48291ae8d6fc08a088b0d&limit=200 "HTTP/1.1 200 OK"
+2026-10-22 05:04:42,142 INFO httpx: HTTP Request: GET https://clob.polymarket.com/book?token_id=21265207456609426291246075480390336499088453711419597084147957999650569091884 "HTTP/1.1 200 OK"
+2026-10-22 05:04:42,169 INFO httpx: HTTP Request: GET https://data-api.polymarket.com/v2/trades?condition=0x94521176f57d2ce81dde01e0b7699ca4279423042d37ed53908f0c8bfefe7e14&limit=200 "HTTP/1.1 200 OK"
+2026-10-22 05:04:47,366 INFO httpx: HTTP Request: GET https://clob.polymarket.com/book?token_id=58802458597374928740225519735423162012398763515664846118442539672822667668833 "HTTP/1.1 404 Not Found"
+2026-10-22 05:04:47,367 WARNING pb.data.recorder: poll 58802458597374928740225519735423162012398763515664846118442539672822667668833 failed: Polymarket 404 on /book: {'error': 'No orderbook exists for the requested token id'}
+2026-10-22 05:04:47,547 INFO httpx: HTTP Request: GET https://clob.polymarket.com/book?token_id=103704141773947678931823410030956181918562062788486034785782641603149828893320 "HTTP/1.1 200 OK"
+2026-10-22 05:04:47,605 INFO httpx: HTTP Request: GET https://data-api.polymarket.com/v2/trades?condition=0xc5eae79d1ffe716572353962eb926b1e3964c500a4880a7a94f58408218ee76b&limit=200 "HTTP/1.1 200 OK"
+2026-10-22 05:04:47,764 INFO httpx: HTTP Request: GET https://clob.polymarket.com/book?token_id=7685158848984498977390071784341171138992058973607044422044852725107513658437 "HTTP/1.1 404 Not Found"
+2026-10-22 05:04:47,765 WARNING pb.data.recorder: poll 7685158848984498977390071784341171138992058973607044422044852725107513658437 failed: Polymarket 404 on /book: {'error': 'No orderbook exists for the requested token id'}
+2026-10-22 05:04:47,923 INFO httpx: HTTP Request: GET https://clob.polymarket.com/book?token_id=107102793637680157985081124002726182334464514298802794132890893773707404215371 "HTTP/1.1 404 Not Found"
+2026-10-22 05:04:47,923 WARNING pb.data.recorder: poll 107102793637680157985081124002726182334464514298802794132890893773707404215371 failed: Polymarket 404 on /book: {'error': 'No orderbook exists for the requested token id'}
+2026-10-22 05:04:48,091 INFO httpx: HTTP Request: GET https://clob.polymarket.com/book?token_id=18246296022868501258060085368606280205967114341141276439803424448463050819498 "HTTP/1.1 200 OK"
+2026-10-22 05:04:48,119 INFO httpx: HTTP Request: GET https://data-api.polymarket.com/v2/trades?condition=0xde5d75ab7702875623ba509bc923241e1211da74a113521b3b70ddac930d7316&limit=200 "HTTP/1.1 200 OK"
+2026-10-22 05:04:48,290 INFO httpx: HTTP Request: GET https://clob.polymarket.com/book?token_id=11703355753646866721510451780813586747644200170798817311988936815535980370261 "HTTP/1.1 200 OK"
+2026-10-22 05:04:48,317 INFO httpx: HTTP Request: GET https://data-api.polymarket.com/v2/trades?condition=0x04fb634139d4654febf4b62c425b209806e06d9eff93ac2e7c5301ecdaf5e4ca&limit=200 "HTTP/1.1 200 OK"
+2026-10-22 05:04:48,482 INFO httpx: HTTP Request: GET https://clob.polymarket.com/book?token_id=33268510350568915228897273528353467773422190590579607471427765079749830445947 "HTTP/1.1 200 OK"
+2026-10-22 05:04:48,526 INFO httpx: HTTP Request: GET https://data-api.polymarket.com/v2/trades?condition=0x9cf563d7b55aa9aa876d5d7e55126347eee473f0ae56d799e325fdef2bf25297&limit=200 "HTTP/1.1 200 OK"
+2026-10-22 05:04:48,700 INFO httpx: HTTP Request: GET https://clob.polymarket.com/book?token_id=33339798372916037220786136133406478491116150628220441951753426683441228279665 "HTTP/1.1 200 OK"
+2026-10-22 05:04:48,724 INFO httpx: HTTP Request: GET https://data-api.polymarket.com/v2/trades?condition=0xefa17dee3af09f69f9ddf245b969aa4efbe7c71cdf06ee49d694408bc33e2ed2&limit=200 "HTTP/1.1 200 OK"
+2026-10-22 05:04:48,891 INFO httpx: HTTP Request: GET https://clob.polymarket.com/book?token_id=44887259505946660799050523095589383516895296837192507586209222338540683060118 "HTTP/1.1 404 Not Found"
+2026-10-22 05:04:48,891 WARNING pb.data.recorder: poll 44887259505946660799050523095589383516895296837192507586209222338540683060118 failed: Polymarket 404 on /book: {'error': 'No orderbook exists for the requested token id'}
+2026-10-22 05:04:49,055 INFO httpx: HTTP Request: GET https://clob.polymarket.com/book?token_id=30630994248667897740988010928640156931882346081873066002335460180076741328029 "HTTP/1.1 200 OK"
+2026-10-22 05:04:49,083 INFO httpx: HTTP Request: GET https://data-api.polymarket.com/v2/trades?condition=0xdf8e2dc5860027decbe6164555c3c1c9645c3bd33e16b9dc57ca87125047d4a8&limit=200 "HTTP/1.1 200 OK"
+2026-10-22 05:04:49,323 INFO httpx: HTTP Request: GET https://clob.polymarket.com/book?token_id=34722410608062854697106861099776685947172185964394483545370684749662285977831 "HTTP/1.1 200 OK"
+2026-10-22 05:04:49,368 INFO httpx: HTTP Request: GET https://data-api.polymarket.com/v2/trades?condition=0x16c63b7cc37f012b9f59ee164ec03877914c701d06d48291ae8d6fc08a088b0d&limit=200 "HTTP/1.1 200 OK"
+2026-10-22 05:04:49,543 INFO httpx: HTTP Request: GET https://clob.polymarket.com/book?token_id=21265207456609426291246075480390336499088453711419597084147957999650569091884 "HTTP/1.1 200 OK"
+2026-10-22 05:04:49,572 INFO httpx: HTTP Request: GET https://data-api.polymarket.com/v2/trades?condition=0x94521176f57d2ce81dde01e0b7699ca4279423042d37ed53908f0c8bfefe7e14&limit=200 "HTTP/1.1 200 OK"
+2026-10-22 05:04:54,771 INFO httpx: HTTP Request: GET https://clob.polymarket.com/book?token_id=58802458597374928740225519735423162012398763515664846118442539672822667668833 "HTTP/1.1 404 Not Found"
+2026-10-22 05:04:54,772 WARNING pb.data.recorder: poll 58802458597374928740225519735423162012398763515664846118442539672822667668833 failed: Polymarket 404 on /book: {'error': 'No orderbook exists for the requested token id'}
+2026-10-22 05:04:54,941 INFO httpx: HTTP Request: GET https://clob.polymarket.com/book?token_id=103704141773947678931823410030956181918562062788486034785782641603149828893320 "HTTP/1.1 200 OK"
+2026-10-22 05:04:55,012 INFO httpx: HTTP Request: GET https://data-api.polymarket.com/v2/trades?condition=0xc5eae79d1ffe716572353962eb926b1e3964c500a4880a7a94f58408218ee76b&limit=200 "HTTP/1.1 200 OK"
+2026-10-22 05:04:55,182 INFO httpx: HTTP Request: GET https://clob.polymarket.com/book?token_id=7685158848984498977390071784341171138992058973607044422044852725107513658437 "HTTP/1.1 404 Not Found"
+2026-10-22 05:04:55,182 WARNING pb.data.recorder: poll 7685158848984498977390071784341171138992058973607044422044852725107513658437 failed: Polymarket 404 on /book: {'error': 'No orderbook exists for the requested token id'}
+2026-10-22 05:04:55,341 INFO httpx: HTTP Request: GET https://clob.polymarket.com/book?token_id=107102793637680157985081124002726182334464514298802794132890893773707404215371 "HTTP/1.1 404 Not Found"
+2026-10-22 05:04:55,342 WARNING pb.data.recorder: poll 107102793637680157985081124002726182334464514298802794132890893773707404215371 failed: Polymarket 404 on /book: {'error': 'No orderbook exists for the requested token id'}
+2026-10-22 05:04:55,506 INFO httpx: HTTP Request: GET https://clob.polymarket.com/book?token_id=18246296022868501258060085368606280205967114341141276439803424448463050819498 "HTTP/1.1 200 OK"
+2026-10-22 05:04:55,541 INFO httpx: HTTP Request: GET https://data-api.polymarket.com/v2/trades?condition=0xde5d75ab7702875623ba509bc923241e1211da74a113521b3b70ddac930d7316&limit=200 "HTTP/1.1 200 OK"
+2026-10-22 05:04:55,710 INFO httpx: HTTP Request: GET https://clob.polymarket.com/book?token_id=11703355753646866721510451780813586747644200170798817311988936815535980370261 "HTTP/1.1 200 OK"
+2026-10-22 05:04:55,744 INFO httpx: HTTP Request: GET https://data-api.polymarket.com/v2/trades?condition=0x04fb634139d4654febf4b62c425b209806e06d9eff93ac2e7c5301ecdaf5e4ca&limit=200 "HTTP/1.1 200 OK"
+2026-10-22 05:04:55,913 INFO httpx: HTTP Request: GET https://clob.polymarket.com/book?token_id=33268510350568915228897273528353467773422190590579607471427765079749830445947 "HTTP/1.1 200 OK"
+2026-10-22 05:04:55,964 INFO httpx: HTTP Request: GET https://data-api.polymarket.com/v2/trades?condition=0x9cf563d7b55aa9aa876d5d7e55126347eee473f0ae56d799e325fdef2bf25297&limit=200 "HTTP/1.1 200 OK"
+2026-10-22 05:04:56,137 INFO httpx: HTTP Request: GET https://clob.polymarket.com/book?token_id=33339798372916037220786136133406478491116150628220441951753426683441228279665 "HTTP/1.1 200 OK"
+2026-10-22 05:04:56,169 INFO httpx: HTTP Request: GET https://data-api.polymarket.com/v2/trades?condition=0xefa17dee3af09f69f9ddf245b969aa4efbe7c71cdf06ee49d694408bc33e2ed2&limit=200 "HTTP/1.1 200 OK"
+2026-10-22 05:04:56,329 INFO httpx: HTTP Request: GET https://clob.polymarket.com/book?token_id=44887259505946660799050523095589383516895296837192507586209222338540683060118 "HTTP/1.1 404 Not Found"
+2026-10-22 05:04:56,330 WARNING pb.data.recorder: poll 44887259505946660799050523095589383516895296837192507586209222338540683060118 failed: Polymarket 404 on /book: {'error': 'No orderbook exists for the requested token id'}
+2026-10-22 05:04:56,503 INFO httpx: HTTP Request: GET https://clob.polymarket.com/book?token_id=30630994248667897740988010928640156931882346081873066002335460180076741328029 "HTTP/1.1 200 OK"
+2026-10-22 05:04:56,539 INFO httpx: HTTP Request: GET https://data-api.polymarket.com/v2/trades?condition=0xdf8e2dc5860027decbe6164555c3c1c9645c3bd33e16b9dc57ca87125047d4a8&limit=200 "HTTP/1.1 200 OK"
+2026-10-22 05:04:56,709 INFO httpx: HTTP Request: GET https://clob.polymarket.com/book?token_id=34722410608062854697106861099776685947172185964394483545370684749662285977831 "HTTP/1.1 200 OK"
+2026-10-22 05:04:56,741 INFO httpx: HTTP Request: GET https://data-api.polymarket.com/v2/trades?condition=0x16c63b7cc37f012b9f59ee164ec03877914c701d06d48291ae8d6fc08a088b0d&limit=200 "HTTP/1.1 200 OK"
+2026-10-22 05:04:56,915 INFO httpx: HTTP Request: GET https://clob.polymarket.com/book?token_id=21265207456609426291246075480390336499088453711419597084147957999650569091884 "HTTP/1.1 200 OK"
+2026-10-22 05:04:56,945 INFO httpx: HTTP Request: GET https://data-api.polymarket.com/v2/trades?condition=0x94521176f57d2ce81dde01e0b7699ca4279423042d37ed53908f0c8bfefe7e14&limit=200 "HTTP/1.1 200 OK"
+2026-10-22 05:05:02,148 INFO httpx: HTTP Request: GET https://clob.polymarket.com/book?token_id=58802458597374928740225519735423162012398763515664846118442539672822667668833 "HTTP/1.1 404 Not Found"
+2026-10-22 05:05:02,148 WARNING pb.data.recorder: poll 58802458597374928740225519735423162012398763515664846118442539672822667668833 failed: Polymarket 404 on /book: {'error': 'No orderbook exists for the requested token id'}
+2026-10-22 05:05:02,319 INFO httpx: HTTP Request: GET https://clob.polymarket.com/book?token_id=103704141773947678931823410030956181918562062788486034785782641603149828893320 "HTTP/1.1 200 OK"
+2026-10-22 05:05:02,390 INFO httpx: HTTP Request: GET https://data-api.polymarket.com/v2/trades?condition=0xc5eae79d1ffe716572353962eb926b1e3964c500a4880a7a94f58408218ee76b&limit=200 "HTTP/1.1 200 OK"
+2026-10-22 05:05:02,551 INFO httpx: HTTP Request: GET https://clob.polymarket.com/book?token_id=7685158848984498977390071784341171138992058973607044422044852725107513658437 "HTTP/1.1 404 Not Found"
+2026-10-22 05:05:02,551 WARNING pb.data.recorder: poll 7685158848984498977390071784341171138992058973607044422044852725107513658437 failed: Polymarket 404 on /book: {'error': 'No orderbook exists for the requested token id'}
+2026-10-22 05:05:02,714 INFO httpx: HTTP Request: GET https://clob.polymarket.com/book?token_id=107102793637680157985081124002726182334464514298802794132890893773707404215371 "HTTP/1.1 404 Not Found"
+2026-10-22 05:05:02,715 WARNING pb.data.recorder: poll 107102793637680157985081124002726182334464514298802794132890893773707404215371 failed: Polymarket 404 on /book: {'error': 'No orderbook exists for the requested token id'}
+2026-10-22 05:05:02,871 INFO httpx: HTTP Request: GET https://clob.polymarket.com/book?token_id=18246296022868501258060085368606280205967114341141276439803424448463050819498 "HTTP/1.1 200 OK"
+2026-10-22 05:05:02,910 INFO httpx: HTTP Request: GET https://data-api.polymarket.com/v2/trades?condition=0xde5d75ab7702875623ba509bc923241e1211da74a113521b3b70ddac930d7316&limit=200 "HTTP/1.1 200 OK"
+2026-10-22 05:05:03,088 INFO httpx: HTTP Request: GET https://clob.polymarket.com/book?token_id=11703355753646866721510451780813586747644200170798817311988936815535980370261 "HTTP/1.1 200 OK"
+2026-10-22 05:05:03,128 INFO httpx: HTTP Request: GET https://data-api.polymarket.com/v2/trades?condition=0x04fb634139d4654febf4b62c425b209806e06d9eff93ac2e7c5301ecdaf5e4ca&limit=200 "HTTP/1.1 200 OK"
+2026-10-22 05:05:03,316 INFO httpx: HTTP Request: GET https://clob.polymarket.com/book?token_id=33268510350568915228897273528353467773422190590579607471427765079749830445947 "HTTP/1.1 200 OK"
+2026-10-22 05:05:03,358 INFO httpx: HTTP Request: GET https://data-api.polymarket.com/v2/trades?condition=0x9cf563d7b55aa9aa876d5d7e55126347eee473f0ae56d799e325fdef2bf25297&limit=200 "HTTP/1.1 200 OK"
+2026-10-22 05:05:03,529 INFO httpx: HTTP Request: GET https://clob.polymarket.com/book?token_id=33339798372916037220786136133406478491116150628220441951753426683441228279665 "HTTP/1.1 200 OK"
+2026-10-22 05:05:03,575 INFO httpx: HTTP Request: GET https://data-api.polymarket.com/v2/trades?condition=0xefa17dee3af09f69f9ddf245b969aa4efbe7c71cdf06ee49d694408bc33e2ed2&limit=200 "HTTP/1.1 200 OK"
+2026-10-22 05:05:03,767 INFO httpx: HTTP Request: GET https://clob.polymarket.com/book?token_id=44887259505946660799050523095589383516895296837192507586209222338540683060118 "HTTP/1.1 404 Not Found"
+2026-10-22 05:05:03,767 WARNING pb.data.recorder: poll 44887259505946660799050523095589383516895296837192507586209222338540683060118 failed: Polymarket 404 on /book: {'error': 'No orderbook exists for the requested token id'}
+2026-10-22 05:05:03,928 INFO httpx: HTTP Request: GET https://clob.polymarket.com/book?token_id=30630994248667897740988010928640156931882346081873066002335460180076741328029 "HTTP/1.1 200 OK"
+2026-10-22 05:05:03,961 INFO httpx: HTTP Request: GET https://data-api.polymarket.com/v2/trades?condition=0xdf8e2dc5860027decbe6164555c3c1c9645c3bd33e16b9dc57ca87125047d4a8&limit=200 "HTTP/1.1 200 OK"
+2026-10-22 05:05:04,122 INFO httpx: HTTP Request: GET https://clob.polymarket.com/book?token_id=34722410608062854697106861099776685947172185964394483545370684749662285977831 "HTTP/1.1 200 OK"
+2026-10-22 05:05:04,159 INFO httpx: HTTP Request: GET https://data-api.polymarket.com/v2/trades?condition=0x16c63b7cc37f012b9f59ee164ec03877914c701d06d48291ae8d6fc08a088b0d&limit=200 "HTTP/1.1 200 OK"
+2026-10-22 05:05:04,315 INFO httpx: HTTP Request: GET https://clob.polymarket.com/book?token_id=21265207456609426291246075480390336499088453711419597084147957999650569091884 "HTTP/1.1 200 OK"
+2026-10-22 05:05:04,345 INFO httpx: HTTP Request: GET https://data-api.polymarket.com/v2/trades?condition=0x94521176f57d2ce81dde01e0b7699ca4279423042d37ed53908f0c8bfefe7e14&limit=200 "HTTP/1.1 200 OK"
+2026-10-22 05:05:09,575 INFO httpx: HTTP Request: GET https://clob.polymarket.com/book?token_id=58802458597374928740225519735423162012398763515664846118442539672822667668833 "HTTP/1.1 404 Not Found"
+2026-10-22 05:05:09,576 WARNING pb.data.recorder: poll 58802458597374928740225519735423162012398763515664846118442539672822667668833 failed: Polymarket 404 on /book: {'error': 'No orderbook exists for the requested token id'}
+2026-10-22 05:05:09,747 INFO httpx: HTTP Request: GET https://clob.polymarket.com/book?token_id=103704141773947678931823410030956181918562062788486034785782641603149828893320 "HTTP/1.1 200 OK"
+2026-10-22 05:05:09,817 INFO httpx: HTTP Request: GET https://data-api.polymarket.com/v2/trades?condition=0xc5eae79d1ffe716572353962eb926b1e3964c500a4880a7a94f58408218ee76b&limit=200 "HTTP/1.1 200 OK"
+2026-10-22 05:05:09,983 INFO httpx: HTTP Request: GET https://clob.polymarket.com/book?token_id=7685158848984498977390071784341171138992058973607044422044852725107513658437 "HTTP/1.1 404 Not Found"
+2026-10-22 05:05:09,983 WARNING pb.data.recorder: poll 7685158848984498977390071784341171138992058973607044422044852725107513658437 failed: Polymarket 404 on /book: {'error': 'No orderbook exists for the requested token id'}
+2026-10-22 05:05:10,157 INFO httpx: HTTP Request: GET https://clob.polymarket.com/book?token_id=107102793637680157985081124002726182334464514298802794132890893773707404215371 "HTTP/1.1 404 Not Found"
+2026-10-22 05:05:10,157 WARNING pb.data.recorder: poll 107102793637680157985081124002726182334464514298802794132890893773707404215371 failed: Polymarket 404 on /book: {'error': 'No orderbook exists for the requested token id'}
+2026-10-22 05:05:10,321 INFO httpx: HTTP Request: GET https://clob.polymarket.com/book?token_id=18246296022868501258060085368606280205967114341141276439803424448463050819498 "HTTP/1.1 200 OK"
+2026-10-22 05:05:10,372 INFO httpx: HTTP Request: GET https://data-api.polymarket.com/v2/trades?condition=0xde5d75ab7702875623ba509bc923241e1211da74a113521b3b70ddac930d7316&limit=200 "HTTP/1.1 200 OK"
+2026-10-22 05:05:10,534 INFO httpx: HTTP Request: GET https://clob.polymarket.com/book?token_id=11703355753646866721510451780813586747644200170798817311988936815535980370261 "HTTP/1.1 200 OK"
+2026-10-22 05:05:10,594 INFO httpx: HTTP Request: GET https://data-api.polymarket.com/v2/trades?condition=0x04fb634139d4654febf4b62c425b209806e06d9eff93ac2e7c5301ecdaf5e4ca&limit=200 "HTTP/1.1 200 OK"
+2026-10-22 05:05:10,780 INFO httpx: HTTP Request: GET https://clob.polymarket.com/book?token_id=33268510350568915228897273528353467773422190590579607471427765079749830445947 "HTTP/1.1 200 OK"
+2026-10-22 05:05:10,828 INFO httpx: HTTP Request: GET https://data-api.polymarket.com/v2/trades?condition=0x9cf563d7b55aa9aa876d5d7e55126347eee473f0ae56d799e325fdef2bf25297&limit=200 "HTTP/1.1 200 OK"
+2026-10-22 05:05:10,998 INFO httpx: HTTP Request: GET https://clob.polymarket.com/book?token_id=33339798372916037220786136133406478491116150628220441951753426683441228279665 "HTTP/1.1 200 OK"
+2026-10-22 05:05:11,039 INFO httpx: HTTP Request: GET https://data-api.polymarket.com/v2/trades?condition=0xefa17dee3af09f69f9ddf245b969aa4efbe7c71cdf06ee49d694408bc33e2ed2&limit=200 "HTTP/1.1 200 OK"
+2026-10-22 05:05:11,206 INFO httpx: HTTP Request: GET https://clob.polymarket.com/book?token_id=44887259505946660799050523095589383516895296837192507586209222338540683060118 "HTTP/1.1 404 Not Found"
+2026-10-22 05:05:11,206 WARNING pb.data.recorder: poll 44887259505946660799050523095589383516895296837192507586209222338540683060118 failed: Polymarket 404 on /book: {'error': 'No orderbook exists for the requested token id'}
+2026-10-22 05:05:11,380 INFO httpx: HTTP Request: GET https://clob.polymarket.com/book?token_id=30630994248667897740988010928640156931882346081873066002335460180076741328029 "HTTP/1.1 200 OK"
+2026-10-22 05:05:11,422 INFO httpx: HTTP Request: GET https://data-api.polymarket.com/v2/trades?condition=0xdf8e2dc5860027decbe6164555c3c1c9645c3bd33e16b9dc57ca87125047d4a8&limit=200 "HTTP/1.1 200 OK"
+2026-10-22 05:05:11,589 INFO httpx: HTTP Request: GET https://clob.polymarket.com/book?token_id=34722410608062854697106861099776685947172185964394483545370684749662285977831 "HTTP/1.1 200 OK"
+2026-10-22 05:05:11,622 INFO httpx: HTTP Request: GET https://data-api.polymarket.com/v2/trades?condition=0x16c63b7cc37f012b9f59ee164ec03877914c701d06d48291ae8d6fc08a088b0d&limit=200 "HTTP/1.1 200 OK"
+2026-10-22 05:05:11,788 INFO httpx: HTTP Request: GET https://clob.polymarket.com/book?token_id=21265207456609426291246075480390336499088453711419597084147957999650569091884 "HTTP/1.1 200 OK"
+2026-10-22 05:05:11,829 INFO httpx: HTTP Request: GET https://data-api.polymarket.com/v2/trades?condition=0x94521176f57d2ce81dde01e0b7699ca4279423042d37ed53908f0c8bfefe7e14&limit=200 "HTTP/1.1 200 OK"
+2026-10-22 05:05:15,512 INFO pb.data.recorder: flushed books-050515-0315.parquet, trades-050515-0315.parquet
+2026-10-22 05:05:17,028 INFO httpx: HTTP Request: GET https://clob.polymarket.com/book?token_id=58802458597374928740225519735423162012398763515664846118442539672822667668833 "HTTP/1.1 404 Not Found"
+2026-10-22 05:05:17,028 WARNING pb.data.recorder: poll 58802458597374928740225519735423162012398763515664846118442539672822667668833 failed: Polymarket 404 on /book: {'error': 'No orderbook exists for the requested token id'}
+2026-10-22 05:05:17,194 INFO httpx: HTTP Request: GET https://clob.polymarket.com/book?token_id=103704141773947678931823410030956181918562062788486034785782641603149828893320 "HTTP/1.1 200 OK"
+2026-10-22 05:05:17,262 INFO httpx: HTTP Request: GET https://data-api.polymarket.com/v2/trades?condition=0xc5eae79d1ffe716572353962eb926b1e3964c500a4880a7a94f58408218ee76b&limit=200 "HTTP/1.1 200 OK"
+2026-10-22 05:05:17,417 INFO httpx: HTTP Request: GET https://clob.polymarket.com/book?token_id=7685158848984498977390071784341171138992058973607044422044852725107513658437 "HTTP/1.1 404 Not Found"
+2026-10-22 05:05:17,417 WARNING pb.data.recorder: poll 7685158848984498977390071784341171138992058973607044422044852725107513658437 failed: Polymarket 404 on /book: {'error': 'No orderbook exists for the requested token id'}
+2026-10-22 05:05:17,578 INFO httpx: HTTP Request: GET https://clob.polymarket.com/book?token_id=107102793637680157985081124002726182334464514298802794132890893773707404215371 "HTTP/1.1 404 Not Found"
+2026-10-22 05:05:17,578 WARNING pb.data.recorder: poll 107102793637680157985081124002726182334464514298802794132890893773707404215371 failed: Polymarket 404 on /book: {'error': 'No orderbook exists for the requested token id'}
+2026-10-22 05:05:17,745 INFO httpx: HTTP Request: GET https://clob.polymarket.com/book?token_id=18246296022868501258060085368606280205967114341141276439803424448463050819498 "HTTP/1.1 200 OK"
+2026-10-22 05:05:17,783 INFO httpx: HTTP Request: GET https://data-api.polymarket.com/v2/trades?condition=0xde5d75ab7702875623ba509bc923241e1211da74a113521b3b70ddac930d7316&limit=200 "HTTP/1.1 200 OK"
+2026-10-22 05:05:17,948 INFO httpx: HTTP Request: GET https://clob.polymarket.com/book?token_id=11703355753646866721510451780813586747644200170798817311988936815535980370261 "HTTP/1.1 200 OK"
+2026-10-22 05:05:17,986 INFO httpx: HTTP Request: GET https://data-api.polymarket.com/v2/trades?condition=0x04fb634139d4654febf4b62c425b209806e06d9eff93ac2e7c5301ecdaf5e4ca&limit=200 "HTTP/1.1 200 OK"
+2026-10-22 05:05:18,318 INFO httpx: HTTP Request: GET https://clob.polymarket.com/book?token_id=33268510350568915228897273528353467773422190590579607471427765079749830445947 "HTTP/1.1 200 OK"
+2026-10-22 05:05:18,345 INFO httpx: HTTP Request: GET https://data-api.polymarket.com/v2/trades?condition=0x9cf563d7b55aa9aa876d5d7e55126347eee473f0ae56d799e325fdef2bf25297&limit=200 "HTTP/1.1 200 OK"
+2026-10-22 05:05:18,507 INFO httpx: HTTP Request: GET https://clob.polymarket.com/book?token_id=33339798372916037220786136133406478491116150628220441951753426683441228279665 "HTTP/1.1 200 OK"
+2026-10-22 05:05:18,535 INFO httpx: HTTP Request: GET https://data-api.polymarket.com/v2/trades?condition=0xefa17dee3af09f69f9ddf245b969aa4efbe7c71cdf06ee49d694408bc33e2ed2&limit=200 "HTTP/1.1 200 OK"
+2026-10-22 05:05:18,708 INFO httpx: HTTP Request: GET https://clob.polymarket.com/book?token_id=44887259505946660799050523095589383516895296837192507586209222338540683060118 "HTTP/1.1 404 Not Found"
+2026-10-22 05:05:18,708 WARNING pb.data.recorder: poll 44887259505946660799050523095589383516895296837192507586209222338540683060118 failed: Polymarket 404 on /book: {'error': 'No orderbook exists for the requested token id'}
+2026-10-22 05:05:18,866 INFO httpx: HTTP Request: GET https://clob.polymarket.com/book?token_id=30630994248667897740988010928640156931882346081873066002335460180076741328029 "HTTP/1.1 200 OK"
+2026-10-22 05:05:18,897 INFO httpx: HTTP Request: GET https://data-api.polymarket.com/v2/trades?condition=0xdf8e2dc5860027decbe6164555c3c1c9645c3bd33e16b9dc57ca87125047d4a8&limit=200 "HTTP/1.1 200 OK"
+2026-10-22 05:05:19,072 INFO httpx: HTTP Request: GET https://clob.polymarket.com/book?token_id=34722410608062854697106861099776685947172185964394483545370684749662285977831 "HTTP/1.1 200 OK"
+2026-10-22 05:05:19,104 INFO httpx: HTTP Request: GET https://data-api.polymarket.com/v2/trades?condition=0x16c63b7cc37f012b9f59ee164ec03877914c701d06d48291ae8d6fc08a088b0d&limit=200 "HTTP/1.1 200 OK"
+2026-10-22 05:05:19,263 INFO httpx: HTTP Request: GET https://clob.polymarket.com/book?token_id=21265207456609426291246075480390336499088453711419597084147957999650569091884 "HTTP/1.1 200 OK"
+2026-10-22 05:05:19,294 INFO httpx: HTTP Request: GET https://data-api.polymarket.com/v2/trades?condition=0x94521176f57d2ce81dde01e0b7699ca4279423042d37ed53908f0c8bfefe7e14&limit=200 "HTTP/1.1 200 OK"
+2026-10-22 05:05:24,494 INFO httpx: HTTP Request: GET https://clob.polymarket.com/book?token_id=58802458597374928740225519735423162012398763515664846118442539672822667668833 "HTTP/1.1 404 Not Found"
+2026-10-22 05:05:24,494 WARNING pb.data.recorder: poll 58802458597374928740225519735423162012398763515664846118442539672822667668833 failed: Polymarket 404 on /book: {'error': 'No orderbook exists for the requested token id'}
+2026-10-22 05:05:24,657 INFO httpx: HTTP Request: GET https://clob.polymarket.com/book?token_id=103704141773947678931823410030956181918562062788486034785782641603149828893320 "HTTP/1.1 200 OK"
+2026-10-22 05:05:24,725 INFO httpx: HTTP Request: GET https://data-api.polymarket.com/v2/trades?condition=0xc5eae79d1ffe716572353962eb926b1e3964c500a4880a7a94f58408218ee76b&limit=200 "HTTP/1.1 200 OK"
+2026-10-22 05:05:24,894 INFO httpx: HTTP Request: GET https://clob.polymarket.com/book?token_id=7685158848984498977390071784341171138992058973607044422044852725107513658437 "HTTP/1.1 404 Not Found"
+2026-10-22 05:05:24,894 WARNING pb.data.recorder: poll 7685158848984498977390071784341171138992058973607044422044852725107513658437 failed: Polymarket 404 on /book: {'error': 'No orderbook exists for the requested token id'}
+2026-10-22 05:05:25,074 INFO httpx: HTTP Request: GET https://clob.polymarket.com/book?token_id=107102793637680157985081124002726182334464514298802794132890893773707404215371 "HTTP/1.1 404 Not Found"
+2026-10-22 05:05:25,074 WARNING pb.data.recorder: poll 107102793637680157985081124002726182334464514298802794132890893773707404215371 failed: Polymarket 404 on /book: {'error': 'No orderbook exists for the requested token id'}
+2026-10-22 05:05:25,237 INFO httpx: HTTP Request: GET https://clob.polymarket.com/book?token_id=18246296022868501258060085368606280205967114341141276439803424448463050819498 "HTTP/1.1 200 OK"
+2026-10-22 05:05:25,281 INFO httpx: HTTP Request: GET https://data-api.polymarket.com/v2/trades?condition=0xde5d75ab7702875623ba509bc923241e1211da74a113521b3b70ddac930d7316&limit=200 "HTTP/1.1 200 OK"
+2026-10-22 05:05:25,455 INFO httpx: HTTP Request: GET https://clob.polymarket.com/book?token_id=11703355753646866721510451780813586747644200170798817311988936815535980370261 "HTTP/1.1 200 OK"
+2026-10-22 05:05:25,501 INFO httpx: HTTP Request: GET https://data-api.polymarket.com/v2/trades?condition=0x04fb634139d4654febf4b62c425b209806e06d9eff93ac2e7c5301ecdaf5e4ca&limit=200 "HTTP/1.1 200 OK"
+2026-10-22 05:05:25,695 INFO httpx: HTTP Request: GET https://clob.polymarket.com/book?token_id=33268510350568915228897273528353467773422190590579607471427765079749830445947 "HTTP/1.1 200 OK"
+2026-10-22 05:05:25,724 INFO httpx: HTTP Request: GET https://data-api.polymarket.com/v2/trades?condition=0x9cf563d7b55aa9aa876d5d7e55126347eee473f0ae56d799e325fdef2bf25297&limit=200 "HTTP/1.1 200 OK"
+2026-10-22 05:05:25,893 INFO httpx: HTTP Request: GET https://clob.polymarket.com/book?token_id=33339798372916037220786136133406478491116150628220441951753426683441228279665 "HTTP/1.1 200 OK"
+2026-10-22 05:05:25,939 INFO httpx: HTTP Request: GET https://data-api.polymarket.com/v2/trades?condition=0xefa17dee3af09f69f9ddf245b969aa4efbe7c71cdf06ee49d694408bc33e2ed2&limit=200 "HTTP/1.1 200 OK"
+2026-10-22 05:05:26,112 INFO httpx: HTTP Request: GET https://clob.polymarket.com/book?token_id=44887259505946660799050523095589383516895296837192507586209222338540683060118 "HTTP/1.1 404 Not Found"
+2026-10-22 05:05:26,112 WARNING pb.data.recorder: poll 44887259505946660799050523095589383516895296837192507586209222338540683060118 failed: Polymarket 404 on /book: {'error': 'No orderbook exists for the requested token id'}
+2026-10-22 05:05:26,284 INFO httpx: HTTP Request: GET https://clob.polymarket.com/book?token_id=30630994248667897740988010928640156931882346081873066002335460180076741328029 "HTTP/1.1 200 OK"
+2026-10-22 05:05:26,318 INFO httpx: HTTP Request: GET https://data-api.polymarket.com/v2/trades?condition=0xdf8e2dc5860027decbe6164555c3c1c9645c3bd33e16b9dc57ca87125047d4a8&limit=200 "HTTP/1.1 200 OK"
+2026-10-22 05:05:26,496 INFO httpx: HTTP Request: GET https://clob.polymarket.com/book?token_id=34722410608062854697106861099776685947172185964394483545370684749662285977831 "HTTP/1.1 200 OK"
+2026-10-22 05:05:26,534 INFO httpx: HTTP Request: GET https://data-api.polymarket.com/v2/trades?condition=0x16c63b7cc37f012b9f59ee164ec03877914c701d06d48291ae8d6fc08a088b0d&limit=200 "HTTP/1.1 200 OK"
+2026-10-22 05:05:26,711 INFO httpx: HTTP Request: GET https://clob.polymarket.com/book?token_id=21265207456609426291246075480390336499088453711419597084147957999650569091884 "HTTP/1.1 200 OK"
+2026-10-22 05:05:26,755 INFO httpx: HTTP Request: GET https://data-api.polymarket.com/v2/trades?condition=0x94521176f57d2ce81dde01e0b7699ca4279423042d37ed53908f0c8bfefe7e14&limit=200 "HTTP/1.1 200 OK"
+2026-10-22 05:05:31,949 INFO httpx: HTTP Request: GET https://clob.polymarket.com/book?token_id=58802458597374928740225519735423162012398763515664846118442539672822667668833 "HTTP/1.1 404 Not Found"
+2026-10-22 05:05:31,949 WARNING pb.data.recorder: poll 58802458597374928740225519735423162012398763515664846118442539672822667668833 failed: Polymarket 404 on /book: {'error': 'No orderbook exists for the requested token id'}
+2026-10-22 05:05:32,130 INFO httpx: HTTP Request: GET https://clob.polymarket.com/book?token_id=103704141773947678931823410030956181918562062788486034785782641603149828893320 "HTTP/1.1 200 OK"
+2026-10-22 05:05:32,187 INFO httpx: HTTP Request: GET https://data-api.polymarket.com/v2/trades?condition=0xc5eae79d1ffe716572353962eb926b1e3964c500a4880a7a94f58408218ee76b&limit=200 "HTTP/1.1 200 OK"
+2026-10-22 05:05:32,359 INFO httpx: HTTP Request: GET https://clob.polymarket.com/book?token_id=7685158848984498977390071784341171138992058973607044422044852725107513658437 "HTTP/1.1 404 Not Found"
+2026-10-22 05:05:32,360 WARNING pb.data.recorder: poll 7685158848984498977390071784341171138992058973607044422044852725107513658437 failed: Polymarket 404 on /book: {'error': 'No orderbook exists for the requested token id'}
+2026-10-22 05:05:32,531 INFO httpx: HTTP Request: GET https://clob.polymarket.com/book?token_id=107102793637680157985081124002726182334464514298802794132890893773707404215371 "HTTP/1.1 404 Not Found"
+2026-10-22 05:05:32,532 WARNING pb.data.recorder: poll 107102793637680157985081124002726182334464514298802794132890893773707404215371 failed: Polymarket 404 on /book: {'error': 'No orderbook exists for the requested token id'}
+2026-10-22 05:05:32,692 INFO httpx: HTTP Request: GET https://clob.polymarket.com/book?token_id=18246296022868501258060085368606280205967114341141276439803424448463050819498 "HTTP/1.1 200 OK"
+2026-10-22 05:05:32,726 INFO httpx: HTTP Request: GET https://data-api.polymarket.com/v2/trades?condition=0xde5d75ab7702875623ba509bc923241e1211da74a113521b3b70ddac930d7316&limit=200 "HTTP/1.1 200 OK"
+2026-10-22 05:05:32,902 INFO httpx: HTTP Request: GET https://clob.polymarket.com/book?token_id=11703355753646866721510451780813586747644200170798817311988936815535980370261 "HTTP/1.1 200 OK"
+2026-10-22 05:05:32,930 INFO httpx: HTTP Request: GET https://data-api.polymarket.com/v2/trades?condition=0x04fb634139d4654febf4b62c425b209806e06d9eff93ac2e7c5301ecdaf5e4ca&limit=200 "HTTP/1.1 200 OK"
+2026-10-22 05:05:33,108 INFO httpx: HTTP Request: GET https://clob.polymarket.com/book?token_id=33268510350568915228897273528353467773422190590579607471427765079749830445947 "HTTP/1.1 200 OK"
+2026-10-22 05:05:33,141 INFO httpx: HTTP Request: GET https://data-api.polymarket.com/v2/trades?condition=0x9cf563d7b55aa9aa876d5d7e55126347eee473f0ae56d799e325fdef2bf25297&limit=200 "HTTP/1.1 200 OK"
+2026-10-22 05:05:33,314 INFO httpx: HTTP Request: GET https://clob.polymarket.com/book?token_id=33339798372916037220786136133406478491116150628220441951753426683441228279665 "HTTP/1.1 200 OK"
+2026-10-22 05:05:33,343 INFO httpx: HTTP Request: GET https://data-api.polymarket.com/v2/trades?condition=0xefa17dee3af09f69f9ddf245b969aa4efbe7c71cdf06ee49d694408bc33e2ed2&limit=200 "HTTP/1.1 200 OK"
+2026-10-22 05:05:33,516 INFO httpx: HTTP Request: GET https://clob.polymarket.com/book?token_id=44887259505946660799050523095589383516895296837192507586209222338540683060118 "HTTP/1.1 404 Not Found"
+2026-10-22 05:05:33,516 WARNING pb.data.recorder: poll 44887259505946660799050523095589383516895296837192507586209222338540683060118 failed: Polymarket 404 on /book: {'error': 'No orderbook exists for the requested token id'}
+2026-10-22 05:05:33,676 INFO httpx: HTTP Request: GET https://clob.polymarket.com/book?token_id=30630994248667897740988010928640156931882346081873066002335460180076741328029 "HTTP/1.1 200 OK"
+2026-10-22 05:05:33,725 INFO httpx: HTTP Request: GET https://data-api.polymarket.com/v2/trades?condition=0xdf8e2dc5860027decbe6164555c3c1c9645c3bd33e16b9dc57ca87125047d4a8&limit=200 "HTTP/1.1 200 OK"
+2026-10-22 05:05:33,888 INFO httpx: HTTP Request: GET https://clob.polymarket.com/book?token_id=34722410608062854697106861099776685947172185964394483545370684749662285977831 "HTTP/1.1 200 OK"
+2026-10-22 05:05:33,917 INFO httpx: HTTP Request: GET https://data-api.polymarket.com/v2/trades?condition=0x16c63b7cc37f012b9f59ee164ec03877914c701d06d48291ae8d6fc08a088b0d&limit=200 "HTTP/1.1 200 OK"
+2026-10-22 05:05:34,072 INFO httpx: HTTP Request: GET https://clob.polymarket.com/book?token_id=21265207456609426291246075480390336499088453711419597084147957999650569091884 "HTTP/1.1 200 OK"
+2026-10-22 05:05:34,105 INFO httpx: HTTP Request: GET https://data-api.polymarket.com/v2/trades?condition=0x94521176f57d2ce81dde01e0b7699ca4279423042d37ed53908f0c8bfefe7e14&limit=200 "HTTP/1.1 200 OK"
+2026-10-22 05:05:39,329 INFO httpx: HTTP Request: GET https://clob.polymarket.com/book?token_id=58802458597374928740225519735423162012398763515664846118442539672822667668833 "HTTP/1.1 404 Not Found"
+2026-10-22 05:05:39,329 WARNING pb.data.recorder: poll 58802458597374928740225519735423162012398763515664846118442539672822667668833 failed: Polymarket 404 on /book: {'error': 'No orderbook exists for the requested token id'}
+2026-10-22 05:05:39,494 INFO httpx: HTTP Request: GET https://clob.polymarket.com/book?token_id=103704141773947678931823410030956181918562062788486034785782641603149828893320 "HTTP/1.1 200 OK"
+2026-10-22 05:05:39,621 INFO httpx: HTTP Request: GET https://data-api.polymarket.com/v2/trades?condition=0xc5eae79d1ffe716572353962eb926b1e3964c500a4880a7a94f58408218ee76b&limit=200 "HTTP/1.1 200 OK"
+2026-10-22 05:05:39,824 INFO httpx: HTTP Request: GET https://clob.polymarket.com/book?token_id=7685158848984498977390071784341171138992058973607044422044852725107513658437 "HTTP/1.1 404 Not Found"
+2026-10-22 05:05:39,824 WARNING pb.data.recorder: poll 7685158848984498977390071784341171138992058973607044422044852725107513658437 failed: Polymarket 404 on /book: {'error': 'No orderbook exists for the requested token id'}
+2026-10-22 05:05:40,033 INFO httpx: HTTP Request: GET https://clob.polymarket.com/book?token_id=107102793637680157985081124002726182334464514298802794132890893773707404215371 "HTTP/1.1 404 Not Found"
+2026-10-22 05:05:40,033 WARNING pb.data.recorder: poll 107102793637680157985081124002726182334464514298802794132890893773707404215371 failed: Polymarket 404 on /book: {'error': 'No orderbook exists for the requested token id'}
+2026-10-22 05:05:40,218 INFO httpx: HTTP Request: GET https://clob.polymarket.com/book?token_id=18246296022868501258060085368606280205967114341141276439803424448463050819498 "HTTP/1.1 200 OK"
+2026-10-22 05:05:40,246 INFO httpx: HTTP Request: GET https://data-api.polymarket.com/v2/trades?condition=0xde5d75ab7702875623ba509bc923241e1211da74a113521b3b70ddac930d7316&limit=200 "HTTP/1.1 200 OK"
+2026-10-22 05:05:40,441 INFO httpx: HTTP Request: GET https://clob.polymarket.com/book?token_id=11703355753646866721510451780813586747644200170798817311988936815535980370261 "HTTP/1.1 200 OK"
+2026-10-22 05:05:40,520 INFO httpx: HTTP Request: GET https://data-api.polymarket.com/v2/trades?condition=0x04fb634139d4654febf4b62c425b209806e06d9eff93ac2e7c5301ecdaf5e4ca&limit=200 "HTTP/1.1 200 OK"
+2026-10-22 05:05:40,704 INFO httpx: HTTP Request: GET https://clob.polymarket.com/book?token_id=33268510350568915228897273528353467773422190590579607471427765079749830445947 "HTTP/1.1 200 OK"
+2026-10-22 05:05:40,756 INFO httpx: HTTP Request: GET https://data-api.polymarket.com/v2/trades?condition=0x9cf563d7b55aa9aa876d5d7e55126347eee473f0ae56d799e325fdef2bf25297&limit=200 "HTTP/1.1 200 OK"
+2026-10-22 05:05:40,923 INFO httpx: HTTP Request: GET https://clob.polymarket.com/book?token_id=33339798372916037220786136133406478491116150628220441951753426683441228279665 "HTTP/1.1 200 OK"
+2026-10-22 05:05:40,959 INFO httpx: HTTP Request: GET https://data-api.polymarket.com/v2/trades?condition=0xefa17dee3af09f69f9ddf245b969aa4efbe7c71cdf06ee49d694408bc33e2ed2&limit=200 "HTTP/1.1 200 OK"
+2026-10-22 05:05:41,126 INFO httpx: HTTP Request: GET https://clob.polymarket.com/book?token_id=44887259505946660799050523095589383516895296837192507586209222338540683060118 "HTTP/1.1 404 Not Found"
+2026-10-22 05:05:41,126 WARNING pb.data.recorder: poll 44887259505946660799050523095589383516895296837192507586209222338540683060118 failed: Polymarket 404 on /book: {'error': 'No orderbook exists for the requested token id'}
+2026-10-22 05:05:41,295 INFO httpx: HTTP Request: GET https://clob.polymarket.com/book?token_id=30630994248667897740988010928640156931882346081873066002335460180076741328029 "HTTP/1.1 200 OK"
+2026-10-22 05:05:41,339 INFO httpx: HTTP Request: GET https://data-api.polymarket.com/v2/trades?condition=0xdf8e2dc5860027decbe6164555c3c1c9645c3bd33e16b9dc57ca87125047d4a8&limit=200 "HTTP/1.1 200 OK"
+2026-10-22 05:05:41,529 INFO httpx: HTTP Request: GET https://clob.polymarket.com/book?token_id=34722410608062854697106861099776685947172185964394483545370684749662285977831 "HTTP/1.1 200 OK"
+2026-10-22 05:05:41,569 INFO httpx: HTTP Request: GET https://data-api.polymarket.com/v2/trades?condition=0x16c63b7cc37f012b9f59ee164ec03877914c701d06d48291ae8d6fc08a088b0d&limit=200 "HTTP/1.1 200 OK"
+2026-10-22 05:05:41,760 INFO httpx: HTTP Request: GET https://clob.polymarket.com/book?token_id=21265207456609426291246075480390336499088453711419597084147957999650569091884 "HTTP/1.1 200 OK"
+2026-10-22 05:05:41,800 INFO httpx: HTTP Request: GET https://data-api.polymarket.com/v2/trades?condition=0x94521176f57d2ce81dde01e0b7699ca4279423042d37ed53908f0c8bfefe7e14&limit=200 "HTTP/1.1 200 OK"
+2026-10-22 05:05:46,989 INFO httpx: HTTP Request: GET https://clob.polymarket.com/book?token_id=58802458597374928740225519735423162012398763515664846118442539672822667668833 "HTTP/1.1 404 Not Found"
+2026-10-22 05:05:46,990 WARNING pb.data.recorder: poll 58802458597374928740225519735423162012398763515664846118442539672822667668833 failed: Polymarket 404 on /book: {'error': 'No orderbook exists for the requested token id'}
+2026-10-22 05:05:47,150 INFO httpx: HTTP Request: GET https://clob.polymarket.com/book?token_id=103704141773947678931823410030956181918562062788486034785782641603149828893320 "HTTP/1.1 200 OK"
+2026-10-22 05:05:47,216 INFO httpx: HTTP Request: GET https://data-api.polymarket.com/v2/trades?condition=0xc5eae79d1ffe716572353962eb926b1e3964c500a4880a7a94f58408218ee76b&limit=200 "HTTP/1.1 200 OK"
+2026-10-22 05:05:47,372 INFO httpx: HTTP Request: GET https://clob.polymarket.com/book?token_id=7685158848984498977390071784341171138992058973607044422044852725107513658437 "HTTP/1.1 404 Not Found"
+2026-10-22 05:05:47,376 WARNING pb.data.recorder: poll 7685158848984498977390071784341171138992058973607044422044852725107513658437 failed: Polymarket 404 on /book: {'error': 'No orderbook exists for the requested token id'}
+2026-10-22 05:05:47,533 INFO httpx: HTTP Request: GET https://clob.polymarket.com/book?token_id=107102793637680157985081124002726182334464514298802794132890893773707404215371 "HTTP/1.1 404 Not Found"
+2026-10-22 05:05:47,533 WARNING pb.data.recorder: poll 107102793637680157985081124002726182334464514298802794132890893773707404215371 failed: Polymarket 404 on /book: {'error': 'No orderbook exists for the requested token id'}
+2026-10-22 05:05:47,723 INFO httpx: HTTP Request: GET https://clob.polymarket.com/book?token_id=18246296022868501258060085368606280205967114341141276439803424448463050819498 "HTTP/1.1 200 OK"
+2026-10-22 05:05:47,755 INFO httpx: HTTP Request: GET https://data-api.polymarket.com/v2/trades?condition=0xde5d75ab7702875623ba509bc923241e1211da74a113521b3b70ddac930d7316&limit=200 "HTTP/1.1 200 OK"
+2026-10-22 05:05:47,932 INFO httpx: HTTP Request: GET https://clob.polymarket.com/book?token_id=11703355753646866721510451780813586747644200170798817311988936815535980370261 "HTTP/1.1 200 OK"
+2026-10-22 05:05:47,963 INFO httpx: HTTP Request: GET https://data-api.polymarket.com/v2/trades?condition=0x04fb634139d4654febf4b62c425b209806e06d9eff93ac2e7c5301ecdaf5e4ca&limit=200 "HTTP/1.1 200 OK"
+2026-10-22 05:05:48,119 INFO httpx: HTTP Request: GET https://clob.polymarket.com/book?token_id=33268510350568915228897273528353467773422190590579607471427765079749830445947 "HTTP/1.1 200 OK"
+2026-10-22 05:05:48,164 INFO httpx: HTTP Request: GET https://data-api.polymarket.com/v2/trades?condition=0x9cf563d7b55aa9aa876d5d7e55126347eee473f0ae56d799e325fdef2bf25297&limit=200 "HTTP/1.1 200 OK"
+2026-10-22 05:05:48,327 INFO httpx: HTTP Request: GET https://clob.polymarket.com/book?token_id=33339798372916037220786136133406478491116150628220441951753426683441228279665 "HTTP/1.1 200 OK"
+2026-10-22 05:05:48,363 INFO httpx: HTTP Request: GET https://data-api.polymarket.com/v2/trades?condition=0xefa17dee3af09f69f9ddf245b969aa4efbe7c71cdf06ee49d694408bc33e2ed2&limit=200 "HTTP/1.1 200 OK"
+2026-10-22 05:05:48,530 INFO httpx: HTTP Request: GET https://clob.polymarket.com/book?token_id=44887259505946660799050523095589383516895296837192507586209222338540683060118 "HTTP/1.1 404 Not Found"
+2026-10-22 05:05:48,530 WARNING pb.data.recorder: poll 44887259505946660799050523095589383516895296837192507586209222338540683060118 failed: Polymarket 404 on /book: {'error': 'No orderbook exists for the requested token id'}
+2026-10-22 05:05:48,698 INFO httpx: HTTP Request: GET https://clob.polymarket.com/book?token_id=30630994248667897740988010928640156931882346081873066002335460180076741328029 "HTTP/1.1 200 OK"
+2026-10-22 05:05:48,728 INFO httpx: HTTP Request: GET https://data-api.polymarket.com/v2/trades?condition=0xdf8e2dc5860027decbe6164555c3c1c9645c3bd33e16b9dc57ca87125047d4a8&limit=200 "HTTP/1.1 200 OK"
+2026-10-22 05:05:48,891 INFO httpx: HTTP Request: GET https://clob.polymarket.com/book?token_id=34722410608062854697106861099776685947172185964394483545370684749662285977831 "HTTP/1.1 200 OK"
+2026-10-22 05:05:48,928 INFO httpx: HTTP Request: GET https://data-api.polymarket.com/v2/trades?condition=0x16c63b7cc37f012b9f59ee164ec03877914c701d06d48291ae8d6fc08a088b0d&limit=200 "HTTP/1.1 200 OK"
+2026-10-22 05:05:49,085 INFO httpx: HTTP Request: GET https://clob.polymarket.com/book?token_id=21265207456609426291246075480390336499088453711419597084147957999650569091884 "HTTP/1.1 200 OK"
+2026-10-22 05:05:49,123 INFO httpx: HTTP Request: GET https://data-api.polymarket.com/v2/trades?condition=0x94521176f57d2ce81dde01e0b7699ca4279423042d37ed53908f0c8bfefe7e14&limit=200 "HTTP/1.1 200 OK"
+2026-10-22 05:05:54,311 INFO httpx: HTTP Request: GET https://clob.polymarket.com/book?token_id=58802458597374928740225519735423162012398763515664846118442539672822667668833 "HTTP/1.1 404 Not Found"
+2026-10-22 05:05:54,312 WARNING pb.data.recorder: poll 58802458597374928740225519735423162012398763515664846118442539672822667668833 failed: Polymarket 404 on /book: {'error': 'No orderbook exists for the requested token id'}
+2026-10-22 05:05:54,467 INFO httpx: HTTP Request: GET https://clob.polymarket.com/book?token_id=103704141773947678931823410030956181918562062788486034785782641603149828893320 "HTTP/1.1 200 OK"
+2026-10-22 05:05:54,539 INFO httpx: HTTP Request: GET https://data-api.polymarket.com/v2/trades?condition=0xc5eae79d1ffe716572353962eb926b1e3964c500a4880a7a94f58408218ee76b&limit=200 "HTTP/1.1 200 OK"
+2026-10-22 05:05:54,714 INFO httpx: HTTP Request: GET https://clob.polymarket.com/book?token_id=7685158848984498977390071784341171138992058973607044422044852725107513658437 "HTTP/1.1 404 Not Found"
+2026-10-22 05:05:54,715 WARNING pb.data.recorder: poll 7685158848984498977390071784341171138992058973607044422044852725107513658437 failed: Polymarket 404 on /book: {'error': 'No orderbook exists for the requested token id'}
+2026-10-22 05:05:54,879 INFO httpx: HTTP Request: GET https://clob.polymarket.com/book?token_id=107102793637680157985081124002726182334464514298802794132890893773707404215371 "HTTP/1.1 404 Not Found"
+2026-10-22 05:05:54,880 WARNING pb.data.recorder: poll 107102793637680157985081124002726182334464514298802794132890893773707404215371 failed: Polymarket 404 on /book: {'error': 'No orderbook exists for the requested token id'}
+2026-10-22 05:05:55,045 INFO httpx: HTTP Request: GET https://clob.polymarket.com/book?token_id=18246296022868501258060085368606280205967114341141276439803424448463050819498 "HTTP/1.1 200 OK"
+2026-10-22 05:05:55,075 INFO httpx: HTTP Request: GET https://data-api.polymarket.com/v2/trades?condition=0xde5d75ab7702875623ba509bc923241e1211da74a113521b3b70ddac930d7316&limit=200 "HTTP/1.1 200 OK"
+2026-10-22 05:05:55,242 INFO httpx: HTTP Request: GET https://clob.polymarket.com/book?token_id=11703355753646866721510451780813586747644200170798817311988936815535980370261 "HTTP/1.1 200 OK"
+2026-10-22 05:05:55,278 INFO httpx: HTTP Request: GET https://data-api.polymarket.com/v2/trades?condition=0x04fb634139d4654febf4b62c425b209806e06d9eff93ac2e7c5301ecdaf5e4ca&limit=200 "HTTP/1.1 200 OK"
+2026-10-22 05:05:55,439 INFO httpx: HTTP Request: GET https://clob.polymarket.com/book?token_id=33268510350568915228897273528353467773422190590579607471427765079749830445947 "HTTP/1.1 200 OK"
+2026-10-22 05:05:55,476 INFO httpx: HTTP Request: GET https://data-api.polymarket.com/v2/trades?condition=0x9cf563d7b55aa9aa876d5d7e55126347eee473f0ae56d799e325fdef2bf25297&limit=200 "HTTP/1.1 200 OK"
+2026-10-22 05:05:55,642 INFO httpx: HTTP Request: GET https://clob.polymarket.com/book?token_id=33339798372916037220786136133406478491116150628220441951753426683441228279665 "HTTP/1.1 200 OK"
+2026-10-22 05:05:55,673 INFO httpx: HTTP Request: GET https://data-api.polymarket.com/v2/trades?condition=0xefa17dee3af09f69f9ddf245b969aa4efbe7c71cdf06ee49d694408bc33e2ed2&limit=200 "HTTP/1.1 200 OK"
+2026-10-22 05:05:55,844 INFO httpx: HTTP Request: GET https://clob.polymarket.com/book?token_id=44887259505946660799050523095589383516895296837192507586209222338540683060118 "HTTP/1.1 404 Not Found"
+2026-10-22 05:05:55,845 WARNING pb.data.recorder: poll 44887259505946660799050523095589383516895296837192507586209222338540683060118 failed: Polymarket 404 on /book: {'error': 'No orderbook exists for the requested token id'}
+2026-10-22 05:05:56,018 INFO httpx: HTTP Request: GET https://clob.polymarket.com/book?token_id=30630994248667897740988010928640156931882346081873066002335460180076741328029 "HTTP/1.1 200 OK"
+2026-10-22 05:05:56,056 INFO httpx: HTTP Request: GET https://data-api.polymarket.com/v2/trades?condition=0xdf8e2dc5860027decbe6164555c3c1c9645c3bd33e16b9dc57ca87125047d4a8&limit=200 "HTTP/1.1 200 OK"
+2026-10-22 05:05:56,228 INFO httpx: HTTP Request: GET https://clob.polymarket.com/book?token_id=34722410608062854697106861099776685947172185964394483545370684749662285977831 "HTTP/1.1 200 OK"
+2026-10-22 05:05:56,262 INFO httpx: HTTP Request: GET https://data-api.polymarket.com/v2/trades?condition=0x16c63b7cc37f012b9f59ee164ec03877914c701d06d48291ae8d6fc08a088b0d&limit=200 "HTTP/1.1 200 OK"
+2026-10-22 05:05:56,438 INFO httpx: HTTP Request: GET https://clob.polymarket.com/book?token_id=21265207456609426291246075480390336499088453711419597084147957999650569091884 "HTTP/1.1 200 OK"
+2026-10-22 05:05:56,471 INFO httpx: HTTP Request: GET https://data-api.polymarket.com/v2/trades?condition=0x94521176f57d2ce81dde01e0b7699ca4279423042d37ed53908f0c8bfefe7e14&limit=200 "HTTP/1.1 200 OK"
+2026-10-22 05:06:01,658 INFO httpx: HTTP Request: GET https://clob.polymarket.com/book?token_id=58802458597374928740225519735423162012398763515664846118442539672822667668833 "HTTP/1.1 404 Not Found"
+2026-10-22 05:06:01,659 WARNING pb.data.recorder: poll 58802458597374928740225519735423162012398763515664846118442539672822667668833 failed: Polymarket 404 on /book: {'error': 'No orderbook exists for the requested token id'}
+2026-10-22 05:06:01,830 INFO httpx: HTTP Request: GET https://clob.polymarket.com/book?token_id=103704141773947678931823410030956181918562062788486034785782641603149828893320 "HTTP/1.1 200 OK"
+2026-10-22 05:06:01,887 INFO httpx: HTTP Request: GET https://data-api.polymarket.com/v2/trades?condition=0xc5eae79d1ffe716572353962eb926b1e3964c500a4880a7a94f58408218ee76b&limit=200 "HTTP/1.1 200 OK"
+2026-10-22 05:06:02,046 INFO httpx: HTTP Request: GET https://clob.polymarket.com/book?token_id=7685158848984498977390071784341171138992058973607044422044852725107513658437 "HTTP/1.1 404 Not Found"
+2026-10-22 05:06:02,047 WARNING pb.data.recorder: poll 7685158848984498977390071784341171138992058973607044422044852725107513658437 failed: Polymarket 404 on /book: {'error': 'No orderbook exists for the requested token id'}
+2026-10-22 05:06:02,222 INFO httpx: HTTP Request: GET https://clob.polymarket.com/book?token_id=107102793637680157985081124002726182334464514298802794132890893773707404215371 "HTTP/1.1 404 Not Found"
+2026-10-22 05:06:02,222 WARNING pb.data.recorder: poll 107102793637680157985081124002726182334464514298802794132890893773707404215371 failed: Polymarket 404 on /book: {'error': 'No orderbook exists for the requested token id'}
+2026-10-22 05:06:02,388 INFO httpx: HTTP Request: GET https://clob.polymarket.com/book?token_id=18246296022868501258060085368606280205967114341141276439803424448463050819498 "HTTP/1.1 200 OK"
+2026-10-22 05:06:02,413 INFO httpx: HTTP Request: GET https://data-api.polymarket.com/v2/trades?condition=0xde5d75ab7702875623ba509bc923241e1211da74a113521b3b70ddac930d7316&limit=200 "HTTP/1.1 200 OK"
+2026-10-22 05:06:02,573 INFO httpx: HTTP Request: GET https://clob.polymarket.com/book?token_id=11703355753646866721510451780813586747644200170798817311988936815535980370261 "HTTP/1.1 200 OK"
+2026-10-22 05:06:02,605 INFO httpx: HTTP Request: GET https://data-api.polymarket.com/v2/trades?condition=0x04fb634139d4654febf4b62c425b209806e06d9eff93ac2e7c5301ecdaf5e4ca&limit=200 "HTTP/1.1 200 OK"
+2026-10-22 05:06:02,776 INFO httpx: HTTP Request: GET https://clob.polymarket.com/book?token_id=33268510350568915228897273528353467773422190590579607471427765079749830445947 "HTTP/1.1 200 OK"
+2026-10-22 05:06:02,817 INFO httpx: HTTP Request: GET https://data-api.polymarket.com/v2/trades?condition=0x9cf563d7b55aa9aa876d5d7e55126347eee473f0ae56d799e325fdef2bf25297&limit=200 "HTTP/1.1 200 OK"
+2026-10-22 05:06:02,980 INFO httpx: HTTP Request: GET https://clob.polymarket.com/book?token_id=33339798372916037220786136133406478491116150628220441951753426683441228279665 "HTTP/1.1 200 OK"
+2026-10-22 05:06:03,014 INFO httpx: HTTP Request: GET https://data-api.polymarket.com/v2/trades?condition=0xefa17dee3af09f69f9ddf245b969aa4efbe7c71cdf06ee49d694408bc33e2ed2&limit=200 "HTTP/1.1 200 OK"
+2026-10-22 05:06:03,184 INFO httpx: HTTP Request: GET https://clob.polymarket.com/book?token_id=44887259505946660799050523095589383516895296837192507586209222338540683060118 "HTTP/1.1 404 Not Found"
+2026-10-22 05:06:03,185 WARNING pb.data.recorder: poll 44887259505946660799050523095589383516895296837192507586209222338540683060118 failed: Polymarket 404 on /book: {'error': 'No orderbook exists for the requested token id'}
+2026-10-22 05:06:03,378 INFO httpx: HTTP Request: GET https://clob.polymarket.com/book?token_id=30630994248667897740988010928640156931882346081873066002335460180076741328029 "HTTP/1.1 200 OK"
+2026-10-22 05:06:03,406 INFO httpx: HTTP Request: GET https://data-api.polymarket.com/v2/trades?condition=0xdf8e2dc5860027decbe6164555c3c1c9645c3bd33e16b9dc57ca87125047d4a8&limit=200 "HTTP/1.1 200 OK"
+2026-10-22 05:06:03,563 INFO httpx: HTTP Request: GET https://clob.polymarket.com/book?token_id=34722410608062854697106861099776685947172185964394483545370684749662285977831 "HTTP/1.1 200 OK"
+2026-10-22 05:06:03,606 INFO httpx: HTTP Request: GET https://data-api.polymarket.com/v2/trades?condition=0x16c63b7cc37f012b9f59ee164ec03877914c701d06d48291ae8d6fc08a088b0d&limit=200 "HTTP/1.1 200 OK"
+2026-10-22 05:06:03,767 INFO httpx: HTTP Request: GET https://clob.polymarket.com/book?token_id=21265207456609426291246075480390336499088453711419597084147957999650569091884 "HTTP/1.1 200 OK"
+2026-10-22 05:06:03,808 INFO httpx: HTTP Request: GET https://data-api.polymarket.com/v2/trades?condition=0x94521176f57d2ce81dde01e0b7699ca4279423042d37ed53908f0c8bfefe7e14&limit=200 "HTTP/1.1 200 OK"
+2026-10-22 05:06:09,012 INFO httpx: HTTP Request: GET https://clob.polymarket.com/book?token_id=58802458597374928740225519735423162012398763515664846118442539672822667668833 "HTTP/1.1 404 Not Found"
+2026-10-22 05:06:09,012 WARNING pb.data.recorder: poll 58802458597374928740225519735423162012398763515664846118442539672822667668833 failed: Polymarket 404 on /book: {'error': 'No orderbook exists for the requested token id'}
+2026-10-22 05:06:09,185 INFO httpx: HTTP Request: GET https://clob.polymarket.com/book?token_id=103704141773947678931823410030956181918562062788486034785782641603149828893320 "HTTP/1.1 200 OK"
+2026-10-22 05:06:09,246 INFO httpx: HTTP Request: GET https://data-api.polymarket.com/v2/trades?condition=0xc5eae79d1ffe716572353962eb926b1e3964c500a4880a7a94f58408218ee76b&limit=200 "HTTP/1.1 200 OK"
+2026-10-22 05:06:09,433 INFO httpx: HTTP Request: GET https://clob.polymarket.com/book?token_id=7685158848984498977390071784341171138992058973607044422044852725107513658437 "HTTP/1.1 404 Not Found"
+2026-10-22 05:06:09,433 WARNING pb.data.recorder: poll 7685158848984498977390071784341171138992058973607044422044852725107513658437 failed: Polymarket 404 on /book: {'error': 'No orderbook exists for the requested token id'}
+2026-10-22 05:06:09,591 INFO httpx: HTTP Request: GET https://clob.polymarket.com/book?token_id=107102793637680157985081124002726182334464514298802794132890893773707404215371 "HTTP/1.1 404 Not Found"
+2026-10-22 05:06:09,592 WARNING pb.data.recorder: poll 107102793637680157985081124002726182334464514298802794132890893773707404215371 failed: Polymarket 404 on /book: {'error': 'No orderbook exists for the requested token id'}
+2026-10-22 05:06:09,756 INFO httpx: HTTP Request: GET https://clob.polymarket.com/book?token_id=18246296022868501258060085368606280205967114341141276439803424448463050819498 "HTTP/1.1 200 OK"
+2026-10-22 05:06:09,787 INFO httpx: HTTP Request: GET https://data-api.polymarket.com/v2/trades?condition=0xde5d75ab7702875623ba509bc923241e1211da74a113521b3b70ddac930d7316&limit=200 "HTTP/1.1 200 OK"
+2026-10-22 05:06:09,950 INFO httpx: HTTP Request: GET https://clob.polymarket.com/book?token_id=11703355753646866721510451780813586747644200170798817311988936815535980370261 "HTTP/1.1 200 OK"
+2026-10-22 05:06:10,014 INFO httpx: HTTP Request: GET https://data-api.polymarket.com/v2/trades?condition=0x04fb634139d4654febf4b62c425b209806e06d9eff93ac2e7c5301ecdaf5e4ca&limit=200 "HTTP/1.1 200 OK"
+2026-10-22 05:06:10,180 INFO httpx: HTTP Request: GET https://clob.polymarket.com/book?token_id=33268510350568915228897273528353467773422190590579607471427765079749830445947 "HTTP/1.1 200 OK"
+2026-10-22 05:06:10,217 INFO httpx: HTTP Request: GET https://data-api.polymarket.com/v2/trades?condition=0x9cf563d7b55aa9aa876d5d7e55126347eee473f0ae56d799e325fdef2bf25297&limit=200 "HTTP/1.1 200 OK"
+2026-10-22 05:06:10,394 INFO httpx: HTTP Request: GET https://clob.polymarket.com/book?token_id=33339798372916037220786136133406478491116150628220441951753426683441228279665 "HTTP/1.1 200 OK"
+2026-10-22 05:06:10,425 INFO httpx: HTTP Request: GET https://data-api.polymarket.com/v2/trades?condition=0xefa17dee3af09f69f9ddf245b969aa4efbe7c71cdf06ee49d694408bc33e2ed2&limit=200 "HTTP/1.1 200 OK"
+2026-10-22 05:06:10,591 INFO httpx: HTTP Request: GET https://clob.polymarket.com/book?token_id=44887259505946660799050523095589383516895296837192507586209222338540683060118 "HTTP/1.1 404 Not Found"
+2026-10-22 05:06:10,591 WARNING pb.data.recorder: poll 44887259505946660799050523095589383516895296837192507586209222338540683060118 failed: Polymarket 404 on /book: {'error': 'No orderbook exists for the requested token id'}
+2026-10-22 05:06:10,787 INFO httpx: HTTP Request: GET https://clob.polymarket.com/book?token_id=30630994248667897740988010928640156931882346081873066002335460180076741328029 "HTTP/1.1 200 OK"
+2026-10-22 05:06:10,822 INFO httpx: HTTP Request: GET https://data-api.polymarket.com/v2/trades?condition=0xdf8e2dc5860027decbe6164555c3c1c9645c3bd33e16b9dc57ca87125047d4a8&limit=200 "HTTP/1.1 200 OK"
+2026-10-22 05:06:10,993 INFO httpx: HTTP Request: GET https://clob.polymarket.com/book?token_id=34722410608062854697106861099776685947172185964394483545370684749662285977831 "HTTP/1.1 200 OK"
+2026-10-22 05:06:11,027 INFO httpx: HTTP Request: GET https://data-api.polymarket.com/v2/trades?condition=0x16c63b7cc37f012b9f59ee164ec03877914c701d06d48291ae8d6fc08a088b0d&limit=200 "HTTP/1.1 200 OK"
+2026-10-22 05:06:11,201 INFO httpx: HTTP Request: GET https://clob.polymarket.com/book?token_id=21265207456609426291246075480390336499088453711419597084147957999650569091884 "HTTP/1.1 200 OK"
+2026-10-22 05:06:11,235 INFO httpx: HTTP Request: GET https://data-api.polymarket.com/v2/trades?condition=0x94521176f57d2ce81dde01e0b7699ca4279423042d37ed53908f0c8bfefe7e14&limit=200 "HTTP/1.1 200 OK"
+2026-10-22 05:06:15,520 INFO pb.data.recorder: flushed books-050615-0316.parquet
+2026-10-22 05:06:16,428 INFO httpx: HTTP Request: GET https://clob.polymarket.com/book?token_id=58802458597374928740225519735423162012398763515664846118442539672822667668833 "HTTP/1.1 404 Not Found"
+2026-10-22 05:06:16,428 WARNING pb.data.recorder: poll 58802458597374928740225519735423162012398763515664846118442539672822667668833 failed: Polymarket 404 on /book: {'error': 'No orderbook exists for the requested token id'}
+2026-10-22 05:06:16,587 INFO httpx: HTTP Request: GET https://clob.polymarket.com/book?token_id=103704141773947678931823410030956181918562062788486034785782641603149828893320 "HTTP/1.1 200 OK"
+2026-10-22 05:06:16,642 INFO httpx: HTTP Request: GET https://data-api.polymarket.com/v2/trades?condition=0xc5eae79d1ffe716572353962eb926b1e3964c500a4880a7a94f58408218ee76b&limit=200 "HTTP/1.1 200 OK"
+2026-10-22 05:06:16,817 INFO httpx: HTTP Request: GET https://clob.polymarket.com/book?token_id=7685158848984498977390071784341171138992058973607044422044852725107513658437 "HTTP/1.1 404 Not Found"
+2026-10-22 05:06:16,817 WARNING pb.data.recorder: poll 7685158848984498977390071784341171138992058973607044422044852725107513658437 failed: Polymarket 404 on /book: {'error': 'No orderbook exists for the requested token id'}
+2026-10-22 05:06:16,994 INFO httpx: HTTP Request: GET https://clob.polymarket.com/book?token_id=107102793637680157985081124002726182334464514298802794132890893773707404215371 "HTTP/1.1 404 Not Found"
+2026-10-22 05:06:16,994 WARNING pb.data.recorder: poll 107102793637680157985081124002726182334464514298802794132890893773707404215371 failed: Polymarket 404 on /book: {'error': 'No orderbook exists for the requested token id'}
+2026-10-22 05:06:17,166 INFO httpx: HTTP Request: GET https://clob.polymarket.com/book?token_id=18246296022868501258060085368606280205967114341141276439803424448463050819498 "HTTP/1.1 200 OK"
+2026-10-22 05:06:17,271 INFO httpx: HTTP Request: GET https://data-api.polymarket.com/v2/trades?condition=0xde5d75ab7702875623ba509bc923241e1211da74a113521b3b70ddac930d7316&limit=200 "HTTP/1.1 200 OK"
+2026-10-22 05:06:17,445 INFO httpx: HTTP Request: GET https://clob.polymarket.com/book?token_id=11703355753646866721510451780813586747644200170798817311988936815535980370261 "HTTP/1.1 200 OK"
+2026-10-22 05:06:17,488 INFO httpx: HTTP Request: GET https://data-api.polymarket.com/v2/trades?condition=0x04fb634139d4654febf4b62c425b209806e06d9eff93ac2e7c5301ecdaf5e4ca&limit=200 "HTTP/1.1 200 OK"
+2026-10-22 05:06:17,652 INFO httpx: HTTP Request: GET https://clob.polymarket.com/book?token_id=33268510350568915228897273528353467773422190590579607471427765079749830445947 "HTTP/1.1 200 OK"
+2026-10-22 05:06:17,683 INFO httpx: HTTP Request: GET https://data-api.polymarket.com/v2/trades?condition=0x9cf563d7b55aa9aa876d5d7e55126347eee473f0ae56d799e325fdef2bf25297&limit=200 "HTTP/1.1 200 OK"
+2026-10-22 05:06:17,848 INFO httpx: HTTP Request: GET https://clob.polymarket.com/book?token_id=33339798372916037220786136133406478491116150628220441951753426683441228279665 "HTTP/1.1 200 OK"
+2026-10-22 05:06:17,873 INFO httpx: HTTP Request: GET https://data-api.polymarket.com/v2/trades?condition=0xefa17dee3af09f69f9ddf245b969aa4efbe7c71cdf06ee49d694408bc33e2ed2&limit=200 "HTTP/1.1 200 OK"
+2026-10-22 05:06:18,028 INFO httpx: HTTP Request: GET https://clob.polymarket.com/book?token_id=44887259505946660799050523095589383516895296837192507586209222338540683060118 "HTTP/1.1 404 Not Found"
+2026-10-22 05:06:18,028 WARNING pb.data.recorder: poll 44887259505946660799050523095589383516895296837192507586209222338540683060118 failed: Polymarket 404 on /book: {'error': 'No orderbook exists for the requested token id'}
+2026-10-22 05:06:18,189 INFO httpx: HTTP Request: GET https://clob.polymarket.com/book?token_id=30630994248667897740988010928640156931882346081873066002335460180076741328029 "HTTP/1.1 200 OK"
+2026-10-22 05:06:18,230 INFO httpx: HTTP Request: GET https://data-api.polymarket.com/v2/trades?condition=0xdf8e2dc5860027decbe6164555c3c1c9645c3bd33e16b9dc57ca87125047d4a8&limit=200 "HTTP/1.1 200 OK"
+2026-10-22 05:06:18,397 INFO httpx: HTTP Request: GET https://clob.polymarket.com/book?token_id=34722410608062854697106861099776685947172185964394483545370684749662285977831 "HTTP/1.1 200 OK"
+2026-10-22 05:06:18,433 INFO httpx: HTTP Request: GET https://data-api.polymarket.com/v2/trades?condition=0x16c63b7cc37f012b9f59ee164ec03877914c701d06d48291ae8d6fc08a088b0d&limit=200 "HTTP/1.1 200 OK"
+2026-10-22 05:06:18,595 INFO httpx: HTTP Request: GET https://clob.polymarket.com/book?token_id=21265207456609426291246075480390336499088453711419597084147957999650569091884 "HTTP/1.1 200 OK"
+2026-10-22 05:06:18,625 INFO httpx: HTTP Request: GET https://data-api.polymarket.com/v2/trades?condition=0x94521176f57d2ce81dde01e0b7699ca4279423042d37ed53908f0c8bfefe7e14&limit=200 "HTTP/1.1 200 OK"
+2026-10-22 05:06:23,832 INFO httpx: HTTP Request: GET https://clob.polymarket.com/book?token_id=58802458597374928740225519735423162012398763515664846118442539672822667668833 "HTTP/1.1 404 Not Found"
+2026-10-22 05:06:23,833 WARNING pb.data.recorder: poll 58802458597374928740225519735423162012398763515664846118442539672822667668833 failed: Polymarket 404 on /book: {'error': 'No orderbook exists for the requested token id'}
+2026-10-22 05:06:24,012 INFO httpx: HTTP Request: GET https://clob.polymarket.com/book?token_id=103704141773947678931823410030956181918562062788486034785782641603149828893320 "HTTP/1.1 200 OK"
+2026-10-22 05:06:24,069 INFO httpx: HTTP Request: GET https://data-api.polymarket.com/v2/trades?condition=0xc5eae79d1ffe716572353962eb926b1e3964c500a4880a7a94f58408218ee76b&limit=200 "HTTP/1.1 200 OK"
+2026-10-22 05:06:24,251 INFO httpx: HTTP Request: GET https://clob.polymarket.com/book?token_id=7685158848984498977390071784341171138992058973607044422044852725107513658437 "HTTP/1.1 404 Not Found"
+2026-10-22 05:06:24,251 WARNING pb.data.recorder: poll 7685158848984498977390071784341171138992058973607044422044852725107513658437 failed: Polymarket 404 on /book: {'error': 'No orderbook exists for the requested token id'}
+2026-10-22 05:06:24,429 INFO httpx: HTTP Request: GET https://clob.polymarket.com/book?token_id=107102793637680157985081124002726182334464514298802794132890893773707404215371 "HTTP/1.1 404 Not Found"
+2026-10-22 05:06:24,429 WARNING pb.data.recorder: poll 107102793637680157985081124002726182334464514298802794132890893773707404215371 failed: Polymarket 404 on /book: {'error': 'No orderbook exists for the requested token id'}
+2026-10-22 05:06:24,609 INFO httpx: HTTP Request: GET https://clob.polymarket.com/book?token_id=18246296022868501258060085368606280205967114341141276439803424448463050819498 "HTTP/1.1 200 OK"
+2026-10-22 05:06:24,638 INFO httpx: HTTP Request: GET https://data-api.polymarket.com/v2/trades?condition=0xde5d75ab7702875623ba509bc923241e1211da74a113521b3b70ddac930d7316&limit=200 "HTTP/1.1 200 OK"
+2026-10-22 05:06:24,818 INFO httpx: HTTP Request: GET https://clob.polymarket.com/book?token_id=11703355753646866721510451780813586747644200170798817311988936815535980370261 "HTTP/1.1 200 OK"
+2026-10-22 05:06:24,847 INFO httpx: HTTP Request: GET https://data-api.polymarket.com/v2/trades?condition=0x04fb634139d4654febf4b62c425b209806e06d9eff93ac2e7c5301ecdaf5e4ca&limit=200 "HTTP/1.1 200 OK"
+2026-10-22 05:06:25,013 INFO httpx: HTTP Request: GET https://clob.polymarket.com/book?token_id=33268510350568915228897273528353467773422190590579607471427765079749830445947 "HTTP/1.1 200 OK"
+2026-10-22 05:06:25,052 INFO httpx: HTTP Request: GET https://data-api.polymarket.com/v2/trades?condition=0x9cf563d7b55aa9aa876d5d7e55126347eee473f0ae56d799e325fdef2bf25297&limit=200 "HTTP/1.1 200 OK"
+2026-10-22 05:06:25,227 INFO httpx: HTTP Request: GET https://clob.polymarket.com/book?token_id=33339798372916037220786136133406478491116150628220441951753426683441228279665 "HTTP/1.1 200 OK"
+2026-10-22 05:06:25,255 INFO httpx: HTTP Request: GET https://data-api.polymarket.com/v2/trades?condition=0xefa17dee3af09f69f9ddf245b969aa4efbe7c71cdf06ee49d694408bc33e2ed2&limit=200 "HTTP/1.1 200 OK"
+2026-10-22 05:06:25,422 INFO httpx: HTTP Request: GET https://clob.polymarket.com/book?token_id=44887259505946660799050523095589383516895296837192507586209222338540683060118 "HTTP/1.1 404 Not Found"
+2026-10-22 05:06:25,422 WARNING pb.data.recorder: poll 44887259505946660799050523095589383516895296837192507586209222338540683060118 failed: Polymarket 404 on /book: {'error': 'No orderbook exists for the requested token id'}
+2026-10-22 05:06:25,601 INFO httpx: HTTP Request: GET https://clob.polymarket.com/book?token_id=30630994248667897740988010928640156931882346081873066002335460180076741328029 "HTTP/1.1 200 OK"
+2026-10-22 05:06:25,646 INFO httpx: HTTP Request: GET https://data-api.polymarket.com/v2/trades?condition=0xdf8e2dc5860027decbe6164555c3c1c9645c3bd33e16b9dc57ca87125047d4a8&limit=200 "HTTP/1.1 200 OK"
+2026-10-22 05:06:25,817 INFO httpx: HTTP Request: GET https://clob.polymarket.com/book?token_id=34722410608062854697106861099776685947172185964394483545370684749662285977831 "HTTP/1.1 200 OK"
+2026-10-22 05:06:25,865 INFO httpx: HTTP Request: GET https://data-api.polymarket.com/v2/trades?condition=0x16c63b7cc37f012b9f59ee164ec03877914c701d06d48291ae8d6fc08a088b0d&limit=200 "HTTP/1.1 200 OK"
+2026-10-22 05:06:26,036 INFO httpx: HTTP Request: GET https://clob.polymarket.com/book?token_id=21265207456609426291246075480390336499088453711419597084147957999650569091884 "HTTP/1.1 200 OK"
+2026-10-22 05:06:26,064 INFO httpx: HTTP Request: GET https://data-api.polymarket.com/v2/trades?condition=0x94521176f57d2ce81dde01e0b7699ca4279423042d37ed53908f0c8bfefe7e14&limit=200 "HTTP/1.1 200 OK"
+2026-10-22 05:06:31,256 INFO httpx: HTTP Request: GET https://clob.polymarket.com/book?token_id=58802458597374928740225519735423162012398763515664846118442539672822667668833 "HTTP/1.1 404 Not Found"
+2026-10-22 05:06:31,256 WARNING pb.data.recorder: poll 58802458597374928740225519735423162012398763515664846118442539672822667668833 failed: Polymarket 404 on /book: {'error': 'No orderbook exists for the requested token id'}
+2026-10-22 05:06:31,423 INFO httpx: HTTP Request: GET https://clob.polymarket.com/book?token_id=103704141773947678931823410030956181918562062788486034785782641603149828893320 "HTTP/1.1 200 OK"
+2026-10-22 05:06:31,483 INFO httpx: HTTP Request: GET https://data-api.polymarket.com/v2/trades?condition=0xc5eae79d1ffe716572353962eb926b1e3964c500a4880a7a94f58408218ee76b&limit=200 "HTTP/1.1 200 OK"
+2026-10-22 05:06:31,647 INFO httpx: HTTP Request: GET https://clob.polymarket.com/book?token_id=7685158848984498977390071784341171138992058973607044422044852725107513658437 "HTTP/1.1 404 Not Found"
+2026-10-22 05:06:31,647 WARNING pb.data.recorder: poll 7685158848984498977390071784341171138992058973607044422044852725107513658437 failed: Polymarket 404 on /book: {'error': 'No orderbook exists for the requested token id'}
+2026-10-22 05:06:31,806 INFO httpx: HTTP Request: GET https://clob.polymarket.com/book?token_id=107102793637680157985081124002726182334464514298802794132890893773707404215371 "HTTP/1.1 404 Not Found"
+2026-10-22 05:06:31,807 WARNING pb.data.recorder: poll 107102793637680157985081124002726182334464514298802794132890893773707404215371 failed: Polymarket 404 on /book: {'error': 'No orderbook exists for the requested token id'}
+2026-10-22 05:06:31,976 INFO httpx: HTTP Request: GET https://clob.polymarket.com/book?token_id=18246296022868501258060085368606280205967114341141276439803424448463050819498 "HTTP/1.1 200 OK"
+2026-10-22 05:06:32,006 INFO httpx: HTTP Request: GET https://data-api.polymarket.com/v2/trades?condition=0xde5d75ab7702875623ba509bc923241e1211da74a113521b3b70ddac930d7316&limit=200 "HTTP/1.1 200 OK"
+2026-10-22 05:06:32,187 INFO httpx: HTTP Request: GET https://clob.polymarket.com/book?token_id=11703355753646866721510451780813586747644200170798817311988936815535980370261 "HTTP/1.1 200 OK"
+2026-10-22 05:06:32,227 INFO httpx: HTTP Request: GET https://data-api.polymarket.com/v2/trades?condition=0x04fb634139d4654febf4b62c425b209806e06d9eff93ac2e7c5301ecdaf5e4ca&limit=200 "HTTP/1.1 200 OK"
+2026-10-22 05:06:32,391 INFO httpx: HTTP Request: GET https://clob.polymarket.com/book?token_id=33268510350568915228897273528353467773422190590579607471427765079749830445947 "HTTP/1.1 200 OK"
+2026-10-22 05:06:32,426 INFO httpx: HTTP Request: GET https://data-api.polymarket.com/v2/trades?condition=0x9cf563d7b55aa9aa876d5d7e55126347eee473f0ae56d799e325fdef2bf25297&limit=200 "HTTP/1.1 200 OK"
+2026-10-22 05:06:32,591 INFO httpx: HTTP Request: GET https://clob.polymarket.com/book?token_id=33339798372916037220786136133406478491116150628220441951753426683441228279665 "HTTP/1.1 200 OK"
+2026-10-22 05:06:32,622 INFO httpx: HTTP Request: GET https://data-api.polymarket.com/v2/trades?condition=0xefa17dee3af09f69f9ddf245b969aa4efbe7c71cdf06ee49d694408bc33e2ed2&limit=200 "HTTP/1.1 200 OK"
+2026-10-22 05:06:32,782 INFO httpx: HTTP Request: GET https://clob.polymarket.com/book?token_id=44887259505946660799050523095589383516895296837192507586209222338540683060118 "HTTP/1.1 404 Not Found"
+2026-10-22 05:06:32,783 WARNING pb.data.recorder: poll 44887259505946660799050523095589383516895296837192507586209222338540683060118 failed: Polymarket 404 on /book: {'error': 'No orderbook exists for the requested token id'}
+2026-10-22 05:06:32,948 INFO httpx: HTTP Request: GET https://clob.polymarket.com/book?token_id=30630994248667897740988010928640156931882346081873066002335460180076741328029 "HTTP/1.1 200 OK"
+2026-10-22 05:06:32,977 INFO httpx: HTTP Request: GET https://data-api.polymarket.com/v2/trades?condition=0xdf8e2dc5860027decbe6164555c3c1c9645c3bd33e16b9dc57ca87125047d4a8&limit=200 "HTTP/1.1 200 OK"
+2026-10-22 05:06:33,149 INFO httpx: HTTP Request: GET https://clob.polymarket.com/book?token_id=34722410608062854697106861099776685947172185964394483545370684749662285977831 "HTTP/1.1 200 OK"
+2026-10-22 05:06:33,197 INFO httpx: HTTP Request: GET https://data-api.polymarket.com/v2/trades?condition=0x16c63b7cc37f012b9f59ee164ec03877914c701d06d48291ae8d6fc08a088b0d&limit=200 "HTTP/1.1 200 OK"
+2026-10-22 05:06:33,361 INFO httpx: HTTP Request: GET https://clob.polymarket.com/book?token_id=21265207456609426291246075480390336499088453711419597084147957999650569091884 "HTTP/1.1 200 OK"
+2026-10-22 05:06:33,397 INFO httpx: HTTP Request: GET https://data-api.polymarket.com/v2/trades?condition=0x94521176f57d2ce81dde01e0b7699ca4279423042d37ed53908f0c8bfefe7e14&limit=200 "HTTP/1.1 200 OK"
+2026-10-22 05:06:38,600 INFO httpx: HTTP Request: GET https://clob.polymarket.com/book?token_id=58802458597374928740225519735423162012398763515664846118442539672822667668833 "HTTP/1.1 404 Not Found"
+2026-10-22 05:06:38,601 WARNING pb.data.recorder: poll 58802458597374928740225519735423162012398763515664846118442539672822667668833 failed: Polymarket 404 on /book: {'error': 'No orderbook exists for the requested token id'}
+2026-10-22 05:06:38,756 INFO httpx: HTTP Request: GET https://clob.polymarket.com/book?token_id=103704141773947678931823410030956181918562062788486034785782641603149828893320 "HTTP/1.1 200 OK"
+2026-10-22 05:06:38,824 INFO httpx: HTTP Request: GET https://data-api.polymarket.com/v2/trades?condition=0xc5eae79d1ffe716572353962eb926b1e3964c500a4880a7a94f58408218ee76b&limit=200 "HTTP/1.1 200 OK"
+2026-10-22 05:06:38,987 INFO httpx: HTTP Request: GET https://clob.polymarket.com/book?token_id=7685158848984498977390071784341171138992058973607044422044852725107513658437 "HTTP/1.1 404 Not Found"
+2026-10-22 05:06:38,987 WARNING pb.data.recorder: poll 7685158848984498977390071784341171138992058973607044422044852725107513658437 failed: Polymarket 404 on /book: {'error': 'No orderbook exists for the requested token id'}
+2026-10-22 05:06:39,166 INFO httpx: HTTP Request: GET https://clob.polymarket.com/book?token_id=107102793637680157985081124002726182334464514298802794132890893773707404215371 "HTTP/1.1 404 Not Found"
+2026-10-22 05:06:39,167 WARNING pb.data.recorder: poll 107102793637680157985081124002726182334464514298802794132890893773707404215371 failed: Polymarket 404 on /book: {'error': 'No orderbook exists for the requested token id'}
+2026-10-22 05:06:39,357 INFO httpx: HTTP Request: GET https://clob.polymarket.com/book?token_id=18246296022868501258060085368606280205967114341141276439803424448463050819498 "HTTP/1.1 200 OK"
+2026-10-22 05:06:39,396 INFO httpx: HTTP Request: GET https://data-api.polymarket.com/v2/trades?condition=0xde5d75ab7702875623ba509bc923241e1211da74a113521b3b70ddac930d7316&limit=200 "HTTP/1.1 200 OK"
+2026-10-22 05:06:39,561 INFO httpx: HTTP Request: GET https://clob.polymarket.com/book?token_id=11703355753646866721510451780813586747644200170798817311988936815535980370261 "HTTP/1.1 200 OK"
+2026-10-22 05:06:39,597 INFO httpx: HTTP Request: GET https://data-api.polymarket.com/v2/trades?condition=0x04fb634139d4654febf4b62c425b209806e06d9eff93ac2e7c5301ecdaf5e4ca&limit=200 "HTTP/1.1 200 OK"
+2026-10-22 05:06:39,772 INFO httpx: HTTP Request: GET https://clob.polymarket.com/book?token_id=33268510350568915228897273528353467773422190590579607471427765079749830445947 "HTTP/1.1 200 OK"
+2026-10-22 05:06:39,806 INFO httpx: HTTP Request: GET https://data-api.polymarket.com/v2/trades?condition=0x9cf563d7b55aa9aa876d5d7e55126347eee473f0ae56d799e325fdef2bf25297&limit=200 "HTTP/1.1 200 OK"
+2026-10-22 05:06:39,966 INFO httpx: HTTP Request: GET https://clob.polymarket.com/book?token_id=33339798372916037220786136133406478491116150628220441951753426683441228279665 "HTTP/1.1 200 OK"
+2026-10-22 05:06:39,998 INFO httpx: HTTP Request: GET https://data-api.polymarket.com/v2/trades?condition=0xefa17dee3af09f69f9ddf245b969aa4efbe7c71cdf06ee49d694408bc33e2ed2&limit=200 "HTTP/1.1 200 OK"
+2026-10-22 05:06:40,156 INFO httpx: HTTP Request: GET https://clob.polymarket.com/book?token_id=44887259505946660799050523095589383516895296837192507586209222338540683060118 "HTTP/1.1 404 Not Found"
+2026-10-22 05:06:40,156 WARNING pb.data.recorder: poll 44887259505946660799050523095589383516895296837192507586209222338540683060118 failed: Polymarket 404 on /book: {'error': 'No orderbook exists for the requested token id'}
+2026-10-22 05:06:40,321 INFO httpx: HTTP Request: GET https://clob.polymarket.com/book?token_id=30630994248667897740988010928640156931882346081873066002335460180076741328029 "HTTP/1.1 200 OK"
+2026-10-22 05:06:40,355 INFO httpx: HTTP Request: GET https://data-api.polymarket.com/v2/trades?condition=0xdf8e2dc5860027decbe6164555c3c1c9645c3bd33e16b9dc57ca87125047d4a8&limit=200 "HTTP/1.1 200 OK"
+2026-10-22 05:06:40,522 INFO httpx: HTTP Request: GET https://clob.polymarket.com/book?token_id=34722410608062854697106861099776685947172185964394483545370684749662285977831 "HTTP/1.1 200 OK"
+2026-10-22 05:06:40,561 INFO httpx: HTTP Request: GET https://data-api.polymarket.com/v2/trades?condition=0x16c63b7cc37f012b9f59ee164ec03877914c701d06d48291ae8d6fc08a088b0d&limit=200 "HTTP/1.1 200 OK"
+2026-10-22 05:06:40,734 INFO httpx: HTTP Request: GET https://clob.polymarket.com/book?token_id=21265207456609426291246075480390336499088453711419597084147957999650569091884 "HTTP/1.1 200 OK"
+2026-10-22 05:06:40,784 INFO httpx: HTTP Request: GET https://data-api.polymarket.com/v2/trades?condition=0x94521176f57d2ce81dde01e0b7699ca4279423042d37ed53908f0c8bfefe7e14&limit=200 "HTTP/1.1 200 OK"
+2026-10-22 05:06:45,980 INFO httpx: HTTP Request: GET https://clob.polymarket.com/book?token_id=58802458597374928740225519735423162012398763515664846118442539672822667668833 "HTTP/1.1 404 Not Found"
+2026-10-22 05:06:45,980 WARNING pb.data.recorder: poll 58802458597374928740225519735423162012398763515664846118442539672822667668833 failed: Polymarket 404 on /book: {'error': 'No orderbook exists for the requested token id'}
+2026-10-22 05:06:46,159 INFO httpx: HTTP Request: GET https://clob.polymarket.com/book?token_id=103704141773947678931823410030956181918562062788486034785782641603149828893320 "HTTP/1.1 200 OK"
+2026-10-22 05:06:46,221 INFO httpx: HTTP Request: GET https://data-api.polymarket.com/v2/trades?condition=0xc5eae79d1ffe716572353962eb926b1e3964c500a4880a7a94f58408218ee76b&limit=200 "HTTP/1.1 200 OK"
+2026-10-22 05:06:46,391 INFO httpx: HTTP Request: GET https://clob.polymarket.com/book?token_id=7685158848984498977390071784341171138992058973607044422044852725107513658437 "HTTP/1.1 404 Not Found"
+2026-10-22 05:06:46,391 WARNING pb.data.recorder: poll 7685158848984498977390071784341171138992058973607044422044852725107513658437 failed: Polymarket 404 on /book: {'error': 'No orderbook exists for the requested token id'}
+2026-10-22 05:06:46,556 INFO httpx: HTTP Request: GET https://clob.polymarket.com/book?token_id=107102793637680157985081124002726182334464514298802794132890893773707404215371 "HTTP/1.1 404 Not Found"
+2026-10-22 05:06:46,556 WARNING pb.data.recorder: poll 107102793637680157985081124002726182334464514298802794132890893773707404215371 failed: Polymarket 404 on /book: {'error': 'No orderbook exists for the requested token id'}
+2026-10-22 05:06:46,724 INFO httpx: HTTP Request: GET https://clob.polymarket.com/book?token_id=18246296022868501258060085368606280205967114341141276439803424448463050819498 "HTTP/1.1 200 OK"
+2026-10-22 05:06:46,763 INFO httpx: HTTP Request: GET https://data-api.polymarket.com/v2/trades?condition=0xde5d75ab7702875623ba509bc923241e1211da74a113521b3b70ddac930d7316&limit=200 "HTTP/1.1 200 OK"
+2026-10-22 05:06:46,955 INFO httpx: HTTP Request: GET https://clob.polymarket.com/book?token_id=11703355753646866721510451780813586747644200170798817311988936815535980370261 "HTTP/1.1 200 OK"
+2026-10-22 05:06:46,984 INFO httpx: HTTP Request: GET https://data-api.polymarket.com/v2/trades?condition=0x04fb634139d4654febf4b62c425b209806e06d9eff93ac2e7c5301ecdaf5e4ca&limit=200 "HTTP/1.1 200 OK"
+2026-10-22 05:06:47,158 INFO httpx: HTTP Request: GET https://clob.polymarket.com/book?token_id=33268510350568915228897273528353467773422190590579607471427765079749830445947 "HTTP/1.1 200 OK"
+2026-10-22 05:06:47,190 INFO httpx: HTTP Request: GET https://data-api.polymarket.com/v2/trades?condition=0x9cf563d7b55aa9aa876d5d7e55126347eee473f0ae56d799e325fdef2bf25297&limit=200 "HTTP/1.1 200 OK"
+2026-10-22 05:06:47,362 INFO httpx: HTTP Request: GET https://clob.polymarket.com/book?token_id=33339798372916037220786136133406478491116150628220441951753426683441228279665 "HTTP/1.1 200 OK"
+2026-10-22 05:06:47,398 INFO httpx: HTTP Request: GET https://data-api.polymarket.com/v2/trades?condition=0xefa17dee3af09f69f9ddf245b969aa4efbe7c71cdf06ee49d694408bc33e2ed2&limit=200 "HTTP/1.1 200 OK"
+2026-10-22 05:06:47,566 INFO httpx: HTTP Request: GET https://clob.polymarket.com/book?token_id=44887259505946660799050523095589383516895296837192507586209222338540683060118 "HTTP/1.1 404 Not Found"
+2026-10-22 05:06:47,566 WARNING pb.data.recorder: poll 44887259505946660799050523095589383516895296837192507586209222338540683060118 failed: Polymarket 404 on /book: {'error': 'No orderbook exists for the requested token id'}
+2026-10-22 05:06:47,733 INFO httpx: HTTP Request: GET https://clob.polymarket.com/book?token_id=30630994248667897740988010928640156931882346081873066002335460180076741328029 "HTTP/1.1 200 OK"
+2026-10-22 05:06:47,762 INFO httpx: HTTP Request: GET https://data-api.polymarket.com/v2/trades?condition=0xdf8e2dc5860027decbe6164555c3c1c9645c3bd33e16b9dc57ca87125047d4a8&limit=200 "HTTP/1.1 200 OK"
+2026-10-22 05:06:47,932 INFO httpx: HTTP Request: GET https://clob.polymarket.com/book?token_id=34722410608062854697106861099776685947172185964394483545370684749662285977831 "HTTP/1.1 200 OK"
+2026-10-22 05:06:47,965 INFO httpx: HTTP Request: GET https://data-api.polymarket.com/v2/trades?condition=0x16c63b7cc37f012b9f59ee164ec03877914c701d06d48291ae8d6fc08a088b0d&limit=200 "HTTP/1.1 200 OK"
+2026-10-22 05:06:48,129 INFO httpx: HTTP Request: GET https://clob.polymarket.com/book?token_id=21265207456609426291246075480390336499088453711419597084147957999650569091884 "HTTP/1.1 200 OK"
+2026-10-22 05:06:48,162 INFO httpx: HTTP Request: GET https://data-api.polymarket.com/v2/trades?condition=0x94521176f57d2ce81dde01e0b7699ca4279423042d37ed53908f0c8bfefe7e14&limit=200 "HTTP/1.1 200 OK"
+2026-10-22 05:06:53,358 INFO httpx: HTTP Request: GET https://clob.polymarket.com/book?token_id=58802458597374928740225519735423162012398763515664846118442539672822667668833 "HTTP/1.1 404 Not Found"
+2026-10-22 05:06:53,358 WARNING pb.data.recorder: poll 58802458597374928740225519735423162012398763515664846118442539672822667668833 failed: Polymarket 404 on /book: {'error': 'No orderbook exists for the requested token id'}
+2026-10-22 05:06:53,527 INFO httpx: HTTP Request: GET https://clob.polymarket.com/book?token_id=103704141773947678931823410030956181918562062788486034785782641603149828893320 "HTTP/1.1 200 OK"
+2026-10-22 05:06:53,587 INFO httpx: HTTP Request: GET https://data-api.polymarket.com/v2/trades?condition=0xc5eae79d1ffe716572353962eb926b1e3964c500a4880a7a94f58408218ee76b&limit=200 "HTTP/1.1 200 OK"
+2026-10-22 05:06:53,755 INFO httpx: HTTP Request: GET https://clob.polymarket.com/book?token_id=7685158848984498977390071784341171138992058973607044422044852725107513658437 "HTTP/1.1 404 Not Found"
+2026-10-22 05:06:53,755 WARNING pb.data.recorder: poll 7685158848984498977390071784341171138992058973607044422044852725107513658437 failed: Polymarket 404 on /book: {'error': 'No orderbook exists for the requested token id'}
+2026-10-22 05:06:53,914 INFO httpx: HTTP Request: GET https://clob.polymarket.com/book?token_id=107102793637680157985081124002726182334464514298802794132890893773707404215371 "HTTP/1.1 404 Not Found"
+2026-10-22 05:06:53,915 WARNING pb.data.recorder: poll 107102793637680157985081124002726182334464514298802794132890893773707404215371 failed: Polymarket 404 on /book: {'error': 'No orderbook exists for the requested token id'}
+2026-10-22 05:06:54,080 INFO httpx: HTTP Request: GET https://clob.polymarket.com/book?token_id=18246296022868501258060085368606280205967114341141276439803424448463050819498 "HTTP/1.1 200 OK"
+2026-10-22 05:06:54,125 INFO httpx: HTTP Request: GET https://data-api.polymarket.com/v2/trades?condition=0xde5d75ab7702875623ba509bc923241e1211da74a113521b3b70ddac930d7316&limit=200 "HTTP/1.1 200 OK"
+2026-10-22 05:06:54,305 INFO httpx: HTTP Request: GET https://clob.polymarket.com/book?token_id=11703355753646866721510451780813586747644200170798817311988936815535980370261 "HTTP/1.1 200 OK"
+2026-10-22 05:06:54,339 INFO httpx: HTTP Request: GET https://data-api.polymarket.com/v2/trades?condition=0x04fb634139d4654febf4b62c425b209806e06d9eff93ac2e7c5301ecdaf5e4ca&limit=200 "HTTP/1.1 200 OK"
+2026-10-22 05:06:54,525 INFO httpx: HTTP Request: GET https://clob.polymarket.com/book?token_id=33268510350568915228897273528353467773422190590579607471427765079749830445947 "HTTP/1.1 200 OK"
+2026-10-22 05:06:54,556 INFO httpx: HTTP Request: GET https://data-api.polymarket.com/v2/trades?condition=0x9cf563d7b55aa9aa876d5d7e55126347eee473f0ae56d799e325fdef2bf25297&limit=200 "HTTP/1.1 200 OK"
+2026-10-22 05:06:54,738 INFO httpx: HTTP Request: GET https://clob.polymarket.com/book?token_id=33339798372916037220786136133406478491116150628220441951753426683441228279665 "HTTP/1.1 200 OK"
+2026-10-22 05:06:54,766 INFO httpx: HTTP Request: GET https://data-api.polymarket.com/v2/trades?condition=0xefa17dee3af09f69f9ddf245b969aa4efbe7c71cdf06ee49d694408bc33e2ed2&limit=200 "HTTP/1.1 200 OK"
+2026-10-22 05:06:54,937 INFO httpx: HTTP Request: GET https://clob.polymarket.com/book?token_id=44887259505946660799050523095589383516895296837192507586209222338540683060118 "HTTP/1.1 404 Not Found"
+2026-10-22 05:06:54,938 WARNING pb.data.recorder: poll 44887259505946660799050523095589383516895296837192507586209222338540683060118 failed: Polymarket 404 on /book: {'error': 'No orderbook exists for the requested token id'}
+2026-10-22 05:06:55,110 INFO httpx: HTTP Request: GET https://clob.polymarket.com/book?token_id=30630994248667897740988010928640156931882346081873066002335460180076741328029 "HTTP/1.1 200 OK"
+2026-10-22 05:06:55,139 INFO httpx: HTTP Request: GET https://data-api.polymarket.com/v2/trades?condition=0xdf8e2dc5860027decbe6164555c3c1c9645c3bd33e16b9dc57ca87125047d4a8&limit=200 "HTTP/1.1 200 OK"
+2026-10-22 05:06:55,315 INFO httpx: HTTP Request: GET https://clob.polymarket.com/book?token_id=34722410608062854697106861099776685947172185964394483545370684749662285977831 "HTTP/1.1 200 OK"
+2026-10-22 05:06:55,344 INFO httpx: HTTP Request: GET https://data-api.polymarket.com/v2/trades?condition=0x16c63b7cc37f012b9f59ee164ec03877914c701d06d48291ae8d6fc08a088b0d&limit=200 "HTTP/1.1 200 OK"
+2026-10-22 05:06:55,514 INFO httpx: HTTP Request: GET https://clob.polymarket.com/book?token_id=21265207456609426291246075480390336499088453711419597084147957999650569091884 "HTTP/1.1 200 OK"
+2026-10-22 05:06:55,552 INFO httpx: HTTP Request: GET https://data-api.polymarket.com/v2/trades?condition=0x94521176f57d2ce81dde01e0b7699ca4279423042d37ed53908f0c8bfefe7e14&limit=200 "HTTP/1.1 200 OK"
+2026-10-22 05:07:00,758 INFO httpx: HTTP Request: GET https://clob.polymarket.com/book?token_id=58802458597374928740225519735423162012398763515664846118442539672822667668833 "HTTP/1.1 404 Not Found"
+2026-10-22 05:07:00,758 WARNING pb.data.recorder: poll 58802458597374928740225519735423162012398763515664846118442539672822667668833 failed: Polymarket 404 on /book: {'error': 'No orderbook exists for the requested token id'}
+2026-10-22 05:07:00,926 INFO httpx: HTTP Request: GET https://clob.polymarket.com/book?token_id=103704141773947678931823410030956181918562062788486034785782641603149828893320 "HTTP/1.1 200 OK"
+2026-10-22 05:07:00,991 INFO httpx: HTTP Request: GET https://data-api.polymarket.com/v2/trades?condition=0xc5eae79d1ffe716572353962eb926b1e3964c500a4880a7a94f58408218ee76b&limit=200 "HTTP/1.1 200 OK"
+2026-10-22 05:07:01,157 INFO httpx: HTTP Request: GET https://clob.polymarket.com/book?token_id=7685158848984498977390071784341171138992058973607044422044852725107513658437 "HTTP/1.1 404 Not Found"
+2026-10-22 05:07:01,157 WARNING pb.data.recorder: poll 7685158848984498977390071784341171138992058973607044422044852725107513658437 failed: Polymarket 404 on /book: {'error': 'No orderbook exists for the requested token id'}
+2026-10-22 05:07:01,312 INFO httpx: HTTP Request: GET https://clob.polymarket.com/book?token_id=107102793637680157985081124002726182334464514298802794132890893773707404215371 "HTTP/1.1 404 Not Found"
+2026-10-22 05:07:01,312 WARNING pb.data.recorder: poll 107102793637680157985081124002726182334464514298802794132890893773707404215371 failed: Polymarket 404 on /book: {'error': 'No orderbook exists for the requested token id'}
+2026-10-22 05:07:01,504 INFO httpx: HTTP Request: GET https://clob.polymarket.com/book?token_id=18246296022868501258060085368606280205967114341141276439803424448463050819498 "HTTP/1.1 200 OK"
+2026-10-22 05:07:01,534 INFO httpx: HTTP Request: GET https://data-api.polymarket.com/v2/trades?condition=0xde5d75ab7702875623ba509bc923241e1211da74a113521b3b70ddac930d7316&limit=200 "HTTP/1.1 200 OK"
+2026-10-22 05:07:01,714 INFO httpx: HTTP Request: GET https://clob.polymarket.com/book?token_id=11703355753646866721510451780813586747644200170798817311988936815535980370261 "HTTP/1.1 200 OK"
+2026-10-22 05:07:01,752 INFO httpx: HTTP Request: GET https://data-api.polymarket.com/v2/trades?condition=0x04fb634139d4654febf4b62c425b209806e06d9eff93ac2e7c5301ecdaf5e4ca&limit=200 "HTTP/1.1 200 OK"
+2026-10-22 05:07:01,920 INFO httpx: HTTP Request: GET https://clob.polymarket.com/book?token_id=33268510350568915228897273528353467773422190590579607471427765079749830445947 "HTTP/1.1 200 OK"
+2026-10-22 05:07:01,953 INFO httpx: HTTP Request: GET https://data-api.polymarket.com/v2/trades?condition=0x9cf563d7b55aa9aa876d5d7e55126347eee473f0ae56d799e325fdef2bf25297&limit=200 "HTTP/1.1 200 OK"
+2026-10-22 05:07:02,127 INFO httpx: HTTP Request: GET https://clob.polymarket.com/book?token_id=33339798372916037220786136133406478491116150628220441951753426683441228279665 "HTTP/1.1 200 OK"
+2026-10-22 05:07:02,154 INFO httpx: HTTP Request: GET https://data-api.polymarket.com/v2/trades?condition=0xefa17dee3af09f69f9ddf245b969aa4efbe7c71cdf06ee49d694408bc33e2ed2&limit=200 "HTTP/1.1 200 OK"
+2026-10-22 05:07:02,328 INFO httpx: HTTP Request: GET https://clob.polymarket.com/book?token_id=44887259505946660799050523095589383516895296837192507586209222338540683060118 "HTTP/1.1 404 Not Found"
+2026-10-22 05:07:02,328 WARNING pb.data.recorder: poll 44887259505946660799050523095589383516895296837192507586209222338540683060118 failed: Polymarket 404 on /book: {'error': 'No orderbook exists for the requested token id'}
+2026-10-22 05:07:02,490 INFO httpx: HTTP Request: GET https://clob.polymarket.com/book?token_id=30630994248667897740988010928640156931882346081873066002335460180076741328029 "HTTP/1.1 200 OK"
+2026-10-22 05:07:02,519 INFO httpx: HTTP Request: GET https://data-api.polymarket.com/v2/trades?condition=0xdf8e2dc5860027decbe6164555c3c1c9645c3bd33e16b9dc57ca87125047d4a8&limit=200 "HTTP/1.1 200 OK"
+2026-10-22 05:07:02,681 INFO httpx: HTTP Request: GET https://clob.polymarket.com/book?token_id=34722410608062854697106861099776685947172185964394483545370684749662285977831 "HTTP/1.1 200 OK"
+2026-10-22 05:07:02,709 INFO httpx: HTTP Request: GET https://data-api.polymarket.com/v2/trades?condition=0x16c63b7cc37f012b9f59ee164ec03877914c701d06d48291ae8d6fc08a088b0d&limit=200 "HTTP/1.1 200 OK"
+2026-10-22 05:07:02,879 INFO httpx: HTTP Request: GET https://clob.polymarket.com/book?token_id=21265207456609426291246075480390336499088453711419597084147957999650569091884 "HTTP/1.1 200 OK"
+2026-10-22 05:07:02,916 INFO httpx: HTTP Request: GET https://data-api.polymarket.com/v2/trades?condition=0x94521176f57d2ce81dde01e0b7699ca4279423042d37ed53908f0c8bfefe7e14&limit=200 "HTTP/1.1 200 OK"
+2026-10-22 05:07:08,100 INFO httpx: HTTP Request: GET https://clob.polymarket.com/book?token_id=58802458597374928740225519735423162012398763515664846118442539672822667668833 "HTTP/1.1 404 Not Found"
+2026-10-22 05:07:08,101 WARNING pb.data.recorder: poll 58802458597374928740225519735423162012398763515664846118442539672822667668833 failed: Polymarket 404 on /book: {'error': 'No orderbook exists for the requested token id'}
+2026-10-22 05:07:08,261 INFO httpx: HTTP Request: GET https://clob.polymarket.com/book?token_id=103704141773947678931823410030956181918562062788486034785782641603149828893320 "HTTP/1.1 200 OK"
+2026-10-22 05:07:08,332 INFO httpx: HTTP Request: GET https://data-api.polymarket.com/v2/trades?condition=0xc5eae79d1ffe716572353962eb926b1e3964c500a4880a7a94f58408218ee76b&limit=200 "HTTP/1.1 200 OK"
+2026-10-22 05:07:08,492 INFO httpx: HTTP Request: GET https://clob.polymarket.com/book?token_id=7685158848984498977390071784341171138992058973607044422044852725107513658437 "HTTP/1.1 404 Not Found"
+2026-10-22 05:07:08,493 WARNING pb.data.recorder: poll 7685158848984498977390071784341171138992058973607044422044852725107513658437 failed: Polymarket 404 on /book: {'error': 'No orderbook exists for the requested token id'}
+2026-10-22 05:07:08,654 INFO httpx: HTTP Request: GET https://clob.polymarket.com/book?token_id=107102793637680157985081124002726182334464514298802794132890893773707404215371 "HTTP/1.1 404 Not Found"
+2026-10-22 05:07:08,654 WARNING pb.data.recorder: poll 107102793637680157985081124002726182334464514298802794132890893773707404215371 failed: Polymarket 404 on /book: {'error': 'No orderbook exists for the requested token id'}
+2026-10-22 05:07:08,817 INFO httpx: HTTP Request: GET https://clob.polymarket.com/book?token_id=18246296022868501258060085368606280205967114341141276439803424448463050819498 "HTTP/1.1 200 OK"
+2026-10-22 05:07:08,856 INFO httpx: HTTP Request: GET https://data-api.polymarket.com/v2/trades?condition=0xde5d75ab7702875623ba509bc923241e1211da74a113521b3b70ddac930d7316&limit=200 "HTTP/1.1 200 OK"
+2026-10-22 05:07:09,015 INFO httpx: HTTP Request: GET https://clob.polymarket.com/book?token_id=11703355753646866721510451780813586747644200170798817311988936815535980370261 "HTTP/1.1 200 OK"
+2026-10-22 05:07:09,173 INFO httpx: HTTP Request: GET https://data-api.polymarket.com/v2/trades?condition=0x04fb634139d4654febf4b62c425b209806e06d9eff93ac2e7c5301ecdaf5e4ca&limit=200 "HTTP/1.1 200 OK"
+2026-10-22 05:07:09,344 INFO httpx: HTTP Request: GET https://clob.polymarket.com/book?token_id=33268510350568915228897273528353467773422190590579607471427765079749830445947 "HTTP/1.1 200 OK"
+2026-10-22 05:07:09,378 INFO httpx: HTTP Request: GET https://data-api.polymarket.com/v2/trades?condition=0x9cf563d7b55aa9aa876d5d7e55126347eee473f0ae56d799e325fdef2bf25297&limit=200 "HTTP/1.1 200 OK"
+2026-10-22 05:07:09,544 INFO httpx: HTTP Request: GET https://clob.polymarket.com/book?token_id=33339798372916037220786136133406478491116150628220441951753426683441228279665 "HTTP/1.1 200 OK"
+2026-10-22 05:07:09,575 INFO httpx: HTTP Request: GET https://data-api.polymarket.com/v2/trades?condition=0xefa17dee3af09f69f9ddf245b969aa4efbe7c71cdf06ee49d694408bc33e2ed2&limit=200 "HTTP/1.1 200 OK"
+2026-10-22 05:07:09,748 INFO httpx: HTTP Request: GET https://clob.polymarket.com/book?token_id=44887259505946660799050523095589383516895296837192507586209222338540683060118 "HTTP/1.1 404 Not Found"
+2026-10-22 05:07:09,748 WARNING pb.data.recorder: poll 44887259505946660799050523095589383516895296837192507586209222338540683060118 failed: Polymarket 404 on /book: {'error': 'No orderbook exists for the requested token id'}
+2026-10-22 05:07:09,920 INFO httpx: HTTP Request: GET https://clob.polymarket.com/book?token_id=30630994248667897740988010928640156931882346081873066002335460180076741328029 "HTTP/1.1 200 OK"
+2026-10-22 05:07:09,952 INFO httpx: HTTP Request: GET https://data-api.polymarket.com/v2/trades?condition=0xdf8e2dc5860027decbe6164555c3c1c9645c3bd33e16b9dc57ca87125047d4a8&limit=200 "HTTP/1.1 200 OK"
+2026-10-22 05:07:10,127 INFO httpx: HTTP Request: GET https://clob.polymarket.com/book?token_id=34722410608062854697106861099776685947172185964394483545370684749662285977831 "HTTP/1.1 200 OK"
+2026-10-22 05:07:10,164 INFO httpx: HTTP Request: GET https://data-api.polymarket.com/v2/trades?condition=0x16c63b7cc37f012b9f59ee164ec03877914c701d06d48291ae8d6fc08a088b0d&limit=200 "HTTP/1.1 200 OK"
+2026-10-22 05:07:10,331 INFO httpx: HTTP Request: GET https://clob.polymarket.com/book?token_id=21265207456609426291246075480390336499088453711419597084147957999650569091884 "HTTP/1.1 200 OK"
+2026-10-22 05:07:10,370 INFO httpx: HTTP Request: GET https://data-api.polymarket.com/v2/trades?condition=0x94521176f57d2ce81dde01e0b7699ca4279423042d37ed53908f0c8bfefe7e14&limit=200 "HTTP/1.1 200 OK"
+2026-10-22 05:07:15,524 INFO pb.data.recorder: flushed books-050715-0317.parquet
+2026-10-22 05:07:15,554 INFO httpx: HTTP Request: GET https://clob.polymarket.com/book?token_id=58802458597374928740225519735423162012398763515664846118442539672822667668833 "HTTP/1.1 404 Not Found"
+2026-10-22 05:07:15,554 WARNING pb.data.recorder: poll 58802458597374928740225519735423162012398763515664846118442539672822667668833 failed: Polymarket 404 on /book: {'error': 'No orderbook exists for the requested token id'}
+2026-10-22 05:07:15,718 INFO httpx: HTTP Request: GET https://clob.polymarket.com/book?token_id=103704141773947678931823410030956181918562062788486034785782641603149828893320 "HTTP/1.1 200 OK"
+2026-10-22 05:07:15,777 INFO httpx: HTTP Request: GET https://data-api.polymarket.com/v2/trades?condition=0xc5eae79d1ffe716572353962eb926b1e3964c500a4880a7a94f58408218ee76b&limit=200 "HTTP/1.1 200 OK"
+2026-10-22 05:07:15,953 INFO httpx: HTTP Request: GET https://clob.polymarket.com/book?token_id=7685158848984498977390071784341171138992058973607044422044852725107513658437 "HTTP/1.1 404 Not Found"
+2026-10-22 05:07:15,953 WARNING pb.data.recorder: poll 7685158848984498977390071784341171138992058973607044422044852725107513658437 failed: Polymarket 404 on /book: {'error': 'No orderbook exists for the requested token id'}
+2026-10-22 05:07:16,110 INFO httpx: HTTP Request: GET https://clob.polymarket.com/book?token_id=107102793637680157985081124002726182334464514298802794132890893773707404215371 "HTTP/1.1 404 Not Found"
+2026-10-22 05:07:16,110 WARNING pb.data.recorder: poll 107102793637680157985081124002726182334464514298802794132890893773707404215371 failed: Polymarket 404 on /book: {'error': 'No orderbook exists for the requested token id'}
+2026-10-22 05:07:16,271 INFO httpx: HTTP Request: GET https://clob.polymarket.com/book?token_id=18246296022868501258060085368606280205967114341141276439803424448463050819498 "HTTP/1.1 200 OK"
+2026-10-22 05:07:16,300 INFO httpx: HTTP Request: GET https://data-api.polymarket.com/v2/trades?condition=0xde5d75ab7702875623ba509bc923241e1211da74a113521b3b70ddac930d7316&limit=200 "HTTP/1.1 200 OK"
+2026-10-22 05:07:16,461 INFO httpx: HTTP Request: GET https://clob.polymarket.com/book?token_id=11703355753646866721510451780813586747644200170798817311988936815535980370261 "HTTP/1.1 200 OK"
+2026-10-22 05:07:16,494 INFO httpx: HTTP Request: GET https://data-api.polymarket.com/v2/trades?condition=0x04fb634139d4654febf4b62c425b209806e06d9eff93ac2e7c5301ecdaf5e4ca&limit=200 "HTTP/1.1 200 OK"
+2026-10-22 05:07:16,663 INFO httpx: HTTP Request: GET https://clob.polymarket.com/book?token_id=33268510350568915228897273528353467773422190590579607471427765079749830445947 "HTTP/1.1 200 OK"
+2026-10-22 05:07:16,698 INFO httpx: HTTP Request: GET https://data-api.polymarket.com/v2/trades?condition=0x9cf563d7b55aa9aa876d5d7e55126347eee473f0ae56d799e325fdef2bf25297&limit=200 "HTTP/1.1 200 OK"
+2026-10-22 05:07:16,859 INFO httpx: HTTP Request: GET https://clob.polymarket.com/book?token_id=33339798372916037220786136133406478491116150628220441951753426683441228279665 "HTTP/1.1 200 OK"
+2026-10-22 05:07:16,891 INFO httpx: HTTP Request: GET https://data-api.polymarket.com/v2/trades?condition=0xefa17dee3af09f69f9ddf245b969aa4efbe7c71cdf06ee49d694408bc33e2ed2&limit=200 "HTTP/1.1 200 OK"
+2026-10-22 05:07:17,043 INFO httpx: HTTP Request: GET https://clob.polymarket.com/book?token_id=44887259505946660799050523095589383516895296837192507586209222338540683060118 "HTTP/1.1 404 Not Found"
+2026-10-22 05:07:17,044 WARNING pb.data.recorder: poll 44887259505946660799050523095589383516895296837192507586209222338540683060118 failed: Polymarket 404 on /book: {'error': 'No orderbook exists for the requested token id'}
+2026-10-22 05:07:17,209 INFO httpx: HTTP Request: GET https://clob.polymarket.com/book?token_id=30630994248667897740988010928640156931882346081873066002335460180076741328029 "HTTP/1.1 200 OK"
+2026-10-22 05:07:17,240 INFO httpx: HTTP Request: GET https://data-api.polymarket.com/v2/trades?condition=0xdf8e2dc5860027decbe6164555c3c1c9645c3bd33e16b9dc57ca87125047d4a8&limit=200 "HTTP/1.1 200 OK"
+2026-10-22 05:07:17,398 INFO httpx: HTTP Request: GET https://clob.polymarket.com/book?token_id=34722410608062854697106861099776685947172185964394483545370684749662285977831 "HTTP/1.1 200 OK"
+2026-10-22 05:07:17,431 INFO httpx: HTTP Request: GET https://data-api.polymarket.com/v2/trades?condition=0x16c63b7cc37f012b9f59ee164ec03877914c701d06d48291ae8d6fc08a088b0d&limit=200 "HTTP/1.1 200 OK"
+2026-10-22 05:07:17,597 INFO httpx: HTTP Request: GET https://clob.polymarket.com/book?token_id=21265207456609426291246075480390336499088453711419597084147957999650569091884 "HTTP/1.1 200 OK"
+2026-10-22 05:07:17,631 INFO httpx: HTTP Request: GET https://data-api.polymarket.com/v2/trades?condition=0x94521176f57d2ce81dde01e0b7699ca4279423042d37ed53908f0c8bfefe7e14&limit=200 "HTTP/1.1 200 OK"
+2026-10-22 05:07:22,814 INFO httpx: HTTP Request: GET https://clob.polymarket.com/book?token_id=58802458597374928740225519735423162012398763515664846118442539672822667668833 "HTTP/1.1 404 Not Found"
+2026-10-22 05:07:22,814 WARNING pb.data.recorder: poll 58802458597374928740225519735423162012398763515664846118442539672822667668833 failed: Polymarket 404 on /book: {'error': 'No orderbook exists for the requested token id'}
+2026-10-22 05:07:22,968 INFO httpx: HTTP Request: GET https://clob.polymarket.com/book?token_id=103704141773947678931823410030956181918562062788486034785782641603149828893320 "HTTP/1.1 200 OK"
+2026-10-22 05:07:23,033 INFO httpx: HTTP Request: GET https://data-api.polymarket.com/v2/trades?condition=0xc5eae79d1ffe716572353962eb926b1e3964c500a4880a7a94f58408218ee76b&limit=200 "HTTP/1.1 200 OK"
+2026-10-22 05:07:23,195 INFO httpx: HTTP Request: GET https://clob.polymarket.com/book?token_id=7685158848984498977390071784341171138992058973607044422044852725107513658437 "HTTP/1.1 404 Not Found"
+2026-10-22 05:07:23,196 WARNING pb.data.recorder: poll 7685158848984498977390071784341171138992058973607044422044852725107513658437 failed: Polymarket 404 on /book: {'error': 'No orderbook exists for the requested token id'}
+2026-10-22 05:07:23,355 INFO httpx: HTTP Request: GET https://clob.polymarket.com/book?token_id=107102793637680157985081124002726182334464514298802794132890893773707404215371 "HTTP/1.1 404 Not Found"
+2026-10-22 05:07:23,355 WARNING pb.data.recorder: poll 107102793637680157985081124002726182334464514298802794132890893773707404215371 failed: Polymarket 404 on /book: {'error': 'No orderbook exists for the requested token id'}
+2026-10-22 05:07:23,511 INFO httpx: HTTP Request: GET https://clob.polymarket.com/book?token_id=18246296022868501258060085368606280205967114341141276439803424448463050819498 "HTTP/1.1 200 OK"
+2026-10-22 05:07:23,544 INFO httpx: HTTP Request: GET https://data-api.polymarket.com/v2/trades?condition=0xde5d75ab7702875623ba509bc923241e1211da74a113521b3b70ddac930d7316&limit=200 "HTTP/1.1 200 OK"
+2026-10-22 05:07:23,703 INFO httpx: HTTP Request: GET https://clob.polymarket.com/book?token_id=11703355753646866721510451780813586747644200170798817311988936815535980370261 "HTTP/1.1 200 OK"
+2026-10-22 05:07:23,732 INFO httpx: HTTP Request: GET https://data-api.polymarket.com/v2/trades?condition=0x04fb634139d4654febf4b62c425b209806e06d9eff93ac2e7c5301ecdaf5e4ca&limit=200 "HTTP/1.1 200 OK"
+2026-10-22 05:07:23,905 INFO httpx: HTTP Request: GET https://clob.polymarket.com/book?token_id=33268510350568915228897273528353467773422190590579607471427765079749830445947 "HTTP/1.1 200 OK"
+2026-10-22 05:07:23,936 INFO httpx: HTTP Request: GET https://data-api.polymarket.com/v2/trades?condition=0x9cf563d7b55aa9aa876d5d7e55126347eee473f0ae56d799e325fdef2bf25297&limit=200 "HTTP/1.1 200 OK"
+2026-10-22 05:07:24,099 INFO httpx: HTTP Request: GET https://clob.polymarket.com/book?token_id=33339798372916037220786136133406478491116150628220441951753426683441228279665 "HTTP/1.1 200 OK"
+2026-10-22 05:07:24,130 INFO httpx: HTTP Request: GET https://data-api.polymarket.com/v2/trades?condition=0xefa17dee3af09f69f9ddf245b969aa4efbe7c71cdf06ee49d694408bc33e2ed2&limit=200 "HTTP/1.1 200 OK"
+2026-10-22 05:07:24,289 INFO httpx: HTTP Request: GET https://clob.polymarket.com/book?token_id=44887259505946660799050523095589383516895296837192507586209222338540683060118 "HTTP/1.1 404 Not Found"
+2026-10-22 05:07:24,289 WARNING pb.data.recorder: poll 44887259505946660799050523095589383516895296837192507586209222338540683060118 failed: Polymarket 404 on /book: {'error': 'No orderbook exists for the requested token id'}
+2026-10-22 05:07:24,447 INFO httpx: HTTP Request: GET https://clob.polymarket.com/book?token_id=30630994248667897740988010928640156931882346081873066002335460180076741328029 "HTTP/1.1 200 OK"
+2026-10-22 05:07:24,475 INFO httpx: HTTP Request: GET https://data-api.polymarket.com/v2/trades?condition=0xdf8e2dc5860027decbe6164555c3c1c9645c3bd33e16b9dc57ca87125047d4a8&limit=200 "HTTP/1.1 200 OK"
+2026-10-22 05:07:24,644 INFO httpx: HTTP Request: GET https://clob.polymarket.com/book?token_id=34722410608062854697106861099776685947172185964394483545370684749662285977831 "HTTP/1.1 200 OK"
+2026-10-22 05:07:24,676 INFO httpx: HTTP Request: GET https://data-api.polymarket.com/v2/trades?condition=0x16c63b7cc37f012b9f59ee164ec03877914c701d06d48291ae8d6fc08a088b0d&limit=200 "HTTP/1.1 200 OK"
+2026-10-22 05:07:24,842 INFO httpx: HTTP Request: GET https://clob.polymarket.com/book?token_id=21265207456609426291246075480390336499088453711419597084147957999650569091884 "HTTP/1.1 200 OK"
+2026-10-22 05:07:24,873 INFO httpx: HTTP Request: GET https://data-api.polymarket.com/v2/trades?condition=0x94521176f57d2ce81dde01e0b7699ca4279423042d37ed53908f0c8bfefe7e14&limit=200 "HTTP/1.1 200 OK"
+2026-10-22 05:07:30,067 INFO httpx: HTTP Request: GET https://clob.polymarket.com/book?token_id=58802458597374928740225519735423162012398763515664846118442539672822667668833 "HTTP/1.1 404 Not Found"
+2026-10-22 05:07:30,068 WARNING pb.data.recorder: poll 58802458597374928740225519735423162012398763515664846118442539672822667668833 failed: Polymarket 404 on /book: {'error': 'No orderbook exists for the requested token id'}
+2026-10-22 05:07:30,222 INFO httpx: HTTP Request: GET https://clob.polymarket.com/book?token_id=103704141773947678931823410030956181918562062788486034785782641603149828893320 "HTTP/1.1 200 OK"
+2026-10-22 05:07:30,280 INFO httpx: HTTP Request: GET https://data-api.polymarket.com/v2/trades?condition=0xc5eae79d1ffe716572353962eb926b1e3964c500a4880a7a94f58408218ee76b&limit=200 "HTTP/1.1 200 OK"
+2026-10-22 05:07:30,435 INFO httpx: HTTP Request: GET https://clob.polymarket.com/book?token_id=7685158848984498977390071784341171138992058973607044422044852725107513658437 "HTTP/1.1 404 Not Found"
+2026-10-22 05:07:30,435 WARNING pb.data.recorder: poll 7685158848984498977390071784341171138992058973607044422044852725107513658437 failed: Polymarket 404 on /book: {'error': 'No orderbook exists for the requested token id'}
+2026-10-22 05:07:30,589 INFO httpx: HTTP Request: GET https://clob.polymarket.com/book?token_id=107102793637680157985081124002726182334464514298802794132890893773707404215371 "HTTP/1.1 404 Not Found"
+2026-10-22 05:07:30,589 WARNING pb.data.recorder: poll 107102793637680157985081124002726182334464514298802794132890893773707404215371 failed: Polymarket 404 on /book: {'error': 'No orderbook exists for the requested token id'}
+2026-10-22 05:07:30,753 INFO httpx: HTTP Request: GET https://clob.polymarket.com/book?token_id=18246296022868501258060085368606280205967114341141276439803424448463050819498 "HTTP/1.1 200 OK"
+2026-10-22 05:07:30,788 INFO httpx: HTTP Request: GET https://data-api.polymarket.com/v2/trades?condition=0xde5d75ab7702875623ba509bc923241e1211da74a113521b3b70ddac930d7316&limit=200 "HTTP/1.1 200 OK"
+2026-10-22 05:07:30,946 INFO httpx: HTTP Request: GET https://clob.polymarket.com/book?token_id=11703355753646866721510451780813586747644200170798817311988936815535980370261 "HTTP/1.1 200 OK"
+2026-10-22 05:07:30,976 INFO httpx: HTTP Request: GET https://data-api.polymarket.com/v2/trades?condition=0x04fb634139d4654febf4b62c425b209806e06d9eff93ac2e7c5301ecdaf5e4ca&limit=200 "HTTP/1.1 200 OK"
+2026-10-22 05:07:31,137 INFO httpx: HTTP Request: GET https://clob.polymarket.com/book?token_id=33268510350568915228897273528353467773422190590579607471427765079749830445947 "HTTP/1.1 200 OK"
+2026-10-22 05:07:31,167 INFO httpx: HTTP Request: GET https://data-api.polymarket.com/v2/trades?condition=0x9cf563d7b55aa9aa876d5d7e55126347eee473f0ae56d799e325fdef2bf25297&limit=200 "HTTP/1.1 200 OK"
+2026-10-22 05:07:31,321 INFO httpx: HTTP Request: GET https://clob.polymarket.com/book?token_id=33339798372916037220786136133406478491116150628220441951753426683441228279665 "HTTP/1.1 200 OK"
+2026-10-22 05:07:31,349 INFO httpx: HTTP Request: GET https://data-api.polymarket.com/v2/trades?condition=0xefa17dee3af09f69f9ddf245b969aa4efbe7c71cdf06ee49d694408bc33e2ed2&limit=200 "HTTP/1.1 200 OK"
+2026-10-22 05:07:31,503 INFO httpx: HTTP Request: GET https://clob.polymarket.com/book?token_id=44887259505946660799050523095589383516895296837192507586209222338540683060118 "HTTP/1.1 404 Not Found"
+2026-10-22 05:07:31,504 WARNING pb.data.recorder: poll 44887259505946660799050523095589383516895296837192507586209222338540683060118 failed: Polymarket 404 on /book: {'error': 'No orderbook exists for the requested token id'}
+2026-10-22 05:07:31,659 INFO httpx: HTTP Request: GET https://clob.polymarket.com/book?token_id=30630994248667897740988010928640156931882346081873066002335460180076741328029 "HTTP/1.1 200 OK"
+2026-10-22 05:07:31,688 INFO httpx: HTTP Request: GET https://data-api.polymarket.com/v2/trades?condition=0xdf8e2dc5860027decbe6164555c3c1c9645c3bd33e16b9dc57ca87125047d4a8&limit=200 "HTTP/1.1 200 OK"
+2026-10-22 05:07:31,842 INFO httpx: HTTP Request: GET https://clob.polymarket.com/book?token_id=34722410608062854697106861099776685947172185964394483545370684749662285977831 "HTTP/1.1 200 OK"
+2026-10-22 05:07:31,868 INFO httpx: HTTP Request: GET https://data-api.polymarket.com/v2/trades?condition=0x16c63b7cc37f012b9f59ee164ec03877914c701d06d48291ae8d6fc08a088b0d&limit=200 "HTTP/1.1 200 OK"
+2026-10-22 05:07:32,026 INFO httpx: HTTP Request: GET https://clob.polymarket.com/book?token_id=21265207456609426291246075480390336499088453711419597084147957999650569091884 "HTTP/1.1 200 OK"
+2026-10-22 05:07:32,058 INFO httpx: HTTP Request: GET https://data-api.polymarket.com/v2/trades?condition=0x94521176f57d2ce81dde01e0b7699ca4279423042d37ed53908f0c8bfefe7e14&limit=200 "HTTP/1.1 200 OK"
+2026-10-22 05:08:15,539 INFO pb.data.recorder: flushed books-050815-0318.parquet
+2026-10-22 05:09:15,547 INFO pb.data.recorder: flushed books-050915-0319.parquet
+2026-10-22 05:10:15,561 INFO pb.data.recorder: flushed books-051015-0320.parquet, trades-051015-0320.parquet
+2026-10-22 05:11:15,576 INFO pb.data.recorder: flushed books-051115-0321.parquet, trades-051115-0321.parquet
+2026-10-22 05:12:15,595 INFO pb.data.recorder: flushed books-051215-0322.parquet, trades-051215-0322.parquet
+2026-10-22 05:13:15,610 INFO pb.data.recorder: flushed books-051315-0323.parquet, trades-051315-0323.parquet
+2026-10-22 05:14:15,622 INFO pb.data.recorder: flushed books-051415-0324.parquet, trades-051415-0324.parquet
+2026-10-22 05:15:15,634 INFO pb.data.recorder: flushed books-051515-0325.parquet, trades-051515-0325.parquet
+2026-10-22 05:16:15,647 INFO pb.data.recorder: flushed books-051615-0326.parquet, trades-051615-0326.parquet
+2026-10-22 05:17:15,659 INFO pb.data.recorder: flushed books-051715-0327.parquet, trades-051715-0327.parquet
+2026-10-22 05:18:15,669 INFO pb.data.recorder: flushed books-051815-0328.parquet, trades-051815-0328.parquet
+2026-10-22 05:19:15,679 INFO pb.data.recorder: flushed books-051915-0329.parquet, trades-051915-0329.parquet
+2026-10-22 05:20:15,705 INFO pb.data.recorder: flushed books-052015-0330.parquet, trades-052015-0330.parquet
+2026-10-22 05:21:15,723 INFO pb.data.recorder: flushed books-052115-0331.parquet, trades-052115-0331.parquet
+2026-10-22 05:22:15,744 INFO pb.data.recorder: flushed books-052215-0332.parquet, trades-052215-0332.parquet
+2026-10-22 05:23:15,782 INFO pb.data.recorder: flushed books-052315-0333.parquet, trades-052315-0333.parquet
+2026-10-22 05:24:15,800 INFO pb.data.recorder: flushed books-052415-0334.parquet, trades-052415-0334.parquet
+2026-10-22 05:25:15,813 INFO pb.data.recorder: flushed books-052515-0335.parquet, trades-052515-0335.parquet
+2026-10-22 05:26:15,847 INFO pb.data.recorder: flushed books-052615-0336.parquet, trades-052615-0336.parquet
+2026-10-22 05:27:15,863 INFO pb.data.recorder: flushed books-052715-0337.parquet, trades-052715-0337.parquet
+2026-10-22 05:28:15,890 INFO pb.data.recorder: flushed books-052815-0338.parquet, trades-052815-0338.parquet
+2026-10-22 05:28:24,899 INFO pb.data.recorder: flushed books-052824-0339.parquet, trades-052824-0339.parquet
+recording ['103704141773947678931823410030956181918562062788486034785782641603149828893320', '107102793637680157985081124002726182334464514298802794132890893773707404215371', '11703355753646866721510451780813586747644200170798817311988936815535980370261', '18246296022868501258060085368606280205967114341141276439803424448463050819498', '21265207456609426291246075480390336499088453711419597084147957999650569091884', '30630994248667897740988010928640156931882346081873066002335460180076741328029', '33268510350568915228897273528353467773422190590579607471427765079749830445947', '33339798372916037220786136133406478491116150628220441951753426683441228279665', '34722410608062854697106861099776685947172185964394483545370684749662285977831', '44887259505946660799050523095589383516895296837192507586209222338540683060118', '58802458597374928740225519735423162012398763515664846118442539672822667668833', '7685158848984498977390071784341171138992058973607044422044852725107513658437'] to data/recorded
+done: books=1453250 trades=24387 flushes=340 files=677
