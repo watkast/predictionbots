@@ -23,6 +23,13 @@
 "ok": false
 }
 ],
+"entry": null,
+"settled": "no_entry"
+},
+"cpc-btc-updown-15m-2026-10-22-1200z": {
+"slug": "cpc-btc-updown-15m-2026-10-22-1200z",
+"window_start": 1792670400,
+"checks": [],
 "entry": null
 }
 }
