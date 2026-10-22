@@ -1,0 +1,178 @@
+//@version=5
+// Early Favorite Timer v1 - 15-minute BTC rounds on Polymarket US.
+// Pings before check 1, at check 1 (13:00 left) and at check 2 (12:00 left), names the favorite,
+// estimates its price from the chart, then says HOLD. The Ask on Polymarket decides the buy.
+indicator("Early Favorite Timer v1", shorttitle="EF Timer", overlay=true)
+
+// ===== 1. Inputs =====
+grpR = "Rule"
+check1    = input.int(2, "Check 1 at minute (elapsed)", minval=1, maxval=12, group=grpR)
+check2    = input.int(3, "Check 2 at minute (elapsed)", minval=2, maxval=13, group=grpR)
+bandLo    = input.int(80, "Buy only if the Ask is at least (cents)", minval=50, maxval=98, group=grpR)
+bandHi    = input.int(94, "and at most (cents)", minval=51, maxval=99, group=grpR)
+stake     = input.float(100.0, "Dollars per round", step=10, minval=1, group=grpR)
+
+grpE = "Chart estimate"
+anchorAdj = input.float(0.0, "Target offset ($) = Polymarket target minus HUD target", step=0.5, group=grpE)
+volLen    = input.int(60, "Volatility window (1-min bars)", minval=10, group=grpE)
+screenLo  = input.int(70, "Ping only if the favorite is estimated at least (cents)", minval=50, maxval=99, group=grpE)
+
+grpU = "HUD"
+hudPos    = input.string("Middle right", "HUD position", options=["Top center", "Top left", "Top right", "Bottom center", "Bottom left", "Bottom right", "Middle right", "Middle left"], group=grpU)
+hudSize   = input.string("Normal", "HUD text size", options=["Small", "Normal", "Large"], group=grpU)
+cellW     = input.int(30, "HUD column width (% of chart)", minval=10, maxval=48, group=grpU)
+
+// ===== 2. Round clock =====
+roundStart = math.floor(time / 900000.0) * 900000
+isNewRound = ta.change(roundStart) != 0
+minuteIdx  = math.floor((time - roundStart) / 60000.0)
+nowMs      = barstate.isrealtime ? timenow : time + 60000
+secsLeft   = math.max(0.0, (roundStart + 900000 - nowMs) / 1000.0)
+secsIn     = 900.0 - secsLeft
+oneMin     = timeframe.isminutes and timeframe.multiplier == 1
+
+// ===== 3. Volatility and the price estimate =====
+r1    = math.log(close / close[1])
+sigma = ta.stdev(r1, volLen) * close
+
+fPhi(x) =>
+    t = 1.0 / (1.0 + 0.3275911 * math.abs(x))
+    y = 1.0 - (((((1.061405429 * t - 1.453152027) * t) + 1.421413741) * t - 0.284496736) * t + 0.254829592) * t * math.exp(-x * x / 2.0)
+    x >= 0 ? 0.5 + 0.5 * y : 0.5 - 0.5 * y
+
+// chance the side that is ahead stays ahead: lead vs volatility over the time left (the last 60 s are averaged)
+favProb(lead, sig, minsLeft) =>
+    float tau = math.max(minsLeft - 0.5, 0.25)
+    sig > 0 ? fPhi(math.abs(lead) / (sig * math.sqrt(tau))) : 0.5
+
+fmtClock(s) =>
+    int tot = int(math.max(0.0, s))
+    int m = int(tot / 60)
+    int sec = tot - m * 60
+    str.tostring(m) + ":" + (sec < 10 ? "0" : "") + str.tostring(sec)
+
+// ===== 4. Target, rule trigger and the chart's own scorecard =====
+var float anchorRaw = na
+var int trigSide = 0
+var bool chk1Hit = false
+var outcomes = array.new_int(0)
+if isNewRound
+    // score the round that just ended: did the favorite the rule picked finish ahead?
+    if trigSide != 0 and not na(anchorRaw)
+        int upWon = ohlc4[1] >= anchorRaw + anchorAdj ? 1 : -1
+        array.push(outcomes, upWon == trigSide ? 1 : 0)
+        if array.size(outcomes) > 20
+            array.shift(outcomes)
+    trigSide := 0
+    chk1Hit := false
+    anchorRaw := (open[1] + high[1] + low[1] + close[1]) / 4
+anchor = anchorRaw + anchorAdj
+
+isChk1   = oneMin and minuteIdx == check1
+isChk2   = oneMin and minuteIdx == check2
+chkSide  = open >= anchor ? 1 : -1
+chkEst   = favProb(open - anchor, sigma, 15.0 - minuteIdx)
+chkCents = chkEst * 100
+inBand   = not na(anchor) and chkCents >= bandLo and chkCents < bandHi + 1
+screenOK = not na(anchor) and chkCents >= screenLo and chkCents < 99
+if isChk1 and inBand and trigSide == 0
+    trigSide := chkSide
+    chk1Hit := true
+if isChk2 and inBand and trigSide == 0
+    trigSide := chkSide
+trigBar  = (isChk1 and inBand) or (isChk2 and inBand and not chk1Hit)
+
+// ===== 5. Live readout and the instruction =====
+liveDev  = close - anchor
+liveSide = liveDev >= 0 ? 1 : -1
+tauLive  = math.max(secsLeft / 60.0 - 0.5, 0.25)
+pUp      = sigma > 0 and not na(anchor) ? fPhi(liveDev / (sigma * math.sqrt(tauLive))) : 0.5
+pDn      = 1.0 - pUp
+favEst   = math.max(pUp, pDn)
+bandTxt  = str.tostring(bandLo) + "-" + str.tostring(bandHi) + "c"
+sideTxt  = liveSide > 0 ? "UP" : "DOWN"
+favTxt   = str.tostring(math.round(favEst * 100)) + "c"
+sideCol  = liveSide > 0 ? color.new(color.green, 10) : color.new(color.red, 10)
+
+string act = "OBSERVING"
+color actCol = color.new(color.gray, 20)
+if not oneMin
+    act := "SET THE CHART TO 1 MINUTE"
+    actCol := color.new(color.maroon, 10)
+else if na(anchor)
+    act := "WAITING FOR THE NEXT ROUND"
+else if minuteIdx < check1
+    act := "GET READY - check 1 in " + fmtClock(check1 * 60 - secsIn)
+else if minuteIdx == check1
+    if favEst * 100 >= screenLo
+        act := "CHECK 1 NOW - tap " + sideTxt + ", buy if Ask is " + bandTxt
+        actCol := sideCol
+    else
+        act := "NO CLEAR FAVORITE (" + favTxt + ") - wait for check 2"
+        actCol := color.new(color.orange, 15)
+else if minuteIdx < check2
+    act := "BOUGHT? HOLD. If not, check 2 in " + fmtClock(check2 * 60 - secsIn)
+    actCol := color.new(color.teal, 20)
+else if minuteIdx == check2
+    if favEst * 100 >= screenLo
+        act := "CHECK 2 (if you did not buy) - tap " + sideTxt + ", Ask " + bandTxt
+        actCol := sideCol
+    else
+        act := "NO CLEAR FAVORITE - skip this round"
+        actCol := color.new(color.orange, 15)
+else
+    act := "HOLD if you bought - do nothing until 0:00"
+    actCol := color.new(color.teal, 20)
+
+// ===== 6. Chart layers =====
+plot(anchor, "Target (estimate)", color=color.new(color.gray, 0), linewidth=1, style=plot.style_stepline)
+bgcolor(oneMin and (minuteIdx == check1 or minuteIdx == check2) ? color.new(color.blue, 88) : na, title="Check minutes")
+plotshape(trigBar and chkSide > 0, "Favorite UP in range", shape.triangleup, location.belowbar, color.green, size=size.tiny)
+plotshape(trigBar and chkSide < 0, "Favorite DOWN in range", shape.triangledown, location.abovebar, color.red, size=size.tiny)
+
+// ===== 7. HUD =====
+posOf(s) =>
+    s == "Top center" ? position.top_center : s == "Top left" ? position.top_left : s == "Top right" ? position.top_right : s == "Bottom center" ? position.bottom_center : s == "Bottom left" ? position.bottom_left : s == "Bottom right" ? position.bottom_right : s == "Middle left" ? position.middle_left : position.middle_right
+txtSize = hudSize == "Small" ? size.small : hudSize == "Large" ? size.large : size.normal
+if barstate.islast
+    hud = table.new(posOf(hudPos), 2, 7, bgcolor=color.new(color.black, 10), border_width=1, border_color=color.new(color.white, 75))
+    int upC = int(math.round(pUp * 100))
+    int dnC = 100 - upC
+    int glow = int(math.max(0.0, math.min(85.0, 80.0 - (favEst - 0.5) * 160.0)))
+    int glowUp = liveSide > 0 ? glow : 90
+    int glowDn = liveSide < 0 ? glow : 90
+    string leadTxt = fmtClock(secsLeft) + " left  |  BTC $" + str.tostring(math.abs(liveDev), "0") + (liveDev >= 0 ? " above" : " below") + " target " + str.tostring(anchor, "#,###.00")
+    string ruleTxt = "Rule: favorite only, at " + str.tostring(15 - check1) + ":00 and " + str.tostring(15 - check2) + ":00 left, Ask " + bandTxt + ". Then hold to the end."
+    string shareTxt = "$" + str.tostring(stake, "0") + " = " + str.tostring(math.round(stake / 0.82)) + " shares at 80-84c | " + str.tostring(math.round(stake / 0.87)) + " at 85-89c | " + str.tostring(math.round(stake / 0.92)) + " at 90-94c"
+    int nOut = array.size(outcomes)
+    float held = nOut > 0 ? array.sum(outcomes) : 0.0
+    float rate = nOut > 0 ? held / nOut : 0.0
+    string scoreTxt = nOut > 0 ? "Chart check, last " + str.tostring(nOut) + " favorites: " + str.tostring(held, "0") + " held (" + str.tostring(math.round(rate * 100)) + "%). Profit needs about 85%." : "Chart check: no favorites scored yet"
+    color scoreCol = nOut == 0 ? color.silver : rate >= 0.88 ? color.lime : rate >= 0.85 ? color.yellow : color.red
+    table.cell(hud, 0, 0, text=act, text_color=color.white, text_size=txtSize, bgcolor=actCol, width=cellW)
+    table.cell(hud, 0, 1, text="UP " + str.tostring(upC) + "c", text_color=color.white, text_size=size.large, bgcolor=color.new(color.green, glowUp), width=cellW)
+    table.cell(hud, 1, 1, text="DOWN " + str.tostring(dnC) + "c", text_color=color.white, text_size=size.large, bgcolor=color.new(color.red, glowDn), width=cellW)
+    table.cell(hud, 0, 2, text=leadTxt, text_color=color.yellow, text_size=txtSize, width=cellW)
+    table.cell(hud, 0, 3, text=ruleTxt, text_color=color.white, text_size=size.small, width=cellW)
+    table.cell(hud, 0, 4, text=shareTxt, text_color=color.silver, text_size=size.small, width=cellW)
+    table.cell(hud, 0, 5, text=scoreTxt, text_color=scoreCol, text_size=size.small, width=cellW)
+    table.cell(hud, 0, 6, text="Estimates use Coinbase. The Ask on Polymarket is what counts.", text_color=color.gray, text_size=size.small, width=cellW)
+    table.merge_cells(hud, 0, 0, 1, 0)
+    table.merge_cells(hud, 0, 2, 1, 2)
+    table.merge_cells(hud, 0, 3, 1, 3)
+    table.merge_cells(hud, 0, 4, 1, 4)
+    table.merge_cells(hud, 0, 5, 1, 5)
+    table.merge_cells(hud, 0, 6, 1, 6)
+
+// ===== 8. Alerts =====
+// Heads-up fires only when a favorite is already forming. Choose "Once Per Bar" (not "Once Per Bar Close").
+headsUp = oneMin and minuteIdx == check1 - 1 and not na(anchor) and chkCents >= screenLo - 10
+ping1   = isChk1 and screenOK
+ping2   = isChk2 and screenOK
+alertcondition(headsUp and not headsUp[1], "EF heads-up", "Early Favorite: check 1 in 60 seconds. Open Polymarket BTC 15m.")
+alertcondition(ping1 and not ping1[1], "EF check 1", "Early Favorite CHECK 1: buy the favorite if its Ask is 80-94c.")
+alertcondition(ping2 and not ping2[1], "EF check 2", "Early Favorite CHECK 2, last look: if you have not bought, buy the favorite if its Ask is 80-94c.")
+if ping1
+    alert("EF CHECK 1: tap " + (chkSide > 0 ? "UP" : "DOWN") + ", buy if Ask is " + bandTxt + " (chart est " + str.tostring(math.round(chkEst * 100)) + "c)", alert.freq_once_per_bar)
+if ping2
+    alert("EF CHECK 2, last look: if you have not bought, tap " + (chkSide > 0 ? "UP" : "DOWN") + ", buy if Ask is " + bandTxt + " (chart est " + str.tostring(math.round(chkEst * 100)) + "c)", alert.freq_once_per_bar)
