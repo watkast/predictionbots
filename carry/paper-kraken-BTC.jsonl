@@ -39,3 +39,5 @@
 {"in_pos": true, "interval_ts": 1792598400.0, "mark": 16898.0, "rate": 0.0001, "signal": 0.1095, "ts": 1792656095.1576283, "type": "tick"}
 {"in_pos": true, "interval_ts": 1792656000.0, "mark": 16481.0, "rate": 0.0001, "signal": 0.1095, "ts": 1792678222.2926593, "type": "tick"}
 {"amount": 0.1, "notional": 1000.0, "rate": 0.0001, "ts": 1792678222.2926593, "type": "funding"}
+{"in_pos": true, "interval_ts": 1792684800.0, "mark": 16359.0, "rate": 0.0001, "signal": 0.1095, "ts": 1792695120.1589873, "type": "tick"}
+{"amount": 0.1, "notional": 1000.0, "rate": 0.0001, "ts": 1792695120.1589873, "type": "funding"}
