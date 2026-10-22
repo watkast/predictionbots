@@ -1,65 +1,65 @@
 {
  "entries": {
   "binance-ref-BTC": {
-   "ticks": 30,
+   "ticks": 31,
    "enters": 0,
    "exits": 0,
    "funding": 0,
    "costs": 0,
    "net": 0,
    "first_ts": 1792220119.6114893,
-   "last_ts": 1792656095.1576283,
+   "last_ts": 1792678222.2926593,
    "in_pos_frac": 0.0,
    "last_signal": null
   },
   "coinbase-BTC": {
-   "ticks": 30,
+   "ticks": 31,
    "enters": 1,
    "exits": 0,
-   "funding": 0.075,
+   "funding": 0.082,
    "costs": 8.281214134702507,
-   "net": -8.206214134702508,
+   "net": -8.199214134702506,
    "first_ts": 1792220119.6114893,
-   "last_ts": 1792656095.1576283,
-   "in_pos_frac": 0.2,
-   "last_signal": 0.10402499999999999
+   "last_ts": 1792678222.2926593,
+   "in_pos_frac": 0.22580645161290322,
+   "last_signal": 0.099645
   },
   "coinbase-ETH": {
-   "ticks": 30,
+   "ticks": 31,
    "enters": 0,
    "exits": 0,
    "funding": 0,
    "costs": 0,
    "net": 0,
    "first_ts": 1792220119.6114893,
-   "last_ts": 1792656095.1576283,
+   "last_ts": 1792678222.2926593,
    "in_pos_frac": 0.0,
-   "last_signal": 0.06935000000000001
+   "last_signal": 0.073365
   },
   "kraken-BTC": {
-   "ticks": 30,
+   "ticks": 31,
    "enters": 1,
    "exits": 0,
-   "funding": 0.8,
+   "funding": 0.9,
    "costs": 4.269227470440483,
-   "net": -3.469227470440483,
+   "net": -3.369227470440483,
    "first_ts": 1792220119.6114893,
-   "last_ts": 1792656095.1576283,
-   "in_pos_frac": 0.7333333333333333,
+   "last_ts": 1792678222.2926593,
+   "in_pos_frac": 0.7419354838709677,
    "last_signal": 0.1095
   },
   "kraken-ETH": {
-   "ticks": 30,
+   "ticks": 31,
    "enters": 1,
    "exits": 0,
-   "funding": 0.8,
+   "funding": 0.9,
    "costs": 4.2018772323282665,
-   "net": -3.4018772323282667,
+   "net": -3.3018772323282666,
    "first_ts": 1792220119.6114893,
-   "last_ts": 1792656095.1576283,
-   "in_pos_frac": 0.7333333333333333,
+   "last_ts": 1792678222.2926593,
+   "in_pos_frac": 0.7419354838709677,
    "last_signal": 0.1095
   }
  },
- "live_rows": 116
+ "live_rows": 120
 }
