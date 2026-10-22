@@ -1,0 +1,158 @@
+//@version=5
+// Early Favorite Signal v2 - Polymarket US 15-minute BTC Up/Down.
+// Tells you what to do, round by round. Shows only what drives the instruction.
+// Rule (data: Oct 6-22, 2026): at 13:00 left, else 12:00 left, buy the favorite only if its Ask is 80-94c.
+// Then hold to the end. No stop, no add. The Ask on Polymarket is the final word; the chart only times it
+// and names the favorite.
+indicator("Early Favorite Signal v2", shorttitle="EF Signal", overlay=true)
+
+// ===== Inputs =====
+grpR = "Rule"
+check1 = input.int(2, "First look (minutes elapsed; 2 = 13:00 left)", minval=1, maxval=12, group=grpR)
+check2 = input.int(3, "Last look (minutes elapsed; 3 = 12:00 left)", minval=2, maxval=13, group=grpR)
+bandLo = input.int(80, "Buy only if the Ask is at least (cents)", minval=50, maxval=98, group=grpR)
+bandHi = input.int(94, "and at most (cents)", minval=51, maxval=99, group=grpR)
+
+grpT = "Target"
+tgtAdj = input.float(0.0, "Target offset ($) = Polymarket price-to-beat minus HUD target", step=0.5, group=grpT)
+
+grpU = "HUD"
+hudPos  = input.string("Middle right", "HUD position", options=["Top center", "Top left", "Top right", "Bottom center", "Bottom left", "Bottom right", "Middle right", "Middle left"], group=grpU)
+hudSize = input.string("Large", "HUD text size", options=["Small", "Normal", "Large"], group=grpU)
+cellW   = input.int(26, "HUD width (% of chart)", minval=10, maxval=48, group=grpU)
+
+// Fixed by the data study (not settings): chart price-estimate scale and the "worth a look" floor.
+volLen   = 60
+kScale   = 0.94
+screenLo = 74.0
+
+// ===== Round clock (rounds start on the quarter hour, UTC) =====
+roundStart = math.floor(time / 900000.0) * 900000
+isNewRound = ta.change(roundStart) != 0
+minuteIdx  = math.floor((time - roundStart) / 60000.0)
+nowMs      = barstate.isrealtime ? timenow : time + 60000
+secsLeft   = math.max(0.0, (roundStart + 900000 - nowMs) / 1000.0)
+secsIn     = 900.0 - secsLeft
+oneMin     = timeframe.isminutes and timeframe.multiplier == 1
+
+fmtClock(s) =>
+    int tot = int(math.max(0.0, s))
+    int m = int(tot / 60)
+    int sec = tot - m * 60
+    str.tostring(m) + ":" + (sec < 10 ? "0" : "") + str.tostring(sec)
+
+fPhi(x) =>
+    t = 1.0 / (1.0 + 0.3275911 * math.abs(x))
+    y = 1.0 - (((((1.061405429 * t - 1.453152027) * t) + 1.421413741) * t - 0.284496736) * t + 0.254829592) * t * math.exp(-x * x / 2.0)
+    x >= 0 ? 0.5 + 0.5 * y : 0.5 - 0.5 * y
+
+// ===== Target and the favorite =====
+// Polymarket's price-to-beat is the average of the 60 BRTI prints in the minute before the round starts.
+// The middle of that minute's high-low range is the closest 1-minute-bar stand-in (about $2.70 off on average).
+var float anchorRaw = na
+var bool  fired = false
+var int   firedSide = 0
+if isNewRound
+    anchorRaw := (high[1] + low[1]) / 2
+    fired := false
+    firedSide := 0
+target = anchorRaw + tgtAdj
+
+r1    = math.log(close / close[1])
+sigma = ta.stdev(r1, volLen) * close
+
+lead   = open - target                       // frozen at the start of the minute, like the tested prices
+side   = lead >= 0 ? 1 : -1
+sideTxt = side > 0 ? "UP" : "DOWN"
+tau    = math.max(15.0 - minuteIdx - 0.5, 0.25)
+estC   = (na(target) or na(sigma) or sigma <= 0) ? na : fPhi(kScale * math.abs(lead) / (sigma * math.sqrt(tau))) * 100.0
+
+isChk1 = oneMin and minuteIdx == check1
+isChk2 = oneMin and minuteIdx == check2
+worth  = not na(estC) and estC >= screenLo and estC < 98.0
+
+if isChk1 and worth and not fired
+    fired := true
+    firedSide := side
+if isChk2 and worth and not fired
+    fired := true
+    firedSide := side
+
+bandTxt = str.tostring(bandLo) + "-" + str.tostring(bandHi) + "c"
+estTxt  = na(estC) ? "?" : str.tostring(math.round(estC)) + "c"
+leadTxt = sideTxt + " leads by $" + (na(lead) ? "?" : str.tostring(math.abs(lead), "#,###"))
+
+// ===== The instruction =====
+string act = ""
+string why = ""
+color  actCol = color.new(color.gray, 25)
+sideCol = side > 0 ? color.new(color.green, 15) : color.new(color.red, 15)
+
+if not oneMin
+    act := "SET CHART TO 1 MINUTE"
+    actCol := color.new(color.maroon, 10)
+else if na(target)
+    act := "WAIT - next round"
+    why := "Next round starts in " + fmtClock(secsLeft)
+else if minuteIdx < check1
+    act := "WAIT"
+    why := "First look in " + fmtClock(check1 * 60 - secsIn)
+else if minuteIdx == check1
+    if worth
+        act := "BUY " + sideTxt + " - only if Ask " + bandTxt
+        why := leadTxt + " | est. " + estTxt
+        actCol := sideCol
+    else if not na(estC) and estC >= 98.0
+        act := "PASS - too expensive now"
+        why := leadTxt + " | est. " + estTxt + " | last look in " + fmtClock(check2 * 60 - secsIn)
+        actCol := color.new(color.orange, 20)
+    else
+        act := "PASS - no clear favorite"
+        why := "est. " + estTxt + " | last look in " + fmtClock(check2 * 60 - secsIn)
+        actCol := color.new(color.orange, 20)
+else if minuteIdx < check2
+    act := fired ? "BOUGHT? HOLD" : "WAIT"
+    why := "Last look in " + fmtClock(check2 * 60 - secsIn)
+    actCol := fired ? color.new(color.teal, 20) : color.new(color.gray, 25)
+else if minuteIdx == check2
+    if worth and fired and firedSide != side
+        act := "FLIPPED - do not buy"
+        why := leadTxt + " | hold only what you already own"
+        actCol := color.new(color.orange, 10)
+    else if worth
+        act := "LAST LOOK: BUY " + sideTxt + " - only if Ask " + bandTxt
+        why := leadTxt + " | est. " + estTxt + " | skip if already in"
+        actCol := sideCol
+    else
+        act := fired ? "HOLD if bought" : "PASS - skip this round"
+        why := "Favorite not in range (est. " + estTxt + ")"
+        actCol := fired ? color.new(color.teal, 20) : color.new(color.orange, 20)
+else
+    act := fired ? "HOLD - do nothing" : "SKIP ROUND"
+    why := "Settles in " + fmtClock(secsLeft)
+    actCol := fired ? color.new(color.teal, 20) : color.new(color.gray, 25)
+
+// ===== Chart layers (only what supports the call) =====
+plot(target, "Target", color=color.new(color.gray, 0), linewidth=1, style=plot.style_stepline)
+plotshape(oneMin and (isChk1 or isChk2) and worth and side > 0, "Buy UP", shape.triangleup, location.belowbar, color.green, size=size.small)
+plotshape(oneMin and (isChk1 or isChk2) and worth and side < 0, "Buy DOWN", shape.triangledown, location.abovebar, color.red, size=size.small)
+
+// ===== HUD =====
+posOf(s) =>
+    s == "Top center" ? position.top_center : s == "Top left" ? position.top_left : s == "Top right" ? position.top_right : s == "Bottom center" ? position.bottom_center : s == "Bottom left" ? position.bottom_left : s == "Bottom right" ? position.bottom_right : s == "Middle left" ? position.middle_left : position.middle_right
+txtSize = hudSize == "Small" ? size.small : hudSize == "Large" ? size.large : size.normal
+if barstate.islast
+    hud = table.new(posOf(hudPos), 1, 2, bgcolor=color.new(color.black, 10), border_width=1, border_color=color.new(color.white, 75))
+    table.cell(hud, 0, 0, text=act, text_color=color.white, text_size=txtSize, bgcolor=actCol, width=cellW)
+    if why != ""
+        table.cell(hud, 0, 1, text=why, text_color=color.yellow, text_size=size.small, width=cellW)
+
+// ===== Alerts =====
+// Create alert -> Condition: this indicator -> "Any alert() function call". Notifications on, open-ended expiry.
+headsUp = oneMin and minuteIdx == check1 - 1 and not na(estC) and estC >= screenLo - 12.0
+if headsUp and not headsUp[1]
+    alert("Early Favorite: first look in 60 seconds. Open Polymarket BTC 15m.", alert.freq_once_per_bar)
+if isChk1 and worth
+    alert("EARLY FAVORITE: BUY " + sideTxt + " only if Ask is " + bandTxt + " (chart est. " + estTxt + ")", alert.freq_once_per_bar)
+if isChk2 and worth and not (fired and firedSide != side)
+    alert("EARLY FAVORITE LAST LOOK: BUY " + sideTxt + " only if Ask is " + bandTxt + " and you are not already in (est. " + estTxt + ")", alert.freq_once_per_bar)
