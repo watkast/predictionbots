@@ -1,0 +1,167 @@
+{
+  "net_pnl": -52.5729,
+  "gross_pnl": -39.9829,
+  "fees": 12.59,
+  "fills": 716,
+  "maker_fills": 0,
+  "taker_fills": 716,
+  "contracts_traded": 715.0,
+  "max_drawdown": 57.729,
+  "max_capital_at_risk": 21.83,
+  "markets_traded": 23,
+  "market_win_rate": 0.13,
+  "sharpe_like": -0.76,
+  "net_pnl_on_max_capital": -2.4083,
+  "maker_pct": 0.0,
+  "reality": {
+    "cross_assumed_fill_frac": 0.0,
+    "cross_assumed_fills": 0,
+    "maker_frac": 0.0,
+    "max_fill_to_touch_depth": 9.0,
+    "top3_market_pnl_frac": 1.0,
+    "pnl_per_contract": -0.07353
+  },
+  "run_id": "taker_lag_kxbtc15m-20261022T1450",
+  "started_at": 1792680651.743127,
+  "updated_at": 1792700651.9872763,
+  "uptime_secs": 20000.2,
+  "open_orders": 0,
+  "positions": {
+    "KXBTC15M-26OCT221100-00": {
+      "contracts": 0.0,
+      "avg_price": 0.0,
+      "realized": -16.38,
+      "fees": 0.98
+    },
+    "KXBTC15M-26OCT221115-15": {
+      "contracts": 0.0,
+      "avg_price": 0.0,
+      "realized": -12.2,
+      "fees": 0.85
+    },
+    "KXBTC15M-26OCT221130-30": {
+      "contracts": 0.0,
+      "avg_price": 0.0,
+      "realized": -9.194,
+      "fees": 0.98
+    },
+    "KXBTC15M-26OCT221145-45": {
+      "contracts": 0.0,
+      "avg_price": 0.0,
+      "realized": 19.77,
+      "fees": 2.76
+    },
+    "KXBTC15M-26OCT221200-00": {
+      "contracts": 0.0,
+      "avg_price": 0.0,
+      "realized": 2.052,
+      "fees": 1.63
+    },
+    "KXBTC15M-26OCT221215-15": {
+      "contracts": 0.0,
+      "avg_price": 0.0,
+      "realized": 27.4481,
+      "fees": 1.18
+    },
+    "KXBTC15M-26OCT221230-30": {
+      "contracts": 0.0,
+      "avg_price": 0.0,
+      "realized": -14.21,
+      "fees": 1.0
+    },
+    "KXBTC15M-26OCT221245-45": {
+      "contracts": 0.0,
+      "avg_price": 0.0,
+      "realized": -9.01,
+      "fees": 0.7
+    },
+    "KXBTC15M-26OCT221300-00": {
+      "contracts": 0.0,
+      "avg_price": 0.0,
+      "realized": -7.929,
+      "fees": 0.65
+    },
+    "KXBTC15M-26OCT221315-15": {
+      "contracts": 0.0,
+      "avg_price": 0.0,
+      "realized": -14.23,
+      "fees": 1.4
+    },
+    "KXBTC15M-26OCT221330-30": {
+      "contracts": 0.0,
+      "avg_price": 0.0,
+      "realized": -6.1,
+      "fees": 0.46
+    }
+  },
+  "markets": [
+    "KXBTC15M-26OCT221100-00",
+    "KXBTC15M-26OCT221115-15",
+    "KXBTC15M-26OCT221130-30",
+    "KXBTC15M-26OCT221145-45",
+    "KXBTC15M-26OCT221200-00",
+    "KXBTC15M-26OCT221215-15",
+    "KXBTC15M-26OCT221230-30",
+    "KXBTC15M-26OCT221245-45",
+    "KXBTC15M-26OCT221300-00",
+    "KXBTC15M-26OCT221315-15",
+    "KXBTC15M-26OCT221330-30",
+    "KXBTC15M-26OCT221345-45",
+    "KXBTC15M-26OCT221400-00",
+    "KXBTC15M-26OCT221415-15",
+    "KXBTC15M-26OCT221430-30",
+    "KXBTC15M-26OCT221445-45",
+    "KXBTC15M-26OCT221500-00",
+    "KXBTC15M-26OCT221515-15",
+    "KXBTC15M-26OCT221530-30",
+    "KXBTC15M-26OCT221545-45",
+    "KXBTC15M-26OCT221600-00",
+    "KXBTC15M-26OCT221615-15",
+    "KXBTC15M-26OCT221630-30"
+  ],
+  "active_markets": [
+    "KXBTC15M-26OCT221630-30"
+  ],
+  "rolls": 333,
+  "last_roll": {
+    "ts": 1792700647.8467646,
+    "selected": 1,
+    "added": [],
+    "dropped": [],
+    "error": ""
+  },
+  "last_event_age": {
+    "KXBTC15M-26OCT221245-45": 13099.6,
+    "KXBTC15M-26OCT221630-30": 0.2
+  },
+  "risk": {
+    "halted": true,
+    "halt_reason": "daily_loss -50.09 < -50.00",
+    "halted_at": 1792689504.6198428,
+    "stale": false,
+    "kill_file": "data/KILL",
+    "kill_file_present": false,
+    "pnl_today": -52.5729,
+    "daily_loss_limit": 50.0,
+    "capital_in_use": 0.0,
+    "capital_in_use_by_market": {},
+    "max_capital_total": 2000.0,
+    "max_capital_per_market": 500.0,
+    "orders_last_min": 0,
+    "max_orders_per_min": 120,
+    "accepted": 723,
+    "rejected": 1723,
+    "reject_reasons": {
+      "halted": 1723
+    },
+    "cancel_all_count": 0,
+    "last_book_age": {
+      "KXBTC15M-26OCT221630-30": 0.2
+    },
+    "stale_secs": 60.0
+  },
+  "strategies": [
+    "taker_lag"
+  ],
+  "venue": "kalshi"
+}
