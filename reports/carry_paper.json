@@ -1,65 +1,65 @@
 {
  "entries": {
   "binance-ref-BTC": {
-   "ticks": 33,
+   "ticks": 34,
    "enters": 0,
    "exits": 0,
    "funding": 0,
    "costs": 0,
    "net": 0,
    "first_ts": 1792220119.6114893,
-   "last_ts": 1792709353.576655,
+   "last_ts": 1792720849.3463259,
    "in_pos_frac": 0.0,
    "last_signal": null
   },
   "coinbase-BTC": {
-   "ticks": 33,
+   "ticks": 34,
    "enters": 1,
    "exits": 0,
-   "funding": 0.099,
+   "funding": 0.104,
    "costs": 8.281214134702507,
-   "net": -8.182214134702507,
+   "net": -8.177214134702508,
    "first_ts": 1792220119.6114893,
-   "last_ts": 1792709353.576655,
-   "in_pos_frac": 0.2727272727272727,
-   "last_signal": 0.09563
+   "last_ts": 1792720849.3463259,
+   "in_pos_frac": 0.29411764705882354,
+   "last_signal": 0.08869500000000001
   },
   "coinbase-ETH": {
-   "ticks": 33,
-   "enters": 0,
-   "exits": 0,
-   "funding": 0,
-   "costs": 0,
-   "net": 0,
-   "first_ts": 1792220119.6114893,
-   "last_ts": 1792709353.576655,
-   "in_pos_frac": 0.0,
-   "last_signal": 0.07884000000000001
-  },
-  "kraken-BTC": {
-   "ticks": 33,
+   "ticks": 34,
    "enters": 1,
    "exits": 0,
-   "funding": 1.0,
-   "costs": 4.269227470440483,
-   "net": -3.269227470440483,
+   "funding": 0,
+   "costs": 8.728272251308901,
+   "net": -8.728272251308901,
    "first_ts": 1792220119.6114893,
-   "last_ts": 1792709353.576655,
-   "in_pos_frac": 0.7575757575757576,
+   "last_ts": 1792720849.3463259,
+   "in_pos_frac": 0.0,
+   "last_signal": 0.08176000000000001
+  },
+  "kraken-BTC": {
+   "ticks": 34,
+   "enters": 1,
+   "exits": 0,
+   "funding": 1.1,
+   "costs": 4.269227470440483,
+   "net": -3.169227470440483,
+   "first_ts": 1792220119.6114893,
+   "last_ts": 1792720849.3463259,
+   "in_pos_frac": 0.7647058823529411,
    "last_signal": 0.1095
   },
   "kraken-ETH": {
-   "ticks": 33,
+   "ticks": 34,
    "enters": 1,
    "exits": 0,
-   "funding": 1.0,
+   "funding": 1.1,
    "costs": 4.2018772323282665,
-   "net": -3.2018772323282665,
+   "net": -3.1018772323282664,
    "first_ts": 1792220119.6114893,
-   "last_ts": 1792709353.576655,
-   "in_pos_frac": 0.7575757575757576,
+   "last_ts": 1792720849.3463259,
+   "in_pos_frac": 0.7647058823529411,
    "last_signal": 0.1095
   }
  },
- "live_rows": 128
+ "live_rows": 134
 }
