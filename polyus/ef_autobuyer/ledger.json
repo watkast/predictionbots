@@ -2187,22 +2187,56 @@
 "shares": 62.5,
 "spent": 50.0,
 "vwap": 0.8,
-"fill_frac": 1.0
+"fill_frac": 1.0,
+"pnl": 11.805
 },
 "100": {
 "shares": 125.0,
 "spent": 100.0,
 "vwap": 0.8,
-"fill_frac": 1.0
+"fill_frac": 1.0,
+"pnl": 23.61
 },
 "250": {
 "shares": 312.5,
 "spent": 250.0,
 "vwap": 0.8,
-"fill_frac": 1.0
+"fill_frac": 1.0,
+"pnl": 59.025
 }
 },
 "check": 180
+},
+"settled": "2026-10-23T07:18:00Z",
+"price_to_beat": 81779.15,
+"settlement": 81698.8,
+"won": true,
+"fee_coef": 0.0695
+},
+"cpc-btc-updown-15m-2026-10-23-0715z": {
+"slug": "cpc-btc-updown-15m-2026-10-23-0715z",
+"window_start": 1792739700,
+"checks": [
+{
+"at": 120,
+"t": 120.0,
+"latency_s": 0.058,
+"ok": false
+},
+{
+"at": 180,
+"t": 180.0,
+"latency_s": 0.062,
+"ok": true,
+"state": "MARKET_STATE_OPEN",
+"fav": "Down",
+"fav_ask": 0.74,
+"long_px": 0.26,
+"short_px": 0.74,
+"up_bid": 0.26,
+"up_ask": 0.27
 }
+],
+"entry": null
 }
 }
