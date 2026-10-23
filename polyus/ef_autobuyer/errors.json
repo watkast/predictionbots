@@ -22,5 +22,17 @@
   "path": "/v1/markets/cpc-btc-updown-15m-2026-10-23-0015z/book",
   "status": 404,
   "body": "{\"code\":5,\"message\":\"market with slug \\\"cpc-btc-updown-15m-2026-10-23-0015z\\\" not found\",\"details\":[]}"
+ },
+ {
+  "t": "2026-10-23T00:32:00Z",
+  "path": "/v1/markets/cpc-btc-updown-15m-2026-10-23-0030z/book",
+  "status": 404,
+  "body": "{\"code\":5,\"message\":\"market with slug \\\"cpc-btc-updown-15m-2026-10-23-0030z\\\" not found\",\"details\":[]}"
+ },
+ {
+  "t": "2026-10-23T00:33:00Z",
+  "path": "/v1/markets/cpc-btc-updown-15m-2026-10-23-0030z/book",
+  "status": 404,
+  "body": "{\"code\":5,\"message\":\"market with slug \\\"cpc-btc-updown-15m-2026-10-23-0030z\\\" not found\",\"details\":[]}"
  }
 ]
