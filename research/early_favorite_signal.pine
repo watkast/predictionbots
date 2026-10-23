@@ -19,9 +19,9 @@ grpT = "Target"
 tgtAdj = input.float(0.0, "Target offset ($) = Polymarket price-to-beat minus HUD target", step=0.5, group=grpT)
 
 grpU = "HUD"
-hudPos  = input.string("Middle right", "HUD position", options=["Top center", "Top left", "Top right", "Bottom center", "Bottom left", "Bottom right", "Middle right", "Middle left"], group=grpU)
-hudSize = input.string("Large", "HUD text size", options=["Small", "Normal", "Large"], group=grpU)
-cellW   = input.int(26, "HUD width (% of chart)", minval=10, maxval=48, group=grpU)
+hudPos  = input.string("Top center", "HUD position", options=["Top center", "Top left", "Top right", "Bottom center", "Bottom left", "Bottom right", "Middle right", "Middle left"], group=grpU)
+hudSize = input.string("Large", "HUD text size", options=["Small", "Normal", "Large", "Huge"], group=grpU)
+cellW   = input.int(100, "HUD width (% of chart; 100 = full width, good for portrait)", minval=10, maxval=100, group=grpU)
 
 // Fixed by the data study (not settings): chart price-estimate scale and the "worth a look" floor.
 volLen   = 60
@@ -154,14 +154,15 @@ plotshape(oneMin and (isChk1 or isChk2) and worth and side < 0, "Buy DOWN", shap
 // ===== HUD =====
 posOf(s) =>
     s == "Top center" ? position.top_center : s == "Top left" ? position.top_left : s == "Top right" ? position.top_right : s == "Bottom center" ? position.bottom_center : s == "Bottom left" ? position.bottom_left : s == "Bottom right" ? position.bottom_right : s == "Middle left" ? position.middle_left : position.middle_right
-txtSize = hudSize == "Small" ? size.small : hudSize == "Large" ? size.large : size.normal
+txtSize = hudSize == "Small" ? size.small : hudSize == "Large" ? size.large : hudSize == "Huge" ? size.huge : size.normal
+detailSize = hudSize == "Large" or hudSize == "Huge" ? size.normal : size.small
 if barstate.islast
     hud = table.new(posOf(hudPos), 1, 3, bgcolor=color.new(color.black, 10), border_width=1, border_color=color.new(color.white, 75))
     table.cell(hud, 0, 0, text=act, text_color=color.white, text_size=txtSize, bgcolor=actCol, width=cellW)
     if why != ""
-        table.cell(hud, 0, 1, text=why, text_color=color.yellow, text_size=size.small, width=cellW)
+        table.cell(hud, 0, 1, text=why, text_color=color.yellow, text_size=detailSize, width=cellW)
     if posTxt != ""
-        table.cell(hud, 0, 2, text=posTxt, text_color=color.white, text_size=size.normal, bgcolor=posCol, width=cellW)
+        table.cell(hud, 0, 2, text=posTxt, text_color=color.white, text_size=detailSize, bgcolor=posCol, width=cellW)
 
 // ===== Alerts =====
 // Create alert -> Condition: this indicator -> "Any alert() function call". Notifications on, open-ended expiry.
