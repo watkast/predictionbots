@@ -4,6 +4,8 @@
 // Rule (data: Oct 6-22, 2026): at 13:00 left, else 12:00 left, buy the favorite only if its Ask is 80-94c.
 // Then hold to the end. No stop, no add. The Ask on Polymarket is the final word; the chart only times it
 // and names the favorite.
+// Position health row: after a call, a chart estimate of how safe that side is (SOLID 85+, WATCH 60-85, WEAK <60).
+// It cannot see your real position; it is observation only, not a sell signal.
 indicator("Early Favorite Signal v2", shorttitle="EF Signal", overlay=true)
 
 // ===== Inputs =====
@@ -78,6 +80,18 @@ if isChk2 and worth and not fired
     fired := true
     firedSide := side
 
+// ===== Position health: chart estimate that the called side still finishes ahead =====
+// Tracked the real sell price within about 3c at 5:00 left on Oct 16-22 data.
+liveLead = firedSide * (close - target)
+tauLive  = math.max(secsLeft / 60.0 - 0.5, 0.25)
+healthC  = (not fired or na(target) or na(sigma) or sigma <= 0) ? na : fPhi(kScale * liveLead / (sigma * math.sqrt(tauLive))) * 100.0
+showHealth = oneMin and fired and minuteIdx > check1 and minuteIdx != check2 and not na(healthC)
+string posTxt = ""
+color  posCol = color.new(color.gray, 25)
+if showHealth
+    posTxt := "If in: " + (firedSide > 0 ? "UP" : "DOWN") + " ~" + str.tostring(math.round(healthC)) + "c | " + (healthC >= 85.0 ? "SOLID" : healthC >= 60.0 ? "WATCH" : "WEAK")
+    posCol := healthC >= 85.0 ? color.new(color.green, 25) : healthC >= 60.0 ? color.new(color.yellow, 30) : color.new(color.red, 20)
+
 bandTxt = str.tostring(bandLo) + "-" + str.tostring(bandHi) + "c"
 estTxt  = na(estC) ? "?" : str.tostring(math.round(estC)) + "c"
 leadTxt = sideTxt + " leads by $" + (na(lead) ? "?" : str.tostring(math.abs(lead), "#,###"))
@@ -142,10 +156,12 @@ posOf(s) =>
     s == "Top center" ? position.top_center : s == "Top left" ? position.top_left : s == "Top right" ? position.top_right : s == "Bottom center" ? position.bottom_center : s == "Bottom left" ? position.bottom_left : s == "Bottom right" ? position.bottom_right : s == "Middle left" ? position.middle_left : position.middle_right
 txtSize = hudSize == "Small" ? size.small : hudSize == "Large" ? size.large : size.normal
 if barstate.islast
-    hud = table.new(posOf(hudPos), 1, 2, bgcolor=color.new(color.black, 10), border_width=1, border_color=color.new(color.white, 75))
+    hud = table.new(posOf(hudPos), 1, 3, bgcolor=color.new(color.black, 10), border_width=1, border_color=color.new(color.white, 75))
     table.cell(hud, 0, 0, text=act, text_color=color.white, text_size=txtSize, bgcolor=actCol, width=cellW)
     if why != ""
         table.cell(hud, 0, 1, text=why, text_color=color.yellow, text_size=size.small, width=cellW)
+    if posTxt != ""
+        table.cell(hud, 0, 2, text=posTxt, text_color=color.white, text_size=size.normal, bgcolor=posCol, width=cellW)
 
 // ===== Alerts =====
 // Create alert -> Condition: this indicator -> "Any alert() function call". Notifications on, open-ended expiry.
