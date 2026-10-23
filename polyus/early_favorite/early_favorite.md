@@ -1,29 +1,29 @@
 # Early Favorite v2 - forward test
 
 Rule (frozen): at 2:00 elapsed (13:00 left), else 3:00, buy the leading side if its ask is 0.80-0.95; $100 per round; hold to settlement; taker fee 0.0695*p*(1-p). Paper only.
-Forward test started 2026-10-23T00:00:00Z. Updated 2026-10-23T13:27:28Z.
+Forward test started 2026-10-23T00:00:00Z. Updated 2026-10-23T18:20:12Z.
 
-**Too early to judge: 14 of the ~150 rounds (about a week) needed.**
+**Too early to judge: 16 of the ~150 rounds (about a week) needed.**
 
 | | Forward | Backtest (Oct 6-22) |
 |---|---|---|
-| Rounds | 14 | 272 |
-| Win rate | 71.4% | 89.3% |
-| Break-even win rate at prices paid | 85.5% | - |
-| Average ask | 0.846 | 0.838 |
-| Net at $100/round | $-231.22 | $+1,486 |
-| Per round | -16.52% | +5.46% |
+| Rounds | 16 | 272 |
+| Win rate | 75.0% | 89.3% |
+| Break-even win rate at prices paid | 85.6% | - |
+| Average ask | 0.847 | 0.838 |
+| Net at $100/round | $-197.19 | $+1,486 |
+| Per round | -12.32% | +5.46% |
 | Max drawdown | $-298.14 | $-403 |
 | Longest losing streak | 2 | 2 |
 | Entry timing | 13:00 / 12:00 left | same |
 
-Rounds where the rule did not trigger: 40. Pending (not settled or not fetched yet): 0.
+Rounds where the rule did not trigger: 57. Pending (not settled or not fetched yet): 1.
 
 ## By day (UTC)
 
 | Day | Net |
 |---|---|
-| 2026-10-23 | $-231.22 |
+| 2026-10-23 | $-197.19 |
 
 ## Last 20 rounds
 
@@ -43,3 +43,5 @@ Rounds where the rule did not trigger: 40. Pending (not settled or not fetched y
 | 10-23 07:30 | 2 | Up | 0.80 | LOST | $-101.39 | $-263.20 |
 | 10-23 08:15 | 2 | Up | 0.87 | won | $+14.04 | $-249.16 |
 | 10-23 11:00 | 3 | Down | 0.84 | won | $+17.94 | $-231.22 |
+| 10-23 14:15 | 2 | Down | 0.90 | won | $+10.42 | $-220.80 |
+| 10-23 16:30 | 2 | Up | 0.80 | won | $+23.61 | $-197.19 |
