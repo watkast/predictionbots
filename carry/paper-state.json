@@ -6,7 +6,7 @@
    "bybit/BTC": "HTTPStatusError(\"Client error '403 Forbidden' for url 'https://api.bybit.com/v5/market/funding/history?category=linear&symbol=BTCUSDT&limit=3'\\nFor more information check: https://developer.mozilla.org/en-US/docs/Web/HTTP/Status/403\")",
    "bybit/ETH": "HTTPStatusError(\"Client error '403 Forbidden' for url 'https://api.bybit.com/v5/market/funding/history?category=linear&symbol=ETHUSDT&limit=3'\\nFor more information check: https://developer.mozilla.org/en-US/docs/Web/HTTP/Status/403\")"
   },
-  "updated_at": 1792709353.576655
+  "updated_at": 1792720849.3463259
  },
  "binance-ref-BTC": {
   "fees": 0.0,
@@ -22,32 +22,34 @@
   "entry_mark": 82775.0,
   "entry_ts": 1792560139.853849,
   "fees": 8.281214134702507,
-  "funding": 0.099,
+  "funding": 0.10400000000000001,
   "in_pos": true,
-  "intervals": 9,
-  "last_interval_ts": 1792706400.0,
+  "intervals": 10,
+  "last_interval_ts": 1792720800.0,
   "notional": 1000.0,
   "realized": -8.281214134702507,
   "trades": 1
  },
  "coinbase-ETH": {
-  "fees": 0.0,
+  "entry_mark": 2387.5,
+  "entry_ts": 1792720849.3463259,
+  "fees": 8.728272251308901,
   "funding": 0.0,
-  "in_pos": false,
+  "in_pos": true,
   "intervals": 0,
-  "last_interval_ts": 1792706400.0,
+  "last_interval_ts": 1792720800.0,
   "notional": 1000.0,
-  "realized": 0.0,
-  "trades": 0
+  "realized": -8.728272251308901,
+  "trades": 1
  },
  "kraken-BTC": {
   "entry_mark": 16323.0,
   "entry_ts": 1792317275.5890625,
   "fees": 4.269227470440483,
-  "funding": 0.9999999999999999,
+  "funding": 1.0999999999999999,
   "in_pos": true,
-  "intervals": 10,
-  "last_interval_ts": 1792684800.0,
+  "intervals": 11,
+  "last_interval_ts": 1792713600.0,
   "notional": 1000.0,
   "realized": -4.269227470440483,
   "trades": 1
@@ -56,10 +58,10 @@
   "entry_mark": 12039.0,
   "entry_ts": 1792317275.5890625,
   "fees": 4.2018772323282665,
-  "funding": 0.9999999999999999,
+  "funding": 1.0999999999999999,
   "in_pos": true,
-  "intervals": 10,
-  "last_interval_ts": 1792684800.0,
+  "intervals": 11,
+  "last_interval_ts": 1792713600.0,
   "notional": 1000.0,
   "realized": -4.2018772323282665,
   "trades": 1
