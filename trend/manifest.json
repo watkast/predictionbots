@@ -1,5 +1,5 @@
 {
- "updated_at": "2026-10-22T00:49:16.901324+00:00",
+ "updated_at": "2026-10-23T00:47:54.405886+00:00",
  "files": {
   "SPY": "/home/runner/work/predictionbots/predictionbots/data/trend/prices-SPY.parquet",
   "QQQ": "/home/runner/work/predictionbots/predictionbots/data/trend/prices-QQQ.parquet",
@@ -12,6 +12,7 @@
   "DBC": "/home/runner/work/predictionbots/predictionbots/data/trend/prices-DBC.parquet",
   "VNQ": "/home/runner/work/predictionbots/predictionbots/data/trend/prices-VNQ.parquet",
   "SHY": "/home/runner/work/predictionbots/predictionbots/data/trend/prices-SHY.parquet",
-  "BIL": "/home/runner/work/predictionbots/predictionbots/data/trend/prices-BIL.parquet"
+  "BIL": "/home/runner/work/predictionbots/predictionbots/data/trend/prices-BIL.parquet",
+  "fred": "/home/runner/work/predictionbots/predictionbots/data/trend/fred-DGS3MO.parquet"
  }
 }
