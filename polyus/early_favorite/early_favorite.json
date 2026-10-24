@@ -13,9 +13,9 @@
   "hold": "settlement"
  },
  "forward_start": "2026-10-23T00:00:00Z",
- "generated": "2026-10-24T20:48:19Z",
+ "generated": "2026-10-24T23:12:23Z",
  "rounds_scored": 29,
- "rounds_skipped_rule_not_met": 150,
+ "rounds_skipped_rule_not_met": 159,
  "rounds_pending": 1,
  "wins": 23,
  "win_rate": 0.7931,
