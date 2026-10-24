@@ -1,0 +1,343 @@
+2026-10-24 00:16:28,935 INFO httpx: HTTP Request: GET https://gamma-api.polymarket.com/markets?limit=200&offset=0&closed=false&order=volume24hr&ascending=false&active=true "HTTP/1.1 200 OK"
+2026-10-24 00:17:30,143 INFO pb.data.recorder: flushed books-001728-0000.parquet, trades-001728-0000.parquet, markets-001728-0000.parquet
+2026-10-24 00:18:30,526 INFO pb.data.recorder: flushed books-001830-0001.parquet, trades-001830-0001.parquet
+2026-10-24 00:19:31,308 INFO pb.data.recorder: flushed books-001930-0002.parquet, trades-001930-0002.parquet
+2026-10-24 00:20:31,966 INFO pb.data.recorder: flushed books-002031-0003.parquet, trades-002031-0003.parquet
+2026-10-24 00:21:32,554 INFO pb.data.recorder: flushed books-002131-0004.parquet, trades-002131-0004.parquet
+2026-10-24 00:22:33,012 INFO pb.data.recorder: flushed books-002232-0005.parquet, trades-002232-0005.parquet
+2026-10-24 00:23:33,559 INFO pb.data.recorder: flushed books-002333-0006.parquet, trades-002333-0006.parquet
+2026-10-24 00:24:34,196 INFO pb.data.recorder: flushed books-002433-0007.parquet, trades-002433-0007.parquet
+2026-10-24 00:25:35,153 INFO pb.data.recorder: flushed books-002534-0008.parquet, trades-002534-0008.parquet
+2026-10-24 00:26:35,620 INFO pb.data.recorder: flushed books-002635-0009.parquet, trades-002635-0009.parquet
+2026-10-24 00:27:36,171 INFO pb.data.recorder: flushed books-002735-0010.parquet, trades-002735-0010.parquet
+2026-10-24 00:28:36,896 INFO pb.data.recorder: flushed books-002836-0011.parquet, trades-002836-0011.parquet
+2026-10-24 00:29:38,448 INFO pb.data.recorder: flushed books-002936-0012.parquet, trades-002936-0012.parquet
+2026-10-24 00:30:39,787 INFO pb.data.recorder: flushed books-003038-0013.parquet, trades-003038-0013.parquet
+2026-10-24 00:31:40,486 INFO pb.data.recorder: flushed books-003139-0014.parquet, trades-003139-0014.parquet
+2026-10-24 00:32:41,328 INFO pb.data.recorder: flushed books-003240-0015.parquet, trades-003240-0015.parquet
+2026-10-24 00:33:42,057 INFO pb.data.recorder: flushed books-003341-0016.parquet, trades-003341-0016.parquet
+2026-10-24 00:34:42,525 INFO pb.data.recorder: flushed books-003442-0017.parquet, trades-003442-0017.parquet
+2026-10-24 00:35:43,273 INFO pb.data.recorder: flushed books-003542-0018.parquet, trades-003542-0018.parquet
+2026-10-24 00:36:44,684 INFO pb.data.recorder: flushed books-003643-0019.parquet, trades-003643-0019.parquet
+2026-10-24 00:37:46,305 INFO pb.data.recorder: flushed books-003744-0020.parquet, trades-003744-0020.parquet
+2026-10-24 00:38:48,095 INFO pb.data.recorder: flushed books-003846-0021.parquet, trades-003846-0021.parquet
+2026-10-24 00:39:49,782 INFO pb.data.recorder: flushed books-003948-0022.parquet, trades-003948-0022.parquet
+2026-10-24 00:40:51,162 INFO pb.data.recorder: flushed books-004049-0023.parquet, trades-004049-0023.parquet
+2026-10-24 00:41:51,675 INFO pb.data.recorder: flushed books-004151-0024.parquet, trades-004151-0024.parquet
+2026-10-24 00:42:52,483 INFO pb.data.recorder: flushed books-004251-0025.parquet, trades-004251-0025.parquet
+2026-10-24 00:43:53,016 INFO pb.data.recorder: flushed books-004352-0026.parquet, trades-004352-0026.parquet
+2026-10-24 00:44:54,184 INFO pb.data.recorder: flushed books-004453-0027.parquet, trades-004453-0027.parquet
+2026-10-24 00:45:55,149 INFO pb.data.recorder: flushed books-004554-0028.parquet, trades-004554-0028.parquet
+2026-10-24 00:46:56,055 INFO pb.data.recorder: flushed books-004655-0029.parquet, trades-004655-0029.parquet
+2026-10-24 00:47:57,075 INFO pb.data.recorder: flushed books-004756-0030.parquet, trades-004756-0030.parquet
+2026-10-24 00:48:58,046 INFO pb.data.recorder: flushed books-004857-0031.parquet, trades-004857-0031.parquet
+2026-10-24 00:49:58,849 INFO pb.data.recorder: flushed books-004958-0032.parquet, trades-004958-0032.parquet
+2026-10-24 00:50:59,499 INFO pb.data.recorder: flushed books-005058-0033.parquet, trades-005058-0033.parquet
+2026-10-24 00:51:59,929 INFO pb.data.recorder: flushed books-005159-0034.parquet, trades-005159-0034.parquet
+2026-10-24 00:53:00,587 INFO pb.data.recorder: flushed books-005259-0035.parquet, trades-005259-0035.parquet
+2026-10-24 00:54:01,879 INFO pb.data.recorder: flushed books-005400-0036.parquet, trades-005400-0036.parquet
+2026-10-24 00:55:02,663 INFO pb.data.recorder: flushed books-005501-0037.parquet, trades-005501-0037.parquet
+2026-10-24 00:56:03,344 INFO pb.data.recorder: flushed books-005602-0038.parquet, trades-005602-0038.parquet
+2026-10-24 00:57:03,974 INFO pb.data.recorder: flushed books-005703-0039.parquet, trades-005703-0039.parquet
+2026-10-24 00:58:05,003 INFO pb.data.recorder: flushed books-005803-0040.parquet, trades-005803-0040.parquet
+2026-10-24 00:59:06,095 INFO pb.data.recorder: flushed books-005905-0041.parquet, trades-005905-0041.parquet
+2026-10-24 01:00:06,624 INFO pb.data.recorder: flushed books-010006-0042.parquet, trades-010006-0042.parquet
+2026-10-24 01:01:07,241 INFO pb.data.recorder: flushed books-010106-0043.parquet, trades-010106-0043.parquet
+2026-10-24 01:02:08,270 INFO pb.data.recorder: flushed books-010207-0044.parquet, trades-010207-0044.parquet
+2026-10-24 01:03:09,312 INFO pb.data.recorder: flushed books-010308-0045.parquet, trades-010308-0045.parquet
+2026-10-24 01:04:10,394 INFO pb.data.recorder: flushed books-010409-0046.parquet, trades-010409-0046.parquet
+2026-10-24 01:05:11,777 INFO pb.data.recorder: flushed books-010510-0047.parquet, trades-010510-0047.parquet
+2026-10-24 01:06:12,858 INFO pb.data.recorder: flushed books-010611-0048.parquet, trades-010611-0048.parquet
+2026-10-24 01:07:13,434 INFO pb.data.recorder: flushed books-010712-0049.parquet, trades-010712-0049.parquet
+2026-10-24 01:08:14,313 INFO pb.data.recorder: flushed books-010813-0050.parquet, trades-010813-0050.parquet
+2026-10-24 01:09:15,640 INFO pb.data.recorder: flushed books-010914-0051.parquet, trades-010914-0051.parquet
+2026-10-24 01:10:16,570 INFO pb.data.recorder: flushed books-011015-0052.parquet, trades-011015-0052.parquet
+2026-10-24 01:11:17,087 INFO pb.data.recorder: flushed books-011116-0053.parquet, trades-011116-0053.parquet
+2026-10-24 01:12:17,680 INFO pb.data.recorder: flushed books-011217-0054.parquet, trades-011217-0054.parquet
+2026-10-24 01:13:18,246 INFO pb.data.recorder: flushed books-011317-0055.parquet, trades-011317-0055.parquet
+2026-10-24 01:14:19,194 INFO pb.data.recorder: flushed books-011418-0056.parquet, trades-011418-0056.parquet
+2026-10-24 01:15:20,089 INFO pb.data.recorder: flushed books-011519-0057.parquet, trades-011519-0057.parquet
+2026-10-24 01:16:21,215 INFO pb.data.recorder: flushed books-011620-0058.parquet, trades-011620-0058.parquet
+2026-10-24 01:17:22,101 INFO pb.data.recorder: flushed books-011721-0059.parquet, trades-011721-0059.parquet
+2026-10-24 01:18:22,824 INFO pb.data.recorder: flushed books-011822-0060.parquet, trades-011822-0060.parquet
+2026-10-24 01:19:23,413 INFO pb.data.recorder: flushed books-011922-0061.parquet, trades-011922-0061.parquet
+2026-10-24 01:20:23,957 INFO pb.data.recorder: flushed books-012023-0062.parquet, trades-012023-0062.parquet
+2026-10-24 01:21:24,446 INFO pb.data.recorder: flushed books-012123-0063.parquet, trades-012123-0063.parquet
+2026-10-24 01:22:25,183 INFO pb.data.recorder: flushed books-012224-0064.parquet, trades-012224-0064.parquet
+2026-10-24 01:23:26,041 INFO pb.data.recorder: flushed books-012325-0065.parquet, trades-012325-0065.parquet
+2026-10-24 01:24:26,459 INFO pb.data.recorder: flushed books-012426-0066.parquet, trades-012426-0066.parquet
+2026-10-24 01:25:26,751 INFO pb.data.recorder: flushed books-012526-0067.parquet, trades-012526-0067.parquet
+2026-10-24 01:26:27,208 INFO pb.data.recorder: flushed books-012626-0068.parquet, trades-012626-0068.parquet
+2026-10-24 01:27:27,731 INFO pb.data.recorder: flushed books-012727-0069.parquet, trades-012727-0069.parquet
+2026-10-24 01:28:28,602 INFO pb.data.recorder: flushed books-012827-0070.parquet, trades-012827-0070.parquet
+2026-10-24 01:29:29,465 INFO pb.data.recorder: flushed books-012928-0071.parquet, trades-012928-0071.parquet
+2026-10-24 01:30:30,271 INFO pb.data.recorder: flushed books-013029-0072.parquet, trades-013029-0072.parquet
+2026-10-24 01:31:31,291 INFO pb.data.recorder: flushed books-013130-0073.parquet, trades-013130-0073.parquet
+2026-10-24 01:32:32,427 INFO pb.data.recorder: flushed books-013231-0074.parquet, trades-013231-0074.parquet
+2026-10-24 01:33:33,579 INFO pb.data.recorder: flushed books-013332-0075.parquet, trades-013332-0075.parquet
+2026-10-24 01:34:34,457 INFO pb.data.recorder: flushed books-013433-0076.parquet, trades-013433-0076.parquet
+2026-10-24 01:35:35,480 INFO pb.data.recorder: flushed books-013534-0077.parquet, trades-013534-0077.parquet
+2026-10-24 01:36:36,200 INFO pb.data.recorder: flushed books-013635-0078.parquet, trades-013635-0078.parquet
+2026-10-24 01:37:37,283 INFO pb.data.recorder: flushed books-013736-0079.parquet, trades-013736-0079.parquet
+2026-10-24 01:38:37,919 INFO pb.data.recorder: flushed books-013837-0080.parquet, trades-013837-0080.parquet
+2026-10-24 01:39:38,604 INFO pb.data.recorder: flushed books-013937-0081.parquet, trades-013937-0081.parquet
+2026-10-24 01:40:39,267 INFO pb.data.recorder: flushed books-014038-0082.parquet, trades-014038-0082.parquet
+2026-10-24 01:41:39,899 INFO pb.data.recorder: flushed books-014139-0083.parquet, trades-014139-0083.parquet
+2026-10-24 01:42:40,338 INFO pb.data.recorder: flushed books-014239-0084.parquet, trades-014239-0084.parquet
+2026-10-24 01:43:40,449 INFO pb.data.recorder: flushed books-014340-0085.parquet, trades-014340-0085.parquet
+2026-10-24 01:44:40,516 INFO pb.data.recorder: flushed books-014440-0086.parquet, trades-014440-0086.parquet
+2026-10-24 01:45:40,617 INFO pb.data.recorder: flushed books-014540-0087.parquet, trades-014540-0087.parquet
+2026-10-24 01:46:40,854 INFO pb.data.recorder: flushed books-014640-0088.parquet, trades-014640-0088.parquet
+2026-10-24 01:47:40,956 INFO pb.data.recorder: flushed books-014740-0089.parquet, trades-014740-0089.parquet
+2026-10-24 01:48:41,074 INFO pb.data.recorder: flushed books-014840-0090.parquet, trades-014840-0090.parquet
+2026-10-24 01:49:41,429 INFO pb.data.recorder: flushed books-014941-0091.parquet, trades-014941-0091.parquet
+2026-10-24 01:50:41,692 INFO pb.data.recorder: flushed books-015041-0092.parquet, trades-015041-0092.parquet
+2026-10-24 01:51:41,797 INFO pb.data.recorder: flushed books-015141-0093.parquet, trades-015141-0093.parquet
+2026-10-24 01:52:41,918 INFO pb.data.recorder: flushed books-015241-0094.parquet, trades-015241-0094.parquet
+2026-10-24 01:53:42,016 INFO pb.data.recorder: flushed books-015341-0095.parquet, trades-015341-0095.parquet
+2026-10-24 01:54:42,128 INFO pb.data.recorder: flushed books-015442-0096.parquet, trades-015442-0096.parquet
+2026-10-24 01:55:42,289 INFO pb.data.recorder: flushed books-015542-0097.parquet, trades-015542-0097.parquet
+2026-10-24 01:56:42,552 INFO pb.data.recorder: flushed books-015642-0098.parquet, trades-015642-0098.parquet
+2026-10-24 01:57:42,658 INFO pb.data.recorder: flushed books-015742-0099.parquet, trades-015742-0099.parquet
+2026-10-24 01:58:42,747 INFO pb.data.recorder: flushed books-015842-0100.parquet, trades-015842-0100.parquet
+2026-10-24 01:59:42,779 INFO pb.data.recorder: flushed books-015942-0101.parquet, trades-015942-0101.parquet
+2026-10-24 02:00:42,815 INFO pb.data.recorder: flushed books-020042-0102.parquet, trades-020042-0102.parquet
+2026-10-24 02:01:42,908 INFO pb.data.recorder: flushed books-020142-0103.parquet, trades-020142-0103.parquet
+2026-10-24 02:02:43,187 INFO pb.data.recorder: flushed books-020242-0104.parquet, trades-020242-0104.parquet
+2026-10-24 02:03:43,410 INFO pb.data.recorder: flushed books-020343-0105.parquet, trades-020343-0105.parquet
+2026-10-24 02:04:43,816 INFO pb.data.recorder: flushed books-020443-0106.parquet, trades-020443-0106.parquet
+2026-10-24 02:05:43,956 INFO pb.data.recorder: flushed books-020543-0107.parquet, trades-020543-0107.parquet
+2026-10-24 02:06:44,143 INFO pb.data.recorder: flushed books-020643-0108.parquet, trades-020643-0108.parquet
+2026-10-24 02:07:44,393 INFO pb.data.recorder: flushed books-020744-0109.parquet, trades-020744-0109.parquet
+2026-10-24 02:08:44,606 INFO pb.data.recorder: flushed books-020844-0110.parquet, trades-020844-0110.parquet
+2026-10-24 02:09:44,762 INFO pb.data.recorder: flushed books-020944-0111.parquet, trades-020944-0111.parquet
+2026-10-24 02:10:45,004 INFO pb.data.recorder: flushed books-021044-0112.parquet, trades-021044-0112.parquet
+2026-10-24 02:11:45,191 INFO pb.data.recorder: flushed books-021145-0113.parquet, trades-021145-0113.parquet
+2026-10-24 02:12:45,381 INFO pb.data.recorder: flushed books-021245-0114.parquet, trades-021245-0114.parquet
+2026-10-24 02:13:45,529 INFO pb.data.recorder: flushed books-021345-0115.parquet, trades-021345-0115.parquet
+2026-10-24 02:14:45,603 INFO pb.data.recorder: flushed books-021445-0116.parquet, trades-021445-0116.parquet
+2026-10-24 02:15:45,678 INFO pb.data.recorder: flushed books-021545-0117.parquet, trades-021545-0117.parquet
+2026-10-24 02:16:45,747 INFO pb.data.recorder: flushed books-021645-0118.parquet, trades-021645-0118.parquet
+2026-10-24 02:17:45,805 INFO pb.data.recorder: flushed books-021745-0119.parquet, trades-021745-0119.parquet
+2026-10-24 02:18:45,861 INFO pb.data.recorder: flushed books-021845-0120.parquet, trades-021845-0120.parquet
+2026-10-24 02:19:45,914 INFO pb.data.recorder: flushed books-021945-0121.parquet, trades-021945-0121.parquet
+2026-10-24 02:20:45,960 INFO pb.data.recorder: flushed books-022045-0122.parquet, trades-022045-0122.parquet
+2026-10-24 02:21:46,011 INFO pb.data.recorder: flushed books-022145-0123.parquet, trades-022145-0123.parquet
+2026-10-24 02:22:46,067 INFO pb.data.recorder: flushed books-022246-0124.parquet, trades-022246-0124.parquet
+2026-10-24 02:23:46,116 INFO pb.data.recorder: flushed books-022346-0125.parquet
+2026-10-24 02:24:46,152 INFO pb.data.recorder: flushed books-022446-0126.parquet, trades-022446-0126.parquet
+2026-10-24 02:25:46,200 INFO pb.data.recorder: flushed books-022546-0127.parquet, trades-022546-0127.parquet
+2026-10-24 02:26:46,221 INFO pb.data.recorder: flushed books-022646-0128.parquet, trades-022646-0128.parquet
+2026-10-24 02:27:46,250 INFO pb.data.recorder: flushed books-022746-0129.parquet, trades-022746-0129.parquet
+2026-10-24 02:28:46,273 INFO pb.data.recorder: flushed books-022846-0130.parquet, trades-022846-0130.parquet
+2026-10-24 02:29:46,381 INFO pb.data.recorder: flushed books-022946-0131.parquet, trades-022946-0131.parquet
+2026-10-24 02:30:46,405 INFO pb.data.recorder: flushed books-023046-0132.parquet, trades-023046-0132.parquet
+2026-10-24 02:31:46,581 INFO pb.data.recorder: flushed books-023146-0133.parquet, trades-023146-0133.parquet
+2026-10-24 02:32:46,863 INFO pb.data.recorder: flushed books-023246-0134.parquet, trades-023246-0134.parquet
+2026-10-24 02:33:47,112 INFO pb.data.recorder: flushed books-023346-0135.parquet, trades-023346-0135.parquet
+2026-10-24 02:34:47,491 INFO pb.data.recorder: flushed books-023447-0136.parquet
+2026-10-24 02:35:47,902 INFO pb.data.recorder: flushed books-023547-0137.parquet, trades-023547-0137.parquet
+2026-10-24 02:36:48,284 INFO pb.data.recorder: flushed books-023647-0138.parquet, trades-023647-0138.parquet
+2026-10-24 02:37:48,523 INFO pb.data.recorder: flushed books-023748-0139.parquet, trades-023748-0139.parquet
+2026-10-24 02:38:48,632 INFO pb.data.recorder: flushed books-023848-0140.parquet, trades-023848-0140.parquet
+2026-10-24 02:39:48,654 INFO pb.data.recorder: flushed books-023948-0141.parquet, trades-023948-0141.parquet
+2026-10-24 02:40:48,666 INFO pb.data.recorder: flushed books-024048-0142.parquet, trades-024048-0142.parquet
+2026-10-24 02:41:48,685 INFO pb.data.recorder: flushed books-024148-0143.parquet, trades-024148-0143.parquet
+2026-10-24 02:42:48,697 INFO pb.data.recorder: flushed books-024248-0144.parquet, trades-024248-0144.parquet
+2026-10-24 02:43:48,710 INFO pb.data.recorder: flushed books-024348-0145.parquet
+2026-10-24 02:44:48,719 INFO pb.data.recorder: flushed books-024448-0146.parquet, trades-024448-0146.parquet
+2026-10-24 02:45:48,728 INFO pb.data.recorder: flushed books-024548-0147.parquet, trades-024548-0147.parquet
+2026-10-24 02:46:48,738 INFO pb.data.recorder: flushed books-024648-0148.parquet, trades-024648-0148.parquet
+2026-10-24 02:47:48,751 INFO pb.data.recorder: flushed books-024748-0149.parquet
+2026-10-24 02:48:48,763 INFO pb.data.recorder: flushed books-024848-0150.parquet
+2026-10-24 02:49:48,783 INFO pb.data.recorder: flushed books-024948-0151.parquet, trades-024948-0151.parquet
+2026-10-24 02:50:48,797 INFO pb.data.recorder: flushed books-025048-0152.parquet, trades-025048-0152.parquet
+2026-10-24 02:51:48,813 INFO pb.data.recorder: flushed books-025148-0153.parquet, trades-025148-0153.parquet
+2026-10-24 02:52:48,835 INFO pb.data.recorder: flushed books-025248-0154.parquet, trades-025248-0154.parquet
+2026-10-24 02:53:48,853 INFO pb.data.recorder: flushed books-025348-0155.parquet, trades-025348-0155.parquet
+2026-10-24 02:54:48,871 INFO pb.data.recorder: flushed books-025448-0156.parquet, trades-025448-0156.parquet
+2026-10-24 02:55:48,888 INFO pb.data.recorder: flushed books-025548-0157.parquet
+2026-10-24 02:56:48,900 INFO pb.data.recorder: flushed books-025648-0158.parquet
+2026-10-24 02:57:48,913 INFO pb.data.recorder: flushed books-025748-0159.parquet, trades-025748-0159.parquet
+2026-10-24 02:58:48,927 INFO pb.data.recorder: flushed books-025848-0160.parquet, trades-025848-0160.parquet
+2026-10-24 02:59:48,948 INFO pb.data.recorder: flushed books-025948-0161.parquet, trades-025948-0161.parquet
+2026-10-24 03:00:48,961 INFO pb.data.recorder: flushed books-030048-0162.parquet
+2026-10-24 03:01:48,973 INFO pb.data.recorder: flushed books-030148-0163.parquet, trades-030148-0163.parquet
+2026-10-24 03:02:48,986 INFO pb.data.recorder: flushed books-030248-0164.parquet, trades-030248-0164.parquet
+2026-10-24 03:03:48,999 INFO pb.data.recorder: flushed books-030348-0165.parquet
+2026-10-24 03:04:49,011 INFO pb.data.recorder: flushed books-030449-0166.parquet
+2026-10-24 03:05:49,020 INFO pb.data.recorder: flushed books-030549-0167.parquet, trades-030549-0167.parquet
+2026-10-24 03:06:49,029 INFO pb.data.recorder: flushed books-030649-0168.parquet, trades-030649-0168.parquet
+2026-10-24 03:07:49,047 INFO pb.data.recorder: flushed books-030749-0169.parquet, trades-030749-0169.parquet
+2026-10-24 03:08:49,060 INFO pb.data.recorder: flushed books-030849-0170.parquet, trades-030849-0170.parquet
+2026-10-24 03:09:49,083 INFO pb.data.recorder: flushed books-030949-0171.parquet, trades-030949-0171.parquet
+2026-10-24 03:10:49,118 INFO pb.data.recorder: flushed books-031049-0172.parquet, trades-031049-0172.parquet
+2026-10-24 03:11:49,131 INFO pb.data.recorder: flushed books-031149-0173.parquet, trades-031149-0173.parquet
+2026-10-24 03:12:49,148 INFO pb.data.recorder: flushed books-031249-0174.parquet, trades-031249-0174.parquet
+2026-10-24 03:13:49,183 INFO pb.data.recorder: flushed books-031349-0175.parquet, trades-031349-0175.parquet
+2026-10-24 03:14:49,192 INFO pb.data.recorder: flushed books-031449-0176.parquet
+2026-10-24 03:15:49,215 INFO pb.data.recorder: flushed books-031549-0177.parquet
+2026-10-24 03:16:49,245 INFO pb.data.recorder: flushed books-031649-0178.parquet, trades-031649-0178.parquet
+2026-10-24 03:17:49,264 INFO pb.data.recorder: flushed books-031749-0179.parquet, trades-031749-0179.parquet
+2026-10-24 03:18:49,285 INFO pb.data.recorder: flushed books-031849-0180.parquet, trades-031849-0180.parquet
+2026-10-24 03:19:49,300 INFO pb.data.recorder: flushed books-031949-0181.parquet, trades-031949-0181.parquet
+2026-10-24 03:20:49,311 INFO pb.data.recorder: flushed books-032049-0182.parquet
+2026-10-24 03:21:49,324 INFO pb.data.recorder: flushed books-032149-0183.parquet
+2026-10-24 03:22:49,335 INFO pb.data.recorder: flushed books-032249-0184.parquet, trades-032249-0184.parquet
+2026-10-24 03:23:49,345 INFO pb.data.recorder: flushed books-032349-0185.parquet, trades-032349-0185.parquet
+2026-10-24 03:24:49,351 INFO pb.data.recorder: flushed books-032449-0186.parquet
+2026-10-24 03:25:49,363 INFO pb.data.recorder: flushed books-032549-0187.parquet, trades-032549-0187.parquet
+2026-10-24 03:26:49,385 INFO pb.data.recorder: flushed books-032649-0188.parquet, trades-032649-0188.parquet
+2026-10-24 03:27:49,393 INFO pb.data.recorder: flushed books-032749-0189.parquet
+2026-10-24 03:28:49,402 INFO pb.data.recorder: flushed books-032849-0190.parquet
+2026-10-24 03:29:49,409 INFO pb.data.recorder: flushed books-032949-0191.parquet
+2026-10-24 03:30:49,439 INFO pb.data.recorder: flushed books-033049-0192.parquet, trades-033049-0192.parquet
+2026-10-24 03:31:49,462 INFO pb.data.recorder: flushed books-033149-0193.parquet, trades-033149-0193.parquet
+2026-10-24 03:32:49,481 INFO pb.data.recorder: flushed books-033249-0194.parquet, trades-033249-0194.parquet
+2026-10-24 03:33:49,494 INFO pb.data.recorder: flushed books-033349-0195.parquet, trades-033349-0195.parquet
+2026-10-24 03:34:49,508 INFO pb.data.recorder: flushed books-033449-0196.parquet, trades-033449-0196.parquet
+2026-10-24 03:35:49,518 INFO pb.data.recorder: flushed books-033549-0197.parquet, trades-033549-0197.parquet
+2026-10-24 03:36:49,531 INFO pb.data.recorder: flushed books-033649-0198.parquet
+2026-10-24 03:37:49,543 INFO pb.data.recorder: flushed books-033749-0199.parquet, trades-033749-0199.parquet
+2026-10-24 03:38:49,553 INFO pb.data.recorder: flushed books-033849-0200.parquet, trades-033849-0200.parquet
+2026-10-24 03:39:49,569 INFO pb.data.recorder: flushed books-033949-0201.parquet, trades-033949-0201.parquet
+2026-10-24 03:40:49,583 INFO pb.data.recorder: flushed books-034049-0202.parquet, trades-034049-0202.parquet
+2026-10-24 03:41:49,595 INFO pb.data.recorder: flushed books-034149-0203.parquet, trades-034149-0203.parquet
+2026-10-24 03:42:49,695 INFO pb.data.recorder: flushed books-034249-0204.parquet, trades-034249-0204.parquet
+2026-10-24 03:43:49,728 INFO pb.data.recorder: flushed books-034349-0205.parquet, trades-034349-0205.parquet
+2026-10-24 03:44:49,746 INFO pb.data.recorder: flushed books-034449-0206.parquet, trades-034449-0206.parquet
+2026-10-24 03:45:49,792 INFO pb.data.recorder: flushed books-034549-0207.parquet
+2026-10-24 03:46:49,837 INFO pb.data.recorder: flushed books-034649-0208.parquet, trades-034649-0208.parquet
+2026-10-24 03:47:49,852 INFO pb.data.recorder: flushed books-034749-0209.parquet, trades-034749-0209.parquet
+2026-10-24 03:48:49,863 INFO pb.data.recorder: flushed books-034849-0210.parquet, trades-034849-0210.parquet
+2026-10-24 03:49:49,869 INFO pb.data.recorder: flushed books-034949-0211.parquet
+2026-10-24 03:50:49,880 INFO pb.data.recorder: flushed books-035049-0212.parquet
+2026-10-24 03:51:49,915 INFO pb.data.recorder: flushed books-035149-0213.parquet, trades-035149-0213.parquet
+2026-10-24 03:52:49,928 INFO pb.data.recorder: flushed books-035249-0214.parquet, trades-035249-0214.parquet
+2026-10-24 03:53:49,945 INFO pb.data.recorder: flushed books-035349-0215.parquet, trades-035349-0215.parquet
+2026-10-24 03:54:49,953 INFO pb.data.recorder: flushed books-035449-0216.parquet
+2026-10-24 03:55:49,959 INFO pb.data.recorder: flushed books-035549-0217.parquet
+2026-10-24 03:56:49,969 INFO pb.data.recorder: flushed books-035649-0218.parquet
+2026-10-24 03:57:49,975 INFO pb.data.recorder: flushed books-035749-0219.parquet
+2026-10-24 03:58:49,985 INFO pb.data.recorder: flushed books-035849-0220.parquet
+2026-10-24 03:59:50,000 INFO pb.data.recorder: flushed books-035949-0221.parquet, trades-035949-0221.parquet
+2026-10-24 04:00:50,048 INFO pb.data.recorder: flushed books-040050-0222.parquet, trades-040050-0222.parquet
+2026-10-24 04:01:50,057 INFO pb.data.recorder: flushed books-040150-0223.parquet
+2026-10-24 04:02:50,067 INFO pb.data.recorder: flushed books-040250-0224.parquet
+2026-10-24 04:03:50,076 INFO pb.data.recorder: flushed books-040350-0225.parquet, trades-040350-0225.parquet
+2026-10-24 04:04:50,085 INFO pb.data.recorder: flushed books-040450-0226.parquet, trades-040450-0226.parquet
+2026-10-24 04:05:50,098 INFO pb.data.recorder: flushed books-040550-0227.parquet
+2026-10-24 04:06:50,113 INFO pb.data.recorder: flushed books-040650-0228.parquet, trades-040650-0228.parquet
+2026-10-24 04:07:50,151 INFO pb.data.recorder: flushed books-040750-0229.parquet, trades-040750-0229.parquet
+2026-10-24 04:08:50,162 INFO pb.data.recorder: flushed books-040850-0230.parquet, trades-040850-0230.parquet
+2026-10-24 04:09:50,252 INFO pb.data.recorder: flushed books-040950-0231.parquet, trades-040950-0231.parquet
+2026-10-24 04:10:50,263 INFO pb.data.recorder: flushed books-041050-0232.parquet, trades-041050-0232.parquet
+2026-10-24 04:11:50,275 INFO pb.data.recorder: flushed books-041150-0233.parquet
+2026-10-24 04:12:50,288 INFO pb.data.recorder: flushed books-041250-0234.parquet, trades-041250-0234.parquet
+2026-10-24 04:13:50,300 INFO pb.data.recorder: flushed books-041350-0235.parquet, trades-041350-0235.parquet
+2026-10-24 04:14:50,326 INFO pb.data.recorder: flushed books-041450-0236.parquet
+2026-10-24 04:15:50,378 INFO pb.data.recorder: flushed books-041550-0237.parquet, trades-041550-0237.parquet
+2026-10-24 04:16:50,423 INFO pb.data.recorder: flushed books-041650-0238.parquet
+2026-10-24 04:17:50,471 INFO pb.data.recorder: flushed books-041750-0239.parquet, trades-041750-0239.parquet
+2026-10-24 04:18:50,521 INFO pb.data.recorder: flushed books-041850-0240.parquet, trades-041850-0240.parquet
+2026-10-24 04:19:50,557 INFO pb.data.recorder: flushed books-041950-0241.parquet, trades-041950-0241.parquet
+2026-10-24 04:20:50,571 INFO pb.data.recorder: flushed books-042050-0242.parquet, trades-042050-0242.parquet
+2026-10-24 04:21:50,582 INFO pb.data.recorder: flushed books-042150-0243.parquet
+2026-10-24 04:22:50,598 INFO pb.data.recorder: flushed books-042250-0244.parquet, trades-042250-0244.parquet
+2026-10-24 04:23:50,614 INFO pb.data.recorder: flushed books-042350-0245.parquet, trades-042350-0245.parquet
+2026-10-24 04:24:50,631 INFO pb.data.recorder: flushed books-042450-0246.parquet, trades-042450-0246.parquet
+2026-10-24 04:25:50,642 INFO pb.data.recorder: flushed books-042550-0247.parquet
+2026-10-24 04:26:50,669 INFO pb.data.recorder: flushed books-042650-0248.parquet, trades-042650-0248.parquet
+2026-10-24 04:27:50,683 INFO pb.data.recorder: flushed books-042750-0249.parquet, trades-042750-0249.parquet
+2026-10-24 04:28:50,701 INFO pb.data.recorder: flushed books-042850-0250.parquet, trades-042850-0250.parquet
+2026-10-24 04:29:50,710 INFO pb.data.recorder: flushed books-042950-0251.parquet
+2026-10-24 04:30:50,725 INFO pb.data.recorder: flushed books-043050-0252.parquet, trades-043050-0252.parquet
+2026-10-24 04:31:50,735 INFO pb.data.recorder: flushed books-043150-0253.parquet
+2026-10-24 04:32:50,748 INFO pb.data.recorder: flushed books-043250-0254.parquet, trades-043250-0254.parquet
+2026-10-24 04:33:50,754 INFO pb.data.recorder: flushed books-043350-0255.parquet
+2026-10-24 04:34:50,773 INFO pb.data.recorder: flushed books-043450-0256.parquet, trades-043450-0256.parquet
+2026-10-24 04:35:50,793 INFO pb.data.recorder: flushed books-043550-0257.parquet, trades-043550-0257.parquet
+2026-10-24 04:36:50,803 INFO pb.data.recorder: flushed books-043650-0258.parquet, trades-043650-0258.parquet
+2026-10-24 04:37:50,812 INFO pb.data.recorder: flushed books-043750-0259.parquet
+2026-10-24 04:38:50,825 INFO pb.data.recorder: flushed books-043850-0260.parquet
+2026-10-24 04:39:50,848 INFO pb.data.recorder: flushed books-043950-0261.parquet, trades-043950-0261.parquet
+2026-10-24 04:40:50,884 INFO pb.data.recorder: flushed books-044050-0262.parquet, trades-044050-0262.parquet
+2026-10-24 04:41:50,894 INFO pb.data.recorder: flushed books-044150-0263.parquet, trades-044150-0263.parquet
+2026-10-24 04:42:50,930 INFO pb.data.recorder: flushed books-044250-0264.parquet, trades-044250-0264.parquet
+2026-10-24 04:43:50,998 INFO pb.data.recorder: flushed books-044350-0265.parquet, trades-044350-0265.parquet
+2026-10-24 04:44:51,065 INFO pb.data.recorder: flushed books-044451-0266.parquet
+2026-10-24 04:45:51,088 INFO pb.data.recorder: flushed books-044551-0267.parquet, trades-044551-0267.parquet
+2026-10-24 04:46:51,104 INFO pb.data.recorder: flushed books-044651-0268.parquet, trades-044651-0268.parquet
+2026-10-24 04:47:51,141 INFO pb.data.recorder: flushed books-044751-0269.parquet, trades-044751-0269.parquet
+2026-10-24 04:48:51,204 INFO pb.data.recorder: flushed books-044851-0270.parquet
+2026-10-24 04:49:51,259 INFO pb.data.recorder: flushed books-044951-0271.parquet
+2026-10-24 04:50:51,300 INFO pb.data.recorder: flushed books-045051-0272.parquet, trades-045051-0272.parquet
+2026-10-24 04:51:51,341 INFO pb.data.recorder: flushed books-045151-0273.parquet
+2026-10-24 04:52:51,397 INFO pb.data.recorder: flushed books-045251-0274.parquet, trades-045251-0274.parquet
+2026-10-24 04:53:51,444 INFO pb.data.recorder: flushed books-045351-0275.parquet
+2026-10-24 04:54:51,484 INFO pb.data.recorder: flushed books-045451-0276.parquet
+2026-10-24 04:55:51,509 INFO pb.data.recorder: flushed books-045551-0277.parquet
+2026-10-24 04:56:51,518 INFO pb.data.recorder: flushed books-045651-0278.parquet, trades-045651-0278.parquet
+2026-10-24 04:57:51,560 INFO pb.data.recorder: flushed books-045751-0279.parquet, trades-045751-0279.parquet
+2026-10-24 04:58:51,608 INFO pb.data.recorder: flushed books-045851-0280.parquet
+2026-10-24 04:59:51,621 INFO pb.data.recorder: flushed books-045951-0281.parquet
+2026-10-24 05:00:51,635 INFO pb.data.recorder: flushed books-050051-0282.parquet, trades-050051-0282.parquet
+2026-10-24 05:01:51,643 INFO pb.data.recorder: flushed books-050151-0283.parquet
+2026-10-24 05:02:51,654 INFO pb.data.recorder: flushed books-050251-0284.parquet, trades-050251-0284.parquet
+2026-10-24 05:03:51,663 INFO pb.data.recorder: flushed books-050351-0285.parquet
+2026-10-24 05:04:51,673 INFO pb.data.recorder: flushed books-050451-0286.parquet, trades-050451-0286.parquet
+2026-10-24 05:05:51,681 INFO pb.data.recorder: flushed books-050551-0287.parquet, trades-050551-0287.parquet
+2026-10-24 05:06:51,689 INFO pb.data.recorder: flushed books-050651-0288.parquet, trades-050651-0288.parquet
+2026-10-24 05:07:51,699 INFO pb.data.recorder: flushed books-050751-0289.parquet
+2026-10-24 05:08:31,727 WARNING pb.venues.polymarket: Polymarket WS error: sent 1011 (internal error) keepalive ping timeout; no close frame received; reconnecting in 2.0s
+2026-10-24 05:08:51,708 INFO pb.data.recorder: flushed books-050851-0290.parquet, trades-050851-0290.parquet
+2026-10-24 05:09:51,730 INFO pb.data.recorder: flushed books-050951-0291.parquet, trades-050951-0291.parquet
+2026-10-24 05:10:51,785 INFO pb.data.recorder: flushed books-051051-0292.parquet
+2026-10-24 05:11:51,870 INFO pb.data.recorder: flushed books-051151-0293.parquet, trades-051151-0293.parquet
+2026-10-24 05:12:51,924 INFO pb.data.recorder: flushed books-051251-0294.parquet
+2026-10-24 05:13:52,010 INFO pb.data.recorder: flushed books-051351-0295.parquet
+2026-10-24 05:14:52,105 INFO pb.data.recorder: flushed books-051452-0296.parquet
+2026-10-24 05:15:52,189 INFO pb.data.recorder: flushed books-051552-0297.parquet
+2026-10-24 05:16:52,293 INFO pb.data.recorder: flushed books-051652-0298.parquet
+2026-10-24 05:17:52,416 INFO pb.data.recorder: flushed books-051752-0299.parquet, trades-051752-0299.parquet
+2026-10-24 05:18:52,533 INFO pb.data.recorder: flushed books-051852-0300.parquet
+2026-10-24 05:19:52,654 INFO pb.data.recorder: flushed books-051952-0301.parquet
+2026-10-24 05:20:52,778 INFO pb.data.recorder: flushed books-052052-0302.parquet, trades-052052-0302.parquet
+2026-10-24 05:21:52,917 INFO pb.data.recorder: flushed books-052152-0303.parquet
+2026-10-24 05:22:53,044 INFO pb.data.recorder: flushed books-052252-0304.parquet
+2026-10-24 05:23:53,169 INFO pb.data.recorder: flushed books-052353-0305.parquet
+2026-10-24 05:24:53,265 INFO pb.data.recorder: flushed books-052453-0306.parquet
+2026-10-24 05:25:53,363 INFO pb.data.recorder: flushed books-052553-0307.parquet
+2026-10-24 05:26:53,469 INFO pb.data.recorder: flushed books-052653-0308.parquet
+2026-10-24 05:27:53,574 INFO pb.data.recorder: flushed books-052753-0309.parquet, trades-052753-0309.parquet
+2026-10-24 05:28:53,670 INFO pb.data.recorder: flushed books-052853-0310.parquet
+2026-10-24 05:29:53,769 INFO pb.data.recorder: flushed books-052953-0311.parquet
+2026-10-24 05:30:53,851 INFO pb.data.recorder: flushed books-053053-0312.parquet
+2026-10-24 05:31:53,983 INFO pb.data.recorder: flushed books-053153-0313.parquet, trades-053153-0313.parquet
+2026-10-24 05:32:54,030 INFO pb.data.recorder: flushed books-053253-0314.parquet
+2026-10-24 05:33:54,040 INFO pb.data.recorder: flushed books-053354-0315.parquet
+2026-10-24 05:34:54,051 INFO pb.data.recorder: flushed books-053454-0316.parquet, trades-053454-0316.parquet
+2026-10-24 05:35:54,062 INFO pb.data.recorder: flushed books-053554-0317.parquet, trades-053554-0317.parquet
+2026-10-24 05:36:54,067 INFO pb.data.recorder: flushed books-053654-0318.parquet
+2026-10-24 05:37:54,077 INFO pb.data.recorder: flushed books-053754-0319.parquet, trades-053754-0319.parquet
+2026-10-24 05:38:54,083 INFO pb.data.recorder: flushed books-053854-0320.parquet
+2026-10-24 05:39:54,094 INFO pb.data.recorder: flushed books-053954-0321.parquet, trades-053954-0321.parquet
+2026-10-24 05:40:54,108 INFO pb.data.recorder: flushed books-054054-0322.parquet, trades-054054-0322.parquet
+2026-10-24 05:41:54,113 INFO pb.data.recorder: flushed books-054154-0323.parquet
+2026-10-24 05:42:54,121 INFO pb.data.recorder: flushed books-054254-0324.parquet
+2026-10-24 05:43:54,145 INFO pb.data.recorder: flushed books-054354-0325.parquet, trades-054354-0325.parquet
+2026-10-24 05:44:54,250 INFO pb.data.recorder: flushed books-054454-0326.parquet
+2026-10-24 05:45:54,312 INFO pb.data.recorder: flushed books-054554-0327.parquet
+2026-10-24 05:46:54,396 INFO pb.data.recorder: flushed books-054654-0328.parquet
+2026-10-24 05:47:54,463 INFO pb.data.recorder: flushed books-054754-0329.parquet
+2026-10-24 05:48:54,519 INFO pb.data.recorder: flushed books-054854-0330.parquet
+2026-10-24 05:49:54,582 INFO pb.data.recorder: flushed books-054954-0331.parquet
+2026-10-24 05:50:54,648 INFO pb.data.recorder: flushed books-055054-0332.parquet
+2026-10-24 05:51:54,713 INFO pb.data.recorder: flushed books-055154-0333.parquet
+2026-10-24 05:52:54,772 INFO pb.data.recorder: flushed books-055254-0334.parquet
+2026-10-24 05:53:54,841 INFO pb.data.recorder: flushed books-055354-0335.parquet
+2026-10-24 05:54:54,904 INFO pb.data.recorder: flushed books-055454-0336.parquet, trades-055454-0336.parquet
+2026-10-24 05:55:54,979 INFO pb.data.recorder: flushed books-055554-0337.parquet, trades-055554-0337.parquet
+2026-10-24 05:56:29,044 INFO pb.data.recorder: flushed books-055629-0338.parquet
+recording ['103704141773947678931823410030956181918562062788486034785782641603149828893320', '109876868437950584369987384406356259939519193117253465815665152916226511121427', '111061902544814266207267295505639408607400625795891618462682726460921782993748', '29333334019139817447151700116338525061857555894700496774613620253316163641269', '3020104737543288644278147773856429848182011206833533921354511106804747813893', '41374842693766832029210243075825659278207965551383033262007115833813928653011', '55159722761418013044126414276680602270318000841690689684819994448621694923050', '68602827084745741252163785208896698402255839768496861645570686063472050673427', '86563869614880421092753151558844510871194707336319416240973297556731707428543', '89614825808182318517107438603433323788424431273582563248306521028214302552681', '90103249718343334756773580827701144244122903469501608441410963092372041632343', '90156713391473539886841846301134056047924794091759813279648270575337667232062'] to data/recorded
+done: books=1564950 trades=5227 flushes=339 files=593
