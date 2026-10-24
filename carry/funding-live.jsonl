@@ -168,3 +168,5 @@
 {"ann": 0.025084076047227, "asset": "ETH", "interval_hours": 8.0, "interval_ts": 1792857600.0, "mark": null, "product_id": "ETH-USDT-SWAP", "rate": 2.29078320066e-05, "source": "okx", "ts": 1792866370.6238935}
 {"ann": 0.29784, "asset": "BTC", "interval_hours": 1.0, "interval_ts": 1792875600.0, "mark": 80310.0, "product_id": "BIP-20DEC30-CDE", "rate": 3.4e-05, "source": "coinbase", "ts": 1792876587.62058}
 {"ann": 0.67452, "asset": "ETH", "interval_hours": 1.0, "interval_ts": 1792875600.0, "mark": 2336.0, "product_id": "ETP-20DEC30-CDE", "rate": 7.7e-05, "source": "coinbase", "ts": 1792876587.62058}
+{"ann": 0.21024, "asset": "BTC", "interval_hours": 1.0, "interval_ts": 1792882800.0, "mark": 80840.0, "product_id": "BIP-20DEC30-CDE", "rate": 2.4e-05, "source": "coinbase", "ts": 1792885746.9101415}
+{"ann": 0.22776, "asset": "ETH", "interval_hours": 1.0, "interval_ts": 1792882800.0, "mark": 2357.0, "product_id": "ETP-20DEC30-CDE", "rate": 2.6e-05, "source": "coinbase", "ts": 1792885746.9101415}
