@@ -1,38 +1,35 @@
 # Early Favorite v2 - forward test
 
 Rule (frozen): at 2:00 elapsed (13:00 left), else 3:00, buy the leading side if its ask is 0.80-0.95; $100 per round; hold to settlement; taker fee 0.0695*p*(1-p). Paper only.
-Forward test started 2026-10-23T00:00:00Z. Updated 2026-10-24T05:48:54Z.
+Forward test started 2026-10-23T00:00:00Z. Updated 2026-10-24T10:55:57Z.
 
-**Too early to judge: 22 of the ~150 rounds (about a week) needed.**
+**Too early to judge: 25 of the ~150 rounds (about a week) needed.**
 
 | | Forward | Backtest (Oct 6-22) |
 |---|---|---|
-| Rounds | 22 | 272 |
-| Win rate | 77.3% | 89.3% |
-| Break-even win rate at prices paid | 85.5% | - |
-| Average ask | 0.846 | 0.838 |
-| Net at $100/round | $-217.34 | $+1,486 |
-| Per round | -9.88% | +5.46% |
-| Max drawdown | $-298.14 | $-403 |
+| Rounds | 25 | 272 |
+| Win rate | 76.0% | 89.3% |
+| Break-even win rate at prices paid | 85.4% | - |
+| Average ask | 0.844 | 0.838 |
+| Net at $100/round | $-281.29 | $+1,486 |
+| Per round | -11.25% | +5.46% |
+| Max drawdown | $-332.83 | $-403 |
 | Longest losing streak | 2 | 2 |
 | Entry timing | 13:00 / 12:00 left | same |
 
-Rounds where the rule did not trigger: 97. Pending (not settled or not fetched yet): 1.
+Rounds where the rule did not trigger: 114. Pending (not settled or not fetched yet): 1.
 
 ## By day (UTC)
 
 | Day | Net |
 |---|---|
 | 2026-10-23 | $-138.09 |
-| 2026-10-24 | $-79.25 |
+| 2026-10-24 | $-143.20 |
 
 ## Last 20 rounds
 
 | Window (UTC) | Min | Side | Ask | Result | P&L | Running |
 |---|---|---|---|---|---|---|
-| 10-23 01:15 | 2 | Down | 0.85 | LOST | $-101.04 | $-66.10 |
-| 10-23 01:45 | 2 | Up | 0.89 | LOST | $-100.76 | $-166.86 |
-| 10-23 02:30 | 2 | Up | 0.88 | won | $+12.80 | $-154.06 |
 | 10-23 03:15 | 2 | Down | 0.82 | won | $+20.70 | $-133.36 |
 | 10-23 03:45 | 2 | Up | 0.81 | won | $+22.14 | $-111.22 |
 | 10-23 05:00 | 3 | Up | 0.80 | won | $+23.61 | $-87.61 |
@@ -50,3 +47,6 @@ Rounds where the rule did not trigger: 97. Pending (not settled or not fetched y
 | 10-23 23:45 | 3 | Up | 0.88 | won | $+12.80 | $-138.09 |
 | 10-24 01:15 | 2 | Up | 0.81 | won | $+22.14 | $-115.95 |
 | 10-24 04:00 | 3 | Up | 0.80 | LOST | $-101.39 | $-217.34 |
+| 10-24 07:00 | 3 | Up | 0.82 | won | $+20.70 | $-196.64 |
+| 10-24 09:30 | 3 | Up | 0.82 | LOST | $-101.25 | $-297.89 |
+| 10-24 10:30 | 3 | Up | 0.85 | won | $+16.60 | $-281.29 |

@@ -13,17 +13,17 @@
   "hold": "settlement"
  },
  "forward_start": "2026-10-23T00:00:00Z",
- "generated": "2026-10-24T05:48:54Z",
- "rounds_scored": 22,
- "rounds_skipped_rule_not_met": 97,
+ "generated": "2026-10-24T10:55:57Z",
+ "rounds_scored": 25,
+ "rounds_skipped_rule_not_met": 114,
  "rounds_pending": 1,
- "wins": 17,
- "win_rate": 0.7727,
- "avg_ask": 0.8464,
- "breakeven_win_rate": 0.8554,
- "net_usd": -217.34,
- "per_round_pct": -9.88,
- "max_drawdown_usd": -298.14,
+ "wins": 19,
+ "win_rate": 0.76,
+ "avg_ask": 0.8444,
+ "breakeven_win_rate": 0.8535,
+ "net_usd": -281.29,
+ "per_round_pct": -11.25,
+ "max_drawdown_usd": -332.83,
  "longest_losing_streak": 2,
  "days": [
   {
@@ -32,10 +32,10 @@
   },
   {
    "day": "2026-10-24",
-   "net_usd": -79.25
+   "net_usd": -143.2
   }
  ],
- "z_vs_backtest_win_rate": -1.82,
+ "z_vs_backtest_win_rate": -2.15,
  "backtest": {
   "period": "2026-10-06 to 2026-10-22",
   "rounds": 272,
@@ -45,7 +45,7 @@
   "net_usd_per_100": 1486,
   "max_drawdown_usd": -403
  },
- "verdict": "Too early to judge: 22 of the ~150 rounds (about a week) needed.",
+ "verdict": "Too early to judge: 25 of the ~150 rounds (about a week) needed.",
  "pending": [
   {
    "slug": "cpc-btc-updown-15m-2026-10-23-1730z",
