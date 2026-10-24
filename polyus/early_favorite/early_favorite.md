@@ -1,36 +1,35 @@
 # Early Favorite v2 - forward test
 
 Rule (frozen): at 2:00 elapsed (13:00 left), else 3:00, buy the leading side if its ask is 0.80-0.95; $100 per round; hold to settlement; taker fee 0.0695*p*(1-p). Paper only.
-Forward test started 2026-10-23T00:00:00Z. Updated 2026-10-24T18:09:22Z.
+Forward test started 2026-10-23T00:00:00Z. Updated 2026-10-24T20:48:19Z.
 
-**Too early to judge: 28 of the ~150 rounds (about a week) needed.**
+**Too early to judge: 29 of the ~150 rounds (about a week) needed.**
 
 | | Forward | Backtest (Oct 6-22) |
 |---|---|---|
-| Rounds | 28 | 272 |
-| Win rate | 78.6% | 89.3% |
-| Break-even win rate at prices paid | 85.6% | - |
-| Average ask | 0.847 | 0.838 |
-| Net at $100/round | $-238.24 | $+1,486 |
-| Per round | -8.51% | +5.46% |
+| Rounds | 29 | 272 |
+| Win rate | 79.3% | 89.3% |
+| Break-even win rate at prices paid | 85.7% | - |
+| Average ask | 0.848 | 0.838 |
+| Net at $100/round | $-222.93 | $+1,486 |
+| Per round | -7.69% | +5.46% |
 | Max drawdown | $-332.83 | $-403 |
 | Longest losing streak | 2 | 2 |
 | Entry timing | 13:00 / 12:00 left | same |
 
-Rounds where the rule did not trigger: 140. Pending (not settled or not fetched yet): 1.
+Rounds where the rule did not trigger: 150. Pending (not settled or not fetched yet): 1.
 
 ## By day (UTC)
 
 | Day | Net |
 |---|---|
 | 2026-10-23 | $-138.09 |
-| 2026-10-24 | $-100.15 |
+| 2026-10-24 | $-84.84 |
 
 ## Last 20 rounds
 
 | Window (UTC) | Min | Side | Ask | Result | P&L | Running |
 |---|---|---|---|---|---|---|
-| 10-23 05:30 | 3 | Up | 0.87 | won | $+14.04 | $-73.57 |
 | 10-23 06:00 | 2 | Down | 0.85 | LOST | $-101.04 | $-174.61 |
 | 10-23 07:00 | 3 | Down | 0.88 | won | $+12.80 | $-161.81 |
 | 10-23 07:30 | 2 | Up | 0.80 | LOST | $-101.39 | $-263.20 |
@@ -50,3 +49,4 @@ Rounds where the rule did not trigger: 140. Pending (not settled or not fetched 
 | 10-24 12:15 | 3 | Up | 0.82 | won | $+20.70 | $-260.59 |
 | 10-24 13:30 | 2 | Down | 0.86 | won | $+15.31 | $-245.28 |
 | 10-24 14:15 | 2 | Down | 0.93 | won | $+7.04 | $-238.24 |
+| 10-24 20:00 | 2 | Up | 0.86 | won | $+15.31 | $-222.93 |
