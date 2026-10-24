@@ -1,0 +1,107 @@
+{
+  "net_pnl": 28.9,
+  "gross_pnl": 28.9,
+  "fees": 0.0,
+  "fills": 7,
+  "maker_fills": 7,
+  "taker_fills": 0,
+  "contracts_traded": 40.0,
+  "max_drawdown": 2.92,
+  "max_capital_at_risk": 4.5,
+  "markets_traded": 18,
+  "market_win_rate": 0.167,
+  "sharpe_like": 1.74,
+  "net_pnl_on_max_capital": 6.4222,
+  "maker_pct": 100.0,
+  "reality": {
+    "cross_assumed_fill_frac": 0.0,
+    "cross_assumed_fills": 0,
+    "maker_frac": 1.0,
+    "max_fill_to_touch_depth": 1.0,
+    "top3_market_pnl_frac": 1.0,
+    "pnl_per_contract": 0.7225
+  },
+  "run_id": "mm_crypto_twap_kxbtc15m-20261024T1157",
+  "started_at": 1792843049.7219346,
+  "updated_at": 1792863050.0547614,
+  "uptime_secs": 20000.3,
+  "open_orders": 0,
+  "positions": {
+    "KXBTC15M-26OCT240930-30": {
+      "contracts": 0.0,
+      "avg_price": 0.0,
+      "realized": 5.6,
+      "fees": 0.0
+    },
+    "KXBTC15M-26OCT241015-15": {
+      "contracts": 0.0,
+      "avg_price": 0.0,
+      "realized": 15.5,
+      "fees": 0.0
+    },
+    "KXBTC15M-26OCT241045-45": {
+      "contracts": 0.0,
+      "avg_price": 0.0,
+      "realized": 7.8,
+      "fees": 0.0
+    }
+  },
+  "markets": [
+    "KXBTC15M-26OCT240800-00",
+    "KXBTC15M-26OCT240815-15",
+    "KXBTC15M-26OCT240830-30",
+    "KXBTC15M-26OCT240845-45",
+    "KXBTC15M-26OCT240900-00",
+    "KXBTC15M-26OCT240915-15",
+    "KXBTC15M-26OCT240930-30",
+    "KXBTC15M-26OCT240945-45",
+    "KXBTC15M-26OCT241000-00",
+    "KXBTC15M-26OCT241015-15",
+    "KXBTC15M-26OCT241030-30",
+    "KXBTC15M-26OCT241045-45",
+    "KXBTC15M-26OCT241100-00",
+    "KXBTC15M-26OCT241115-15",
+    "KXBTC15M-26OCT241130-30",
+    "KXBTC15M-26OCT241145-45",
+    "KXBTC15M-26OCT241200-00",
+    "KXBTC15M-26OCT241215-15"
+  ],
+  "active_markets": [],
+  "rolls": 332,
+  "last_roll": {
+    "ts": 1792863008.7738552,
+    "selected": 0,
+    "added": [],
+    "dropped": [],
+    "error": ""
+  },
+  "last_event_age": {
+    "KXBTC15M-26OCT240830-30": 18019.9
+  },
+  "risk": {
+    "halted": false,
+    "halt_reason": "",
+    "halted_at": 0.0,
+    "stale": false,
+    "kill_file": "data/KILL",
+    "kill_file_present": false,
+    "pnl_today": 28.9,
+    "daily_loss_limit": 50.0,
+    "capital_in_use": 0.0,
+    "capital_in_use_by_market": {},
+    "max_capital_total": 2000.0,
+    "max_capital_per_market": 500.0,
+    "orders_last_min": 0,
+    "max_orders_per_min": 120,
+    "accepted": 41,
+    "rejected": 0,
+    "reject_reasons": {},
+    "cancel_all_count": 0,
+    "last_book_age": {},
+    "stale_secs": 60.0
+  },
+  "strategies": [
+    "mm_crypto_twap"
+  ],
+  "venue": "kalshi"
+}

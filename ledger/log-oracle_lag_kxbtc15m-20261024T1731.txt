@@ -1,0 +1,4 @@
+2026-10-24 17:31:15,019 INFO httpx: HTTP Request: GET https://external-api.kalshi.com/trade-api/v2/markets?series_ticker=KXBTC15M&status=open&limit=200 "HTTP/1.1 200 OK"
+no markets
+[oracle_lag_kxbtc15m] /opt/hostedtoolcache/Python/3.13.16/x64/bin/python /home/runner/work/predictionbots/predictionbots/scripts/paper.py --venue kalshi --strategy oracle_lag --run-id oracle_lag_kxbtc15m-20261024T1731 --params configs/oracle_lag.yaml --kalshi-series KXBTC15M --top 2 --signals coinbase --duration 20000.0 --max-position 400 --daily-loss-limit 300 --max-capital 2000 --max-capital-per-market 400 --roll-secs 60
+[oracle_lag_kxbtc15m] skipped: selector found no markets
