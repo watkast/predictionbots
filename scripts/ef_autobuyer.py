@@ -42,6 +42,14 @@ RULE = {
 }
 ROUND_S = 900
 BOOK_PATH = "/v1/markets/{slug}/book"
+# The gateway answers 404 "market with slug ... not found" for a market that exists (and is trading) at
+# 2:00 and often still at 3:00 elapsed; it clears later in the round. Oct 22-24: 45% of 13:00-left reads
+# and 23% of rounds (both checks) were lost that way. So each check keeps re-reading the book for up to
+# RETRY_WINDOW_S after its target second. This is read reliability, not a rule change: the entry still
+# happens at the first qualifying read after the 13:00 / 12:00-left target, and the ledger records the
+# actual elapsed time ('t') and the number of tries.
+RETRY_WINDOW_S = 45
+RETRY_EVERY_S = 5
 
 
 # ---------- pure helpers (unit-tested) ----------
@@ -138,6 +146,21 @@ def slug_for(ws: int) -> str:
     return f"cpc-btc-updown-15m-{d:%Y-%m-%d-%H%M}z"
 
 
+def read_book(get, slug: str, until: float, every: float = RETRY_EVERY_S, clock=time.time, sleep=time.sleep):
+    """Read the book, re-trying every `every` s while it fails, until a read would end after `until`.
+
+    Returns (json_or_None, tries, time_of_last_read, latency_of_last_read_s)."""
+    tries = 0
+    while True:
+        tries += 1
+        t0 = clock()
+        j = get(BOOK_PATH.format(slug=slug))
+        latency = clock() - t0
+        if j is not None or clock() + every >= until:
+            return j, tries, t0, latency
+        sleep(every)
+
+
 # ---------- ledger ----------
 
 def load(out: Path) -> dict:
@@ -191,15 +214,14 @@ def run(out: Path, minutes: float):
                 continue
             while time.time() < t_chk:
                 time.sleep(min(0.2, t_chk - time.time()) if t_chk > time.time() else 0)
-            t0 = time.time()
-            j = get(BOOK_PATH.format(slug=slug))
+            j, tries, t_read, latency = read_book(get, slug, t_chk + RETRY_WINDOW_S)
             book = parse_book(j) if j else None
             if book and not first_book_logged:
                 (out / "sample_book.json").parent.mkdir(parents=True, exist_ok=True)
                 (out / "sample_book.json").write_text(json.dumps(j)[:20000])
                 first_book_logged = True
-            c = {"at": chk, "t": round(t0 - ws, 2), "latency_s": round(time.time() - t0, 3),
-                 "ok": bool(book)}
+            c = {"at": chk, "t": round(t_read - ws, 2), "latency_s": round(latency, 3),
+                 "ok": bool(book), "tries": tries}
             if book:
                 fav = favorite(book)
                 c.update(state=book["state"], fav=fav and fav[0], fav_ask=fav and fav[1],
@@ -317,7 +339,15 @@ def report(out: Path, history: Path | None):
     ok = [c for r in observed for c in r["checks"]]
     if ok:
         lines += ["", f"Book reads: {len(ok)}, failed: {sum(not c['ok'] for c in ok)}, "
+                      f"re-tried: {sum(c.get('tries', 1) > 1 for c in ok)}, "
                       f"median latency {sorted(c['latency_s'] for c in ok)[len(ok) // 2]:.2f}s."]
+        # how late after the 13:00 / 12:00-left target the entries were actually read
+        lateness = [c["t"] - c["at"] for r in entries for c in r["checks"] if c["at"] == r["entry"]["check"]]
+        if lateness:
+            late = [x for x in lateness if x > 20]
+            summary["entries_read_late"] = len(late)
+            lines.append(f"Entries read more than 20 s after their target second: {len(late)} of {len(lateness)}"
+                         + (f" (avg {sum(late) / len(late):.0f} s late)." if late else "."))
     out.mkdir(parents=True, exist_ok=True)
     (out / "README.md").write_text("\n".join(lines) + "\n")
     (out / "summary.json").write_text(json.dumps(summary, indent=1))

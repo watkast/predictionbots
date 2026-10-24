@@ -48,3 +48,37 @@ def test_pnl_includes_fee():
     loss = efa.pnl(100, 0.85, False, 0.0695)
     fee = 0.0695 * 0.85 * 0.15 * 100
     assert abs(win - (15 - fee)) < 1e-3 and abs(loss - (-85 - fee)) < 1e-3
+
+
+def test_read_book_retries_until_window_closes():
+    # fake clock: each call advances 1 s; a fake gateway that 404s (None) for the first 3 reads
+    t = {"now": 1000.0}
+    clock = lambda: t["now"]
+
+    def tick(s):
+        t["now"] += s
+
+    calls = []
+
+    def get(path):
+        calls.append(path)
+        tick(0.1)
+        return {"marketData": {}} if len(calls) > 3 else None
+
+    j, tries, t_read, lat = efa.read_book(get, "slug-a", until=1000.0 + 45, every=5, clock=clock, sleep=tick)
+    assert j is not None and tries == 4 and 1015.0 <= t_read <= 1016.0 and 0 < lat < 0.2
+    assert calls[0] == efa.BOOK_PATH.format(slug="slug-a")
+
+
+def test_read_book_gives_up_at_window_end():
+    t = {"now": 2000.0}
+    clock = lambda: t["now"]
+    tick = lambda s: t.__setitem__("now", t["now"] + s)
+    n = {"c": 0}
+
+    def get(path):
+        n["c"] += 1
+        return None
+
+    j, tries, t_read, _ = efa.read_book(get, "slug-b", until=2000.0 + 45, every=5, clock=clock, sleep=tick)
+    assert j is None and tries == n["c"] == 9 and t_read == 2040.0
