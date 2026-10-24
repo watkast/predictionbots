@@ -59,8 +59,43 @@ def iso(ts: float) -> str:
     return datetime.fromtimestamp(ts, timezone.utc).strftime("%Y-%m-%dT%H:%M:%SZ")
 
 
+def pull_by_minute(root: Path, fast: int = 9, slow: int = 21, atr_len: int = 10, mult: float = 2.0) -> dict[int, int]:
+    """Chart 'pull' per BRTI 1-minute candle, keyed by the candle's start: +1/-1 each for close vs EMA(slow), EMA(fast)
+    vs EMA(slow) and the Supertrend side, so -3..+3. Mirrors research/market_pull.pine. A PARALLEL column for the
+    ledger, not part of the frozen rule. Returns {} when brti_1m.json is not there."""
+    f = root / "brti_1m.json"
+    if not f.exists():
+        return {}
+    candles = {int(c["timestamp"]): c for c in json.loads(f.read_text())}
+    out: dict[int, int] = {}
+    kf, ks, ka = 2.0 / (fast + 1), 2.0 / (slow + 1), 1.0 / atr_len
+    ef = es = atr = prev_close = None
+    pu = pl = pst = None
+    for ts in sorted(candles):
+        c = candles[ts]
+        h, lo, cl = float(c["high"]), float(c["low"]), float(c["close"])
+        ef = cl if ef is None else ef + kf * (cl - ef)
+        es = cl if es is None else es + ks * (cl - es)
+        tr = h - lo if prev_close is None else max(h - lo, abs(h - prev_close), abs(lo - prev_close))
+        atr = tr if atr is None else atr + ka * (tr - atr)
+        up_b, lo_b = (h + lo) / 2 + mult * atr, (h + lo) / 2 - mult * atr
+        if pu is None:
+            pu, pl, pst, d = up_b, lo_b, up_b, 1
+        else:
+            lb = lo_b if (lo_b > pl or prev_close < pl) else pl
+            ub = up_b if (up_b < pu or prev_close > pu) else pu
+            d = (-1 if cl > ub else 1) if pst == pu else (1 if cl < lb else -1)   # -1 = up trend, like ta.supertrend
+            pu, pl, pst = ub, lb, (lb if d == -1 else ub)
+        p1 = (cl > es) - (cl < es)
+        p2 = (ef > es) - (ef < es)
+        out[ts] = int(p1 + p2 - d)
+        prev_close = cl
+    return out
+
+
 def score(root: Path, start_ts: float):
     markets = {m.get("slug"): m for m in json.loads((root / "markets.json").read_text())}
+    pulls = pull_by_minute(root)
     ledger, pending, skipped = [], [], 0
     for f in sorted(glob.glob(str(root / "price_history" / "*.json"))):
         d = json.loads(Path(f).read_text())
@@ -98,9 +133,12 @@ def score(root: Path, start_ts: float):
         n = RULE["stake_usd"] / entry["ask"]
         fee = RULE["fee_coef"] * entry["ask"] * (1 - entry["ask"]) * n
         pnl = (n if won else 0.0) - RULE["stake_usd"] - fee
+        # chart pull at the check, signed against the favorite: +3 = all three trend parts with it, -3 = all against
+        p = pulls.get(ws + 60 * (entry["minute"] - 1))      # the 1-minute candle that closes at the check
+        pull = None if p is None else p * (1 if entry["side"] == "Up" else -1)
         ledger.append(dict(slug=d["slug"], window_start=iso(ws), minute=entry["minute"], side=entry["side"],
                            ask=round(entry["ask"], 3), price_to_beat=ptb, settlement=sp,
-                           won=int(won), contracts=round(n, 2), fee=round(fee, 2), pnl=round(pnl, 2)))
+                           won=int(won), contracts=round(n, 2), fee=round(fee, 2), pnl=round(pnl, 2), pull=pull))
     ledger.sort(key=lambda r: r["window_start"])
     return ledger, pending, skipped
 
@@ -126,6 +164,14 @@ def summarize(ledger, pending, skipped, start_ts):
     z = ((wins / n) - p0) / math.sqrt(p0 * (1 - p0) / n) if n else None
     # break-even win rate at the average ask, after fees
     be = (avg_ask + RULE["fee_coef"] * avg_ask * (1 - avg_ask)) if avg_ask else None
+    # parallel column: how the rounds went by chart pull at the check (see pull_by_minute)
+    pull_rows = []
+    for label, pick in (("with the favorite 3/3", lambda p: p >= 3), ("with the favorite 1/3", lambda p: 0 < p < 3),
+                        ("against the favorite", lambda p: p < 0)):
+        g = [r for r in ledger if r.get("pull") is not None and pick(r["pull"])]
+        pull_rows.append({"pull": label, "rounds": len(g),
+                          "win_rate": round(sum(r["won"] for r in g) / len(g), 4) if g else None,
+                          "net_usd": round(sum(r["pnl"] for r in g), 2)})
     return {
         "rule": RULE, "forward_start": iso(start_ts), "generated": iso(datetime.now(timezone.utc).timestamp()),
         "rounds_scored": n, "rounds_skipped_rule_not_met": skipped, "rounds_pending": len(pending),
@@ -137,6 +183,7 @@ def summarize(ledger, pending, skipped, start_ts):
         "days": [{"day": k, "net_usd": round(v, 2)} for k, v in sorted(by_day.items())],
         "z_vs_backtest_win_rate": round(z, 2) if z is not None else None,
         "backtest": BACKTEST,
+        "pull": pull_rows,
     }
 
 
@@ -153,7 +200,7 @@ def verdict(s):
 
 def write(out: Path, ledger, pending, s):
     out.mkdir(parents=True, exist_ok=True)
-    cols = ["window_start", "slug", "minute", "side", "ask", "price_to_beat", "settlement", "won", "contracts", "fee", "pnl", "cum_pnl"]
+    cols = ["window_start", "slug", "minute", "side", "ask", "price_to_beat", "settlement", "won", "contracts", "fee", "pnl", "cum_pnl", "pull"]
     with open(out / "early_favorite_ledger.csv", "w", newline="") as fh:
         w = csv.DictWriter(fh, fieldnames=cols)
         w.writeheader()
@@ -193,11 +240,20 @@ def write(out: Path, ledger, pending, s):
         "|---|---|",
     ] + [f"| {d['day']} | ${d['net_usd']:+,.2f} |" for d in s["days"]] + [
         "",
+        "## Chart pull at the check (parallel column - not part of the rule)",
+        "",
+        "Pull = EMA 9/21 and Supertrend on BRTI 1-minute candles, as drawn by research/market_pull.pine, read against the favorite. "
+        "Oct 16-24 (143 rounds): 3/3 with the favorite won 92%, 1/3 won 84%, against won 78%. Small sample; this column is the forward test of that.",
+        "",
+        "| Pull at the check | Rounds | Win rate | Net |",
+        "|---|---|---|---|",
+    ] + [f"| {p['pull']} | {p['rounds']} | {pct(p['win_rate'])} | ${p['net_usd']:+,.2f} |" for p in s.get("pull", [])] + [
+        "",
         "## Last 20 rounds",
         "",
-        "| Window (UTC) | Min | Side | Ask | Result | P&L | Running |",
-        "|---|---|---|---|---|---|---|",
-    ] + [f"| {r['window_start'][5:16].replace('T', ' ')} | {r['minute']} | {r['side']} | {r['ask']:.2f} | {'won' if r['won'] else 'LOST'} | ${r['pnl']:+.2f} | ${r['cum_pnl']:+.2f} |"
+        "| Window (UTC) | Min | Side | Ask | Pull | Result | P&L | Running |",
+        "|---|---|---|---|---|---|---|---|",
+    ] + [f"| {r['window_start'][5:16].replace('T', ' ')} | {r['minute']} | {r['side']} | {r['ask']:.2f} | {'-' if r.get('pull') is None else f"{r['pull']:+d}"} | {'won' if r['won'] else 'LOST'} | ${r['pnl']:+.2f} | ${r['cum_pnl']:+.2f} |"
          for r in ledger[-20:]]
     (out / "early_favorite.md").write_text("\n".join(lines) + "\n")
     return s

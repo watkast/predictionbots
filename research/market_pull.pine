@@ -1,0 +1,82 @@
+//@version=5
+// Market Pull - BTC on a 1-minute chart. Shows which way the market is pulling and how hard.
+// It does not place or veto Early Favorite trades: the frozen rule and the Ask still decide. This is context for the eyes.
+// Layers: round anchor (the same price-to-beat stand-in the EF Signal uses) with Up/Down shading, EMA 9/21 ribbon,
+// Supertrend line, session VWAP, a background tint by pull score, and one PULL cell.
+// Pull score (-3..+3): +1/-1 each for close vs slow EMA, fast vs slow EMA, Supertrend side. Read it against the favorite.
+// Data, Oct 16-24 2026 (143 Early Favorite rounds, BRTI 1-minute candles): pull with the favorite at the check -> 87.5% won
+// (92% when all three parts agreed), pull against the favorite -> 78%. Small sample: it is being scored forward in the
+// tracker as a parallel column, not applied as a rule.
+indicator("Market Pull", shorttitle="Pull", overlay=true)
+
+// ===== Inputs =====
+grpL = "Layers"
+showRound  = input.bool(true, "Round anchor line and Up/Down shading", group=grpL)
+showRibbon = input.bool(true, "EMA ribbon (fast/slow)", group=grpL)
+showST     = input.bool(true, "Supertrend line", group=grpL)
+showVwap   = input.bool(true, "Session VWAP", group=grpL)
+showBg     = input.bool(true, "Background tint by pull score", group=grpL)
+
+grpP = "Pull"
+fastLen = input.int(9, "Fast EMA", minval=2, group=grpP)
+slowLen = input.int(21, "Slow EMA", minval=3, group=grpP)
+stAtr   = input.int(10, "Supertrend ATR length", minval=1, group=grpP)
+stMult  = input.float(2.0, "Supertrend factor", minval=0.5, step=0.25, group=grpP)
+tgtAdj  = input.float(0.0, "Anchor offset ($) - use the same value as the EF Signal target offset", step=0.5, group=grpP)
+
+grpU = "Readout"
+cellPos  = input.string("Bottom right", "PULL cell position", options=["Bottom right", "Bottom left", "Bottom center", "Top right", "Top left", "Top center", "Middle right", "Middle left"], group=grpU)
+cellSize = input.string("Large", "PULL cell text size", options=["Small", "Normal", "Large", "Huge"], group=grpU)
+
+// ===== Round anchor (rounds start on the quarter hour, UTC; anchor = mid of the minute before, like the EF Signal) =====
+roundStart = math.floor(time / 900000.0) * 900000
+isNewRound = ta.change(roundStart) != 0
+var float anchorRaw = na
+if isNewRound
+    anchorRaw := (high[1] + low[1]) / 2
+anchor = anchorRaw + tgtAdj
+lead = open - anchor
+side = lead >= 0 ? 1 : -1
+sideTxt = side > 0 ? "UP" : "DOWN"
+
+// ===== Trend parts =====
+emaF = ta.ema(close, fastLen)
+emaS = ta.ema(close, slowLen)
+[stLine, stDir] = ta.supertrend(stMult, stAtr)
+stBull = stDir < 0
+vwapD = ta.vwap(hlc3, timeframe.change("1D"))
+
+p1 = close > emaS ? 1 : close < emaS ? -1 : 0
+p2 = emaF > emaS ? 1 : emaF < emaS ? -1 : 0
+p3 = stBull ? 1 : -1
+pull = p1 + p2 + p3
+strong = math.abs(pull) >= 3
+agree = na(anchor) ? 0 : side * pull
+
+// ===== Chart layers =====
+pA = plot(showRound ? anchor : na, "Round anchor", color=color.new(color.white, 30), linewidth=1, style=plot.style_stepline)
+pC = plot(showRound ? close : na, "Price (for the shading)", color=color.new(color.white, 100), display=display.none)
+fill(pA, pC, color=showRound and not na(anchor) ? (close >= anchor ? color.new(color.green, 80) : color.new(color.red, 80)) : na, title="Up/Down vs anchor")
+
+pF = plot(showRibbon ? emaF : na, "Fast EMA", color=color.new(color.aqua, 40), linewidth=1)
+pS = plot(showRibbon ? emaS : na, "Slow EMA", color=color.new(color.orange, 40), linewidth=1)
+fill(pF, pS, color=emaF > emaS ? color.new(color.green, 70) : emaF < emaS ? color.new(color.red, 70) : color.new(color.gray, 80), title="Ribbon")
+
+plot(showST and stBull ? stLine : na, "Supertrend up", color=color.green, linewidth=2, style=plot.style_linebr)
+plot(showST and not stBull ? stLine : na, "Supertrend down", color=color.red, linewidth=2, style=plot.style_linebr)
+plot(showVwap ? vwapD : na, "Session VWAP", color=color.new(color.purple, 20), linewidth=1)
+
+bgcolor(showBg and pull != 0 ? color.new(pull > 0 ? color.green : color.red, strong ? 82 : 92) : na, title="Pull tint")
+
+// ===== PULL cell =====
+posOf(s) =>
+    s == "Top center" ? position.top_center : s == "Top left" ? position.top_left : s == "Top right" ? position.top_right : s == "Bottom center" ? position.bottom_center : s == "Bottom left" ? position.bottom_left : s == "Bottom right" ? position.bottom_right : s == "Middle left" ? position.middle_left : position.middle_right
+txtSize = cellSize == "Small" ? size.small : cellSize == "Large" ? size.large : cellSize == "Huge" ? size.huge : size.normal
+dirTxt  = pull > 0 ? "UP" : pull < 0 ? "DOWN" : "FLAT"
+strTxt  = pull == 0 ? "" : " " + str.tostring(math.abs(pull)) + "/3"
+favTxt  = agree > 0 ? " - with the favorite (" + sideTxt + ")" : agree < 0 ? " - AGAINST the favorite (" + sideTxt + ")" : ""
+cellTxt = "PULL: " + dirTxt + strTxt + favTxt
+cellCol = pull >= 3 ? color.new(color.green, 15) : pull > 0 ? color.new(color.green, 55) : pull <= -3 ? color.new(color.red, 15) : pull < 0 ? color.new(color.red, 55) : color.new(color.gray, 30)
+if barstate.islast
+    t = table.new(posOf(cellPos), 1, 1, bgcolor=color.new(color.black, 10), border_width=1, border_color=color.new(color.white, 75))
+    table.cell(t, 0, 0, text=cellTxt, text_color=color.white, text_size=txtSize, bgcolor=cellCol)

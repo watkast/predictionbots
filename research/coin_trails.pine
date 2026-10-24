@@ -1,0 +1,60 @@
+//@version=5
+// Coin Trails - the four Polymarket US 15-minute coins (BTC, ETH, SOL, XRP) on one pane.
+// Each line is that coin's move since ITS current round anchor (mid of the minute before the quarter-hour, the same
+// price-to-beat stand-in the EF Signal uses), in percent. Above zero = that coin's Up side is winning right now.
+// Rounds restart on every quarter hour (UTC), so the trails re-zero together; a faint bar marks each round start.
+// The cell lists which coins are Up and which are Down. Context only: it places and vetoes nothing.
+// Chart timeframe: 1 minute. Any timeframe works, but 1 minute matches the rounds.
+indicator("Coin Trails", shorttitle="Trails", overlay=false, format=format.percent, precision=2)
+
+grpS = "Coins"
+symB = input.symbol("COINBASE:BTCUSD", "BTC", group=grpS)
+symE = input.symbol("COINBASE:ETHUSD", "ETH", group=grpS)
+symS = input.symbol("COINBASE:SOLUSD", "SOL", group=grpS)
+symX = input.symbol("COINBASE:XRPUSD", "XRP", group=grpS)
+
+grpU = "Readout"
+cellPos  = input.string("Top left", "Cell position", options=["Top left", "Top right", "Top center", "Bottom left", "Bottom right", "Bottom center", "Middle left", "Middle right"], group=grpU)
+cellSize = input.string("Normal", "Cell text size", options=["Small", "Normal", "Large", "Huge"], group=grpU)
+markRound = input.bool(true, "Mark round starts", group=grpU)
+
+// ===== Move since the round anchor, evaluated inside each coin's own series =====
+trail() =>
+    rs = math.floor(time / 900000.0) * 900000
+    var float a = na
+    if ta.change(rs) != 0
+        a := (high[1] + low[1]) / 2
+    na(a) ? na : (close / a - 1.0) * 100.0
+
+tB = request.security(symB, timeframe.period, trail())
+tE = request.security(symE, timeframe.period, trail())
+tS = request.security(symS, timeframe.period, trail())
+tX = request.security(symX, timeframe.period, trail())
+
+// ===== Pane =====
+roundStart = math.floor(time / 900000.0) * 900000
+isNewRound = ta.change(roundStart) != 0
+bgcolor(markRound and isNewRound ? color.new(color.gray, 60) : na, title="Round start")
+hline(0, "Round anchor", color=color.new(color.white, 40), linestyle=hline.style_solid)
+
+plot(tB, "BTC", color=color.orange, linewidth=2)
+plot(tE, "ETH", color=color.new(color.blue, 0), linewidth=1)
+plot(tS, "SOL", color=color.new(color.purple, 0), linewidth=1)
+plot(tX, "XRP", color=color.new(color.teal, 0), linewidth=1)
+
+// ===== Cell: who is Up, who is Down =====
+posOf(s) =>
+    s == "Top center" ? position.top_center : s == "Top left" ? position.top_left : s == "Top right" ? position.top_right : s == "Bottom center" ? position.bottom_center : s == "Bottom left" ? position.bottom_left : s == "Bottom right" ? position.bottom_right : s == "Middle left" ? position.middle_left : position.middle_right
+txtSize = cellSize == "Small" ? size.small : cellSize == "Large" ? size.large : cellSize == "Huge" ? size.huge : size.normal
+tag(nm, v) =>
+    na(v) ? "" : nm + " " + (v >= 0 ? "+" : "") + str.tostring(v, "#.##") + "%"
+upList = (not na(tB) and tB >= 0 ? tag("BTC", tB) + "  " : "") + (not na(tE) and tE >= 0 ? tag("ETH", tE) + "  " : "") + (not na(tS) and tS >= 0 ? tag("SOL", tS) + "  " : "") + (not na(tX) and tX >= 0 ? tag("XRP", tX) + "  " : "")
+dnList = (not na(tB) and tB < 0 ? tag("BTC", tB) + "  " : "") + (not na(tE) and tE < 0 ? tag("ETH", tE) + "  " : "") + (not na(tS) and tS < 0 ? tag("SOL", tS) + "  " : "") + (not na(tX) and tX < 0 ? tag("XRP", tX) + "  " : "")
+nUp = (not na(tB) and tB >= 0 ? 1 : 0) + (not na(tE) and tE >= 0 ? 1 : 0) + (not na(tS) and tS >= 0 ? 1 : 0) + (not na(tX) and tX >= 0 ? 1 : 0)
+nDn = (not na(tB) and tB < 0 ? 1 : 0) + (not na(tE) and tE < 0 ? 1 : 0) + (not na(tS) and tS < 0 ? 1 : 0) + (not na(tX) and tX < 0 ? 1 : 0)
+headCol = nUp == 4 ? color.new(color.green, 15) : nDn == 4 ? color.new(color.red, 15) : color.new(color.gray, 30)
+if barstate.islast
+    t = table.new(posOf(cellPos), 1, 3, bgcolor=color.new(color.black, 10), border_width=1, border_color=color.new(color.white, 75))
+    table.cell(t, 0, 0, text="Since the round anchor: " + str.tostring(nUp) + " up, " + str.tostring(nDn) + " down", text_color=color.white, text_size=txtSize, bgcolor=headCol)
+    table.cell(t, 0, 1, text=upList == "" ? "UP: none" : "UP: " + upList, text_color=color.new(color.green, 0), text_size=txtSize, text_halign=text.align_left)
+    table.cell(t, 0, 2, text=dnList == "" ? "DOWN: none" : "DOWN: " + dnList, text_color=color.new(color.red, 0), text_size=txtSize, text_halign=text.align_left)

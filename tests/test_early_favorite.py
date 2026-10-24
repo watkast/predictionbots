@@ -34,3 +34,23 @@ def test_rule(tmp_path):
     assert ledger[2]["pnl"] < -100
     s = summarize(ledger, pending, skipped, WS)
     assert s["rounds_scored"] == 3 and s["wins"] == 2 and s["longest_losing_streak"] == 1
+
+
+def test_pull_column(tmp_path):
+    from scripts.early_favorite_tracker import pull_by_minute
+    # 120 minutes of steadily rising candles -> every trend part says up -> +3 once the averages have warmed up
+    cs = [{"timestamp": WS - 7200 + 60 * i, "open": 100 + i, "high": 100.5 + i, "low": 99.5 + i, "close": 100.2 + i} for i in range(120)]
+    (tmp_path / "brti_1m.json").write_text(json.dumps(cs))
+    pulls = pull_by_minute(tmp_path)
+    assert pulls[WS - 60] == 3 and pulls[WS - 7200 + 60 * 119] == 3
+    assert pull_by_minute(tmp_path / "nowhere") == {}
+    # a round at WS whose check at minute 2 reads the candle starting at WS+60: Down favorite against an up pull -> -3
+    cs += [{"timestamp": WS + 60 * i, "open": 220 + i, "high": 220.5 + i, "low": 219.5 + i, "close": 220.2 + i} for i in range(5)]
+    (tmp_path / "brti_1m.json").write_text(json.dumps(cs))
+    (tmp_path / "price_history").mkdir()
+    mk = [_round(tmp_path, "a", WS, {2: (0.15, 0.86)}, 100, 99)]
+    (tmp_path / "markets.json").write_text(json.dumps(mk))
+    ledger, pending, skipped = score(tmp_path, WS)
+    assert ledger[0]["side"] == "Down" and ledger[0]["pull"] == -3 and ledger[0]["won"] == 1
+    s = summarize(ledger, pending, skipped, WS)
+    assert [p["rounds"] for p in s["pull"]] == [0, 0, 1]
