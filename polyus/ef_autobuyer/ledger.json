@@ -6334,22 +6334,63 @@
 "shares": 53.7634,
 "spent": 50.0,
 "vwap": 0.93,
-"fill_frac": 1.0
+"fill_frac": 1.0,
+"pnl": 3.5202
 },
 "100": {
 "shares": 107.5269,
 "spent": 100.0,
 "vwap": 0.93,
-"fill_frac": 1.0
+"fill_frac": 1.0,
+"pnl": 7.0404
 },
 "250": {
 "shares": 268.8172,
 "spent": 250.0,
 "vwap": 0.93,
-"fill_frac": 1.0
+"fill_frac": 1.0,
+"pnl": 17.601
 }
 },
 "check": 120
+},
+"settled": "2026-10-24T14:33:00Z",
+"price_to_beat": 80483.88,
+"settlement": 80146.37,
+"won": true,
+"fee_coef": 0.0695
+},
+"cpc-btc-updown-15m-2026-10-24-1430z": {
+"slug": "cpc-btc-updown-15m-2026-10-24-1430z",
+"window_start": 1792852200,
+"checks": [
+{
+"at": 120,
+"t": 120.0,
+"latency_s": 0.046,
+"ok": true,
+"state": "MARKET_STATE_OPEN",
+"fav": "Up",
+"fav_ask": 0.75,
+"long_px": 0.74,
+"short_px": 0.26,
+"up_bid": 0.74,
+"up_ask": 0.75
+},
+{
+"at": 180,
+"t": 180.0,
+"latency_s": 0.029,
+"ok": true,
+"state": "MARKET_STATE_OPEN",
+"fav": "Up",
+"fav_ask": 0.74,
+"long_px": 0.73,
+"short_px": 0.27,
+"up_bid": 0.73,
+"up_ask": 0.74
 }
+],
+"entry": null
 }
 }
