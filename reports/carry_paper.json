@@ -1,65 +1,65 @@
 {
  "entries": {
   "binance-ref-BTC": {
-   "ticks": 43,
+   "ticks": 44,
    "enters": 0,
    "exits": 0,
    "funding": 0,
    "costs": 0,
    "net": 0,
    "first_ts": 1792220119.6114893,
-   "last_ts": 1792866370.6238935,
+   "last_ts": 1792876587.62058,
    "in_pos_frac": 0.0,
    "last_signal": null
   },
   "coinbase-BTC": {
-   "ticks": 43,
+   "ticks": 44,
    "enters": 1,
    "exits": 0,
-   "funding": 0.19,
+   "funding": 0.224,
    "costs": 8.281214134702507,
-   "net": -8.091214134702508,
+   "net": -8.057214134702507,
    "first_ts": 1792220119.6114893,
-   "last_ts": 1792866370.6238935,
-   "in_pos_frac": 0.4418604651162791,
-   "last_signal": 0.08176
+   "last_ts": 1792876587.62058,
+   "in_pos_frac": 0.45454545454545453,
+   "last_signal": 0.09234500000000001
   },
   "coinbase-ETH": {
-   "ticks": 43,
+   "ticks": 44,
    "enters": 1,
    "exits": 0,
-   "funding": 0.054,
+   "funding": 0.131,
    "costs": 8.728272251308901,
-   "net": -8.674272251308901,
+   "net": -8.597272251308901,
    "first_ts": 1792220119.6114893,
-   "last_ts": 1792866370.6238935,
-   "in_pos_frac": 0.20930232558139536,
-   "last_signal": 0.083585
+   "last_ts": 1792876587.62058,
+   "in_pos_frac": 0.22727272727272727,
+   "last_signal": 0.110595
   },
   "kraken-BTC": {
-   "ticks": 43,
+   "ticks": 44,
    "enters": 1,
    "exits": 0,
    "funding": 1.6,
    "costs": 4.269227470440483,
    "net": -2.669227470440483,
    "first_ts": 1792220119.6114893,
-   "last_ts": 1792866370.6238935,
-   "in_pos_frac": 0.813953488372093,
+   "last_ts": 1792876587.62058,
+   "in_pos_frac": 0.8181818181818182,
    "last_signal": 0.1095
   },
   "kraken-ETH": {
-   "ticks": 43,
+   "ticks": 44,
    "enters": 1,
    "exits": 0,
    "funding": 1.6,
    "costs": 4.2018772323282665,
    "net": -2.6018772323282664,
    "first_ts": 1792220119.6114893,
-   "last_ts": 1792866370.6238935,
-   "in_pos_frac": 0.813953488372093,
+   "last_ts": 1792876587.62058,
+   "in_pos_frac": 0.8181818181818182,
    "last_signal": 0.1095
   }
  },
- "live_rows": 168
+ "live_rows": 170
 }
