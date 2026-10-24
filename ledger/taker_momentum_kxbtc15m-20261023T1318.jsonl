@@ -1,0 +1,46 @@
+{"type": "start", "ts": 1792761511.0847402, "run_id": "taker_momentum_kxbtc15m-20261023T1318", "markets": ["KXBTC15M-26OCT230930-30"]}
+{"type": "market_removed", "ts": 1792762231.1558173, "market_id": "KXBTC15M-26OCT230930-30", "reason": "settled 1"}
+{"type": "market_added", "ts": 1792762231.9790215, "market_id": "KXBTC15M-26OCT230945-45", "close_ts": 1792763100.0, "title": "BTC price up in next 15 mins?"}
+{"type": "market_removed", "ts": 1792763131.2077436, "market_id": "KXBTC15M-26OCT230945-45", "reason": "settled 1"}
+{"type": "market_added", "ts": 1792763132.696086, "market_id": "KXBTC15M-26OCT231000-00", "close_ts": 1792764000.0, "title": "BTC price up in next 15 mins?"}
+{"type": "market_removed", "ts": 1792764031.2692277, "market_id": "KXBTC15M-26OCT231000-00", "reason": "settled 1"}
+{"type": "market_added", "ts": 1792764033.7009668, "market_id": "KXBTC15M-26OCT231015-15", "close_ts": 1792764900.0, "title": "BTC price up in next 15 mins?"}
+{"type": "market_removed", "ts": 1792764931.3272777, "market_id": "KXBTC15M-26OCT231015-15", "reason": "settled 0"}
+{"type": "market_added", "ts": 1792764934.5516965, "market_id": "KXBTC15M-26OCT231030-30", "close_ts": 1792765800.0, "title": "BTC price up in next 15 mins?"}
+{"type": "market_removed", "ts": 1792765831.3869214, "market_id": "KXBTC15M-26OCT231030-30", "reason": "settled 0"}
+{"type": "market_added", "ts": 1792765835.3659418, "market_id": "KXBTC15M-26OCT231045-45", "close_ts": 1792766700.0, "title": "BTC price up in next 15 mins?"}
+{"type": "market_removed", "ts": 1792766731.4381623, "market_id": "KXBTC15M-26OCT231045-45", "reason": "settled 1"}
+{"type": "market_added", "ts": 1792766736.0360405, "market_id": "KXBTC15M-26OCT231100-00", "close_ts": 1792767600.0, "title": "BTC price up in next 15 mins?"}
+{"type": "market_removed", "ts": 1792767631.4939063, "market_id": "KXBTC15M-26OCT231100-00", "reason": "settled 0"}
+{"type": "market_added", "ts": 1792767637.0366843, "market_id": "KXBTC15M-26OCT231115-15", "close_ts": 1792768500.0, "title": "BTC price up in next 15 mins?"}
+{"type": "market_removed", "ts": 1792768531.7356393, "market_id": "KXBTC15M-26OCT231115-15", "reason": "settled 0"}
+{"type": "market_added", "ts": 1792768537.9318435, "market_id": "KXBTC15M-26OCT231130-30", "close_ts": 1792769400.0, "title": "BTC price up in next 15 mins?"}
+{"type": "market_removed", "ts": 1792769431.7933965, "market_id": "KXBTC15M-26OCT231130-30", "reason": "settled 1"}
+{"type": "market_added", "ts": 1792769439.0155704, "market_id": "KXBTC15M-26OCT231145-45", "close_ts": 1792770300.0, "title": "BTC price up in next 15 mins?"}
+{"type": "market_removed", "ts": 1792770331.848838, "market_id": "KXBTC15M-26OCT231145-45", "reason": "settled 0"}
+{"type": "market_added", "ts": 1792770340.078915, "market_id": "KXBTC15M-26OCT231200-00", "close_ts": 1792771200.0, "title": "BTC price up in next 15 mins?"}
+{"type": "market_removed", "ts": 1792771231.9044325, "market_id": "KXBTC15M-26OCT231200-00", "reason": "settled 1"}
+{"type": "market_added", "ts": 1792771240.921743, "market_id": "KXBTC15M-26OCT231215-15", "close_ts": 1792772100.0, "title": "BTC price up in next 15 mins?"}
+{"type": "market_removed", "ts": 1792772131.959709, "market_id": "KXBTC15M-26OCT231215-15", "reason": "settled 0"}
+{"type": "market_added", "ts": 1792772141.939425, "market_id": "KXBTC15M-26OCT231230-30", "close_ts": 1792773000.0, "title": "BTC price up in next 15 mins?"}
+{"type": "market_removed", "ts": 1792773032.0208685, "market_id": "KXBTC15M-26OCT231230-30", "reason": "settled 0"}
+{"type": "market_added", "ts": 1792773042.9282384, "market_id": "KXBTC15M-26OCT231245-45", "close_ts": 1792773900.0, "title": "BTC price up in next 15 mins?"}
+{"type": "market_removed", "ts": 1792773932.075882, "market_id": "KXBTC15M-26OCT231245-45", "reason": "settled 1"}
+{"type": "market_added", "ts": 1792773943.791561, "market_id": "KXBTC15M-26OCT231300-00", "close_ts": 1792774800.0, "title": "BTC price up in next 15 mins?"}
+{"type": "market_removed", "ts": 1792774832.1325858, "market_id": "KXBTC15M-26OCT231300-00", "reason": "settled 0"}
+{"type": "market_added", "ts": 1792774844.6945019, "market_id": "KXBTC15M-26OCT231315-15", "close_ts": 1792775700.0, "title": "BTC price up in next 15 mins?"}
+{"type": "market_removed", "ts": 1792775732.189238, "market_id": "KXBTC15M-26OCT231315-15", "reason": "settled 1"}
+{"type": "market_added", "ts": 1792775746.032537, "market_id": "KXBTC15M-26OCT231330-30", "close_ts": 1792776600.0, "title": "BTC price up in next 15 mins?"}
+{"type": "market_removed", "ts": 1792776632.246638, "market_id": "KXBTC15M-26OCT231330-30", "reason": "settled 0"}
+{"type": "market_added", "ts": 1792776647.14792, "market_id": "KXBTC15M-26OCT231345-45", "close_ts": 1792777500.0, "title": "BTC price up in next 15 mins?"}
+{"type": "market_removed", "ts": 1792777532.3066237, "market_id": "KXBTC15M-26OCT231345-45", "reason": "settled 0"}
+{"type": "market_added", "ts": 1792777548.2495408, "market_id": "KXBTC15M-26OCT231400-00", "close_ts": 1792778400.0, "title": "BTC price up in next 15 mins?"}
+{"type": "market_removed", "ts": 1792778432.363933, "market_id": "KXBTC15M-26OCT231400-00", "reason": "settled 1"}
+{"type": "market_added", "ts": 1792778449.3903506, "market_id": "KXBTC15M-26OCT231415-15", "close_ts": 1792779300.0, "title": "BTC price up in next 15 mins?"}
+{"type": "market_removed", "ts": 1792779332.4272254, "market_id": "KXBTC15M-26OCT231415-15", "reason": "settled 0"}
+{"type": "market_added", "ts": 1792779350.337702, "market_id": "KXBTC15M-26OCT231430-30", "close_ts": 1792780200.0, "title": "BTC price up in next 15 mins?"}
+{"type": "market_removed", "ts": 1792780232.4837227, "market_id": "KXBTC15M-26OCT231430-30", "reason": "settled 0"}
+{"type": "market_added", "ts": 1792780251.1956232, "market_id": "KXBTC15M-26OCT231445-45", "close_ts": 1792781100.0, "title": "BTC price up in next 15 mins?"}
+{"type": "market_removed", "ts": 1792781132.5373282, "market_id": "KXBTC15M-26OCT231445-45", "reason": "settled 0"}
+{"type": "market_added", "ts": 1792781152.0500457, "market_id": "KXBTC15M-26OCT231500-00", "close_ts": 1792782000.0, "title": "BTC price up in next 15 mins?"}
+{"type": "stop", "ts": 1792781511.270247, "summary": {"net_pnl": 0.0, "gross_pnl": 0.0, "fees": 0, "fills": 0, "maker_fills": 0, "taker_fills": 0, "contracts_traded": 0, "max_drawdown": 0.0, "max_capital_at_risk": 0.0, "markets_traded": 23, "market_win_rate": 0.0, "sharpe_like": 0.0, "net_pnl_on_max_capital": 0.0, "maker_pct": 0.0, "reality": {"cross_assumed_fill_frac": 0.0, "cross_assumed_fills": 0, "maker_frac": 0.0, "max_fill_to_touch_depth": 0.0, "top3_market_pnl_frac": 0.0, "pnl_per_contract": 0.0}, "run_id": "taker_momentum_kxbtc15m-20261023T1318", "started_at": 1792761511.0847402, "updated_at": 1792781511.2697139, "uptime_secs": 20000.2, "open_orders": 0, "positions": {}, "markets": ["KXBTC15M-26OCT230930-30", "KXBTC15M-26OCT230945-45", "KXBTC15M-26OCT231000-00", "KXBTC15M-26OCT231015-15", "KXBTC15M-26OCT231030-30", "KXBTC15M-26OCT231045-45", "KXBTC15M-26OCT231100-00", "KXBTC15M-26OCT231115-15", "KXBTC15M-26OCT231130-30", "KXBTC15M-26OCT231145-45", "KXBTC15M-26OCT231200-00", "KXBTC15M-26OCT231215-15", "KXBTC15M-26OCT231230-30", "KXBTC15M-26OCT231245-45", "KXBTC15M-26OCT231300-00", "KXBTC15M-26OCT231315-15", "KXBTC15M-26OCT231330-30", "KXBTC15M-26OCT231345-45", "KXBTC15M-26OCT231400-00", "KXBTC15M-26OCT231415-15", "KXBTC15M-26OCT231430-30", "KXBTC15M-26OCT231445-45", "KXBTC15M-26OCT231500-00"], "active_markets": ["KXBTC15M-26OCT231500-00"], "rolls": 332, "last_roll": {"ts": 1792781452.2404494, "selected": 1, "added": [], "dropped": [], "error": ""}, "last_event_age": {"KXBTC15M-26OCT231500-00": 0.5}, "risk": {"halted": false, "halt_reason": "", "halted_at": 0.0, "stale": false, "kill_file": "data/KILL", "kill_file_present": false, "pnl_today": 0.0, "daily_loss_limit": 50.0, "capital_in_use": 0.0, "capital_in_use_by_market": {}, "max_capital_total": 2000.0, "max_capital_per_market": 500.0, "orders_last_min": 0, "max_orders_per_min": 120, "accepted": 0, "rejected": 0, "reject_reasons": {}, "cancel_all_count": 0, "last_book_age": {"KXBTC15M-26OCT231500-00": 0.5}, "stale_secs": 60.0}, "strategies": ["taker_momentum"], "venue": "kalshi"}}

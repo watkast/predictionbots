@@ -1,0 +1,239 @@
+{
+  "net_pnl": -18.3056,
+  "gross_pnl": 11.0544,
+  "fees": 29.36,
+  "fills": 1672,
+  "maker_fills": 0,
+  "taker_fills": 1672,
+  "contracts_traded": 1666.0,
+  "max_drawdown": 88.828,
+  "max_capital_at_risk": 25.35,
+  "markets_traded": 23,
+  "market_win_rate": 0.348,
+  "sharpe_like": -0.26,
+  "net_pnl_on_max_capital": -0.7221,
+  "maker_pct": 0.0,
+  "reality": {
+    "cross_assumed_fill_frac": 0.0,
+    "cross_assumed_fills": 0,
+    "maker_frac": 0.0,
+    "max_fill_to_touch_depth": 99.0,
+    "top3_market_pnl_frac": 0.5649,
+    "pnl_per_contract": -0.01099
+  },
+  "run_id": "taker_lag_kxbtc15m-20261023T1318",
+  "started_at": 1792761515.6881096,
+  "updated_at": 1792781515.8458724,
+  "uptime_secs": 20000.2,
+  "open_orders": 0,
+  "positions": {
+    "KXBTC15M-26OCT230930-30": {
+      "contracts": 0.0,
+      "avg_price": 0.0,
+      "realized": -5.014,
+      "fees": 0.88
+    },
+    "KXBTC15M-26OCT230945-45": {
+      "contracts": 0.0,
+      "avg_price": 0.0,
+      "realized": 23.306,
+      "fees": 1.47
+    },
+    "KXBTC15M-26OCT231000-00": {
+      "contracts": 0.0,
+      "avg_price": 0.0,
+      "realized": 31.99,
+      "fees": 1.12
+    },
+    "KXBTC15M-26OCT231015-15": {
+      "contracts": 0.0,
+      "avg_price": 0.0,
+      "realized": -15.17,
+      "fees": 0.96
+    },
+    "KXBTC15M-26OCT231030-30": {
+      "contracts": 0.0,
+      "avg_price": 0.0,
+      "realized": -0.1699,
+      "fees": 0.68
+    },
+    "KXBTC15M-26OCT231045-45": {
+      "contracts": 0.0,
+      "avg_price": 0.0,
+      "realized": -16.8798,
+      "fees": 1.09
+    },
+    "KXBTC15M-26OCT231100-00": {
+      "contracts": 0.0,
+      "avg_price": 0.0,
+      "realized": 23.6521,
+      "fees": 1.16
+    },
+    "KXBTC15M-26OCT231115-15": {
+      "contracts": 0.0,
+      "avg_price": 0.0,
+      "realized": -7.025,
+      "fees": 0.73
+    },
+    "KXBTC15M-26OCT231130-30": {
+      "contracts": 0.0,
+      "avg_price": 0.0,
+      "realized": 6.826,
+      "fees": 1.97
+    },
+    "KXBTC15M-26OCT231145-45": {
+      "contracts": 0.0,
+      "avg_price": 0.0,
+      "realized": 30.732,
+      "fees": 1.66
+    },
+    "KXBTC15M-26OCT231200-00": {
+      "contracts": 0.0,
+      "avg_price": 0.0,
+      "realized": -9.42,
+      "fees": 0.72
+    },
+    "KXBTC15M-26OCT231215-15": {
+      "contracts": 0.0,
+      "avg_price": 0.0,
+      "realized": -1.305,
+      "fees": 2.11
+    },
+    "KXBTC15M-26OCT231230-30": {
+      "contracts": 0.0,
+      "avg_price": 0.0,
+      "realized": -22.62,
+      "fees": 1.2
+    },
+    "KXBTC15M-26OCT231245-45": {
+      "contracts": 0.0,
+      "avg_price": 0.0,
+      "realized": -6.727,
+      "fees": 0.74
+    },
+    "KXBTC15M-26OCT231300-00": {
+      "contracts": 0.0,
+      "avg_price": 0.0,
+      "realized": 11.852,
+      "fees": 2.32
+    },
+    "KXBTC15M-26OCT231315-15": {
+      "contracts": 0.0,
+      "avg_price": 0.0,
+      "realized": -16.43,
+      "fees": 1.0
+    },
+    "KXBTC15M-26OCT231330-30": {
+      "contracts": 0.0,
+      "avg_price": 0.0,
+      "realized": -14.9,
+      "fees": 1.51
+    },
+    "KXBTC15M-26OCT231345-45": {
+      "contracts": 0.0,
+      "avg_price": 0.0,
+      "realized": 13.87,
+      "fees": 1.92
+    },
+    "KXBTC15M-26OCT231400-00": {
+      "contracts": 0.0,
+      "avg_price": 0.0,
+      "realized": -12.59,
+      "fees": 1.24
+    },
+    "KXBTC15M-26OCT231415-15": {
+      "contracts": 0.0,
+      "avg_price": 0.0,
+      "realized": -9.737,
+      "fees": 0.79
+    },
+    "KXBTC15M-26OCT231430-30": {
+      "contracts": 0.0,
+      "avg_price": 0.0,
+      "realized": 17.464,
+      "fees": 2.14
+    },
+    "KXBTC15M-26OCT231445-45": {
+      "contracts": 0.0,
+      "avg_price": 0.0,
+      "realized": -17.13,
+      "fees": 1.0
+    },
+    "KXBTC15M-26OCT231500-00": {
+      "contracts": 50.0,
+      "avg_price": 0.2454,
+      "realized": 0.0,
+      "fees": 0.95
+    }
+  },
+  "markets": [
+    "KXBTC15M-26OCT230930-30",
+    "KXBTC15M-26OCT230945-45",
+    "KXBTC15M-26OCT231000-00",
+    "KXBTC15M-26OCT231015-15",
+    "KXBTC15M-26OCT231030-30",
+    "KXBTC15M-26OCT231045-45",
+    "KXBTC15M-26OCT231100-00",
+    "KXBTC15M-26OCT231115-15",
+    "KXBTC15M-26OCT231130-30",
+    "KXBTC15M-26OCT231145-45",
+    "KXBTC15M-26OCT231200-00",
+    "KXBTC15M-26OCT231215-15",
+    "KXBTC15M-26OCT231230-30",
+    "KXBTC15M-26OCT231245-45",
+    "KXBTC15M-26OCT231300-00",
+    "KXBTC15M-26OCT231315-15",
+    "KXBTC15M-26OCT231330-30",
+    "KXBTC15M-26OCT231345-45",
+    "KXBTC15M-26OCT231400-00",
+    "KXBTC15M-26OCT231415-15",
+    "KXBTC15M-26OCT231430-30",
+    "KXBTC15M-26OCT231445-45",
+    "KXBTC15M-26OCT231500-00"
+  ],
+  "active_markets": [
+    "KXBTC15M-26OCT231500-00"
+  ],
+  "rolls": 332,
+  "last_roll": {
+    "ts": 1792781464.453347,
+    "selected": 1,
+    "added": [],
+    "dropped": [],
+    "error": ""
+  },
+  "last_event_age": {
+    "KXBTC15M-26OCT231300-00": 6678.4,
+    "KXBTC15M-26OCT231500-00": 0.7
+  },
+  "risk": {
+    "halted": false,
+    "halt_reason": "",
+    "halted_at": 0.0,
+    "stale": false,
+    "kill_file": "data/KILL",
+    "kill_file_present": false,
+    "pnl_today": -18.5556,
+    "daily_loss_limit": 50.0,
+    "capital_in_use": 12.27,
+    "capital_in_use_by_market": {
+      "KXBTC15M-26OCT231500-00": 12.27
+    },
+    "max_capital_total": 2000.0,
+    "max_capital_per_market": 500.0,
+    "orders_last_min": 0,
+    "max_orders_per_min": 120,
+    "accepted": 1684,
+    "rejected": 0,
+    "reject_reasons": {},
+    "cancel_all_count": 0,
+    "last_book_age": {
+      "KXBTC15M-26OCT231500-00": 0.7
+    },
+    "stale_secs": 60.0
+  },
+  "strategies": [
+    "taker_lag"
+  ],
+  "venue": "kalshi"
+}

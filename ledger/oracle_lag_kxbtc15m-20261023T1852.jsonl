@@ -1,0 +1,96 @@
+{"type": "start", "ts": 1792781536.7414272, "run_id": "oracle_lag_kxbtc15m-20261023T1852", "markets": ["KXBTC15M-26OCT231500-00"]}
+{"type": "market_removed", "ts": 1792782016.7886891, "market_id": "KXBTC15M-26OCT231500-00", "reason": "settled 0"}
+{"type": "market_added", "ts": 1792782017.319096, "market_id": "KXBTC15M-26OCT231515-15", "close_ts": 1792782900.0, "title": "BTC price up in next 15 mins?"}
+{"type": "fill", "ts": 1792782600.6969059, "market_id": "KXBTC15M-26OCT231515-15", "order_id": "o1", "action": "sell", "price": 0.16, "size": 357.0, "fee": 3.36, "is_maker": false, "strategy": "oracle_lag"}
+{"type": "fill", "ts": 1792782615.4292986, "market_id": "KXBTC15M-26OCT231515-15", "order_id": "o3", "action": "buy", "price": 0.12, "size": 5.0, "fee": 0.0, "is_maker": true, "strategy": "oracle_lag"}
+{"type": "fill", "ts": 1792782615.4292986, "market_id": "KXBTC15M-26OCT231515-15", "order_id": "o3", "action": "buy", "price": 0.12, "size": 272.0, "fee": 0.0, "is_maker": true, "strategy": "oracle_lag"}
+{"type": "fill", "ts": 1792782615.4292986, "market_id": "KXBTC15M-26OCT231515-15", "order_id": "o3", "action": "buy", "price": 0.12, "size": 0.01, "fee": 0.0, "is_maker": true, "strategy": "oracle_lag"}
+{"type": "fill", "ts": 1792782615.4292986, "market_id": "KXBTC15M-26OCT231515-15", "order_id": "o3", "action": "buy", "price": 0.12, "size": 79.99000000000001, "fee": 0.0, "is_maker": true, "strategy": "oracle_lag"}
+{"type": "market_removed", "ts": 1792782916.8262827, "market_id": "KXBTC15M-26OCT231515-15", "reason": "settled 0"}
+{"type": "market_added", "ts": 1792782977.8513858, "market_id": "KXBTC15M-26OCT231530-30", "close_ts": 1792783800.0, "title": "BTC price up in next 15 mins?"}
+{"type": "market_removed", "ts": 1792783816.862484, "market_id": "KXBTC15M-26OCT231530-30", "reason": "settled 1"}
+{"type": "market_added", "ts": 1792783818.350621, "market_id": "KXBTC15M-26OCT231545-45", "close_ts": 1792784700.0, "title": "BTC price up in next 15 mins?"}
+{"type": "fill", "ts": 1792784400.3448648, "market_id": "KXBTC15M-26OCT231545-45", "order_id": "o5", "action": "sell", "price": 0.26, "size": 400.0, "fee": 5.39, "is_maker": false, "strategy": "oracle_lag"}
+{"type": "fill", "ts": 1792784527.341818, "market_id": "KXBTC15M-26OCT231545-45", "order_id": "o7", "action": "buy", "price": 0.12, "size": 47.72, "fee": 0.0, "is_maker": true, "strategy": "oracle_lag"}
+{"type": "fill", "ts": 1792784527.341818, "market_id": "KXBTC15M-26OCT231545-45", "order_id": "o7", "action": "buy", "price": 0.12, "size": 21.23, "fee": 0.0, "is_maker": true, "strategy": "oracle_lag"}
+{"type": "fill", "ts": 1792784527.341818, "market_id": "KXBTC15M-26OCT231545-45", "order_id": "o7", "action": "buy", "price": 0.12, "size": 26.54, "fee": 0.0, "is_maker": true, "strategy": "oracle_lag"}
+{"type": "fill", "ts": 1792784527.341818, "market_id": "KXBTC15M-26OCT231545-45", "order_id": "o7", "action": "buy", "price": 0.12, "size": 1.72, "fee": 0.0, "is_maker": true, "strategy": "oracle_lag"}
+{"type": "fill", "ts": 1792784527.341818, "market_id": "KXBTC15M-26OCT231545-45", "order_id": "o7", "action": "buy", "price": 0.12, "size": 62.0, "fee": 0.0, "is_maker": true, "strategy": "oracle_lag"}
+{"type": "fill", "ts": 1792784527.341818, "market_id": "KXBTC15M-26OCT231545-45", "order_id": "o7", "action": "buy", "price": 0.12, "size": 240.79, "fee": 0.0, "is_maker": true, "strategy": "oracle_lag"}
+{"type": "market_removed", "ts": 1792784716.8996866, "market_id": "KXBTC15M-26OCT231545-45", "reason": "settled 0"}
+{"type": "market_added", "ts": 1792784718.74935, "market_id": "KXBTC15M-26OCT231600-00", "close_ts": 1792785600.0, "title": "BTC price up in next 15 mins?"}
+{"type": "fill", "ts": 1792785300.545846, "market_id": "KXBTC15M-26OCT231600-00", "order_id": "o9", "action": "sell", "price": 0.42, "size": 400.0, "fee": 6.83, "is_maker": false, "strategy": "oracle_lag"}
+{"type": "fill", "ts": 1792785422.5819118, "market_id": "KXBTC15M-26OCT231600-00", "order_id": "o11", "action": "buy", "price": 0.12, "size": 0.03, "fee": 0.0, "is_maker": true, "strategy": "oracle_lag"}
+{"type": "fill", "ts": 1792785422.5819118, "market_id": "KXBTC15M-26OCT231600-00", "order_id": "o11", "action": "buy", "price": 0.12, "size": 9.47, "fee": 0.0, "is_maker": true, "strategy": "oracle_lag"}
+{"type": "fill", "ts": 1792785422.5819118, "market_id": "KXBTC15M-26OCT231600-00", "order_id": "o11", "action": "buy", "price": 0.12, "size": 2.51, "fee": 0.0, "is_maker": true, "strategy": "oracle_lag"}
+{"type": "fill", "ts": 1792785422.5819118, "market_id": "KXBTC15M-26OCT231600-00", "order_id": "o11", "action": "buy", "price": 0.12, "size": 5.0, "fee": 0.0, "is_maker": true, "strategy": "oracle_lag"}
+{"type": "fill", "ts": 1792785422.5819118, "market_id": "KXBTC15M-26OCT231600-00", "order_id": "o11", "action": "buy", "price": 0.12, "size": 2.22, "fee": 0.0, "is_maker": true, "strategy": "oracle_lag"}
+{"type": "fill", "ts": 1792785422.5819118, "market_id": "KXBTC15M-26OCT231600-00", "order_id": "o11", "action": "buy", "price": 0.12, "size": 1.35, "fee": 0.0, "is_maker": true, "strategy": "oracle_lag"}
+{"type": "fill", "ts": 1792785422.5819118, "market_id": "KXBTC15M-26OCT231600-00", "order_id": "o11", "action": "buy", "price": 0.12, "size": 225.53, "fee": 0.0, "is_maker": true, "strategy": "oracle_lag"}
+{"type": "fill", "ts": 1792785422.5819118, "market_id": "KXBTC15M-26OCT231600-00", "order_id": "o11", "action": "buy", "price": 0.12, "size": 6.55, "fee": 0.0, "is_maker": true, "strategy": "oracle_lag"}
+{"type": "fill", "ts": 1792785422.5819118, "market_id": "KXBTC15M-26OCT231600-00", "order_id": "o11", "action": "buy", "price": 0.12, "size": 9.13, "fee": 0.0, "is_maker": true, "strategy": "oracle_lag"}
+{"type": "fill", "ts": 1792785422.5819118, "market_id": "KXBTC15M-26OCT231600-00", "order_id": "o11", "action": "buy", "price": 0.12, "size": 15.27, "fee": 0.0, "is_maker": true, "strategy": "oracle_lag"}
+{"type": "fill", "ts": 1792785422.5819118, "market_id": "KXBTC15M-26OCT231600-00", "order_id": "o11", "action": "buy", "price": 0.12, "size": 45.74, "fee": 0.0, "is_maker": true, "strategy": "oracle_lag"}
+{"type": "fill", "ts": 1792785422.5819118, "market_id": "KXBTC15M-26OCT231600-00", "order_id": "o11", "action": "buy", "price": 0.12, "size": 77.19999999999999, "fee": 0.0, "is_maker": true, "strategy": "oracle_lag"}
+{"type": "market_removed", "ts": 1792785616.942177, "market_id": "KXBTC15M-26OCT231600-00", "reason": "settled 0"}
+{"type": "market_added", "ts": 1792785679.4042304, "market_id": "KXBTC15M-26OCT231615-15", "close_ts": 1792786500.0, "title": "BTC price up in next 15 mins?"}
+{"type": "market_removed", "ts": 1792786516.9820943, "market_id": "KXBTC15M-26OCT231615-15", "reason": "settled 1"}
+{"type": "market_added", "ts": 1792786519.863363, "market_id": "KXBTC15M-26OCT231630-30", "close_ts": 1792787400.0, "title": "BTC price up in next 15 mins?"}
+{"type": "market_removed", "ts": 1792787417.0186496, "market_id": "KXBTC15M-26OCT231630-30", "reason": "settled 1"}
+{"type": "market_added", "ts": 1792787420.477967, "market_id": "KXBTC15M-26OCT231645-45", "close_ts": 1792788300.0, "title": "BTC price up in next 15 mins?"}
+{"type": "market_removed", "ts": 1792788317.0556047, "market_id": "KXBTC15M-26OCT231645-45", "reason": "settled 1"}
+{"type": "market_added", "ts": 1792788320.8955827, "market_id": "KXBTC15M-26OCT231700-00", "close_ts": 1792789200.0, "title": "BTC price up in next 15 mins?"}
+{"type": "fill", "ts": 1792788900.3487341, "market_id": "KXBTC15M-26OCT231700-00", "order_id": "o13", "action": "sell", "price": 0.63, "size": 400.0, "fee": 6.53, "is_maker": false, "strategy": "oracle_lag"}
+{"type": "fill", "ts": 1792789109.4205835, "market_id": "KXBTC15M-26OCT231700-00", "order_id": "o15", "action": "buy", "price": 0.12, "size": 10.0, "fee": 0.0, "is_maker": true, "strategy": "oracle_lag"}
+{"type": "fill", "ts": 1792789109.4205835, "market_id": "KXBTC15M-26OCT231700-00", "order_id": "o15", "action": "buy", "price": 0.12, "size": 10.0, "fee": 0.0, "is_maker": true, "strategy": "oracle_lag"}
+{"type": "fill", "ts": 1792789109.4205835, "market_id": "KXBTC15M-26OCT231700-00", "order_id": "o15", "action": "buy", "price": 0.12, "size": 2.13, "fee": 0.0, "is_maker": true, "strategy": "oracle_lag"}
+{"type": "fill", "ts": 1792789109.4205835, "market_id": "KXBTC15M-26OCT231700-00", "order_id": "o15", "action": "buy", "price": 0.12, "size": 45.82, "fee": 0.0, "is_maker": true, "strategy": "oracle_lag"}
+{"type": "fill", "ts": 1792789109.4205835, "market_id": "KXBTC15M-26OCT231700-00", "order_id": "o15", "action": "buy", "price": 0.12, "size": 34.17, "fee": 0.0, "is_maker": true, "strategy": "oracle_lag"}
+{"type": "fill", "ts": 1792789109.4205835, "market_id": "KXBTC15M-26OCT231700-00", "order_id": "o15", "action": "buy", "price": 0.12, "size": 4.02, "fee": 0.0, "is_maker": true, "strategy": "oracle_lag"}
+{"type": "fill", "ts": 1792789109.4205835, "market_id": "KXBTC15M-26OCT231700-00", "order_id": "o15", "action": "buy", "price": 0.12, "size": 16.21, "fee": 0.0, "is_maker": true, "strategy": "oracle_lag"}
+{"type": "fill", "ts": 1792789109.4205835, "market_id": "KXBTC15M-26OCT231700-00", "order_id": "o15", "action": "buy", "price": 0.12, "size": 80.0, "fee": 0.0, "is_maker": true, "strategy": "oracle_lag"}
+{"type": "fill", "ts": 1792789109.4205835, "market_id": "KXBTC15M-26OCT231700-00", "order_id": "o15", "action": "buy", "price": 0.12, "size": 68.75, "fee": 0.0, "is_maker": true, "strategy": "oracle_lag"}
+{"type": "fill", "ts": 1792789109.4205835, "market_id": "KXBTC15M-26OCT231700-00", "order_id": "o15", "action": "buy", "price": 0.12, "size": 3.0, "fee": 0.0, "is_maker": true, "strategy": "oracle_lag"}
+{"type": "fill", "ts": 1792789109.4205835, "market_id": "KXBTC15M-26OCT231700-00", "order_id": "o15", "action": "buy", "price": 0.12, "size": 12.0, "fee": 0.0, "is_maker": true, "strategy": "oracle_lag"}
+{"type": "fill", "ts": 1792789109.4205835, "market_id": "KXBTC15M-26OCT231700-00", "order_id": "o15", "action": "buy", "price": 0.12, "size": 0.1, "fee": 0.0, "is_maker": true, "strategy": "oracle_lag"}
+{"type": "fill", "ts": 1792789109.4205835, "market_id": "KXBTC15M-26OCT231700-00", "order_id": "o15", "action": "buy", "price": 0.12, "size": 18.0, "fee": 0.0, "is_maker": true, "strategy": "oracle_lag"}
+{"type": "fill", "ts": 1792789109.4205835, "market_id": "KXBTC15M-26OCT231700-00", "order_id": "o15", "action": "buy", "price": 0.12, "size": 80.0, "fee": 0.0, "is_maker": true, "strategy": "oracle_lag"}
+{"type": "fill", "ts": 1792789109.4205835, "market_id": "KXBTC15M-26OCT231700-00", "order_id": "o15", "action": "buy", "price": 0.12, "size": 15.799999999999955, "fee": 0.0, "is_maker": true, "strategy": "oracle_lag"}
+{"type": "market_removed", "ts": 1792789217.0941231, "market_id": "KXBTC15M-26OCT231700-00", "reason": "settled 0"}
+{"type": "market_added", "ts": 1792789221.3860877, "market_id": "KXBTC15M-26OCT231715-15", "close_ts": 1792790100.0, "title": "BTC price up in next 15 mins?"}
+{"type": "fill", "ts": 1792789840.945245, "market_id": "KXBTC15M-26OCT231715-15", "order_id": "o17", "action": "buy", "price": 0.83, "size": 361.0, "fee": 3.57, "is_maker": false, "strategy": "oracle_lag"}
+{"type": "fill", "ts": 1792790005.964573, "market_id": "KXBTC15M-26OCT231715-15", "order_id": "o19", "action": "sell", "price": 0.88, "size": 1.93, "fee": 0.0, "is_maker": true, "strategy": "oracle_lag"}
+{"type": "fill", "ts": 1792790005.964573, "market_id": "KXBTC15M-26OCT231715-15", "order_id": "o19", "action": "sell", "price": 0.88, "size": 1.68, "fee": 0.0, "is_maker": true, "strategy": "oracle_lag"}
+{"type": "fill", "ts": 1792790005.964573, "market_id": "KXBTC15M-26OCT231715-15", "order_id": "o19", "action": "sell", "price": 0.88, "size": 10.89, "fee": 0.0, "is_maker": true, "strategy": "oracle_lag"}
+{"type": "fill", "ts": 1792790005.964573, "market_id": "KXBTC15M-26OCT231715-15", "order_id": "o19", "action": "sell", "price": 0.88, "size": 32.07, "fee": 0.0, "is_maker": true, "strategy": "oracle_lag"}
+{"type": "fill", "ts": 1792790005.964573, "market_id": "KXBTC15M-26OCT231715-15", "order_id": "o19", "action": "sell", "price": 0.88, "size": 16.92, "fee": 0.0, "is_maker": true, "strategy": "oracle_lag"}
+{"type": "fill", "ts": 1792790005.964573, "market_id": "KXBTC15M-26OCT231715-15", "order_id": "o19", "action": "sell", "price": 0.88, "size": 46.15, "fee": 0.0, "is_maker": true, "strategy": "oracle_lag"}
+{"type": "fill", "ts": 1792790005.964573, "market_id": "KXBTC15M-26OCT231715-15", "order_id": "o19", "action": "sell", "price": 0.88, "size": 22.32, "fee": 0.0, "is_maker": true, "strategy": "oracle_lag"}
+{"type": "fill", "ts": 1792790005.964573, "market_id": "KXBTC15M-26OCT231715-15", "order_id": "o19", "action": "sell", "price": 0.88, "size": 229.04, "fee": 0.0, "is_maker": true, "strategy": "oracle_lag"}
+{"type": "market_removed", "ts": 1792790117.1332388, "market_id": "KXBTC15M-26OCT231715-15", "reason": "settled 1"}
+{"type": "market_added", "ts": 1792790181.9467566, "market_id": "KXBTC15M-26OCT231730-30", "close_ts": 1792791000.0, "title": "BTC price up in next 15 mins?"}
+{"type": "market_removed", "ts": 1792791017.1750531, "market_id": "KXBTC15M-26OCT231730-30", "reason": "settled 0"}
+{"type": "market_added", "ts": 1792791022.5188756, "market_id": "KXBTC15M-26OCT231745-45", "close_ts": 1792791900.0, "title": "BTC price up in next 15 mins?"}
+{"type": "market_removed", "ts": 1792791917.209324, "market_id": "KXBTC15M-26OCT231745-45", "reason": "settled 0"}
+{"type": "market_added", "ts": 1792791922.9778397, "market_id": "KXBTC15M-26OCT231800-00", "close_ts": 1792792800.0, "title": "BTC price up in next 15 mins?"}
+{"type": "market_removed", "ts": 1792792817.2489676, "market_id": "KXBTC15M-26OCT231800-00", "reason": "settled 1"}
+{"type": "market_added", "ts": 1792792883.6479673, "market_id": "KXBTC15M-26OCT231815-15", "close_ts": 1792793700.0, "title": "BTC price up in next 15 mins?"}
+{"type": "market_removed", "ts": 1792793717.2853472, "market_id": "KXBTC15M-26OCT231815-15", "reason": "settled 0"}
+{"type": "market_added", "ts": 1792793724.1522403, "market_id": "KXBTC15M-26OCT231830-30", "close_ts": 1792794600.0, "title": "BTC price up in next 15 mins?"}
+{"type": "market_removed", "ts": 1792794617.3211594, "market_id": "KXBTC15M-26OCT231830-30", "reason": "settled 0"}
+{"type": "market_added", "ts": 1792794624.681116, "market_id": "KXBTC15M-26OCT231845-45", "close_ts": 1792795500.0, "title": "BTC price up in next 15 mins?"}
+{"type": "market_removed", "ts": 1792795517.3619075, "market_id": "KXBTC15M-26OCT231845-45", "reason": "settled 0"}
+{"type": "market_added", "ts": 1792795525.3718731, "market_id": "KXBTC15M-26OCT231900-00", "close_ts": 1792796400.0, "title": "BTC price up in next 15 mins?"}
+{"type": "market_removed", "ts": 1792796417.402465, "market_id": "KXBTC15M-26OCT231900-00", "reason": "settled 0"}
+{"type": "market_added", "ts": 1792796426.0320945, "market_id": "KXBTC15M-26OCT231915-15", "close_ts": 1792797300.0, "title": "BTC price up in next 15 mins?"}
+{"type": "market_removed", "ts": 1792797317.443347, "market_id": "KXBTC15M-26OCT231915-15", "reason": "settled 0"}
+{"type": "market_added", "ts": 1792797326.6425164, "market_id": "KXBTC15M-26OCT231930-30", "close_ts": 1792798200.0, "title": "BTC price up in next 15 mins?"}
+{"type": "market_removed", "ts": 1792798217.4755597, "market_id": "KXBTC15M-26OCT231930-30", "reason": "settled 1"}
+{"type": "market_added", "ts": 1792798287.388395, "market_id": "KXBTC15M-26OCT231945-45", "close_ts": 1792799100.0, "title": "BTC price up in next 15 mins?"}
+{"type": "market_removed", "ts": 1792799117.509482, "market_id": "KXBTC15M-26OCT231945-45", "reason": "settled 0"}
+{"type": "market_added", "ts": 1792799128.0014477, "market_id": "KXBTC15M-26OCT232000-00", "close_ts": 1792800000.0, "title": "BTC price up in next 15 mins?"}
+{"type": "market_removed", "ts": 1792800017.54841, "market_id": "KXBTC15M-26OCT232000-00", "reason": "settled 1"}
+{"type": "market_added", "ts": 1792800028.5755718, "market_id": "KXBTC15M-26OCT232015-15", "close_ts": 1792800900.0, "title": "BTC price up in next 15 mins?"}
+{"type": "market_removed", "ts": 1792800917.583925, "market_id": "KXBTC15M-26OCT232015-15", "reason": "settled 0"}
+{"type": "market_added", "ts": 1792800929.0871775, "market_id": "KXBTC15M-26OCT232030-30", "close_ts": 1792801800.0, "title": "BTC price up in next 15 mins?"}
+{"type": "stop", "ts": 1792801536.7827694, "summary": {"net_pnl": 386.65, "gross_pnl": 412.33, "fees": 25.68, "fills": 50, "maker_fills": 45, "taker_fills": 5, "contracts_traded": 3836.0, "max_drawdown": 63.135, "max_capital_at_risk": 299.63, "markets_traded": 22, "market_win_rate": 0.227, "sharpe_like": 1.77, "net_pnl_on_max_capital": 1.2904, "maker_pct": 90.0, "reality": {"cross_assumed_fill_frac": 0.0, "cross_assumed_fills": 0, "maker_frac": 0.9, "max_fill_to_touch_depth": 1.0, "top3_market_pnl_frac": 0.9343, "pnl_per_contract": 0.1008}, "run_id": "oracle_lag_kxbtc15m-20261023T1852", "started_at": 1792781536.7414272, "updated_at": 1792801536.7822587, "uptime_secs": 20000.0, "open_orders": 0, "positions": {"KXBTC15M-26OCT231515-15": {"contracts": 0.0, "avg_price": 0.0, "realized": 14.28, "fees": 3.36}, "KXBTC15M-26OCT231545-45": {"contracts": 0.0, "avg_price": 0.0, "realized": 56.0, "fees": 5.39}, "KXBTC15M-26OCT231600-00": {"contracts": 0.0, "avg_price": 0.0, "realized": 120.0, "fees": 6.83}, "KXBTC15M-26OCT231700-00": {"contracts": 0.0, "avg_price": 0.0, "realized": 204.0, "fees": 6.53}, "KXBTC15M-26OCT231715-15": {"contracts": 0.0, "avg_price": 0.0, "realized": 18.05, "fees": 3.57}}, "markets": ["KXBTC15M-26OCT231500-00", "KXBTC15M-26OCT231515-15", "KXBTC15M-26OCT231530-30", "KXBTC15M-26OCT231545-45", "KXBTC15M-26OCT231600-00", "KXBTC15M-26OCT231615-15", "KXBTC15M-26OCT231630-30", "KXBTC15M-26OCT231645-45", "KXBTC15M-26OCT231700-00", "KXBTC15M-26OCT231715-15", "KXBTC15M-26OCT231730-30", "KXBTC15M-26OCT231745-45", "KXBTC15M-26OCT231800-00", "KXBTC15M-26OCT231815-15", "KXBTC15M-26OCT231830-30", "KXBTC15M-26OCT231845-45", "KXBTC15M-26OCT231900-00", "KXBTC15M-26OCT231915-15", "KXBTC15M-26OCT231930-30", "KXBTC15M-26OCT231945-45", "KXBTC15M-26OCT232000-00", "KXBTC15M-26OCT232015-15", "KXBTC15M-26OCT232030-30"], "active_markets": ["KXBTC15M-26OCT232030-30"], "rolls": 333, "last_roll": {"ts": 1792801529.336742, "selected": 1, "added": [], "dropped": [], "error": ""}, "last_event_age": {"KXBTC15M-26OCT232030-30": 0.5}, "risk": {"halted": false, "halt_reason": "", "halted_at": 0.0, "stale": false, "kill_file": "data/KILL", "kill_file_present": false, "pnl_today": 0.0, "daily_loss_limit": 300.0, "capital_in_use": 0.0, "capital_in_use_by_market": {}, "max_capital_total": 2000.0, "max_capital_per_market": 400.0, "orders_last_min": 0, "max_orders_per_min": 120, "accepted": 10, "rejected": 0, "reject_reasons": {}, "cancel_all_count": 0, "last_book_age": {"KXBTC15M-26OCT232030-30": 0.5}, "stale_secs": 60.0}, "strategies": ["oracle_lag"], "venue": "kalshi"}}
