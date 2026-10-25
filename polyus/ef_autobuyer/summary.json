@@ -19,5 +19,6 @@
    "ret_per_dollar": 0.0122
   }
  },
- "live_minus_display_c": -0.9
+ "live_minus_display_c": -0.9,
+ "entries_read_late": 0
 }
