@@ -1,65 +1,65 @@
 {
  "entries": {
   "binance-ref-BTC": {
-   "ticks": 46,
+   "ticks": 47,
    "enters": 0,
    "exits": 0,
    "funding": 0,
    "costs": 0,
    "net": 0,
    "first_ts": 1792220119.6114893,
-   "last_ts": 1792905874.2224004,
+   "last_ts": 1792923251.2174566,
    "in_pos_frac": 0.0,
    "last_signal": null
   },
   "coinbase-BTC": {
-   "ticks": 46,
+   "ticks": 47,
    "enters": 1,
    "exits": 0,
-   "funding": 0.265,
+   "funding": 0.28300000000000003,
    "costs": 8.281214134702507,
-   "net": -8.016214134702507,
+   "net": -7.998214134702507,
    "first_ts": 1792220119.6114893,
-   "last_ts": 1792905874.2224004,
-   "in_pos_frac": 0.4782608695652174,
-   "last_signal": 0.10329500000000001
+   "last_ts": 1792923251.2174566,
+   "in_pos_frac": 0.48936170212765956,
+   "last_signal": 0.106945
   },
   "coinbase-ETH": {
-   "ticks": 46,
+   "ticks": 47,
    "enters": 1,
    "exits": 0,
    "funding": 0.165,
    "costs": 8.728272251308901,
    "net": -8.563272251308902,
    "first_ts": 1792220119.6114893,
-   "last_ts": 1792905874.2224004,
-   "in_pos_frac": 0.2608695652173913,
-   "last_signal": 0.115705
+   "last_ts": 1792923251.2174566,
+   "in_pos_frac": 0.2765957446808511,
+   "last_signal": 0.11169000000000001
   },
   "kraken-BTC": {
-   "ticks": 46,
+   "ticks": 47,
    "enters": 1,
    "exits": 0,
-   "funding": 1.6,
+   "funding": 1.7000000000000002,
    "costs": 4.269227470440483,
-   "net": -2.669227470440483,
+   "net": -2.5692274704404827,
    "first_ts": 1792220119.6114893,
-   "last_ts": 1792905874.2224004,
-   "in_pos_frac": 0.8260869565217391,
+   "last_ts": 1792923251.2174566,
+   "in_pos_frac": 0.8297872340425532,
    "last_signal": 0.1095
   },
   "kraken-ETH": {
-   "ticks": 46,
+   "ticks": 47,
    "enters": 1,
    "exits": 0,
-   "funding": 1.6,
+   "funding": 1.7000000000000002,
    "costs": 4.2018772323282665,
-   "net": -2.6018772323282664,
+   "net": -2.5018772323282663,
    "first_ts": 1792220119.6114893,
-   "last_ts": 1792905874.2224004,
-   "in_pos_frac": 0.8260869565217391,
+   "last_ts": 1792923251.2174566,
+   "in_pos_frac": 0.8297872340425532,
    "last_signal": 0.1095
   }
  },
- "live_rows": 176
+ "live_rows": 182
 }
