@@ -1,6 +1,6 @@
 # Carry paper ledger (signals only, no orders)
 
-generated 2026-10-25T05:24:41.200007+00:00
+generated 2026-10-25T08:35:27.913805+00:00
 
 | entry | ticks | enters | exits | in-pos share | funding $ | costs $ | net $ | last signal (ann) | since |
 |---|---|---|---|---|---|---|---|---|---|
