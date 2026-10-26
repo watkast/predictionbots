@@ -7984,6 +7984,13 @@
 "slug": "cpc-btc-updown-15m-2026-10-25-2330z",
 "window_start": 1792971000,
 "checks": [],
+"entry": null,
+"settled": "no_entry"
+},
+"cpc-btc-updown-15m-2026-10-26-0130z": {
+"slug": "cpc-btc-updown-15m-2026-10-26-0130z",
+"window_start": 1792978200,
+"checks": [],
 "entry": null
 }
 }
