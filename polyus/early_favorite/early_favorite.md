@@ -1,23 +1,23 @@
 # Early Favorite v2 - forward test
 
 Rule (frozen): at 2:00 elapsed (13:00 left), else 3:00, buy the leading side if its ask is 0.80-0.95; $100 per round; hold to settlement; taker fee 0.0695*p*(1-p). Paper only.
-Forward test started 2026-10-23T00:00:00Z. Updated 2026-10-26T00:16:52Z.
+Forward test started 2026-10-23T00:00:00Z. Updated 2026-10-26T06:08:04Z.
 
-**Too early to judge: 46 of the ~150 rounds (about a week) needed.**
+**Too early to judge: 48 of the ~150 rounds (about a week) needed.**
 
 | | Forward | Backtest (Oct 6-22) |
 |---|---|---|
-| Rounds | 46 | 272 |
-| Win rate | 84.8% | 89.3% |
-| Break-even win rate at prices paid | 85.6% | - |
+| Rounds | 48 | 272 |
+| Win rate | 85.4% | 89.3% |
+| Break-even win rate at prices paid | 85.5% | - |
 | Average ask | 0.847 | 0.838 |
-| Net at $100/round | $-51.62 | $+1,486 |
-| Per round | -1.12% | +5.46% |
+| Net at $100/round | $-14.32 | $+1,486 |
+| Per round | -0.30% | +5.46% |
 | Max drawdown | $-332.83 | $-403 |
 | Longest losing streak | 2 | 2 |
 | Entry timing | 13:00 / 12:00 left | same |
 
-Rounds where the rule did not trigger: 242. Pending (not settled or not fetched yet): 2.
+Rounds where the rule did not trigger: 264. Pending (not settled or not fetched yet): 1.
 
 ## By day (UTC)
 
@@ -26,6 +26,7 @@ Rounds where the rule did not trigger: 242. Pending (not settled or not fetched 
 | 2026-10-23 | $-138.09 |
 | 2026-10-24 | $-72.04 |
 | 2026-10-25 | $+158.51 |
+| 2026-10-26 | $+37.30 |
 
 ## Chart pull at the check (parallel column - not part of the rule)
 
@@ -33,7 +34,7 @@ Pull = EMA 9/21 and Supertrend on BRTI 1-minute candles, as drawn by research/ma
 
 | Pull at the check | Rounds | Win rate | Net |
 |---|---|---|---|
-| with the favorite 3/3 | 35 | 88.6% | $+86.23 |
+| with the favorite 3/3 | 37 | 89.2% | $+123.53 |
 | with the favorite 1/3 | 11 | 72.7% | $-137.85 |
 | against the favorite | 0 | - | $+0.00 |
 
@@ -41,8 +42,6 @@ Pull = EMA 9/21 and Supertrend on BRTI 1-minute candles, as drawn by research/ma
 
 | Window (UTC) | Min | Side | Ask | Pull | Result | P&L | Running |
 |---|---|---|---|---|---|---|---|
-| 10-24 13:30 | 2 | Down | 0.86 | +3 | won | $+15.31 | $-245.28 |
-| 10-24 14:15 | 2 | Down | 0.93 | +3 | won | $+7.04 | $-238.24 |
 | 10-24 20:00 | 2 | Up | 0.86 | +3 | won | $+15.31 | $-222.93 |
 | 10-24 23:30 | 3 | Up | 0.88 | +3 | won | $+12.80 | $-210.13 |
 | 10-25 00:00 | 3 | Down | 0.80 | +1 | won | $+23.61 | $-186.52 |
@@ -61,3 +60,5 @@ Pull = EMA 9/21 and Supertrend on BRTI 1-minute candles, as drawn by research/ma
 | 10-25 21:45 | 2 | Down | 0.88 | +3 | won | $+12.80 | $-86.83 |
 | 10-25 22:00 | 2 | Up | 0.89 | +1 | won | $+11.60 | $-75.23 |
 | 10-25 22:15 | 3 | Up | 0.80 | +1 | won | $+23.61 | $-51.62 |
+| 10-26 00:45 | 3 | Down | 0.82 | +3 | won | $+20.70 | $-30.92 |
+| 10-26 04:30 | 3 | Up | 0.85 | +3 | won | $+16.60 | $-14.32 |
