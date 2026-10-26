@@ -60,5 +60,7 @@ jobs:
             sleep 600
             publish || true
           done
-          wait $pid || true
+          wait $pid; rc=$?
           publish
+          # a crashed watcher must fail the run, not hide behind a successful publish
+          exit $rc

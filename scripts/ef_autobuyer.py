@@ -233,7 +233,7 @@ def run(out: Path, minutes: float):
                     e["check"] = chk
                     rec["entry"] = e
             rec["checks"].append(c)
-            print(f"{iso(t0)} {slug} check@{chk}s -> {c.get('fav')} {c.get('fav_ask')} "
+            print(f"{iso(t_read)} {slug} check@{chk}s -> {c.get('fav')} {c.get('fav_ask')} "
                   f"{'ENTRY ' + json.dumps(rec['entry']['fills']['100']) if rec['entry'] else 'no entry'}", flush=True)
             save(out, led)
             if errors:
