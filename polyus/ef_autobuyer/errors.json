@@ -1,83 +1,5 @@
 [
  {
-  "t": "2026-10-26T13:32:40Z",
-  "path": "/v1/markets/cpc-btc-updown-15m-2026-10-26-1330z/book",
-  "status": 404,
-  "body": "{\"code\":5,\"message\":\"market with slug \\\"cpc-btc-updown-15m-2026-10-26-1330z\\\" not found\",\"details\":[]}"
- },
- {
-  "t": "2026-10-26T14:02:00Z",
-  "path": "/v1/markets/cpc-btc-updown-15m-2026-10-26-1400z/book",
-  "status": 404,
-  "body": "{\"code\":5,\"message\":\"market with slug \\\"cpc-btc-updown-15m-2026-10-26-1400z\\\" not found\",\"details\":[]}"
- },
- {
-  "t": "2026-10-26T14:02:05Z",
-  "path": "/v1/markets/cpc-btc-updown-15m-2026-10-26-1400z/book",
-  "status": 404,
-  "body": "{\"code\":5,\"message\":\"market with slug \\\"cpc-btc-updown-15m-2026-10-26-1400z\\\" not found\",\"details\":[]}"
- },
- {
-  "t": "2026-10-26T14:02:10Z",
-  "path": "/v1/markets/cpc-btc-updown-15m-2026-10-26-1400z/book",
-  "status": 404,
-  "body": "{\"code\":5,\"message\":\"market with slug \\\"cpc-btc-updown-15m-2026-10-26-1400z\\\" not found\",\"details\":[]}"
- },
- {
-  "t": "2026-10-26T14:02:15Z",
-  "path": "/v1/markets/cpc-btc-updown-15m-2026-10-26-1400z/book",
-  "status": 404,
-  "body": "{\"code\":5,\"message\":\"market with slug \\\"cpc-btc-updown-15m-2026-10-26-1400z\\\" not found\",\"details\":[]}"
- },
- {
-  "t": "2026-10-26T14:02:20Z",
-  "path": "/v1/markets/cpc-btc-updown-15m-2026-10-26-1400z/book",
-  "status": 404,
-  "body": "{\"code\":5,\"message\":\"market with slug \\\"cpc-btc-updown-15m-2026-10-26-1400z\\\" not found\",\"details\":[]}"
- },
- {
-  "t": "2026-10-26T14:17:00Z",
-  "path": "/v1/markets/cpc-btc-updown-15m-2026-10-26-1415z/book",
-  "status": 404,
-  "body": "{\"code\":5,\"message\":\"market with slug \\\"cpc-btc-updown-15m-2026-10-26-1415z\\\" not found\",\"details\":[]}"
- },
- {
-  "t": "2026-10-26T14:17:05Z",
-  "path": "/v1/markets/cpc-btc-updown-15m-2026-10-26-1415z/book",
-  "status": 404,
-  "body": "{\"code\":5,\"message\":\"market with slug \\\"cpc-btc-updown-15m-2026-10-26-1415z\\\" not found\",\"details\":[]}"
- },
- {
-  "t": "2026-10-26T14:17:10Z",
-  "path": "/v1/markets/cpc-btc-updown-15m-2026-10-26-1415z/book",
-  "status": 404,
-  "body": "{\"code\":5,\"message\":\"market with slug \\\"cpc-btc-updown-15m-2026-10-26-1415z\\\" not found\",\"details\":[]}"
- },
- {
-  "t": "2026-10-26T14:17:15Z",
-  "path": "/v1/markets/cpc-btc-updown-15m-2026-10-26-1415z/book",
-  "status": 404,
-  "body": "{\"code\":5,\"message\":\"market with slug \\\"cpc-btc-updown-15m-2026-10-26-1415z\\\" not found\",\"details\":[]}"
- },
- {
-  "t": "2026-10-26T14:17:20Z",
-  "path": "/v1/markets/cpc-btc-updown-15m-2026-10-26-1415z/book",
-  "status": 404,
-  "body": "{\"code\":5,\"message\":\"market with slug \\\"cpc-btc-updown-15m-2026-10-26-1415z\\\" not found\",\"details\":[]}"
- },
- {
-  "t": "2026-10-26T14:17:25Z",
-  "path": "/v1/markets/cpc-btc-updown-15m-2026-10-26-1415z/book",
-  "status": 404,
-  "body": "{\"code\":5,\"message\":\"market with slug \\\"cpc-btc-updown-15m-2026-10-26-1415z\\\" not found\",\"details\":[]}"
- },
- {
-  "t": "2026-10-26T14:17:30Z",
-  "path": "/v1/markets/cpc-btc-updown-15m-2026-10-26-1415z/book",
-  "status": 404,
-  "body": "{\"code\":5,\"message\":\"market with slug \\\"cpc-btc-updown-15m-2026-10-26-1415z\\\" not found\",\"details\":[]}"
- },
- {
   "t": "2026-10-26T14:17:35Z",
   "path": "/v1/markets/cpc-btc-updown-15m-2026-10-26-1415z/book",
   "status": 404,
@@ -298,5 +220,83 @@
   "path": "/v1/markets/cpc-btc-updown-15m-2026-10-26-1530z/book",
   "status": 404,
   "body": "{\"code\":5,\"message\":\"market with slug \\\"cpc-btc-updown-15m-2026-10-26-1530z\\\" not found\",\"details\":[]}"
+ },
+ {
+  "t": "2026-10-26T15:47:00Z",
+  "path": "/v1/markets/cpc-btc-updown-15m-2026-10-26-1545z/book",
+  "status": 404,
+  "body": "{\"code\":5,\"message\":\"market with slug \\\"cpc-btc-updown-15m-2026-10-26-1545z\\\" not found\",\"details\":[]}"
+ },
+ {
+  "t": "2026-10-26T15:47:05Z",
+  "path": "/v1/markets/cpc-btc-updown-15m-2026-10-26-1545z/book",
+  "status": 404,
+  "body": "{\"code\":5,\"message\":\"market with slug \\\"cpc-btc-updown-15m-2026-10-26-1545z\\\" not found\",\"details\":[]}"
+ },
+ {
+  "t": "2026-10-26T15:47:10Z",
+  "path": "/v1/markets/cpc-btc-updown-15m-2026-10-26-1545z/book",
+  "status": 404,
+  "body": "{\"code\":5,\"message\":\"market with slug \\\"cpc-btc-updown-15m-2026-10-26-1545z\\\" not found\",\"details\":[]}"
+ },
+ {
+  "t": "2026-10-26T15:47:15Z",
+  "path": "/v1/markets/cpc-btc-updown-15m-2026-10-26-1545z/book",
+  "status": 404,
+  "body": "{\"code\":5,\"message\":\"market with slug \\\"cpc-btc-updown-15m-2026-10-26-1545z\\\" not found\",\"details\":[]}"
+ },
+ {
+  "t": "2026-10-26T15:47:20Z",
+  "path": "/v1/markets/cpc-btc-updown-15m-2026-10-26-1545z/book",
+  "status": 404,
+  "body": "{\"code\":5,\"message\":\"market with slug \\\"cpc-btc-updown-15m-2026-10-26-1545z\\\" not found\",\"details\":[]}"
+ },
+ {
+  "t": "2026-10-26T15:47:25Z",
+  "path": "/v1/markets/cpc-btc-updown-15m-2026-10-26-1545z/book",
+  "status": 404,
+  "body": "{\"code\":5,\"message\":\"market with slug \\\"cpc-btc-updown-15m-2026-10-26-1545z\\\" not found\",\"details\":[]}"
+ },
+ {
+  "t": "2026-10-26T15:47:30Z",
+  "path": "/v1/markets/cpc-btc-updown-15m-2026-10-26-1545z/book",
+  "status": 404,
+  "body": "{\"code\":5,\"message\":\"market with slug \\\"cpc-btc-updown-15m-2026-10-26-1545z\\\" not found\",\"details\":[]}"
+ },
+ {
+  "t": "2026-10-26T15:47:35Z",
+  "path": "/v1/markets/cpc-btc-updown-15m-2026-10-26-1545z/book",
+  "status": 404,
+  "body": "{\"code\":5,\"message\":\"market with slug \\\"cpc-btc-updown-15m-2026-10-26-1545z\\\" not found\",\"details\":[]}"
+ },
+ {
+  "t": "2026-10-26T15:47:40Z",
+  "path": "/v1/markets/cpc-btc-updown-15m-2026-10-26-1545z/book",
+  "status": 404,
+  "body": "{\"code\":5,\"message\":\"market with slug \\\"cpc-btc-updown-15m-2026-10-26-1545z\\\" not found\",\"details\":[]}"
+ },
+ {
+  "t": "2026-10-26T15:48:00Z",
+  "path": "/v1/markets/cpc-btc-updown-15m-2026-10-26-1545z/book",
+  "status": 404,
+  "body": "{\"code\":5,\"message\":\"market with slug \\\"cpc-btc-updown-15m-2026-10-26-1545z\\\" not found\",\"details\":[]}"
+ },
+ {
+  "t": "2026-10-26T15:48:05Z",
+  "path": "/v1/markets/cpc-btc-updown-15m-2026-10-26-1545z/book",
+  "status": 404,
+  "body": "{\"code\":5,\"message\":\"market with slug \\\"cpc-btc-updown-15m-2026-10-26-1545z\\\" not found\",\"details\":[]}"
+ },
+ {
+  "t": "2026-10-26T15:48:10Z",
+  "path": "/v1/markets/cpc-btc-updown-15m-2026-10-26-1545z/book",
+  "status": 404,
+  "body": "{\"code\":5,\"message\":\"market with slug \\\"cpc-btc-updown-15m-2026-10-26-1545z\\\" not found\",\"details\":[]}"
+ },
+ {
+  "t": "2026-10-26T15:48:15Z",
+  "path": "/v1/markets/cpc-btc-updown-15m-2026-10-26-1545z/book",
+  "status": 404,
+  "body": "{\"code\":5,\"message\":\"market with slug \\\"cpc-btc-updown-15m-2026-10-26-1545z\\\" not found\",\"details\":[]}"
  }
 ]
