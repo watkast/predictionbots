@@ -6,8 +6,9 @@
 # human-gated stages.
 name: bounty-scan
 on:
-  schedule:
-    - cron: "19 6 * * 2"      # Tuesdays 06:19 UTC
+  # Schedule disabled 2026-10-26: bug-bounty venture cancelled (expected $0; one platform ban ends it). Re-enable by uncommenting; workflow_dispatch still works.
+  # schedule:
+  #   - cron: "19 6 * * 2"      # Tuesdays 06:19 UTC
   workflow_dispatch:
     inputs:
       only:

@@ -54,3 +54,34 @@ def test_pull_column(tmp_path):
     assert ledger[0]["side"] == "Down" and ledger[0]["pull"] == -3 and ledger[0]["won"] == 1
     s = summarize(ledger, pending, skipped, WS)
     assert [p["rounds"] for p in s["pull"]] == [0, 0, 1]
+
+
+def test_cut_column(tmp_path):
+    from scripts.early_favorite_tracker import CUT
+    (tmp_path / "price_history").mkdir()
+    mk = [
+        # Up 0.85 at 2:00; at 10:00 elapsed the Down ask is 0.70 -> Up bid 0.30 < 0.45 -> cut; Up then loses at settlement
+        _round(tmp_path, "a", WS, {2: (0.85, 0.16), 10: (0.31, 0.70)}, 100, 99),
+        # Up 0.85; at 10:00 Up bid is 0.90 -> no cut; wins
+        _round(tmp_path, "b", WS + 900, {2: (0.85, 0.16), 10: (0.91, 0.10)}, 100, 101),
+        # Down 0.82; at 10:00 the Up ask is 0.60 -> Down bid 0.40 -> cut; Down then WINS (the cut gives the win away)
+        _round(tmp_path, "c", WS + 1800, {2: (0.19, 0.82), 10: (0.60, 0.41)}, 100, 99),
+        # Up 0.85, no 10:00 price stored -> column empty
+        _round(tmp_path, "d", WS + 2700, {2: (0.85, 0.16)}, 100, 101),
+    ]
+    (tmp_path / "markets.json").write_text(json.dumps(mk))
+    ledger, pending, skipped = score(tmp_path, WS)
+    a, b, c, d = ledger
+    assert a["cut"] == 1 and a["bid_at_cut"] == 0.30 and a["won"] == 0
+    n = RULE["stake_usd"] / 0.85
+    px = 0.30 - CUT["slippage"]
+    exp = n * px - 100 - 0.0695 * 0.85 * 0.15 * n - 0.0695 * px * (1 - px) * n
+    assert abs(a["pnl_cut"] - exp) < 0.01 and a["pnl_cut"] > a["pnl"]          # the cut saved most of the stake
+    assert b["cut"] == 0 and b["pnl_cut"] == b["pnl"]                            # no cut -> identical to hold
+    assert c["cut"] == 1 and c["won"] == 1 and c["pnl_cut"] < c["pnl"]            # cut a winner -> worse than hold
+    assert d["bid_at_cut"] is None and d["cut"] == 0 and d["pnl_cut"] == d["pnl"]
+    s = summarize(ledger, pending, skipped, WS)
+    k = s["cut"]
+    assert k["rounds_with_price"] == 3 and k["cuts"] == 2
+    assert k["cuts_that_would_have_lost"] == 1 and k["cuts_that_would_have_won"] == 1
+    assert abs(k["cut_minus_hold_usd"] - round((a["pnl_cut"] - a["pnl"]) + (c["pnl_cut"] - c["pnl"]), 2)) < 0.02

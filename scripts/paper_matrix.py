@@ -32,6 +32,7 @@ def load_matrix(path: str | Path) -> dict:
     data = yaml.safe_load(Path(path).read_text()) or {}
     data.setdefault("defaults", {})
     data.setdefault("runs", [])
+    data.setdefault("retired", [])      # entries kept for the record; never run unless moved back to `runs`
     return data
 
 
@@ -100,16 +101,27 @@ def main() -> int:
     a = ap.parse_args()
     m = load_matrix(a.matrix)
     runs = {r["name"]: r for r in m["runs"]}
+    retired = {r["name"]: r for r in m["retired"]}
     if a.list:
+        if not m["runs"]:
+            print("no active entries")
         for r in m["runs"]:
             req = f" (requires {', '.join(r['requires_env'])})" if r.get("requires_env") else ""
             print(f"{r['name']:34s} {r['strategy']:24s} {r['venue']:11s} signals={r.get('signals') or '-'}{req}")
+        for r in m["retired"]:
+            print(f"{r['name']:34s} {r['strategy']:24s} {r['venue']:11s} RETIRED {r.get('retired_on', '')}: {r.get('reason', '')}")
         return 0
     names = list(runs) if a.all else a.entry
     if not names:
+        if a.all:
+            print("no active entries (all retired; see `retired:` in the matrix file)")
+            return 0
         ap.error("--entry NAME, --all or --list")
     unknown = [n for n in names if n not in runs]
     if unknown:
+        was = [n for n in unknown if n in retired]
+        if was:
+            print(f"retired entries (move back under `runs:` to run them): {was}", file=sys.stderr)
         print(f"unknown entries: {unknown}; known: {list(runs)}", file=sys.stderr)
         return 2
     rc = 0

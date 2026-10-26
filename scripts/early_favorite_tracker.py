@@ -40,6 +40,11 @@ RULE = {
     "fee_coef": 0.0695,
     "hold": "settlement",
 }
+# PARALLEL column, not part of the frozen rule: what if the position were sold at 5:00 left when the
+# favorite's bid has fallen under CUT["bid_below"]? Scored next to hold-to-settlement on the same rounds.
+# Backtest Oct 6-22 (272 trades): +$150-220 over holding, i.e. under 1% of the money staked, and found
+# in-sample, so it is being forward-tested here, not traded. Exit = taker sell at bid - slippage, taker fee.
+CUT = {"minute": 10, "bid_below": 0.45, "slippage": 0.02}
 FORWARD_START = "2026-10-23T00:00:00Z"   # v2 forward test; v1 (wrong minutes) ran 2026-10-22T08:30Z to 10-23T00:00Z
 # Re-tested at the true 2:00/3:00-elapsed timing on 2026-10-06 .. 2026-10-22 (1590 settled rounds)
 BACKTEST = {"period": "2026-10-06 to 2026-10-22", "rounds": 272, "win_rate": 0.893, "avg_ask": 0.838,
@@ -136,9 +141,19 @@ def score(root: Path, start_ts: float):
         # chart pull at the check, signed against the favorite: +3 = all three trend parts with it, -3 = all against
         p = pulls.get(ws + 60 * (entry["minute"] - 1))      # the 1-minute candle that closes at the check
         pull = None if p is None else p * (1 if entry["side"] == "Up" else -1)
+        # parallel column: the 5:00-left cut (see CUT). The favorite's bid = 1 - the other side's ask.
+        bid_at_cut, pnl_cut, cut = None, pnl, 0
+        hc = hist.get(ws + 60 * (CUT["minute"] - lag))
+        if hc is not None:
+            bid_at_cut = (1 - float(hc["shortPrice"])) if entry["side"] == "Up" else (1 - float(hc["longPrice"]))
+            if bid_at_cut < CUT["bid_below"]:
+                px = max(bid_at_cut - CUT["slippage"], 0.01)
+                pnl_cut = n * px - RULE["stake_usd"] - fee - RULE["fee_coef"] * px * (1 - px) * n
+                cut = 1
         ledger.append(dict(slug=d["slug"], window_start=iso(ws), minute=entry["minute"], side=entry["side"],
                            ask=round(entry["ask"], 3), price_to_beat=ptb, settlement=sp,
-                           won=int(won), contracts=round(n, 2), fee=round(fee, 2), pnl=round(pnl, 2), pull=pull))
+                           won=int(won), contracts=round(n, 2), fee=round(fee, 2), pnl=round(pnl, 2), pull=pull,
+                           bid_at_cut=None if bid_at_cut is None else round(bid_at_cut, 2), cut=cut, pnl_cut=round(pnl_cut, 2)))
     ledger.sort(key=lambda r: r["window_start"])
     return ledger, pending, skipped
 
@@ -172,6 +187,15 @@ def summarize(ledger, pending, skipped, start_ts):
         pull_rows.append({"pull": label, "rounds": len(g),
                           "win_rate": round(sum(r["won"] for r in g) / len(g), 4) if g else None,
                           "net_usd": round(sum(r["pnl"] for r in g), 2)})
+    # parallel column: the 5:00-left cut vs holding, on the rounds where the 5:00-left price is known
+    scored = [r for r in ledger if r.get("bid_at_cut") is not None]
+    cuts = [r for r in scored if r.get("cut")]
+    cut_row = {"rule": CUT, "rounds_with_price": len(scored), "cuts": len(cuts),
+               "cuts_that_would_have_lost": sum(1 for r in cuts if not r["won"]),
+               "cuts_that_would_have_won": sum(1 for r in cuts if r["won"]),
+               "net_usd_hold": round(sum(r["pnl"] for r in scored), 2),
+               "net_usd_cut": round(sum(r["pnl_cut"] for r in scored), 2)}
+    cut_row["cut_minus_hold_usd"] = round(cut_row["net_usd_cut"] - cut_row["net_usd_hold"], 2)
     return {
         "rule": RULE, "forward_start": iso(start_ts), "generated": iso(datetime.now(timezone.utc).timestamp()),
         "rounds_scored": n, "rounds_skipped_rule_not_met": skipped, "rounds_pending": len(pending),
@@ -184,6 +208,7 @@ def summarize(ledger, pending, skipped, start_ts):
         "z_vs_backtest_win_rate": round(z, 2) if z is not None else None,
         "backtest": BACKTEST,
         "pull": pull_rows,
+        "cut": cut_row,
     }
 
 
@@ -200,7 +225,8 @@ def verdict(s):
 
 def write(out: Path, ledger, pending, s):
     out.mkdir(parents=True, exist_ok=True)
-    cols = ["window_start", "slug", "minute", "side", "ask", "price_to_beat", "settlement", "won", "contracts", "fee", "pnl", "cum_pnl", "pull"]
+    cols = ["window_start", "slug", "minute", "side", "ask", "price_to_beat", "settlement", "won", "contracts", "fee", "pnl", "cum_pnl", "pull",
+            "bid_at_cut", "cut", "pnl_cut"]
     with open(out / "early_favorite_ledger.csv", "w", newline="") as fh:
         w = csv.DictWriter(fh, fieldnames=cols)
         w.writeheader()
@@ -248,6 +274,18 @@ def write(out: Path, ledger, pending, s):
         "| Pull at the check | Rounds | Win rate | Net |",
         "|---|---|---|---|",
     ] + [f"| {p['pull']} | {p['rounds']} | {pct(p['win_rate'])} | ${p['net_usd']:+,.2f} |" for p in s.get("pull", [])] + [
+        "",
+        "## Cut at 5:00 left (parallel column - not part of the rule)",
+        "",
+        f"What if the position were sold at {15 - CUT['minute']}:00 left whenever the favorite's bid is under {CUT['bid_below'] * 100:.0f}c "
+        f"(sold {CUT['slippage'] * 100:.0f}c under the bid, taker fee)? Backtest Oct 6-22: about +$150-220 over holding on 272 trades, under 1% of the money "
+        "staked and found in-sample. This is its forward test; the traded rule stays hold-to-settlement.",
+        "",
+        "| | Hold (the rule) | Cut under 45c at 5:00 left |",
+        "|---|---|---|",
+        f"| Rounds with a 5:00-left price | {s['cut']['rounds_with_price']} | same |",
+        f"| Positions cut | - | {s['cut']['cuts']} ({s['cut']['cuts_that_would_have_lost']} would have lost, {s['cut']['cuts_that_would_have_won']} would have won) |",
+        f"| Net at $100/round | ${s['cut']['net_usd_hold']:+,.2f} | ${s['cut']['net_usd_cut']:+,.2f} ({s['cut']['cut_minus_hold_usd']:+,.2f}) |",
         "",
         "## Last 20 rounds",
         "",

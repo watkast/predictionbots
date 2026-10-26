@@ -40,6 +40,14 @@ never more generous than a backtest fill:
 
 ## Strategies (`pb/strategies/`, params in `configs/<name>.yaml`)
 
+**2026-10-26: the whole paper matrix below is retired.** Seven paper days against live books: every
+maker model lost or never filled, both taker baselines lost as designed, ORACLE-LAG lost heavily
+(final table in `reports/README.md`; entries kept under `retired:` in `configs/paper_matrix.yaml`;
+the paper / record / backtest / carry / bounty schedules are off, `workflow_dispatch` only). The one
+live line of research is **Early Favorite** on Polymarket US 15-min BTC: `research/early_favorite_playbook.md`,
+`scripts/early_favorite_tracker.py` (forward test, `polyus.yml`), `scripts/ef_autobuyer.py` (live-book
+paper fills, `ef-autobuyer.yml`), `research/early_favorite_signal.pine` (the TradingView HUD).
+
 | name | idea | evidence (one line) |
 |---|---|---|
 | `mm_inventory` | inventory-skewed, VPIN-gated passive MM, any series | makers +1.9c/contract on Kalshi single-name markets (Bartlett & O'Hara 2026); ~70% of active Polymarket makers profitable (TUM 2025) |

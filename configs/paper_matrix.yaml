@@ -5,6 +5,13 @@
 # (passed as `--set k=v`); `args` are extra scripts/paper.py flags. `roll_secs` is how
 # often the market selector is re-run during the run so newly listed markets (the next
 # KXBTC15M window, the next day's weather ladder) join and settled ones leave.
+#
+# 2026-10-26: the whole matrix is RETIRED (see `retired:` below and reports/README.md for the
+# final leaderboard). Seven paper days against live books: every maker model lost or never
+# filled, both taker baselines lost as designed, ORACLE-LAG lost heavily. The only live
+# research is the Early Favorite line (scripts/early_favorite_tracker.py, scripts/ef_autobuyer.py,
+# workflows polyus.yml / ef-autobuyer.yml). To revive an entry, move it back under `runs:` and
+# re-enable the cron in .github/workflows/paper.yml (and record.yml / backtest.yml if wanted).
 defaults:
   duration: 3300          # seconds (fits a GitHub Actions hourly job)
   roll_secs: 60
@@ -14,8 +21,12 @@ defaults:
   max_capital_per_market: 500
   record: true
 
-runs:
+runs: []
+
+retired:
   - name: mm_crypto_twap_kxbtc15m
+    retired_on: 2026-10-26
+    reason: "-$52.00 on $41 peak collateral over 5 paper days (79 fills, 100% maker). Final leaderboard in reports/README.md."
     strategy: mm_crypto_twap
     venue: kalshi
     select: {kalshi_series: [KXBTC15M], top: 2}
@@ -24,6 +35,8 @@ runs:
     note: Model 2 on the two most-traded live 15-min BTC windows (rolls to the next window); needs btc_index + twap60.
 
   - name: mm_inventory_kxhigh
+    retired_on: 2026-10-26
+    reason: "-$36.13 on $302 (-12%) over 7 paper days, 1,108 maker fills; bleed slowed after Oct 17 but never turned positive."
     strategy: mm_inventory
     venue: kalshi
     select: {kalshi_series: [KXHIGHNY, KXHIGHMIA, KXHIGHCHI], top: 3}
@@ -32,6 +45,8 @@ runs:
     note: Model 1 passive MM across three daily-high ladders (zero maker fee).
 
   - name: mm_weather_ladder_kxhighny
+    retired_on: 2026-10-26
+    reason: "-$23.53 on $58 over 7 paper days (189 maker fills)."
     strategy: mm_weather_ladder
     venue: kalshi
     select: {kalshi_series: [KXHIGHNY], top: 8}
@@ -40,6 +55,8 @@ runs:
     note: Model 3; Open-Meteo ensemble -> fcst_prob per rung. Add nws:KNYC for the obs verdict.
 
   - name: favorite_maker_kalshi_scan
+    retired_on: 2026-10-26
+    reason: "Zero fills in 94 paper hours; the selector/quotes never met the market."
     strategy: favorite_maker
     venue: kalshi
     select: {kalshi_scan: nonsports, top: 20}
@@ -48,6 +65,8 @@ runs:
     note: Model 4 on the 20 most active non-sports Kalshi markets.
 
   - name: endgame_bond_kalshi
+    retired_on: 2026-10-26
+    reason: "Zero fills in 94 paper hours."
     strategy: endgame_bond
     venue: kalshi
     select: {kalshi_scan: all, top: 30}
@@ -56,6 +75,8 @@ runs:
     note: Model 5; the strategy itself filters to allowed series/categories and the final hours.
 
   - name: sharp_line_maker_kxnflgame
+    retired_on: 2026-10-26
+    reason: "Parked, never started: no ODDS_API_KEY. Decision 2026-10-26: not worth the owner's time while no prediction-market model has shown an edge; revive if Early Favorite graduates and a second venue is wanted."
     strategy: sharp_line_maker
     venue: kalshi
     select: {kalshi_series: [KXNFLGAME], top: 6}
@@ -65,6 +86,8 @@ runs:
     note: Model 6; de-vigged Pinnacle/consensus sharp_prob via The Odds API, game_state via ESPN.
 
   - name: complete_set_arb_polymarket
+    retired_on: 2026-10-26
+    reason: "-$128.82 on $213 over 7 paper days (57 taker fills); taker fees eat the sets, as the literature said."
     strategy: complete_set_arb
     venue: polymarket
     select: {poly_events: true, top: 5}
@@ -73,6 +96,8 @@ runs:
     note: Model 7 on the five highest-volume Polymarket events (neg-risk -> mutually_exclusive).
 
   - name: mm_inventory_poly_crypto15m
+    retired_on: 2026-10-26
+    reason: "-$493.12; 100% of maker fills were cross-assumed (no prints), so the data could not even test it. HALTED by daily loss repeatedly."
     strategy: mm_inventory
     venue: polymarket
     select: {poly_crypto_15m: true, top: 2}
@@ -81,6 +106,8 @@ runs:
     note: Model 1 on Polymarket 5/15-min up-or-down markets found by slug (btc-updown-15m-<epoch>), rolling.
 
   - name: taker_lag_kxbtc15m
+    retired_on: 2026-10-26
+    reason: "Control group, lost as designed: about -$55 per 5.5 h run, -$331.52 total. Fee drag confirmed; nothing more to learn."
     strategy: taker_lag
     venue: kalshi
     select: {kalshi_series: [KXBTC15M], top: 2}
@@ -90,6 +117,8 @@ runs:
     note: Baseline T1 (expected to lose after fees); size 1.
 
   - name: taker_momentum_kxbtc15m
+    retired_on: 2026-10-26
+    reason: "Control group; never fired in 72 paper hours."
     strategy: taker_momentum
     venue: kalshi
     select: {kalshi_series: [KXBTC15M], top: 2}
@@ -99,6 +128,8 @@ runs:
     note: Baseline T2 (expected to lose after fees); size 1.
 
   - name: sharp_line_maker_novig_nfl
+    retired_on: 2026-10-26
+    reason: "Parked, never started: no NOVIG_API_KEY / NOVIG_SECRET / ODDS_API_KEY. Decision 2026-10-26: same as sharp_line_maker_kxnflgame."
     strategy: sharp_line_maker
     venue: novig
     select: {top: 6}
@@ -114,6 +145,8 @@ runs:
       pull_before_close (close_ts = kickoff) matters. Needs a Novig trading key for the signed WS.
 
   - name: oracle_lag_poly_btc15m
+    retired_on: 2026-10-26
+    reason: "-$1,282.30 over 4 paper days (69 fills); won 4-14% of markets. Matches reports/oracle_lag_backtest.md."
     strategy: oracle_lag
     venue: polymarket
     select: {poly_crypto_15m: true, top: 2}
@@ -125,6 +158,8 @@ runs:
     note: ORACLE-LAG v4 (user's docx/Pine rule) on Polymarket btc-updown-15m, $300 IOC at <=0.85 then rest a sell at 0.88. Expected to lose (reports/oracle_lag_backtest.md).
 
   - name: oracle_lag_kxbtc15m
+    retired_on: 2026-10-26
+    reason: "-$1,387.65 over 5 paper days (255 fills); HALTED by the $300 daily-loss limit."
     strategy: oracle_lag
     venue: kalshi
     select: {kalshi_series: [KXBTC15M], top: 2}

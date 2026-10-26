@@ -3,8 +3,9 @@
 # reports/README.md on main is regenerated each run. No real money anywhere.
 name: paper
 on:
-  schedule:
-    - cron: "23 */6 * * *"
+  # Schedule disabled 2026-10-26: paper matrix retired (configs/paper_matrix.yaml `retired:`); every model lost or never filled in 7 paper days. Re-enable by uncommenting; workflow_dispatch still works.
+  # schedule:
+  #   - cron: "23 */6 * * *"
   workflow_dispatch:
     inputs:
       entry:

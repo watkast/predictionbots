@@ -3,9 +3,10 @@
 # orders). Data lives on the `data` branch under carry/; reports on main.
 name: carry
 on:
-  schedule:
-    - cron: "41 * * * *"      # hourly paper tick
-    - cron: "17 3 * * *"      # nightly download + backtest
+  # Schedule disabled 2026-10-26: funding carry parked: excess over T-bills ~0 since 2022, paper ticks net negative; revive if funding stays >20%/yr. Re-enable by uncommenting; workflow_dispatch still works.
+  # schedule:
+  #   - cron: "41 * * * *"      # hourly paper tick
+  #   - cron: "17 3 * * *"      # nightly download + backtest
   workflow_dispatch:
     inputs:
       job:

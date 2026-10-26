@@ -4,8 +4,9 @@
 # replay it later with the no-fantasy-fills simulator.
 name: record
 on:
-  schedule:
-    - cron: "7 */6 * * *"
+  # Schedule disabled 2026-10-26: recordings fed the retired paper matrix; 4.6 GB already on the data branch. Re-enable by uncommenting; workflow_dispatch still works.
+  # schedule:
+  #   - cron: "7 */6 * * *"
   workflow_dispatch:
     inputs:
       seconds:

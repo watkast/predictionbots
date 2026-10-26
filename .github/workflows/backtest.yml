@@ -3,8 +3,9 @@
 # and walk-forward. Writes reports/ on main.
 name: backtest
 on:
-  schedule:
-    - cron: "41 9 * * *"
+  # Schedule disabled 2026-10-26: replays the retired matrix; nothing left to sweep. Re-enable by uncommenting; workflow_dispatch still works.
+  # schedule:
+  #   - cron: "41 9 * * *"
   workflow_dispatch:
 
 permissions:

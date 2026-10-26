@@ -79,17 +79,24 @@ def test_report_aggregates_ledgers_and_backtests(tmp_path):
 def test_paper_matrix_commands_and_env_gating(monkeypatch):
     pm = _load("paper_matrix")
     m = pm.load_matrix(ROOT / "configs" / "paper_matrix.yaml")
-    names = [r["name"] for r in m["runs"]]
+    # 2026-10-26: the matrix is retired; the entries live under `retired:` (with a dated reason) and
+    # `runs:` is empty, so the paper workflow has nothing to launch. build_command must still work on
+    # them so an entry can be moved back and run unchanged.
+    assert m["runs"] == []
+    entries = m["retired"]
+    names = [r["name"] for r in entries]
     assert "mm_crypto_twap_kxbtc15m" in names and "sharp_line_maker_kxnflgame" in names
     assert len(names) == len(set(names)) == 13
+    for r in entries:
+        assert r.get("retired_on") and r.get("reason"), r["name"]
     from pb.live.paper import _import_all_strategies
     from pb.strategies.base import REGISTRY
 
     _import_all_strategies()
-    for r in m["runs"]:
+    for r in entries:
         assert r["strategy"] in REGISTRY, r["name"]
         assert (ROOT / r["params"]).exists(), r["params"]
-    by = {r["name"]: r for r in m["runs"]}
+    by = {r["name"]: r for r in entries}
     cmd = pm.build_command(by["mm_crypto_twap_kxbtc15m"], m["defaults"], duration=42, run_id="rid")
     assert cmd[1].endswith("scripts/paper.py")
     s = " ".join(cmd)
@@ -114,15 +121,32 @@ def test_paper_matrix_commands_and_env_gating(monkeypatch):
     assert pm.missing_env(by["mm_crypto_twap_kxbtc15m"], {}) == []
     # every generated command parses with scripts/paper.py's argparser
     paper = _load("paper")
-    for r in m["runs"]:
+    for r in entries:
         argv = pm.build_command(r, m["defaults"])[2:]
         monkeypatch.setattr(sys, "argv", ["paper.py", *argv])
         a = paper.parse()
         assert a.strategy == r["strategy"] and a.venue == r["venue"]
 
 
-def test_paper_matrix_no_markets_is_skipped_not_failed(monkeypatch, capsys):
+def test_paper_matrix_retired_entries_are_listed_not_run(monkeypatch, capsys):
     pm = _load("paper_matrix")
+    monkeypatch.setattr(sys, "argv", ["paper_matrix.py", "--list"])
+    assert pm.main() == 0
+    out = capsys.readouterr().out
+    assert "no active entries" in out and "oracle_lag_kxbtc15m" in out and "RETIRED 2026-10-26" in out
+    monkeypatch.setattr(sys, "argv", ["paper_matrix.py", "--all"])
+    assert pm.main() == 0 and "no active entries" in capsys.readouterr().out
+    monkeypatch.setattr(sys, "argv", ["paper_matrix.py", "--entry", "oracle_lag_kxbtc15m"])
+    assert pm.main() == 2
+    assert "retired entries" in capsys.readouterr().err
+
+
+def test_paper_matrix_no_markets_is_skipped_not_failed(monkeypatch, capsys, tmp_path):
+    pm = _load("paper_matrix")
+    # a one-entry matrix of our own: the shipped matrix has no active runs any more
+    mx = tmp_path / "matrix.yaml"
+    mx.write_text("defaults: {duration: 10}\nruns:\n  - {name: e1, strategy: mm_inventory, venue: polymarket, "
+                  "select: {poly_crypto_15m: true, top: 2}, params: configs/mm_inventory.yaml}\n")
 
     class R:
         def __init__(self, rc):
@@ -130,7 +154,7 @@ def test_paper_matrix_no_markets_is_skipped_not_failed(monkeypatch, capsys):
 
     calls = []
     monkeypatch.setattr(pm.subprocess, "run", lambda cmd, cwd: (calls.append(cmd), R(pm.NO_MARKETS_EXIT))[1])
-    monkeypatch.setattr(sys, "argv", ["paper_matrix.py", "--entry", "mm_inventory_poly_crypto15m"])
+    monkeypatch.setattr(sys, "argv", ["paper_matrix.py", "--matrix", str(mx), "--entry", "e1"])
     assert pm.main() == 0 and calls
     assert "skipped: selector found no markets" in capsys.readouterr().out
     monkeypatch.setattr(pm.subprocess, "run", lambda cmd, cwd: R(1))
