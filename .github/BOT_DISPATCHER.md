@@ -55,6 +55,14 @@ write the plan into the ticket instead of doing it.
 Do everything except commit/push: put the full patch (unified diff, fenced) and the test output in a ticket comment,
 move the ticket to Fix, and say in the summary that push access was denied.
 
+## Board refresh (every run, after the ticket work)
+
+The owner's board is the Claude artifact at https://claude.ai/artifact/Vcn1HBEASz9u5WrXTe4ma3 (collection `board`,
+documents `tickets` and `health`). Run `python scripts/tracker.py board-docs /tmp/board` and write the two files with
+the ArtifactData tool: `set` collection `board` doc `tickets` from `/tmp/board/board_doc.json`, and `set` collection
+`board` doc `health` from `/tmp/board/health_doc.json` (read each document first and pass its `version` as
+`if_version`). Skip silently if the ArtifactData tool is not available in the session.
+
 ## Finish
 
 Summary for the owner, 2–6 plain lines: which tickets moved to which stage, anything needing the owner's decision,

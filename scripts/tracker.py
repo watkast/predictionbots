@@ -16,6 +16,7 @@ Usage (needs `gh` logged in, or GITHUB_TOKEN in Actions):
   python scripts/tracker.py close 12 --note "Live Test passed: 24 h of clean runs"
   python scripts/tracker.py list [--type error|project] [--all]
   python scripts/tracker.py board            # JSON for the board page / the bot
+  python scripts/tracker.py board-docs OUT   # OUT/board_doc.json + OUT/health_doc.json, the two documents the board artifact reads
 """
 from __future__ import annotations
 
@@ -26,6 +27,7 @@ import re
 import subprocess
 import sys
 import time
+from pathlib import Path
 
 REPO = os.environ.get("TRACKER_REPO", "watkast/predictionbots")
 
@@ -210,6 +212,21 @@ def board() -> dict:
     return out
 
 
+def board_docs(out: Path) -> list[Path]:
+    """The two documents behind the board artifact (collection `board`, docs `tickets` and `health`)."""
+    from datetime import datetime, timezone
+    out.mkdir(parents=True, exist_ok=True)
+    b = board()
+    b["generated"] = datetime.now(timezone.utc).strftime("%Y-%m-%dT%H:%M:%SZ")
+    (out / "board_doc.json").write_text(json.dumps(b))
+    r = subprocess.run(["gh", "api", "-H", "Accept: application/vnd.github.raw",
+                        f"repos/{REPO}/contents/health/status.json?ref=data"], capture_output=True, text=True)
+    health = json.loads(r.stdout) if r.returncode == 0 and r.stdout.strip() else {"generated": None, "ok": None, "checks": [],
+                                                                                 "note": "health/status.json not found on the data branch"}
+    (out / "health_doc.json").write_text(json.dumps(health))
+    return [out / "board_doc.json", out / "health_doc.json"]
+
+
 def main() -> int:
     ap = argparse.ArgumentParser(description=__doc__, formatter_class=argparse.RawDescriptionHelpFormatter)
     sub = ap.add_subparsers(dest="cmd", required=True)
@@ -223,6 +240,7 @@ def main() -> int:
     p = sub.add_parser("close"); p.add_argument("number", type=int); p.add_argument("--note", default="")
     p = sub.add_parser("list"); p.add_argument("--type", choices=["project", "error"]); p.add_argument("--all", action="store_true")
     sub.add_parser("board")
+    p = sub.add_parser("board-docs"); p.add_argument("out")
     a = ap.parse_args()
     if a.cmd == "ensure-labels":
         made = ensure_labels()
@@ -242,6 +260,9 @@ def main() -> int:
             print(f"#{i['number']:<4} {ticket_type(i):7} {ticket_stage(i) or '-':15} {ticket_bot(i) or '-':14} {i['state']:6} {i['title']}")
     elif a.cmd == "board":
         print(json.dumps(board(), indent=1))
+    elif a.cmd == "board-docs":
+        for f in board_docs(Path(a.out)):
+            print(f)
     return 0
 
 
