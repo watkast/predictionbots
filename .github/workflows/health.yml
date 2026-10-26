@@ -1,0 +1,47 @@
+# Health watchdog: every hour, check that every bot's output is fresh and that the auto-buyer is actually
+# recording checks (not just publishing). Opens P0 Error tickets for failures, marks recovered ones, and
+# publishes health/status.json to the data branch for the board. Goes red only if the watchdog itself
+# crashes (error-watch then tickets that).
+name: health
+on:
+  schedule:
+    - cron: "53 * * * *"
+  workflow_dispatch:
+
+permissions:
+  contents: write
+  issues: write
+
+concurrency:
+  group: health-${{ github.ref }}
+  cancel-in-progress: false
+
+jobs:
+  check:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with: { python-version: "3.13" }
+      - name: Data branch (ledgers, logs, previous health status)
+        run: |
+          git fetch origin data
+          git worktree add ../datawt origin/data
+      - name: Check (findings become tickets; this step is red only if the watchdog itself crashes)
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: python scripts/health_check.py --data ../datawt --state ../datawt/health --open-tickets
+      - name: Publish health/status.json
+        if: always()
+        run: |
+          cd ../datawt
+          git config user.name "predictionbots-health"
+          git config user.email "bots@users.noreply.github.com"
+          git add -A health
+          git commit -qm "health $(date -u +%FT%TZ)" || exit 0
+          for i in 1 2 3 4 5; do
+            git push -q origin HEAD:data && break
+            git fetch -q origin data && git rebase -q origin/data || git rebase --abort
+            sleep $((RANDOM % 20 + 5))
+          done

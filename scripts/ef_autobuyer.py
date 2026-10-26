@@ -386,9 +386,12 @@ def main() -> int:
     if a.cmd == "probe":
         probe(out)
         return 0
-    if a.cmd == "run":
-        run(out, a.minutes)
-    report(out, Path(a.history))
+    sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
+    from pb.errlog import guard
+    with guard("ef-autobuyer", out=out, cmd=a.cmd, minutes=a.minutes):
+        if a.cmd == "run":
+            run(out, a.minutes)
+        report(out, Path(a.history))
     return 0
 
 
