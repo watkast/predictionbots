@@ -1,6 +1,6 @@
 //@version=6
 // =============================================================================
-//  VELOCITY REACH vs TARGET  (v5.3)
+//  VELOCITY REACH vs TARGET  (v5.4)
 //  ---------------------------------------------------------------------------
 //  • Velocity      = smoothed price change per bar (signed)
 //  • Acceleration  = change in velocity per bar
@@ -42,8 +42,10 @@
 //                    of the distance the projection does NOT cover in time
 //                    (moving away = SELL 100%). Information only: the EF rule
 //                    tested Oct 6-22 was buy once and hold to the end.
-//  • Win prob      = EF HUD formula (price lead vs volatility over the time
-//                    left, k = 0.94) with optional momentum drift.
+//  • Odds          = EF HUD formula (price lead vs volatility over the time
+//                    left, k = 0.94); momentum is credited for 3 bars at most.
+//                    "NOT ON THIS PATH" is the momentum view only; the ODDS row
+//                    is the one that says how likely a cross really is.
 //  • Rounds        = each 15-min round gets its own background tint (four
 //                    rotating colors, or two alternating shades), the live
 //                    round slightly stronger, and a dashed vertical mark at
@@ -87,7 +89,7 @@ tablePos  = input.string("Middle right", "Table position",
 hudSize   = input.string("small", "Table text size", options = ["tiny", "small", "normal"], group = gH, display = display.none)
 
 gS = "Win probability"
-driftW    = input.float(0.5, "Momentum drift weight (0 = pure EF HUD estimate, 1 = full projection)",
+driftW    = input.float(0.3, "Momentum drift weight (0 = pure EF HUD estimate, 1 = full; drift is only credited for the next 3 bars)",
      minval = 0, maxval = 1, step = 0.1, group = gS, display = display.none)
 
 gB = "Round shading (15-min marks)"
@@ -242,7 +244,7 @@ dirTxt    = dir > 0 ? "UP-CROSS" : "DOWN-CROSS"
 statusTxt = atTarget ? "AT TARGET  (" + withinTxt + " left)" :
      possible ? dirTxt + " POSSIBLE ✔ in less than " + withinTxt + "  (ETA ~" + etaTxt + ")" :
      beyond   ? dirTxt + " NOT IN TIME ✘  ETA ~" + etaTxt + ", " + withinTxt + " left" :
-     dirTxt + " NOT POSSIBLE ✘ in less than " + withinTxt
+     dirTxt + " NOT ON THIS PATH ✘ in less than " + withinTxt + " (momentum view — see p)"
 sideTxt   = atTarget ? "AT TARGET" : dist < 0 ? "ABOVE by $" + fmt2(-dist) + " · UP winning" : "BELOW by $" + fmt2(dist) + " · DOWN winning"
 
 // ─────────── Win probability (EF Signal HUD formula + optional momentum drift) ───────────
@@ -252,7 +254,7 @@ r1    = math.log(close / close[1])
 sigma = ta.stdev(r1, volLen) * close             // $ per sqrt(bar)
 tau   = math.max(Nf, 0.25)
 lead  = -dist                                     // + = UP winning
-driftDisp = reachRaw - p0                         // projected move by the end of the horizon
+driftDisp = proj(p0, vel, acc, math.min(Nf, 3.0)) - p0   // momentum credited for at most 3 bars: a 10-minute extrapolation is fantasy
 pUp   = (na(target) or na(sigma) or sigma <= 0) ? float(na) : fPhi(kScale * (lead + driftW * driftDisp) / (sigma * math.sqrt(tau)))
 pMine = dir > 0 ? pUp : 1.0 - pUp                 // my side = the side that needs the cross
 
@@ -406,7 +408,7 @@ if barstate.islast and not na(reach) and not na(target)
         hudRow(3, "Reach " + fmtP(reach) + " (" + fmt2(reachPct) + "%) in " + withinTxt,                    statusCol)
         hudRow(4, tgtShort + " " + fmtP(target) + " (" + fmt2(dist / p0 * 100) + "% away) · ETA " + etaTxt, colTgt)
         hudRow(5, statusTxt,                                                                                statusCol)
-        hudRow(6, na(pUp) ? "p —" : "p UP " + fmt0(pUp * 100) + "% · DOWN " + fmt0((1.0 - pUp) * 100) + "% · cross " + fmt0(pMine * 100) + "%", color.white)
+        hudRow(6, na(pUp) ? "p —" : "ODDS (vol model)  UP " + fmt0(pUp * 100) + "% · DOWN " + fmt0((1.0 - pUp) * 100) + "% · cross " + fmt0(pMine * 100) + "%", color.white)
         hudRow(7, "Position: " + posTxt,                                                                    posCol)
 
 // ─────────────────────────── Signals & alerts ───────────────────────────
