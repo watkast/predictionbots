@@ -50,8 +50,11 @@ paper fills, `ef-autobuyer.yml`), `research/early_favorite_signal.pine` (the Tra
 Live cockpit: `research/pm15_copilot.html` (open in a browser on the iPad; also published as a claude.ai artifact) — one
 Polymarket US 15-min BTC round at a time on the Coinbase feed, with the settlement model fitted from screen recordings
 (PM's price = 60-s trailing average of spot, ~2 s delayed, plus a basis offset; the final price is that average at the
-bell and the next target is this round's settlement), the locked-outcome headline with cents on the table, safety-rated
-plays, paper bets with a sell countdown, and the next/past rounds. `scripts/pm15_relay_worker.js` is the Cloudflare
+bell and the next target is this round's settlement), a plain-English safety headline (SURE THING only when even a
+record-pace BTC move could not get the average back across the target; otherwise PROCEED WITH CAUTION / GET OUT / SELL
+NOW with the fastest possible flip and the chance before the bell), safety-rated plays, paper bets that buy the sure
+thing and sell on GET OUT, and the next/past rounds. `research/pm15_brain.pine` is the same brain as a TradingView
+indicator (one HUD, technical rows behind a switch). `scripts/pm15_relay_worker.js` is the Cloudflare
 Worker that forwards the two read-only gateway endpoints with CORS for the page.
 Companion chart tool: `research/velocity_reach_vs_target.pine` (TradingView — projects BTC's velocity /
 acceleration forward, draws a vertical reach post with a 1m/2m/3m… time ruler up through the target and
