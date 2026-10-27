@@ -1,6 +1,6 @@
 //@version=6
 // =============================================================================
-//  VELOCITY REACH vs TARGET  (v5)
+//  VELOCITY REACH vs TARGET  (v5.2)
 //  ---------------------------------------------------------------------------
 //  • Velocity      = smoothed price change per bar (signed)
 //  • Acceleration  = change in velocity per bar
@@ -80,6 +80,7 @@ gH = "HUD"
 showTable = input.bool(true, "Show info table", group = gH)
 tablePos  = input.string("Middle right", "Table position",
      options = ["Middle right", "Middle left", "Top right", "Top left", "Bottom right", "Bottom left"], group = gH, display = display.none)
+hudSize   = input.string("small", "Table text size", options = ["tiny", "small", "normal"], group = gH, display = display.none)
 
 gS = "Win probability"
 driftW    = input.float(0.5, "Momentum drift weight (0 = pure EF HUD estimate, 1 = full projection)",
@@ -122,6 +123,7 @@ tblPos(s) =>
          s == "Bottom right" ? position.bottom_right : position.bottom_left
 
 rulerTextSize = rulerSize == "tiny" ? size.tiny : rulerSize == "normal" ? size.normal : size.small
+hudTextSize   = hudSize   == "tiny" ? size.tiny : hudSize   == "normal" ? size.normal : size.small
 
 // ─────────────────── Velocity & acceleration (price per bar) ───────────────────
 rawVel = (close - close[velLen]) / velLen
@@ -207,9 +209,9 @@ etaTxt    = na(barsToTarget) ? "—" : durTxt(math.ceil(barsToTarget))
 dirTxt    = dir > 0 ? "UP-CROSS" : "DOWN-CROSS"
 statusTxt = atTarget ? "AT TARGET  (" + withinTxt + " left)" :
      possible ? dirTxt + " POSSIBLE ✔ in less than " + withinTxt + "  (ETA ~" + etaTxt + ")" :
-     beyond   ? dirTxt + " NOT IN TIME ✘ needs ~" + etaTxt + ", less than " + withinTxt + " left" :
-     dirTxt + " NOT POSSIBLE ✘ in less than " + withinTxt + " at current velocity"
-sideTxt   = atTarget ? "AT TARGET" : dist < 0 ? "ABOVE by $" + fmt2(-dist) + "  (UP winning)" : "BELOW by $" + fmt2(dist) + "  (DOWN winning)"
+     beyond   ? dirTxt + " NOT IN TIME ✘  ETA ~" + etaTxt + ", " + withinTxt + " left" :
+     dirTxt + " NOT POSSIBLE ✘ in less than " + withinTxt
+sideTxt   = atTarget ? "AT TARGET" : dist < 0 ? "ABOVE by $" + fmt2(-dist) + " · UP winning" : "BELOW by $" + fmt2(dist) + " · DOWN winning"
 
 // ─────────── Win probability (EF Signal HUD formula + optional momentum drift) ───────────
 kScale = 0.94
@@ -234,12 +236,12 @@ var label    crossLbl   = na
 var polyline path       = na
 var array<line>  tickLines = array.new<line>()
 var array<label> tickLbls  = array.new<label>()
-var table    info       = table.new(tblPos(tablePos), 2, 10, bgcolor = color.new(color.black, 15),
+// One narrow column so the HUD fits a phone screen (two columns pushed the labels off the left edge)
+var table    info       = table.new(tblPos(tablePos), 1, 8, bgcolor = color.new(color.black, 15),
      border_width = 1, border_color = color.new(color.gray, 70))
 
-cellRow(r, k, v, c) =>
-    table.cell(info, 0, r, k, text_color = color.new(color.white, 25), text_size = size.small, text_halign = text.align_left)
-    table.cell(info, 1, r, v, text_color = c, text_size = size.small, text_halign = text.align_right)
+hudRow(r, v, c) =>
+    table.cell(info, 0, r, v, text_color = c, text_size = hudTextSize, text_halign = text.align_left)
 
 if barstate.islast and not na(reach) and not na(target)
     line.delete(reachLine)
@@ -362,19 +364,18 @@ if barstate.islast and not na(reach) and not na(target)
                  " → SELL " + fmt0(sellPct) + "%"
             posCol := sellPct >= 50 ? colNo : colBeyond
 
-    // Info table
+    // Info table (one column, short lines)
     if showTable
-        perHour = vel * 3600.0 / timeframe.in_seconds()
-        cellRow(0, "Round",           fmtClock(secsLeft) + " left  (" + str.tostring(barsLeft) + " bars)", color.white)
-        cellRow(1, "Price vs target", sideTxt,                                                   dist < 0 ? colOk : colNo)
-        cellRow(2, "Velocity",        fmt2(vel) + " /bar  (" + fmt2(perHour) + " /hr)",         vel >= 0 ? colOk : colNo)
-        cellRow(3, "Acceleration",    fmt2(acc) + " /bar²",                                     acc >= 0 ? colOk : colNo)
-        cellRow(4, "Reach (" + withinTxt + ")", fmtP(reach) + "  (" + fmt2(reachPct) + "%)",    statusCol)
-        cellRow(5, tgtName,           fmtP(target) + "  (" + fmt2(dist / p0 * 100) + "% away)", colTgt)
-        cellRow(6, "Time to target",  etaTxt + "  (" + barsTxt + " bars)",                      statusCol)
-        cellRow(7, "Status",          statusTxt,                                                statusCol)
-        cellRow(8, "Win prob (chart)", na(pUp) ? "—" : "UP " + fmt0(pUp * 100) + "%  ·  DOWN " + fmt0((1.0 - pUp) * 100) + "%  ·  cross " + fmt0(pMine * 100) + "%", color.white)
-        cellRow(9, "Position (needs cross)", posTxt,                                            posCol)
+        perHour  = vel * 3600.0 / timeframe.in_seconds()
+        tgtShort = tgtSource == "Polymarket round (price to beat)" ? "Beat (est.)" : "Target"
+        hudRow(0, "Round  " + fmtClock(secsLeft) + " left · " + str.tostring(barsLeft) + " bars",            color.white)
+        hudRow(1, sideTxt,                                                                                  dist < 0 ? colOk : colNo)
+        hudRow(2, "v " + fmt2(vel) + "/bar (" + fmt0(perHour) + "/hr) · a " + fmt2(acc) + "/bar²",            vel >= 0 ? colOk : colNo)
+        hudRow(3, "Reach " + fmtP(reach) + " (" + fmt2(reachPct) + "%) in " + withinTxt,                    statusCol)
+        hudRow(4, tgtShort + " " + fmtP(target) + " (" + fmt2(dist / p0 * 100) + "% away) · ETA " + etaTxt, colTgt)
+        hudRow(5, statusTxt,                                                                                statusCol)
+        hudRow(6, na(pUp) ? "p —" : "p UP " + fmt0(pUp * 100) + "% · DOWN " + fmt0((1.0 - pUp) * 100) + "% · cross " + fmt0(pMine * 100) + "%", color.white)
+        hudRow(7, "Position: " + posTxt,                                                                    posCol)
 
 // ─────────────────────────── Signals & alerts ───────────────────────────
 plotshape(possible and not possible[1], title = "Cross became possible", style = shape.diamond,
