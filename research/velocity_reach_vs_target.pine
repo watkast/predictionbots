@@ -231,7 +231,7 @@ if barstate.islast and not na(reach) and not na(target)
             y = proj(p0, vel, acc, t)
             if y > runMax
                 runMax := y
-                beyondH = t > N
+                beyondH = t > Nf                      // past the time left → dimmed (matches the status)
                 hitTgt  = y >= target and prevY < target
                 major   = t % 5 == 0
                 tickCol = hitTgt ? colTgt : color.new(statusCol, beyondH ? 60 : (major ? 0 : 35))
