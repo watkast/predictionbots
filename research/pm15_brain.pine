@@ -27,6 +27,12 @@
 //    • Buys: SURE THING (mechanical) or "WITH CAUTION" (the math likes it but a
 //      flip is still possible, chance stated). The EF rule and the Alpha gate
 //      are kept as caution plays.
+//    • BUY-IN row: "if I bought the favorite now" — win chance if held to the
+//      bell (the math), the chance the display flips against you first (the
+//      scare), cents won if right / lost if wrong, the edge after fee, the
+//      asks that make the same buy break-even / GOOD / GREAT, ¼-Kelly size,
+//      and the best edge seen this round. Lower ask = more reward; the edge
+//      says whether the extra risk is paid for.
 //  Odds come from the settlement-average model (vol-based, momentum credited
 //  for 45 s at most). The momentum post is kept as a VIEW, never as odds.
 //  The label on the post (between the spot and the target) says how many
@@ -478,6 +484,37 @@ flipOf(x) =>
 getOut  = posDir != 0 and not posSure and (posCrossed or posFlip >= getOutOdds / 100.0 or (not na(crossEta) and crossEta <= crossSecs) or (secsLeft > 60 and lead < cushion) or pMine < 0.85)
 sellNow = posDir != 0 and pMine < 0.5
 
+// ─────────────────────── Buy-in risk / reward: "if I bought the favorite now" ───────────────────────
+// win chance if held to the bell = the math (never 100% unless SURE); the scare = the chance the price display flips
+// against you before the bell (touch odds); edge = win chance − ask − fee, in cents per share; the ladder = the asks
+// that would make the same buy break-even / GOOD / GREAT; ¼-Kelly for size.
+winHold = sureThing ? 1.0 : math.min(pFav, 0.995)
+scare   = favFlip
+bePrice(q, e) =>
+    float p = q - e
+    p := q - e - fee(p)
+    p := q - e - fee(p)
+    math.max(0.0, p)
+askNow   = hasAsk ? favAsk : float(na)
+edgeNow  = hasAsk ? winHold - askNow - fee(askNow) : float(na)
+beP      = bePrice(winHold, 0.0)
+goodP    = bePrice(winHold, 0.04)
+greatP   = bePrice(winHold, 0.08)
+kellyF   = hasAsk and edgeNow > 0 and askNow < 1 ? edgeNow / (1.0 - askNow) : 0.0
+scary    = scare >= 0.25
+buyGrade = na(edgeNow) ? "" : edgeNow >= 0.08 ? "GREAT" : edgeNow >= 0.04 ? "GOOD" : edgeNow >= 0.01 ? "FAIR" : "POOR"
+varip float bestEdge = na
+varip float bestAsk  = na
+varip float bestLeft = na
+if isNewRound
+    bestEdge := na
+    bestAsk := na
+    bestLeft := na
+if barstate.islast and hasAsk and not na(edgeNow) and (na(bestEdge) or edgeNow > bestEdge)
+    bestEdge := edgeNow
+    bestAsk := askNow
+    bestLeft := secsLeft
+
 // ─────────────────────── The command ───────────────────────
 string cmd = "WAIT"
 string why = ""
@@ -626,7 +663,7 @@ if barstate.islast and not na(target)
         postLbl := label.new(xp, (close + tgtPlot) / 2, reachMinsTxt + " at record pace\n" + avgTxt + "\n" + reachWord + " · " + fmtClock(secsLeft) + " left", xloc = xloc.bar_index, style = label.style_label_left, color = color.new(reachCol, 0), textcolor = reachTier >= 2 ? color.black : color.white, size = size.small)
 
 // ─────────────────────── HUD ───────────────────────
-var table hud = table.new(tblPos(hudPos), 1, 10, bgcolor = color.new(color.black, 15), border_width = 1, border_color = color.new(color.gray, 70))
+var table hud = table.new(tblPos(hudPos), 1, 11, bgcolor = color.new(color.black, 15), border_width = 1, border_color = color.new(color.gray, 70))
 row(r, txt, c, bg) =>
     table.cell(hud, 0, r, txt, text_color = c, text_size = hudTxt, text_halign = text.align_left, bgcolor = bg)
 if barstate.islast
@@ -646,16 +683,19 @@ if barstate.islast
     row(3, safetyTxt, safetyCol, blackBg)
     row(4, factsTxt, color.silver, blackBg)
     row(5, posTxt, posDir != 0 ? color.white : color.gray, posDir != 0 ? (posSure ? color.new(colOk, 70) : sellNow or getOut ? color.new(colBad, 60) : blackBg) : blackBg)
+    buyTxt = "BUY-IN  " + (hasAsk ? "if you buy " + favTxt + " now at " + fmt0(askNow * 100) + "¢: " + buyGrade + (scary and buyGrade != "POOR" ? " BUT SCARY" : "") + " · +" + fmt0((1.0 - askNow - fee(askNow)) * 100) + "¢/share if right (+" + fmt0((1.0 - askNow - fee(askNow)) / askNow * 100) + "%), −" + fmt0(askNow * 100) + "¢ if wrong · edge " + (edgeNow >= 0 ? "+" : "−") + fmt1(math.abs(edgeNow) * 100) + "¢ · size ¼-Kelly " + fmt0(kellyF * 25) + "% of bankroll · " : "type the ask in settings to grade a buy-in · ") + "win if held to the bell " + (sureThing ? "100%" : fmt0(winHold * 100) + "%") + " · display flips against you " + chanceTxt(scare) + " · break-even " + fmt0(beP * 100) + "¢ · GOOD under " + fmt0(goodP * 100) + "¢ · GREAT under " + fmt0(greatP * 100) + "¢" + (not na(bestEdge) ? " · best this round " + (bestEdge >= 0 ? "+" : "−") + fmt1(math.abs(bestEdge) * 100) + "¢ at " + fmt0(bestAsk * 100) + "¢ with " + fmtClock(bestLeft) + " left" : "")
+    buyCol = not hasAsk ? color.silver : buyGrade == "POOR" ? colBad : buyGrade == "FAIR" or scary ? colEasy : colOk
+    row(6, buyTxt, buyCol, blackBg)
     if showTech
         pathTxt = "momentum: " + (math.sign(velS) == math.sign(needMove) and math.abs(velS) > 0.01 ? "crosses in ~" + secsTxt(math.abs(needMove / velS)) + " at this pace" : "not on this path") + " · v " + (vel >= 0 ? "+" : "") + fmt1(vel) + "/bar · a " + (accEma >= 0 ? "+" : "") + str.tostring(accEma, "#.##")
         upTxt = "UP " + fmt0(pUp * 100) + "¢ fair" + (mktUp > 0 ? " (mkt " + fmt0(mktUp) + ", edge " + (pUp * 100 - mktUp >= 0 ? "+" : "") + fmt0(pUp * 100 - mktUp) + ")" : "")
         dnTxt = "DOWN " + fmt0(pDn * 100) + "¢ fair" + (mktDn > 0 ? " (mkt " + fmt0(mktDn) + ", edge " + (pDn * 100 - mktDn >= 0 ? "+" : "") + fmt0(pDn * 100 - mktDn) + ")" : "")
         lights = (l1 ? "Lead ✓" : "Lead ✗") + "  " + (l2 ? "Trend ✓" : "Trend ✗") + "  " + (l3 ? "Momentum ✓" : "Momentum ✗") + "  " + (l4 ? "Calm ✓" : "Calm ✗") + "  " + (l5 ? "Safe ✓" : "Safe ✗") + "  " + (l6 ? "Headroom ✓" : "Headroom ✗") + "  (" + str.tostring(conv) + "/6)"
         reachTxt = "REACH  " + reachWord + " — the target is $" + fmt0(math.abs(needMove)) + " " + (needMove >= 0 ? "up" : "down") + ": " + reachMinsTxt + " at record pace vs " + fmtClock(secsLeft) + " left · touch odds " + pctTxt(reachOdds) + " · record move in that time $" + fmt0(recLeft) + " · history " + fmt0(bar_index / 1440.0) + "d 1-min, " + fmt0(bars5 / 288.0) + "d 5-min, " + fmt0(bars15 / 96.0) + "d 15-min"
-        row(6, "MATH  UP " + pctTxt(pUp) + " · DOWN " + pctTxt(pDn) + " (model, never a guarantee) · safe " + pctTxt(pSafe) + " on adverse vol · avg " + (gap >= 0 ? "+$" : "−$") + fmt1(math.abs(gap)) + " vs target, 3σ $" + fmt1(sSd * 3) + (inSettleWin ? " · " + fmt0(sKnown * 100) + "% in the books" : "") + " · grade " + grade + (mathLock ? " · math lock (still not a sure thing unless SAFE)" : "") + " · " + upTxt + "   " + dnTxt, color.silver, blackBg)
-        row(7, lights, conv >= minConv ? colOk : color.silver, blackBg)
-        row(8, pathTxt + " · last 3 min range $" + fmt0(range3) + " · adverse swing $" + fmt0(sigAdvB) + "/min" + (volDanger ? " · WILD" : cleanRun ? " · clean trend" : revRisk ? " · turning" : ""), color.silver, blackBg)
-        row(9, reachTxt, reachCol, blackBg)
+        row(7, "MATH  UP " + pctTxt(pUp) + " · DOWN " + pctTxt(pDn) + " (model, never a guarantee) · safe " + pctTxt(pSafe) + " on adverse vol · avg " + (gap >= 0 ? "+$" : "−$") + fmt1(math.abs(gap)) + " vs target, 3σ $" + fmt1(sSd * 3) + (inSettleWin ? " · " + fmt0(sKnown * 100) + "% in the books" : "") + " · grade " + grade + (mathLock ? " · math lock (still not a sure thing unless SAFE)" : "") + " · " + upTxt + "   " + dnTxt, color.silver, blackBg)
+        row(8, lights, conv >= minConv ? colOk : color.silver, blackBg)
+        row(9, pathTxt + " · last 3 min range $" + fmt0(range3) + " · adverse swing $" + fmt0(sigAdvB) + "/min" + (volDanger ? " · WILD" : cleanRun ? " · clean trend" : revRisk ? " · turning" : ""), color.silver, blackBg)
+        row(10, reachTxt, reachCol, blackBg)
 
 // ─────────────────────── Alerts ───────────────────────
 sureOn = sureThing and posDir == 0 and secsLeft > 4 and (not hasAsk or favAsk <= maxLock / 100.0)

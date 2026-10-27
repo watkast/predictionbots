@@ -52,8 +52,10 @@ Polymarket US 15-min BTC round at a time on the Coinbase feed, with the settleme
 (PM's price = 60-s trailing average of spot, ~2 s delayed, plus a basis offset; the final price is that average at the
 bell and the next target is this round's settlement), a plain-English safety headline (SURE THING only when even a
 record-pace BTC move could not get the average back across the target; otherwise PROCEED WITH CAUTION / GET OUT / SELL
-NOW with the fastest possible flip and the chance before the bell), safety-rated plays, paper bets that buy the sure
-thing and sell on GET OUT, and the next/past rounds. `research/pm15_brain.pine` is the same brain as a TradingView
+NOW with the fastest possible flip and the chance before the bell), an "if I bought the favorite now" card (win chance if
+held, the scare, cents won/lost, edge after fee, the asks that make the buy GOOD/GREAT, ¼-Kelly size, best edge this
+round), safety-rated plays, paper bets that buy the sure thing (or the math lock, or an edge of N¢+) and sell on GET OUT,
+and the next/past rounds. `research/pm15_brain.pine` is the same brain as a TradingView
 indicator (one HUD, technical rows behind a switch). `scripts/pm15_relay_worker.js` is the Cloudflare
 Worker that forwards the two read-only gateway endpoints with CORS for the page.
 Companion chart tool: `research/velocity_reach_vs_target.pine` (TradingView — projects BTC's velocity /

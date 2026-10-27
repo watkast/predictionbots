@@ -106,6 +106,14 @@ canvas { position: absolute; inset: 0; width: 100%; height: 100%; display: block
 .reach b { font: 700 13px/1 var(--font-display); letter-spacing: .08em; padding: 2px 7px; border-radius: 5px; color: #140800; margin-right: 4px; }
 .reach b.t0 { background: var(--bad); color: #fff; } .reach b.t1 { background: var(--warn); } .reach b.t2 { background: #ffe14d; } .reach b.t3 { background: var(--good); } .reach b.tx { background: var(--surface-2); color: var(--muted); }
 .reach .n { font-family: var(--font-mono); color: var(--fg); }
+.buyin .b-head { font: 700 22px/1.15 var(--font-display); letter-spacing: .01em; }
+.buyin .b-head.great, .buyin .b-head.good { color: var(--good); } .buyin .b-head.fair { color: #ffe14d; } .buyin .b-head.poor { color: var(--bad); } .buyin .b-head.none { color: var(--muted); }
+.buyin .b-sub { font-size: 13px; margin-top: 4px; }
+.buyin .b-ladder { display: flex; flex-wrap: wrap; gap: 6px; margin-top: 8px; }
+.buyin .b-ladder span { font-size: 12px; padding: 3px 8px; border-radius: 999px; border: 1px solid var(--line); color: var(--muted); }
+.buyin .b-ladder span b { font-family: var(--font-mono); color: var(--fg); }
+.buyin .b-ladder span.great { border-color: var(--good); } .buyin .b-ladder span.good { border-color: #28d97888; } .buyin .b-ladder span.be { border-color: var(--warn); }
+.buyin .b-sub .n { font-family: var(--font-mono); color: var(--fg); }
 .side { display: grid; gap: 12px; min-width: 0; }
 
 /* feed row */
@@ -261,6 +269,15 @@ details.settings summary { cursor: pointer; font: 700 15px/1.4 var(--font-displa
         </div>
       </section>
 
+      <!-- if I bought now -->
+      <section class="card buyin" id="buyin">
+        <h3>If I bought the favorite now</h3>
+        <div class="b-head" id="b-head">Waiting for prices.</div>
+        <div class="b-sub" id="b-sub"></div>
+        <div class="b-ladder" id="b-ladder"></div>
+        <div class="hint" id="b-best"></div>
+      </section>
+
       <!-- plays -->
       <section class="card">
         <h3>Plays right now · safety rating</h3>
@@ -324,7 +341,9 @@ details.settings summary { cursor: pointer; font: 700 15px/1.4 var(--font-displa
       <label>Record margin (× the fastest move seen, 1 = as seen)<input id="s-recmargin" type="number" inputmode="decimal" min="0.5" max="3" step="0.1" value="1"></label>
       <label>MOST LIKELY when touch odds ≥ (%)<input id="s-reach-green" type="number" inputmode="decimal" min="1" max="99" step="1" value="50"></label>
       <label>EASILY when touch odds ≥ (%) · below = UNLIKELY<input id="s-reach-yellow" type="number" inputmode="decimal" min="1" max="99" step="1" value="10"></label>
-      <label>Paper bot buys on<select id="s-paperon"><option value="sure">Sure thing (record pace can't flip it)</option><option value="math">Math lock (model %, not a sure thing)</option></select></label>
+      <label>Paper bot buys on<select id="s-paperon"><option value="sure">Sure thing (record pace can't flip it)</option><option value="math">Math lock (model %, not a sure thing)</option><option value="edge">Best edge (edge after fee ≥ N¢, scare ≤ M%)</option></select></label>
+      <label>Edge mode: edge after fee at least (¢)<input id="s-edgemin" type="number" inputmode="decimal" min="1" max="30" step="1" value="6"></label>
+      <label>Edge mode: scare (display-flip chance) at most (%)<input id="s-edgescare" type="number" inputmode="decimal" min="1" max="50" step="1" value="15"></label>
       <label>GET OUT when the flip chance reaches (%)<input id="s-getout" type="number" inputmode="decimal" min="5" max="60" step="1" value="25"></label>
       <label>GET OUT when BTC would reach the target within (s) at its pace<input id="s-cross" type="number" inputmode="decimal" min="15" max="300" step="5" value="90"></label>
       <label>GET OUT when BTC is within × one routine minute's move (outside the last minute)<input id="s-cushion" type="number" inputmode="decimal" min="0.5" max="5" step="0.5" value="2"></label>
@@ -357,7 +376,7 @@ const SLUG = ws => { const d = new Date(ws * 1000); const p = n => String(n).pad
   return `cpc-btc-updown-15m-${d.getUTCFullYear()}-${p(d.getUTCMonth()+1)}-${p(d.getUTCDate())}-${p(d.getUTCHours())}${p(d.getUTCMinutes())}z`; };
 
 // ---------- settings (per device) ----------
-const DEF = { stake: 20, lockP: 99.5, maxAsk: 97, drift: 0.5, fee: 0.0695, relay: '', offset: null, sound: false, recMargin: 1, reachGreen: 50, reachYellow: 10, paperOn: 'sure', getOutOdds: 25, crossSecs: 90, cushionX: 2 };
+const DEF = { stake: 20, lockP: 99.5, maxAsk: 97, drift: 0.5, fee: 0.0695, relay: '', offset: null, sound: false, recMargin: 1, reachGreen: 50, reachYellow: 10, paperOn: 'sure', getOutOdds: 25, crossSecs: 90, cushionX: 2, edgeMin: 6, edgeScare: 15 };
 let S = Object.assign({}, DEF);
 try { Object.assign(S, JSON.parse(localStorage.getItem('pm15.settings') || '{}')); } catch (e) {}
 const saveS = () => { try { localStorage.setItem('pm15.settings', JSON.stringify(S)); } catch (e) {} };
@@ -518,7 +537,7 @@ function toast(msg) { const t = $('toast'); t.textContent = msg; t.hidden = fals
 
 // ---------- round state ----------
 const R = { T0: 0, T: 0, slug: '', target: NaN, targetSrc: 'none', offset: S.offset, offsetSrc: S.offset == null ? 'none' : 'saved',
-  apiOk: null, book: null, bookAt: 0, lockAt: null, lockAsk: NaN, result: null, settle: NaN, lockBeeped: false };
+  apiOk: null, book: null, bookAt: 0, lockAt: null, lockAsk: NaN, result: null, settle: NaN, lockBeeped: false, bestEdge: NaN, bestAsk: NaN, bestLeft: NaN };
 let history = []; try { history = JSON.parse(localStorage.getItem('pm15.history') || '[]'); } catch (e) {}
 let myPos = null; try { myPos = JSON.parse(localStorage.getItem('pm15.mypos') || 'null'); } catch (e) {}
 const paper = { side: null, shares: 0, cost: 0, px: NaN, modelFill: false, state: 'idle', armAt: 0, armPct: 0, sellPlan: null, roundPnl: 0, totalPnl: 0, note: '', boughtT0: 0 };
@@ -527,7 +546,7 @@ try { paper.totalPnl = Number(localStorage.getItem('pm15.paperTotal')) || 0; } c
 function startRound(T0) {
   // close out the previous one
   if (R.T0 && R.T0 !== T0) finishRound();
-  Object.assign(R, { T0, T: T0 + ROUND, slug: SLUG(T0), target: NaN, targetSrc: 'none', book: null, bookAt: 0, lockAt: null, lockAsk: NaN, result: null, settle: NaN, lockBeeped: false });
+  Object.assign(R, { T0, T: T0 + ROUND, slug: SLUG(T0), target: NaN, targetSrc: 'none', book: null, bookAt: 0, lockAt: null, lockAsk: NaN, result: null, settle: NaN, lockBeeped: false, bestEdge: NaN, bestAsk: NaN, bestLeft: NaN });
   paper.roundPnl = 0; paper.state = 'idle'; paper.note = '';
   if (myPos && myPos.T0 !== T0) { myPos = null; try { localStorage.removeItem('pm15.mypos'); } catch (e) {} }
   // the new target is the previous round's settlement average, if we computed one
@@ -690,7 +709,18 @@ function evaluate() {
   const cushion = Math.max(20, (S.cushionX || 2) * sig * Math.sqrt(60));                        // "one routine minute's move" × the setting
   const flipOf = side => { const crossed = side !== spotSide; const pSide = side === 'UP' ? pUp : 1 - pUp;
     return { crossed, odds: crossed ? 1 - pSide : reach ? reach.odds : NaN, fastest: crossed ? 0 : reach ? reach.mins : NaN, pSide, sure: side === 'UP' ? sureUp : sureDn }; };
-  lastEval = { nowS, sec, r, spot, fresh, off, offKnown, sig, vel, pmShown, target, d, pUp, pFav, fav, dog, gap, z, lagS, need, lead, spotSide, reach, sureUp, sureDn, sureEta, velTow, crossEta, cushion, flipOf, avgSpeed, avgMins };
+  // "if I bought the favorite now": win chance if held to the bell (the math, never 100% unless SURE), the scare (the chance the
+  // display flips against you first), edge after fee at the current ask, the asks that make the same buy break-even / GOOD / GREAT
+  const sureFav = fav === 'UP' ? sureUp : sureDn, winHold = sureFav ? 1 : Math.min(pFav, 0.995);
+  const scare = (() => { const f = flipOf(fav); return f.odds; })();
+  const qNow = Number.isFinite(pUp) ? quotes(fav) : { ask: NaN, src: 'none' }, askNow = qNow.ask;
+  const edgeNow = Number.isFinite(askNow) ? winHold - askNow - fee(askNow, S.fee) : NaN;
+  const bePrice = e => { let p = winHold - e; p = winHold - e - fee(p, S.fee); p = winHold - e - fee(p, S.fee); return Math.max(0, p); };
+  const buyIn = Number.isFinite(pUp) && r > 0 ? { ask: askNow, src: qNow.src, winHold, scare, edge: edgeNow, scary: scare >= 0.25,
+    grade: !Number.isFinite(edgeNow) ? '' : edgeNow >= 0.08 ? 'GREAT' : edgeNow >= 0.04 ? 'GOOD' : edgeNow >= 0.01 ? 'FAIR' : 'POOR',
+    be: bePrice(0), good: bePrice(0.04), great: bePrice(0.08), kelly: Number.isFinite(edgeNow) && edgeNow > 0 && askNow < 1 ? edgeNow / (1 - askNow) : 0 } : null;
+  if (buyIn && Number.isFinite(edgeNow) && (!Number.isFinite(R.bestEdge) || edgeNow > R.bestEdge)) { R.bestEdge = edgeNow; R.bestAsk = askNow; R.bestLeft = r; }
+  lastEval = { nowS, sec, r, spot, fresh, off, offKnown, sig, vel, pmShown, target, d, pUp, pFav, fav, dog, gap, z, lagS, need, lead, spotSide, reach, sureUp, sureDn, sureEta, velTow, crossEta, cushion, flipOf, avgSpeed, avgMins, buyIn };
   return lastEval;
 }
 // dollars traversed between T0 and `upto`, in 1-minute steps plus the partial minute
@@ -728,14 +758,14 @@ function paperStep(E) {
   if (E.r <= 0) return;
   if (!paper.side) {
     // buys the sure thing (record pace can't flip it) — or, if you switch the setting, the old math lock
-    const trigger = S.paperOn === 'math' ? E.pFav >= lockP : (E.fav === 'UP' ? E.sureUp : E.sureDn);
+    const trigger = S.paperOn === 'math' ? E.pFav >= lockP : S.paperOn === 'edge' ? (E.buyIn && Number.isFinite(E.buyIn.edge) && E.buyIn.edge >= (S.edgeMin || 6) / 100 && E.buyIn.scare <= (S.edgeScare || 15) / 100 && E.r > 60) : (E.fav === 'UP' ? E.sureUp : E.sureDn);
     const go = trigger && E.fresh && E.r > 4 && paper.boughtT0 !== R.T0 && !(q.src === 'book' && !Number.isFinite(q.ask));
     if (go) {
       const ask = Number.isFinite(q.ask) ? q.ask : NaN;
       if (!Number.isFinite(ask) || ask <= maxAsk) {
         const px = Number.isFinite(ask) ? ask : maxAsk; const shares = S.stake / px;
         Object.assign(paper, { side: E.fav, shares, cost: S.stake + fee(px, S.fee) * shares, px, modelFill: !Number.isFinite(ask), state: 'holding', armAt: 0, sellPlan: null, boughtT0: R.T0 });
-        paper.note = 'Bought ' + E.fav + ' ' + shares.toFixed(1) + ' sh @' + cents(px) + (paper.modelFill ? ' (model fill: no live book)' : '') + ' at ' + clock(E.r) + ' left' + (S.paperOn === 'math' ? ' (math lock)' : ' (sure thing)');
+        paper.note = 'Bought ' + E.fav + ' ' + shares.toFixed(1) + ' sh @' + cents(px) + (paper.modelFill ? ' (model fill: no live book)' : '') + ' at ' + clock(E.r) + ' left' + (S.paperOn === 'math' ? ' (math lock)' : S.paperOn === 'edge' ? ' (edge ' + (E.buyIn.edge * 100).toFixed(1) + '¢)' : ' (sure thing)');
         if (R.lockAt == null) { R.lockAt = E.r; R.lockAsk = px; }
       }
     }
@@ -858,7 +888,7 @@ function renderPaper(E) {
   else if (paper.state === 'firing') { cls += ' firing'; s = 'SELLING!'; n = paper.sellPlan || ''; }
   else if (paper.state === 'sold') { cls += ' done'; s = 'Sold'; }
   else if (paper.side) { s = paper.sellPlan || ('Holding ' + paper.side + ' to the bell'); n = paper.note; }
-  else { const sureFav = E.fav === 'UP' ? E.sureUp : E.sureDn; s = E.r > 0 ? (S.paperOn === 'math' ? (E.pFav >= S.lockP / 100 ? 'Math lock seen — buying' : 'Watching for a math lock') : (sureFav ? 'Sure thing seen — buying' : 'Watching for a sure thing')) : 'Round over'; n = paper.note || (S.paperOn === 'math' ? 'Buys when the math says ' + S.lockP + '%+ (not a sure thing); sells on GET OUT or a flip.' : 'Buys the sure thing (record pace can\'t flip it) with the stake in Settings; sells on GET OUT or a flip.'); }
+  else { const sureFav = E.fav === 'UP' ? E.sureUp : E.sureDn; s = E.r > 0 ? (S.paperOn === 'math' ? (E.pFav >= S.lockP / 100 ? 'Math lock seen — buying' : 'Watching for a math lock') : S.paperOn === 'edge' ? 'Watching for an edge of ' + (S.edgeMin || 6) + '¢+' : (sureFav ? 'Sure thing seen — buying' : 'Watching for a sure thing')) : 'Round over'; n = paper.note || (S.paperOn === 'math' ? 'Buys when the math says ' + S.lockP + '%+ (not a sure thing); sells on GET OUT or a flip.' : S.paperOn === 'edge' ? 'Buys the favorite when the edge after fee is ' + (S.edgeMin || 6) + '¢+ and the scare is under ' + (S.edgeScare || 15) + '%; sells on GET OUT or a flip.' : 'Buys the sure thing (record pace can\'t flip it) with the stake in Settings; sells on GET OUT or a flip.'); }
   cell.className = cls; st.textContent = s; note.textContent = n;
   const pMine = paper.side ? (paper.side === 'UP' ? E.pUp : 1 - E.pUp) : NaN; const q = paper.side ? quotes(paper.side) : { bid: NaN };
   const mark = Number.isFinite(q.bid) ? q.bid : pMine; const value = paper.shares * (Number.isFinite(mark) ? mark : 0);
@@ -882,6 +912,22 @@ function renderPlays(E) {
     rows.push('<tr><td>Sell my ' + myPos.side + ' now' + (Number.isFinite(qm.bid) ? ' @' + cents(qm.bid) : '') + '</td><td class="n">—</td><td class="n">' + (Number.isFinite(qm.bid) ? fmtS(qm.bid * myPos.shares - fee(qm.bid, S.fee) * myPos.shares - myPos.spent) : 'need a bid') + '</td><td><span class="grade gA">SURE</span> cash now, gives up ' + (Number.isFinite(qm.bid) ? ((pm - qm.bid) * 100).toFixed(1) + '¢/share' : 'the rest') + '</td></tr>'); }
   const elapsed = ROUND - E.r; if (elapsed >= 110 && elapsed <= 200) { const [g, gc] = gradeOf(E.pFav); rows.push('<tr><td>Early Favorite rule (13:00/12:00 left, fav at 80–94¢)</td><td class="n">' + pct(Math.min(E.pFav, 0.995)) + '</td><td class="n">tested Oct 6–22</td><td><span class="grade ' + gc + '">' + g + '</span> with caution · flip chance ' + chanceTxt(E.flipOf(E.fav).odds) + '</td></tr>'); }
   tb.innerHTML = rows.join('');
+}
+function renderBuyIn(E) {
+  const b = E.buyIn, head = $('b-head'), sub = $('b-sub'), lad = $('b-ladder'), best = $('b-best');
+  if (!b) { head.className = 'b-head none'; head.textContent = E.r <= 0 ? 'Round over.' : 'Waiting for the target.'; sub.textContent = ''; lad.innerHTML = ''; best.textContent = ''; return; }
+  const c = v => Math.round(v * 100) + '¢';
+  if (Number.isFinite(b.ask)) {
+    const win = 1 - b.ask - fee(b.ask, S.fee);
+    head.className = 'b-head ' + b.grade.toLowerCase();
+    head.textContent = b.grade + (b.scary && b.grade !== 'POOR' ? ' BUT SCARY' : '') + ' — ' + E.fav + ' at ' + c(b.ask) + (b.src === 'book' ? '' : ' (typed)');
+    sub.innerHTML = 'Right: <span class="n">+' + c(win) + '</span>/share (+' + Math.round(win / b.ask * 100) + '%). Wrong: <span class="n">−' + c(b.ask) + '</span>/share. Win if held to the bell <span class="n">' + (b.winHold >= 1 ? '100%' : Math.round(b.winHold * 100) + '%') + '</span>; the display flips against you first <span class="n">' + chanceTxt(b.scare) + '</span>. Edge after fee <span class="n">' + (b.edge >= 0 ? '+' : '−') + (Math.abs(b.edge) * 100).toFixed(1) + '¢</span>/share' + (b.edge > 0 ? ' · size ¼-Kelly <span class="n">' + Math.round(b.kelly * 25) + '%</span> of bankroll' : ' · no size: overpriced for the risk') + '.';
+  } else {
+    head.className = 'b-head none'; head.textContent = 'No ask yet — read the ' + E.fav + ' button';
+    sub.innerHTML = 'Win if held to the bell <span class="n">' + (b.winHold >= 1 ? '100%' : Math.round(b.winHold * 100) + '%') + '</span>; the display flips against you first <span class="n">' + chanceTxt(b.scare) + '</span>. Type the ask in Settings (or use the relay) to grade it.';
+  }
+  lad.innerHTML = '<span class="great">GREAT under <b>' + c(b.great) + '</b></span><span class="good">GOOD under <b>' + c(b.good) + '</b></span><span class="be">break-even <b>' + c(b.be) + '</b></span>';
+  best.textContent = Number.isFinite(R.bestEdge) ? 'Best buy-in seen this round: ' + (R.bestEdge >= 0 ? '+' : '−') + (Math.abs(R.bestEdge) * 100).toFixed(1) + '¢ edge at ' + c(R.bestAsk) + ' with ' + clock(R.bestLeft) + ' left.' : 'Lower ask = more reward; the edge says whether the extra risk is paid for.';
 }
 function renderMine(E) {
   if (!myPos) { $('my-hold').textContent = 'nothing'; $('my-cost').textContent = '—'; $('my-worth').textContent = '—'; $('my-win').textContent = '—'; return; }
@@ -987,12 +1033,12 @@ $('my-set').onclick = () => { const price = Number($('my-price').value) / 100, s
 $('my-clear').onclick = () => { myPos = null; try { localStorage.removeItem('pm15.mypos'); } catch (e) {} };
 function loadSettings() { $('s-stake').value = S.stake; $('s-lockp').value = S.lockP; $('s-maxask').value = S.maxAsk; $('s-drift').value = S.drift; $('s-fee').value = S.fee; $('s-relay').value = S.relay || ''; $('s-offset').value = S.offset == null ? '' : S.offset.toFixed(2);
   $('s-recmargin').value = S.recMargin; $('s-reach-green').value = S.reachGreen; $('s-reach-yellow').value = S.reachYellow;
-  $('s-paperon').value = S.paperOn || 'sure'; $('s-getout').value = S.getOutOdds; $('s-cross').value = S.crossSecs; $('s-cushion').value = S.cushionX; }
+  $('s-paperon').value = S.paperOn || 'sure'; $('s-getout').value = S.getOutOdds; $('s-cross').value = S.crossSecs; $('s-cushion').value = S.cushionX; $('s-edgemin').value = S.edgeMin; $('s-edgescare').value = S.edgeScare; }
 $('s-save').onclick = () => {
   S.stake = Math.max(1, Number($('s-stake').value) || DEF.stake); S.lockP = Math.min(99.99, Math.max(90, Number($('s-lockp').value) || DEF.lockP)); S.maxAsk = Math.min(99, Math.max(50, Number($('s-maxask').value) || DEF.maxAsk));
   S.drift = Math.min(1, Math.max(0, Number($('s-drift').value))); S.fee = Number($('s-fee').value) || DEF.fee; S.relay = ($('s-relay').value || '').trim();
   S.recMargin = Math.min(3, Math.max(0.5, Number($('s-recmargin').value) || DEF.recMargin)); S.reachGreen = Math.min(99, Math.max(1, Number($('s-reach-green').value) || DEF.reachGreen)); S.reachYellow = Math.min(S.reachGreen, Math.max(1, Number($('s-reach-yellow').value) || DEF.reachYellow));
-  S.paperOn = $('s-paperon').value === 'math' ? 'math' : 'sure'; S.getOutOdds = Math.min(60, Math.max(5, Number($('s-getout').value) || DEF.getOutOdds)); S.crossSecs = Math.min(300, Math.max(15, Number($('s-cross').value) || DEF.crossSecs)); S.cushionX = Math.min(5, Math.max(0.5, Number($('s-cushion').value) || DEF.cushionX));
+  S.paperOn = ['math', 'edge'].includes($('s-paperon').value) ? $('s-paperon').value : 'sure'; S.edgeMin = Math.min(30, Math.max(1, Number($('s-edgemin').value) || DEF.edgeMin)); S.edgeScare = Math.min(50, Math.max(1, Number($('s-edgescare').value) || DEF.edgeScare)); S.getOutOdds = Math.min(60, Math.max(5, Number($('s-getout').value) || DEF.getOutOdds)); S.crossSecs = Math.min(300, Math.max(15, Number($('s-cross').value) || DEF.crossSecs)); S.cushionX = Math.min(5, Math.max(0.5, Number($('s-cushion').value) || DEF.cushionX));
   const offIn = $('s-offset').value.trim(); if (offIn !== '') { S.offset = Number(offIn); R.offset = S.offset; R.offsetSrc = 'typed'; }
   const tIn = Number($('s-target').value); if (tIn > 1000) { R.target = tIn; R.targetSrc = 'manual'; calibrateOffset(); }
   saveS(); R.apiOk = null; pmFetchMarket(); pmFetchBook(); toast('Saved');
@@ -1011,7 +1057,7 @@ setInterval(() => { if (!Number.isFinite(R.target) || R.targetSrc === 'est') pmF
 let frame = 0;
 function tick() {
   const E = evaluate();
-  if (Number.isFinite(E.spot)) { liveRecordCheck(E.sec); paperStep(E); dictate(E); renderHeader(E); renderPaper(E); if (frame % 3 === 0) { renderFeed(E); renderPlays(E); renderMine(E); renderNext(E); renderReach(E); } if (frame % 2 === 0) drawChart(E); }
+  if (Number.isFinite(E.spot)) { liveRecordCheck(E.sec); paperStep(E); dictate(E); renderHeader(E); renderPaper(E); if (frame % 3 === 0) { renderFeed(E); renderPlays(E); renderBuyIn(E); renderMine(E); renderNext(E); renderReach(E); } if (frame % 2 === 0) drawChart(E); }
   else { $('timer').textContent = clock(E.r); renderHeader(E); dictate(E); }
   frame++;
 }
