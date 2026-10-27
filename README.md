@@ -49,9 +49,10 @@ live line of research is **Early Favorite** on Polymarket US 15-min BTC: `resear
 paper fills, `ef-autobuyer.yml`), `research/early_favorite_signal.pine` (the TradingView HUD).
 Companion chart tool: `research/velocity_reach_vs_target.pine` (TradingView — projects BTC's velocity /
 acceleration forward, draws a vertical reach post with a 1m/2m/3m… time ruler up through the target and
-marks the tick where the target is hit; the target defaults to the round's price-to-beat estimated the
+marks the tick where the target is hit, in whichever direction the target lies; the target defaults to the round's price-to-beat estimated the
 same way as the HUD, the horizon to the time left in the round, and the status / alerts read
-"UP-CROSS POSSIBLE in less than 3:42").
+"UP-CROSS POSSIBLE in less than 3:42"; an optional position row prints SELL x% / BUY +x% / HOLD from a
+half-Kelly size against the chart's win-probability estimate).
 
 | name | idea | evidence (one line) |
 |---|---|---|
