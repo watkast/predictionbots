@@ -1,23 +1,23 @@
 # Early Favorite v2 - forward test
 
 Rule (frozen): at 2:00 elapsed (13:00 left), else 3:00, buy the leading side if its ask is 0.80-0.95; $100 per round; hold to settlement; taker fee 0.0695*p*(1-p). Paper only.
-Forward test started 2026-10-23T00:00:00Z. Updated 2026-10-27T10:32:39Z.
+Forward test started 2026-10-23T00:00:00Z. Updated 2026-10-27T16:36:59Z.
 
 **Losing: forward win rate is below break-even at the prices paid.**
 
 | | Forward | Backtest (Oct 6-22) |
 |---|---|---|
-| Rounds | 66 | 272 |
-| Win rate | 81.8% | 89.3% |
+| Rounds | 74 | 272 |
+| Win rate | 79.7% | 89.3% |
 | Break-even win rate at prices paid | 85.4% | - |
-| Average ask | 0.845 | 0.838 |
-| Net at $100/round | $-305.58 | $+1,486 |
-| Per round | -4.63% | +5.46% |
-| Max drawdown | $-407.56 | $-403 |
-| Longest losing streak | 2 | 2 |
+| Average ask | 0.844 | 0.838 |
+| Net at $100/round | $-524.48 | $+1,486 |
+| Per round | -7.09% | +5.46% |
+| Max drawdown | $-578.08 | $-403 |
+| Longest losing streak | 3 | 2 |
 | Entry timing | 13:00 / 12:00 left | same |
 
-Rounds where the rule did not trigger: 360. Pending (not settled or not fetched yet): 1.
+Rounds where the rule did not trigger: 376. Pending (not settled or not fetched yet): 1.
 
 ## By day (UTC)
 
@@ -27,7 +27,7 @@ Rounds where the rule did not trigger: 360. Pending (not settled or not fetched 
 | 2026-10-24 | $-72.04 |
 | 2026-10-25 | $+158.51 |
 | 2026-10-26 | $-288.77 |
-| 2026-10-27 | $+34.81 |
+| 2026-10-27 | $-184.09 |
 
 ## Chart pull at the check (parallel column - not part of the rule)
 
@@ -35,8 +35,8 @@ Pull = EMA 9/21 and Supertrend on BRTI 1-minute candles, as drawn by research/ma
 
 | Pull at the check | Rounds | Win rate | Net |
 |---|---|---|---|
-| with the favorite 3/3 | 49 | 85.7% | $-45.92 |
-| with the favorite 1/3 | 17 | 70.6% | $-259.66 |
+| with the favorite 3/3 | 54 | 83.3% | $-202.17 |
+| with the favorite 1/3 | 20 | 70.0% | $-322.31 |
 | against the favorite | 0 | - | $+0.00 |
 
 ## Cut at 5:00 left (parallel column - not part of the rule)
@@ -45,22 +45,14 @@ What if the position were sold at 5:00 left whenever the favorite's bid is under
 
 | | Hold (the rule) | Cut under 45c at 5:00 left |
 |---|---|---|
-| Rounds with a 5:00-left price | 66 | same |
-| Positions cut | - | 6 (5 would have lost, 1 would have won) |
-| Net at $100/round | $-305.58 | $-262.50 (+43.08) |
+| Rounds with a 5:00-left price | 74 | same |
+| Positions cut | - | 8 (7 would have lost, 1 would have won) |
+| Net at $100/round | $-524.48 | $-473.48 (+51.00) |
 
 ## Last 20 rounds
 
 | Window (UTC) | Min | Side | Ask | Pull | Result | P&L | Running |
 |---|---|---|---|---|---|---|---|
-| 10-26 00:45 | 3 | Down | 0.82 | +3 | won | $+20.70 | $-30.92 |
-| 10-26 04:30 | 3 | Up | 0.85 | +3 | won | $+16.60 | $-14.32 |
-| 10-26 07:00 | 3 | Up | 0.81 | +3 | won | $+22.14 | $+7.82 |
-| 10-26 09:15 | 3 | Up | 0.93 | +3 | won | $+7.04 | $+14.86 |
-| 10-26 10:00 | 3 | Down | 0.81 | +3 | won | $+22.14 | $+37.00 |
-| 10-26 11:30 | 2 | Down | 0.82 | +3 | LOST | $-101.25 | $-64.25 |
-| 10-26 12:15 | 3 | Down | 0.80 | +3 | LOST | $-101.39 | $-165.64 |
-| 10-26 13:00 | 3 | Down | 0.91 | +3 | won | $+9.26 | $-156.38 |
 | 10-26 14:30 | 3 | Down | 0.80 | +3 | LOST | $-101.39 | $-257.77 |
 | 10-26 20:30 | 3 | Up | 0.83 | +1 | LOST | $-101.18 | $-358.95 |
 | 10-26 21:00 | 2 | Up | 0.92 | +3 | won | $+8.14 | $-350.81 |
@@ -73,3 +65,11 @@ What if the position were sold at 5:00 left whenever the favorite's bid is under
 | 10-27 07:15 | 3 | Up | 0.81 | +1 | won | $+22.14 | $-348.42 |
 | 10-27 07:45 | 3 | Up | 0.81 | +1 | won | $+22.14 | $-326.28 |
 | 10-27 08:00 | 3 | Up | 0.82 | +3 | won | $+20.70 | $-305.58 |
+| 10-27 10:45 | 3 | Up | 0.94 | +3 | won | $+5.97 | $-299.61 |
+| 10-27 11:00 | 2 | Up | 0.81 | +1 | won | $+22.14 | $-277.47 |
+| 10-27 11:15 | 2 | Down | 0.80 | +3 | won | $+23.61 | $-253.86 |
+| 10-27 12:15 | 2 | Up | 0.85 | +3 | won | $+16.60 | $-237.26 |
+| 10-27 13:30 | 3 | Down | 0.83 | +3 | LOST | $-101.18 | $-338.44 |
+| 10-27 14:15 | 2 | Down | 0.80 | +1 | LOST | $-101.39 | $-439.83 |
+| 10-27 15:00 | 3 | Up | 0.82 | +3 | LOST | $-101.25 | $-541.08 |
+| 10-27 16:15 | 3 | Up | 0.85 | +1 | won | $+16.60 | $-524.48 |
