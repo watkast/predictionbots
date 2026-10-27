@@ -36,12 +36,14 @@
 //  • Horizon       = by default the time left in the current round: the status
 //                    reads "UP-CROSS POSSIBLE in less than 3:42" (the time left)
 //                    and the alerts carry the same wording.
-//  • Position row  = optional. Enter your side, contracts, entry, bankroll and
-//                    the current Ask / Bid; the last HUD row prints SELL x% /
-//                    BUY +x% more / HOLD from a fractional-Kelly size against
-//                    the chart's win-probability estimate (EF HUD formula, with
-//                    optional momentum drift). Information only: the EF rule
+//  • Position row  = assumes you hold the side that needs the cross (no inputs).
+//                    Cross possible in time → BUY +x% more, x = spare time
+//                    (1 − ETA / time left). Otherwise → SELL x%, x = the share
+//                    of the distance the projection does NOT cover in time
+//                    (moving away = SELL 100%). Information only: the EF rule
 //                    tested Oct 6-22 was buy once and hold to the end.
+//  • Win prob      = EF HUD formula (price lead vs volatility over the time
+//                    left, k = 0.94) with optional momentum drift.
 //  Built for a 1-min chart. Info table + alerts included.
 // =============================================================================
 indicator("Velocity Reach vs Target", shorttitle = "Velocity Reach", overlay = true,
@@ -79,15 +81,8 @@ showTable = input.bool(true, "Show info table", group = gH)
 tablePos  = input.string("Middle right", "Table position",
      options = ["Middle right", "Middle left", "Top right", "Top left", "Bottom right", "Bottom left"], group = gH, display = display.none)
 
-gS = "My position (last HUD row)"
-mySide    = input.string("None", "My side", options = ["None", "UP", "DOWN"], group = gS, display = display.none)
-myQty     = input.float(0.0, "Contracts held", minval = 0, step = 1, group = gS, display = display.none)
-myEntry   = input.float(0.0, "Avg entry (¢)", minval = 0, maxval = 100, step = 1, group = gS, display = display.none)
-bankroll  = input.float(0.0, "Bankroll ($, cash + open positions)", minval = 0, step = 10, group = gS, display = display.none)
-askNow    = input.float(0.0, "Current Ask for my side (¢, 0 = use entry)", minval = 0, maxval = 100, step = 1, group = gS, display = display.none)
-bidNow    = input.float(0.0, "Current Bid for my side (¢, 0 = use entry)", minval = 0, maxval = 100, step = 1, group = gS, display = display.none)
-kellyFrac = input.float(0.5, "Kelly fraction (0.5 = half-Kelly)", minval = 0.1, maxval = 1.0, step = 0.1, group = gS, display = display.none)
-driftW    = input.float(0.5, "Momentum drift weight in win probability (0 = pure EF HUD estimate, 1 = full projection)",
+gS = "Win probability"
+driftW    = input.float(0.5, "Momentum drift weight (0 = pure EF HUD estimate, 1 = full projection)",
      minval = 0, maxval = 1, step = 0.1, group = gS, display = display.none)
 
 gC = "Colors"
@@ -225,7 +220,7 @@ tau   = math.max(Nf, 0.25)
 lead  = -dist                                     // + = UP winning
 driftDisp = reachRaw - p0                         // projected move by the end of the horizon
 pUp   = (na(target) or na(sigma) or sigma <= 0) ? float(na) : fPhi(kScale * (lead + driftW * driftDisp) / (sigma * math.sqrt(tau)))
-pMine = mySide == "UP" ? pUp : mySide == "DOWN" ? 1.0 - pUp : float(na)
+pMine = dir > 0 ? pUp : 1.0 - pUp                 // my side = the side that needs the cross
 
 // ─────────────────────────────── Drawing ───────────────────────────────
 var line     reachLine  = na
@@ -349,33 +344,23 @@ if barstate.islast and not na(reach) and not na(target)
              xloc = xloc.bar_index, style = dir > 0 ? label.style_label_down : label.style_label_up,
              color = color.new(cCol, 15), textcolor = color.black, size = size.small)
 
-    // Position row: fractional-Kelly size for my side vs the chart's win-probability estimate
-    string posTxt = "none  (set My side + contracts in settings)"
-    color  posCol = color.new(color.white, 40)
-    if mySide != "None" and myQty > 0
-        A    = (askNow > 0 ? askNow : myEntry) / 100.0
-        Bd   = (bidNow > 0 ? bidNow : myEntry) / 100.0
-        head = mySide + " " + fmt0(myQty) + " @" + fmt0(myEntry) + "¢ | p " + (na(pMine) ? "n/a" : fmt0(pMine * 100) + "%") + " | "
-        if na(pMine) or A <= 0 or Bd <= 0
-            posTxt := head + "set Avg entry (or Ask / Bid)"
-        else if pMine < Bd
-            posTxt := head + "SELL 100%  (bid " + fmt0(Bd * 100) + "¢ > p)"
-            posCol := colNo
-        else if bankroll <= 0
-            posTxt := head + "HOLD  (set Bankroll for sizing)"
+    // Position row: you hold the side that needs the cross. Size from distance and time:
+    //   cross in time → BUY +x% more, x = spare time (1 − ETA / time left)
+    //   otherwise     → SELL x%, x = share of the distance the projection does not cover in time
+    string posTxt = "AT TARGET → HOLD"
+    color  posCol = color.white
+    if not atTarget
+        coverage = math.abs(reach - p0) / math.abs(dist)          // 0 = moving away … 1 = reaches the target in time
+        if possible
+            spare  = math.max(0.0, 1.0 - barsToTarget / Nf)
+            addPct = spare * 100
+            posTxt := "ETA ~" + etaTxt + " of " + withinTxt + (addPct >= 1 ? " → BUY +" + fmt0(addPct) + "% more" : " → HOLD")
+            posCol := colOk
         else
-            fBuy  = A  >= 0.99 ? 0.0 : (pMine - A)  / (1.0 - A)       // Kelly fraction if adding at the ask
-            fHold = Bd >= 0.99 ? 0.0 : (pMine - Bd) / (1.0 - Bd)      // Kelly fraction the position is worth at the bid
-            nBuy  = kellyFrac * fBuy  * bankroll / A
-            nHold = kellyFrac * fHold * bankroll / Bd
-            if myQty > nHold
-                posTxt := head + "SELL " + fmt0((1.0 - nHold / myQty) * 100) + "%  (over Kelly size at bid " + fmt0(Bd * 100) + "¢)"
-                posCol := colNo
-            else if fBuy > 0 and nBuy > myQty
-                posTxt := head + "BUY +" + fmt0((nBuy / myQty - 1.0) * 100) + "% more  (ask " + fmt0(A * 100) + "¢ < p)"
-                posCol := colOk
-            else
-                posTxt := head + "HOLD"
+            sellPct = math.min(100.0, (1.0 - coverage) * 100)
+            posTxt := (coverage <= 0 ? "moving away" : "covers " + fmt0(coverage * 100) + "% of $" + fmt2(math.abs(dist))) +
+                 " → SELL " + fmt0(sellPct) + "%"
+            posCol := sellPct >= 50 ? colNo : colBeyond
 
     // Info table
     if showTable
@@ -388,8 +373,8 @@ if barstate.islast and not na(reach) and not na(target)
         cellRow(5, tgtName,           fmtP(target) + "  (" + fmt2(dist / p0 * 100) + "% away)", colTgt)
         cellRow(6, "Time to target",  etaTxt + "  (" + barsTxt + " bars)",                      statusCol)
         cellRow(7, "Status",          statusTxt,                                                statusCol)
-        cellRow(8, "Win prob (chart)", na(pUp) ? "—" : "UP " + fmt0(pUp * 100) + "%  ·  DOWN " + fmt0((1.0 - pUp) * 100) + "%", color.white)
-        cellRow(9, "Position",        posTxt,                                                   posCol)
+        cellRow(8, "Win prob (chart)", na(pUp) ? "—" : "UP " + fmt0(pUp * 100) + "%  ·  DOWN " + fmt0((1.0 - pUp) * 100) + "%  ·  cross " + fmt0(pMine * 100) + "%", color.white)
+        cellRow(9, "Position (needs cross)", posTxt,                                            posCol)
 
 // ─────────────────────────── Signals & alerts ───────────────────────────
 plotshape(possible and not possible[1], title = "Cross became possible", style = shape.diamond,

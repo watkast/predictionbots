@@ -51,8 +51,8 @@ Companion chart tool: `research/velocity_reach_vs_target.pine` (TradingView — 
 acceleration forward, draws a vertical reach post with a 1m/2m/3m… time ruler up through the target and
 marks the tick where the target is hit, in whichever direction the target lies; the target defaults to the round's price-to-beat estimated the
 same way as the HUD, the horizon to the time left in the round, and the status / alerts read
-"UP-CROSS POSSIBLE in less than 3:42"; an optional position row prints SELL x% / BUY +x% / HOLD from a
-half-Kelly size against the chart's win-probability estimate).
+"UP-CROSS POSSIBLE in less than 3:42"; a position row (you hold the side that needs the cross) prints BUY +x% more
+(spare time) or SELL x% (share of the distance not covered in time), no inputs needed).
 
 | name | idea | evidence (one line) |
 |---|---|---|
