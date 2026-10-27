@@ -1,6 +1,6 @@
 //@version=6
 // =============================================================================
-//  VELOCITY REACH vs TARGET
+//  VELOCITY REACH vs TARGET  (v4)
 //  ---------------------------------------------------------------------------
 //  • Velocity      = smoothed price change per bar (signed)
 //  • Speed         = |velocity|, shown per hour in the table
@@ -10,26 +10,40 @@
 //  • Reach line    = thick vertical line just right of the last candle:
 //                    current price → projected reach. Compare its top with
 //                    the dashed target line.
-//        GREEN  = reach clears the target  → upward crossover possible
-//        YELLOW = clears it, but later than the projection horizon
+//        GREEN  = reach clears the target in time → upward crossover possible
+//        YELLOW = clears it, but only after the time left (NOT IN TIME)
 //        RED    = does not reach it at the current velocity
 //  • ETA line      = thin dashed vertical line at the bar where the projected
-//                    path meets the target (only when a cross is possible)
+//                    path meets the target
 //  • Ruler         = tick marks on the reach line showing where the path sits
 //                    after 1, 2, 3… bars, labelled in chart time (1m, 2m… /
 //                    1h, 2h…). Major tick every 5 bars. Ticks stop at the peak.
 //                    Past the horizon the post continues dashed (dimmed ticks)
 //                    up to the target + N extra bars, and the tick where the
 //                    target is hit is marked "◀ TARGET".
-//  Works on any symbol / timeframe. Info table + alerts included.
+//  • Target        = by default the Polymarket US 15-min round's price-to-beat,
+//                    estimated from the chart the same way as the EF Signal HUD:
+//                    rounds start on the quarter hour (UTC); the price-to-beat is
+//                    the average of the 60 BRTI prints in the minute before the
+//                    start ≈ midpoint of that 1-min bar (~$2.70 off on average).
+//                    "Round target offset" nudges it to Polymarket's exact number.
+//                    A manual price or the recent swing high can be used instead.
+//  • Horizon       = by default the time left in the current round: the status
+//                    reads "UP-CROSS POSSIBLE in less than 3:42" (the time left),
+//                    GREEN means the path clears the target before the round ends,
+//                    and the alerts carry the same wording.
+//  Built for a 1-min chart. Info table + alerts included.
 // =============================================================================
 indicator("Velocity Reach vs Target", shorttitle = "Velocity Reach", overlay = true,
      max_lines_count = 500, max_labels_count = 500, max_polylines_count = 5)
 
 // ─────────────────────────────── Inputs ───────────────────────────────
 gT = "Target"
-targetInput  = input.float(0.0, "Target price  (0 = auto: recent swing high)", minval = 0, step = 100, group = gT)
-autoLookback = input.int(50, "Auto-target lookback (bars)", minval = 2, group = gT)
+tgtSource    = input.string("Polymarket round (price to beat)", "Target source",
+     options = ["Polymarket round (price to beat)", "Manual price", "Recent swing high"], group = gT)
+targetInput  = input.float(0.0, "Manual target price  (0 = fall back to swing high)", minval = 0, step = 100, group = gT)
+tgtAdj       = input.float(0.0, "Round target offset ($) = Polymarket price-to-beat minus chart estimate", step = 0.5, group = gT)
+autoLookback = input.int(50, "Swing-high lookback (bars)", minval = 2, group = gT)
 
 gV = "Velocity / Acceleration"
 velLen    = input.int(14, "Velocity lookback (bars)", minval = 1, group = gV,
@@ -39,7 +53,9 @@ useAccel  = input.bool(true, "Include acceleration / deceleration", group = gV,
      tooltip = "ON: p = v·t + ½·a·t²    OFF: straight line p = v·t")
 
 gP = "Projection"
-horizon    = input.int(20, "Projection horizon (bars ahead)", minval = 1, maxval = 300, group = gP)
+horizonMode = input.string("Time left in round", "Horizon", options = ["Time left in round", "Fixed bars"], group = gP,
+     tooltip = "Time left in round: GREEN = the path clears the target before the current 15-min round ends")
+horizon    = input.int(20, "Fixed horizon (bars ahead)", minval = 1, maxval = 300, group = gP)
 lineOffset = input.int(2, "Reach line offset (bars right of last bar)", minval = 0, maxval = 50, group = gP)
 showPath   = input.bool(true, "Draw projected path", group = gP)
 showEta    = input.bool(true, "Draw ETA line at projected cross", group = gP)
@@ -51,10 +67,28 @@ showTable  = input.bool(true, "Show info table", group = gP)
 
 gC = "Colors"
 colOk     = input.color(color.lime,   "Cross possible",  group = gC)
-colBeyond = input.color(color.yellow, "Beyond horizon",  group = gC)
+colBeyond = input.color(color.yellow, "Not in time",     group = gC)
 colNo     = input.color(color.red,    "Not possible",    group = gC)
 colTgt    = input.color(color.orange, "Target line",     group = gC)
 colPath   = input.color(color.aqua,   "Projected path",  group = gC)
+
+// ─────────────────────────────── Helpers ───────────────────────────────
+fmtP(x) => str.tostring(x, format.mintick)
+fmt2(x) => str.tostring(x, "#.##")
+fmtClock(s) =>
+    int tot = int(math.max(0.0, s))
+    int m   = int(tot / 60)
+    int sec = tot - m * 60
+    str.tostring(m) + ":" + (sec < 10 ? "0" : "") + str.tostring(sec)
+
+// bars → chart-time label: "3m", "2.5h", "1d" …
+durTxt(bars) =>
+    secs = bars * timeframe.in_seconds()
+    secs < 60 ? str.tostring(secs) + "s" :
+         secs < 3600 ? str.tostring(secs / 60.0, "#") + "m" :
+         secs < 86400 ? str.tostring(secs / 3600.0, "#.#") + "h" :
+         str.tostring(secs / 86400.0, "#.#") + "d"
+rulerTextSize = rulerSize == "tiny" ? size.tiny : rulerSize == "normal" ? size.normal : size.small
 
 // ─────────────────── Velocity & acceleration (price per bar) ───────────────────
 rawVel = (close - close[velLen]) / velLen
@@ -62,21 +96,44 @@ vel    = ta.ema(rawVel, smoothLen)                 // signed velocity   (price /
 accEma = ta.ema(ta.change(vel), smoothLen)
 acc    = useAccel ? accEma : 0.0                   // acceleration      (price / bar²)
 
+// ─────────── Polymarket round clock (rounds start on the quarter hour, UTC) ───────────
+roundMs    = 900000
+roundStart = math.floor(time / 900000.0) * roundMs
+isNewRound = ta.change(roundStart) != 0
+barMs      = timeframe.in_seconds() * 1000
+nowMs      = barstate.isrealtime ? timenow : time + barMs
+secsLeft   = math.max(0.0, (roundStart + roundMs - nowMs) / 1000.0)
+barsLeft   = math.max(1, math.ceil(secsLeft / timeframe.in_seconds()))
+oneMin     = timeframe.isminutes and timeframe.multiplier == 1
+
+// Price-to-beat estimate (same stand-in as the EF Signal HUD): on a 1-min chart the midpoint of the
+// bar before the round starts; on other timeframes the first print of the round.
+var float roundAnchor = na
+if isNewRound
+    roundAnchor := oneMin ? (high[1] + low[1]) / 2 : open
+roundTarget = roundAnchor + tgtAdj
+
 // ─────────────────────────────── Target ───────────────────────────────
 swingHigh = ta.highest(high, autoLookback)
-target    = targetInput > 0 ? targetInput : swingHigh
+target    = tgtSource == "Polymarket round (price to beat)" ? roundTarget :
+     tgtSource == "Manual price" and targetInput > 0 ? targetInput : swingHigh
+tgtName   = tgtSource == "Polymarket round (price to beat)" ? "Price to beat (est.)" :
+     tgtSource == "Manual price" and targetInput > 0 ? "Target (manual)" : "Target (swing high)"
 
 // ─────────────────── Projection  p(t) = p0 + v·t + ½·a·t² ───────────────────
 proj(p, v, a, t) => p + v * t + 0.5 * a * t * t
 
 p0 = close
-N  = horizon
+roundMode = horizonMode == "Time left in round"
+Nf = roundMode ? math.max(secsLeft / timeframe.in_seconds(), 0.01) : float(horizon)   // horizon in bars (fractional in round mode)
+N  = math.max(1, math.ceil(Nf))                                                        // whole bars, for drawing
+withinTxt = roundMode ? fmtClock(secsLeft) : durTxt(horizon)                            // "3:42" (time left) or "20m"
 
 // Highest point the projected path reaches inside the horizon
-reach = math.max(p0, proj(p0, vel, acc, N))
+reach = math.max(p0, proj(p0, vel, acc, Nf))
 if math.abs(acc) > 1e-10
     tPeak = -vel / acc                              // bar where velocity hits zero
-    if tPeak > 0 and tPeak < N
+    if tPeak > 0 and tPeak < Nf
         reach := math.max(reach, proj(p0, vel, acc, tPeak))
 
 // Bars until the path first touches the target  (na = never at this pace)
@@ -101,16 +158,17 @@ else
         barsToTarget := best
 
 aboveTarget = dist <= 0
-possible    = not aboveTarget and not na(barsToTarget) and barsToTarget <= N
-beyond      = not aboveTarget and not na(barsToTarget) and barsToTarget >  N
+possible    = not aboveTarget and not na(barsToTarget) and barsToTarget <= Nf    // crosses within the time left
+beyond      = not aboveTarget and not na(barsToTarget) and barsToTarget >  Nf    // crosses, but too late
 crossedUp   = ta.crossover(close, target)
 
 statusCol = aboveTarget or possible ? colOk : beyond ? colBeyond : colNo
 barsTxt   = na(barsToTarget) ? "—" : str.tostring(math.ceil(barsToTarget))
-statusTxt = aboveTarget ? "ALREADY ABOVE TARGET" :
-     possible ? "UP-CROSS POSSIBLE ✔   (~" + barsTxt + " bars)" :
-     beyond   ? "Possible, but beyond horizon (~" + barsTxt + " bars)" :
-     "NOT POSSIBLE ✘ at current velocity"
+etaTxt    = na(barsToTarget) ? "—" : durTxt(math.ceil(barsToTarget))
+statusTxt = aboveTarget ? "ALREADY ABOVE TARGET  (" + withinTxt + " left)" :
+     possible ? "UP-CROSS POSSIBLE ✔ in less than " + withinTxt + "  (ETA ~" + etaTxt + ")" :
+     beyond   ? "NOT IN TIME ✘ needs ~" + etaTxt + ", less than " + withinTxt + " left" :
+     "NOT POSSIBLE ✘ in less than " + withinTxt + " at current velocity"
 
 // ─────────────────────────────── Drawing ───────────────────────────────
 var line     reachLine  = na
@@ -124,20 +182,9 @@ var label    crossLbl   = na
 var polyline path       = na
 var array<line>  tickLines = array.new<line>()
 var array<label> tickLbls  = array.new<label>()
-var table    info       = table.new(position.top_right, 2, 7, bgcolor = color.new(color.black, 15),
+var table    info       = table.new(position.top_right, 2, 8, bgcolor = color.new(color.black, 15),
      border_width = 1, border_color = color.new(color.gray, 70))
 
-fmtP(x) => str.tostring(x, format.mintick)
-fmt2(x) => str.tostring(x, "#.##")
-rulerTextSize = rulerSize == "tiny" ? size.tiny : rulerSize == "normal" ? size.normal : size.small
-
-// bars → chart-time label: "3m", "2.5h", "1d" …
-durTxt(bars) =>
-    secs = bars * timeframe.in_seconds()
-    secs < 60 ? str.tostring(secs) + "s" :
-         secs < 3600 ? str.tostring(secs / 60.0, "#") + "m" :
-         secs < 86400 ? str.tostring(secs / 3600.0, "#.#") + "h" :
-         str.tostring(secs / 86400.0, "#.#") + "d"
 cellRow(r, k, v, c) =>
     table.cell(info, 0, r, k, text_color = color.new(color.white, 25), text_size = size.small, text_halign = text.align_left)
     table.cell(info, 1, r, v, text_color = c, text_size = size.small, text_halign = text.align_right)
@@ -205,7 +252,7 @@ if barstate.islast and not na(reach) and not na(target)
     // Horizontal target line
     targetLine := line.new(x0 - 1, target, x0 + N + lineOffset, target, xloc = xloc.bar_index,
          extend = extend.both, color = colTgt, style = line.style_dashed, width = 1)
-    tgtLbl := label.new(x0 + N + lineOffset, target, "Target " + fmtP(target),
+    tgtLbl := label.new(x0 + N + lineOffset, target, tgtName + " " + fmtP(target),
          xloc = xloc.bar_index, style = label.style_label_left, color = color.new(colTgt, 15),
          textcolor = color.black, size = size.small)
 
@@ -229,27 +276,30 @@ if barstate.islast and not na(reach) and not na(target)
             pathExt := polyline.new(pts2, curved = false, closed = false, xloc = xloc.bar_index,
                  line_color = color.new(colPath, 60), line_style = line.style_dotted, line_width = 1)
 
-    // ETA line + marker where the path meets the target (green inside the horizon, yellow beyond it)
+    // ETA line + marker where the path meets the target (green = in time, yellow = too late)
     if not na(barsToTarget) and barsToTarget > 0 and barsToTarget <= 480
         xc   = x0 + math.ceil(barsToTarget)
         cCol = possible ? colOk : colBeyond
         if showEta
             etaLine := line.new(xc, p0, xc, target, xloc = xloc.bar_index, color = color.new(cCol, 40),
                  style = line.style_dashed, width = 1)
-        crossLbl := label.new(xc, target, "▲ cross in ~" + barsTxt + " bars",
+        crossTxt = possible ? "▲ cross in ~" + etaTxt + " ✔  (" + withinTxt + " left)" :
+             "▲ cross in ~" + etaTxt + " ✘  only " + withinTxt + " left"
+        crossLbl := label.new(xc, target, crossTxt,
              xloc = xloc.bar_index, style = label.style_label_down, color = color.new(cCol, 15),
              textcolor = color.black, size = size.small)
 
     // Info table
     if showTable
         perHour = vel * 3600.0 / timeframe.in_seconds()
-        cellRow(0, "Velocity",       fmt2(vel) + " /bar",                                   vel >= 0 ? colOk : colNo)
-        cellRow(1, "Speed",          fmt2(math.abs(perHour)) + " /hr",                      color.white)
-        cellRow(2, "Acceleration",   fmt2(acc) + " /bar²",                                  acc >= 0 ? colOk : colNo)
-        cellRow(3, "Reach (" + str.tostring(N) + " bars)", fmtP(reach) + "  (" + fmt2(reachPct) + "%)", statusCol)
-        cellRow(4, "Target",         fmtP(target) + "  (" + fmt2(dist / p0 * 100) + "% away)", colTgt)
-        cellRow(5, "Bars to target", barsTxt,                                               statusCol)
-        cellRow(6, "Status",         statusTxt,                                             statusCol)
+        cellRow(0, "Round",          fmtClock(secsLeft) + " left  (" + str.tostring(barsLeft) + " bars)", color.white)
+        cellRow(1, "Velocity",       fmt2(vel) + " /bar",                                   vel >= 0 ? colOk : colNo)
+        cellRow(2, "Speed",          fmt2(math.abs(perHour)) + " /hr",                      color.white)
+        cellRow(3, "Acceleration",   fmt2(acc) + " /bar²",                                  acc >= 0 ? colOk : colNo)
+        cellRow(4, "Reach (" + withinTxt + ")", fmtP(reach) + "  (" + fmt2(reachPct) + "%)", statusCol)
+        cellRow(5, tgtName,          fmtP(target) + "  (" + fmt2(dist / p0 * 100) + "% away)", colTgt)
+        cellRow(6, "Time to target", etaTxt + "  (" + barsTxt + " bars)",                   statusCol)
+        cellRow(7, "Status",         statusTxt,                                             statusCol)
 
 // ─────────────────────────── Signals & alerts ───────────────────────────
 plotshape(possible and not possible[1], title = "Cross became possible", style = shape.triangleup,
@@ -257,6 +307,15 @@ plotshape(possible and not possible[1], title = "Cross became possible", style =
 plotshape(not possible and possible[1] and not aboveTarget, title = "Cross no longer possible", style = shape.triangledown,
      location = location.abovebar, color = colNo, size = size.tiny)
 
-alertcondition(possible and not possible[1], "Up-cross possible", "Projected reach now clears the target — upward crossover possible at current velocity")
-alertcondition(not possible and possible[1] and not aboveTarget, "Up-cross no longer possible", "Projected reach fell below the target")
+// Fixed-text alerts (Create alert → Condition: this indicator → pick one)
+alertcondition(possible and not possible[1], "Up-cross possible", "Projected reach now clears the target in time — upward crossover possible at current velocity")
+alertcondition(not possible and possible[1] and not aboveTarget, "Up-cross no longer possible", "Projected reach no longer clears the target in time")
 alertcondition(crossedUp, "Price crossed target", "Price crossed above the target price")
+
+// Live-text prompts with the time left (Create alert → Condition: this indicator → "Any alert() function call")
+if possible and not possible[1]
+    alert("Velocity Reach: " + statusTxt, alert.freq_once_per_bar)
+if not possible and possible[1] and not aboveTarget
+    alert("Velocity Reach: " + statusTxt, alert.freq_once_per_bar)
+if crossedUp
+    alert("Velocity Reach: price crossed above " + fmtP(target) + " with " + withinTxt + " left", alert.freq_once_per_bar)
