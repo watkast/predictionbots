@@ -1,6 +1,6 @@
 //@version=6
 // =============================================================================
-//  VELOCITY REACH vs TARGET  (v5.2)
+//  VELOCITY REACH vs TARGET  (v5.3)
 //  ---------------------------------------------------------------------------
 //  • Velocity      = smoothed price change per bar (signed)
 //  • Acceleration  = change in velocity per bar
@@ -44,6 +44,10 @@
 //                    tested Oct 6-22 was buy once and hold to the end.
 //  • Win prob      = EF HUD formula (price lead vs volatility over the time
 //                    left, k = 0.94) with optional momentum drift.
+//  • Rounds        = each 15-min round gets its own background tint (four
+//                    rotating colors, or two alternating shades), the live
+//                    round slightly stronger, and a dashed vertical mark at
+//                    every quarter-hour boundary.
 //  Built for a 1-min chart. Info table + alerts included.
 // =============================================================================
 indicator("Velocity Reach vs Target", shorttitle = "Velocity Reach", overlay = true,
@@ -85,6 +89,14 @@ hudSize   = input.string("small", "Table text size", options = ["tiny", "small",
 gS = "Win probability"
 driftW    = input.float(0.5, "Momentum drift weight (0 = pure EF HUD estimate, 1 = full projection)",
      minval = 0, maxval = 1, step = 0.1, group = gS, display = display.none)
+
+gB = "Round shading (15-min marks)"
+bgMode     = input.string("Four colors", "Background", options = ["Four colors", "Two shades", "Off"], group = gB, display = display.none)
+bgTransp   = input.int(88, "Background transparency (higher = fainter)", minval = 50, maxval = 100, group = gB, display = display.none)
+liveBoost  = input.int(8, "Current round: extra opacity", minval = 0, maxval = 30, group = gB, display = display.none)
+showMarks  = input.bool(true, "Vertical line at each 15-min mark", group = gB)
+markWidth  = input.int(1, "Mark line width", minval = 1, maxval = 3, group = gB, display = display.none)
+keepMarks  = input.int(60, "Keep marks for the last N rounds", minval = 4, maxval = 400, group = gB, display = display.none)
 
 gC = "Colors"
 colOk     = input.color(color.lime,   "Cross possible",  group = gC)
@@ -147,6 +159,26 @@ var float roundAnchor = na
 if isNewRound
     roundAnchor := oneMin ? (high[1] + low[1]) / 2 : open
 roundTarget = roundAnchor + tgtAdj
+
+// ─────────── Round shading: alternating background per round + a mark at each 15-min boundary ───────────
+roundIdx   = int(roundStart / roundMs)                  // round counter (since epoch)
+slot       = roundIdx % 4
+hueCol     = slot == 0 ? color.rgb(41, 121, 255) :      // blue
+     slot == 1 ? color.rgb(171, 71, 188) :              // purple
+     slot == 2 ? color.rgb(0, 172, 193) :               // teal
+     color.rgb(255, 167, 38)                            // amber
+shadeCol   = roundIdx % 2 == 0 ? color.rgb(120, 144, 156) : color.rgb(38, 50, 56)
+roundCol   = bgMode == "Four colors" ? hueCol : shadeCol
+isCurRound = roundStart == math.floor(timenow / 900000.0) * roundMs
+bgT        = math.max(0, bgTransp - (isCurRound ? liveBoost : 0))
+bgcolor(bgMode == "Off" ? na : color.new(roundCol, bgT), title = "Round shading")
+
+var array<line> roundMarks = array.new<line>()
+if showMarks and isNewRound
+    array.push(roundMarks, line.new(roundStart, close, roundStart, close + syminfo.mintick, xloc = xloc.bar_time,
+         extend = extend.both, color = color.new(roundCol, 30), style = line.style_dashed, width = markWidth))
+    if array.size(roundMarks) > keepMarks
+        line.delete(array.shift(roundMarks))
 
 // ─────────────────────────────── Target ───────────────────────────────
 swingHigh = ta.highest(high, autoLookback)
