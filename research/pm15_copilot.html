@@ -1,0 +1,845 @@
+<title>PM15 Copilot</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@600;700;800&family=IBM+Plex+Sans:wght@400;500;600&family=IBM+Plex+Mono:wght@500;600&display=swap">
+<style>
+/* Layout: a dark cockpit for one 15-minute market. Header band = the market itself; the DO NOW card
+   sits above everything; chart left, dictation/positions right on wide screens, stacked on a phone. */
+:root {
+  --bg: #0a0d14;          /* near-black, blue bias (PM's own ground) */
+  --surface: #121723;
+  --surface-2: #1a2130;
+  --line: #27304a;
+  --fg: #e9edf7;
+  --muted: #8f9ab4;
+  --spot: #9b8cff;        /* Coinbase spot: purple-blue */
+  --pm: #62ccff;          /* what Polymarket shows: light blue */
+  --target: #ffb020;      /* the price-to-beat: bright yellow-orange, the brightest thing on the page */
+  --post: #b57cff;        /* the ruler post: glowing purple */
+  --good: #28d978;
+  --warn: #ff8a1f;
+  --orange: #ff6a00;      /* construction safety orange: the selling countdown */
+  --bad: #ff4b5c;
+  --font-display: "Barlow Condensed", "Arial Narrow", Impact, sans-serif;
+  --font-body: "IBM Plex Sans", "Helvetica Neue", Arial, sans-serif;
+  --font-mono: "IBM Plex Mono", "SF Mono", Menlo, Consolas, monospace;
+  color-scheme: dark;
+}
+* { box-sizing: border-box; }
+html, body { height: 100%; }
+body { margin: 0; background: var(--bg); color: var(--fg); font-family: var(--font-body); font-size: 14px; line-height: 1.35; }
+body::before { content: ""; position: fixed; inset: 0 0 auto; height: env(safe-area-inset-top, 0px); z-index: 10; background: var(--bg); }
+.wrap { max-width: 1480px; margin: 0 auto; padding-block: 10px 28px;
+  padding-left: max(16px, env(safe-area-inset-left, 0px)); padding-right: max(16px, env(safe-area-inset-right, 0px));
+  display: grid; gap: 12px; }
+.num { font-family: var(--font-mono); font-variant-numeric: tabular-nums; }
+.label { font-size: 11px; letter-spacing: .08em; text-transform: uppercase; color: var(--muted); }
+button, input, select { font: inherit; color: inherit; }
+button { background: var(--surface-2); border: 1px solid var(--line); border-radius: 8px; padding: 6px 10px; cursor: pointer; }
+button:hover { border-color: var(--muted); }
+button:focus-visible, input:focus-visible, select:focus-visible, summary:focus-visible { outline: 2px solid var(--pm); outline-offset: 2px; }
+input, select { background: var(--bg); border: 1px solid var(--line); border-radius: 8px; padding: 6px 8px; min-width: 0; width: 100%; }
+.card { background: var(--surface); border: 1px solid var(--line); border-radius: 12px; padding: 12px 14px; min-width: 0; }
+.card h3 { margin: 0 0 8px; font: 700 15px/1 var(--font-display); letter-spacing: .06em; text-transform: uppercase; color: var(--muted); }
+
+/* ===== Market header band ===== */
+.mkt { display: grid; grid-template-columns: 1fr auto; gap: 10px 20px; align-items: center; padding: 12px 16px;
+  background: linear-gradient(180deg, #151a28, #0f1320); border: 1px solid var(--line); border-radius: 14px; }
+.mkt-name { font: 800 clamp(26px, 4vw, 40px)/1 var(--font-display); letter-spacing: .02em; text-wrap: balance; }
+.mkt-win { color: var(--muted); font-size: 13px; margin-top: 4px; }
+.mkt-win b { color: var(--fg); font-weight: 600; }
+.timer { font: 800 clamp(44px, 7vw, 72px)/1 var(--font-display); letter-spacing: .02em; text-align: right; }
+.timer.closing { color: var(--warn); }
+.timer.final { color: var(--bad); }
+.timer-sub { text-align: right; color: var(--muted); font-size: 12px; }
+.mkt-stats { grid-column: 1 / -1; display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap: 8px 16px; }
+.stat .label { margin-bottom: 2px; }
+.stat .v { font: 600 22px/1.1 var(--font-mono); font-variant-numeric: tabular-nums; }
+.stat .v.target { color: var(--target); }
+.stat .v.pm { color: var(--pm); }
+.stat .v.spot { color: var(--spot); }
+.stat .v.up { color: var(--good); } .stat .v.down { color: var(--bad); }
+.stat small { display: block; color: var(--muted); font-size: 11px; margin-top: 2px; }
+.chips { grid-column: 1 / -1; display: flex; flex-wrap: wrap; gap: 6px; }
+.chip { font-size: 11px; padding: 3px 8px; border-radius: 999px; border: 1px solid var(--line); color: var(--muted); display: inline-flex; gap: 6px; align-items: center; }
+.chip i { width: 7px; height: 7px; border-radius: 50%; background: var(--muted); display: inline-block; }
+.chip.ok i { background: var(--good); } .chip.warn i { background: var(--warn); } .chip.bad i { background: var(--bad); }
+
+/* ===== DO NOW ===== */
+.donow { display: grid; grid-template-columns: 1.6fr 1fr; gap: 12px; }
+.do { border-radius: 14px; border: 2px solid var(--line); padding: 14px 16px; background: var(--surface); display: grid; gap: 6px; min-width: 0; }
+.do .label { font: 700 13px/1 var(--font-display); letter-spacing: .14em; }
+.do .head { font: 800 clamp(30px, 5.2vw, 58px)/1 var(--font-display); letter-spacing: .01em; text-wrap: balance; }
+.do .sub { font-size: 15px; color: var(--fg); }
+.do .time { font: 700 clamp(20px, 3vw, 30px)/1.1 var(--font-display); color: var(--muted); letter-spacing: .02em; }
+.do .time b { color: var(--fg); font-family: var(--font-mono); font-size: .95em; }
+.do.lock { border-color: var(--good); background: linear-gradient(180deg, #0f2a1d, #10201a); box-shadow: 0 0 0 1px #28d97833, 0 0 40px #28d97822; }
+.do.lock .head, .do.lock .label { color: var(--good); }
+.do.sell { border-color: var(--bad); background: linear-gradient(180deg, #2c1216, #1c1216); }
+.do.sell .head, .do.sell .label { color: var(--bad); }
+.do.hold { border-color: var(--pm); }
+.do.hold .head, .do.hold .label { color: var(--pm); }
+.do.ready { border-color: var(--warn); }
+.do.ready .head, .do.ready .label { color: var(--warn); }
+.do.wait .head { color: var(--muted); }
+.do.next .head { font-size: clamp(22px, 3.4vw, 34px); color: var(--fg); }
+.do.next .label { color: var(--muted); }
+@keyframes pulse { 0%,100% { box-shadow: 0 0 0 0 #28d97855; } 50% { box-shadow: 0 0 0 10px #28d97800; } }
+.do.lock { animation: pulse 1.4s ease-out infinite; }
+@media (prefers-reduced-motion: reduce) { .do.lock { animation: none; } }
+
+/* ===== Main grid ===== */
+.main { display: grid; grid-template-columns: minmax(0, 1.5fr) minmax(300px, 1fr); gap: 12px; align-items: start; }
+.chartcard { padding: 10px 10px 8px; }
+.chart-top { display: flex; flex-wrap: wrap; gap: 8px 14px; align-items: baseline; justify-content: space-between; padding: 0 4px 6px; }
+.legend { display: flex; flex-wrap: wrap; gap: 10px; font-size: 12px; color: var(--muted); }
+.legend span::before { content: ""; display: inline-block; width: 18px; height: 3px; border-radius: 2px; margin-right: 6px; vertical-align: middle; background: currentColor; }
+.legend .l-spot { color: var(--spot); } .legend .l-pm { color: var(--pm); } .legend .l-target { color: var(--target); } .legend .l-post { color: var(--post); }
+.legend .l-target::before { height: 0; border-top: 3px dashed currentColor; }
+.canvas-box { position: relative; width: 100%; aspect-ratio: 16 / 9; max-height: 60vh; min-height: 300px; }
+canvas { position: absolute; inset: 0; width: 100%; height: 100%; display: block; border-radius: 8px; }
+.side { display: grid; gap: 12px; min-width: 0; }
+
+/* feed row */
+.feed { display: grid; grid-template-columns: 1fr 1fr; gap: 8px 14px; }
+.feed .v { font: 600 24px/1.1 var(--font-mono); font-variant-numeric: tabular-nums; }
+.feed .spot .v { color: var(--spot); } .feed .pm .v { color: var(--pm); }
+.feed .lag { grid-column: 1 / -1; font-size: 13px; color: var(--muted); }
+.feed .lag b { color: var(--fg); font-family: var(--font-mono); }
+.feed .insight { grid-column: 1 / -1; font-size: 14px; padding: 8px 10px; border-radius: 8px; background: var(--surface-2); border-left: 3px solid var(--pm); }
+.feed .insight.good { border-left-color: var(--good); } .feed .insight.bad { border-left-color: var(--bad); } .feed .insight.warn { border-left-color: var(--warn); }
+
+/* paper engine */
+.paper { display: grid; grid-template-columns: 1.2fr 1fr; gap: 10px; }
+.cell { border: 2px solid var(--line); border-radius: 10px; padding: 10px 12px; min-width: 0; background: var(--surface-2); }
+.cell .big { font: 700 20px/1.15 var(--font-display); letter-spacing: .01em; }
+.cell .small { font-size: 12px; color: var(--muted); margin-top: 4px; }
+.cell.arm { border-color: var(--orange); box-shadow: 0 0 0 3px #ff6a0033; }
+.cell.arm .big { color: var(--orange); }
+.cell.firing { border-color: var(--orange); background: #ff6a00; color: #140800; }
+.cell.firing .big, .cell.firing .small { color: #140800; }
+.cell.done { border-color: var(--good); }
+.cell.done .big { color: var(--good); }
+.kv { display: grid; grid-template-columns: auto 1fr; gap: 2px 10px; font-size: 13px; }
+.kv .k { color: var(--muted); }
+.kv .n { font-family: var(--font-mono); font-variant-numeric: tabular-nums; text-align: right; }
+.pos { color: var(--good); } .neg { color: var(--bad); }
+
+/* plays */
+table { width: 100%; border-collapse: collapse; font-size: 13px; }
+th, td { padding: 6px 6px; text-align: left; border-bottom: 1px solid var(--line); vertical-align: top; }
+th { font-size: 11px; letter-spacing: .06em; text-transform: uppercase; color: var(--muted); font-weight: 600; }
+td.n, th.n { text-align: right; font-family: var(--font-mono); font-variant-numeric: tabular-nums; }
+.grade { display: inline-block; min-width: 30px; text-align: center; font: 700 13px/1 var(--font-display); padding: 4px 6px; border-radius: 6px; letter-spacing: .05em; }
+.gA { background: #163d2a; color: var(--good); } .gB { background: #1a3550; color: var(--pm); } .gC { background: #3d2f12; color: var(--warn); } .gD { background: #3e1a20; color: var(--bad); }
+.tablebox { overflow-x: auto; }
+
+/* my position + inputs */
+.row { display: flex; flex-wrap: wrap; gap: 8px; align-items: end; }
+.row > label { display: grid; gap: 3px; font-size: 11px; color: var(--muted); flex: 1 1 90px; min-width: 0; }
+.row input, .row select { width: 100%; }
+.seg { display: inline-flex; border: 1px solid var(--line); border-radius: 8px; overflow: hidden; }
+.seg button { border: 0; border-radius: 0; background: transparent; padding: 6px 12px; }
+.seg button.on.up { background: #163d2a; color: var(--good); } .seg button.on.down { background: #3e1a20; color: var(--bad); }
+.btn-primary { background: var(--pm); color: #06131c; border-color: transparent; font-weight: 600; }
+.btn-danger { background: #3e1a20; color: var(--bad); }
+.hint { font-size: 12px; color: var(--muted); }
+
+/* next / past */
+.next .v { font: 600 20px/1.1 var(--font-mono); font-variant-numeric: tabular-nums; color: var(--target); }
+.past { display: flex; flex-wrap: wrap; gap: 6px; }
+.pill { display: inline-grid; justify-items: center; gap: 2px; padding: 6px 8px; border-radius: 8px; border: 1px solid var(--line); min-width: 62px; font-size: 11px; color: var(--muted); }
+.pill b { font: 700 16px/1 var(--font-display); }
+.pill.up b { color: var(--good); } .pill.down b { color: var(--bad); }
+.pill.locked { border-color: var(--good); }
+
+details.settings { border: 1px solid var(--line); border-radius: 12px; padding: 8px 14px; background: var(--surface); }
+details.settings summary { cursor: pointer; font: 700 15px/1.4 var(--font-display); letter-spacing: .06em; text-transform: uppercase; color: var(--muted); }
+.settings .grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(170px, 1fr)); gap: 10px; margin-top: 10px; }
+.settings label { display: grid; gap: 3px; font-size: 11px; color: var(--muted); }
+.settings .wide { grid-column: 1 / -1; }
+.toast { position: fixed; left: 50%; bottom: calc(16px + env(safe-area-inset-bottom, 0px)); transform: translateX(-50%); background: var(--surface-2); border: 1px solid var(--line); padding: 8px 14px; border-radius: 10px; font-size: 13px; z-index: 20; }
+
+@media (max-width: 860px) {
+  .main { grid-template-columns: 1fr; }
+  .donow { grid-template-columns: 1fr; }
+  .mkt { grid-template-columns: 1fr; }
+  .timer, .timer-sub { text-align: left; }
+  .paper { grid-template-columns: 1fr; }
+}
+</style>
+
+<div class="wrap">
+  <!-- ===== The market itself ===== -->
+  <header class="mkt" id="mkt">
+    <div>
+      <div class="mkt-name">BTC UP OR DOWN 15M</div>
+      <div class="mkt-win">Polymarket US · <b id="win-et">—</b> ET · <b id="win-local">—</b> local · round <span class="num" id="slug">—</span></div>
+    </div>
+    <div>
+      <div class="timer num" id="timer">--:--</div>
+      <div class="timer-sub" id="timer-sub">left in this round</div>
+    </div>
+    <div class="mkt-stats">
+      <div class="stat"><div class="label">Target · price to beat</div><div class="v target num" id="h-target">—</div><small id="h-target-src">waiting for data</small></div>
+      <div class="stat"><div class="label">Polymarket shows (60-s average)</div><div class="v pm num" id="h-pm">—</div><small id="h-pm-diff">—</small></div>
+      <div class="stat"><div class="label">Coinbase spot (what the market trades on)</div><div class="v spot num" id="h-spot">—</div><small id="h-spot-diff">—</small></div>
+      <div class="stat"><div class="label">Leader · settles UP if PM's final ≥ target</div><div class="v num" id="h-lead">—</div><small id="h-lead-p">—</small></div>
+    </div>
+    <div class="chips">
+      <span class="chip" id="chip-cb"><i></i>Coinbase: connecting</span>
+      <span class="chip" id="chip-pm"><i></i>PM API: not tried</span>
+      <span class="chip" id="chip-off"><i></i>Basis offset: unknown</span>
+      <span class="chip" id="chip-vol"><i></i>Vol: —</span>
+      <button id="btn-sound" title="Beep when a locked play appears">🔇 Sound off</button>
+      <button id="btn-wake" title="Keep the screen on">Keep screen on</button>
+    </div>
+  </header>
+
+  <!-- ===== DO NOW / NEXT ===== -->
+  <section class="donow">
+    <div class="do wait" id="do">
+      <div class="label" id="do-label">DO NOW</div>
+      <div class="head" id="do-head">Connecting to the feed…</div>
+      <div class="sub" id="do-sub">The Coinbase feed and the round clock come first; the dictation starts as soon as prices arrive.</div>
+      <div class="time" id="do-time"></div>
+    </div>
+    <div class="do next" id="nx">
+      <div class="label">NEXT</div>
+      <div class="head" id="nx-head">—</div>
+      <div class="sub" id="nx-sub"></div>
+      <div class="time" id="nx-time"></div>
+    </div>
+  </section>
+
+  <main class="main">
+    <!-- ===== Chart ===== -->
+    <section class="card chartcard">
+      <div class="chart-top">
+        <div class="legend">
+          <span class="l-target">Target (price to beat)</span>
+          <span class="l-spot">Coinbase spot</span>
+          <span class="l-pm">Polymarket shows</span>
+          <span class="l-post">Post: $ to cross · 1m ticks at current pace</span>
+        </div>
+        <div class="hint">Shaded band on the right = the part of the settlement average already in the books.</div>
+      </div>
+      <div class="canvas-box"><canvas id="cv"></canvas></div>
+    </section>
+
+    <aside class="side">
+      <!-- feed row -->
+      <section class="card feed">
+        <div class="spot"><div class="label">Coinbase spot</div><div class="v" id="f-spot">—</div></div>
+        <div class="pm"><div class="label">Polymarket shows</div><div class="v" id="f-pm">—</div></div>
+        <div class="lag" id="f-lag">PM is <b>—</b> s and <b>—</b> behind the spot</div>
+        <div class="insight" id="f-insight">Waiting for prices.</div>
+      </section>
+
+      <!-- paper engine -->
+      <section class="card">
+        <h3>Script's own bets (paper)</h3>
+        <div class="paper">
+          <div class="cell" id="p-cell"><div class="big" id="p-status">Watching the round</div><div class="small" id="p-note">Buys the locked play with the stake in Settings; sells only if the lock breaks.</div></div>
+          <div class="cell"><div class="kv">
+            <span class="k">Position</span><span class="n" id="p-side">none</span>
+            <span class="k">Shares</span><span class="n" id="p-shares">0</span>
+            <span class="k">Buy-in cost</span><span class="n" id="p-cost">$0.00</span>
+            <span class="k">Value now</span><span class="n" id="p-value">$0.00</span>
+            <span class="k">P&amp;L</span><span class="n" id="p-pnl">—</span>
+            <span class="k">Round / total</span><span class="n" id="p-total">—</span>
+          </div></div>
+        </div>
+      </section>
+
+      <!-- plays -->
+      <section class="card">
+        <h3>Plays right now · safety rating</h3>
+        <div class="tablebox"><table>
+          <thead><tr><th>Play</th><th class="n">Win</th><th class="n">Net if right</th><th>Safety</th></tr></thead>
+          <tbody id="plays"><tr><td colspan="4" class="hint">Waiting for prices.</td></tr></tbody>
+        </table></div>
+        <div class="hint" id="plays-note">Win = model probability from the settlement average. Net = per $1 contract after Polymarket's taker fee. A+ ≥ 99.5% · A ≥ 99% · B ≥ 97% · C ≥ 90% · D below.</div>
+      </section>
+
+      <!-- my position -->
+      <section class="card">
+        <h3>My position on Polymarket</h3>
+        <div class="row">
+          <div class="seg" id="my-seg"><button class="up" data-side="UP">UP</button><button class="down" data-side="DOWN">DOWN</button></div>
+          <label>Paid (¢ per share)<input id="my-price" type="number" inputmode="decimal" min="1" max="99" step="1" placeholder="92"></label>
+          <label>Spent ($)<input id="my-spent" type="number" inputmode="decimal" min="1" step="1" placeholder="20"></label>
+          <button class="btn-primary" id="my-set">I'm in</button>
+          <button class="btn-danger" id="my-clear">Out</button>
+        </div>
+        <div class="kv" style="margin-top:8px">
+          <span class="k">Holding</span><span class="n" id="my-hold">nothing</span>
+          <span class="k">Cost</span><span class="n" id="my-cost">—</span>
+          <span class="k">Current (model · PM bid)</span><span class="n" id="my-worth">—</span>
+          <span class="k">To win</span><span class="n" id="my-win">—</span>
+        </div>
+      </section>
+
+      <!-- next round -->
+      <section class="card next">
+        <h3>Next round</h3>
+        <div class="kv">
+          <span class="k">Window</span><span class="n" id="n-win">—</span>
+          <span class="k">Its target forms from</span><span class="n">the last 60 s of this round</span>
+          <span class="k">Target so far</span><span class="n v" id="n-target">—</span>
+        </div>
+        <div class="hint" id="n-hint">The next price-to-beat is this round's settlement average. In the final minute it is already taking shape.</div>
+      </section>
+
+      <!-- past -->
+      <section class="card">
+        <h3>Past rounds (this session)</h3>
+        <div class="past" id="past"><span class="hint">None yet.</span></div>
+      </section>
+    </aside>
+  </main>
+
+  <details class="settings" id="settings">
+    <summary>Settings · target / quotes / relay</summary>
+    <div class="grid">
+      <label>Target from your PM screen ($)<input id="s-target" type="number" inputmode="decimal" step="0.01" placeholder="79566.79"></label>
+      <label>Favorite's Ask on PM (¢, 0 = unknown)<input id="s-ask" type="number" inputmode="decimal" min="0" max="100" step="1" value="0"></label>
+      <label>Favorite's Bid on PM (¢, 0 = unknown)<input id="s-bid" type="number" inputmode="decimal" min="0" max="100" step="1" value="0"></label>
+      <label>Script stake per lock ($)<input id="s-stake" type="number" inputmode="decimal" min="1" step="1" value="20"></label>
+      <label>Locked = win probability ≥ (%)<input id="s-lockp" type="number" inputmode="decimal" min="90" max="99.99" step="0.1" value="99.5"></label>
+      <label>Max price to pay for a lock (¢)<input id="s-maxask" type="number" inputmode="decimal" min="50" max="99" step="1" value="97"></label>
+      <label>Momentum drift weight (0–1)<input id="s-drift" type="number" inputmode="decimal" min="0" max="1" step="0.1" value="0.5"></label>
+      <label>Taker fee coefficient<input id="s-fee" type="number" inputmode="decimal" min="0" max="0.2" step="0.0005" value="0.0695"></label>
+      <label class="wide">PM API relay URL (leave empty to try the gateway directly)<input id="s-relay" type="url" placeholder="https://your-worker.workers.dev"></label>
+      <label>Basis offset PM − Coinbase ($, auto when the target is known)<input id="s-offset" type="number" inputmode="decimal" step="0.01" placeholder="auto"></label>
+      <div class="wide hint" id="s-note">Everything saves on this device. PM's price is modeled as the 60-second average of Coinbase spot, 2 s delayed, plus a basis offset that recalibrates each round from the exact target (API or the number you type).</div>
+      <div class="wide row"><button id="s-save" class="btn-primary">Save</button><button id="s-reset-hist">Clear session history</button></div>
+    </div>
+  </details>
+</div>
+<div class="toast" id="toast" hidden></div>
+
+<script>
+'use strict';
+/* =====================================================================================
+   PM15 Copilot — one Polymarket US 15-minute BTC round at a time.
+   Model (fitted on screen recordings, mean abs error $0.34):
+     PM "Current" = offset + mean(Coinbase spot over the last 60 s), ~2 s delayed.
+     Final price   = that average at the bell.  Price-to-beat = that average at the open.
+   ===================================================================================== */
+const $ = id => document.getElementById(id);
+const ROUND = 900, WIN = 60, DELAY = 2;
+const SLUG = ws => { const d = new Date(ws * 1000); const p = n => String(n).padStart(2, '0');
+  return `cpc-btc-updown-15m-${d.getUTCFullYear()}-${p(d.getUTCMonth()+1)}-${p(d.getUTCDate())}-${p(d.getUTCHours())}${p(d.getUTCMinutes())}z`; };
+
+// ---------- settings (per device) ----------
+const DEF = { stake: 20, lockP: 99.5, maxAsk: 97, drift: 0.5, fee: 0.0695, relay: '', offset: null, sound: false };
+let S = Object.assign({}, DEF);
+try { Object.assign(S, JSON.parse(localStorage.getItem('pm15.settings') || '{}')); } catch (e) {}
+const saveS = () => { try { localStorage.setItem('pm15.settings', JSON.stringify(S)); } catch (e) {} };
+
+// ---------- price store: per-second last price, plus raw ticks for the chart ----------
+const secs = new Map();          // second (int) -> last spot price in that second
+let firstSec = Infinity, lastTickMs = 0, spotNow = NaN;
+function addPrice(ms, price) {
+  if (!(price > 1000)) return;
+  const s = Math.floor(ms / 1000);
+  secs.set(s, price);
+  if (s < firstSec) firstSec = s;
+  if (ms >= lastTickMs) { lastTickMs = ms; spotNow = price; }
+}
+function priceAt(sec) {          // last known price at or before `sec` (carry-forward, up to 10 min)
+  for (let k = 0; k < 600; k++) { const v = secs.get(sec - k); if (v !== undefined) return v; }
+  return NaN;
+}
+function avgRange(from, to, assumeAfter = Infinity, assumeVal = NaN) {   // mean over [from, to) seconds
+  let sum = 0, n = 0, last = priceAt(Math.floor(from));
+  for (let s = Math.floor(from); s < to; s++) {
+    let v = s >= assumeAfter ? assumeVal : secs.get(s);
+    if (v === undefined || !(v > 0)) v = last; else last = v;
+    if (v > 0) { sum += v; n++; }
+  }
+  return n ? sum / n : NaN;
+}
+function velocity(nowS) {        // $/s over the last 15 s
+  const a = priceAt(nowS - 15), b = priceAt(nowS);
+  return (a > 0 && b > 0) ? (b - a) / 15 : 0;
+}
+let sigmaCache = { at: 0, v: 6 };
+function sigma(nowS) {           // $ per sqrt(second), robust (MAD) over the last 10 minutes, blended with the plain std
+  if (nowS - sigmaCache.at < 5) return sigmaCache.v;
+  const r = []; let prev = NaN;
+  for (let s = nowS - 600; s <= nowS; s++) { const v = secs.get(s); if (v > 0) { if (prev > 0) r.push(Math.log(v / prev)); prev = v; } }
+  let out = sigmaCache.v;
+  if (r.length > 60) {
+    const sorted = r.map(Math.abs).sort((a, b) => a - b); const mad = sorted[Math.floor(sorted.length / 2)] * 1.4826;
+    const mean = r.reduce((a, b) => a + b, 0) / r.length; const sd = Math.sqrt(r.reduce((a, b) => a + (b - mean) ** 2, 0) / r.length);
+    const spot = priceAt(nowS); out = Math.max(mad, 0.7 * sd) * spot; out = Math.max(out, 0.5);
+  }
+  sigmaCache = { at: nowS, v: out }; return out;
+}
+function Phi(x) { const t = 1 / (1 + 0.2316419 * Math.abs(x)); const d = 0.3989422804014327 * Math.exp(-x * x / 2);
+  const p = d * t * (0.319381530 + t * (-0.356563782 + t * (1.781477937 + t * (-1.821255978 + t * 1.330274429)))); return x >= 0 ? 1 - p : p; }
+
+// Settlement average S = offset + mean(spot over [T-62, T-2]).  Returns its mean and sd at time `now`.
+function settleDist(now, T, spot, offset, sig, vel, driftW, assumeAfter = Infinity) {
+  const wStart = T - WIN - DELAY, wEnd = T - DELAY, rp = wEnd - now;
+  if (rp <= 0) return { mean: offset + avgRange(wStart, wEnd, assumeAfter, spot), sd: 0, known: 1 };
+  if (rp >= WIN) { const driftH = Math.min(Math.max(rp - WIN / 2, 0), 45); return { mean: offset + spot + driftW * vel * driftH, sd: sig * Math.sqrt(rp - WIN + WIN / 3), known: 0 }; }
+  const knownW = (WIN - rp) / WIN, knownAvg = avgRange(wStart, now, assumeAfter, spot);
+  const futMean = spot + driftW * vel * (rp / 2);
+  return { mean: offset + knownW * knownAvg + (rp / WIN) * futMean, sd: sig * Math.sqrt(rp * rp * rp / 3) / WIN, known: knownW };
+}
+const pUpFrom = (d, target) => d.sd > 0 ? Phi((d.mean - target) / d.sd) : (d.mean >= target ? 1 : 0);
+const fee = (px, coef) => coef * px * (1 - px);
+const gradeOf = p => p >= 0.995 ? ['A+', 'gA', 'locked'] : p >= 0.99 ? ['A', 'gA', 'near-certain'] : p >= 0.97 ? ['B', 'gB', 'strong'] : p >= 0.90 ? ['C', 'gC', 'risky'] : ['D', 'gD', 'a coin flip'];
+
+// ---------- formatting ----------
+const fmt$ = (v, d = 2) => Number.isFinite(v) ? v.toLocaleString('en-US', { minimumFractionDigits: d, maximumFractionDigits: d }) : '—';
+const fmtS = v => Number.isFinite(v) ? (v >= 0 ? '+$' : '−$') + fmt$(Math.abs(v)) : '—';
+const clock = s => { s = Math.max(0, Math.ceil(s)); return Math.floor(s / 60) + ':' + String(s % 60).padStart(2, '0'); };
+const secsTxt = s => s < 60 ? Math.max(0, Math.ceil(s)) + 's' : clock(s);
+const pct = p => Number.isFinite(p) ? (p * 100).toFixed(p > 0.99 || p < 0.01 ? 2 : 1) + '%' : '—';
+const cents = v => Number.isFinite(v) ? Math.round(v * 100) + '¢' : '—';
+const etFmt = new Intl.DateTimeFormat('en-US', { timeZone: 'America/New_York', hour: 'numeric', minute: '2-digit' });
+const etDay = new Intl.DateTimeFormat('en-US', { timeZone: 'America/New_York', month: 'short', day: 'numeric' });
+const locFmt = new Intl.DateTimeFormat([], { hour: 'numeric', minute: '2-digit' });
+const winTxt = (T0, f) => f.format(new Date(T0 * 1000)).replace(/ (AM|PM)$/, '') + '–' + f.format(new Date((T0 + ROUND) * 1000));
+function toast(msg) { const t = $('toast'); t.textContent = msg; t.hidden = false; clearTimeout(toast.h); toast.h = setTimeout(() => t.hidden = true, 3500); }
+
+// ---------- round state ----------
+const R = { T0: 0, T: 0, slug: '', target: NaN, targetSrc: 'none', offset: S.offset, offsetSrc: S.offset == null ? 'none' : 'saved',
+  apiOk: null, book: null, bookAt: 0, lockAt: null, lockAsk: NaN, result: null, settle: NaN, lockBeeped: false };
+let history = []; try { history = JSON.parse(localStorage.getItem('pm15.history') || '[]'); } catch (e) {}
+let myPos = null; try { myPos = JSON.parse(localStorage.getItem('pm15.mypos') || 'null'); } catch (e) {}
+const paper = { side: null, shares: 0, cost: 0, px: NaN, modelFill: false, state: 'idle', armAt: 0, armPct: 0, sellPlan: null, roundPnl: 0, totalPnl: 0, note: '', boughtT0: 0 };
+try { paper.totalPnl = Number(localStorage.getItem('pm15.paperTotal')) || 0; } catch (e) {}
+
+function startRound(T0) {
+  // close out the previous one
+  if (R.T0 && R.T0 !== T0) finishRound();
+  Object.assign(R, { T0, T: T0 + ROUND, slug: SLUG(T0), target: NaN, targetSrc: 'none', book: null, bookAt: 0, lockAt: null, lockAsk: NaN, result: null, settle: NaN, lockBeeped: false });
+  paper.roundPnl = 0; paper.state = 'idle'; paper.note = '';
+  if (myPos && myPos.T0 !== T0) { myPos = null; try { localStorage.removeItem('pm15.mypos'); } catch (e) {} }
+  // the new target is the previous round's settlement average, if we computed one
+  const prev = history.length ? history[history.length - 1] : null;
+  if (prev && prev.T0 === T0 - ROUND && Number.isFinite(prev.settle)) { R.target = prev.settle; R.targetSrc = prev.settleSrc === 'api' ? 'api' : 'est'; }
+  pmFetchMarket(); pmFetchBook();
+  $('slug').textContent = R.slug;
+  $('win-et').textContent = etDay.format(new Date(T0 * 1000)) + ', ' + winTxt(T0, etFmt);
+  $('win-local').textContent = winTxt(T0, locFmt);
+  $('n-win').textContent = winTxt(T0 + ROUND, etFmt) + ' ET';
+}
+function finishRound() {
+  const nowS = Date.now() / 1000;
+  const d = settleDist(R.T, R.T, spotNow, R.offset || 0, sigma(Math.floor(nowS)), 0, 0);
+  const settle = Number.isFinite(R.settle) ? R.settle : d.mean;
+  const rec = { T0: R.T0, target: R.target, targetSrc: R.targetSrc, settle, settleSrc: Number.isFinite(R.settle) ? 'api' : 'est',
+    result: Number.isFinite(settle) && Number.isFinite(R.target) ? (settle >= R.target ? 'UP' : 'DOWN') : null,
+    margin: settle - R.target, lockAt: R.lockAt, lockAsk: R.lockAsk, paperPnl: 0 };
+  // settle the paper position
+  if (paper.side && paper.shares > 0 && rec.result) {
+    const won = paper.side === rec.result; const pnl = (won ? paper.shares : 0) - paper.cost;
+    paper.totalPnl += pnl; rec.paperPnl = pnl; paper.note = (won ? 'Won ' : 'Lost ') + fmtS(pnl) + ' at the bell';
+    try { localStorage.setItem('pm15.paperTotal', String(paper.totalPnl)); } catch (e) {}
+    paper.side = null; paper.shares = 0; paper.cost = 0; paper.state = 'idle';
+  }
+  history.push(rec); if (history.length > 40) history.shift();
+  try { localStorage.setItem('pm15.history', JSON.stringify(history)); } catch (e) {}
+  renderPast();
+}
+
+// ---------- Polymarket US gateway (direct, or through the relay) ----------
+const pmBase = () => (S.relay || 'https://gateway.polymarket.us').replace(/\/$/, '');
+const val = v => (v && typeof v === 'object') ? Number(v.value) : Number(v);
+async function pmGet(path) {
+  const r = await fetch(pmBase() + path, { headers: { 'Accept': 'application/json' } });
+  if (!r.ok) throw new Error('HTTP ' + r.status);
+  return r.json();
+}
+let pmBusy = false;
+async function pmFetchMarket(slugArg) {
+  const slug = slugArg || R.slug; if (!slug) return;
+  try {
+    const j = await pmGet('/v1/market/slug/' + slug);
+    const m = (j && j.market) || j || {}; const t = m.assetPriceTerms || {};
+    const ptb = val(t.priceToBeat), sp = val(t.settlementPrice), fc = val(m.feeCoefficient);
+    R.apiOk = true;
+    if (Number.isFinite(fc) && fc > 0 && fc < 0.5 && Math.abs(fc - S.fee) > 1e-9) { S.fee = fc; saveS(); }
+    if (slug === R.slug) {
+      if (Number.isFinite(ptb)) { R.target = ptb; R.targetSrc = 'api'; calibrateOffset(); }
+    } else {  // previous round: its settlement is this round's target, and it recalibrates the basis
+      const prev = history.find(h => SLUG(h.T0) === slug);
+      if (prev && Number.isFinite(sp)) { prev.settle = sp; prev.settleSrc = 'api'; prev.result = sp >= prev.target ? 'UP' : 'DOWN'; prev.margin = sp - prev.target; renderPast(); }
+      if (Number.isFinite(sp) && !Number.isFinite(R.target)) { R.target = sp; R.targetSrc = 'api'; calibrateOffset(); }
+    }
+  } catch (e) {
+    if (R.apiOk === null && !S.relay && /TypeError|Failed to fetch|NetworkError/.test(String(e))) R.apiOk = false; // blocked by CORS or offline
+  }
+}
+async function pmFetchBook() {
+  if (!R.slug || pmBusy) return; pmBusy = true;
+  try {
+    const j = await pmGet('/v1/markets/' + R.slug + '/book');
+    const md = (j && j.marketData) || j || {};
+    const side = k => (md[k] || []).map(e => [val(e.px), val(e.qty)]).filter(x => Number.isFinite(x[0]) && x[1] > 0);
+    const bids = side('bids').sort((a, b) => b[0] - a[0]), offers = side('offers').sort((a, b) => a[0] - b[0]);
+    if (bids.length || offers.length) {
+      R.book = { upAsk: offers.length ? offers[0][0] : NaN, upBid: bids.length ? bids[0][0] : NaN, upAskQty: offers.length ? offers[0][1] : 0, upBidQty: bids.length ? bids[0][1] : 0 };
+      R.bookAt = Date.now(); R.apiOk = true;
+    }
+  } catch (e) {
+    if (R.apiOk === null && !S.relay && /TypeError|Failed to fetch|NetworkError/.test(String(e))) R.apiOk = false;
+  } finally { pmBusy = false; }
+}
+function calibrateOffset() {
+  if (!Number.isFinite(R.target)) return;
+  const a = avgRange(R.T0 - WIN - DELAY, R.T0 - DELAY);
+  if (Number.isFinite(a)) { R.offset = R.target - a; R.offsetSrc = 'this round'; S.offset = R.offset; saveS(); }
+}
+// quotes for a side: from the book if fresh, else from the manual fields; fee-aware helpers
+function quotes(side) {
+  const fresh = R.book && Date.now() - R.bookAt < 15000;
+  if (fresh) {
+    if (side === 'UP') return { ask: R.book.upAsk, bid: R.book.upBid, askQty: R.book.upAskQty, src: 'book' };
+    return { ask: Number.isFinite(R.book.upBid) ? 1 - R.book.upBid : NaN, bid: Number.isFinite(R.book.upAsk) ? 1 - R.book.upAsk : NaN, askQty: R.book.upBidQty, src: 'book' };
+  }
+  const a = Number($('s-ask').value) / 100, b = Number($('s-bid').value) / 100;
+  return { ask: a > 0 ? a : NaN, bid: b > 0 ? b : NaN, askQty: NaN, src: a > 0 || b > 0 ? 'typed' : 'none' };
+}
+
+// ---------- Coinbase feed ----------
+let ws = null, wsTimer = null, cbState = 'connecting';
+function connectWS() {
+  try { ws = new WebSocket('wss://ws-feed.exchange.coinbase.com'); } catch (e) { cbState = 'down'; return; }
+  cbState = 'connecting';
+  ws.onopen = () => { ws.send(JSON.stringify({ type: 'subscribe', product_ids: ['BTC-USD'], channels: ['ticker'] })); cbState = 'live'; };
+  ws.onmessage = ev => { let m; try { m = JSON.parse(ev.data); } catch (e) { return; }
+    if (m.type === 'ticker' && m.price) { addPrice(Date.now(), parseFloat(m.price)); cbState = 'live'; } };
+  ws.onclose = () => { cbState = 'reconnecting'; clearTimeout(wsTimer); wsTimer = setTimeout(connectWS, 2000); };
+  ws.onerror = () => { try { ws.close(); } catch (e) {} };
+}
+async function backfill() {
+  // recent trades (seconds), then 1-minute candles (hours) for the chart's left edge and the previous-minute averages
+  try {
+    const tr = await (await fetch('https://api.exchange.coinbase.com/products/BTC-USD/trades?limit=1000')).json();
+    if (Array.isArray(tr)) for (const t of tr) addPrice(Date.parse(t.time), parseFloat(t.price));
+  } catch (e) {}
+  try {
+    const c = await (await fetch('https://api.exchange.coinbase.com/products/BTC-USD/candles?granularity=60')).json();
+    if (Array.isArray(c)) for (const k of c) { const [t, lo, hi, op, cl] = k; const base = t;
+      for (let s = 0; s < 60; s++) if (!secs.has(base + s)) secs.set(base + s, s < 30 ? (op + cl) / 2 : cl); if (base < firstSec) firstSec = base; }
+  } catch (e) {}
+  if (Number.isFinite(R.target)) calibrateOffset();
+}
+
+// ---------- the brain: one evaluation per frame ----------
+let lastEval = null, doHold = { key: '', since: 0 };
+function evaluate() {
+  const nowMs = Date.now(), nowS = nowMs / 1000, sec = Math.floor(nowS);
+  const T0 = Math.floor(nowS / ROUND) * ROUND; if (T0 !== R.T0) startRound(T0);
+  const r = R.T - nowS, spot = spotNow, fresh = nowMs - lastTickMs < 4000;
+  const off = Number.isFinite(R.offset) ? R.offset : 0, offKnown = Number.isFinite(R.offset);
+  const sig = sigma(sec), vel = velocity(sec);
+  const pmShown = off + avgRange(sec - WIN - DELAY, sec - DELAY);
+  // target fallback: estimated from the minute before the open
+  if (!Number.isFinite(R.target) && Number.isFinite(spot)) { const a = avgRange(R.T0 - WIN - DELAY, R.T0 - DELAY); if (Number.isFinite(a)) { R.target = a + off; R.targetSrc = 'est'; } }
+  const target = R.target;
+  const d = settleDist(nowS, R.T, spot, off, sig, vel, S.drift);
+  const pUp = Number.isFinite(target) && Number.isFinite(spot) ? pUpFrom(d, target) : NaN;
+  const fav = pUp >= 0.5 ? 'UP' : 'DOWN', pFav = fav === 'UP' ? pUp : 1 - pUp, dog = fav === 'UP' ? 'DOWN' : 'UP';
+  // how far the settlement mean sits from the target, in $ and in sd
+  const gap = d.mean - target, z = d.sd > 0 ? gap / d.sd : (gap >= 0 ? 99 : -99);
+  // effective lag: how long ago the spot last equalled what PM shows now
+  let lagS = NaN; if (Number.isFinite(pmShown)) { const want = pmShown - off; let prev = priceAt(sec);
+    for (let k = 1; k <= 180; k++) { const v = priceAt(sec - k); if (!(v > 0)) break; if ((prev - want) * (v - want) <= 0) { lagS = k; break; } prev = v; } }
+  // seconds until the favorite locks if the spot holds here (the known part of the window keeps growing)
+  let lockEta = NaN; const lockP = S.lockP / 100;
+  if (Number.isFinite(pFav) && pFav < lockP && r > 3) {
+    for (let s = 1; s <= Math.min(r, 600); s += 1) { const dd = settleDist(nowS + s, R.T, spot, off, sig, 0, 0, sec);
+      const pu = pUpFrom(dd, target); const pf = fav === 'UP' ? pu : 1 - pu; if (pf >= lockP) { lockEta = s; break; } }
+  }
+  // seconds until the favorite would flip if the spot kept its current velocity (settlement mean crosses the target)
+  let flipEta = NaN; if (Math.abs(vel) > 0.02 && Number.isFinite(gap) && Math.sign(vel) === -Math.sign(gap)) {
+    for (let s = 1; s <= Math.min(r, 600); s += 1) { const sp2 = spot + vel * s; const dd = settleDist(nowS + s, R.T, sp2, off, sig, 0, 0, sec);
+      if (Math.sign(dd.mean - target) !== Math.sign(gap)) { flipEta = s; break; } }
+  }
+  lastEval = { nowS, sec, r, spot, fresh, off, offKnown, sig, vel, pmShown, target, d, pUp, pFav, fav, dog, gap, z, lagS, lockEta, flipEta };
+  return lastEval;
+}
+
+// ---------- paper engine ----------
+function paperStep(E) {
+  const q = quotes(E.fav); const lockP = S.lockP / 100, maxAsk = S.maxAsk / 100;
+  if (E.r <= 0) return;
+  if (!paper.side) {
+    const locked = E.pFav >= lockP && E.fresh && E.r > 4 && paper.boughtT0 !== R.T0 && !(q.src === 'book' && !Number.isFinite(q.ask));
+    if (locked) {
+      const ask = Number.isFinite(q.ask) ? q.ask : NaN;
+      if (!Number.isFinite(ask) || ask <= maxAsk) {
+        const px = Number.isFinite(ask) ? ask : maxAsk; const shares = S.stake / px;
+        Object.assign(paper, { side: E.fav, shares, cost: S.stake + fee(px, S.fee) * shares, px, modelFill: !Number.isFinite(ask), state: 'holding', armAt: 0, sellPlan: null, boughtT0: R.T0 });
+        paper.note = 'Bought ' + E.fav + ' ' + shares.toFixed(1) + ' sh @' + cents(px) + (paper.modelFill ? ' (model fill: no live book)' : '') + ' at ' + clock(E.r) + ' left';
+        if (R.lockAt == null) { R.lockAt = E.r; R.lockAsk = px; }
+      }
+    }
+    return;
+  }
+  // holding: sell only if the lock breaks (favorite flips or drops hard) — otherwise ride to settlement
+  const pMine = paper.side === 'UP' ? E.pUp : 1 - E.pUp;
+  let wantPct = 0, why = '';
+  if (pMine < 0.5) { wantPct = 100; why = paper.side + ' is no longer the favorite'; }
+  else if (pMine < 0.90 && E.r > 45) { wantPct = 50; why = 'lock broke: ' + pct(pMine) + ' and ' + (Number.isFinite(E.flipEta) ? 'flipping in ~' + secsTxt(E.flipEta) : 'under pressure'); }
+  if (wantPct > 0) {
+    if (paper.state !== 'armed' && paper.state !== 'firing') { paper.state = 'armed'; paper.armAt = E.nowS + 3; paper.armPct = wantPct; paper.sellPlan = why; }
+    else if (paper.state === 'armed' && E.nowS >= paper.armAt) {
+      paper.state = 'firing'; paper.armAt = E.nowS + 0.8;
+    } else if (paper.state === 'firing' && E.nowS >= paper.armAt) {
+      const qq = quotes(paper.side); const bid = Number.isFinite(qq.bid) ? qq.bid : Math.max(0.01, Math.min(0.99, pMine));
+      const sh = paper.shares * paper.armPct / 100; const proceeds = sh * bid - fee(bid, S.fee) * sh;
+      const costPart = paper.cost * paper.armPct / 100; const pnl = proceeds - costPart;
+      paper.shares -= sh; paper.cost -= costPart; paper.roundPnl += pnl; paper.totalPnl += pnl;
+      try { localStorage.setItem('pm15.paperTotal', String(paper.totalPnl)); } catch (e) {}
+      paper.note = 'Sold ' + paper.armPct + '% @' + cents(bid) + ' → ' + fmtS(pnl) + ' (' + why + ')';
+      paper.state = 'sold'; paper.armAt = E.nowS + 4;
+      if (paper.shares < 0.01) { paper.side = null; paper.shares = 0; paper.cost = 0; }
+    }
+  } else if (paper.state === 'armed') { paper.state = 'holding'; paper.sellPlan = null; }
+  else if (paper.state === 'sold' && E.nowS >= paper.armAt) paper.state = paper.side ? 'holding' : 'idle';
+  // a projected sell, with a countdown, when the lock is eroding
+  if (paper.state === 'holding') {
+    if (Number.isFinite(E.flipEta) && pMine < 0.97) { paper.sellPlan = 'May sell 50% in ~' + secsTxt(Math.max(0, E.flipEta - 6)) + ' if this keeps up'; }
+    else paper.sellPlan = null;
+  }
+}
+
+// ---------- dictation ----------
+function dictate(E) {
+  const el = $('do'), lockP = S.lockP / 100, maxAsk = S.maxAsk / 100;
+  let cls = 'wait', label = 'DO NOW', head = '', sub = '', time = '';
+  const q = quotes(E.fav), ask = q.ask, bid = q.bid;
+  const [g, gcls, gword] = gradeOf(E.pFav);
+  const needMove = Number.isFinite(E.gap) ? Math.abs(E.gap) : NaN;
+  if (!E.fresh || !Number.isFinite(E.spot)) { head = cbState === 'live' ? 'Feed stalled' : 'Connecting to Coinbase…'; sub = 'No price in the last few seconds. Nothing to act on until it returns.'; }
+  else if (!Number.isFinite(E.target)) { head = 'Need the target'; sub = 'Type the price-to-beat from your Polymarket screen in Settings. The basis offset calibrates from it.'; }
+  else if (E.r <= 0) { cls = 'wait'; head = 'Round over'; sub = 'Settling. The next round starts on the quarter hour.'; }
+  else if (myPos) {
+    const pMine = myPos.side === 'UP' ? E.pUp : 1 - E.pUp; const [mg] = gradeOf(pMine);
+    if (pMine >= lockP) { cls = 'hold'; head = 'HOLD ' + myPos.side + ' — locked'; sub = pct(pMine) + ' to settle your way. Ride it to the bell; selling now only gives up the last cents.'; time = 'Settles in <b>' + clock(E.r) + '</b>'; }
+    else if (pMine < 0.5) { cls = 'sell'; head = 'SELL ' + myPos.side + ' NOW'; sub = E.fav + ' leads: your side is ' + pct(pMine) + '. Take the bid; every second costs value.'; time = Number.isFinite(E.flipEta) ? '' : 'You have <b>' + clock(E.r) + '</b> until it settles against you'; }
+    else if (pMine < 0.90) { cls = 'sell'; head = 'SELL HALF of ' + myPos.side; sub = 'Lock broke: ' + pct(pMine) + '. The settlement average is only ' + fmtS(Math.abs(E.gap)).replace('+', '') + ' from the target.'; time = Number.isFinite(E.flipEta) ? 'Flips in ~<b>' + secsTxt(E.flipEta) + '</b> at this pace' : 'You have <b>' + clock(E.r) + '</b>'; }
+    else { cls = 'hold'; head = 'HOLD ' + myPos.side + ' (' + mg + ')'; sub = pct(pMine) + '. ' + (Number.isFinite(E.lockEta) ? 'Locks in ~' + secsTxt(E.lockEta) + ' if the price holds.' : 'Not locked yet; watch the gap.'); time = 'Settles in <b>' + clock(E.r) + '</b>'; }
+  }
+  else if (E.pFav >= lockP && q.src === 'book' && !Number.isFinite(ask)) { cls = 'ready'; head = E.fav + ' is sold out'; sub = 'Locked ' + pct(E.pFav) + ', but nobody is offering ' + E.fav + ' under $1 right now. Watch the button; sellers show up when the spot wobbles.'; time = 'Settles in <b>' + clock(E.r) + '</b>'; }
+  else if (E.pFav >= lockP && (!Number.isFinite(ask) || ask <= maxAsk)) {
+    cls = 'lock'; label = 'FREE MONEY · DO NOW';
+    const payUp = Number.isFinite(ask) ? ask : maxAsk; const net = E.pFav - payUp - fee(payUp, S.fee);
+    head = 'BUY ' + E.fav + (Number.isFinite(ask) ? ' at ' + cents(ask) : ' up to ' + cents(maxAsk));
+    sub = 'Locked ' + pct(E.pFav) + ': the settlement average would need to move ' + fmtS(needMove).replace('+', '') + ' against a ' + fmtS(E.d.sd * 3).replace('+', '') + ' 3σ range. '
+      + (Number.isFinite(ask) ? '+' + (net * 100).toFixed(1) + '¢ per share after fee (' + (net / payUp * 100).toFixed(1) + '% in ' + clock(E.r) + ').' : 'Each cent under $1 on the button is yours.');
+    const kelly = Math.max(0, E.pFav - (1 - E.pFav) * payUp / (1 - payUp));
+    sub += (Number.isFinite(q.askQty) ? ' ' + Math.round(q.askQty) + ' shares offered at ' + cents(ask) + '.' : '') + ' Size: full Kelly says ' + Math.round(kelly * 100) + '% of bankroll, which assumes the model is never wrong. Cap it at 10–20%.';
+    time = 'You have <b>' + clock(Math.max(0, E.r - 5)) + '</b> to get filled · ride to the bell';
+    if (!R.lockBeeped) { beep(); R.lockBeeped = true; }
+  }
+  else if (E.pFav >= lockP) { cls = 'ready'; head = E.fav + ' is locked but priced at ' + cents(ask); sub = 'Above your max of ' + cents(maxAsk) + '. Net would be ' + ((E.pFav - ask - fee(ask, S.fee)) * 100).toFixed(1) + '¢/share — raise the max in Settings if that is still worth it.'; time = 'Settles in <b>' + clock(E.r) + '</b>'; }
+  else if (E.pFav >= 0.97) { cls = 'ready'; head = 'GET READY: ' + E.fav + ' ' + pct(E.pFav); sub = 'Nearly locked. It locks when the gap holds while the settlement window fills in' + (Number.isFinite(ask) ? '; the button shows ' + cents(ask) + '.' : '.'); time = Number.isFinite(E.lockEta) ? 'Locks in ~<b>' + secsTxt(E.lockEta) + '</b> if the price holds' : 'Needs a bigger gap first'; }
+  else {
+    cls = 'wait'; head = 'WAIT — ' + E.fav + ' ' + pct(E.pFav) + ' (' + g + ')';
+    sub = gword === 'a coin flip' ? 'Too close to call: the settlement average sits ' + fmtS(needMove).replace('+', '') + ' from the target with a 3σ range of ' + fmtS(E.d.sd * 3).replace('+', '') + '.' : 'Leaning ' + E.fav + ' but not safe. Buying here is a ' + g + ' play; the locked one usually appears inside the last 2 minutes.';
+    time = Number.isFinite(E.lockEta) ? 'Could lock in ~<b>' + secsTxt(E.lockEta) + '</b> if the price holds' : 'Round ends in <b>' + clock(E.r) + '</b>';
+  }
+  el.className = 'do ' + cls; $('do-label').textContent = label; $('do-head').textContent = head; $('do-sub').textContent = sub; $('do-time').innerHTML = time;
+
+  // NEXT
+  let nh = '', ns = '', nt = '';
+  if (E.r > 0 && Number.isFinite(E.target)) {
+    if (E.r <= WIN + DELAY) { nh = 'Round settles · next target forming'; ns = 'The last 60 s set the next price-to-beat: ' + fmt$(E.d.mean) + ' so far. Decide now; buying stops at the bell.'; nt = 'Bell in <b>' + clock(E.r) + '</b>'; }
+    else if (myPos) { nh = Number.isFinite(E.flipEta) ? 'Watch for a flip' : 'Then: hold to the bell'; ns = Number.isFinite(E.flipEta) ? 'At the current pace the lead flips; the sell call comes 6 s before that.' : 'Nothing to do unless the lead shrinks. Lock check runs every second.'; nt = Number.isFinite(E.flipEta) ? 'in ~<b>' + secsTxt(E.flipEta) + '</b>' : 'Bell in <b>' + clock(E.r) + '</b>'; }
+    else { nh = Number.isFinite(E.lockEta) ? 'Lock window opens' : 'Free-money check keeps running'; ns = Number.isFinite(E.lockEta) ? E.fav + ' locks if BTC holds this gap (' + fmtS(E.gap).replace('−', '-') + ' on the average). Have the ' + E.fav + ' button ready.' : 'A lock needs the gap to beat 3σ for the time left. The window usually opens in the final 2 minutes.'; nt = Number.isFinite(E.lockEta) ? 'in ~<b>' + secsTxt(E.lockEta) + '</b>' : 'Bell in <b>' + clock(E.r) + '</b>'; }
+  } else if (E.r <= 0) { nh = 'Next round'; ns = 'Target = this round\'s settlement average.'; nt = ''; }
+  $('nx-head').textContent = nh; $('nx-sub').textContent = ns; $('nx-time').innerHTML = nt;
+}
+
+// ---------- panels ----------
+function renderHeader(E) {
+  const r = E.r, tm = $('timer');
+  tm.textContent = r > 0 ? clock(r) : 'ENDED'; tm.className = 'timer num' + (r <= 60 ? ' closing' : '') + (r <= 10 ? ' final' : '');
+  $('timer-sub').textContent = r > 0 ? (r <= WIN + DELAY ? Math.round(E.d.known * 100) + '% of the settlement average is in the books' : 'left in this round') : 'settling';
+  $('h-target').textContent = fmt$(E.target);
+  $('h-target-src').textContent = R.targetSrc === 'api' ? 'exact (Polymarket API)' : R.targetSrc === 'manual' ? 'typed from your screen' : R.targetSrc === 'est' ? 'estimated: 60-s average before the open' + (E.offKnown ? '' : ' (no basis offset yet)') : 'unknown';
+  $('h-pm').textContent = fmt$(E.pmShown); $('h-pm-diff').textContent = Number.isFinite(E.pmShown) && Number.isFinite(E.target) ? fmtS(E.pmShown - E.target) + ' vs target' : '—';
+  $('h-spot').textContent = fmt$(E.spot); $('h-spot-diff').textContent = Number.isFinite(E.spot) && Number.isFinite(E.target) ? fmtS(E.spot + E.off - E.target) + ' vs target (basis-adjusted)' : '—';
+  const lead = $('h-lead'); lead.textContent = Number.isFinite(E.pUp) ? E.fav : '—'; lead.className = 'v num ' + (E.fav === 'UP' ? 'up' : 'down');
+  $('h-lead-p').textContent = Number.isFinite(E.pUp) ? pct(E.pFav) + ' · settlement average ' + fmtS(E.gap) + ' from target · z ' + (Number.isFinite(E.z) ? E.z.toFixed(1) : '—') : '—';
+  const chip = (id, cls, txt) => { const c = $(id); c.className = 'chip ' + cls; c.lastChild.textContent = txt; };
+  chip('chip-cb', E.fresh ? 'ok' : cbState === 'live' ? 'warn' : 'bad', 'Coinbase: ' + (E.fresh ? 'live' : cbState));
+  chip('chip-pm', R.apiOk === true ? 'ok' : R.apiOk === false ? 'bad' : 'warn', 'PM API: ' + (R.apiOk === true ? (R.book ? 'live book' : 'market data') : R.apiOk === false ? 'blocked (CORS) · use a relay or type the target' : 'trying…'));
+  chip('chip-off', E.offKnown ? 'ok' : 'warn', 'Basis offset: ' + (E.offKnown ? fmtS(E.off) + ' (' + R.offsetSrc + ')' : 'unknown'));
+  chip('chip-vol', 'ok', 'Vol: ' + fmt$(E.sig, 1) + '/√s · ±' + fmt$(E.sig * Math.sqrt(60), 0) + ' per min (1σ)');
+}
+function renderFeed(E) {
+  $('f-spot').textContent = fmt$(E.spot); $('f-pm').textContent = fmt$(E.pmShown);
+  const lag = $('f-lag'); lag.innerHTML = Number.isFinite(E.lagS) ? 'Polymarket is showing a price from <b>' + E.lagS + ' s</b> ago, <b>' + fmtS((E.spot + E.off) - E.pmShown) + '</b> from the spot (basis-adjusted)' : 'PM lag: <b>—</b> (it shows a 60-s average: ~30 s behind a steady move)';
+  const ins = $('f-insight'); let txt = '', cls = '';
+  if (Number.isFinite(E.target) && Number.isFinite(E.spot)) {
+    const spotAdj = E.spot + E.off, spotSide = spotAdj >= E.target ? 'UP' : 'DOWN', pmSide = E.pmShown >= E.target ? 'UP' : 'DOWN';
+    const away = Math.abs(spotAdj - E.target) - Math.abs(E.pmShown - E.target);
+    if (spotSide !== pmSide) { txt = 'Spot has crossed to the ' + spotSide + ' side but Polymarket still shows ' + pmSide + ' ahead. The button prices will follow the spot within ~' + (Number.isFinite(E.lagS) ? E.lagS : 30) + ' s; the settlement average moves slower than either.'; cls = 'warn'; }
+    else if (away > 1) { txt = 'Spot is pulling away from the target faster than PM shows (' + fmtS(away).replace('+', '+') + ' more). PM\'s number will keep moving ' + spotSide + ' even if BTC stops now, so ' + spotSide + ' is strengthening.'; cls = 'good'; }
+    else if (away < -1) { txt = 'Spot has turned back toward the target; PM\'s number has not shown it yet. Expect ' + pmSide + ' to weaken over the next ~' + (Number.isFinite(E.lagS) ? E.lagS : 30) + ' s' + (Math.abs(E.vel) > 0.05 ? ' (moving ' + fmtS(E.vel * 60).replace('+', '+') + '/min)' : '') + '.'; cls = 'bad'; }
+    else { txt = 'Spot and PM agree: ' + spotSide + ' ahead by ' + fmtS(Math.abs(spotAdj - E.target)).replace('+', '') + '. Velocity ' + fmtS(E.vel * 60) + '/min' + (Math.abs(E.vel * 60) < 5 ? ' — calm.' : (Math.sign(E.vel) === (spotSide === 'UP' ? 1 : -1) ? ' — widening the lead.' : ' — eating into the lead.')); cls = ''; }
+  } else txt = 'Waiting for the target.';
+  ins.textContent = txt; ins.className = 'insight ' + cls;
+}
+function renderPaper(E) {
+  const cell = $('p-cell'), st = $('p-status'), note = $('p-note');
+  let cls = 'cell', s = '', n = paper.note || '';
+  if (paper.state === 'armed') { cls += ' arm'; s = 'Selling ' + paper.armPct + '% in ' + Math.max(0, Math.ceil(paper.armAt - E.nowS)) + ' seconds!'; n = paper.sellPlan || ''; }
+  else if (paper.state === 'firing') { cls += ' firing'; s = 'SELLING!'; n = paper.sellPlan || ''; }
+  else if (paper.state === 'sold') { cls += ' done'; s = 'Sold'; }
+  else if (paper.side) { s = paper.sellPlan || ('Holding ' + paper.side + ' to the bell'); n = paper.note; }
+  else { s = E.r > 0 ? (E.pFav >= S.lockP / 100 ? 'Lock seen — buying' : 'Watching for a lock') : 'Round over'; n = paper.note || 'Buys the locked play with the stake in Settings; sells only if the lock breaks.'; }
+  cell.className = cls; st.textContent = s; note.textContent = n;
+  const pMine = paper.side ? (paper.side === 'UP' ? E.pUp : 1 - E.pUp) : NaN; const q = paper.side ? quotes(paper.side) : { bid: NaN };
+  const mark = Number.isFinite(q.bid) ? q.bid : pMine; const value = paper.shares * (Number.isFinite(mark) ? mark : 0);
+  $('p-side').textContent = paper.side ? paper.side + ' @' + cents(paper.px) + (paper.modelFill ? '*' : '') : 'none';
+  $('p-shares').textContent = paper.shares.toFixed(1); $('p-cost').textContent = '$' + fmt$(paper.cost); $('p-value').textContent = '$' + fmt$(value);
+  const pnl = $('p-pnl'); const upnl = paper.side ? value - paper.cost : NaN; pnl.textContent = Number.isFinite(upnl) ? fmtS(upnl) + ' open' : '—'; pnl.className = 'n ' + (upnl >= 0 ? 'pos' : 'neg');
+  const tot = $('p-total'); tot.textContent = fmtS(paper.roundPnl) + ' / ' + fmtS(paper.totalPnl); tot.className = 'n ' + (paper.totalPnl >= 0 ? 'pos' : 'neg');
+}
+function renderPlays(E) {
+  const tb = $('plays'); if (!Number.isFinite(E.pUp) || E.r <= 0) { tb.innerHTML = '<tr><td colspan="4" class="hint">' + (E.r <= 0 ? 'Round over.' : 'Waiting for the target.') + '</td></tr>'; return; }
+  const rows = [];
+  const add = (name, p, px, kind) => { const [g, gc, gw] = gradeOf(p); const net = Number.isFinite(px) ? (kind === 'sell' ? px - fee(px, S.fee) : p - px - fee(px, S.fee)) : NaN;
+    rows.push('<tr><td>' + name + '</td><td class="n">' + pct(p) + '</td><td class="n">' + (Number.isFinite(net) ? (net >= 0 ? '+' : '') + (net * 100).toFixed(1) + '¢' : 'need a price') + '</td><td><span class="grade ' + gc + '">' + g + '</span> ' + gw + '</td></tr>'); };
+  const qf = quotes(E.fav), qd = quotes(E.dog);
+  add('Buy ' + E.fav + ' (favorite)' + (Number.isFinite(qf.ask) ? ' @' + cents(qf.ask) : ''), E.pFav, qf.ask, 'buy');
+  add('Buy ' + E.dog + ' (underdog)' + (Number.isFinite(qd.ask) ? ' @' + cents(qd.ask) : ''), 1 - E.pFav, qd.ask, 'buy');
+  if (myPos) { const pm = myPos.side === 'UP' ? E.pUp : 1 - E.pUp; const qm = quotes(myPos.side);
+    add('Hold my ' + myPos.side + ' to the bell', pm, myPos.price, 'buy');
+    rows.push('<tr><td>Sell my ' + myPos.side + ' now' + (Number.isFinite(qm.bid) ? ' @' + cents(qm.bid) : '') + '</td><td class="n">—</td><td class="n">' + (Number.isFinite(qm.bid) ? fmtS(qm.bid * myPos.shares - fee(qm.bid, S.fee) * myPos.shares - myPos.spent) : 'need a bid') + '</td><td><span class="grade gA">A+</span> certain, but gives up ' + (Number.isFinite(qm.bid) ? ((pm - qm.bid) * 100).toFixed(1) + '¢/share' : 'the rest') + '</td></tr>'); }
+  const elapsed = ROUND - E.r; if (elapsed >= 110 && elapsed <= 200) { const [g, gc] = gradeOf(E.pFav); rows.push('<tr><td>Early Favorite rule (13:00/12:00 left, fav at 80–94¢)</td><td class="n">' + pct(E.pFav) + '</td><td class="n">tested Oct 6–22</td><td><span class="grade ' + gc + '">' + g + '</span> your tested rule</td></tr>'); }
+  tb.innerHTML = rows.join('');
+}
+function renderMine(E) {
+  if (!myPos) { $('my-hold').textContent = 'nothing'; $('my-cost').textContent = '—'; $('my-worth').textContent = '—'; $('my-win').textContent = '—'; return; }
+  const pm = myPos.side === 'UP' ? E.pUp : 1 - E.pUp; const q = quotes(myPos.side);
+  $('my-hold').textContent = myPos.side + ' · ' + myPos.shares.toFixed(1) + ' shares';
+  $('my-cost').textContent = cents(myPos.price) + ' · $' + fmt$(myPos.spent);
+  $('my-worth').textContent = (Number.isFinite(pm) ? pct(pm) + ' · $' + fmt$(myPos.shares * pm) + ' (' + fmtS(myPos.shares * pm - myPos.spent) + ')' : '—') + (Number.isFinite(q.bid) ? ' · bid ' + cents(q.bid) : '');
+  $('my-win').textContent = '$' + fmt$(myPos.shares) + ' (' + fmtS(myPos.shares - myPos.spent) + ')';
+}
+function renderNext(E) {
+  if (!Number.isFinite(E.d.mean)) return;
+  const soFar = E.r <= WIN + DELAY ? E.d.mean : NaN;
+  $('n-target').textContent = Number.isFinite(soFar) ? fmt$(soFar) + ' (' + Math.round(E.d.known * 100) + '% set)' : 'forms in ' + clock(E.r - WIN - DELAY);
+  $('n-hint').textContent = Number.isFinite(soFar) ? 'Whatever the average lands on at the bell becomes the next target. If spot sits far from it, the next round may open with a lead already.' : 'The next price-to-beat is this round\'s settlement average. In the final minute it is already taking shape.';
+}
+function renderPast() {
+  const box = $('past'); if (!history.length) { box.innerHTML = '<span class="hint">None yet.</span>'; return; }
+  box.innerHTML = history.slice(-12).reverse().map(h => '<span class="pill ' + (h.result === 'UP' ? 'up' : h.result === 'DOWN' ? 'down' : '') + (h.lockAt != null ? ' locked' : '') + '"><b>' + (h.result === 'UP' ? '↑' : h.result === 'DOWN' ? '↓' : '·') + '</b><span>' + etFmt.format(new Date(h.T0 * 1000)).replace(/ (AM|PM)$/, '') + '</span><span>' + (Number.isFinite(h.margin) ? fmtS(h.margin) : '—') + '</span><span>' + (h.lockAt != null ? 'lock ' + clock(h.lockAt) + ' left' : 'no lock') + '</span></span>').join('');
+}
+
+// ---------- chart ----------
+const cv = $('cv'), ctx = cv.getContext('2d');
+function drawChart(E) {
+  const box = cv.parentElement, dpr = window.devicePixelRatio || 1, W = box.clientWidth, H = box.clientHeight;
+  if (cv.width !== Math.round(W * dpr) || cv.height !== Math.round(H * dpr)) { cv.width = Math.round(W * dpr); cv.height = Math.round(H * dpr); }
+  ctx.setTransform(dpr, 0, 0, dpr, 0, 0); ctx.clearRect(0, 0, W, H);
+  ctx.fillStyle = '#0d1119'; ctx.fillRect(0, 0, W, H);
+  const padR = 92, padL = 10, padT = 18, padB = 26, iw = W - padL - padR, ih = H - padT - padB;
+  const t0 = R.T0 - 120, t1 = R.T + 20; const xOf = t => padL + (t - t0) / (t1 - t0) * iw;
+  // series
+  const pts = [], pm = []; const off = E.off; let lo = Infinity, hi = -Infinity;
+  for (let s = Math.max(t0, firstSec); s <= E.sec; s++) { const v = secs.get(s); if (v > 0) { pts.push([s, v]); lo = Math.min(lo, v); hi = Math.max(hi, v); } }
+  if (pts.length < 2) { ctx.fillStyle = '#8f9ab4'; ctx.font = '14px IBM Plex Sans, sans-serif'; ctx.fillText('Waiting for Coinbase prices…', padL + 10, padT + 24); return; }
+  for (let s = Math.max(t0, firstSec + WIN + DELAY); s <= E.sec; s += 2) { const v = off + avgRange(s - WIN - DELAY, s - DELAY); if (v > 0) pm.push([s, v]); }
+  const target = E.target; if (Number.isFinite(target)) { lo = Math.min(lo, target - off); hi = Math.max(hi, target - off); }
+  // y-scale is in SPOT dollars; PM-side values are shown basis-adjusted (minus offset) so one axis serves both
+  let span = Math.max(hi - lo, 20); lo -= span * 0.12; hi += span * 0.12; span = hi - lo;
+  const yOf = v => padT + (hi - v) / span * ih;
+  // grid: price
+  ctx.strokeStyle = '#1b2232'; ctx.lineWidth = 1; ctx.fillStyle = '#6f7a93'; ctx.font = '11px IBM Plex Mono, monospace'; ctx.textAlign = 'left'; ctx.textBaseline = 'middle';
+  const step = [1, 2, 5, 10, 20, 25, 50, 100, 200].find(s => span / s <= 8) || 500;
+  for (let v = Math.ceil(lo / step) * step; v <= hi; v += step) { const y = yOf(v); ctx.beginPath(); ctx.moveTo(padL, y); ctx.lineTo(W - padR, y); ctx.stroke(); ctx.fillText(fmt$(v, 0), W - padR + 8, y); }
+  // grid: minutes + round boundaries
+  ctx.textAlign = 'center'; ctx.textBaseline = 'top';
+  for (let t = Math.ceil(t0 / 60) * 60; t <= t1; t += 60) { const x = xOf(t); const isQ = t % ROUND === 0; ctx.strokeStyle = isQ ? '#3a4668' : '#161c2a'; ctx.lineWidth = isQ ? 1.5 : 1; ctx.beginPath(); ctx.moveTo(x, padT); ctx.lineTo(x, H - padB); ctx.stroke();
+    if (t % 300 === 0 || isQ) { ctx.fillStyle = isQ ? '#aeb8d0' : '#6f7a93'; ctx.fillText(etFmt.format(new Date(t * 1000)).replace(/ (AM|PM)$/, ''), x, H - padB + 6); } }
+  // settlement window band: the part already known
+  if (E.r > 0 && E.r <= WIN + DELAY) { const a = xOf(R.T - WIN - DELAY), b = xOf(Math.min(E.sec, R.T - DELAY)); ctx.fillStyle = '#62ccff14'; ctx.fillRect(a, padT, b - a, ih); ctx.fillStyle = '#62ccff22'; ctx.fillRect(xOf(R.T - WIN - DELAY), padT, xOf(R.T - DELAY) - xOf(R.T - WIN - DELAY), 3); }
+  else if (E.r > 0) { ctx.fillStyle = '#62ccff22'; ctx.fillRect(xOf(R.T - WIN - DELAY), padT, xOf(R.T - DELAY) - xOf(R.T - WIN - DELAY), 3); }
+  // PM line
+  if (pm.length > 1) { ctx.strokeStyle = '#62ccff'; ctx.lineWidth = 2; ctx.beginPath(); pm.forEach((p, i) => { const x = xOf(p[0]), y = yOf(p[1] - off); i ? ctx.lineTo(x, y) : ctx.moveTo(x, y); }); ctx.stroke(); }
+  // spot line
+  ctx.strokeStyle = '#9b8cff'; ctx.lineWidth = 2; ctx.beginPath(); pts.forEach((p, i) => { const x = xOf(p[0]), y = yOf(p[1]); i ? ctx.lineTo(x, y) : ctx.moveTo(x, y); }); ctx.stroke();
+  const last = pts[pts.length - 1], xs = xOf(last[0]), ys = yOf(last[1]);
+  // target line: the brightest thing on the chart
+  if (Number.isFinite(target)) { const yt = yOf(target - off); ctx.save(); ctx.setLineDash([8, 6]); ctx.strokeStyle = '#ffb020'; ctx.lineWidth = 2.5; ctx.shadowColor = '#ffb020'; ctx.shadowBlur = 10; ctx.beginPath(); ctx.moveTo(padL, yt); ctx.lineTo(W - padR, yt); ctx.stroke(); ctx.restore();
+    ctx.fillStyle = '#ffb020'; ctx.fillRect(W - padR + 2, yt - 11, padR - 4, 22); ctx.fillStyle = '#1a1000'; ctx.font = 'bold 12px IBM Plex Mono, monospace'; ctx.textAlign = 'left'; ctx.textBaseline = 'middle'; ctx.fillText(fmt$(target), W - padR + 6, yt);
+    ctx.fillStyle = '#ffb020'; ctx.font = 'bold 11px IBM Plex Sans, sans-serif'; ctx.fillText('TARGET ' + (last[1] + off >= target ? '▼ spot above' : '▲ spot below'), padL + 8, yt + (last[1] + off >= target ? 12 : -12));
+    // the post: from the spot to the target, with minute ticks at the current pace, and the $ to cross in the middle
+    const xp = Math.min(xs + 22, W - padR - 6); const yTop = Math.min(ys, yt), yBot = Math.max(ys, yt);
+    ctx.save(); ctx.strokeStyle = '#b57cff'; ctx.shadowColor = '#b57cff'; ctx.shadowBlur = 12; ctx.lineWidth = 3; ctx.beginPath(); ctx.moveTo(xp, ys); ctx.lineTo(xp, yt); ctx.stroke(); ctx.restore();
+    ctx.strokeStyle = '#d9c4ff'; ctx.lineWidth = 1.5; ctx.fillStyle = '#d9c4ff'; ctx.font = '10px IBM Plex Mono, monospace'; ctx.textAlign = 'left'; ctx.textBaseline = 'middle';
+    const dir = Math.sign((target - off) - last[1]) || 1; let run = last[1];
+    for (let m = 1; m <= Math.ceil(E.r / 60); m++) { const proj = last[1] + E.vel * 60 * m; if ((proj - run) * dir <= 0) break; run = proj; if ((proj - (target - off)) * dir > 0) break; const y = yOf(proj); ctx.beginPath(); ctx.moveTo(xp - 5, y); ctx.lineTo(xp + 5, y); ctx.stroke(); ctx.fillText(m + 'm', xp + 8, y); }
+    if (Math.abs(E.vel) < 0.02) for (let m = 1; m <= Math.min(Math.ceil(E.r / 60), 15); m++) { const y = yTop + (yBot - yTop) * m / Math.max(1, Math.ceil(E.r / 60)); if (y > yBot) break; ctx.beginPath(); ctx.moveTo(xp - 3, y); ctx.lineTo(xp + 3, y); ctx.stroke(); }
+    const need = (target - off) - last[1]; const ym = (ys + yt) / 2; const txt = (need >= 0 ? '+' : '−') + '$' + fmt$(Math.abs(need), 1) + ' to cross';
+    ctx.font = 'bold 12px IBM Plex Mono, monospace'; const tw = ctx.measureText(txt).width; ctx.fillStyle = '#1a0f2e'; ctx.fillRect(xp - tw / 2 - 6, ym - 10, tw + 12, 20); ctx.strokeStyle = '#b57cff'; ctx.lineWidth = 1; ctx.strokeRect(xp - tw / 2 - 6, ym - 10, tw + 12, 20); ctx.fillStyle = '#e6d6ff'; ctx.textAlign = 'center'; ctx.fillText(txt, xp, ym);
+  }
+  // PM "is here" marker: where the spot last sat at what PM now shows
+  if (Number.isFinite(E.lagS)) { const xl = xOf(E.sec - E.lagS); ctx.save(); ctx.setLineDash([3, 4]); ctx.strokeStyle = '#62ccff'; ctx.lineWidth = 1.5; ctx.beginPath(); ctx.moveTo(xl, padT); ctx.lineTo(xl, H - padB); ctx.stroke(); ctx.restore();
+    ctx.fillStyle = '#62ccff'; ctx.font = 'bold 10px IBM Plex Sans, sans-serif'; ctx.textAlign = 'center'; ctx.textBaseline = 'top'; ctx.fillText('PM is here (−' + E.lagS + 's)', xl, padT + 2); }
+  // end dots + price tags
+  ctx.beginPath(); ctx.fillStyle = '#9b8cff'; ctx.arc(xs, ys, 4, 0, Math.PI * 2); ctx.fill();
+  if (pm.length) { const pl = pm[pm.length - 1]; ctx.beginPath(); ctx.fillStyle = '#62ccff'; ctx.arc(xOf(pl[0]), yOf(pl[1] - off), 4, 0, Math.PI * 2); ctx.fill(); }
+  ctx.font = 'bold 11px IBM Plex Mono, monospace'; ctx.textAlign = 'left'; ctx.textBaseline = 'middle';
+  ctx.fillStyle = '#9b8cff'; ctx.fillRect(W - padR + 2, ys - 9, padR - 4, 18); ctx.fillStyle = '#0d1119'; ctx.fillText(fmt$(last[1], 1), W - padR + 6, ys);
+  if (pm.length) { const pl = pm[pm.length - 1], yp = yOf(pl[1] - off); if (Math.abs(yp - ys) > 18) { ctx.fillStyle = '#62ccff'; ctx.fillRect(W - padR + 2, yp - 9, padR - 4, 18); ctx.fillStyle = '#0d1119'; ctx.fillText(fmt$(pl[1], 1), W - padR + 6, yp); } }
+}
+
+// ---------- audio / wake lock ----------
+let audio = null;
+function beep() { if (!S.sound) return; try { audio = audio || new (window.AudioContext || window.webkitAudioContext)(); const o = audio.createOscillator(), g = audio.createGain(); o.frequency.value = 880; o.connect(g); g.connect(audio.destination); g.gain.value = 0.2; o.start(); setTimeout(() => { o.frequency.value = 1320; }, 140); setTimeout(() => { o.stop(); }, 320); } catch (e) {} }
+$('btn-sound').onclick = () => { S.sound = !S.sound; saveS(); $('btn-sound').textContent = S.sound ? '🔔 Sound on' : '🔇 Sound off'; if (S.sound) beep(); };
+$('btn-sound').textContent = S.sound ? '🔔 Sound on' : '🔇 Sound off';
+let wake = null;
+$('btn-wake').onclick = async () => { try { wake = await navigator.wakeLock.request('screen'); $('btn-wake').textContent = 'Screen stays on'; } catch (e) { toast('Screen lock not available here'); } };
+
+// ---------- inputs ----------
+let mySide = 'UP';
+document.querySelectorAll('#my-seg button').forEach(b => b.onclick = () => { mySide = b.dataset.side; document.querySelectorAll('#my-seg button').forEach(x => x.classList.toggle('on', x === b)); });
+document.querySelector('#my-seg button.up').classList.add('on');
+$('my-set').onclick = () => { const price = Number($('my-price').value) / 100, spent = Number($('my-spent').value);
+  if (!(price > 0 && price < 1) || !(spent > 0)) { toast('Enter the price you paid and the dollars spent'); return; }
+  myPos = { T0: R.T0, side: mySide, price, spent, shares: spent / price }; try { localStorage.setItem('pm15.mypos', JSON.stringify(myPos)); } catch (e) {} toast('Tracking your ' + mySide + ' position'); };
+$('my-clear').onclick = () => { myPos = null; try { localStorage.removeItem('pm15.mypos'); } catch (e) {} };
+function loadSettings() { $('s-stake').value = S.stake; $('s-lockp').value = S.lockP; $('s-maxask').value = S.maxAsk; $('s-drift').value = S.drift; $('s-fee').value = S.fee; $('s-relay').value = S.relay || ''; $('s-offset').value = S.offset == null ? '' : S.offset.toFixed(2); }
+$('s-save').onclick = () => {
+  S.stake = Math.max(1, Number($('s-stake').value) || DEF.stake); S.lockP = Math.min(99.99, Math.max(90, Number($('s-lockp').value) || DEF.lockP)); S.maxAsk = Math.min(99, Math.max(50, Number($('s-maxask').value) || DEF.maxAsk));
+  S.drift = Math.min(1, Math.max(0, Number($('s-drift').value))); S.fee = Number($('s-fee').value) || DEF.fee; S.relay = ($('s-relay').value || '').trim();
+  const offIn = $('s-offset').value.trim(); if (offIn !== '') { S.offset = Number(offIn); R.offset = S.offset; R.offsetSrc = 'typed'; }
+  const tIn = Number($('s-target').value); if (tIn > 1000) { R.target = tIn; R.targetSrc = 'manual'; calibrateOffset(); }
+  saveS(); R.apiOk = null; pmFetchMarket(); pmFetchBook(); toast('Saved');
+};
+$('s-reset-hist').onclick = () => { history = []; try { localStorage.removeItem('pm15.history'); localStorage.removeItem('pm15.paperTotal'); } catch (e) {} paper.totalPnl = 0; renderPast(); toast('History cleared'); };
+loadSettings();
+if (myPos && myPos.T0 !== Math.floor(Date.now() / 1000 / ROUND) * ROUND) myPos = null;
+
+// ---------- loops ----------
+connectWS(); backfill();
+setInterval(() => { pmFetchBook(); }, 2500);
+setInterval(() => { if (!Number.isFinite(R.target) || R.targetSrc === 'est') pmFetchMarket(); const prevSlug = SLUG(R.T0 - ROUND); const prev = history.find(h => SLUG(h.T0) === prevSlug); if (prev && prev.settleSrc !== 'api') pmFetchMarket(prevSlug); }, 6000);
+let frame = 0;
+function tick() {
+  const E = evaluate();
+  if (Number.isFinite(E.spot)) { paperStep(E); dictate(E); renderHeader(E); renderPaper(E); if (frame % 3 === 0) { renderFeed(E); renderPlays(E); renderMine(E); renderNext(E); } if (frame % 2 === 0) drawChart(E); }
+  else { $('timer').textContent = clock(E.r); renderHeader(E); dictate(E); }
+  frame++;
+}
+setInterval(tick, 250);
+renderPast();
+window.addEventListener('resize', () => { if (lastEval) drawChart(lastEval); });
+</script>

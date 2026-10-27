@@ -47,6 +47,12 @@ the paper / record / backtest / carry / bounty schedules are off, `workflow_disp
 live line of research is **Early Favorite** on Polymarket US 15-min BTC: `research/early_favorite_playbook.md`,
 `scripts/early_favorite_tracker.py` (forward test, `polyus.yml`), `scripts/ef_autobuyer.py` (live-book
 paper fills, `ef-autobuyer.yml`), `research/early_favorite_signal.pine` (the TradingView HUD).
+Live cockpit: `research/pm15_copilot.html` (open in a browser on the iPad; also published as a claude.ai artifact) — one
+Polymarket US 15-min BTC round at a time on the Coinbase feed, with the settlement model fitted from screen recordings
+(PM's price = 60-s trailing average of spot, ~2 s delayed, plus a basis offset; the final price is that average at the
+bell and the next target is this round's settlement), the locked-outcome headline with cents on the table, safety-rated
+plays, paper bets with a sell countdown, and the next/past rounds. `scripts/pm15_relay_worker.js` is the Cloudflare
+Worker that forwards the two read-only gateway endpoints with CORS for the page.
 Companion chart tool: `research/velocity_reach_vs_target.pine` (TradingView — projects BTC's velocity /
 acceleration forward, draws a vertical reach post with a 1m/2m/3m… time ruler up through the target and
 marks the tick where the target is hit, in whichever direction the target lies; the target defaults to the round's price-to-beat estimated the
