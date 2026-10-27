@@ -228,7 +228,7 @@ details.settings summary { cursor: pointer; font: 700 15px/1.4 var(--font-displa
           <span class="l-target">Target (price to beat)</span>
           <span class="l-spot">Coinbase spot</span>
           <span class="l-pm">Polymarket shows</span>
-          <span class="l-post">Post: minutes to the target at BTC's record pace · 1m ticks at current pace</span>
+          <span class="l-post">Post: minutes to the target at BTC's record pace and at this round's avg speed · 1m ticks at current pace</span>
         </div>
         <div class="hint">Shaded band on the right = the part of the settlement average already in the books.</div>
       </div>
@@ -487,7 +487,7 @@ function renderReach(E) {
   if (!RI) { el.innerHTML = '<b class="tx">REACH</b> waiting for the target.'; return; }
   const hist = (REC.spans.m1 ? Math.round(REC.spans.m1) + 'd of 1-min' : 'no 1-min') + ' · ' + (REC.spans.m5 ? Math.round(REC.spans.m5) + 'd of 5-min' : 'no 5-min') + ' · ' + (REC.spans.m15 ? Math.round(REC.spans.m15) + 'd of 15-min' : 'no 15-min') + (REC.scanning ? ' · scanning ' + Math.round(REC.progress * 100) + '%' : REC.at ? ' · scanned ' + Math.max(1, Math.round((Date.now() - REC.at) / 60000)) + ' min ago' : '') + (REC.note ? ' · ' + REC.note : '');
   if (RI.tier < 0) { el.innerHTML = '<b class="tx">REACH</b> record pace not known yet — ' + hist; return; }
-  el.innerHTML = '<b class="t' + RI.tier + '">' + RI.word + '</b> the target is <span class="n">' + fmtS(RI.dist).replace('+', '') + '</span> ' + (RI.need >= 0 ? 'up' : 'down') + ': BTC needs <span class="n">' + RI.minsTxt.replace('<', '&lt;').replace('>', '&gt;') + '</span> at record pace vs <span class="n">' + clock(E.r) + '</span> left · touch odds <span class="n">' + pct(RI.odds) + '</span> · the most it has moved in that time: <span class="n">' + fmtS(RI.recLeft).replace('+', '') + '</span> · history ' + hist;
+  el.innerHTML = '<b class="t' + RI.tier + '">' + RI.word + '</b> the target is <span class="n">' + fmtS(RI.dist).replace('+', '') + '</span> ' + (RI.need >= 0 ? 'up' : 'down') + ': BTC needs <span class="n">' + RI.minsTxt.replace('<', '&lt;').replace('>', '&gt;') + '</span> at record pace vs <span class="n">' + clock(E.r) + '</span> left · <span class="n">' + avgMinsTxt(E.avgMins).replace('<', '&lt;') + '</span> at this round\'s avg speed of <span class="n">$' + fmt$(E.avgSpeed, 0) + '/min</span> · touch odds <span class="n">' + pct(RI.odds) + '</span> · the most it has moved in that time: <span class="n">' + fmtS(RI.recLeft).replace('+', '') + '</span> · history ' + hist;
 }
 
 // Settlement average S = offset + mean(spot over [T-62, T-2]).  Returns its mean and sd at time `now`.
@@ -682,13 +682,26 @@ function evaluate() {
       if (ok) { sureEta = s; break; }
     }
   }
+  // average speed this round: dollars traversed per minute in 1-minute steps (path length, not net move); last round's until a minute is in
+  const elapsed = ROUND - r;
+  const avgSpeed = elapsed >= 60 ? roundPath(R.T0, sec) / (elapsed / 60) : (roundPath(R.T0 - ROUND, R.T0) > 0 ? roundPath(R.T0 - ROUND, R.T0) / 15 : NaN);
+  const avgMins = Number.isFinite(avgSpeed) && avgSpeed > 0 && Number.isFinite(lead) ? lead / avgSpeed : NaN;
   const velTow = vel * (need >= 0 ? 1 : -1), crossEta = velTow > 0.01 ? lead / velTow : NaN;    // toward the target: $/s and seconds to get there at this pace
   const cushion = Math.max(20, (S.cushionX || 2) * sig * Math.sqrt(60));                        // "one routine minute's move" × the setting
   const flipOf = side => { const crossed = side !== spotSide; const pSide = side === 'UP' ? pUp : 1 - pUp;
     return { crossed, odds: crossed ? 1 - pSide : reach ? reach.odds : NaN, fastest: crossed ? 0 : reach ? reach.mins : NaN, pSide, sure: side === 'UP' ? sureUp : sureDn }; };
-  lastEval = { nowS, sec, r, spot, fresh, off, offKnown, sig, vel, pmShown, target, d, pUp, pFav, fav, dog, gap, z, lagS, need, lead, spotSide, reach, sureUp, sureDn, sureEta, velTow, crossEta, cushion, flipOf };
+  lastEval = { nowS, sec, r, spot, fresh, off, offKnown, sig, vel, pmShown, target, d, pUp, pFav, fav, dog, gap, z, lagS, need, lead, spotSide, reach, sureUp, sureDn, sureEta, velTow, crossEta, cushion, flipOf, avgSpeed, avgMins };
   return lastEval;
 }
+// dollars traversed between T0 and `upto`, in 1-minute steps plus the partial minute
+function roundPath(T0, upto) {
+  let path = 0, prev = priceAt(T0); const K = Math.floor((upto - T0) / 60);
+  for (let k = 1; k <= K; k++) { const v = priceAt(T0 + 60 * k); if (prev > 0 && v > 0) path += Math.abs(v - prev); if (v > 0) prev = v; }
+  if (upto > T0 + 60 * K) { const last = priceAt(upto); if (prev > 0 && last > 0) path += Math.abs(last - prev); }
+  return path;
+}
+const avgMinsTxt = m => !Number.isFinite(m) ? '—' : m > 99 ? '99+ min' : m < 0.1 ? '< 0.1 min' : m.toFixed(1) + ' min';
+const avgTxt = E => !Number.isFinite(E.avgSpeed) ? 'avg speed: no data yet' : avgMinsTxt(E.avgMins) + ' at avg speed · $' + fmt$(E.avgSpeed, 0) + '/min this round';
 // the four words for a flip chance, and the sentence for where BTC is
 const chanceWord = p => p >= 0.5 ? 'likely' : p >= 0.25 ? 'a real chance' : p >= 0.10 ? 'possible' : p >= 0.03 ? 'unlikely' : p >= 0.005 ? 'rare' : 'very rare';
 const chanceTxt = p => !Number.isFinite(p) ? 'unknown' : (p < 0.005 ? 'under 1%' : p > 0.995 ? 'over 99%' : Math.round(p * 100) + '%') + ' (' + chanceWord(p) + ')';
@@ -938,11 +951,12 @@ function drawChart(E) {
     if (Math.abs(E.vel) < 0.02) for (let m = 1; m <= Math.min(Math.ceil(E.r / 60), 15); m++) { const y = yTop + (yBot - yTop) * m / Math.max(1, Math.ceil(E.r / 60)); if (y > yBot) break; ctx.beginPath(); ctx.moveTo(xp - 3, y); ctx.lineTo(xp + 3, y); ctx.stroke(); }
     const RI = reachInfo(E); const ym = (ys + yt) / 2;
     const l1 = RI && RI.tier >= 0 ? RI.minsTxt + ' at record pace' : 'record pace: scanning…';
-    const l2 = RI && RI.tier >= 0 ? RI.word + ' · ' + clock(E.r) + ' left' : 'Coinbase 1 / 5 / 15-min history';
-    ctx.font = 'bold 12px IBM Plex Mono, monospace'; const tw1 = ctx.measureText(l1).width; ctx.font = 'bold 11px IBM Plex Sans, sans-serif'; const tw = Math.max(tw1, ctx.measureText(l2).width);
-    const cx = Math.max(padL + tw / 2 + 8, Math.min(xp, W - padR - tw / 2 - 8)), bx = cx - tw / 2 - 7, by = ym - 16;
-    ctx.fillStyle = RI && RI.tier >= 0 ? RI.col : '#1a0f2e'; ctx.fillRect(bx, by, tw + 14, 32); ctx.strokeStyle = RI && RI.tier >= 0 ? RI.col : '#b57cff'; ctx.lineWidth = 1; ctx.strokeRect(bx, by, tw + 14, 32);
-    ctx.fillStyle = RI && RI.tier >= 0 ? RI.text : '#e6d6ff'; ctx.textAlign = 'center'; ctx.font = 'bold 12px IBM Plex Mono, monospace'; ctx.fillText(l1, cx, ym - 8); ctx.font = 'bold 11px IBM Plex Sans, sans-serif'; ctx.fillText(l2, cx, ym + 8);
+    const l2 = avgTxt(E);
+    const l3 = RI && RI.tier >= 0 ? RI.word + ' · ' + clock(E.r) + ' left' : 'Coinbase 1 / 5 / 15-min history';
+    ctx.font = 'bold 12px IBM Plex Mono, monospace'; const tw1 = ctx.measureText(l1).width; ctx.font = '11px IBM Plex Mono, monospace'; const tw2 = ctx.measureText(l2).width; ctx.font = 'bold 11px IBM Plex Sans, sans-serif'; const tw = Math.max(tw1, tw2, ctx.measureText(l3).width);
+    const cx = Math.max(padL + tw / 2 + 8, Math.min(xp, W - padR - tw / 2 - 8)), bx = cx - tw / 2 - 7, by = ym - 23;
+    ctx.fillStyle = RI && RI.tier >= 0 ? RI.col : '#1a0f2e'; ctx.fillRect(bx, by, tw + 14, 46); ctx.strokeStyle = RI && RI.tier >= 0 ? RI.col : '#b57cff'; ctx.lineWidth = 1; ctx.strokeRect(bx, by, tw + 14, 46);
+    ctx.fillStyle = RI && RI.tier >= 0 ? RI.text : '#e6d6ff'; ctx.textAlign = 'center'; ctx.font = 'bold 12px IBM Plex Mono, monospace'; ctx.fillText(l1, cx, ym - 15); ctx.font = '11px IBM Plex Mono, monospace'; ctx.fillText(l2, cx, ym); ctx.font = 'bold 11px IBM Plex Sans, sans-serif'; ctx.fillText(l3, cx, ym + 15);
   }
   // PM "is here" marker: where the spot last sat at what PM now shows
   if (Number.isFinite(E.lagS)) { const xl = xOf(E.sec - E.lagS); ctx.save(); ctx.setLineDash([3, 4]); ctx.strokeStyle = '#62ccff'; ctx.lineWidth = 1.5; ctx.beginPath(); ctx.moveTo(xl, padT); ctx.lineTo(xl, H - padB); ctx.stroke(); ctx.restore();

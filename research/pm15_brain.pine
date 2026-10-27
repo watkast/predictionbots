@@ -30,7 +30,8 @@
 //  Odds come from the settlement-average model (vol-based, momentum credited
 //  for 45 s at most). The momentum post is kept as a VIEW, never as odds.
 //  The label on the post (between the spot and the target) says how many
-//  minutes BTC would need to reach the target at the FASTEST it has ever moved
+//  minutes BTC would need to reach the target at its AVERAGE speed this round
+//  (dollars traversed per minute) and at the FASTEST it has ever moved
 //  (record up / down moves over 1–15 min from the chart's history plus 5-min
 //  and 15-min bars), and compares that with the time left:
 //    red = NOT POSSIBLE (needs more than the time left even at record pace)
@@ -387,6 +388,22 @@ posPnl  = posDir != 0 ? posVal - posUsd : float(na)
 // whether that fits in the time left. Red = it does not fit even at record pace. The other three tiers
 // use the touch odds: the chance a path with today's adverse-side vol touches the target before the bell.
 needMove  = target - offset - close                 // $ the spot must move (+ = up)
+
+// ─────────────────── Average speed this round: dollars traversed per minute ───────────────────
+// |close − close[1]| summed over this round's bars (path length, not net move) ÷ minutes elapsed. Until the round has a
+// minute of data it shows last round's average. "Time at avg speed" = the gap ÷ that, as if every minute went the right way.
+var float pathClosed   = 0.0
+var float prevRoundAvg = na
+if isNewRound
+    prevRoundAvg := pathClosed / 15.0
+    pathClosed := 0.0
+barMove   = math.abs(close - nz(close[1], close))
+pathRound = pathClosed + barMove
+pathClosed += barMove
+avgSpeed  = minsElapsed >= 1 ? pathRound / minsElapsed : prevRoundAvg          // $ per minute this round
+avgMins   = not na(avgSpeed) and avgSpeed > 0 ? math.abs(needMove) / avgSpeed : float(na)
+avgMinsTxt = na(avgMins) ? "—" : avgMins > 99 ? "99+ min" : avgMins < 0.1 ? "< 0.1 min" : fmt1(avgMins) + " min"
+avgTxt    = na(avgSpeed) ? "avg speed: no data yet" : avgMinsTxt + " at avg speed · $" + fmt0(avgSpeed) + "/min this round"
 var float reachMins = na
 var float reachOdds = na
 var float recLeft   = na
@@ -606,7 +623,7 @@ if barstate.islast and not na(target)
             array.push(tick, line.new(xp - 1, p, xp + 1, p, xloc = xloc.bar_index, color = color.new(colPost, 20), width = 2))
             array.push(tickL, label.new(xp + 1, p, str.tostring(m) + "m", xloc = xloc.bar_index, style = label.style_label_left, color = color.new(color.black, 100), textcolor = color.new(colPost, 20), size = size.small))
         // the label between the spot and the target: minutes to get there at BTC's record pace, judged against the time left
-        postLbl := label.new(xp, (close + tgtPlot) / 2, reachMinsTxt + " at record pace\n" + reachWord + " · " + fmtClock(secsLeft) + " left", xloc = xloc.bar_index, style = label.style_label_left, color = color.new(reachCol, 0), textcolor = reachTier >= 2 ? color.black : color.white, size = size.small)
+        postLbl := label.new(xp, (close + tgtPlot) / 2, reachMinsTxt + " at record pace\n" + avgTxt + "\n" + reachWord + " · " + fmtClock(secsLeft) + " left", xloc = xloc.bar_index, style = label.style_label_left, color = color.new(reachCol, 0), textcolor = reachTier >= 2 ? color.black : color.white, size = size.small)
 
 // ─────────────────────── HUD ───────────────────────
 var table hud = table.new(tblPos(hudPos), 1, 10, bgcolor = color.new(color.black, 15), border_width = 1, border_color = color.new(color.gray, 70))
@@ -621,7 +638,7 @@ if barstate.islast
     fastX  = posDir != 0 ? posFast : favFast
     safetyTxt = na(target) or secsLeft <= 0 ? "SAFETY  —" : sureX ? "SAFETY  SAFE — nothing can flip " + sideName(sideX) + " now, not even a record move." : "SAFETY  A flip is possible · fastest at record pace " + fastTxt(fastX) + " · chance before the bell " + chanceTxt(flipX) + (posDir != 0 ? " · GET OUT fires at " + str.tostring(getOutOdds) + "%, within $" + fmt0(cushion) + " of the target, or if BTC would reach it inside " + str.tostring(crossSecs) + " s at its pace" : "")
     safetyCol = na(target) or secsLeft <= 0 ? color.silver : sureX ? colOk : (posDir != 0 and (getOut or sellNow)) ? colBad : colEasy
-    factsTxt = fmtClock(secsLeft) + " left · " + favTxt + " for now · " + whereTxt + " · PM shows $" + fmt1(math.abs(pmShown - target)) + " " + (pmShown >= target ? "above" : "below") + " · target " + fmtP(target) + " (" + tgtSrc + ")"
+    factsTxt = fmtClock(secsLeft) + " left · " + favTxt + " for now · " + whereTxt + " · PM shows $" + fmt1(math.abs(pmShown - target)) + " " + (pmShown >= target ? "above" : "below") + " · avg speed $" + fmt0(nz(avgSpeed)) + "/min this round (target in " + avgMinsTxt + " at that pace) · target " + fmtP(target) + " (" + tgtSrc + ")"
     posTxt = posDir != 0 ? "In " + sideName(posDir) + " @" + fmt0(posEntry) + "¢ for $" + fmt0(posUsd) + " · worth about $" + fmt0(posVal) + " now (" + (posPnl >= 0 ? "+$" : "−$") + fmt0(math.abs(posPnl)) + ") · pays $" + fmt0(posShares) + " if it holds" : "No position — set Side in settings after you buy"
     row(0, cmd, color.white, cmdCol)
     row(1, timing, color.yellow, blackBg)
