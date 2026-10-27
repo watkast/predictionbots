@@ -1,0 +1,262 @@
+//@version=6
+// =============================================================================
+//  VELOCITY REACH vs TARGET
+//  ---------------------------------------------------------------------------
+//  • Velocity      = smoothed price change per bar (signed)
+//  • Speed         = |velocity|, shown per hour in the table
+//  • Acceleration  = change in velocity per bar
+//  • Projection    = p(t) = p0 + v·t + ½·a·t²   (t in bars, kinematics)
+//  • Reach         = highest point the projection hits inside the horizon
+//  • Reach line    = thick vertical line just right of the last candle:
+//                    current price → projected reach. Compare its top with
+//                    the dashed target line.
+//        GREEN  = reach clears the target  → upward crossover possible
+//        YELLOW = clears it, but later than the projection horizon
+//        RED    = does not reach it at the current velocity
+//  • ETA line      = thin dashed vertical line at the bar where the projected
+//                    path meets the target (only when a cross is possible)
+//  • Ruler         = tick marks on the reach line showing where the path sits
+//                    after 1, 2, 3… bars, labelled in chart time (1m, 2m… /
+//                    1h, 2h…). Major tick every 5 bars. Ticks stop at the peak.
+//                    Past the horizon the post continues dashed (dimmed ticks)
+//                    up to the target + N extra bars, and the tick where the
+//                    target is hit is marked "◀ TARGET".
+//  Works on any symbol / timeframe. Info table + alerts included.
+// =============================================================================
+indicator("Velocity Reach vs Target", shorttitle = "Velocity Reach", overlay = true,
+     max_lines_count = 500, max_labels_count = 500, max_polylines_count = 5)
+
+// ─────────────────────────────── Inputs ───────────────────────────────
+gT = "Target"
+targetInput  = input.float(0.0, "Target price  (0 = auto: recent swing high)", minval = 0, step = 100, group = gT)
+autoLookback = input.int(50, "Auto-target lookback (bars)", minval = 2, group = gT)
+
+gV = "Velocity / Acceleration"
+velLen    = input.int(14, "Velocity lookback (bars)", minval = 1, group = gV,
+     tooltip = "Velocity = average price change per bar over this window")
+smoothLen = input.int(5, "Smoothing (EMA length)", minval = 1, group = gV)
+useAccel  = input.bool(true, "Include acceleration / deceleration", group = gV,
+     tooltip = "ON: p = v·t + ½·a·t²    OFF: straight line p = v·t")
+
+gP = "Projection"
+horizon    = input.int(20, "Projection horizon (bars ahead)", minval = 1, maxval = 300, group = gP)
+lineOffset = input.int(2, "Reach line offset (bars right of last bar)", minval = 0, maxval = 50, group = gP)
+showPath   = input.bool(true, "Draw projected path", group = gP)
+showEta    = input.bool(true, "Draw ETA line at projected cross", group = gP)
+showRuler  = input.bool(true, "Ruler ticks on reach line (one per bar)", group = gP)
+labelEvery = input.int(1, "Ruler: label every N ticks", minval = 1, group = gP)
+rulerSize  = input.string("small", "Ruler: label size", options = ["tiny", "small", "normal"], group = gP)
+extendPast = input.int(5, "Ruler: extend past horizon to target (+N bars above, 0 = off)", minval = 0, maxval = 200, group = gP)
+showTable  = input.bool(true, "Show info table", group = gP)
+
+gC = "Colors"
+colOk     = input.color(color.lime,   "Cross possible",  group = gC)
+colBeyond = input.color(color.yellow, "Beyond horizon",  group = gC)
+colNo     = input.color(color.red,    "Not possible",    group = gC)
+colTgt    = input.color(color.orange, "Target line",     group = gC)
+colPath   = input.color(color.aqua,   "Projected path",  group = gC)
+
+// ─────────────────── Velocity & acceleration (price per bar) ───────────────────
+rawVel = (close - close[velLen]) / velLen
+vel    = ta.ema(rawVel, smoothLen)                 // signed velocity   (price / bar)
+accEma = ta.ema(ta.change(vel), smoothLen)
+acc    = useAccel ? accEma : 0.0                   // acceleration      (price / bar²)
+
+// ─────────────────────────────── Target ───────────────────────────────
+swingHigh = ta.highest(high, autoLookback)
+target    = targetInput > 0 ? targetInput : swingHigh
+
+// ─────────────────── Projection  p(t) = p0 + v·t + ½·a·t² ───────────────────
+proj(p, v, a, t) => p + v * t + 0.5 * a * t * t
+
+p0 = close
+N  = horizon
+
+// Highest point the projected path reaches inside the horizon
+reach = math.max(p0, proj(p0, vel, acc, N))
+if math.abs(acc) > 1e-10
+    tPeak = -vel / acc                              // bar where velocity hits zero
+    if tPeak > 0 and tPeak < N
+        reach := math.max(reach, proj(p0, vel, acc, tPeak))
+
+// Bars until the path first touches the target  (na = never at this pace)
+dist         = target - p0
+barsToTarget = float(na)
+if dist <= 0
+    barsToTarget := 0.0
+else if math.abs(acc) < 1e-10
+    if vel > 0
+        barsToTarget := dist / vel
+else
+    disc = vel * vel + 2.0 * acc * dist
+    if disc >= 0
+        sq   = math.sqrt(disc)
+        r1   = (-vel - sq) / acc
+        r2   = (-vel + sq) / acc
+        best = float(na)
+        if r1 > 0
+            best := r1
+        if r2 > 0 and (na(best) or r2 < best)
+            best := r2
+        barsToTarget := best
+
+aboveTarget = dist <= 0
+possible    = not aboveTarget and not na(barsToTarget) and barsToTarget <= N
+beyond      = not aboveTarget and not na(barsToTarget) and barsToTarget >  N
+crossedUp   = ta.crossover(close, target)
+
+statusCol = aboveTarget or possible ? colOk : beyond ? colBeyond : colNo
+barsTxt   = na(barsToTarget) ? "—" : str.tostring(math.ceil(barsToTarget))
+statusTxt = aboveTarget ? "ALREADY ABOVE TARGET" :
+     possible ? "UP-CROSS POSSIBLE ✔   (~" + barsTxt + " bars)" :
+     beyond   ? "Possible, but beyond horizon (~" + barsTxt + " bars)" :
+     "NOT POSSIBLE ✘ at current velocity"
+
+// ─────────────────────────────── Drawing ───────────────────────────────
+var line     reachLine  = na
+var line     targetLine = na
+var line     etaLine    = na
+var line     extLine    = na
+var polyline pathExt    = na
+var label    reachLbl   = na
+var label    tgtLbl     = na
+var label    crossLbl   = na
+var polyline path       = na
+var array<line>  tickLines = array.new<line>()
+var array<label> tickLbls  = array.new<label>()
+var table    info       = table.new(position.top_right, 2, 7, bgcolor = color.new(color.black, 15),
+     border_width = 1, border_color = color.new(color.gray, 70))
+
+fmtP(x) => str.tostring(x, format.mintick)
+fmt2(x) => str.tostring(x, "#.##")
+rulerTextSize = rulerSize == "tiny" ? size.tiny : rulerSize == "normal" ? size.normal : size.small
+
+// bars → chart-time label: "3m", "2.5h", "1d" …
+durTxt(bars) =>
+    secs = bars * timeframe.in_seconds()
+    secs < 60 ? str.tostring(secs) + "s" :
+         secs < 3600 ? str.tostring(secs / 60.0, "#") + "m" :
+         secs < 86400 ? str.tostring(secs / 3600.0, "#.#") + "h" :
+         str.tostring(secs / 86400.0, "#.#") + "d"
+cellRow(r, k, v, c) =>
+    table.cell(info, 0, r, k, text_color = color.new(color.white, 25), text_size = size.small, text_halign = text.align_left)
+    table.cell(info, 1, r, v, text_color = c, text_size = size.small, text_halign = text.align_right)
+
+if barstate.islast and not na(reach) and not na(target)
+    line.delete(reachLine)
+    line.delete(targetLine)
+    line.delete(etaLine)
+    line.delete(extLine)
+    polyline.delete(pathExt)
+    label.delete(reachLbl)
+    label.delete(tgtLbl)
+    label.delete(crossLbl)
+    polyline.delete(path)
+    for l in tickLines
+        line.delete(l)
+    array.clear(tickLines)
+    for lb in tickLbls
+        label.delete(lb)
+    array.clear(tickLbls)
+
+    x0       = bar_index
+    xr       = bar_index + lineOffset
+    reachPct = (reach / p0 - 1) * 100
+
+    // How far the ruler / path run: to the horizon, or past it to the target + extra bars
+    tEnd = N
+    if extendPast > 0 and not na(barsToTarget) and barsToTarget > 0
+        tEnd := math.min(math.max(N, math.ceil(barsToTarget) + extendPast), 300)
+
+    // Vertical reach line: current price → projected reach
+    reachLine := line.new(xr, p0, xr, reach, xloc = xloc.bar_index, color = statusCol, width = 4)
+    reachLbl  := label.new(xr, reach, "Reach " + fmtP(reach) + "  (" + fmt2(reachPct) + "%)",
+         xloc = xloc.bar_index, style = label.style_label_right, color = color.new(statusCol, 15),
+         textcolor = color.black, size = size.small)
+
+    // Ruler: tick + time label where the path sits after 1, 2, 3… bars
+    // (only while the path is still making new highs; major tick every 5 bars).
+    // Past the horizon ticks are dimmed; the tick that reaches the target is marked.
+    if showRuler
+        runMax = p0
+        prevY  = p0
+        for t = 1 to tEnd
+            y = proj(p0, vel, acc, t)
+            if y > runMax
+                runMax := y
+                beyondH = t > N
+                hitTgt  = y >= target and prevY < target
+                major   = t % 5 == 0
+                tickCol = hitTgt ? colTgt : color.new(statusCol, beyondH ? 60 : (major ? 0 : 35))
+                array.push(tickLines, line.new((major or hitTgt) ? xr - 1 : xr, y, xr + 1, y, xloc = xloc.bar_index,
+                     color = tickCol, width = (major or hitTgt) ? 2 : 1))
+                if t % labelEvery == 0 or hitTgt
+                    txt = durTxt(t) + (hitTgt ? "  ◀ TARGET" : "")
+                    array.push(tickLbls, label.new(xr + 1, y, txt, xloc = xloc.bar_index,
+                         style = label.style_label_left, color = color.new(color.black, 100),
+                         textcolor = hitTgt ? colTgt : color.new(chart.fg_color, beyondH ? 50 : 10),
+                         size = rulerTextSize))
+            prevY := y
+        // Dashed continuation of the post above the horizon
+        if runMax > reach
+            extLine := line.new(xr, reach, xr, runMax, xloc = xloc.bar_index, color = color.new(statusCol, 50),
+                 style = line.style_dashed, width = 2)
+
+    // Horizontal target line
+    targetLine := line.new(x0 - 1, target, x0 + N + lineOffset, target, xloc = xloc.bar_index,
+         extend = extend.both, color = colTgt, style = line.style_dashed, width = 1)
+    tgtLbl := label.new(x0 + N + lineOffset, target, "Target " + fmtP(target),
+         xloc = xloc.bar_index, style = label.style_label_left, color = color.new(colTgt, 15),
+         textcolor = color.black, size = size.small)
+
+    // Dotted projected path
+    if showPath
+        pts   = array.new<chart.point>()
+        steps = math.min(N, 60)
+        for i = 0 to steps
+            t = float(N) * i / steps
+            array.push(pts, chart.point.from_index(x0 + math.round(t), proj(p0, vel, acc, t)))
+        path := polyline.new(pts, curved = false, closed = false, xloc = xloc.bar_index,
+             line_color = colPath, line_style = line.style_dotted, line_width = 2)
+        // Dimmed continuation of the path past the horizon
+        if tEnd > N
+            pts2   = array.new<chart.point>()
+            span   = tEnd - N
+            steps2 = math.min(span, 60)
+            for j = 0 to steps2
+                t2 = N + float(span) * j / steps2
+                array.push(pts2, chart.point.from_index(x0 + math.round(t2), proj(p0, vel, acc, t2)))
+            pathExt := polyline.new(pts2, curved = false, closed = false, xloc = xloc.bar_index,
+                 line_color = color.new(colPath, 60), line_style = line.style_dotted, line_width = 1)
+
+    // ETA line + marker where the path meets the target (green inside the horizon, yellow beyond it)
+    if not na(barsToTarget) and barsToTarget > 0 and barsToTarget <= 480
+        xc   = x0 + math.ceil(barsToTarget)
+        cCol = possible ? colOk : colBeyond
+        if showEta
+            etaLine := line.new(xc, p0, xc, target, xloc = xloc.bar_index, color = color.new(cCol, 40),
+                 style = line.style_dashed, width = 1)
+        crossLbl := label.new(xc, target, "▲ cross in ~" + barsTxt + " bars",
+             xloc = xloc.bar_index, style = label.style_label_down, color = color.new(cCol, 15),
+             textcolor = color.black, size = size.small)
+
+    // Info table
+    if showTable
+        perHour = vel * 3600.0 / timeframe.in_seconds()
+        cellRow(0, "Velocity",       fmt2(vel) + " /bar",                                   vel >= 0 ? colOk : colNo)
+        cellRow(1, "Speed",          fmt2(math.abs(perHour)) + " /hr",                      color.white)
+        cellRow(2, "Acceleration",   fmt2(acc) + " /bar²",                                  acc >= 0 ? colOk : colNo)
+        cellRow(3, "Reach (" + str.tostring(N) + " bars)", fmtP(reach) + "  (" + fmt2(reachPct) + "%)", statusCol)
+        cellRow(4, "Target",         fmtP(target) + "  (" + fmt2(dist / p0 * 100) + "% away)", colTgt)
+        cellRow(5, "Bars to target", barsTxt,                                               statusCol)
+        cellRow(6, "Status",         statusTxt,                                             statusCol)
+
+// ─────────────────────────── Signals & alerts ───────────────────────────
+plotshape(possible and not possible[1], title = "Cross became possible", style = shape.triangleup,
+     location = location.belowbar, color = colOk, size = size.tiny)
+plotshape(not possible and possible[1] and not aboveTarget, title = "Cross no longer possible", style = shape.triangledown,
+     location = location.abovebar, color = colNo, size = size.tiny)
+
+alertcondition(possible and not possible[1], "Up-cross possible", "Projected reach now clears the target — upward crossover possible at current velocity")
+alertcondition(not possible and possible[1] and not aboveTarget, "Up-cross no longer possible", "Projected reach fell below the target")
+alertcondition(crossedUp, "Price crossed target", "Price crossed above the target price")

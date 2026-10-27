@@ -47,6 +47,9 @@ the paper / record / backtest / carry / bounty schedules are off, `workflow_disp
 live line of research is **Early Favorite** on Polymarket US 15-min BTC: `research/early_favorite_playbook.md`,
 `scripts/early_favorite_tracker.py` (forward test, `polyus.yml`), `scripts/ef_autobuyer.py` (live-book
 paper fills, `ef-autobuyer.yml`), `research/early_favorite_signal.pine` (the TradingView HUD).
+Companion chart tool: `research/velocity_reach_vs_target.pine` (TradingView — projects BTC's velocity /
+acceleration forward, draws a vertical reach post with a 1m/2m/3m… time ruler up through the target and
+marks the tick where the target is hit, so you can see whether an up-cross is reachable and when).
 
 | name | idea | evidence (one line) |
 |---|---|---|
