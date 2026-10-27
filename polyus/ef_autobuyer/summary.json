@@ -1,6 +1,6 @@
 {
- "rounds_observed": 318,
- "entries": 32,
+ "rounds_observed": 319,
+ "entries": 33,
  "scored": 32,
  "by_stake": {
   "50": {
@@ -20,5 +20,5 @@
   }
  },
  "live_minus_display_c": 1.03,
- "entries_read_late": 3
+ "entries_read_late": 4
 }
