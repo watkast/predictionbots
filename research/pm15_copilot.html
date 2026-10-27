@@ -98,6 +98,10 @@ input, select { background: var(--bg); border: 1px solid var(--line); border-rad
 .legend .l-target::before { height: 0; border-top: 3px dashed currentColor; }
 .canvas-box { position: relative; width: 100%; aspect-ratio: 16 / 9; max-height: 60vh; min-height: 300px; }
 canvas { position: absolute; inset: 0; width: 100%; height: 100%; display: block; border-radius: 8px; }
+.reach { font-size: 12px; color: var(--muted); padding: 8px 4px 0; line-height: 1.4; }
+.reach b { font: 700 13px/1 var(--font-display); letter-spacing: .08em; padding: 2px 7px; border-radius: 5px; color: #140800; margin-right: 4px; }
+.reach b.t0 { background: var(--bad); color: #fff; } .reach b.t1 { background: var(--warn); } .reach b.t2 { background: #ffe14d; } .reach b.t3 { background: var(--good); } .reach b.tx { background: var(--surface-2); color: var(--muted); }
+.reach .n { font-family: var(--font-mono); color: var(--fg); }
 .side { display: grid; gap: 12px; min-width: 0; }
 
 /* feed row */
@@ -220,11 +224,12 @@ details.settings summary { cursor: pointer; font: 700 15px/1.4 var(--font-displa
           <span class="l-target">Target (price to beat)</span>
           <span class="l-spot">Coinbase spot</span>
           <span class="l-pm">Polymarket shows</span>
-          <span class="l-post">Post: $ to cross · 1m ticks at current pace</span>
+          <span class="l-post">Post: minutes to the target at BTC's record pace · 1m ticks at current pace</span>
         </div>
         <div class="hint">Shaded band on the right = the part of the settlement average already in the books.</div>
       </div>
       <div class="canvas-box"><canvas id="cv"></canvas></div>
+      <div class="reach" id="reach">Record pace: scanning Coinbase history…</div>
     </section>
 
     <aside class="side">
@@ -312,7 +317,10 @@ details.settings summary { cursor: pointer; font: 700 15px/1.4 var(--font-displa
       <label>Taker fee coefficient<input id="s-fee" type="number" inputmode="decimal" min="0" max="0.2" step="0.0005" value="0.0695"></label>
       <label class="wide">PM API relay URL (leave empty to try the gateway directly)<input id="s-relay" type="url" placeholder="https://your-worker.workers.dev"></label>
       <label>Basis offset PM − Coinbase ($, auto when the target is known)<input id="s-offset" type="number" inputmode="decimal" step="0.01" placeholder="auto"></label>
-      <div class="wide hint" id="s-note">Everything saves on this device. PM's price is modeled as the 60-second average of Coinbase spot, 2 s delayed, plus a basis offset that recalibrates each round from the exact target (API or the number you type).</div>
+      <label>Record margin (× the fastest move seen, 1 = as seen)<input id="s-recmargin" type="number" inputmode="decimal" min="0.5" max="3" step="0.1" value="1"></label>
+      <label>MOST LIKELY when touch odds ≥ (%)<input id="s-reach-green" type="number" inputmode="decimal" min="1" max="99" step="1" value="50"></label>
+      <label>EASILY when touch odds ≥ (%) · below = UNLIKELY<input id="s-reach-yellow" type="number" inputmode="decimal" min="1" max="99" step="1" value="10"></label>
+      <div class="wide hint" id="s-note">Everything saves on this device. PM's price is modeled as the 60-second average of Coinbase spot, 2 s delayed, plus a basis offset that recalibrates each round from the exact target (API or the number you type). The post label = minutes BTC would need to reach the target at the fastest it has moved in that direction (record up/down moves over 1–15 min from Coinbase 1-min, 5-min and 15-min history, rescanned every 6 h and bumped live); red = NOT POSSIBLE in the time left even at record pace.</div>
       <div class="wide row"><button id="s-save" class="btn-primary">Save</button><button id="s-reset-hist">Clear session history</button></div>
     </div>
   </details>
@@ -333,7 +341,7 @@ const SLUG = ws => { const d = new Date(ws * 1000); const p = n => String(n).pad
   return `cpc-btc-updown-15m-${d.getUTCFullYear()}-${p(d.getUTCMonth()+1)}-${p(d.getUTCDate())}-${p(d.getUTCHours())}${p(d.getUTCMinutes())}z`; };
 
 // ---------- settings (per device) ----------
-const DEF = { stake: 20, lockP: 99.5, maxAsk: 97, drift: 0.5, fee: 0.0695, relay: '', offset: null, sound: false };
+const DEF = { stake: 20, lockP: 99.5, maxAsk: 97, drift: 0.5, fee: 0.0695, relay: '', offset: null, sound: false, recMargin: 1, reachGreen: 50, reachYellow: 10 };
 let S = Object.assign({}, DEF);
 try { Object.assign(S, JSON.parse(localStorage.getItem('pm15.settings') || '{}')); } catch (e) {}
 const saveS = () => { try { localStorage.setItem('pm15.settings', JSON.stringify(S)); } catch (e) {} };
@@ -380,6 +388,90 @@ function sigma(nowS) {           // $ per sqrt(second), robust (MAD) over the la
 }
 function Phi(x) { const t = 1 / (1 + 0.2316419 * Math.abs(x)); const d = 0.3989422804014327 * Math.exp(-x * x / 2);
   const p = d * t * (0.319381530 + t * (-0.356563782 + t * (1.781477937 + t * (-1.821255978 + t * 1.330274429)))); return x >= 0 ? 1 - p : p; }
+
+// ---------- record pace: the most BTC has ever moved in 1…15 minutes, up and down separately ----------
+// Kept as a fraction of price (index = minutes, [0] = 0) so old history scales to today's price. Filled from a
+// Coinbase candle scan (1-min for the last 5 days → every horizon; 5-min for 30 days → 5/10/15; 15-min for 120
+// days → 15), bumped live from the per-second feed, cached on the device and rescanned every 6 hours.
+const REC = { up: new Array(16).fill(0), dn: new Array(16).fill(0), at: 0, ready: false, spans: { m1: 0, m5: 0, m15: 0 }, scanning: false, progress: 0, note: '' };
+try { const j = JSON.parse(localStorage.getItem('pm15.records') || 'null'); if (j && Array.isArray(j.up) && j.up.length === 16) { Object.assign(REC, { up: j.up, dn: j.dn, at: j.at || 0, spans: j.spans || REC.spans }); REC.ready = j.up[15] > 0; } } catch (e) {}
+const saveRec = () => { try { localStorage.setItem('pm15.records', JSON.stringify({ up: REC.up, dn: REC.dn, at: REC.at, spans: REC.spans })); } catch (e) {} };
+function recMonotone() { for (let h = 1; h <= 15; h++) { REC.up[h] = Math.max(REC.up[h], REC.up[h - 1]); REC.dn[h] = Math.max(REC.dn[h], REC.dn[h - 1]); } REC.ready = REC.up[15] > 0 && REC.dn[15] > 0; }
+function recBump(h, upFrac, dnFrac) { let hit = false; if (upFrac > REC.up[h]) { REC.up[h] = upFrac; hit = true; } if (dnFrac > REC.dn[h]) { REC.dn[h] = dnFrac; hit = true; } return hit; }
+// records from an ascending candle list [t, lo, hi, op, cl] of `barMins`-minute bars, windows of 1…maxBars bars
+function recFromCandles(c, barMins, maxBars) {
+  let hit = false;
+  const run = new Array(c.length).fill(0);                              // consecutive on-grid bars ending at i
+  for (let i = 1; i < c.length; i++) run[i] = c[i][0] - c[i - 1][0] === barMins * 60 ? run[i - 1] + 1 : 0;
+  for (let w = 1; w <= maxBars; w++) {
+    const hMin = w * barMins; if (hMin > 15) break;
+    for (let i = w; i < c.length; i++) {
+      if (run[i] < w) continue;                                       // a gap or an off-grid bar inside the window: skip it
+      const start = c[i - w][4]; if (!(start > 0)) continue;
+      let hi = -Infinity, lo = Infinity;
+      for (let k = i - w + 1; k <= i; k++) { if (c[k][2] > hi) hi = c[k][2]; if (c[k][1] < lo) lo = c[k][1]; }
+      if (recBump(hMin, (hi - start) / start, (start - lo) / start)) hit = true;
+    }
+  }
+  return hit;
+}
+async function fetchCandles(gran, startS, endS) {
+  const u = 'https://api.exchange.coinbase.com/products/BTC-USD/candles?granularity=' + gran + '&start=' + new Date(startS * 1000).toISOString() + '&end=' + new Date(endS * 1000).toISOString();
+  const r = await fetch(u); if (!r.ok) throw new Error('HTTP ' + r.status);
+  const j = await r.json(); return Array.isArray(j) ? j.filter(k => Array.isArray(k) && k.length >= 5).sort((a, b) => a[0] - b[0]) : [];
+}
+async function scanRecords() {
+  if (REC.scanning) return; REC.scanning = true; REC.progress = 0; REC.note = '';
+  const now = Math.floor(Date.now() / 1000);
+  const plan = [{ gran: 60, days: 5, maxBars: 15, key: 'm1' }, { gran: 300, days: 30, maxBars: 3, key: 'm5' }, { gran: 900, days: 120, maxBars: 1, key: 'm15' }];
+  const jobs = [];
+  for (const p of plan) { const span = p.gran * 290; for (let end = now; end > now - p.days * 86400; end -= span) jobs.push({ p, start: Math.max(end - span, now - p.days * 86400), end }); }
+  const got = { m1: [], m5: [], m15: [] }; let done = 0, failed = 0;
+  const worker = async () => { while (jobs.length) { const j = jobs.shift(); try { got[j.p.key].push(...await fetchCandles(j.p.gran, j.start, j.end)); } catch (e) { failed++; } done++; REC.progress = done / (done + jobs.length); await new Promise(r => setTimeout(r, 120)); } };
+  await Promise.all([worker(), worker(), worker()]);
+  let hit = false;
+  for (const p of plan) { const c = got[p.key].sort((a, b) => a[0] - b[0]); if (c.length > p.maxBars) { if (recFromCandles(c, p.gran / 60, p.maxBars)) hit = true; REC.spans[p.key] = Math.max(REC.spans[p.key] || 0, (c[c.length - 1][0] - c[0][0]) / 86400); } }
+  recMonotone(); REC.at = Date.now(); REC.scanning = false; REC.note = failed ? failed + ' of ' + done + ' requests failed' : '';
+  saveRec(); if (hit) toast('Record pace updated from Coinbase history');
+}
+// live: once a minute, check the last 15 minutes of the per-second feed against the records
+let liveRecMin = 0;
+function liveRecordCheck(sec) {
+  const m = Math.floor(sec / 60); if (m === liveRecMin) return; liveRecMin = m;
+  let hit = false;
+  for (let h = 1; h <= 15; h++) {
+    const start = priceAt(sec - 60 * h); if (!(start > 0)) break;
+    let hi = -Infinity, lo = Infinity, n = 0;
+    for (let s = sec - 60 * h + 1; s <= sec; s++) { const v = secs.get(s); if (v > 0) { n++; if (v > hi) hi = v; if (v < lo) lo = v; } }
+    if (n < 30 * h) continue;                                       // too thin to trust
+    if (recBump(h, (hi - start) / start, (start - lo) / start)) hit = true;
+  }
+  if (hit) { recMonotone(); saveRec(); }
+}
+// the record move (in $) over `mins` minutes, interpolated between whole minutes
+function recAt(mins, rec) { if (mins >= 15) return rec[15]; if (mins <= 0) return 0; const k = Math.floor(mins); return rec[k] + (rec[k + 1] - rec[k]) * (mins - k); }
+// minutes to the target at record pace + the four-tier verdict against the time left
+function reachInfo(E) {
+  if (!Number.isFinite(E.target) || !Number.isFinite(E.spot)) return null;
+  const need = (E.target - E.off) - E.spot, dist = Math.abs(need);
+  const rec = (need >= 0 ? REC.up : REC.dn).map(f => f * E.spot * (S.recMargin || 1));
+  let mins = NaN;
+  if (dist <= 0) mins = 0; else for (let h = 1; h <= 15; h++) { const a = rec[h - 1], b = rec[h]; if (b >= dist) { mins = (h - 1) + (b > a ? (dist - a) / (b - a) : 0); break; } }
+  const rMin = E.r / 60, recLeft = recAt(rMin, rec);
+  const z = E.r > 0 ? dist / (Math.max(E.sig, 0.5) * Math.sqrt(E.r)) : 99, odds = Math.min(1, 2 * (1 - Phi(z)));
+  const tier = !REC.ready ? -1 : (E.r <= 0 || !Number.isFinite(mins) || mins > rMin) ? 0 : odds < (S.reachYellow || 10) / 100 ? 1 : odds < (S.reachGreen || 50) / 100 ? 2 : 3;
+  const word = tier < 0 ? 'SCANNING' : ['NOT POSSIBLE', 'UNLIKELY', 'EASILY', 'MOST LIKELY'][tier];
+  const col = tier < 0 ? '#1a0f2e' : ['#ff4b5c', '#ff8a1f', '#ffe14d', '#28d978'][tier], text = tier <= 0 ? '#ffffff' : '#140800';
+  const minsTxt = !REC.ready ? '—' : !Number.isFinite(mins) ? '> 15 min' : mins < 0.1 ? '< 0.1 min' : mins.toFixed(1) + ' min';
+  return { need, dist, mins, minsTxt, rMin, recLeft, odds, tier, word, col, text };
+}
+function renderReach(E) {
+  const el = $('reach'); const RI = reachInfo(E);
+  if (!RI) { el.innerHTML = '<b class="tx">REACH</b> waiting for the target.'; return; }
+  const hist = (REC.spans.m1 ? Math.round(REC.spans.m1) + 'd of 1-min' : 'no 1-min') + ' · ' + (REC.spans.m5 ? Math.round(REC.spans.m5) + 'd of 5-min' : 'no 5-min') + ' · ' + (REC.spans.m15 ? Math.round(REC.spans.m15) + 'd of 15-min' : 'no 15-min') + (REC.scanning ? ' · scanning ' + Math.round(REC.progress * 100) + '%' : REC.at ? ' · scanned ' + Math.max(1, Math.round((Date.now() - REC.at) / 60000)) + ' min ago' : '') + (REC.note ? ' · ' + REC.note : '');
+  if (RI.tier < 0) { el.innerHTML = '<b class="tx">REACH</b> record pace not known yet — ' + hist; return; }
+  el.innerHTML = '<b class="t' + RI.tier + '">' + RI.word + '</b> the target is <span class="n">' + fmtS(RI.dist).replace('+', '') + '</span> ' + (RI.need >= 0 ? 'up' : 'down') + ': BTC needs <span class="n">' + RI.minsTxt.replace('<', '&lt;').replace('>', '&gt;') + '</span> at record pace vs <span class="n">' + clock(E.r) + '</span> left · touch odds <span class="n">' + pct(RI.odds) + '</span> · the most it has moved in that time: <span class="n">' + fmtS(RI.recLeft).replace('+', '') + '</span> · history ' + hist;
+}
 
 // Settlement average S = offset + mean(spot over [T-62, T-2]).  Returns its mean and sd at time `now`.
 function settleDist(now, T, spot, offset, sig, vel, driftW, assumeAfter = Infinity) {
@@ -779,15 +871,21 @@ function drawChart(E) {
   if (Number.isFinite(target)) { const yt = yOf(target - off); ctx.save(); ctx.setLineDash([8, 6]); ctx.strokeStyle = '#ffb020'; ctx.lineWidth = 2.5; ctx.shadowColor = '#ffb020'; ctx.shadowBlur = 10; ctx.beginPath(); ctx.moveTo(padL, yt); ctx.lineTo(W - padR, yt); ctx.stroke(); ctx.restore();
     ctx.fillStyle = '#ffb020'; ctx.fillRect(W - padR + 2, yt - 11, padR - 4, 22); ctx.fillStyle = '#1a1000'; ctx.font = 'bold 12px IBM Plex Mono, monospace'; ctx.textAlign = 'left'; ctx.textBaseline = 'middle'; ctx.fillText(fmt$(target), W - padR + 6, yt);
     ctx.fillStyle = '#ffb020'; ctx.font = 'bold 11px IBM Plex Sans, sans-serif'; ctx.fillText('TARGET ' + (last[1] + off >= target ? '▼ spot above' : '▲ spot below'), padL + 8, yt + (last[1] + off >= target ? 12 : -12));
-    // the post: from the spot to the target, with minute ticks at the current pace, and the $ to cross in the middle
+    // the post: from the spot to the target, with minute ticks at the current pace; in the middle, the minutes BTC
+    // would need to reach the target at its record pace, colored against the time left
     const xp = Math.min(xs + 22, W - padR - 6); const yTop = Math.min(ys, yt), yBot = Math.max(ys, yt);
     ctx.save(); ctx.strokeStyle = '#b57cff'; ctx.shadowColor = '#b57cff'; ctx.shadowBlur = 12; ctx.lineWidth = 3; ctx.beginPath(); ctx.moveTo(xp, ys); ctx.lineTo(xp, yt); ctx.stroke(); ctx.restore();
     ctx.strokeStyle = '#d9c4ff'; ctx.lineWidth = 1.5; ctx.fillStyle = '#d9c4ff'; ctx.font = '10px IBM Plex Mono, monospace'; ctx.textAlign = 'left'; ctx.textBaseline = 'middle';
     const dir = Math.sign((target - off) - last[1]) || 1; let run = last[1];
     for (let m = 1; m <= Math.ceil(E.r / 60); m++) { const proj = last[1] + E.vel * 60 * m; if ((proj - run) * dir <= 0) break; run = proj; if ((proj - (target - off)) * dir > 0) break; const y = yOf(proj); ctx.beginPath(); ctx.moveTo(xp - 5, y); ctx.lineTo(xp + 5, y); ctx.stroke(); ctx.fillText(m + 'm', xp + 8, y); }
     if (Math.abs(E.vel) < 0.02) for (let m = 1; m <= Math.min(Math.ceil(E.r / 60), 15); m++) { const y = yTop + (yBot - yTop) * m / Math.max(1, Math.ceil(E.r / 60)); if (y > yBot) break; ctx.beginPath(); ctx.moveTo(xp - 3, y); ctx.lineTo(xp + 3, y); ctx.stroke(); }
-    const need = (target - off) - last[1]; const ym = (ys + yt) / 2; const txt = (need >= 0 ? '+' : '−') + '$' + fmt$(Math.abs(need), 1) + ' to cross';
-    ctx.font = 'bold 12px IBM Plex Mono, monospace'; const tw = ctx.measureText(txt).width; ctx.fillStyle = '#1a0f2e'; ctx.fillRect(xp - tw / 2 - 6, ym - 10, tw + 12, 20); ctx.strokeStyle = '#b57cff'; ctx.lineWidth = 1; ctx.strokeRect(xp - tw / 2 - 6, ym - 10, tw + 12, 20); ctx.fillStyle = '#e6d6ff'; ctx.textAlign = 'center'; ctx.fillText(txt, xp, ym);
+    const RI = reachInfo(E); const ym = (ys + yt) / 2;
+    const l1 = RI && RI.tier >= 0 ? RI.minsTxt + ' at record pace' : 'record pace: scanning…';
+    const l2 = RI && RI.tier >= 0 ? RI.word + ' · ' + clock(E.r) + ' left' : 'Coinbase 1 / 5 / 15-min history';
+    ctx.font = 'bold 12px IBM Plex Mono, monospace'; const tw1 = ctx.measureText(l1).width; ctx.font = 'bold 11px IBM Plex Sans, sans-serif'; const tw = Math.max(tw1, ctx.measureText(l2).width);
+    const cx = Math.max(padL + tw / 2 + 8, Math.min(xp, W - padR - tw / 2 - 8)), bx = cx - tw / 2 - 7, by = ym - 16;
+    ctx.fillStyle = RI && RI.tier >= 0 ? RI.col : '#1a0f2e'; ctx.fillRect(bx, by, tw + 14, 32); ctx.strokeStyle = RI && RI.tier >= 0 ? RI.col : '#b57cff'; ctx.lineWidth = 1; ctx.strokeRect(bx, by, tw + 14, 32);
+    ctx.fillStyle = RI && RI.tier >= 0 ? RI.text : '#e6d6ff'; ctx.textAlign = 'center'; ctx.font = 'bold 12px IBM Plex Mono, monospace'; ctx.fillText(l1, cx, ym - 8); ctx.font = 'bold 11px IBM Plex Sans, sans-serif'; ctx.fillText(l2, cx, ym + 8);
   }
   // PM "is here" marker: where the spot last sat at what PM now shows
   if (Number.isFinite(E.lagS)) { const xl = xOf(E.sec - E.lagS); ctx.save(); ctx.setLineDash([3, 4]); ctx.strokeStyle = '#62ccff'; ctx.lineWidth = 1.5; ctx.beginPath(); ctx.moveTo(xl, padT); ctx.lineTo(xl, H - padB); ctx.stroke(); ctx.restore();
@@ -816,10 +914,12 @@ $('my-set').onclick = () => { const price = Number($('my-price').value) / 100, s
   if (!(price > 0 && price < 1) || !(spent > 0)) { toast('Enter the price you paid and the dollars spent'); return; }
   myPos = { T0: R.T0, side: mySide, price, spent, shares: spent / price }; try { localStorage.setItem('pm15.mypos', JSON.stringify(myPos)); } catch (e) {} toast('Tracking your ' + mySide + ' position'); };
 $('my-clear').onclick = () => { myPos = null; try { localStorage.removeItem('pm15.mypos'); } catch (e) {} };
-function loadSettings() { $('s-stake').value = S.stake; $('s-lockp').value = S.lockP; $('s-maxask').value = S.maxAsk; $('s-drift').value = S.drift; $('s-fee').value = S.fee; $('s-relay').value = S.relay || ''; $('s-offset').value = S.offset == null ? '' : S.offset.toFixed(2); }
+function loadSettings() { $('s-stake').value = S.stake; $('s-lockp').value = S.lockP; $('s-maxask').value = S.maxAsk; $('s-drift').value = S.drift; $('s-fee').value = S.fee; $('s-relay').value = S.relay || ''; $('s-offset').value = S.offset == null ? '' : S.offset.toFixed(2);
+  $('s-recmargin').value = S.recMargin; $('s-reach-green').value = S.reachGreen; $('s-reach-yellow').value = S.reachYellow; }
 $('s-save').onclick = () => {
   S.stake = Math.max(1, Number($('s-stake').value) || DEF.stake); S.lockP = Math.min(99.99, Math.max(90, Number($('s-lockp').value) || DEF.lockP)); S.maxAsk = Math.min(99, Math.max(50, Number($('s-maxask').value) || DEF.maxAsk));
   S.drift = Math.min(1, Math.max(0, Number($('s-drift').value))); S.fee = Number($('s-fee').value) || DEF.fee; S.relay = ($('s-relay').value || '').trim();
+  S.recMargin = Math.min(3, Math.max(0.5, Number($('s-recmargin').value) || DEF.recMargin)); S.reachGreen = Math.min(99, Math.max(1, Number($('s-reach-green').value) || DEF.reachGreen)); S.reachYellow = Math.min(S.reachGreen, Math.max(1, Number($('s-reach-yellow').value) || DEF.reachYellow));
   const offIn = $('s-offset').value.trim(); if (offIn !== '') { S.offset = Number(offIn); R.offset = S.offset; R.offsetSrc = 'typed'; }
   const tIn = Number($('s-target').value); if (tIn > 1000) { R.target = tIn; R.targetSrc = 'manual'; calibrateOffset(); }
   saveS(); R.apiOk = null; pmFetchMarket(); pmFetchBook(); toast('Saved');
@@ -830,12 +930,15 @@ if (myPos && myPos.T0 !== Math.floor(Date.now() / 1000 / ROUND) * ROUND) myPos =
 
 // ---------- loops ----------
 connectWS(); backfill();
+// record scan: now (unless the cached one is under 6 h old), then every 6 h
+if (!REC.ready || Date.now() - REC.at > 6 * 3600 * 1000) scanRecords();
+setInterval(() => { if (Date.now() - REC.at > 6 * 3600 * 1000) scanRecords(); }, 15 * 60 * 1000);
 setInterval(() => { pmFetchBook(); }, 2500);
 setInterval(() => { if (!Number.isFinite(R.target) || R.targetSrc === 'est') pmFetchMarket(); const prevSlug = SLUG(R.T0 - ROUND); const prev = history.find(h => SLUG(h.T0) === prevSlug); if (prev && prev.settleSrc !== 'api') pmFetchMarket(prevSlug); }, 6000);
 let frame = 0;
 function tick() {
   const E = evaluate();
-  if (Number.isFinite(E.spot)) { paperStep(E); dictate(E); renderHeader(E); renderPaper(E); if (frame % 3 === 0) { renderFeed(E); renderPlays(E); renderMine(E); renderNext(E); } if (frame % 2 === 0) drawChart(E); }
+  if (Number.isFinite(E.spot)) { liveRecordCheck(E.sec); paperStep(E); dictate(E); renderHeader(E); renderPaper(E); if (frame % 3 === 0) { renderFeed(E); renderPlays(E); renderMine(E); renderNext(E); renderReach(E); } if (frame % 2 === 0) drawChart(E); }
   else { $('timer').textContent = clock(E.r); renderHeader(E); dictate(E); }
   frame++;
 }

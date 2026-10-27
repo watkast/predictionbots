@@ -1,6 +1,6 @@
 //@version=6
 // =============================================================================
-//  PM15 BRAIN  v1 — Polymarket US 15-minute BTC Up/Down, one script
+//  PM15 BRAIN  v1.1 — Polymarket US 15-minute BTC Up/Down, one script
 //  ---------------------------------------------------------------------------
 //  Replaces "Velocity Reach vs Target" + "Alpha Engine v6.x" on the chart.
 //  Built on what the Oct 27 screen recordings showed:
@@ -20,6 +20,12 @@
 //    5. Otherwise WAIT, with the reason and the time to the next event.
 //  Odds come from the settlement-average model (vol-based, momentum credited
 //  for 45 s at most). The momentum post is kept as a VIEW, never as odds.
+//  The label on the post (between the spot and the target) says how many
+//  minutes BTC would need to reach the target at the FASTEST it has ever moved
+//  (record up / down moves over 1–15 min from the chart's history plus 5-min
+//  and 15-min bars), and compares that with the time left:
+//    red = NOT POSSIBLE (needs more than the time left even at record pace)
+//    orange = UNLIKELY · yellow = EASILY · green = MOST LIKELY (touch odds).
 //  Live ticks: on the realtime bar the script records every tick (varip) so the
 //  60-s average and the known part of the settlement window are exact; on
 //  history it uses the bar's OHLC blend.
@@ -68,6 +74,11 @@ velLen    = input.int(14, "Velocity lookback (bars)", minval = 1, group = gV, di
 smoothLen = input.int(5, "Smoothing (EMA)", minval = 1, group = gV, display = display.none)
 driftW    = input.float(0.3, "Momentum credited in the odds (0–1, 45 s at most)", minval = 0, maxval = 1, step = 0.1, group = gV, display = display.none)
 
+gR = "Reach: minutes to the target at BTC's record pace"
+recScale    = input.float(1.0, "Record margin (× the fastest move seen; 1 = as seen)", minval = 0.5, maxval = 3.0, step = 0.1, group = gR, display = display.none)
+reachGreen  = input.int(50, "MOST LIKELY when the touch odds are at least (%)", minval = 1, maxval = 99, group = gR, display = display.none)
+reachYellow = input.int(10, "EASILY when the touch odds are at least (%) — below that UNLIKELY; beyond the record NOT POSSIBLE", minval = 1, maxval = 99, group = gR, display = display.none)
+
 gH = "HUD / chart"
 hudPos   = input.string("Middle right", "HUD position", options = ["Middle right", "Middle left", "Top right", "Top left", "Bottom right", "Bottom left"], group = gH, display = display.none)
 hudSize  = input.string("normal", "HUD text size", options = ["small", "normal", "large"], group = gH, display = display.none)
@@ -81,6 +92,7 @@ colTgt  = input.color(#ffb020, "Target line (brightest)", group = gC)
 colPM   = input.color(#62ccff, "Polymarket shows", group = gC)
 colPost = input.color(#b57cff, "Momentum post", group = gC)
 colOk   = input.color(#28d978, "Good", group = gC)
+colEasy = input.color(#ffe14d, "Easily (reach label, yellow)", group = gC)
 colWarn = input.color(#ff8a1f, "Caution", group = gC)
 colBad  = input.color(#ff4b5c, "Bad", group = gC)
 
@@ -190,6 +202,90 @@ accEma = ta.ema(ta.change(vel), smoothLen)
 velS   = vel / 60.0                                // $ per second
 proj(p, v, a, t) => p + v * t + 0.5 * a * t * t
 
+// ─────────────────── Record pace: the most BTC has ever moved in 1…15 minutes ───────────────────
+// Moves are kept as a fraction of price so old history scales to today's price. Every horizon comes
+// from the chart's own 1-min bars (all the history TradingView loads: the move from the close before
+// an h-bar window to the highest high / lowest low inside it); the 5 / 10 / 15-minute horizons are
+// also checked against 5-min and 15-min bars, which reach back hundreds of days. Up and down are
+// tracked separately: BTC falls faster than it rises.
+upRec(h) => ta.max(nz((ta.highest(high, h) - close[h]) / close[h]))
+dnRec(h) => ta.max(nz((close[h] - ta.lowest(low, h)) / close[h]))
+rUp1  = upRec(1)
+rUp2  = upRec(2)
+rUp3  = upRec(3)
+rUp4  = upRec(4)
+rUp5  = upRec(5)
+rUp6  = upRec(6)
+rUp7  = upRec(7)
+rUp8  = upRec(8)
+rUp9  = upRec(9)
+rUp10 = upRec(10)
+rUp11 = upRec(11)
+rUp12 = upRec(12)
+rUp13 = upRec(13)
+rUp14 = upRec(14)
+rUp15 = upRec(15)
+rDn1  = dnRec(1)
+rDn2  = dnRec(2)
+rDn3  = dnRec(3)
+rDn4  = dnRec(4)
+rDn5  = dnRec(5)
+rDn6  = dnRec(6)
+rDn7  = dnRec(7)
+rDn8  = dnRec(8)
+rDn9  = dnRec(9)
+rDn10 = dnRec(10)
+rDn11 = dnRec(11)
+rDn12 = dnRec(12)
+rDn13 = dnRec(13)
+rDn14 = dnRec(14)
+rDn15 = dnRec(15)
+[rUp5b, rUp10b, rUp15b, rDn5b, rDn10b, rDn15b, bars5] = request.security(syminfo.tickerid, "5",
+     [ta.max(nz((high - close[1]) / close[1])),
+      ta.max(nz((ta.highest(high, 2) - close[2]) / close[2])),
+      ta.max(nz((ta.highest(high, 3) - close[3]) / close[3])),
+      ta.max(nz((close[1] - low) / close[1])),
+      ta.max(nz((close[2] - ta.lowest(low, 2)) / close[2])),
+      ta.max(nz((close[3] - ta.lowest(low, 3)) / close[3])),
+      bar_index])
+[rUp15c, rDn15c, bars15] = request.security(syminfo.tickerid, "15",
+     [ta.max(nz((high - close[1]) / close[1])), ta.max(nz((close[1] - low) / close[1])), bar_index])
+// dollars reachable by minute 0…15 at record pace (index = minutes), never shrinking with the horizon
+recTable(up) =>
+    f = up ? array.from(0.0, rUp1, rUp2, rUp3, rUp4, rUp5, rUp6, rUp7, rUp8, rUp9, rUp10, rUp11, rUp12, rUp13, rUp14, rUp15) : array.from(0.0, rDn1, rDn2, rDn3, rDn4, rDn5, rDn6, rDn7, rDn8, rDn9, rDn10, rDn11, rDn12, rDn13, rDn14, rDn15)
+    array.set(f, 5,  math.max(array.get(f, 5),  up ? rUp5b  : rDn5b))
+    array.set(f, 10, math.max(array.get(f, 10), up ? rUp10b : rDn10b))
+    array.set(f, 15, math.max(array.get(f, 15), up ? rUp15b : rDn15b, up ? rUp15c : rDn15c))
+    for h = 1 to 15
+        array.set(f, h, math.max(array.get(f, h), array.get(f, h - 1)))
+    for h = 0 to 15
+        array.set(f, h, array.get(f, h) * close * recScale)
+    f
+// minutes needed to cover `dist` dollars at record pace (interpolated); na = more than 15 minutes, never seen
+needMins(dist, rec) =>
+    float t = na
+    if dist <= 0
+        t := 0.0
+    else
+        for h = 1 to 15
+            a = array.get(rec, h - 1)
+            b = array.get(rec, h)
+            if b >= dist
+                t := (h - 1) + (b > a ? (dist - a) / (b - a) : 0.0)
+                break
+    t
+// the most BTC has moved in `mins` minutes (fractional), at record pace
+recAt(mins, rec) =>
+    float out = 0.0
+    if mins >= 15
+        out := array.get(rec, 15)
+    else if mins > 0
+        k = int(math.floor(mins))
+        lo = array.get(rec, k)
+        hi = array.get(rec, k + 1)
+        out := lo + (hi - lo) * (mins - k)
+    out
+
 // ─────────────────── Settlement average: mean and sd at time `atMs` ───────────────────
 // S = offset + mean(spot over [T-62, T-2]).  Known part from the tick buffer (or the bar blend), future part
 // from the current spot with momentum credited for at most 45 s; sd from Brownian motion.
@@ -290,6 +386,28 @@ if barstate.islast
             if math.sign(m3 - target) != math.sign(gap)
                 flipEta := s
                 break
+
+// ─────────────────────── Reach: record pace vs the time left (last bar only) ───────────────────────
+// How long BTC would need to reach the target at the fastest it has ever moved in that direction, and
+// whether that fits in the time left. Red = it does not fit even at record pace. The other three tiers
+// use the touch odds: the chance a path with today's adverse-side vol touches the target before the bell.
+needMove  = target - offset - close                 // $ the spot must move (+ = up)
+var float reachMins = na
+var float reachOdds = na
+var float recLeft   = na
+var int   reachTier = 0
+var string reachWord = "NOT POSSIBLE"
+if barstate.islast and not na(target)
+    rec = recTable(needMove >= 0)
+    reachMins := needMins(math.abs(needMove), rec)
+    recLeft   := recAt(secsLeft / 60.0, rec)
+    sigDirS = math.max((needMove >= 0 ? sigUpB : sigDnB) / math.sqrt(60.0), 0.5)
+    zT = secsLeft > 0 ? math.abs(needMove) / (sigDirS * math.sqrt(secsLeft)) : 99.0
+    reachOdds := math.min(1.0, 2.0 * (1.0 - fPhi(zT)))
+    reachTier := secsLeft <= 0 or na(reachMins) or reachMins > secsLeft / 60.0 ? 0 : reachOdds < reachYellow / 100.0 ? 1 : reachOdds < reachGreen / 100.0 ? 2 : 3
+    reachWord := reachTier == 0 ? "NOT POSSIBLE" : reachTier == 1 ? "UNLIKELY" : reachTier == 2 ? "EASILY" : "MOST LIKELY"
+reachCol  = reachTier == 0 ? colBad : reachTier == 1 ? colWarn : reachTier == 2 ? colEasy : colOk
+reachMinsTxt = na(reachMins) ? "> 15 min" : reachMins < 0.1 ? "< 0.1 min" : fmt1(reachMins) + " min"
 
 // ─────────────────────── The command ───────────────────────
 string cmd = "WAIT"
@@ -434,16 +552,15 @@ if barstate.islast and not na(target)
                 break
             array.push(tick, line.new(xp - 1, p, xp + 1, p, xloc = xloc.bar_index, color = color.new(colPost, 20), width = 2))
             array.push(tickL, label.new(xp + 1, p, str.tostring(m) + "m", xloc = xloc.bar_index, style = label.style_label_left, color = color.new(color.black, 100), textcolor = color.new(colPost, 20), size = size.small))
-        need = tgtPlot - close
-        postLbl := label.new(xp, (close + tgtPlot) / 2, (need >= 0 ? "+$" : "−$") + fmt1(math.abs(need)) + " to cross", xloc = xloc.bar_index, style = label.style_label_left, color = color.new(colPost, 35), textcolor = color.white, size = size.small)
+        // the label between the spot and the target: minutes to get there at BTC's record pace, judged against the time left
+        postLbl := label.new(xp, (close + tgtPlot) / 2, reachMinsTxt + " at record pace\n" + reachWord + " · " + fmtClock(secsLeft) + " left", xloc = xloc.bar_index, style = label.style_label_left, color = color.new(reachCol, 0), textcolor = reachTier >= 2 ? color.black : color.white, size = size.small)
 
 // ─────────────────────── HUD ───────────────────────
-var table hud = table.new(tblPos(hudPos), 1, 9, bgcolor = color.new(color.black, 15), border_width = 1, border_color = color.new(color.gray, 70))
+var table hud = table.new(tblPos(hudPos), 1, 10, bgcolor = color.new(color.black, 15), border_width = 1, border_color = color.new(color.gray, 70))
 row(r, txt, c, bg) =>
     table.cell(hud, 0, r, txt, text_color = c, text_size = hudTxt, text_halign = text.align_left, bgcolor = bg)
 if barstate.islast
     // momentum view: does the current path even reach the target, and when (never a probability)
-    needMove = target - offset - close
     pathTxt = "momentum: " + (math.sign(velS) == math.sign(needMove) and math.abs(velS) > 0.01 ? "crosses in ~" + secsTxt(math.abs(needMove / velS)) + " at this pace" : "not on this path") + " · v " + (vel >= 0 ? "+" : "") + fmt1(vel) + "/bar · a " + (accEma >= 0 ? "+" : "") + str.tostring(accEma, "#.##")
     upTxt = "UP " + fmt0(pUp * 100) + "¢ fair" + (mktUp > 0 ? " (mkt " + fmt0(mktUp) + ", edge " + (pUp * 100 - mktUp >= 0 ? "+" : "") + fmt0(pUp * 100 - mktUp) + ")" : "")
     dnTxt = "DOWN " + fmt0(pDn * 100) + "¢ fair" + (mktDn > 0 ? " (mkt " + fmt0(mktDn) + ", edge " + (pDn * 100 - mktDn >= 0 ? "+" : "") + fmt0(pDn * 100 - mktDn) + ")" : "")
@@ -458,6 +575,8 @@ if barstate.islast
     row(6, lights, conv >= minConv ? colOk : color.silver, color.new(color.black, 100))
     row(7, posTxt, posDir != 0 ? color.white : color.gray, posDir != 0 ? (pMine >= lockP ? color.new(colOk, 70) : pMine < 0.5 ? color.new(colBad, 60) : color.new(color.black, 100)) : color.new(color.black, 100))
     row(8, pathTxt + " · last 3 min range $" + fmt0(range3) + " · adverse swing $" + fmt0(sigAdvB) + "/min" + (volDanger ? " · WILD" : cleanRun ? " · clean trend" : revRisk ? " · turning" : ""), color.silver, color.new(color.black, 100))
+    reachTxt = "REACH  " + reachWord + " — the target is $" + fmt0(math.abs(needMove)) + " " + (needMove >= 0 ? "up" : "down") + ": " + reachMinsTxt + " at record pace vs " + fmtClock(secsLeft) + " left · touch odds " + pctTxt(reachOdds) + " · record move in that time $" + fmt0(recLeft) + " · history " + fmt0(bar_index / 1440.0) + "d 1-min, " + fmt0(bars5 / 288.0) + "d 5-min, " + fmt0(bars15 / 96.0) + "d 15-min"
+    row(9, reachTxt, reachCol, color.new(color.black, 100))
 
 // ─────────────────────── Alerts ───────────────────────
 lockOn = lockBuyable and posDir == 0 and secsLeft > 4
