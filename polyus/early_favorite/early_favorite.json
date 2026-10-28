@@ -13,16 +13,16 @@
   "hold": "settlement"
  },
  "forward_start": "2026-10-23T00:00:00Z",
- "generated": "2026-10-28T01:19:53Z",
- "rounds_scored": 77,
- "rounds_skipped_rule_not_met": 408,
+ "generated": "2026-10-28T08:25:50Z",
+ "rounds_scored": 81,
+ "rounds_skipped_rule_not_met": 432,
  "rounds_pending": 1,
- "wins": 62,
- "win_rate": 0.8052,
- "avg_ask": 0.8448,
- "breakeven_win_rate": 0.8539,
- "net_usd": -476.0,
- "per_round_pct": -6.18,
+ "wins": 66,
+ "win_rate": 0.8148,
+ "avg_ask": 0.8442,
+ "breakeven_win_rate": 0.8533,
+ "net_usd": -399.96,
+ "per_round_pct": -4.94,
  "max_drawdown_usd": -578.08,
  "longest_losing_streak": 3,
  "days": [
@@ -45,9 +45,13 @@
   {
    "day": "2026-10-27",
    "net_usd": -135.61
+  },
+  {
+   "day": "2026-10-28",
+   "net_usd": 76.04
   }
  ],
- "z_vs_backtest_win_rate": -2.49,
+ "z_vs_backtest_win_rate": -2.28,
  "backtest": {
   "period": "2026-10-06 to 2026-10-22",
   "rounds": 272,
@@ -60,15 +64,15 @@
  "pull": [
   {
    "pull": "with the favorite 3/3",
-   "rounds": 57,
-   "win_rate": 0.8421,
-   "net_usd": -153.69
+   "rounds": 60,
+   "win_rate": 0.85,
+   "net_usd": -99.79
   },
   {
    "pull": "with the favorite 1/3",
-   "rounds": 20,
-   "win_rate": 0.7,
-   "net_usd": -322.31
+   "rounds": 21,
+   "win_rate": 0.7143,
+   "net_usd": -300.17
   },
   {
    "pull": "against the favorite",
@@ -83,12 +87,12 @@
    "bid_below": 0.45,
    "slippage": 0.02
   },
-  "rounds_with_price": 77,
+  "rounds_with_price": 81,
   "cuts": 8,
   "cuts_that_would_have_lost": 7,
   "cuts_that_would_have_won": 1,
-  "net_usd_hold": -476.0,
-  "net_usd_cut": -425.0,
+  "net_usd_hold": -399.96,
+  "net_usd_cut": -348.96,
   "cut_minus_hold_usd": 51.0
  },
  "verdict": "Losing: forward win rate is below break-even at the prices paid.",
