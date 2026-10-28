@@ -15512,7 +15512,8 @@
 "up_ask": 0.38
 }
 ],
-"entry": null
+"entry": null,
+"settled": "no_entry"
 },
 "cpc-btc-updown-15m-2026-10-28-1115z": {
 "slug": "cpc-btc-updown-15m-2026-10-28-1115z",
@@ -15531,6 +15532,20 @@
 "short_px": 0.58,
 "up_bid": 0.43,
 "up_ask": 0.44
+},
+{
+"at": 180,
+"t": 180.0,
+"latency_s": 0.041,
+"ok": true,
+"tries": 1,
+"state": "MARKET_STATE_OPEN",
+"fav": "Down",
+"fav_ask": 0.65,
+"long_px": 0.36,
+"short_px": 0.64,
+"up_bid": 0.35,
+"up_ask": 0.36
 }
 ],
 "entry": null
