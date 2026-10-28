@@ -14720,5 +14720,26 @@
 }
 ],
 "entry": null
+},
+"cpc-btc-updown-15m-2026-10-28-0630z": {
+"slug": "cpc-btc-updown-15m-2026-10-28-0630z",
+"window_start": 1793169000,
+"checks": [
+{
+"at": 120,
+"t": 125.06,
+"latency_s": 0.068,
+"ok": true,
+"tries": 2,
+"state": "MARKET_STATE_OPEN",
+"fav": "Down",
+"fav_ask": 0.59,
+"long_px": 0.42,
+"short_px": 0.58,
+"up_bid": 0.41,
+"up_ask": 0.42
+}
+],
+"entry": null
 }
 }
