@@ -617,7 +617,9 @@ def detect_impl_k(kms: list[dict]) -> list[dict]:
             x = float(m["strike"]) if m.get("strike") is not None else None
         except (TypeError, ValueError):
             x = None
-        if kind in ("total", "h1_total", "total_maps") and x is not None:
+        if kind == "team_total" and x is not None:
+            axis = f"{scope}_teamtotal_{re.sub(r'[0-9]+$', '', suffix)}"
+        elif kind in ("total", "h1_total", "total_maps") and x is not None:
             axis = f"{scope}_total" + ("_maps" if kind == "total_maps" else "")
         elif kind in ("spread", "h1_spread") and x is not None:
             axis = f"{scope}_margin_{re.sub(r'[0-9]+$', '', suffix)}"
