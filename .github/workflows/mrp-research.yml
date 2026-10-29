@@ -5,7 +5,7 @@ name: mrp-research
 on:
   push:
     branches: [main]
-    paths: ["mrp/research/**", ".github/workflows/mrp-research.yml"]
+    paths: ["mrp/research/**", "mrp/gha_research.sh", ".github/workflows/mrp-research.yml"]
   workflow_dispatch:
     inputs:
       study:
