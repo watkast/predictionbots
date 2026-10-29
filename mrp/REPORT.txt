@@ -1,24 +1,24 @@
 
-Mr. P — gate report   records=1,855,756  windows=164  lot=10  errors_logged=2631
+Mr. P — gate report   records=1,879,816  windows=172  lot=10  errors_logged=2631
 data: mrp/data   index sources: {'btc': 'kalshi', 'link': 'kalshi', 'sui': 'kalshi', 'hype': 'kalshi', 'hbar': 'kalshi', 'bch': 'kalshi', 'aave': 'kalshi', 'vvv': 'kalshi', 'xlm': 'kalshi', 'near': 'kalshi', 'ltc': 'kalshi', 'pepeusd_rti': 'kalshi', 'ada': 'kalshi', 'dot': 'kalshi', 'wld': 'kalshi', 'uniusd_rti': 'kalshi', 'xrp': 'kalshi', 'bnb': 'kalshi', 'shib': 'kalshi', 'zec': 'kalshi', 'doge': 'kalshi', 'sol': 'kalshi', 'eth': 'kalshi'}
 
-=== BTC 5-minute   windows=25   index=kalshi   settlement reproduced 24/25
+=== BTC 5-minute   windows=27   index=kalshi   settlement reproduced 26/27
 T-left    n  flip%  open% med|d|bps PM ask<=.99  <=.95 entry_ok ok&flip min|d|ok$ PM ask p50 K ask p50 K bid p50 lock>0 maxlock
 -------------------------------------------------------------------------------------------------------------------------------
-   180   25  20.0%   100%       4.3          25     25       24       4         6      0.680         -         -      0       -
-   120   25  12.0%   100%       7.2          22     15       20       3         1      0.910         -         -      0       -
-    90   25  12.0%   100%      10.1          18      7       18       2         0      0.980         -         -      0       -
-    60   25   8.0%   100%       8.8          10      6        9       1         1      0.950         -         -      0       -
-    45   25   4.0%   100%       9.4           4      4        4       1         8      0.850         -         -      0       -
-    30   25   0.0%   100%      10.8           4      1        3       0        13      0.990         -         -      0       -
-    20   25   0.0%   100%      10.2           2      1        2       0         2      0.970         -         -      0       -
-    15   25   0.0%   100%       9.7           2      2        2       0         5      0.900         -         -      0       -
-    10   25   0.0%   100%      10.0           3      2        3       0        10      0.940         -         -      0       -
-     5   25   0.0%   100%      10.0           1      1        1       0        13      0.660         -         -      0       -
-     3   25   0.0%   100%      10.1           1      0        1       0         2      0.990         -         -      0       -
-     2   25   0.0%   100%      11.2           0      0        0       0         -          -         -         -      0       -
-     1   25   0.0%   100%      10.8           0      0        0       0         -          -         -         -      0       -
-  index speed (kalshi, 20208 prints): 1s max 54.88 p99.9 38.19 | 5s max 128.65 p99.9 81.32 | 10s max 172.95 p99.9 107.90 | 15s max 207.51 p99.9 123.38 | 30s max 268.13 p99.9 155.42 | 60s max 239.07 p99.9 188.29
+   180   27  22.2%   100%       3.4          27     27       26       5         4      0.680         -         -      0       -
+   120   27  11.1%   100%       7.9          24     16       22       3         1      0.910         -         -      0       -
+    90   27  11.1%   100%      10.1          19      8       19       2         0      0.980         -         -      0       -
+    60   27   7.4%   100%       9.7          10      6        9       1         1      0.950         -         -      0       -
+    45   27   3.7%   100%       9.5           4      4        4       1         8      0.850         -         -      0       -
+    30   27   0.0%   100%      11.1           4      1        3       0        13      0.990         -         -      0       -
+    20   27   0.0%   100%      11.1           2      1        2       0         2      0.970         -         -      0       -
+    15   27   0.0%   100%      10.2           2      2        2       0         5      0.900         -         -      0       -
+    10   27   0.0%   100%      10.9           3      2        3       0        10      0.940         -         -      0       -
+     5   27   0.0%   100%      12.0           1      1        1       0        13      0.660         -         -      0       -
+     3   27   0.0%   100%      11.6           1      0        1       0         2      0.990         -         -      0       -
+     2   27   0.0%   100%      11.7           0      0        0       0         -          -         -         -      0       -
+     1   27   0.0%   100%      11.1           0      0        0       0         -          -         -         -      0       -
+  index speed (kalshi, 20830 prints): 1s max 54.88 p99.9 38.77 | 5s max 128.65 p99.9 83.13 | 10s max 172.95 p99.9 117.20 | 15s max 207.51 p99.9 126.06 | 30s max 268.13 p99.9 156.39 | 60s max 239.07 p99.9 188.29
 
 === BTC 15-minute   windows=15   index=kalshi   settlement reproduced 10/15
 T-left    n  flip%  open% med|d|bps PM ask<=.99  <=.95 entry_ok ok&flip min|d|ok$ PM ask p50 K ask p50 K bid p50 lock>0 maxlock
@@ -38,7 +38,7 @@ T-left    n  flip%  open% med|d|bps PM ask<=.99  <=.95 entry_ok ok&flip min|d|ok
      3   15   0.0%    93%       9.3           0      0        0       0         -          -         -     0.999      0       -
      2   15   0.0%    93%       9.4           0      0        0       0         -          -         -     0.999      0       -
      1   15   0.0%    93%       9.1           0      0        0       0         -          -         -     0.999      0       -
-  index speed (kalshi, 20208 prints): 1s max 54.88 p99.9 38.19 | 5s max 128.65 p99.9 81.32 | 10s max 172.95 p99.9 107.90 | 15s max 207.51 p99.9 123.38 | 30s max 268.13 p99.9 155.42 | 60s max 239.07 p99.9 188.29
+  index speed (kalshi, 20830 prints): 1s max 54.88 p99.9 38.77 | 5s max 128.65 p99.9 83.13 | 10s max 172.95 p99.9 117.20 | 15s max 207.51 p99.9 126.06 | 30s max 268.13 p99.9 156.39 | 60s max 239.07 p99.9 188.29
 
 === BTC 60-minute   windows=4   index=kalshi   settlement reproduced 4/4
 T-left    n  flip%  open% med|d|bps PM ask<=.99  <=.95 entry_ok ok&flip min|d|ok$ PM ask p50 K ask p50 K bid p50 lock>0 maxlock
@@ -58,25 +58,25 @@ T-left    n  flip%  open% med|d|bps PM ask<=.99  <=.95 entry_ok ok&flip min|d|ok
      3    4   0.0%    75%      53.8           0      0        0       0         -          -         -         -      0       -
      2    4   0.0%    75%      53.8           0      0        0       0         -          -         -         -      0       -
      1    4   0.0%    75%      53.9           0      0        0       0         -          -         -         -      0       -
-  index speed (kalshi, 20208 prints): 1s max 54.88 p99.9 38.19 | 5s max 128.65 p99.9 81.32 | 10s max 172.95 p99.9 107.90 | 15s max 207.51 p99.9 123.38 | 30s max 268.13 p99.9 155.42 | 60s max 239.07 p99.9 188.29
+  index speed (kalshi, 20830 prints): 1s max 54.88 p99.9 38.77 | 5s max 128.65 p99.9 83.13 | 10s max 172.95 p99.9 117.20 | 15s max 207.51 p99.9 126.06 | 30s max 268.13 p99.9 156.39 | 60s max 239.07 p99.9 188.29
 
-=== ETH 5-minute   windows=25   index=kalshi   settlement reproduced 25/25
+=== ETH 5-minute   windows=27   index=kalshi   settlement reproduced 27/27
 T-left    n  flip%  open% med|d|bps PM ask<=.99  <=.95 entry_ok ok&flip min|d|ok$ PM ask p50 K ask p50 K bid p50 lock>0 maxlock
 -------------------------------------------------------------------------------------------------------------------------------
-   180   25  12.0%   100%       8.4          25     23       24       3         0      0.770         -         -      0       -
-   120   25  20.0%   100%      12.0          23     15       21       5         0      0.890         -         -      0       -
-    90   25  12.0%   100%      11.8          19     11       16       3         0      0.940         -         -      0       -
-    60   25  16.0%   100%      10.7          11     10       11       4         0      0.790         -         -      0       -
-    45   25   4.0%   100%       8.9          10      8        9       0         0      0.930         -         -      0       -
-    30   25   4.0%   100%       8.6           8      4        6       0         0      0.960         -         -      0       -
-    20   25   0.0%   100%       9.1           5      2        5       0         0      0.970         -         -      0       -
-    15   25   0.0%   100%       9.7           4      3        3       0         0      0.950         -         -      0       -
-    10   25   4.0%   100%       9.0           3      1        2       0         0      0.970         -         -      0       -
-     5   25   0.0%   100%       9.6           2      2        2       0         0      0.930         -         -      0       -
-     3   25   0.0%   100%      10.1           1      1        1       0         0      0.930         -         -      0       -
-     2   25   0.0%   100%      10.3           2      1        2       0         0      0.970         -         -      0       -
-     1   25   0.0%   100%      10.6           1      1        1       0         0      0.930         -         -      0       -
-  index speed (kalshi, 17177 prints): 1s max 1.93 p99.9 1.56 | 5s max 4.12 p99.9 2.92 | 10s max 6.91 p99.9 3.80 | 15s max 7.72 p99.9 4.73 | 30s max 10.30 p99.9 7.68 | 60s max 10.93 p99.9 9.37
+   180   27  18.5%   100%       8.3          27     25       26       5         0      0.770         -         -      0       -
+   120   27  18.5%   100%      12.0          25     16       23       5         0      0.920         -         -      0       -
+    90   27  11.1%   100%      11.8          20     11       17       3         0      0.950         -         -      0       -
+    60   27  14.8%   100%      12.2          11     10       11       4         0      0.790         -         -      0       -
+    45   27   3.7%   100%      10.9          10      8        9       0         0      0.930         -         -      0       -
+    30   27   3.7%   100%      11.0           8      4        6       0         0      0.960         -         -      0       -
+    20   27   0.0%   100%      10.0           5      2        5       0         0      0.970         -         -      0       -
+    15   27   0.0%   100%      10.1           4      3        3       0         0      0.950         -         -      0       -
+    10   27   3.7%   100%       9.8           3      1        2       0         0      0.970         -         -      0       -
+     5   27   0.0%   100%      10.0           2      2        2       0         0      0.930         -         -      0       -
+     3   27   0.0%   100%      10.6           1      1        1       0         0      0.930         -         -      0       -
+     2   27   0.0%   100%      10.6           2      1        2       0         0      0.970         -         -      0       -
+     1   27   0.0%   100%      11.3           1      1        1       0         0      0.930         -         -      0       -
+  index speed (kalshi, 17799 prints): 1s max 1.93 p99.9 1.56 | 5s max 4.12 p99.9 2.92 | 10s max 6.91 p99.9 3.80 | 15s max 7.72 p99.9 4.73 | 30s max 10.30 p99.9 7.68 | 60s max 10.93 p99.9 9.37
 
 === ETH 15-minute   windows=11   index=kalshi   settlement reproduced 11/11
 T-left    n  flip%  open% med|d|bps PM ask<=.99  <=.95 entry_ok ok&flip min|d|ok$ PM ask p50 K ask p50 K bid p50 lock>0 maxlock
@@ -96,7 +96,7 @@ T-left    n  flip%  open% med|d|bps PM ask<=.99  <=.95 entry_ok ok&flip min|d|ok
      3   11   0.0%    91%      11.6           0      0        0       0         -          -         -     0.999      0       -
      2   11   0.0%    91%      11.7           0      0        0       0         -          -         -     0.999      0       -
      1   11   0.0%    91%      11.3           0      0        0       0         -          -         -     0.999      0       -
-  index speed (kalshi, 17177 prints): 1s max 1.93 p99.9 1.56 | 5s max 4.12 p99.9 2.92 | 10s max 6.91 p99.9 3.80 | 15s max 7.72 p99.9 4.73 | 30s max 10.30 p99.9 7.68 | 60s max 10.93 p99.9 9.37
+  index speed (kalshi, 17799 prints): 1s max 1.93 p99.9 1.56 | 5s max 4.12 p99.9 2.92 | 10s max 6.91 p99.9 3.80 | 15s max 7.72 p99.9 4.73 | 30s max 10.30 p99.9 7.68 | 60s max 10.93 p99.9 9.37
 
 === ETH 60-minute   windows=4   index=kalshi   settlement reproduced 4/4
 T-left    n  flip%  open% med|d|bps PM ask<=.99  <=.95 entry_ok ok&flip min|d|ok$ PM ask p50 K ask p50 K bid p50 lock>0 maxlock
@@ -116,25 +116,25 @@ T-left    n  flip%  open% med|d|bps PM ask<=.99  <=.95 entry_ok ok&flip min|d|ok
      3    4   0.0%    75%      41.5           0      0        0       0         -          -         -         -      0       -
      2    4   0.0%    75%      41.5           0      0        0       0         -          -         -         -      0       -
      1    4   0.0%    75%      41.8           0      0        0       0         -          -         -         -      0       -
-  index speed (kalshi, 17177 prints): 1s max 1.93 p99.9 1.56 | 5s max 4.12 p99.9 2.92 | 10s max 6.91 p99.9 3.80 | 15s max 7.72 p99.9 4.73 | 30s max 10.30 p99.9 7.68 | 60s max 10.93 p99.9 9.37
+  index speed (kalshi, 17799 prints): 1s max 1.93 p99.9 1.56 | 5s max 4.12 p99.9 2.92 | 10s max 6.91 p99.9 3.80 | 15s max 7.72 p99.9 4.73 | 30s max 10.30 p99.9 7.68 | 60s max 10.93 p99.9 9.37
 
-=== SOL 5-minute   windows=25   index=kalshi   settlement reproduced 25/25
+=== SOL 5-minute   windows=27   index=kalshi   settlement reproduced 27/27
 T-left    n  flip%  open% med|d|bps PM ask<=.99  <=.95 entry_ok ok&flip min|d|ok$ PM ask p50 K ask p50 K bid p50 lock>0 maxlock
 -------------------------------------------------------------------------------------------------------------------------------
-   180   25   8.0%   100%       8.2          25     20       23       2         0      0.780         -         -      0       -
-   120   25   4.0%   100%      10.9          22     14       21       0         0      0.920         -         -      0       -
-    90   25   4.0%   100%      15.0          18      9       18       1         0      0.960         -         -      0       -
-    60   25   4.0%   100%      10.7          10      4        8       1         0      0.970         -         -      0       -
-    45   25   4.0%   100%      12.7           7      3        7       1         0      0.960         -         -      0       -
-    30   25   4.0%   100%      10.8           4      2        3       0         0      0.960         -         -      0       -
-    20   25   4.0%   100%      10.8           3      0        3       1         0      0.960         -         -      0       -
-    15   25   4.0%   100%      10.8           3      0        1       0         0      0.960         -         -      0       -
-    10   25   0.0%   100%      10.8           1      1        1       0         0      0.920         -         -      0       -
-     5   25   0.0%   100%      10.8           1      1        1       0         0      0.920         -         -      0       -
-     3   25   0.0%   100%      10.8           1      1        1       0         0      0.920         -         -      0       -
-     2   25   0.0%   100%      11.0           1      1        0       0         -      0.920         -         -      0       -
-     1   25   0.0%   100%      10.8           0      0        0       0         -          -         -         -      0       -
-  index speed (kalshi, 17177 prints): 1s max 0.16 p99.9 0.06 | 5s max 0.19 p99.9 0.11 | 10s max 0.19 p99.9 0.16 | 15s max 0.22 p99.9 0.19 | 30s max 0.32 p99.9 0.29 | 60s max 0.42 p99.9 0.38
+   180   27  11.1%   100%       6.6          27     22       24       2         0      0.760         -         -      0       -
+   120   27   3.7%   100%      10.9          24     15       23       0         0      0.920         -         -      0       -
+    90   27   3.7%   100%      15.0          20      9       20       1         0      0.970         -         -      0       -
+    60   27   3.7%   100%      12.0          10      4        8       1         0      0.970         -         -      0       -
+    45   27   3.7%   100%      13.0           7      3        7       1         0      0.960         -         -      0       -
+    30   27   3.7%   100%      14.0           4      2        3       0         0      0.960         -         -      0       -
+    20   27   3.7%   100%      13.0           3      0        3       1         0      0.960         -         -      0       -
+    15   27   3.7%   100%      13.0           3      0        1       0         0      0.960         -         -      0       -
+    10   27   0.0%   100%      14.0           1      1        1       0         0      0.920         -         -      0       -
+     5   27   0.0%   100%      14.0           1      1        1       0         0      0.920         -         -      0       -
+     3   27   0.0%   100%      12.0           1      1        1       0         0      0.920         -         -      0       -
+     2   27   0.0%   100%      13.0           1      1        0       0         -      0.920         -         -      0       -
+     1   27   0.0%   100%      13.0           0      0        0       0         -          -         -         -      0       -
+  index speed (kalshi, 17799 prints): 1s max 0.16 p99.9 0.06 | 5s max 0.19 p99.9 0.11 | 10s max 0.19 p99.9 0.16 | 15s max 0.22 p99.9 0.19 | 30s max 0.32 p99.9 0.29 | 60s max 0.42 p99.9 0.38
 
 === SOL 15-minute   windows=11   index=kalshi   settlement reproduced 11/11
 T-left    n  flip%  open% med|d|bps PM ask<=.99  <=.95 entry_ok ok&flip min|d|ok$ PM ask p50 K ask p50 K bid p50 lock>0 maxlock
@@ -154,7 +154,7 @@ T-left    n  flip%  open% med|d|bps PM ask<=.99  <=.95 entry_ok ok&flip min|d|ok
      3   11   0.0%    91%      29.5           0      0        0       0         -          -         -     0.999      0       -
      2   11   0.0%    91%      28.6           0      0        0       0         -          -         -     0.999      0       -
      1   11   0.0%    91%      28.6           0      0        0       0         -          -         -     0.999      0       -
-  index speed (kalshi, 17177 prints): 1s max 0.16 p99.9 0.06 | 5s max 0.19 p99.9 0.11 | 10s max 0.19 p99.9 0.16 | 15s max 0.22 p99.9 0.19 | 30s max 0.32 p99.9 0.29 | 60s max 0.42 p99.9 0.38
+  index speed (kalshi, 17799 prints): 1s max 0.16 p99.9 0.06 | 5s max 0.19 p99.9 0.11 | 10s max 0.19 p99.9 0.16 | 15s max 0.22 p99.9 0.19 | 30s max 0.32 p99.9 0.29 | 60s max 0.42 p99.9 0.38
 
 === SOL 60-minute   windows=4   index=kalshi   settlement reproduced 4/4
 T-left    n  flip%  open% med|d|bps PM ask<=.99  <=.95 entry_ok ok&flip min|d|ok$ PM ask p50 K ask p50 K bid p50 lock>0 maxlock
@@ -174,25 +174,25 @@ T-left    n  flip%  open% med|d|bps PM ask<=.99  <=.95 entry_ok ok&flip min|d|ok
      3    4   0.0%    75%      53.4           0      0        0       0         -          -         -         -      0       -
      2    4   0.0%    75%      52.9           0      0        0       0         -          -         -         -      0       -
      1    4   0.0%    75%      52.9           0      0        0       0         -          -         -         -      0       -
-  index speed (kalshi, 17177 prints): 1s max 0.16 p99.9 0.06 | 5s max 0.19 p99.9 0.11 | 10s max 0.19 p99.9 0.16 | 15s max 0.22 p99.9 0.19 | 30s max 0.32 p99.9 0.29 | 60s max 0.42 p99.9 0.38
+  index speed (kalshi, 17799 prints): 1s max 0.16 p99.9 0.06 | 5s max 0.19 p99.9 0.11 | 10s max 0.19 p99.9 0.16 | 15s max 0.22 p99.9 0.19 | 30s max 0.32 p99.9 0.29 | 60s max 0.42 p99.9 0.38
 
-=== XRP 5-minute   windows=25   index=kalshi   settlement reproduced 25/25
+=== XRP 5-minute   windows=27   index=kalshi   settlement reproduced 27/27
 T-left    n  flip%  open% med|d|bps PM ask<=.99  <=.95 entry_ok ok&flip min|d|ok$ PM ask p50 K ask p50 K bid p50 lock>0 maxlock
 -------------------------------------------------------------------------------------------------------------------------------
-   180   25  12.0%   100%       8.7          25     21       22       3         0      0.810         -         -      0       -
-   120   25   8.0%   100%      14.4          21     12       19       2         0      0.930         -         -      0       -
-    90   25   8.0%   100%      15.6          18      9       15       2         0      0.970         -         -      0       -
-    60   25  12.0%   100%      17.4           9      6        8       3         0      0.900         -         -      0       -
-    45   25   8.0%   100%      14.8           6      4        6       2         0      0.860         -         -      0       -
-    30   25   4.0%   100%      16.7           4      2        3       1         0      0.970         -         -      0       -
-    20   25   4.0%   100%      15.8           3      0        1       0         0      0.970         -         -      0       -
-    15   25   4.0%   100%      15.7           4      1        4       1         0      0.990         -         -      0       -
-    10   25   0.0%   100%      15.0           1      1        1       0         0      0.850         -         -      0       -
-     5   25   0.0%   100%      15.2           0      0        0       0         -          -         -         -      0       -
-     3   25   0.0%   100%      15.4           1      0        1       0         0      0.990         -         -      0       -
-     2   25   0.0%   100%      15.8           1      0        1       0         0      0.990         -         -      0       -
-     1   25   0.0%   100%      16.2           0      0        0       0         -          -         -         -      0       -
-  index speed (kalshi, 17178 prints): 1s max 0.00 p99.9 0.00 | 5s max 0.00 p99.9 0.00 | 10s max 0.00 p99.9 0.00 | 15s max 0.00 p99.9 0.00 | 30s max 0.00 p99.9 0.00 | 60s max 0.01 p99.9 0.00
+   180   27  14.8%   100%       8.7          27     23       23       3         0      0.810         -         -      0       -
+   120   27   7.4%   100%      14.4          23     13       21       2         0      0.930         -         -      0       -
+    90   27   7.4%   100%      16.5          19      9       16       2         0      0.970         -         -      0       -
+    60   27  11.1%   100%      17.4          10      6        9       3         0      0.930         -         -      0       -
+    45   27   7.4%   100%      14.8           6      4        6       2         0      0.860         -         -      0       -
+    30   27   3.7%   100%      16.7           4      2        3       1         0      0.970         -         -      0       -
+    20   27   3.7%   100%      16.2           3      0        1       0         0      0.970         -         -      0       -
+    15   27   3.7%   100%      15.8           4      1        4       1         0      0.990         -         -      0       -
+    10   27   0.0%   100%      15.0           1      1        1       0         0      0.850         -         -      0       -
+     5   27   0.0%   100%      16.3           0      0        0       0         -          -         -         -      0       -
+     3   27   0.0%   100%      16.6           1      0        1       0         0      0.990         -         -      0       -
+     2   27   0.0%   100%      16.7           1      0        1       0         0      0.990         -         -      0       -
+     1   27   0.0%   100%      16.3           0      0        0       0         -          -         -         -      0       -
+  index speed (kalshi, 17800 prints): 1s max 0.00 p99.9 0.00 | 5s max 0.00 p99.9 0.00 | 10s max 0.00 p99.9 0.00 | 15s max 0.00 p99.9 0.00 | 30s max 0.00 p99.9 0.00 | 60s max 0.01 p99.9 0.00
 
 === XRP 15-minute   windows=11   index=kalshi   settlement reproduced 11/11
 T-left    n  flip%  open% med|d|bps PM ask<=.99  <=.95 entry_ok ok&flip min|d|ok$ PM ask p50 K ask p50 K bid p50 lock>0 maxlock
@@ -212,7 +212,7 @@ T-left    n  flip%  open% med|d|bps PM ask<=.99  <=.95 entry_ok ok&flip min|d|ok
      3   11   0.0%    91%      24.0           0      0        0       0         -          -         -     0.999      0       -
      2   11   0.0%    91%      24.4           0      0        0       0         -          -         -     0.999      0       -
      1   11   0.0%    91%      24.8           0      0        0       0         -          -         -     0.999      0       -
-  index speed (kalshi, 17178 prints): 1s max 0.00 p99.9 0.00 | 5s max 0.00 p99.9 0.00 | 10s max 0.00 p99.9 0.00 | 15s max 0.00 p99.9 0.00 | 30s max 0.00 p99.9 0.00 | 60s max 0.01 p99.9 0.00
+  index speed (kalshi, 17800 prints): 1s max 0.00 p99.9 0.00 | 5s max 0.00 p99.9 0.00 | 10s max 0.00 p99.9 0.00 | 15s max 0.00 p99.9 0.00 | 30s max 0.00 p99.9 0.00 | 60s max 0.01 p99.9 0.00
 
 === XRP 60-minute   windows=4   index=kalshi   settlement reproduced 4/4
 T-left    n  flip%  open% med|d|bps PM ask<=.99  <=.95 entry_ok ok&flip min|d|ok$ PM ask p50 K ask p50 K bid p50 lock>0 maxlock
@@ -232,25 +232,25 @@ T-left    n  flip%  open% med|d|bps PM ask<=.99  <=.95 entry_ok ok&flip min|d|ok
      3    4   0.0%    75%      36.9           0      0        0       0         -          -         -         -      0       -
      2    4   0.0%    75%      37.1           0      0        0       0         -          -         -         -      0       -
      1    4   0.0%    75%      37.2           0      0        0       0         -          -         -         -      0       -
-  index speed (kalshi, 17178 prints): 1s max 0.00 p99.9 0.00 | 5s max 0.00 p99.9 0.00 | 10s max 0.00 p99.9 0.00 | 15s max 0.00 p99.9 0.00 | 30s max 0.00 p99.9 0.00 | 60s max 0.01 p99.9 0.00
+  index speed (kalshi, 17800 prints): 1s max 0.00 p99.9 0.00 | 5s max 0.00 p99.9 0.00 | 10s max 0.00 p99.9 0.00 | 15s max 0.00 p99.9 0.00 | 30s max 0.00 p99.9 0.00 | 60s max 0.01 p99.9 0.00
 
 Columns: PM = Polymarket US (0.01 ticks, leader ask / count with >= lot contracts), K = Kalshi (0.001 ticks). lock>0 = checkpoints where buying the leader on one venue and selling it on the other cleared both fees.
 entry_ok = state OPEN, PM leader ask <= 0.99 with >= lot contracts, positive net. ok&flip must be ZERO with margin before anything goes live.
 
 Cross-venue lock scan — every second of the last 5 minutes, Polymarket WebSocket book vs Kalshi snapshot (15-minute windows, same index):
  coin windows  seconds lock>0.4c  lock>1c longest run max margin max depth
-  btc      12     1963        31       15           2     +0.126        52
-  eth      10     1045        10        8           1     +0.150       401
-  sol       8      790         5        4           1     +0.048        10
-  xrp       8      830         9        5           1     +0.042       134
+  btc      13     2051        35       18           2     +0.126        52
+  eth      11     1133        14       12           2     +0.150       401
+  sol       9      868         6        4           1     +0.048        10
+  xrp       9      886         9        5           1     +0.042       134
 A lock is a same-second pair where buying the Up side on one venue and selling it on the other clears both taker fees with >= 10 contracts on both sides. 'longest run' = consecutive seconds it persisted.
 
 Polymarket state transitions:
-                    None -> CLOSED                   before_end  x136
-                  CLOSED -> OPEN                     before_end  x132
-                    OPEN -> CLOSED                    after_end  x94
+                    None -> CLOSED                   before_end  x148
+                  CLOSED -> OPEN                     before_end  x140
+                    OPEN -> CLOSED                    after_end  x97
                     None -> OPEN                     before_end  x39
-                    OPEN -> EXPIRED                   after_end  x36
+                    OPEN -> EXPIRED                   after_end  x39
                     None -> HALTED                   before_end  x7
                     None -> OPEN                      after_end  x3
                   HALTED -> OPEN                     before_end  x2
