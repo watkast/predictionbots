@@ -1,35 +1,37 @@
 
-Mr. P — gate report   windows=1  lot=10  errors_logged=0
+Mr. P — gate report   windows=2  lot=10  errors_logged=0
 data: mrp/data   csv: mrp/windows.csv
 
-settlement reproduction: our 60-sample average matched the exchange's settlementPrice in 0/1 windows  (anything < 100% means a feed gap or a rule mismatch)
+settlement reproduction: our 60-sample average matched the exchange's settlementPrice in 0/2 windows  (anything < 100% means a feed gap or a rule mismatch)
 
 T-left    n  flip%  open%  ask<=99 entry_ok  ok&flip  min|d|ok  med|d| ask p50 ask p90  net/lot
 -----------------------------------------------------------------------------------------------
-   180    1   0.0%   0.0%        0        0        0         -     218       -       -        -
-   120    1   0.0% 100.0%        0        0        0         -     205       -       -        -
-    90    1   0.0% 100.0%        0        0        0         -     186       -       -        -
-    60    1   0.0% 100.0%        0        0        0         -     185       -       -        -
-    45    1   0.0% 100.0%        0        0        0         -     178       -       -        -
-    30    1   0.0% 100.0%        0        0        0         -     172       -       -        -
-    20    1   0.0% 100.0%        0        0        0         -     168       -       -        -
-    15    1   0.0% 100.0%        0        0        0         -     166       -       -        -
-    10    1   0.0% 100.0%        0        0        0         -     164       -       -        -
-     5    1   0.0% 100.0%        0        0        0         -     162       -       -        -
-     3    1   0.0% 100.0%        0        0        0         -     161       -       -        -
-     2    1   0.0% 100.0%        0        0        0         -     161       -       -        -
-     1    1   0.0% 100.0%        0        0        0         -     160       -       -        -
+   600    1   0.0%   0.0%        0        0        0         -      58       -       -        -
+   300    1   0.0%   0.0%        0        0        0         -      41       -       -        -
+   180    2   0.0%   0.0%        0        0        0         -     117       -       -        -
+   120    2   0.0% 100.0%        1        1        0        21     113    0.72    0.72     2.66
+    90    2   0.0% 100.0%        1        1        0        13     100    0.80    0.80     1.89
+    60    2   0.0% 100.0%        1        0        0         -      94    0.40    0.40        -
+    45    2   0.0% 100.0%        1        0        0         -      90    0.40    0.40        -
+    30    2   0.0% 100.0%        0        0        0         -      91       -       -        -
+    20    2   0.0% 100.0%        0        0        0         -      91       -       -        -
+    15    2   0.0% 100.0%        0        0        0         -      91       -       -        -
+    10    2   0.0% 100.0%        0        0        0         -      92       -       -        -
+     5    2   0.0% 100.0%        0        0        0         -      92       -       -        -
+     3    2   0.0% 100.0%        0        0        0         -      92       -       -        -
+     2    2   0.0% 100.0%        0        0        0         -      92       -       -        -
+     1    2   0.0% 100.0%        0        0        0         -      92       -       -        -
 
 flip% = leading side at T-left lost.  entry_ok = state OPEN, leader ask <= 0.99 with >= 10 contracts, positive net after fee (re-run with --min-d to test a settlement-gate threshold).
 ok&flip = entries that would have been taken AND lost — this column must be ZERO, with margin, before anything goes live.
 
 BRTI speed (max absolute move observed over a span, $):
-    1s  max=    1.27  p99.9=    1.27  p99=   1.13  median=  0.35  (n=619)
-    5s  max=    5.96  p99.9=    5.96  p99=   5.67  median=  1.73  (n=615)
-   10s  max=   11.67  p99.9=   11.67  p99=  11.14  median=  3.60  (n=610)
-   15s  max=   16.83  p99.9=   16.83  p99=  16.30  median=  5.31  (n=605)
-   30s  max=   28.75  p99.9=   28.75  p99=  28.41  median= 10.07  (n=590)
-   60s  max=   45.13  p99.9=   45.13  p99=  44.37  median= 18.85  (n=560)
+    1s  max=    1.31  p99.9=    1.29  p99=   1.16  median=  0.28  (n=1222)
+    5s  max=    6.35  p99.9=    6.27  p99=   5.69  median=  1.41  (n=1218)
+   10s  max=   12.04  p99.9=   11.91  p99=  11.27  median=  2.82  (n=1213)
+   15s  max=   17.42  p99.9=   17.24  p99=  16.54  median=  4.19  (n=1208)
+   30s  max=   30.75  p99.9=   30.70  p99=  29.54  median=  7.97  (n=1193)
+   60s  max=   55.07  p99.9=   54.71  p99=  52.34  median= 13.77  (n=1163)
   -> a flip at T-left=k needs the remaining k prints to average 60/k x |d| away. Compare need_rem_move in windows.csv to the max k-second move above.
 
 market state transitions seen (from -> to, relative to window end):
