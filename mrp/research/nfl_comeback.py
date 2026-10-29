@@ -22,6 +22,7 @@ Outputs: <out>/NFL.md (report), <out>/nfl_trades.csv (every simulated entry), <o
 from __future__ import annotations
 
 import argparse
+import bisect
 import csv
 import json
 import math
@@ -166,7 +167,12 @@ def espn_game(event_ticker: str, codes: list[str], cache: str) -> Optional[dict]
                     tl.append((ts, int((pl.get("period") or {}).get("number") or 0), cs,
                                int(pl.get("homeScore") or 0), int(pl.get("awayScore") or 0)))
             tl.sort()
-            return {"ko": ko, "home": teams.get("home"), "away": teams.get("away"), "tl": tl}
+            scores, prev = [], (0, 0)
+            for ts, per, cs, hs, as_ in tl:
+                if (hs, as_) != prev:
+                    scores.append((ts, per, cs, hs - prev[0], as_ - prev[1]))
+                    prev = (hs, as_)
+            return {"ko": ko, "home": teams.get("home"), "away": teams.get("away"), "tl": tl, "scores": scores}
     return None
 
 
@@ -286,6 +292,11 @@ def main():
     season_cal = defaultdict(lambda: [0, 0, 0.0])   # (season, phase, bucket)
     fav_cal = defaultdict(lambda: [0, 0, 0.0])      # (period, pregame role, score state, coarse bucket)
     fav_season = defaultdict(lambda: [0, 0, 0.0])
+    final2 = defaultdict(lambda: [0, 0, 0.0])          # H1: last 2:00 of Q4, bucket -> [n, wins, paid]
+    halftime = []                                      # H2: (season, drift, q3 ask, won)
+    team_bias = defaultdict(lambda: [0, 0.0, 0, 0.0])  # H3: team -> [n in-game samples, sum(won-ask-fee), n games pregame, sum(won-pre)]
+    react = []                                         # H4: (game volume, absorbed@1, @2, @3, move size, season)
+    blowout = defaultdict(lambda: [0, 0, 0.0])         # H5: (season, deficit band, price band) -> [n, wins, paid]
     seen_rule: set = set()
     rule_trades: list = []
     COARSE = [(0.05, 0.20), (0.20, 0.35), (0.35, 0.50), (0.50, 0.65), (0.65, 0.80), (0.80, 0.95)]
@@ -356,6 +367,44 @@ def main():
                             seen_rule.add(("anchor", ek))
                             rule_trades.append({"season": season, "game": ek, "q": per, "entry": c["a"], "won": won,
                                                 "pnl": won - c["a"] - fee(c["a"])})
+                # H1 final two minutes / H5 blowouts / H3 in-game team bias samples
+                f2_seen, bo_seen, last_tb = set(), set(), -999
+                for ph_, st, c in st_series:
+                    if st is None or c["a"] is None or not (0 < c["a"] < 1):
+                        continue
+                    per, clk, diff = st
+                    if per == 4 and clk <= 120:
+                        pb = next((b for b in BUCKETS if b[0] <= c["a"] < b[1]), None)
+                        if pb and pb not in f2_seen:
+                            f2_seen.add(pb); d_ = final2[pb]; d_[0] += 1; d_[1] += won; d_[2] += c["a"]
+                    if per in (2, 3) and c["a"] < 0.20 and diff <= -10:
+                        band = ("<=-17" if diff <= -17 else "-16..-10", "<0.10" if c["a"] < 0.10 else "0.10-0.20")
+                        if band not in bo_seen:
+                            bo_seen.add(band); d_ = blowout[(season,) + band]; d_[0] += 1; d_[1] += won; d_[2] += c["a"]
+                    if 1 <= per <= 4 and c["t"] - last_tb >= 900:
+                        last_tb = c["t"]; tb = team_bias[code]; tb[0] += 1; tb[1] += won - c["a"] - fee(c["a"])
+                if pre_mid is not None:
+                    tb = team_bias[code]; tb[2] += 1; tb[3] += won - pre_mid
+                # H2 halftime drift: last Q2 minute vs first Q3 minute
+                q2 = [c for ph_, st, c in st_series if st and st[0] == 2 and c["a"] and c["b"]]
+                q3 = [c for ph_, st, c in st_series if st and st[0] == 3 and c["a"] and c["b"]]
+                if q2 and q3:
+                    m2 = (q2[-1]["a"] + q2[-1]["b"]) / 2; m3 = (q3[0]["a"] + q3[0]["b"]) / 2
+                    halftime.append((season, m3 - m2, q3[0]["a"], won))
+                # H4 repricing latency after scores (home market only, so each score counts once)
+                if is_home and g.get("scores"):
+                    vol = sum(c.get("v") or 0 for _, c in series if 0 <= _ <= 240)
+                    ct = [c["t"] for _, c in series]
+                    mids = [((c["a"] + c["b"]) / 2 if c["a"] and c["b"] else None) for _, c in series]
+                    def mid_at(t):
+                        i = bisect.bisect_right(ct, t) - 1
+                        return mids[i] if 0 <= i < len(mids) else None
+                    for ts, per, cs_, dh, da in g["scores"]:
+                        p0, p1, p2, p3, p5 = (mid_at(ts - 60), mid_at(ts + 60), mid_at(ts + 120), mid_at(ts + 180), mid_at(ts + 300))
+                        if None in (p0, p1, p2, p3, p5) or abs(p5 - p0) < 0.03:
+                            continue
+                        mv = p5 - p0
+                        react.append((vol, (p1 - p0) / mv, (p2 - p0) / mv, (p3 - p0) / mv, abs(mv), season))
                 # real phases replace the wall-clock proxy
                 series_ph = [(ph_ or "pre", c) for ph_, st, c in st_series]
             else:
@@ -489,6 +538,46 @@ def main():
             avg_e = sum(t["entry"] for t in ts) / n
             L.append(f"| {yr} | {n} | {100 * sum(t['won'] for t in ts) / n:.0f}% | {avg_e:.3f} | {sum(pn) / n:+.3f} | "
                      f"{100 * sum(pn) / n / avg_e:+.0f}% | {worst:+.2f} | {weeks:.0f} | {n / weeks:.1f} |")
+    L.append("")
+    L.append("## H. Hypotheses from the forced-spend exercise\n")
+    L.append("### H1. Forced sellers — last 2:00 of the 4th quarter (does the deadline push prices below the truth?)\n")
+    L.append("| ask bucket | n | avg paid | win rate | 95% low | edge |\n|---|---|---|---|---|---|")
+    for b in BUCKETS:
+        n, k, sp = final2[b]
+        if n >= 8:
+            L.append(f"| {b[0]:.2f}–{b[1]:.2f} | {n} | {sp / n:.3f} | {k / n:.3f} | {wilson_lo(k, n):.3f} | {k / n - sp / n - fee(sp / n):+.3f} |")
+    L.append("\n### H2. Halftime drift — nothing happens on the field; does the price move mean-revert?\n")
+    L.append("| halftime drift | n | avg Q3-start ask | win rate | edge buying at Q3 start |\n|---|---|---|---|---|")
+    for lab, lo, hi in (("fell > 3c", -9, -0.03), ("flat ±3c", -0.03, 0.03), ("rose > 3c", 0.03, 9)):
+        xs = [h for h in halftime if lo <= h[1] < hi and 0 < h[2] < 1]
+        if len(xs) >= 10:
+            n = len(xs); k = sum(h[3] for h in xs); ap = sum(h[2] for h in xs) / n
+            L.append(f"| {lab} | {n} | {ap:.3f} | {k / n:.3f} | {sum(h[3] - h[2] - fee(h[2]) for h in xs) / n:+.3f} |")
+    L.append("\n### H3. Team bias — popular teams overpriced? (in-game samples every 15 min; pregame mid)\n")
+    L.append("| team | in-game samples | in-game edge | games | pregame edge (won − pregame mid) |\n|---|---|---|---|---|")
+    tb_rows = sorted(((t, v) for t, v in team_bias.items() if v[0] >= 20), key=lambda kv: kv[1][1] / kv[1][0])
+    for t, (n, se, ng, sp) in tb_rows[:8] + [("…", (0, 0, 0, 0))] + tb_rows[-8:]:
+        if t == "…":
+            L.append("| … | | | | |"); continue
+        L.append(f"| {t} | {n} | {se / n:+.3f} | {ng} | {(sp / ng if ng else 0):+.3f} |")
+    L.append("\nNegative = the market overpays for that team. ~30 teams × noise: only trust large, consistent gaps.\n")
+    L.append("### H4. Repricing speed after a score (share of the 5-minute move already in the price)\n")
+    if react:
+        vs = sorted(r[0] for r in react); t1, t2 = vs[len(vs) // 3], vs[2 * len(vs) // 3]
+        L.append("| game attention (Kalshi volume tercile) | scores | median absorbed +1 min | +2 min | +3 min | share still < 50% at +1 min |\n|---|---|---|---|---|---|")
+        for lab, lo, hi in (("low", -1, t1), ("mid", t1, t2), ("high", t2, 1e18)):
+            xs = [r for r in react if lo < r[0] <= hi]
+            if xs:
+                med = lambda i: sorted(x[i] for x in xs)[len(xs) // 2]
+                L.append(f"| {lab} | {len(xs)} | {100 * med(1):.0f}% | {100 * med(2):.0f}% | {100 * med(3):.0f}% | {100 * sum(1 for x in xs if x[1] < 0.5) / len(xs):.0f}% |")
+        L.append("\nMinute candles + ESPN wallclock (play start, can lag the snap): a coarse first look. If low-attention games "
+                 "absorb < 50% in the first minute, a fast score feed has an edge there; the live 15 s radar tape measures it properly.\n")
+    L.append("### H5. Blowout overreaction — trailing by 10+ in Q2/Q3 and priced under 20c (the curling shot)\n")
+    L.append("| season | deficit | ask | n | avg paid | win rate | 95% low | payoff multiple (win/paid) |\n|---|---|---|---|---|---|---|---|")
+    for key in sorted(blowout):
+        n, k, sp = blowout[key]
+        if n >= 5:
+            L.append(f"| {key[0]} | {key[1]} | {key[2]} | {n} | {sp / n:.3f} | {k / n:.3f} | {wilson_lo(k, n):.3f} | {(k / n) / (sp / n):.2f}x |")
     L.append("")
     L.append("## A4. Out-of-sample check — calibration edge by season (same cells, split)\n")
     L.append("An edge that is real should show in BOTH seasons. One season positive and the other flat = likely noise.\n")
