@@ -1,6 +1,6 @@
 # NFL in-game underdog study (KXNFLGAME)
 
-Updated 2026-10-29 19:22Z. 482 games, 904 team-markets with 1-min candles (skipped: 56 no kickoff time, 4 no candles). ESPN play-by-play matched for 454 games: their phases come from the real quarter and clock (Q4 late = under 7:30 left); others use minutes since kickoff. Buying at the ask, Kalshi taker fee 0.07·p·(1−p). One entry per team per game per rule.
+Updated 2026-10-29 20:54Z. 482 games, 904 team-markets with 1-min candles (skipped: 56 no kickoff time, 4 no candles). ESPN play-by-play matched for 454 games: their phases come from the real quarter and clock (Q4 late = under 7:30 left); others use minutes since kickoff. Buying at the ask, Kalshi taker fee 0.07·p·(1−p). One entry per team per game per rule.
 
 ## A. Calibration — does a team priced X actually win X% of the time?
 
@@ -265,6 +265,29 @@ Role = which side the market favoured in the 30 min before kickoff. If bettors a
 | Q4 | pregame fav | trailing | 0.05–0.20 | 155 | 0.141 | 0.148 | 0.101 | -0.001 |
 | Q4 | pregame fav | trailing | 0.20–0.35 | 156 | 0.279 | 0.263 | 0.200 | -0.030 |
 | Q4 | pregame fav | trailing | 0.35–0.50 | 141 | 0.412 | 0.355 | 0.280 | -0.075 |
+
+### A3 by season (anchoring cells only)
+
+| quarter | pregame role | score | ask | 2025 n / win / paid / edge | 2026 n / win / paid / edge |
+|---|---|---|---|---|---|
+| Q1 | pregame dog | leading | 0.35–0.50 | 97 / 0.505 / 0.429 / +0.059 | 39 / 0.487 / 0.441 / +0.029 |
+| Q1 | pregame fav | trailing | 0.35–0.50 | 66 / 0.333 / 0.453 / -0.137 | 39 / 0.462 / 0.440 / +0.004 |
+| Q2 | pregame dog | leading | 0.35–0.50 | 108 / 0.481 / 0.438 / +0.026 | 42 / 0.571 / 0.445 / +0.109 |
+| Q2 | pregame fav | trailing | 0.35–0.50 | 111 / 0.360 / 0.435 / -0.092 | 61 / 0.279 / 0.422 / -0.161 |
+| Q3 | pregame dog | leading | 0.35–0.50 | 71 / 0.521 / 0.442 / +0.062 | 26 / 0.615 / 0.442 / +0.157 |
+| Q3 | pregame fav | trailing | 0.35–0.50 | 85 / 0.306 / 0.423 / -0.134 | 43 / 0.302 / 0.421 / -0.135 |
+| Q4 | pregame dog | leading | 0.35–0.50 | 64 / 0.547 / 0.443 / +0.086 | 31 / 0.581 / 0.458 / +0.105 |
+| Q4 | pregame fav | trailing | 0.35–0.50 | 97 / 0.340 / 0.416 / -0.093 | 44 / 0.386 / 0.404 / -0.034 |
+
+### Anchoring rule as a strategy
+
+Rule: the first time in Q2 or Q3 that the pregame underdog is LEADING and its ask is 35-65c, buy it at the ask and hold. One trade per game.
+
+| season | trades | win% | avg entry | avg P&L / contract | ROI | worst 10-trade run | weeks | trades / week |
+|---|---|---|---|---|---|---|---|---|
+| 2025 | 133 | 48% | 0.438 | +0.026 | +6% | -2.67 | 15 | 9.1 |
+| 2026 | 54 | 59% | 0.446 | +0.130 | +29% | -0.76 | 7 | 8.1 |
+| all | 187 | 51% | 0.440 | +0.056 | +13% | -2.67 | 21 | 8.8 |
 
 ## A4. Out-of-sample check — calibration edge by season (same cells, split)
 
