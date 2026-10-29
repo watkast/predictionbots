@@ -43,6 +43,14 @@ PHASES = [("Q1", 0, 45), ("Q2", 45, 95), ("Q3", 110, 155), ("Q4 early", 155, 185
 BUCKETS = [(0.05, 0.10), (0.10, 0.15), (0.15, 0.20), (0.20, 0.25), (0.25, 0.30), (0.30, 0.35), (0.35, 0.40), (0.40, 0.50)]
 HOLD_P = [0.15, 0.20, 0.25, 0.30, 0.35]
 BOUNCE_D = [0.10, 0.15, 0.20]
+THETA_MAKER = 0.0175            # resting sell orders: Kalshi maker fee (conservative; 0 on many series)
+LEVELS = [round(0.05 * i, 2) for i in range(1, 20)]          # 0.05 .. 0.95 absolute sell prices
+LADDERS = {                                                    # name -> weights per 10c step above entry, up to 0.90
+    "heavy-low": lambda k: [k - i for i in range(k)],            # 7,6,5,...,1
+    "equal": lambda k: [1] * k,
+    "halving": lambda k: [2 ** (k - i) for i in range(k)],       # 64,32,...,1
+    "heavy-high": lambda k: [i + 1 for i in range(k)],
+}
 _last = [0.0]
 
 
@@ -99,6 +107,14 @@ def kickoff(m: dict) -> Optional[float]:
     return (d.replace(hour=h, minute=int(mi or 0), tzinfo=timezone(timedelta(hours=off)))).timestamp()
 
 
+def px_hi(o: Any) -> Optional[float]:
+    if isinstance(o, dict):
+        for k in ("high", "high_dollars"):
+            if o.get(k) is not None:
+                return px(o[k])
+    return None
+
+
 def px(o: Any) -> Optional[float]:
     if o is None:
         return None
@@ -115,7 +131,7 @@ def px(o: Any) -> Optional[float]:
 
 
 def candles(ticker: str, series: str, t0: int, t1: int, cache_dir: str) -> list[dict]:
-    path = os.path.join(cache_dir, f"{ticker}.json")
+    path = os.path.join(cache_dir, f"{ticker}.v2.json")
     if os.path.exists(path):
         with open(path) as fh:
             return json.load(fh)
@@ -126,12 +142,17 @@ def candles(ticker: str, series: str, t0: int, t1: int, cache_dir: str) -> list[
         if cs:
             for c in cs:
                 out.append({"t": int(c.get("end_period_ts") or 0), "b": px(c.get("yes_bid")), "a": px(c.get("yes_ask")),
+                            "bh": px_hi(c.get("yes_bid")),
                             "p": px(c.get("price")), "v": float(c.get("volume") or c.get("volume_fp") or 0)})
             break
     out.sort(key=lambda x: x["t"])
     with open(path, "w") as fh:
         json.dump(out, fh, separators=(",", ":"))
     return out
+
+
+def fee_m(p: float) -> float:
+    return THETA_MAKER * p * (1 - p)
 
 
 def fee(p: float) -> float:
@@ -225,13 +246,28 @@ def main():
                             pnl = pnl_hold
                         row[f"pnl_b{D}"] = round(pnl, 4)
                         row[f"hit_b{D}"] = int(exit_px is not None)
+                    # sell-limit study: highest bid reached after entry (a resting sell at L fills if bid >= L)
+                    hi = max([(c.get("bh") or c.get("b") or 0) for _, c in series[i0 + 1:]] or [0])
+                    row["max_bid_after"] = round(hi, 3)
+                    for L in LEVELS:
+                        if L > e:
+                            row[f"L{L:.2f}"] = round((L - fee_m(L)) if hi >= L else won, 4) - e - fee(e)
+                    steps = [round(e + 0.10 * (j + 1), 2) for j in range(20) if e + 0.10 * (j + 1) <= 0.905]
+                    for lname, wf in LADDERS.items():
+                        if not steps:
+                            row[f"lad_{lname}"] = row["pnl_hold"]
+                            continue
+                        w = wf(len(steps)); tw = sum(w)
+                        val = sum(wi / tw * ((L - fee_m(L)) if hi >= L else won) for wi, L in zip(w, steps))
+                        row[f"lad_{lname}"] = round(val - e - fee(e), 4)
                     trades.append(row)
         if gi % 20 == 0:
             print(f"  {gi}/{len(gkeys)} games, {used} team-markets used", file=sys.stderr)
 
     with open(os.path.join(a.out, "nfl_trades.csv"), "w", newline="") as fh:
         if trades:
-            w = csv.DictWriter(fh, fieldnames=list(trades[0].keys()))
+            cols = list(dict.fromkeys(k for t in trades for k in t))
+            w = csv.DictWriter(fh, fieldnames=cols)
             w.writeheader(); w.writerows(trades)
 
     L = []
@@ -267,6 +303,28 @@ def main():
                      f"{avg('pnl_b0.15'):+.3f} | {avg('pnl_b0.2'):+.3f} | {avg('pnl_bx2'):+.3f} | {100 * avg('hit_b0.15'):.0f}% | {worst:+.2f} |")
     L.append("\nP&L is per $1 contract. A +0.03 average on 25c entries is +12% per trade. Bounce columns sell at the bid the "
              "first time it reaches the target and otherwise hold to the final whistle.\n")
+    L.append("## D. Sell limits — place a resting sell right after buying\n")
+    L.append("Each cell: average P&L per contract if the whole position rests one sell at that price (unfilled -> held to the final "
+             "whistle). The best level is the most profitable single exit; a ladder spreads across levels to smooth results.\n")
+    for ph, _, _ in PHASES:
+        for P in (0.20, 0.25, 0.30):
+            ts = grp.get((ph, P), [])
+            if len(ts) < 10:
+                continue
+            cells = []
+            for Lv in LEVELS:
+                k = f"L{Lv:.2f}"
+                vals = [t[k] for t in ts if k in t]
+                if len(vals) >= 10:
+                    fill = sum(1 for t in ts if k in t and t["max_bid_after"] >= Lv) / len(vals)
+                    cells.append(f"{Lv:.2f}: {sum(vals) / len(vals):+.3f} ({100 * fill:.0f}% fill)")
+            best = max(cells, key=lambda c: float(c.split(": ")[1].split(" ")[0])) if cells else "-"
+            L.append(f"- **{ph}, entry ≤ {P:.2f}** (n={len(ts)}): best single exit {best}")
+            L.append("  - " + " · ".join(cells[:10]))
+            lad = " · ".join(f"{nm} {sum(t['lad_' + nm] for t in ts) / len(ts):+.3f}" for nm in LADDERS)
+            hold = sum(t["pnl_hold"] for t in ts) / len(ts)
+            L.append(f"  - ladders (10c steps to 0.90): {lad} · hold {hold:+.3f}")
+    L.append("")
     with open(os.path.join(a.out, "NFL.md"), "w") as fh:
         fh.write("\n".join(L) + "\n")
     print("\n".join(L))
