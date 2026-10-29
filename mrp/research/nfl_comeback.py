@@ -285,6 +285,9 @@ def main():
     state_cal = defaultdict(lambda: [0, 0, 0.0])    # (period, deficit bucket, price bucket) -> [n, wins, sum paid]
     season_cal = defaultdict(lambda: [0, 0, 0.0])   # (season, phase, bucket)
     fav_cal = defaultdict(lambda: [0, 0, 0.0])      # (period, pregame role, score state, coarse bucket)
+    fav_season = defaultdict(lambda: [0, 0, 0.0])
+    seen_rule: set = set()
+    rule_trades: list = []
     COARSE = [(0.05, 0.20), (0.20, 0.35), (0.35, 0.50), (0.50, 0.65), (0.65, 0.80), (0.80, 0.95)]
     espn_hits = 0
     for gi, ek in enumerate(gkeys):
@@ -344,6 +347,15 @@ def main():
                             seen_cells.add(fcell)
                             fc = fav_cal[fcell]
                             fc[0] += 1; fc[1] += won; fc[2] += c["a"]
+                            fs = fav_season[(season,) + fcell]
+                            fs[0] += 1; fs[1] += won; fs[2] += c["a"]
+                        # the anchoring rule as a strategy: first time in Q2-Q3 the pregame favourite trails and is
+                        # priced 35-50c -> (for the favourite's own market) record; underdog side handled via its market
+                        if per in (2, 3) and role == "pregame dog" and ss == "leading" and 0.35 <= c["a"] < 0.65 \
+                                and ("anchor", ek) not in seen_rule:
+                            seen_rule.add(("anchor", ek))
+                            rule_trades.append({"season": season, "game": ek, "q": per, "entry": c["a"], "won": won,
+                                                "pnl": won - c["a"] - fee(c["a"])})
                 # real phases replace the wall-clock proxy
                 series_ph = [(ph_ or "pre", c) for ph_, st, c in st_series]
             else:
@@ -451,6 +463,32 @@ def main():
             continue
         avg = sp / n
         L.append(f"| Q{per} | {role} | {ss} | {cb[0]:.2f}–{cb[1]:.2f} | {n} | {avg:.3f} | {k / n:.3f} | {wilson_lo(k, n):.3f} | {k / n - avg - fee(avg):+.3f} |")
+    L.append("")
+    L.append("### A3 by season (anchoring cells only)\n")
+    L.append("| quarter | pregame role | score | ask | " + " | ".join(f"{yr} n / win / paid / edge" for yr in sorted({k[0] for k in fav_season})) + " |")
+    L.append("|---|---|---|---|" + "---|" * len({k[0] for k in fav_season}))
+    for (per, role, ss, cb) in sorted(fav_cal):
+        if not ((role == "pregame fav" and ss == "trailing") or (role == "pregame dog" and ss == "leading")) or cb[0] < 0.35 or cb[0] > 0.50:
+            continue
+        cells = []
+        for yr in sorted({k[0] for k in fav_season}):
+            n, k, sp = fav_season.get((yr, per, role, ss, cb), [0, 0, 0.0])
+            cells.append(f"{n} / {k / n:.3f} / {sp / n:.3f} / {k / n - sp / n - fee(sp / n):+.3f}" if n >= 10 else f"{n} / -")
+        L.append(f"| Q{per} | {role} | {ss} | {cb[0]:.2f}–{cb[1]:.2f} | " + " | ".join(cells) + " |")
+    if rule_trades:
+        L.append("\n### Anchoring rule as a strategy\n")
+        L.append("Rule: the first time in Q2 or Q3 that the pregame underdog is LEADING and its ask is 35-65c, buy it at the ask and hold. "
+                 "One trade per game.\n")
+        L.append("| season | trades | win% | avg entry | avg P&L / contract | ROI | worst 10-trade run | weeks | trades / week |\n|---|---|---|---|---|---|---|---|---|")
+        for yr in sorted({t["season"] for t in rule_trades}) + ["all"]:
+            ts = [t for t in rule_trades if yr == "all" or t["season"] == yr]
+            ts.sort(key=lambda t: t["game"])
+            n = len(ts); pn = [t["pnl"] for t in ts]
+            worst = min(sum(pn[i:i + 10]) for i in range(max(1, n - 9))) if n >= 10 else sum(pn)
+            weeks = max(1, len({t["game"].split("-")[1][:7] for t in ts}) / 3)
+            avg_e = sum(t["entry"] for t in ts) / n
+            L.append(f"| {yr} | {n} | {100 * sum(t['won'] for t in ts) / n:.0f}% | {avg_e:.3f} | {sum(pn) / n:+.3f} | "
+                     f"{100 * sum(pn) / n / avg_e:+.0f}% | {worst:+.2f} | {weeks:.0f} | {n / weeks:.1f} |")
     L.append("")
     L.append("## A4. Out-of-sample check — calibration edge by season (same cells, split)\n")
     L.append("An edge that is real should show in BOTH seasons. One season positive and the other flat = likely noise.\n")
