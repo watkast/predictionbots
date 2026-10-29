@@ -140,6 +140,8 @@ def classify_k(series: str, ticker: str) -> str:
         return "h1_btts"
     if s.endswith("BTTS"):
         return "btts"
+    if "TEAMTOTAL" in s:
+        return "team_total"                      # one team's own goals: a different quantity from the game total
     if "1HTOTAL" in s:
         return "h1_total"
     if "1HSPREAD" in s:
