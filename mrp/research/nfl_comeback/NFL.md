@@ -1,6 +1,6 @@
 # NFL in-game underdog study (KXNFLGAME)
 
-Updated 2026-10-29 20:54Z. 482 games, 904 team-markets with 1-min candles (skipped: 56 no kickoff time, 4 no candles). ESPN play-by-play matched for 454 games: their phases come from the real quarter and clock (Q4 late = under 7:30 left); others use minutes since kickoff. Buying at the ask, Kalshi taker fee 0.07·p·(1−p). One entry per team per game per rule.
+Updated 2026-10-29 21:56Z. 482 games, 904 team-markets with 1-min candles (skipped: 56 no kickoff time, 4 no candles). ESPN play-by-play matched for 454 games: their phases come from the real quarter and clock (Q4 late = under 7:30 left); others use minutes since kickoff. Buying at the ask, Kalshi taker fee 0.07·p·(1−p). One entry per team per game per rule.
 
 ## A. Calibration — does a team priced X actually win X% of the time?
 
@@ -288,6 +288,76 @@ Rule: the first time in Q2 or Q3 that the pregame underdog is LEADING and its as
 | 2025 | 133 | 48% | 0.438 | +0.026 | +6% | -2.67 | 15 | 9.1 |
 | 2026 | 54 | 59% | 0.446 | +0.130 | +29% | -0.76 | 7 | 8.1 |
 | all | 187 | 51% | 0.440 | +0.056 | +13% | -2.67 | 21 | 8.8 |
+
+## H. Hypotheses from the forced-spend exercise
+
+### H1. Forced sellers — last 2:00 of the 4th quarter (does the deadline push prices below the truth?)
+
+| ask bucket | n | avg paid | win rate | 95% low | edge |
+|---|---|---|---|---|---|
+| 0.05–0.10 | 112 | 0.072 | 0.071 | 0.037 | -0.005 |
+| 0.10–0.15 | 108 | 0.121 | 0.102 | 0.058 | -0.027 |
+| 0.15–0.20 | 107 | 0.171 | 0.140 | 0.087 | -0.041 |
+| 0.20–0.25 | 119 | 0.220 | 0.210 | 0.147 | -0.022 |
+| 0.25–0.30 | 111 | 0.269 | 0.279 | 0.204 | -0.004 |
+| 0.30–0.35 | 113 | 0.322 | 0.327 | 0.248 | -0.010 |
+| 0.35–0.40 | 114 | 0.370 | 0.342 | 0.261 | -0.044 |
+| 0.40–0.50 | 166 | 0.447 | 0.410 | 0.338 | -0.055 |
+
+### H2. Halftime drift — nothing happens on the field; does the price move mean-revert?
+
+| halftime drift | n | avg Q3-start ask | win rate | edge buying at Q3 start |
+|---|---|---|---|---|
+| fell > 3c | 21 | 0.505 | 0.476 | -0.043 |
+| flat ±3c | 833 | 0.506 | 0.497 | -0.020 |
+| rose > 3c | 28 | 0.504 | 0.571 | +0.052 |
+
+### H3. Team bias — popular teams overpriced? (in-game samples every 15 min; pregame mid)
+
+| team | in-game samples | in-game edge | games | pregame edge (won − pregame mid) |
+|---|---|---|---|---|
+| KC | 331 | -0.216 | 27 | -0.214 |
+| IND | 329 | -0.166 | 28 | -0.155 |
+| PHI | 347 | -0.153 | 28 | -0.107 |
+| ARI | 393 | -0.124 | 31 | -0.120 |
+| BAL | 325 | -0.106 | 28 | -0.029 |
+| LV | 348 | -0.101 | 28 | -0.148 |
+| NYJ | 374 | -0.087 | 30 | -0.137 |
+| DAL | 333 | -0.081 | 26 | -0.148 |
+| … | | | | |
+| JAX | 342 | +0.047 | 29 | +0.122 |
+| CLE | 383 | +0.056 | 30 | +0.093 |
+| BUF | 378 | +0.082 | 31 | +0.073 |
+| NE | 345 | +0.098 | 30 | +0.161 |
+| MIN | 342 | +0.120 | 28 | +0.074 |
+| CHI | 363 | +0.123 | 30 | +0.158 |
+| SF | 367 | +0.150 | 31 | +0.202 |
+| DEN | 369 | +0.172 | 30 | +0.191 |
+
+Negative = the market overpays for that team. ~30 teams × noise: only trust large, consistent gaps.
+
+### H4. Repricing speed after a score (share of the 5-minute move already in the price)
+
+| game attention (Kalshi volume tercile) | scores | median absorbed +1 min | +2 min | +3 min | share still < 50% at +1 min |
+|---|---|---|---|---|---|
+| low | 776 | 74% | 91% | 100% | 33% |
+| mid | 775 | 86% | 100% | 100% | 23% |
+| high | 770 | 85% | 96% | 100% | 24% |
+
+Minute candles + ESPN wallclock (play start, can lag the snap): a coarse first look. If low-attention games absorb < 50% in the first minute, a fast score feed has an edge there; the live 15 s radar tape measures it properly.
+
+### H5. Blowout overreaction — trailing by 10+ in Q2/Q3 and priced under 20c (the curling shot)
+
+| season | deficit | ask | n | avg paid | win rate | 95% low | payoff multiple (win/paid) |
+|---|---|---|---|---|---|---|---|
+| 2025 | -16..-10 | 0.10-0.20 | 147 | 0.151 | 0.170 | 0.118 | 1.13x |
+| 2025 | -16..-10 | <0.10 | 135 | 0.077 | 0.096 | 0.057 | 1.24x |
+| 2025 | <=-17 | 0.10-0.20 | 24 | 0.135 | 0.333 | 0.180 | 2.47x |
+| 2025 | <=-17 | <0.10 | 80 | 0.051 | 0.100 | 0.052 | 1.98x |
+| 2026 | -16..-10 | 0.10-0.20 | 80 | 0.157 | 0.188 | 0.117 | 1.20x |
+| 2026 | -16..-10 | <0.10 | 51 | 0.075 | 0.098 | 0.043 | 1.30x |
+| 2026 | <=-17 | 0.10-0.20 | 12 | 0.123 | 0.083 | 0.015 | 0.68x |
+| 2026 | <=-17 | <0.10 | 32 | 0.050 | 0.031 | 0.006 | 0.62x |
 
 ## A4. Out-of-sample check — calibration edge by season (same cells, split)
 
