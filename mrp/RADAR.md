@@ -1,11 +1,11 @@
 # Mr. P — sports radar
 
-Updated 2026-10-29T22:56:12Z by `run-20261029T1721-40913591931` (last 7 days). Read-only scanner of every sports market on Polymarket US and Kalshi — it never places orders.
+Updated 2026-10-29T23:06:21Z by `run-20261029T1721-40913591931` (last 7 days). Read-only scanner of every sports market on Polymarket US and Kalshi — it never places orders.
 Kit: `mrp/mrp_sports_radar.py` on the `mrp` branch. Raw tape: `mrp/radar/<run>/`.
 
 # Sports radar report
 
-records 170,765 | 2026-10-29 15:47Z → 22:56Z | runs 10 | pairs matched 302 | errors none
+records 170,876 | 2026-10-29 15:47Z → 22:56Z | runs 10 | pairs matched 302 | errors none
 
 ## Catalogue (latest inventory, 22:28Z)
 
@@ -80,11 +80,11 @@ Polymarket US sports events 4087 of 5565 active events; Kalshi near-term sports 
 |---|---|---|---|---|---|
 | dead_pm | 7 | 79 | - | 19 min | 0/79 |
 | decided_k | 14 | 19 | 0.0937 | 0 min | 0/0 |
-| decided_pm | 1 | 1 | 0.9893 | 0 min | 0/1 |
+| decided_pm | 1 | 4 | 0.9893 | 0 min | 0/4 |
 | dutch_k | 1 | 241 | 0.1744 | 29 min | 0/0 |
 | dutch_pm | 14 | 310 | 0.9786 | 89 min | 0/0 |
 | implication_k | 68 | 10528 | 0.5258 | 29 min | 0/0 |
-| lag_k_settled | 167 | 3363 | 0.9573 | 44 min | 2331/3196 |
+| lag_k_settled | 167 | 3372 | 0.9573 | 44 min | 2340/3205 |
 | lag_k_settled_closed | 10 | 154 | 0.9043 | 50 min | 0/154 |
 
 Top by persistence × hits:
@@ -212,24 +212,24 @@ change% = share of scan cycles (60 s) where the best quote moved; react = median
 
 | venue | sport | markets | snapshots | two-sided | med spread | change% | react (min) | round sizes | med size |
 |---|---|---|---|---|---|---|---|---|---|
-| pm | tennis | 340 | 22817 | 92% | 0.010 | 30% | 0.7 (n=12643) | - | - |
-| pm | soccer | 114 | 11238 | 86% | 0.010 | 18% | 0.8 (n=185) | - | - |
-| pm | esports | 431 | 9946 | 78% | 0.020 | 24% | 0.5 (n=1819) | - | - |
+| pm | tennis | 340 | 22826 | 92% | 0.010 | 30% | 0.7 (n=12650) | - | - |
+| pm | soccer | 114 | 11241 | 86% | 0.010 | 18% | 0.8 (n=185) | - | - |
+| pm | esports | 431 | 9955 | 78% | 0.020 | 24% | 0.5 (n=1819) | - | - |
 | pm | football | 363 | 9207 | 23% | 0.020 | 25% | - (n=0) | - | - |
-| pm | table-tennis | 331 | 6281 | 88% | 0.010 | 39% | 0.5 (n=2809) | - | - |
+| pm | table-tennis | 331 | 6286 | 88% | 0.010 | 39% | 0.5 (n=2812) | - | - |
 | pm | basketball | 76 | 1702 | 60% | 0.020 | 27% | 0.5 (n=472) | - | - |
 | pm | golf | 159 | 1584 | 0% | - | 0% | - (n=0) | - | - |
 | pm | climate | 54 | 1278 | 64% | 0.030 | 22% | - (n=0) | - | - |
 | pm | ice-hockey | 26 | 1263 | 85% | 0.070 | 16% | 1.0 (n=56) | - | - |
 | pm | cricket | 6 | 422 | 88% | 0.070 | 7% | 2.9 (n=37) | - | - |
 | pm | beach-volleyball | 6 | 332 | 91% | 0.010 | 30% | 0.5 (n=190) | - | - |
-| pm | darts | 16 | 279 | 79% | 0.160 | 38% | 1.0 (n=35) | - | - |
+| pm | darts | 16 | 280 | 79% | 0.160 | 38% | 1.0 (n=35) | - | - |
 | pm | macro | 5 | 115 | 0% | - | 13% | - (n=0) | - | - |
 | pm | baseball | 1 | 3 | 100% | 0.010 | 0% | - (n=0) | - | - |
 | k | KXCS2MAP Counter-Strike 2 Map Win | 224 | 16751 | 91% | 0.860 | 8% | - | 26% | 100 |
 | k | KXESOCCERGAME eSoccer Game | 570 | 6814 | 31% | 0.780 | 9% | - | 18% | 3 |
-| k | KXATPSETWINNER ATP Set Winner | 62 | 4463 | 88% | 0.020 | 8% | - | 14% | 356 |
-| k | KXNCAAFGAME College Football Game | 478 | 4286 | 100% | 0.020 | 1% | - | 10% | 250 |
+| k | KXATPSETWINNER ATP Set Winner | 62 | 4469 | 88% | 0.020 | 8% | - | 14% | 354 |
+| k | KXNCAAFGAME College Football Game | 478 | 4332 | 100% | 0.020 | 1% | - | 10% | 250 |
 | k | KXITFWMATCH ITF Women's Match | 160 | 3190 | 72% | 0.030 | 21% | - | 8% | 116 |
 | k | KXCOPADELREYTOTAL Copa del Rey Total | 256 | 3185 | 0% | - | 0% | - | 0% | - |
 | k | KXSERIEASCORE Correct Score | 150 | 3018 | 47% | 0.020 | 2% | - | 6% | 944 |
@@ -250,8 +250,8 @@ change% = share of scan cycles (60 s) where the best quote moved; react = median
 | k | KXLOLDRAGONKILLS LOL Dragon Kills | 64 | 971 | 8% | 0.960 | 0% | - | 6% | 44 |
 | k | KXCS2GAME Counter-Strike 2 Game | 82 | 940 | 1% | 0.295 | 52% | - | 0% | 5 |
 | k | KXEGYPLTOTAL Point Total | 31 | 938 | 74% | 0.010 | 6% | - | 12% | 1000 |
+| k | KXNFLGAME NFL Game | 58 | 918 | 100% | 0.010 | 1% | - | 4% | 92080 |
 | k | KXCOPADELREYADVANCE Copa Del Rey To Advance | 74 | 900 | 0% | - | 0% | - | 0% | - |
-| k | KXNFLGAME NFL Game | 58 | 899 | 100% | 0.010 | 1% | - | 4% | 90491 |
 | k | KXSERIEASPREAD Serie A Spread | 51 | 819 | 79% | 0.020 | 1% | - | 8% | 1572 |
 | k | KXEUROLEAGUESPREAD EuroLeague Spread | 36 | 781 | 33% | 0.140 | 23% | - | 11% | 58 |
 | k | KXATPEXACTMATCH ATP Exact Match Score | 52 | 752 | 46% | 0.020 | 18% | - | 12% | 363 |
