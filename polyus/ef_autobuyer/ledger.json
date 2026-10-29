@@ -19005,6 +19005,28 @@
 "tries": 1
 }
 ],
+"entry": null,
+"settled": "no_entry"
+},
+"cpc-btc-updown-15m-2026-10-29-1030z": {
+"slug": "cpc-btc-updown-15m-2026-10-29-1030z",
+"window_start": 1793269800,
+"checks": [
+{
+"at": 120,
+"t": 120.0,
+"latency_s": 0.1,
+"ok": false,
+"tries": 1
+},
+{
+"at": 180,
+"t": 180.0,
+"latency_s": 0.072,
+"ok": false,
+"tries": 1
+}
+],
 "entry": null
 }
 }
