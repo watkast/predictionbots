@@ -26,6 +26,19 @@ and `POLYMARKET_SECRET_KEY` as repo secrets to enable the Polymarket US WebSocke
 limits of this path: GitHub's cron can start late (a few minutes of gap between runs), and the 6-hour
 job cap means one restart per run. For months of continuous capture, move to a VPS (below) — same code.
 
+## Sports radar (`mrp_sports_radar.py`, workflow `mrp-radar.yml`)
+The second scanner hunts the obscure-sports "clunkiness gaps" on both venues — public endpoints
+only, no keys, never an order. Every 60 s it pulls Polymarket US in-play and ended-but-still-open
+events (score, period, every market's best bid/ask) and Kalshi's near-term sports markets, then runs:
+`dead_pm` (game over / total already exceeded, market still quoting), `lag_k_settled` (Kalshi has
+finalized a game the Polymarket market still trades), `dutch_k` / `dutch_pm` (mutually exclusive
+outcomes whose asks sum below $1 after fees), `xvenue` (matched moneyline priced differently on the two
+venues after both fees). Each hit is re-checked with a fresh BBO call and logged with how long it
+persisted. Snapshots are written only on change (plus a 5-minute heartbeat) and `mrp_radar_report.py`
+turns them into `mrp/RADAR.md` on the `mrp-data` branch: catalogue by sport, every opportunity kind,
+close/settlement latency per sport, and a participant fingerprint per sport (quote cadence, spread,
+round-lot sizes, reaction time to score changes — the human-vs-bot tells).
+
 ## Cloud box path: a $4–8/month VPS (10 minutes, Safari + an SSH app)
 1. Create a droplet at digitalocean.com (Ubuntu 24.04, region New York, cheapest size, **password** auth
    — easier than SSH keys on mobile). Copy its IP. (AWS Lightsail in Virginia is the equivalent.)
