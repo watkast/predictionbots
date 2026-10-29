@@ -15,6 +15,7 @@ Usage:  python3 mrp_analyze.py [DATA_DIR] [--lot 10] [--days 7] [--min-d-bps 0] 
 from __future__ import annotations
 
 import argparse
+from decimal import Decimal, ROUND_HALF_UP
 import csv
 import glob
 import gzip
@@ -232,7 +233,8 @@ def main():
         outcome = ("UP" if settle >= 0.5 else "DOWN") if settle is not None else ("UP" if sp >= ptb else "DOWN")
         series = idx.get(sym, {})
         mine = [series[ts] for ts in range(end - 60, end) if ts in series]
-        my_close = round(sum(mine) / 60, 2) if len(mine) == 60 else None
+        # exact decimal average, half-up to the cent (float round() turned 81599.075 into .07; the exchange printed .08)
+        my_close = float((sum(Decimal(str(x)) for x in mine) / 60).quantize(Decimal("0.01"), ROUND_HALF_UP)) if len(mine) == 60 else None
         bl = books.get(slug, [])
         kl = kbooks.get((sym, end), [])
         for tau in CHECKPOINTS:
