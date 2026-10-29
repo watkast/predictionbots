@@ -1,18 +1,16 @@
 #!/usr/bin/env python3
 """
-Mr. P — Analyzer v0.  Reads the recorder's JSONL and answers, per completed window and
-per "seconds-left" checkpoint:
+Mr. P — Analyzer v2.  Reads recorder JSONL (v1 or v2) and answers, per coin/timeframe and per
+seconds-left checkpoint:
 
-  SETTLEMENT gate  did the leading side at T-tau end up winning?  (flip rate)
-                   how far was BRTI from the price-to-beat?  (|d|)
-                   what average would the remaining samples have needed to flip it?
-  PRICE gate       was there an ask <= 0.99 on the leading side with >= LOT contracts?
-                   what would 10 contracts net after the Polymarket US taker fee?
-  EXECUTION gate   what state was the market in?  (OPEN vs anything else)
-  PHYSICS          fastest BRTI moves observed over 1/5/10/15/30/60 s windows
-                   (the "historical top speed", measured on the exact settlement series)
+  SETTLEMENT gate  did the leader at T-tau win?  how far was the index from the open (|d|, $ and bps)?
+  PRICE gate       Polymarket: leader ask <= 0.99 / <= 0.95 with >= LOT contracts?  net after taker fee?
+                   Kalshi:     leader bid/ask at the same instant (yes-leg pricing, 0.001 ticks)
+  CROSS-VENUE      lock margin = best(pm_bid - kalshi_ask, kalshi_bid - pm_ask) - fees
+  EXECUTION gate   Polymarket market state at the checkpoint
+  PHYSICS          fastest index moves over 1/5/10/15/30/60 s from the true (Kalshi) prints
 
-Usage:  python3 mrp_analyze.py [DATA_DIR] [--lot 10] [--csv windows.csv]
+Usage:  python3 mrp_analyze.py [DATA_DIR] [--lot 10] [--days 7] [--min-d-bps 0] [--csv windows.csv]
 """
 from __future__ import annotations
 
@@ -21,15 +19,16 @@ import csv
 import glob
 import gzip
 import json
-import math
 import os
+import re
 import statistics
 from collections import defaultdict
 from datetime import datetime, timezone
 
 CHECKPOINTS = [600, 300, 180, 120, 90, 60, 45, 30, 20, 15, 10, 5, 3, 2, 1]
-THETA = 0.0695  # Polymarket US standard taker fee coefficient
-WINDOW = 900
+THETA_PM = 0.0695      # Polymarket US taker
+THETA_K = 0.07         # Kalshi taker
+SLUG_RE = re.compile(r"^cpc-([a-z0-9]+)-updown-(\d+)([mh])-")
 
 
 def parse_amount(v):
@@ -59,21 +58,23 @@ def parse_ts(v):
     return None
 
 
-def bankers_round_cents(x: float) -> float:
-    return round(x + 0.0, 2)  # Python's round() is banker's rounding at exact ties
+def slug_parts(slug):
+    m = SLUG_RE.match(slug or "")
+    if not m:
+        return "btc", 900
+    n, u = int(m.group(2)), m.group(3)
+    return m.group(1), n * (60 if u == "m" else 3600)
 
 
-def taker_fee(contracts: float, p: float) -> float:
-    return bankers_round_cents(THETA * contracts * p * (1 - p))
+def fee(theta, contracts, p):
+    return round(theta * contracts * p * (1 - p) + 1e-12, 2)
 
 
 def load(data_dir, days=None):
-    """Every */YYYY-MM-DD/HH.jsonl under data_dir, any depth (one sub-folder per recorder run is fine).
-    `days` keeps only date folders within the last N days."""
     files = sorted(glob.glob(os.path.join(data_dir, "**", "*.jsonl"), recursive=True)
                    + glob.glob(os.path.join(data_dir, "**", "*.jsonl.gz"), recursive=True))
     if days:
-        cutoff = (datetime.now(timezone.utc).timestamp() - days * 86400)
+        cutoff = datetime.now(timezone.utc).timestamp() - days * 86400
         keep = []
         for f in files:
             day = os.path.basename(os.path.dirname(f))
@@ -98,54 +99,83 @@ def load(data_dir, days=None):
                     continue
 
 
-def book_sides(book: dict):
-    """Polymarket US books are a single Up/Yes instrument: buying DOWN = going short Up at the bid.
-    Returns (ask_up, depth_up, cum_up_le99, ask_down, depth_down, cum_down_le99)."""
+def pm_sides(book):
+    """Polymarket books quote one Up instrument: buying DOWN = shorting Up at the bid."""
     offers = [(parse_amount(o.get("px")), float(o.get("qty") or 0)) for o in (book.get("offers") or [])]
     bids = [(parse_amount(b.get("px")), float(b.get("qty") or 0)) for b in (book.get("bids") or [])]
     offers = [(p, q) for p, q in offers if p is not None and q > 0]
     bids = [(p, q) for p, q in bids if p is not None and q > 0]
     ask_up = min(offers)[0] if offers else None
-    depth_up = sum(q for p, q in offers if ask_up is not None and abs(p - ask_up) < 1e-9)
-    cum_up = sum(q for p, q in offers if p <= 0.99 + 1e-9)
-    best_bid = max(bids)[0] if bids else None
-    ask_down = round(1 - best_bid, 4) if best_bid is not None else None
-    depth_down = sum(q for p, q in bids if best_bid is not None and abs(p - best_bid) < 1e-9)
-    cum_down = sum(q for p, q in bids if (1 - p) <= 0.99 + 1e-9)
-    return ask_up, depth_up, cum_up, ask_down, depth_down, cum_down
+    bid_up = max(bids)[0] if bids else None
+    return {"ask_up": ask_up, "ask_up_q": sum(q for p, q in offers if ask_up is not None and abs(p - ask_up) < 1e-9),
+            "bid_up": bid_up, "bid_up_q": sum(q for p, q in bids if bid_up is not None and abs(p - bid_up) < 1e-9),
+            "ask_down": round(1 - bid_up, 4) if bid_up is not None else None,
+            "ask_down_q": sum(q for p, q in bids if bid_up is not None and abs(p - bid_up) < 1e-9),
+            "bid_down": round(1 - ask_up, 4) if ask_up is not None else None,
+            "bid_down_q": sum(q for p, q in offers if ask_up is not None and abs(p - ask_up) < 1e-9)}
+
+
+def k_sides(snap):
+    yb = snap.get("yb") or []
+    ya = snap.get("ya") or []
+    out = {"ask_up": ya[0][0] if ya else None, "ask_up_q": ya[0][1] if ya else 0,
+           "bid_up": yb[0][0] if yb else None, "bid_up_q": yb[0][1] if yb else 0}
+    out["ask_down"] = round(1 - out["bid_up"], 4) if out["bid_up"] is not None else None
+    out["ask_down_q"] = out["bid_up_q"]
+    out["bid_down"] = round(1 - out["ask_up"], 4) if out["ask_up"] is not None else None
+    out["bid_down_q"] = out["ask_up_q"]
+    return out
+
+
+def nearest_before(lst, t, max_age):
+    """lst sorted by time; latest element with time <= t + 0.5 and >= t - max_age."""
+    best = None
+    for tb, b in reversed(lst):
+        if tb <= t + 0.5:
+            if tb >= t - max_age:
+                best = b
+            break
+    return best
 
 
 def main():
     ap = argparse.ArgumentParser()
     ap.add_argument("data_dir", nargs="?", default=os.environ.get("MRP_DATA_DIR", "./data"))
-    ap.add_argument("--lot", type=float, default=10, help="contracts per entry (default 10)")
+    ap.add_argument("--lot", type=float, default=10)
+    ap.add_argument("--days", type=float, default=None)
+    ap.add_argument("--min-depth", type=float, default=None)
+    ap.add_argument("--min-d-bps", type=float, default=0.0, help="settlement-gate threshold in basis points of price")
     ap.add_argument("--csv", default="windows.csv")
-    ap.add_argument("--min-depth", type=float, default=None, help="required contracts at the ask (default = lot)")
-    ap.add_argument("--days", type=float, default=None, help="only analyze the last N days of data (default all)")
-    ap.add_argument("--min-d", type=float, default=0.0,
-                    help="settlement-gate threshold: require |BRTI - priceToBeat| >= this ($) for entry_ok (default 0 = off)")
     args = ap.parse_args()
     lot = args.lot
     min_depth = args.min_depth if args.min_depth is not None else lot
-    min_d = args.min_d
 
-    brti: dict[int, float] = {}
-    markets: dict[str, dict] = {}
-    books: dict[str, list] = defaultdict(list)
-    states: dict[str, list] = defaultdict(list)
-    settle_avg: dict[str, list] = defaultdict(list)
+    idx = defaultdict(dict)          # sym -> {sec: value}
+    idx_src = {}                     # sym -> kalshi|pmus
+    markets = {}                     # slug -> dict
+    books = defaultdict(list)        # slug -> [(t, book)]
+    kbooks = defaultdict(list)       # (sym, close) -> [(t, snap)]
+    states = defaultdict(list)
+    settle_avg = defaultdict(list)
     errors = 0
-
+    n_rec = 0
     for r in load(args.data_dir, args.days):
+        n_rec += 1
         k, d, t = r.get("k"), r.get("d"), r.get("t")
-        if k == "pmus.idx":
+        if k == "kalshi.idx":
             try:
-                brti[int(d["ts"])] = float(d["c"])
+                idx[d["sym"]][int(d["t"])] = float(d["v"]); idx_src[d["sym"]] = "kalshi"
+            except (KeyError, TypeError, ValueError):
+                pass
+        elif k == "pmus.idx":
+            try:
+                sym = d.get("sym", "btc")
+                if idx_src.get(sym) != "kalshi":
+                    idx[sym][int(d["ts"])] = float(d["c"]); idx_src.setdefault(sym, "pmus")
             except (KeyError, TypeError, ValueError):
                 pass
         elif k == "pmus.market":
-            slug = d.get("slug")
-            apt = d.get("assetPriceTerms") or {}
+            slug = d.get("slug"); apt = d.get("assetPriceTerms") or {}
             m = markets.setdefault(slug, {"slug": slug})
             m["start"] = parse_ts(apt.get("windowStart")) or m.get("start")
             m["end"] = parse_ts(apt.get("windowEnd")) or m.get("end")
@@ -155,81 +185,82 @@ def main():
             sp = parse_amount(apt.get("settlementPrice"))
             if sp is not None:
                 m["settlementPrice"] = sp
-            m["tick"] = d.get("orderPriceMinTickSize", m.get("tick"))
-            m["minq"] = d.get("minimumTradeQty", m.get("minq"))
         elif k == "pmus.settlement":
-            slug = d.get("slug")
-            m = markets.setdefault(slug, {"slug": slug})
+            slug = d.get("slug"); m = markets.setdefault(slug, {"slug": slug})
             if d.get("settlementPrice") is not None:
                 m["settlementPrice"] = d["settlementPrice"]
             if d.get("priceToBeat") is not None and m.get("ptb") is None:
                 m["ptb"] = d["priceToBeat"]
             if d.get("settlement") is not None:
                 m["settlement"] = parse_amount(d["settlement"])
-            m["settle_latency_s"] = d.get("latency_s")
             if d.get("end"):
                 m["end"] = d["end"]
+            m["settle_latency_s"] = d.get("latency_s")
         elif k == "pmus.book":
             books[d.get("slug")].append((t / 1000.0, d.get("book") or {}))
+        elif k == "pmus.ws":
+            md = d.get("marketData")
+            if md and md.get("marketSlug"):
+                books[md["marketSlug"]].append((t / 1000.0, md))
+        elif k == "kalshi.book":
+            kbooks[(d.get("sym"), int(d.get("close") or 0))].append((t / 1000.0, d))
         elif k == "pmus.state":
             states[d.get("slug")].append((t / 1000.0, d.get("from"), d.get("to")))
-        elif k == "pmus.settle_avg":
+        elif k in ("settle_avg", "pmus.settle_avg"):
             settle_avg[d.get("slug")].append((t / 1000.0, d))
         elif k == "err":
             errors += 1
+    for lst in books.values():
+        lst.sort(key=lambda x: x[0])
+    for lst in kbooks.values():
+        lst.sort(key=lambda x: x[0])
 
-    # ---------------------------------------------------------------- per-window table
     rows = []
     for slug, m in sorted(markets.items()):
         ptb, end = m.get("ptb"), m.get("end")
         if ptb is None or end is None:
             continue
         end = int(round(end))
-        sp = m.get("settlementPrice")
-        settle = m.get("settlement")
+        sym, hz = slug_parts(slug)
+        sp, settle = m.get("settlementPrice"), m.get("settlement")
         if sp is None and settle is None:
-            continue  # not settled yet
-        if settle is not None:
-            outcome = "UP" if settle >= 0.5 else "DOWN"
-        else:
-            outcome = "UP" if sp >= ptb else "DOWN"
-        # settlement-minute check from our own BRTI capture
-        mine = [brti[ts] for ts in range(end - 60, end) if ts in brti]
-        my_close = round(sum(mine) / len(mine), 2) if len(mine) == 60 else None
-        bl = sorted(books.get(slug, []))
+            continue
+        outcome = ("UP" if settle >= 0.5 else "DOWN") if settle is not None else ("UP" if sp >= ptb else "DOWN")
+        series = idx.get(sym, {})
+        mine = [series[ts] for ts in range(end - 60, end) if ts in series]
+        my_close = round(sum(mine) / 60, 2) if len(mine) == 60 else None
+        bl = books.get(slug, [])
+        kl = kbooks.get((sym, end), [])
         for tau in CHECKPOINTS:
+            if tau >= hz:
+                continue
             t = end - tau
-            # BRTI at t (fallback: nearest earlier print within 3 s)
-            px = None
-            for back in range(0, 4):
-                if (t - back) in brti:
-                    px = brti[t - back]
-                    break
+            px = next((series[t - b] for b in range(0, 4) if (t - b) in series), None)
             if px is None:
                 continue
             d = px - ptb
             leader = "UP" if d >= 0 else "DOWN"
-            # latest book at or before t (+0.5 s slack), not older than 3 s
-            bk = None
-            bt = None
-            for tb, b in reversed(bl):
-                if tb <= t + 0.5:
-                    if tb >= t - 3.0:
-                        bk, bt = b, tb
-                    break
+            bk = nearest_before(bl, t, 3.0)
+            ks = nearest_before(kl, t, 3.0)
+            pm = pm_sides(bk) if bk else {}
+            kk = k_sides(ks) if ks else {}
+            side = "up" if leader == "UP" else "down"
+            l_ask, l_q = pm.get(f"ask_{side}"), pm.get(f"ask_{side}_q") or 0
+            l_bid = pm.get(f"bid_{side}")
+            k_ask, k_q, k_bid = kk.get(f"ask_{side}"), kk.get(f"ask_{side}_q") or 0, kk.get(f"bid_{side}")
+            f_pm = fee(THETA_PM, lot, l_ask) if l_ask else None
+            net = round(lot * (1 - l_ask) - f_pm, 2) if l_ask else None
             state = bk.get("state") if bk else None
-            ask_up = depth_up = cum_up = ask_dn = depth_dn = cum_dn = None
-            if bk:
-                ask_up, depth_up, cum_up, ask_dn, depth_dn, cum_dn = book_sides(bk)
-            l_ask = ask_up if leader == "UP" else ask_dn
-            l_depth = depth_up if leader == "UP" else depth_dn
-            l_cum = cum_up if leader == "UP" else cum_dn
-            fee = taker_fee(lot, l_ask) if l_ask else None
-            net_win = round(lot * (1 - l_ask) - fee, 2) if l_ask else None
-            entry_ok = bool(bk and state == "MARKET_STATE_OPEN" and l_ask is not None and l_ask <= 0.99
-                            and (l_depth or 0) >= min_depth and net_win is not None and net_win > 0
-                            and abs(d) >= min_d)
-            # required remaining-average move (from recorder's running-average records), tau <= 60
+            d_bps = 1e4 * d / ptb if ptb else 0
+            entry_ok = bool(bk and state == "MARKET_STATE_OPEN" and l_ask is not None and l_ask <= 0.99 and l_q >= min_depth
+                            and net is not None and net > 0 and abs(d_bps) >= args.min_d_bps)
+            # cross-venue lock on the leader: buy on one venue, sell on the other (same settlement index)
+            lock = None
+            if l_bid is not None and k_ask is not None:
+                lock = round(l_bid - k_ask - THETA_PM * l_bid * (1 - l_bid) - THETA_K * k_ask * (1 - k_ask), 4)
+            if l_ask is not None and k_bid is not None:
+                alt = round(k_bid - l_ask - THETA_PM * l_ask * (1 - l_ask) - THETA_K * k_bid * (1 - k_bid), 4)
+                lock = alt if lock is None else max(lock, alt)
             need = None
             if tau <= 60:
                 best = None
@@ -238,93 +269,77 @@ def main():
                         best = (ta, sa)
                 if best:
                     need = best[1].get("need_rem_move")
-            rows.append({
-                "slug": slug, "end_utc": datetime.fromtimestamp(end, tz=timezone.utc).strftime("%Y-%m-%d %H:%M"),
-                "tau": tau, "ptb": ptb, "brti": px, "d": round(d, 2), "leader": leader, "outcome": outcome,
-                "flip": int(leader != outcome), "state": state, "book_age_s": round(t - bt, 1) if bt else None,
-                "ask_up": ask_up, "ask_down": ask_dn, "leader_ask": l_ask, "leader_depth": l_depth,
-                "leader_cum_le99": l_cum, "fee": fee, "net_if_win": net_win, "entry_ok": int(entry_ok),
-                "need_rem_move": need, "settlementPrice": sp, "my_close_avg": my_close,
-                "close_match": (None if (sp is None or my_close is None) else int(abs(sp - my_close) < 0.006)),
-            })
+            rows.append({"slug": slug, "sym": sym, "hz_min": hz // 60,
+                         "end_utc": datetime.fromtimestamp(end, tz=timezone.utc).strftime("%Y-%m-%d %H:%M"),
+                         "tau": tau, "ptb": ptb, "idx": px, "idx_src": idx_src.get(sym), "d": round(d, 4), "d_bps": round(d_bps, 1),
+                         "leader": leader, "outcome": outcome, "flip": int(leader != outcome), "state": state,
+                         "pm_leader_ask": l_ask, "pm_leader_ask_q": l_q, "pm_leader_bid": l_bid,
+                         "k_leader_ask": k_ask, "k_leader_ask_q": k_q, "k_leader_bid": k_bid, "lock_margin": lock,
+                         "fee": f_pm, "net_if_win": net, "entry_ok": int(entry_ok), "need_rem_move": need,
+                         "settlementPrice": sp, "my_close_avg": my_close,
+                         "close_match": (None if (sp is None or my_close is None) else int(abs(sp - my_close) < 0.006))})
 
+    print(f"\nMr. P — gate report   records={n_rec:,}  windows={len({r['slug'] for r in rows})}  lot={lot:g}  errors_logged={errors}")
+    print(f"data: {args.data_dir}   index sources: {dict(idx_src) or 'none'}")
     if not rows:
-        print("No completed windows with price-to-beat + settlement yet. Let the recorder run longer.")
+        print("No completed windows with price-to-beat + settlement yet.")
         return
-
     with open(args.csv, "w", newline="") as fh:
-        w = csv.DictWriter(fh, fieldnames=list(rows[0].keys()))
-        w.writeheader()
-        w.writerows(rows)
+        w = csv.DictWriter(fh, fieldnames=list(rows[0].keys())); w.writeheader(); w.writerows(rows)
 
-    # ---------------------------------------------------------------- report
-    windows = sorted({r["slug"] for r in rows})
-    print(f"\nMr. P — gate report   windows={len(windows)}  lot={lot:g}  errors_logged={errors}")
-    print(f"data: {args.data_dir}   csv: {args.csv}\n")
-    flips_total = sum(1 for r in rows if r["tau"] == 60 and r["flip"])
-    cm = [r["close_match"] for r in rows if r["tau"] == 60 and r["close_match"] is not None]
-    if cm:
-        print(f"settlement reproduction: our 60-sample average matched the exchange's settlementPrice "
-              f"in {sum(cm)}/{len(cm)} windows  (anything < 100% means a feed gap or a rule mismatch)\n")
-    hdr = f"{'T-left':>6} {'n':>4} {'flip%':>6} {'open%':>6} {'ask<=99':>8} {'entry_ok':>8} {'ok&flip':>8} " \
-          f"{'min|d|ok':>9} {'med|d|':>7} {'ask p50':>7} {'ask p90':>7} {'net/lot':>8}"
-    print(hdr)
-    print("-" * len(hdr))
-    for tau in CHECKPOINTS:
-        rr = [r for r in rows if r["tau"] == tau]
-        if not rr:
-            continue
-        n = len(rr)
-        flip = sum(r["flip"] for r in rr)
-        openp = sum(1 for r in rr if r["state"] == "MARKET_STATE_OPEN")
-        cheap = sum(1 for r in rr if r["leader_ask"] is not None and r["leader_ask"] <= 0.99)
-        ok = [r for r in rr if r["entry_ok"]]
-        ok_flip = sum(r["flip"] for r in ok)
-        min_d_ok = min((abs(r["d"]) for r in ok), default=None)
-        med_d = statistics.median(abs(r["d"]) for r in rr)
-        asks = sorted(r["leader_ask"] for r in rr if r["leader_ask"] is not None)
-        p50 = asks[len(asks) // 2] if asks else None
-        p90 = asks[int(len(asks) * 0.9)] if asks else None
-        nets = [r["net_if_win"] for r in ok]
-        net_med = statistics.median(nets) if nets else None
-        print(f"{tau:>6} {n:>4} {100*flip/n:>5.1f}% {100*openp/n:>5.1f}% {cheap:>8} {len(ok):>8} {ok_flip:>8} "
-              f"{(f'{min_d_ok:.0f}' if min_d_ok is not None else '-'):>9} {med_d:>7.0f} "
-              f"{(f'{p50:.2f}' if p50 is not None else '-'):>7} {(f'{p90:.2f}' if p90 is not None else '-'):>7} "
-              f"{(f'{net_med:.2f}' if net_med is not None else '-'):>8}")
-    print(f"\nflip% = leading side at T-left lost.  entry_ok = state OPEN, leader ask <= 0.99 with >= {min_depth:g} "
-          f"contracts, positive net after fee{f', |d| >= ${min_d:g}' if min_d else ''} (re-run with --min-d to test a "
-          f"settlement-gate threshold).\nok&flip = entries that would have been taken AND lost — this column must be "
-          f"ZERO, with margin, before anything goes live.")
-
-    # ---------------------------------------------------------------- physics: BRTI speed
-    ts_sorted = sorted(brti)
-    if len(ts_sorted) > 120:
-        print("\nBRTI speed (max absolute move observed over a span, $):")
-        for span in (1, 5, 10, 15, 30, 60):
-            moves = []
-            for ts in ts_sorted:
-                if (ts + span) in brti:
-                    moves.append(abs(brti[ts + span] - brti[ts]))
-            if moves:
-                moves.sort()
-                p99 = moves[int(len(moves) * 0.99)]
-                print(f"  {span:>3}s  max={moves[-1]:>8.2f}  p99.9={moves[int(len(moves)*0.999)]:>8.2f}  "
-                      f"p99={p99:>7.2f}  median={moves[len(moves)//2]:>6.2f}  (n={len(moves)})")
-        print("  -> a flip at T-left=k needs the remaining k prints to average 60/k x |d| away. "
-              "Compare need_rem_move in windows.csv to the max k-second move above.")
-
-    # ---------------------------------------------------------------- state transitions summary
+    groups = sorted({(r["sym"], r["hz_min"]) for r in rows})
+    for sym, hzm in groups:
+        rr_all = [r for r in rows if r["sym"] == sym and r["hz_min"] == hzm]
+        wins = sorted({r["slug"] for r in rr_all})
+        cm = [r["close_match"] for r in rr_all if r["tau"] == 60 and r["close_match"] is not None]
+        print(f"\n=== {sym.upper()} {hzm}-minute   windows={len(wins)}   index={idx_src.get(sym, '?')}"
+              + (f"   settlement reproduced {sum(cm)}/{len(cm)}" if cm else ""))
+        hdr = (f"{'T-left':>6} {'n':>4} {'flip%':>6} {'open%':>6} {'med|d|bps':>9} {'PM ask<=.99':>11} {'<=.95':>6} "
+               f"{'entry_ok':>8} {'ok&flip':>7} {'min|d|ok$':>9} {'PM ask p50':>10} {'K ask p50':>9} {'K bid p50':>9} {'lock>0':>6} {'maxlock':>7}")
+        print(hdr); print("-" * len(hdr))
+        for tau in CHECKPOINTS:
+            rr = [r for r in rr_all if r["tau"] == tau]
+            if not rr:
+                continue
+            n = len(rr); flips = sum(r["flip"] for r in rr)
+            openp = sum(1 for r in rr if r["state"] == "MARKET_STATE_OPEN")
+            cheap = sum(1 for r in rr if r["pm_leader_ask"] is not None and r["pm_leader_ask"] <= 0.99)
+            cheap95 = sum(1 for r in rr if r["pm_leader_ask"] is not None and r["pm_leader_ask"] <= 0.95)
+            ok = [r for r in rr if r["entry_ok"]]
+            okflip = sum(r["flip"] for r in ok)
+            mind = min((abs(r["d"]) for r in ok), default=None)
+            med_bps = statistics.median(abs(r["d_bps"]) for r in rr)
+            pa = sorted(r["pm_leader_ask"] for r in rr if r["pm_leader_ask"] is not None)
+            ka = sorted(r["k_leader_ask"] for r in rr if r["k_leader_ask"] is not None)
+            kb = sorted(r["k_leader_bid"] for r in rr if r["k_leader_bid"] is not None)
+            locks = [r["lock_margin"] for r in rr if r["lock_margin"] is not None]
+            f = lambda xs, fmt="{:.3f}": (fmt.format(xs[len(xs) // 2]) if xs else "-")
+            print(f"{tau:>6} {n:>4} {100*flips/n:>5.1f}% {100*openp/n:>5.0f}% {med_bps:>9.1f} {cheap:>11} {cheap95:>6} "
+                  f"{len(ok):>8} {okflip:>7} {(f'{mind:.0f}' if mind is not None else '-'):>9} {f(pa):>10} {f(ka):>9} {f(kb):>9} "
+                  f"{sum(1 for x in locks if x > 0):>6} {(f'{max(locks):+.3f}' if locks else '-'):>7}")
+        # physics from the true prints
+        series = idx.get(sym, {})
+        if len(series) > 600:
+            ks = sorted(series)
+            out = []
+            for span in (1, 5, 10, 15, 30, 60):
+                mv = sorted(abs(series[t + span] - series[t]) for t in ks if (t + span) in series)
+                if mv:
+                    out.append(f"{span}s max {mv[-1]:.2f} p99.9 {mv[int(len(mv)*.999)]:.2f}")
+            print(f"  index speed ({idx_src.get(sym)}, {len(series)} prints): " + " | ".join(out))
+    print("\nColumns: PM = Polymarket US (0.01 ticks, leader ask / count with >= lot contracts), K = Kalshi (0.001 ticks). "
+          "lock>0 = checkpoints where buying the leader on one venue and selling it on the other cleared both fees.\n"
+          "entry_ok = state OPEN, PM leader ask <= 0.99 with >= lot contracts, positive net"
+          + (f", |d| >= {args.min_d_bps:g} bps" if args.min_d_bps else "") + ". ok&flip must be ZERO with margin before anything goes live.")
     trans = defaultdict(int)
     for slug, lst in states.items():
-        m = markets.get(slug, {})
-        end = m.get("end")
+        end = (markets.get(slug) or {}).get("end")
         for t, a, b in lst:
-            rel = round(t - end) if end else None
-            trans[(a, b, "before_end" if (rel is not None and rel < 0) else "after_end")] += 1
+            trans[(str(a)[13:] or str(a), str(b)[13:] or str(b), "before_end" if (end and t < end) else "after_end")] += 1
     if trans:
-        print("\nmarket state transitions seen (from -> to, relative to window end):")
-        for (a, b, when), n in sorted(trans.items(), key=lambda x: -x[1]):
-            print(f"  {str(a):>36} -> {str(b):<36} {when:>10}  x{n}")
+        print("\nPolymarket state transitions:")
+        for (a, b, when), n in sorted(trans.items(), key=lambda x: -x[1])[:12]:
+            print(f"  {a:>22} -> {b:<24} {when:>10}  x{n}")
 
 
 if __name__ == "__main__":
