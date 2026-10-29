@@ -78,6 +78,7 @@ def main():
     pm_snaps = defaultdict(list)                     # (sport, market slug) -> [(t, bid, ask, score, live)]
     k_snaps = defaultdict(list)                      # (series, ticker) -> [(t, yb, ya, ybq, yaq, status)]
     samples = {}
+    decided = defaultdict(list)                      # kalshi ticker -> [(t, margin, lock, rec)]
     series_titles = {}
     matches = 0
     for r in load(a.root, a.days):
@@ -126,6 +127,8 @@ def main():
         elif k == "sp.sample":
             obj = d.get("event") or d.get("market") or {}
             samples[d.get("venue")] = sorted(obj.keys())[:60]
+        elif k == "sp.decided":
+            decided[d.get("market")].append((t, d.get("margin"), d.get("lock"), d))
         elif k == "sp.match":
             matches += 1
 
@@ -177,8 +180,36 @@ def main():
                 px = f" pm {fmt(d.get('pm_bid'), 2)}/{fmt(d.get('pm_ask'), 2)} k {fmt(d.get('k_bid'), 2)}/{fmt(d.get('k_ask'), 2)} {d.get('dir') or ''}"
             bbo = d.get("bbo")
             bb = f" | fresh bbo {fmt(bbo.get('bid'), 2)}/{fmt(bbo.get('ask'), 2)} depth {bbo.get('bidDepth')}/{bbo.get('askDepth')}" if bbo else ""
-            print(f"- **{o['kind']}** {d.get('sport') or ''} — {desc[:70]} —{px} | margin {fmt(o['max_margin'], 4)} | "
+            lk = " 🔒" if d.get("lock") else ""
+            act = f" {d.get('action')} @ {d.get('price')}" if d.get("action") else ""
+            print(f"- **{o['kind']}**{lk} {d.get('sport') or ''} — {desc[:70]} —{px}{act} | margin {fmt(o['max_margin'], 4)} | "
                   f"{o['max_persist'] // 60} min, {o['hits']} hits{bb} | score {d.get('score') or '-'} {d.get('period') or ''}")
+        print()
+
+    # ------------------------------------------------------------------ decided-state engine
+    print("## Decided-state engine (contracts the live score already settled, still trading)\n")
+    if not decided:
+        print("no decided-but-active contracts seen yet\n")
+    else:
+        rows = []
+        for tk, xs in decided.items():
+            xs.sort(key=lambda x: x[0])
+            first, last = xs[0][0], xs[-1][0]
+            mispriced = [x for x in xs if (x[1] or 0) > 0.004]
+            locked = [x for x in mispriced if x[2]]
+            d = xs[-1][3]
+            rows.append((tk, d, len(xs), (last - first) / 1000, max((x[1] or 0) for x in xs),
+                         (mispriced[-1][0] - mispriced[0][0]) / 1000 if mispriced else 0,
+                         max((x[1] or 0) for x in locked) if locked else None,
+                         max(((x[3].get("depth") or 0) for x in locked), default=0)))
+        n_mis = sum(1 for r in rows if r[4] > 0.004)
+        n_lock = sum(1 for r in rows if r[6])
+        print(f"{len(rows)} contracts decided while active; {n_mis} had a price leaving > 0.4c after fees; "
+              f"{n_lock} of those were mispriced AFTER the score was stable (lock tier)\n")
+        print("| sport | game | contract | decided | reason | max margin | mispriced for | lock margin | lock depth |\n|---|---|---|---|---|---|---|---|---|")
+        for tk, d, n, span, mm, mis, lm, dep in sorted(rows, key=lambda r: -(r[6] or 0) - r[4] / 10)[: a.top]:
+            print(f"| {d.get('sport')} | {str(d.get('title'))[:32]} | {tk} | {'YES' if d.get('decided_yes') else 'NO'} | {d.get('reason')} | "
+                  f"{fmt(mm, 3)} | {mis:.0f}s | {fmt(lm, 3)} | {fmt(dep, 0)} |")
         print()
 
     # ------------------------------------------------------------------ latency
