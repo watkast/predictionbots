@@ -1,0 +1,35 @@
+# Mr. P research studies (read-only; public endpoints; never places orders). Every script in mrp/research/
+# runs when it changes on main (so merging a study's PR runs it) or on demand; results land on the
+# mrp-data branch at mrp/research/<study>/ (e.g. mrp/research/nfl_comeback/NFL.md).
+name: mrp-research
+on:
+  push:
+    branches: [main]
+    paths: ["mrp/research/**", ".github/workflows/mrp-research.yml"]
+  workflow_dispatch:
+    inputs:
+      study:
+        description: "Study name (file in mrp/research without .py); empty = all"
+        default: ""
+
+permissions:
+  contents: write
+
+concurrency:
+  group: mrp-research
+  cancel-in-progress: false
+
+jobs:
+  research:
+    runs-on: ubuntu-latest
+    timeout-minutes: 300
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+          cache: pip
+          cache-dependency-path: mrp/requirements.txt
+      - run: pip install -r mrp/requirements.txt
+      - name: Run studies and publish to mrp-data
+        run: bash mrp/gha_research.sh "${{ github.event.inputs.study || '' }}"
