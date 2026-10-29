@@ -12,7 +12,21 @@ and under what conditions. Nothing here trades.
 - Trading ends at the settlement instant. Windows open for trading ~90 s before they start.
 - Kalshi's KXBTC15M uses the identical statistic on the identical index.
 
-## Fastest path from an iPhone/iPad: a $4–6/month cloud box (10 minutes, Safari + an SSH app)
+## Zero-server path (what's running now): GitHub Actions, the repo's own pattern
+`.github/workflows/mrp-record.yml` on `main` records in back-to-back ~5.6 h runs (hourly cron +
+concurrency group, like `ef-autobuyer.yml`), publishing every 10 minutes to the small `mrp-data`
+branch:
+- `mrp/REPORT.md` — the analyzer's gate report over the last 7 days (read it on GitHub from a phone)
+- `mrp/windows.csv` — per-window detail
+- `mrp/data/<run>/YYYY-MM-DD/HH.jsonl` — raw capture, one folder per run
+
+The runner is read-only: it never calls an order endpoint. The Kalshi layer turns on automatically
+from the repo's existing `KALSHI_KEY_ID` / `KALSHI_PRIVATE_KEY_PEM` secrets; add `POLYMARKET_KEY_ID`
+and `POLYMARKET_SECRET_KEY` as repo secrets to enable the Polymarket US WebSocket layer. Known
+limits of this path: GitHub's cron can start late (a few minutes of gap between runs), and the 6-hour
+job cap means one restart per run. For months of continuous capture, move to a VPS (below) — same code.
+
+## Cloud box path: a $4–8/month VPS (10 minutes, Safari + an SSH app)
 1. Create a droplet at digitalocean.com (Ubuntu 24.04, region New York, cheapest size, **password** auth
    — easier than SSH keys on mobile). Copy its IP. (AWS Lightsail in Virginia is the equivalent.)
 2. Install **Termius** (free) → New host → the IP, user `root`, the password → connect.

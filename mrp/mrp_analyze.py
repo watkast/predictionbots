@@ -66,8 +66,21 @@ def taker_fee(contracts: float, p: float) -> float:
     return bankers_round_cents(THETA * contracts * p * (1 - p))
 
 
-def load(data_dir):
-    files = sorted(glob.glob(os.path.join(data_dir, "*", "*.jsonl")))
+def load(data_dir, days=None):
+    """Every */YYYY-MM-DD/HH.jsonl under data_dir, any depth (one sub-folder per recorder run is fine).
+    `days` keeps only date folders within the last N days."""
+    files = sorted(glob.glob(os.path.join(data_dir, "**", "*.jsonl"), recursive=True))
+    if days:
+        cutoff = (datetime.now(timezone.utc).timestamp() - days * 86400)
+        keep = []
+        for f in files:
+            day = os.path.basename(os.path.dirname(f))
+            try:
+                if datetime.strptime(day, "%Y-%m-%d").replace(tzinfo=timezone.utc).timestamp() + 86400 >= cutoff:
+                    keep.append(f)
+            except ValueError:
+                keep.append(f)
+        files = keep
     if not files:
         raise SystemExit(f"no JSONL files under {data_dir}")
     for f in files:
@@ -105,6 +118,7 @@ def main():
     ap.add_argument("--lot", type=float, default=10, help="contracts per entry (default 10)")
     ap.add_argument("--csv", default="windows.csv")
     ap.add_argument("--min-depth", type=float, default=None, help="required contracts at the ask (default = lot)")
+    ap.add_argument("--days", type=float, default=None, help="only analyze the last N days of data (default all)")
     ap.add_argument("--min-d", type=float, default=0.0,
                     help="settlement-gate threshold: require |BRTI - priceToBeat| >= this ($) for entry_ok (default 0 = off)")
     args = ap.parse_args()
@@ -119,7 +133,7 @@ def main():
     settle_avg: dict[str, list] = defaultdict(list)
     errors = 0
 
-    for r in load(args.data_dir):
+    for r in load(args.data_dir, args.days):
         k, d, t = r.get("k"), r.get("d"), r.get("t")
         if k == "pmus.idx":
             try:

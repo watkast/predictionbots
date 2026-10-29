@@ -76,6 +76,10 @@ WINDOW = 900  # seconds
 
 KALSHI_KEY_ID = os.environ.get("KALSHI_KEY_ID")
 KALSHI_PRIVATE_KEY_PATH = os.environ.get("KALSHI_PRIVATE_KEY_PATH")
+# Same conventions as pb/venues/kalshi.py: PEM text (with literal "\n" allowed) or base64 PEM.
+KALSHI_PRIVATE_KEY_PEM = os.environ.get("KALSHI_PRIVATE_KEY_PEM")
+KALSHI_PRIVATE_KEY_B64 = os.environ.get("KALSHI_PRIVATE_KEY_B64")
+KALSHI_ON = bool(KALSHI_KEY_ID and (KALSHI_PRIVATE_KEY_PATH or KALSHI_PRIVATE_KEY_PEM or KALSHI_PRIVATE_KEY_B64))
 KALSHI_REST = os.environ.get("KALSHI_REST_URL", "https://external-api.kalshi.com")
 KALSHI_WS_URL = os.environ.get("KALSHI_WS_URL", "wss://external-api-ws.kalshi.com/trade-api/ws/v2")
 KALSHI_SERIES = os.environ.get("KALSHI_SERIES", "KXBTC15M")
@@ -484,8 +488,14 @@ def _kalshi_signer():
     from cryptography.hazmat.primitives import hashes, serialization
     from cryptography.hazmat.primitives.asymmetric import ed25519, padding, rsa
 
-    with open(KALSHI_PRIVATE_KEY_PATH, "rb") as f:
-        key = serialization.load_pem_private_key(f.read(), password=None)
+    if KALSHI_PRIVATE_KEY_PATH:
+        with open(KALSHI_PRIVATE_KEY_PATH, "rb") as f:
+            pem = f.read()
+    elif KALSHI_PRIVATE_KEY_PEM:
+        pem = KALSHI_PRIVATE_KEY_PEM.replace("\\n", "\n").encode()
+    else:
+        pem = base64.b64decode(KALSHI_PRIVATE_KEY_B64 or "")
+    key = serialization.load_pem_private_key(pem, password=None)
 
     def headers(method: str, path: str) -> dict:
         ts = str(now_ms())
@@ -635,14 +645,13 @@ def status_loop():
 def main():
     os.makedirs(DATA_DIR, exist_ok=True)
     W.write("rec.start", {"data_dir": DATA_DIR, "book_hot_s": BOOK_HOT_SECONDS,
-                          "kalshi": bool(KALSHI_KEY_ID and KALSHI_PRIVATE_KEY_PATH),
-                          "pmus_ws": bool(PM_KEY_ID and PM_SECRET), "pid": os.getpid()})
+                          "kalshi": KALSHI_ON, "pmus_ws": bool(PM_KEY_ID and PM_SECRET), "pid": os.getpid()})
     log(f"Mr. P recorder starting -> {DATA_DIR}  (Layer A on; "
-        f"Kalshi {'ON' if KALSHI_KEY_ID and KALSHI_PRIVATE_KEY_PATH else 'off'}; "
+        f"Kalshi {'ON' if KALSHI_ON else 'off'}; "
         f"PM-US WS {'ON' if PM_KEY_ID and PM_SECRET else 'off'})")
     threads = [threading.Thread(target=f, name=f.__name__, daemon=True)
                for f in (discovery_loop, index_loop, book_loop, settlement_loop, status_loop)]
-    if KALSHI_KEY_ID and KALSHI_PRIVATE_KEY_PATH:
+    if KALSHI_ON:
         threads.append(threading.Thread(target=run_async, args=(kalshi_ws_main(),), name="kalshi_ws", daemon=True))
     if PM_KEY_ID and PM_SECRET:
         threads.append(threading.Thread(target=run_async, args=(pmus_ws_main(),), name="pmus_ws", daemon=True))
