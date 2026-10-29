@@ -1,4 +1,4 @@
-# Mr. P — Night-1 kit (recorder · analyzer · backfill)
+# Mr. P — recorder kit (v2: every coin and timeframe, both venues)
 
 Goal of this kit: measure, on the exact series the market settles on, whether a
 "zero-risk" late entry exists in the Polymarket US 15-minute BTC Up/Down market —
@@ -58,6 +58,11 @@ python3 mrp_recorder.py
 ```
 Leave it running on an always-on machine. It writes `./data/YYYY-MM-DD/HH.jsonl` and prints a
 status line every minute. Ctrl-C stops it; restarting is safe (append-only files).
+
+v2 records every Up/Down window Polymarket US lists for the next 2 hours (any coin, 5m/15m/1h) and every
+open Kalshi `KX<COIN>15M` market for the coins in `MRP_COINS` (default btc,eth,sol,xrp,doge,bnb,hype).
+The analyzer reports per coin and timeframe, with Kalshi's book beside Polymarket's at every checkpoint
+and the cross-venue lock margin.
 
 What it records (Layer A, public endpoints only):
 - `pmus.idx` — every 1-second BRTI print (the settlement series), ~1 s latency
