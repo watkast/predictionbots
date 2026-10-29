@@ -40,6 +40,7 @@ S = requests.Session()
 S.headers["User-Agent"] = "mrp-research/0.1 (read-only)"
 THETA = 0.07
 PHASES = [("Q1", 0, 45), ("Q2", 45, 95), ("Q3", 110, 155), ("Q4 early", 155, 185), ("Q4 late", 185, 215)]
+DEFICITS = [(-99, -17), (-16, -9), (-8, -4), (-3, -1), (0, 0), (1, 99)]      # team score minus opponent
 BUCKETS = [(0.05, 0.10), (0.10, 0.15), (0.15, 0.20), (0.20, 0.25), (0.25, 0.30), (0.30, 0.35), (0.35, 0.40), (0.40, 0.50)]
 HOLD_P = [0.15, 0.20, 0.25, 0.30, 0.35]
 BOUNCE_D = [0.10, 0.15, 0.20]
@@ -105,6 +106,93 @@ def kickoff(m: dict) -> Optional[float]:
     h = int(hh) % 12 + (12 if ap == "PM" else 0)
     off = TZ.get(tz, -5)
     return (d.replace(hour=h, minute=int(mi or 0), tzinfo=timezone(timedelta(hours=off)))).timestamp()
+
+
+ESPN = "https://site.api.espn.com/apis/site/v2/sports/football/nfl"
+ALIAS = {"LA": "LAR", "JAC": "JAX", "WSH": "WAS", "LVR": "LV", "OAK": "LV", "SD": "LAC", "GNB": "GB", "KAN": "KC", "NWE": "NE",
+         "NOR": "NO", "SFO": "SF", "TAM": "TB"}
+MONTHS = {m: i for i, m in enumerate(("JAN", "FEB", "MAR", "APR", "MAY", "JUN", "JUL", "AUG", "SEP", "OCT", "NOV", "DEC"), 1)}
+
+
+def espn_get(url: str, cache_path: str) -> Any:
+    if os.path.exists(cache_path):
+        with open(cache_path) as fh:
+            return json.load(fh)
+    for i in range(3):
+        try:
+            r = S.get(url, timeout=30)
+            if r.status_code == 200:
+                data = r.json()
+                with open(cache_path, "w") as fh:
+                    json.dump(data, fh, separators=(",", ":"))
+                return data
+        except requests.RequestException:
+            pass
+        time.sleep(2 * (i + 1))
+    return None
+
+
+def espn_game(event_ticker: str, codes: list[str], cache: str) -> Optional[dict]:
+    """Find the ESPN game for a Kalshi NFL event (date in the ticker + team codes); return kickoff, home/away
+    abbreviations and the play-by-play state timeline [(ts, period, clock_s, home, away)]."""
+    m = re.match(r"[A-Z0-9]+-(\d\d)([A-Z]{3})(\d\d)", event_ticker)
+    if not m or m.group(2) not in MONTHS:
+        return None
+    d0 = datetime(2000 + int(m.group(1)), MONTHS[m.group(2)], int(m.group(3)))
+    want = {ALIAS.get(c, c) for c in codes}
+    for dd in (0, -1, 1):
+        day = (d0 + timedelta(days=dd)).strftime("%Y%m%d")
+        sb = espn_get(f"{ESPN}/scoreboard?dates={day}", os.path.join(cache, f"espn_sb_{day}.json")) or {}
+        for ev in sb.get("events") or []:
+            comp = (ev.get("competitions") or [{}])[0]
+            teams = {c.get("homeAway"): (c.get("team") or {}).get("abbreviation") for c in comp.get("competitors") or []}
+            if set(teams.values()) != want:
+                continue
+            ko = datetime.fromisoformat(str(ev.get("date")).replace("Z", "+00:00")).timestamp()
+            summ = espn_get(f"{ESPN}/summary?event={ev['id']}", os.path.join(cache, f"espn_sum_{ev['id']}.json")) or {}
+            tl = []
+            for dr in ((summ.get("drives") or {}).get("previous") or []):
+                for pl in dr.get("plays") or []:
+                    wc = pl.get("wallclock")
+                    if not wc:
+                        continue
+                    try:
+                        ts = datetime.fromisoformat(wc.replace("Z", "+00:00")).timestamp()
+                    except ValueError:
+                        continue
+                    clk = str((pl.get("clock") or {}).get("displayValue") or "0:00")
+                    mm_ = re.match(r"(\d+):(\d+)", clk)
+                    cs = int(mm_.group(1)) * 60 + int(mm_.group(2)) if mm_ else 0
+                    tl.append((ts, int((pl.get("period") or {}).get("number") or 0), cs,
+                               int(pl.get("homeScore") or 0), int(pl.get("awayScore") or 0)))
+            tl.sort()
+            return {"ko": ko, "home": teams.get("home"), "away": teams.get("away"), "tl": tl}
+    return None
+
+
+def state_at(g: dict, t: float) -> Optional[tuple]:
+    """(period, clock_s, home, away) of the last play at or before t."""
+    tl = g["tl"]
+    lo, hi = 0, len(tl)
+    while lo < hi:
+        mid = (lo + hi) // 2
+        if tl[mid][0] <= t:
+            lo = mid + 1
+        else:
+            hi = mid
+    return tl[lo - 1][1:] if lo else None
+
+
+def phase_of(period: int, clock_s: int) -> Optional[str]:
+    if period == 1:
+        return "Q1"
+    if period == 2:
+        return "Q2"
+    if period == 3:
+        return "Q3"
+    if period == 4:
+        return "Q4 early" if clock_s > 450 else "Q4 late"
+    return "OT" if period >= 5 else None
 
 
 def px_hi(o: Any) -> Optional[float]:
@@ -176,7 +264,7 @@ def main():
     os.makedirs(cache, exist_ok=True)
 
     ms = paged("/markets", {"series_ticker": a.series, "status": "settled", "limit": 1000, "mve_filter": "exclude"})
-    ms += paged("/historical/markets", {"series_ticker": a.series, "limit": 1000, "mve_filter": "exclude"})
+    ms += paged("/historical/markets", {"series_ticker": a.series, "limit": 1000})
     seen, markets = set(), []
     for m in ms:
         if m.get("ticker") in seen or m.get("result") not in ("yes", "no"):
@@ -194,9 +282,14 @@ def main():
     trades = []          # every simulated entry
     calib = defaultdict(lambda: [0, 0, 0.0])     # (phase, bucket) -> [n, wins, sum entry]
     no_kick = no_candles = used = 0
+    state_cal = defaultdict(lambda: [0, 0, 0.0])    # (period, deficit bucket, price bucket) -> [n, wins, sum paid]
+    espn_hits = 0
     for gi, ek in enumerate(gkeys):
+        codes = [mm_["ticker"].rsplit("-", 1)[-1] for mm_ in games[ek]]
+        g = espn_game(ek, codes, cache)
+        espn_hits += 1 if g else 0
         for m in games[ek]:
-            ko = kickoff(m)
+            ko = g["ko"] if g else kickoff(m)
             if not ko:
                 no_kick += 1
                 continue
@@ -208,11 +301,46 @@ def main():
             won = 1 if m["result"] == "yes" else 0
             team = m.get("yes_sub_title") or m["ticker"].rsplit("-", 1)[-1]
             series = [(int((c["t"] - ko) // 60), c) for c in cs]
+            code = ALIAS.get(m["ticker"].rsplit("-", 1)[-1], m["ticker"].rsplit("-", 1)[-1])
+            if g and g["tl"] and code in (g["home"], g["away"]):
+                is_home = code == g["home"]
+                st_series = []
+                for mn, c in series:
+                    st = state_at(g, c["t"])
+                    if st is None:
+                        st_series.append((None, None, c))
+                        continue
+                    per, clk, hs, as_ = st
+                    diff = (hs - as_) if is_home else (as_ - hs)
+                    st_series.append((phase_of(per, clk), (per, clk, diff), c))
+                # state calibration: first minute in each (period, deficit, price) cell
+                seen_cells = set()
+                for ph_, st, c in st_series:
+                    if st is None or c["a"] is None or not (0 < c["a"] < 1):
+                        continue
+                    per, clk, diff = st
+                    db = next((d for d in DEFICITS if d[0] <= diff <= d[1]), None)
+                    pb = next((b for b in BUCKETS if b[0] <= c["a"] < b[1]), None)
+                    if db is None or pb is None or per > 4:
+                        continue
+                    cell = (per, db, pb)
+                    if cell not in seen_cells:
+                        seen_cells.add(cell)
+                        sc = state_cal[cell]
+                        sc[0] += 1; sc[1] += won; sc[2] += c["a"]
+                # real phases replace the wall-clock proxy
+                series_ph = [(ph_ or "pre", c) for ph_, st, c in st_series]
+            else:
+                series_ph = None
             # A. calibration: first minute in each (phase, bucket)
+            def in_phase(idx, ph, lo, hi):
+                if series_ph is not None:
+                    return series_ph[idx][0] == ph
+                return lo <= series[idx][0] < hi
             for ph, lo, hi in PHASES:
                 hit = set()
-                for mn, c in series:
-                    if not (lo <= mn < hi) or c["a"] is None or not (0 < c["a"] < 1):
+                for idx, (mn, c) in enumerate(series):
+                    if not in_phase(idx, ph, lo, hi) or c["a"] is None or not (0 < c["a"] < 1):
                         continue
                     for b in BUCKETS:
                         if b not in hit and b[0] <= c["a"] < b[1]:
@@ -224,7 +352,7 @@ def main():
                 for P in HOLD_P:
                     entry = None
                     for i, (mn, c) in enumerate(series):
-                        if lo <= mn < hi and c["a"] is not None and 0 < c["a"] <= P and (c["b"] or 0) > 0:
+                        if in_phase(i, ph, lo, hi) and c["a"] is not None and 0 < c["a"] <= P and (c["b"] or 0) > 0:
                             entry = (i, mn, c["a"])
                             break
                     if not entry:
@@ -273,8 +401,9 @@ def main():
     L = []
     L.append(f"# NFL in-game underdog study ({a.series})\n")
     L.append(f"Updated {datetime.now(timezone.utc):%Y-%m-%d %H:%MZ}. {len(gkeys)} games, {used} team-markets with 1-min candles "
-             f"(skipped: {no_kick} no kickoff time, {no_candles} no candles). Buying at the ask, Kalshi taker fee 0.07·p·(1−p). "
-             "Phase = minutes since scheduled kickoff (proxy). One entry per team per game per rule.\n")
+             f"(skipped: {no_kick} no kickoff time, {no_candles} no candles). ESPN play-by-play matched for {espn_hits} games: "
+             "their phases come from the real quarter and clock (Q4 late = under 7:30 left); others use minutes since kickoff. "
+             "Buying at the ask, Kalshi taker fee 0.07·p·(1−p). One entry per team per game per rule.\n")
     L.append("## A. Calibration — does a team priced X actually win X% of the time?\n")
     L.append("| phase | ask bucket | n | avg paid | win rate | 95% low | edge/contract (after fee) |\n|---|---|---|---|---|---|---|")
     for ph, _, _ in PHASES:
@@ -286,6 +415,15 @@ def main():
             edge = k / n - avg - fee(avg)
             L.append(f"| {ph} | {b[0]:.2f}–{b[1]:.2f} | {n} | {avg:.3f} | {k / n:.3f} | {wilson_lo(k, n):.3f} | {edge:+.3f} |")
     L.append("\nEdge is real only where the **95% low** win rate is above avg paid + fee. Positive edge with a low bound below the price = not proven yet.\n")
+    L.append("## A2. Game state — team trailing by X in quarter Q, priced in bucket B: how often does it win?\n")
+    L.append("| quarter | score diff | ask bucket | n | avg paid | win rate | 95% low | edge (after fee) |\n|---|---|---|---|---|---|---|---|")
+    for (per, db, pb), (n, k, sp) in sorted(state_cal.items()):
+        if n < 8:
+            continue
+        avg = sp / n
+        dl = f"{db[0]}..{db[1]}" if db[0] != db[1] else "tied"
+        L.append(f"| Q{per} | {dl} | {pb[0]:.2f}–{pb[1]:.2f} | {n} | {avg:.3f} | {k / n:.3f} | {wilson_lo(k, n):.3f} | {k / n - avg - fee(avg):+.3f} |")
+    L.append("")
     L.append("## B/C. Strategies — buy the first time the ask is ≤ P in the phase\n")
     L.append("| phase | P | n | win% | hold: avg P&L/contract | bounce +10c | +15c | +20c | double | hit% (+15c) | worst-10 sum |\n|---|---|---|---|---|---|---|---|---|---|---|")
     grp = defaultdict(list)
