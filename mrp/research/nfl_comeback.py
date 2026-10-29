@@ -39,7 +39,7 @@ BASE = os.environ.get("KALSHI_REST_URL", "https://external-api.kalshi.com") + "/
 S = requests.Session()
 S.headers["User-Agent"] = "mrp-research/0.1 (read-only)"
 THETA = 0.07
-PHASES = [("Q1", 0, 45), ("Q2", 45, 95), ("Q3", 110, 155), ("Q4 early", 155, 185), ("Q4 late", 185, 215)]
+PHASES = [("pre", -30, 0), ("Q1", 0, 45), ("Q2", 45, 95), ("Q3", 110, 155), ("Q4 early", 155, 185), ("Q4 late", 185, 215)]
 DEFICITS = [(-99, -17), (-16, -9), (-8, -4), (-3, -1), (0, 0), (1, 99)]      # team score minus opponent
 BUCKETS = [(0.05, 0.10), (0.10, 0.15), (0.15, 0.20), (0.20, 0.25), (0.25, 0.30), (0.30, 0.35), (0.35, 0.40), (0.40, 0.50)]
 HOLD_P = [0.15, 0.20, 0.25, 0.30, 0.35]
@@ -283,6 +283,9 @@ def main():
     calib = defaultdict(lambda: [0, 0, 0.0])     # (phase, bucket) -> [n, wins, sum entry]
     no_kick = no_candles = used = 0
     state_cal = defaultdict(lambda: [0, 0, 0.0])    # (period, deficit bucket, price bucket) -> [n, wins, sum paid]
+    season_cal = defaultdict(lambda: [0, 0, 0.0])   # (season, phase, bucket)
+    fav_cal = defaultdict(lambda: [0, 0, 0.0])      # (period, pregame role, score state, coarse bucket)
+    COARSE = [(0.05, 0.20), (0.20, 0.35), (0.35, 0.50), (0.50, 0.65), (0.65, 0.80), (0.80, 0.95)]
     espn_hits = 0
     for gi, ek in enumerate(gkeys):
         codes = [mm_["ticker"].rsplit("-", 1)[-1] for mm_ in games[ek]]
@@ -301,6 +304,11 @@ def main():
             won = 1 if m["result"] == "yes" else 0
             team = m.get("yes_sub_title") or m["ticker"].rsplit("-", 1)[-1]
             series = [(int((c["t"] - ko) // 60), c) for c in cs]
+            kdt = datetime.fromtimestamp(ko, tz=timezone.utc)
+            season = kdt.year if kdt.month >= 8 else kdt.year - 1
+            pre = [c for mn, c in series if -30 <= mn < 0 and c["a"] is not None and c["b"] is not None and 0 < c["b"] <= c["a"] < 1]
+            pre_mid = (pre[-1]["a"] + pre[-1]["b"]) / 2 if pre else None
+            role = None if pre_mid is None else ("pregame fav" if pre_mid >= 0.5 else "pregame dog")
             code = ALIAS.get(m["ticker"].rsplit("-", 1)[-1], m["ticker"].rsplit("-", 1)[-1])
             if g and g["tl"] and code in (g["home"], g["away"]):
                 is_home = code == g["home"]
@@ -328,6 +336,14 @@ def main():
                         seen_cells.add(cell)
                         sc = state_cal[cell]
                         sc[0] += 1; sc[1] += won; sc[2] += c["a"]
+                    cb = next((b for b in COARSE if b[0] <= c["a"] < b[1]), None)
+                    if role and cb:
+                        ss = "trailing" if diff < 0 else ("tied" if diff == 0 else "leading")
+                        fcell = (per, role, ss, cb)
+                        if fcell not in seen_cells:
+                            seen_cells.add(fcell)
+                            fc = fav_cal[fcell]
+                            fc[0] += 1; fc[1] += won; fc[2] += c["a"]
                 # real phases replace the wall-clock proxy
                 series_ph = [(ph_ or "pre", c) for ph_, st, c in st_series]
             else:
@@ -347,6 +363,8 @@ def main():
                             hit.add(b)
                             d = calib[(ph, b)]
                             d[0] += 1; d[1] += won; d[2] += c["a"]
+                            d2 = season_cal[(season, ph, b)]
+                            d2[0] += 1; d2[1] += won; d2[2] += c["a"]
             # B/C. hold and bounce strategies
             for ph, lo, hi in PHASES:
                 for P in HOLD_P:
@@ -424,6 +442,29 @@ def main():
         dl = f"{db[0]}..{db[1]}" if db[0] != db[1] else "tied"
         L.append(f"| Q{per} | {dl} | {pb[0]:.2f}–{pb[1]:.2f} | {n} | {avg:.3f} | {k / n:.3f} | {wilson_lo(k, n):.3f} | {k / n - avg - fee(avg):+.3f} |")
     L.append("")
+    L.append("## A3. Pregame favourite vs underdog, by in-game score state (anchoring test)\n")
+    L.append("Role = which side the market favoured in the 30 min before kickoff. If bettors anchor on the pregame favourite, "
+             "trailing favourites are overpriced (negative edge) and leading underdogs underpriced (positive edge).\n")
+    L.append("| quarter | pregame role | score | ask | n | avg paid | win rate | 95% low | edge |\n|---|---|---|---|---|---|---|---|---|")
+    for (per, role, ss, cb), (n, k, sp) in sorted(fav_cal.items()):
+        if n < 15:
+            continue
+        avg = sp / n
+        L.append(f"| Q{per} | {role} | {ss} | {cb[0]:.2f}–{cb[1]:.2f} | {n} | {avg:.3f} | {k / n:.3f} | {wilson_lo(k, n):.3f} | {k / n - avg - fee(avg):+.3f} |")
+    L.append("")
+    L.append("## A4. Out-of-sample check — calibration edge by season (same cells, split)\n")
+    L.append("An edge that is real should show in BOTH seasons. One season positive and the other flat = likely noise.\n")
+    L.append("| phase | ask bucket | " + " | ".join(f"{yr} n / edge" for yr in sorted({k[0] for k in season_cal})) + " |")
+    L.append("|---|---|" + "---|" * len({k[0] for k in season_cal}))
+    for ph, _, _ in PHASES:
+        for b in BUCKETS:
+            cells = []
+            for yr in sorted({k[0] for k in season_cal}):
+                n, k, sp = season_cal.get((yr, ph, b), [0, 0, 0.0])
+                cells.append(f"{n} / {k / n - sp / n - fee(sp / n):+.3f}" if n >= 10 else f"{n} / -")
+            L.append(f"| {ph} | {b[0]:.2f}–{b[1]:.2f} | " + " | ".join(cells) + " |")
+    L.append("\n" + f"Note: about {sum(1 for v in calib.values() if v[0] >= 5) + sum(1 for v in state_cal.values() if v[0] >= 8)} cells are tested; "
+             "at 95% confidence ~5% of them look significant by chance. Trust only patterns that repeat across neighbouring cells AND both seasons.\n")
     L.append("## B/C. Strategies — buy the first time the ask is ≤ P in the phase\n")
     L.append("| phase | P | n | win% | hold: avg P&L/contract | bounce +10c | +15c | +20c | double | hit% (+15c) | worst-10 sum |\n|---|---|---|---|---|---|---|---|---|---|---|")
     grp = defaultdict(list)

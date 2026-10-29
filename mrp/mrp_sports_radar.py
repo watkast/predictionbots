@@ -821,6 +821,11 @@ def main():
                         confirmed += 1
                     except Exception as e:  # noqa
                         o["bbo_err"] = str(e)[:100]
+                st = (o.get("bbo") or {}).get("state")
+                if st and st != "OPEN":
+                    # Polymarket already halted this market: the event-list quote is stale, nothing is tradable
+                    o["kind"] = o["kind"] + "_closed"
+                    o["lock"] = False
                 W.write("sp.opp", o)
             for key in [k_ for k_, t in seen_opps.items() if now - t > 86400]:
                 seen_opps.pop(key, None)
