@@ -1,11 +1,11 @@
 # Mr. P — sports radar
 
-Updated 2026-10-29T17:31:56Z by `run-20261029T1721-40913591931` (last 7 days). Read-only scanner of every sports market on Polymarket US and Kalshi — it never places orders.
+Updated 2026-10-29T17:42:01Z by `run-20261029T1721-40913591931` (last 7 days). Read-only scanner of every sports market on Polymarket US and Kalshi — it never places orders.
 Kit: `mrp/mrp_sports_radar.py` on the `mrp` branch. Raw tape: `mrp/radar/<run>/`.
 
 # Sports radar report
 
-records 16,946 | 2026-10-29 15:47Z → 17:31Z | runs 2 | pairs matched 76 | errors none
+records 20,293 | 2026-10-29 15:47Z → 17:41Z | runs 2 | pairs matched 92 | errors none
 
 ## Catalogue (latest inventory, 17:23Z)
 
@@ -80,17 +80,17 @@ Polymarket US sports events 3946 of 5434 active events; Kalshi near-term sports 
 |---|---|---|---|---|---|
 | dead_pm | 7 | 79 | - | 19 min | 0/79 |
 | dutch_pm | 14 | 310 | 0.9786 | 89 min | 0/0 |
-| lag_k_settled | 143 | 857 | 0.9573 | 12 min | 90/690 |
+| lag_k_settled | 143 | 937 | 0.9573 | 19 min | 170/770 |
 
 Top by persistence × hits:
 
 - **dutch_pm** football — Week 8 Passing Yards Leader — Σask 0.040 | margin 0.9573 | 89 min, 90 hits | score - 
 - **dutch_pm** football — Week 8 Top TE Fantasy Football (PPR) — Σask 0.830 | margin 0.1152 | 79 min, 80 hits | score - 
 - **dutch_pm** football — Top WR Fantasy Football Week 8 (PPR) — Σask 0.460 | margin 0.5085 | 70 min, 71 hits | score - 
+- **lag_k_settled** table-tennis — Fashchevskyi Ivan vs. Potapov Mykhailo — bid 0.50 ask 0.51 sell_yes @ 0.5 | margin 0.4750 | 19 min, 75 hits | fresh bbo 0.50/0.51 depth 17/16 | score 0-0 
+- **lag_k_settled** table-tennis — Potapov Mykhailo vs. Pytsko Ivan — bid 0.47 ask 0.48 sell_yes @ 0.47 | margin 0.4451 | 19 min, 75 hits | fresh bbo 0.47/0.48 depth 15/15 | score 0-0 
 - **dutch_pm** esports — eBattles: Portugal (Taz) vs. Belgium (Maxa) — Σask 0.640 | margin 0.3304 | 51 min, 11 hits | score - 
 - **dutch_pm** football — Top RB Fantasy Football Week 8 (PPR) — Σask 0.860 | margin 0.0838 | 29 min, 30 hits | score - 
-- **lag_k_settled** table-tennis — Fashchevskyi Ivan vs. Potapov Mykhailo — bid 0.50 ask 0.51 sell_yes @ 0.5 | margin 0.4750 | 9 min, 35 hits | fresh bbo 0.50/0.51 depth 17/16 | score 0-0 
-- **lag_k_settled** table-tennis — Potapov Mykhailo vs. Pytsko Ivan — bid 0.37 ask 0.48 sell_yes @ 0.37 | margin 0.3467 | 9 min, 35 hits | fresh bbo 0.47/0.48 depth 15/15 | score 0-0 
 - **dead_pm** soccer — Atletico Nacional vs. Independiente Santa Fe — bid 0.65 ask 0.67 | margin - | 19 min, 20 hits | fresh bbo -/- depth None/None | score 0-0 POST
 - **dead_pm** soccer — Atletico Nacional vs. Independiente Santa Fe — bid 0.18 ask 0.21 | margin - | 19 min, 20 hits | fresh bbo -/- depth None/None | score 0-0 POST
 - **dead_pm** soccer — Atletico Nacional vs. Independiente Santa Fe — bid 0.13 ask 0.15 | margin - | 19 min, 20 hits | fresh bbo -/- depth None/None | score 0-0 POST
@@ -127,46 +127,46 @@ Kalshi: settlement_ts − close_time per series (negative = settled before the s
 
 | series | n | median | p90 |
 |---|---|---|---|
-| KXESOCCERGAME eSoccer Game | 132 | 4.0 min | 4.1 min |
+| KXESOCCERGAME eSoccer Game | 138 | 4.0 min | 4.1 min |
 | KXNFLNEXTTEAM Player Next Team | 33 | 3.0 min | 3.0 min |
+| KXCS2MAP Counter-Strike 2 Map Winner  | 32 | 3.0 min | 3.0 min |
 | KXITFWMATCH ITF Women's Match | 28 | 2.0 min | 2.1 min |
-| KXCS2MAP Counter-Strike 2 Map Winner  | 22 | 3.0 min | 3.0 min |
-| KXLIGAPROMATCH Russia Liga Pro Match | 22 | 4.0 min | 4.1 min |
-| KXITFWDOUBLES ITF Women's Doubles Match | 20 | 2.0 min | 2.1 min |
-| KXCS2GAME Counter-Strike 2 Game | 20 | 3.0 min | 3.0 min |
+| KXLIGAPROMATCH Russia Liga Pro Match | 26 | 4.0 min | 4.1 min |
+| KXCS2GAME Counter-Strike 2 Game | 24 | 3.0 min | 3.0 min |
+| KXITFWDOUBLES ITF Women's Doubles Match | 22 | 2.0 min | 2.1 min |
+| KXITFDOUBLES ITF Doubles Match | 18 | 2.0 min | 2.1 min |
+| KXDARTSMATCH Darts Match | 16 | 6.0 min | 6.0 min |
 | KXEBASKETBALLGAME eBasketball Game | 16 | 4.0 min | 4.0 min |
-| KXDARTSMATCH Darts Match | 14 | 6.0 min | 6.0 min |
-| KXITFDOUBLES ITF Doubles Match | 14 | 2.0 min | 2.0 min |
-| KXITFMATCH ITF Men's Match | 12 | 2.0 min | 2.1 min |
-| KXCS2SPREAD CS2 Spread | 10 | 4.0 min | 4.1 min |
+| KXITFMATCH ITF Men's Match | 14 | 2.0 min | 2.1 min |
+| KXATPSETWINNER ATP Set Winner | 12 | 6.0 min | 6.0 min |
+| KXCS2SPREAD CS2 Spread | 12 | 4.0 min | 4.1 min |
+| KXEFOOTBALLGAME eFootball Game | 10 | 31.0 min | 31.1 min |
+| KXDOTA2MAP Dota 2 Map Winner | 10 | 3.0 min | 3.0 min |
 | KXSAUDIPLTOTAL Saudi Pro League Total | 9 | 4.0 min | 4.0 min |
-| KXATPSETWINNER ATP Set Winner | 8 | 6.0 min | 6.0 min |
-| KXEFOOTBALLGAME eFootball Game | 8 | 31.0 min | 31.1 min |
 | KXATPEXACTMATCH ATP Exact Match Score | 8 | 6.0 min | 6.0 min |
+| KXCS2TOTALMAPS CS2 Total Maps | 6 | 3.0 min | 3.0 min |
 | KXEGYPLTOTAL Point Total | 6 | 4.0 min | 4.0 min |
 | KXATPGSPREAD ATP Game Spread | 6 | 6.0 min | 6.1 min |
 | KXATPGTOTAL ATP Total Games | 6 | 6.0 min | 6.0 min |
 | KXWTACHALLENGERMATCH Challenger WTA | 6 | 2.0 min | 2.1 min |
 | KXEGYPLSPREAD Spread | 5 | 1.5 min | 1.5 min |
 | KXSAUDIPLSPREAD Saudi Pro League Game | 5 | 1.5 min | 1.5 min |
+| KXT20MATCH Men's T20 Cricket Match | 4 | 5.0 min | 5.0 min |
 | KXATPDOUBLES ATP Doubles Tennis Match | 4 | 2.0 min | 2.1 min |
-| KXCS2TOTALMAPS CS2 Total Maps | 4 | 3.0 min | 3.0 min |
 | KXATPMATCH ATP Tennis Match | 4 | 2.0 min | 2.1 min |
-| KXDOTA2MAP Dota 2 Map Winner | 4 | 3.0 min | 3.0 min |
 | KXODIMATCH Men's ODI Cricket Match | 4 | 157.4 min | 309.8 min |
+| KXATPCHALLENGERDOUBLES ATP Challenger Doubles Match | 4 | 2.1 min | 2.1 min |
 | KXEGYPLGAME Egyptian Premier League Game | 3 | 1.0 min | 1.0 min |
 | KXGRECUPTOTAL Point Total | 3 | 4.1 min | 4.1 min |
+| KXATP Men's Tournament Winner | 3 | 6.0 min | 6.0 min |
 | KXSAUDIPLGAME Saudi Pro League Game | 3 | 1.0 min | 1.0 min |
 | KXSAUDIPL1HTOTAL 1st Half Total | 3 | 4.0 min | 4.0 min |
 | KXSAUDIPL1H 1st Half Winner | 3 | 1.5 min | 1.5 min |
-| KXT20MATCH Men's T20 Cricket Match | 2 | 5.0 min | 5.0 min |
-| KXATP Men's Tournament Winner | 2 | 6.0 min | 6.0 min |
 | KXATPCHALLENGERMATCH Challenger ATP  | 2 | 2.0 min | 2.0 min |
 | KXKHLGAME KHL Game | 2 | 31.0 min | 31.0 min |
 | KXSAUDIPL1HSPREAD 1st Half Spread | 2 | 1.5 min | 1.5 min |
+| KXDOTA2GAME Dota 2 Game | 2 | 6.1 min | 6.1 min |
 | KXSAUDIPLBTTS BTTS | 1 | 6.0 min | 6.0 min |
-| KXSAUDIPL1HBTTS 1st Half BTTS | 1 | 6.0 min | 6.0 min |
-| KXEGYPLBTTS BTTS | 1 | 6.0 min | 6.0 min |
 
 ## Participant fingerprint (per sport; 60 s snapshots)
 
@@ -174,59 +174,59 @@ change% = share of scan cycles (60 s) where the best quote moved; react = median
 
 | venue | sport | markets | snapshots | two-sided | med spread | change% | react (min) | round sizes | med size |
 |---|---|---|---|---|---|---|---|---|---|
-| pm | tennis | 270 | 4937 | 92% | 0.010 | 50% | 1.0 (n=2820) | - | - |
-| pm | esports | 119 | 1749 | 79% | 0.020 | 47% | 1.0 (n=362) | - | - |
-| pm | soccer | 108 | 1626 | 91% | 0.010 | 32% | 1.0 (n=35) | - | - |
-| pm | football | 363 | 1621 | 25% | 0.010 | 10% | - (n=0) | - | - |
-| pm | table-tennis | 207 | 1247 | 90% | 0.010 | 40% | 1.0 (n=474) | - | - |
+| pm | tennis | 271 | 5517 | 91% | 0.010 | 45% | 1.0 (n=3154) | - | - |
+| pm | soccer | 108 | 2085 | 91% | 0.010 | 30% | 1.0 (n=44) | - | - |
+| pm | esports | 123 | 1961 | 79% | 0.020 | 41% | 1.0 (n=409) | - | - |
+| pm | football | 363 | 1714 | 26% | 0.020 | 10% | - (n=0) | - | - |
+| pm | table-tennis | 208 | 1378 | 91% | 0.010 | 40% | 1.0 (n=575) | - | - |
+| pm | basketball | 68 | 320 | 47% | 0.010 | 21% | 1.0 (n=71) | - | - |
 | pm | golf | 159 | 312 | 0% | - | 0% | - (n=0) | - | - |
-| pm | basketball | 68 | 309 | 46% | 0.010 | 22% | 1.0 (n=66) | - | - |
-| pm | ice-hockey | 26 | 256 | 98% | 0.105 | 40% | 1.0 (n=12) | - | - |
-| pm | cricket | 4 | 157 | 83% | 0.030 | 26% | 1.6 (n=14) | - | - |
-| pm | darts | 16 | 113 | 70% | 0.180 | 43% | 1.0 (n=26) | - | - |
-| pm | climate | 30 | 60 | 32% | 0.030 | 0% | - (n=0) | - | - |
-| pm | beach-volleyball | 6 | 56 | 73% | 0.010 | 32% | 1.0 (n=27) | - | - |
+| pm | ice-hockey | 26 | 281 | 98% | 0.110 | 34% | 1.0 (n=13) | - | - |
+| pm | cricket | 4 | 168 | 82% | 0.040 | 21% | 2.2 (n=16) | - | - |
+| pm | darts | 16 | 114 | 70% | 0.175 | 43% | 1.0 (n=26) | - | - |
+| pm | beach-volleyball | 6 | 74 | 80% | 0.010 | 28% | 1.0 (n=34) | - | - |
+| pm | climate | 30 | 72 | 40% | 0.040 | 50% | - (n=0) | - | - |
 | pm | macro | 5 | 15 | 0% | - | 0% | - (n=0) | - | - |
-| k | KXCS2MAP Counter-Strike 2 Map Win | 186 | 863 | 84% | 0.490 | 11% | - | 25% | 125 |
-| k | KXITFMATCH ITF Men's Match | 118 | 828 | 91% | 0.030 | 17% | - | 9% | 92 |
-| k | KXESOCCERGAME eSoccer Game | 138 | 681 | 0% | - | 0% | - | 0% | - |
-| k | KXATPSETWINNER ATP Set Winner | 42 | 261 | 76% | 0.020 | 13% | - | 16% | 580 |
-| k | KXDOTA2MAP Dota 2 Map Winner | 36 | 218 | 82% | 0.825 | 17% | - | 7% | 1 |
+| k | KXCS2MAP Counter-Strike 2 Map Win | 192 | 1707 | 89% | 0.420 | 10% | - | 27% | 100 |
+| k | KXITFMATCH ITF Men's Match | 118 | 842 | 90% | 0.030 | 17% | - | 9% | 92 |
+| k | KXESOCCERGAME eSoccer Game | 147 | 810 | 0% | - | 0% | - | 0% | - |
+| k | KXITFWMATCH ITF Women's Match | 140 | 562 | 69% | 0.020 | 21% | - | 7% | 314 |
+| k | KXATPSETWINNER ATP Set Winner | 46 | 494 | 84% | 0.010 | 12% | - | 17% | 580 |
+| k | KXDOTA2MAP Dota 2 Map Winner | 36 | 375 | 84% | 0.830 | 13% | - | 6% | 1 |
 | k | KXNFLNEXTTEAM Player Next Team | 33 | 198 | 0% | - | 0% | - | 0% | - |
-| k | KXITFWMATCH ITF Women's Match | 28 | 154 | 0% | - | 0% | - | 0% | - |
-| k | KXCS2GAME Counter-Strike 2 Game | 20 | 134 | 9% | 0.295 | 52% | - | 0% | 5 |
-| k | KXLIGAPROMATCH Russia Liga Pro Match | 22 | 134 | 0% | - | 0% | - | 0% | - |
-| k | KXWTACHALLENGERMATCH Challenger WTA | 28 | 102 | 73% | 0.010 | 10% | - | 3% | 1375 |
-| k | KXITFWDOUBLES ITF Women's Doubles Matc | 22 | 94 | 0% | - | 0% | - | 0% | - |
-| k | KXITFDOUBLES ITF Doubles Match | 16 | 68 | 0% | - | 0% | - | 0% | - |
-| k | KXDARTSMATCH Darts Match | 14 | 66 | 0% | - | 0% | - | 0% | - |
-| k | KXEBASKETBALLGAME eBasketball Game | 16 | 62 | 0% | - | 0% | - | 0% | - |
-| k | KXCS2SPREAD CS2 Spread | 10 | 52 | 0% | - | 0% | - | 0% | - |
-| k | KXEFOOTBALLGAME eFootball Game | 8 | 46 | 0% | - | 0% | - | 0% | - |
-| k | KXSAUDIPLTOTAL Saudi Pro League Total | 9 | 41 | 0% | - | 0% | - | 0% | - |
-| k | KXARGLNBGAME Liga Nacional de Basquet | 2 | 40 | 100% | 0.665 | 0% | - | 0% | 10 |
+| k | KXLIGAPROMATCH Russia Liga Pro Match | 26 | 162 | 0% | - | 0% | - | 0% | - |
+| k | KXCS2GAME Counter-Strike 2 Game | 24 | 158 | 8% | 0.295 | 52% | - | 0% | 5 |
+| k | KXWTACHALLENGERMATCH Challenger WTA | 28 | 114 | 65% | 0.010 | 10% | - | 3% | 1375 |
+| k | KXITFWDOUBLES ITF Women's Doubles Matc | 22 | 102 | 0% | - | 0% | - | 0% | - |
+| k | KXATPCHALLENGERDOUBLES ATP Challenger Doubles M | 18 | 99 | 92% | 0.200 | 12% | - | 12% | 101 |
+| k | KXDARTSMATCH Darts Match | 16 | 82 | 0% | - | 0% | - | 0% | - |
+| k | KXITFDOUBLES ITF Doubles Match | 18 | 80 | 0% | - | 0% | - | 0% | - |
+| k | KXEBASKETBALLGAME eBasketball Game | 16 | 74 | 0% | - | 0% | - | 0% | - |
+| k | KXCS2SPREAD CS2 Spread | 12 | 60 | 0% | - | 0% | - | 0% | - |
+| k | KXEFOOTBALLGAME eFootball Game | 8 | 54 | 0% | - | 0% | - | 0% | - |
+| k | KXSAUDIPLTOTAL Saudi Pro League Total | 9 | 45 | 0% | - | 0% | - | 0% | - |
+| k | KXARGLNBGAME Liga Nacional de Basquet | 2 | 44 | 100% | 0.665 | 0% | - | 0% | 10 |
 | k | KXEGYPLTOTAL Point Total | 6 | 36 | 0% | - | 0% | - | 0% | - |
+| k | KXATPEXACTMATCH ATP Exact Match Score | 8 | 32 | 0% | - | 0% | - | 0% | - |
 | k | KXEGYPLSPREAD Spread | 5 | 30 | 0% | - | 0% | - | 0% | - |
+| k | KXSAUDIPLSPREAD Saudi Pro League Game | 5 | 30 | 0% | - | 0% | - | 0% | - |
+| k | KXCS2TOTALMAPS CS2 Total Maps | 6 | 27 | 0% | - | 0% | - | 0% | - |
 | k | KXATPDOUBLES ATP Doubles Tennis Match | 4 | 26 | 0% | - | 0% | - | 0% | - |
-| k | KXSAUDIPLSPREAD Saudi Pro League Game | 5 | 25 | 0% | - | 0% | - | 0% | - |
-| k | KXATPEXACTMATCH ATP Exact Match Score | 8 | 24 | 0% | - | 0% | - | 0% | - |
-| k | KXCS2TOTALMAPS CS2 Total Maps | 4 | 22 | 0% | - | 0% | - | 0% | - |
+| k | KXATPGSPREAD ATP Game Spread | 6 | 24 | 0% | - | 0% | - | 0% | - |
+| k | KXATPGTOTAL ATP Total Games | 6 | 24 | 0% | - | 0% | - | 0% | - |
 | k | KXSAUDIPL1HTOTAL 1st Half Total | 3 | 18 | 0% | - | 0% | - | 0% | - |
 | k | KXSAUDIPL1H 1st Half Winner | 3 | 18 | 0% | - | 0% | - | 0% | - |
+| k | KXT20MATCH Men's T20 Cricket Match | 4 | 18 | 0% | - | 0% | - | 0% | - |
 | k | KXEGYPLGAME Egyptian Premier League  | 3 | 18 | 0% | - | 0% | - | 0% | - |
-| k | KXATPGSPREAD ATP Game Spread | 6 | 18 | 0% | - | 0% | - | 0% | - |
-| k | KXATPGTOTAL ATP Total Games | 6 | 18 | 0% | - | 0% | - | 0% | - |
-| k | KXT20MATCH Men's T20 Cricket Match | 2 | 14 | 0% | - | 0% | - | 0% | - |
+| k | KXATPMATCH ATP Tennis Match | 4 | 18 | 0% | - | 0% | - | 0% | - |
+| k | KXATP Men's Tournament Winner | 3 | 18 | 0% | - | 0% | - | 0% | - |
+| k | KXSAUDIPLGAME Saudi Pro League Game | 3 | 18 | 0% | - | 0% | - | 0% | - |
 | k | KXGRECUPTOTAL Point Total | 3 | 14 | 0% | - | 0% | - | 0% | - |
-| k | KXATPMATCH ATP Tennis Match | 4 | 14 | 0% | - | 0% | - | 0% | - |
-| k | KXATP Men's Tournament Winner | 2 | 14 | 0% | - | 0% | - | 0% | - |
+| k | KXATPCHALLENGERMATCH Challenger ATP  | 2 | 14 | 0% | - | 0% | - | 0% | - |
 | k | KXSAUDIPL1HSPREAD 1st Half Spread | 2 | 12 | 0% | - | 0% | - | 0% | - |
 | k | KXKHLGAME KHL Game | 2 | 12 | 0% | - | 0% | - | 0% | - |
-| k | KXSAUDIPLGAME Saudi Pro League Game | 3 | 12 | 0% | - | 0% | - | 0% | - |
-| k | KXATPCHALLENGERMATCH Challenger ATP  | 2 | 10 | 0% | - | 0% | - | 0% | - |
-| k | KXODIMATCH Men's ODI Cricket Match | 2 | 8 | 0% | - | 0% | - | 0% | - |
+| k | KXODIMATCH Men's ODI Cricket Match | 2 | 12 | 0% | - | 0% | - | 0% | - |
 | k | KXSAUDIPLBTTS BTTS | 1 | 6 | 0% | - | 0% | - | 0% | - |
-| k | KXSAUDIPL1HBTTS 1st Half BTTS | 1 | 6 | 0% | - | 0% | - | 0% | - |
 
 ## Schema notes (raw keys seen)
 
