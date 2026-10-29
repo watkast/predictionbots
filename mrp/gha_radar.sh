@@ -47,13 +47,31 @@ publish() {
   )
 }
 
-timeout "$((MINUTES * 60))" python "$KIT/mrp_sports_radar.py" &
-pid=$!
-while kill -0 "$pid" 2>/dev/null; do
+# --- run with self-update: every publish cycle, if mrp/ changed on main, pull it and restart the scanner
+DEADLINE=$(( $(date +%s) + MINUTES * 60 ))
+kit_rev() { git -C "$GITHUB_WORKSPACE" rev-parse "${1:-HEAD}:mrp" 2>/dev/null; }
+start() {
+  local left=$(( DEADLINE - $(date +%s) ))
+  [ "$left" -gt 30 ] || return 1
+  timeout "$left" python "$KIT/mrp_sports_radar.py" &
+  pid=$!
+}
+pid=""
+start || exit 0
+rc=0
+while [ -n "$pid" ] && kill -0 "$pid" 2>/dev/null; do
   sleep "${MRP_PUBLISH_SECONDS:-600}"
   publish || true
+  if git -C "$GITHUB_WORKSPACE" fetch -q --depth 1 origin main 2>/dev/null && [ "$(kit_rev FETCH_HEAD)" != "$(kit_rev HEAD)" ]; then
+    echo "[self-update] new mrp/ on main — restarting on $(git -C "$GITHUB_WORKSPACE" rev-parse --short FETCH_HEAD)"
+    git -C "$GITHUB_WORKSPACE" checkout -q FETCH_HEAD -- mrp && git -C "$GITHUB_WORKSPACE" reset -q --soft FETCH_HEAD
+    pip install -q -r "$GITHUB_WORKSPACE/mrp/requirements.txt" || true
+    kill -TERM "$pid" 2>/dev/null; wait "$pid" 2>/dev/null
+    start || break
+  fi
 done
-wait "$pid"; rc=$?
+wait "$pid" 2>/dev/null; rc=$?
 publish || true
-if [ "$rc" -eq 124 ] || [ "$rc" -eq 0 ]; then exit 0; fi
+# `timeout` returns 124 when it stopped the scanner on schedule — that is the normal end of a run
+if [ "$rc" -eq 124 ] || [ "$rc" -eq 0 ] || [ "$rc" -eq 143 ]; then exit 0; fi
 exit "$rc"
