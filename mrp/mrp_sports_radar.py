@@ -57,6 +57,7 @@ sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
 import mrp_recorder as R  # Writer, parse_ts, log, hosts, .env  # noqa: E402
 import mrp_decided as D  # noqa: E402
 from mrp_implications import Leg, implication_locks  # noqa: E402
+import mrp_paper  # noqa: E402
 
 W = R.W
 log = R.log
@@ -67,6 +68,8 @@ NEAR_EVERY = float(os.environ.get("MRP_RADAR_NEAR_SECONDS", "600"))
 INV_EVERY = float(os.environ.get("MRP_RADAR_INVENTORY_SECONDS", "10800"))
 K_SWEEP_EVERY = float(os.environ.get("MRP_RADAR_K_SWEEP_SECONDS", "300"))   # full Kalshi near-term discovery
 ENDED_EVERY = 4                                                              # ended-but-open poll every N cycles
+# Kalshi game series listed days ahead (close_time ~2 days after the game, outside the near-term sweep): poll every cycle
+ALWAYS_SERIES = [x for x in os.environ.get("MRP_RADAR_ALWAYS_SERIES", "KXNFLGAME,KXNCAAFGAME").split(",") if x]
 MAX_PAGES = int(os.environ.get("MRP_RADAR_MAX_PAGES", "60"))
 REQ_GAP = float(os.environ.get("MRP_RADAR_REQ_GAP", "0.2"))           # >= 200 ms between requests per venue
 MIN_MARGIN = float(os.environ.get("MRP_RADAR_MIN_MARGIN", "0.004"))    # $ per contract after fees
@@ -720,6 +723,7 @@ def main():
     settled: list[dict] = []
     n_cycle = 0
     pm_delta, k_delta = Delta("sp.pm.event", every=20), Delta("sp.k.market", every=20)
+    paper = mrp_paper.Paper(W, R.DATA_DIR, D)
 
     def _stop(*_):
         STOP.set()
@@ -774,8 +778,18 @@ def main():
                 if new_settled:
                     seen_settled.update(m["t"] for m in new_settled)
                     W.write("sp.k.settled", new_settled[:500])
-            else:
-                for sr in sorted(hot_series)[:25]:
+            for sr in ALWAYS_SERIES:
+                try:
+                    for x in K.by_series(sr):
+                        m = k_compact(x)
+                        if m.get("t"):
+                            kmap[m["t"]] = m
+                            if m["ev"] not in K.events and len(K.events) < 5000:
+                                K.event_meta(m["ev"])
+                except Exception as e:  # noqa
+                    W.err(f"sp.k.always:{sr}", e)
+            if now - last_sweep > 5:          # not the sweep cycle: refresh hot series too
+                for sr in sorted(hot_series - set(ALWAYS_SERIES))[:25]:
                     try:
                         for x in K.by_series(sr):
                             m = k_compact(x)
@@ -827,6 +841,11 @@ def main():
                     o["kind"] = o["kind"] + "_closed"
                     o["lock"] = False
                 W.write("sp.opp", o)
+            try:
+                paper.step(now, pm_all, kmap, pairs, opps, settled)
+            except Exception as e:  # noqa
+                W.err("paper", e)
+                log(f"paper error: {type(e).__name__}: {e}")
             for key in [k_ for k_, t in seen_opps.items() if now - t > 86400]:
                 seen_opps.pop(key, None)
             # --- every INV_EVERY: inventory + recently closed Polymarket events (close latency)
