@@ -26,13 +26,13 @@ flip% = leading side at T-left lost.  entry_ok = state OPEN, leader ask <= 0.99 
 ok&flip = entries that would have been taken AND lost — this column must be ZERO, with margin, before anything goes live.
 
 BRTI speed (max absolute move observed over a span, $):
-    1s  max=    1.31  p99.9=    1.29  p99=   1.16  median=  0.28  (n=1222)
-    5s  max=    6.35  p99.9=    6.27  p99=   5.69  median=  1.41  (n=1218)
-   10s  max=   12.04  p99.9=   11.91  p99=  11.27  median=  2.82  (n=1213)
-   15s  max=   17.42  p99.9=   17.24  p99=  16.54  median=  4.19  (n=1208)
-   30s  max=   30.75  p99.9=   30.70  p99=  29.54  median=  7.97  (n=1193)
-   60s  max=   55.07  p99.9=   54.71  p99=  52.34  median= 13.77  (n=1163)
+    1s  max=    1.31  p99.9=    1.29  p99=   1.11  median=  0.26  (n=1824)
+    5s  max=    6.35  p99.9=    6.27  p99=   5.52  median=  1.27  (n=1820)
+   10s  max=   12.04  p99.9=   11.91  p99=  10.97  median=  2.60  (n=1815)
+   15s  max=   17.42  p99.9=   17.24  p99=  16.08  median=  3.85  (n=1810)
+   30s  max=   30.75  p99.9=   30.70  p99=  28.59  median=  7.35  (n=1795)
+   60s  max=   55.07  p99.9=   54.71  p99=  49.97  median= 13.48  (n=1765)
   -> a flip at T-left=k needs the remaining k prints to average 60/k x |d| away. Compare need_rem_move in windows.csv to the max k-second move above.
 
 market state transitions seen (from -> to, relative to window end):
-                                  None -> MARKET_STATE_OPEN                    before_end  x2
+                                  None -> MARKET_STATE_OPEN                    before_end  x3
