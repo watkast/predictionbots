@@ -1,0 +1,48 @@
+# Mr. P recorder (read-only; it never places orders). Captures the exact settlement series the
+# Polymarket US 15-min BTC Up/Down market resolves on (CF Benchmarks BRTI, 1-second), plus that
+# market's order book and state in each window's final minutes. Same shape as ef-autobuyer.yml:
+# ~5.6 h per run, hourly cron + a concurrency group = back-to-back runs, publishing every 10 min
+# to the small `mrp-data` branch (not the 4.6 GB `data` branch), where mrp/REPORT.md is regenerated.
+# Kit, docs and analyzer live in mrp/ (merged from the `mrp` branch).
+name: mrp-record
+on:
+  schedule:
+    - cron: "29 * * * *"
+  workflow_dispatch:
+    inputs:
+      minutes:
+        description: "Minutes to record"
+        default: "335"
+  push:
+    branches: [main]
+    paths: [".github/workflows/mrp-record.yml"]
+
+permissions:
+  contents: write
+
+concurrency:
+  group: mrp-record
+  cancel-in-progress: false
+
+jobs:
+  record:
+    runs-on: ubuntu-latest
+    timeout-minutes: 355
+    env:
+      # Kalshi layer (BRTI push feed + KXBTC15M books) uses the repo's existing secrets; empty = off.
+      KALSHI_KEY_ID: ${{ secrets.KALSHI_KEY_ID }}
+      KALSHI_PRIVATE_KEY_PEM: ${{ secrets.KALSHI_PRIVATE_KEY_PEM }}
+      # Polymarket US WebSocket layer; add these two repo secrets to turn it on. Public REST layer needs nothing.
+      POLYMARKET_KEY_ID: ${{ secrets.POLYMARKET_KEY_ID }}
+      POLYMARKET_SECRET_KEY: ${{ secrets.POLYMARKET_SECRET_KEY }}
+      MRP_DATA_DIR: ${{ github.workspace }}/mrpdata
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+          cache: pip
+          cache-dependency-path: mrp/requirements.txt
+      - run: pip install -r mrp/requirements.txt
+      - name: Record, publishing every 10 minutes
+        run: bash mrp/gha_record.sh "${{ github.event.inputs.minutes || '335' }}"
