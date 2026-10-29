@@ -65,7 +65,8 @@ _load_dotenv()
 
 # ----------------------------------------------------------------------------- config
 DATA_DIR = os.environ.get("MRP_DATA_DIR", "./data")
-PMUS_BASE = os.environ.get("PMUS_BASE_URL", "https://api.polymarket.us")
+# Public (unauthenticated) endpoints are served by the gateway host; api.polymarket.us is for signed calls.
+PMUS_BASE = os.environ.get("PMUS_BASE_URL", "https://gateway.polymarket.us")
 BOOK_HOT_SECONDS = int(os.environ.get("MRP_BOOK_HOT_SECONDS", "180"))   # 1 Hz book polling inside this
 BOOK_COLD_INTERVAL = float(os.environ.get("MRP_BOOK_COLD_INTERVAL", "10"))
 IDX_INTERVAL = float(os.environ.get("MRP_IDX_INTERVAL", "1.0"))
@@ -407,9 +408,22 @@ def index_loop():
 
 
 # ----------------------------------------------------------------------------- thread: order book poller
+_book404_last: dict[str, float] = {}
+
+
 def _poll_book(slug: str, tag: str):
     try:
         bk = PM.book(slug)
+    except requests.HTTPError as e:
+        # The gateway can answer 404 for a market that exists and is trading (early in the round,
+        # per scripts/ef_autobuyer.py). Record it, but at most once a minute per slug.
+        if e.response is not None and e.response.status_code == 404:
+            if time.time() - _book404_last.get(slug, 0) > 60:
+                _book404_last[slug] = time.time()
+                W.write("pmus.book404", {"slug": slug, "tag": tag})
+            return
+        W.err(f"book:{slug}", e)
+        return
     except Exception as e:  # noqa
         W.err(f"book:{slug}", e)
         return

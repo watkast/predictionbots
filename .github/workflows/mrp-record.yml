@@ -3,7 +3,7 @@
 # market's order book and state in each window's final minutes. Same shape as ef-autobuyer.yml:
 # ~5.6 h per run, hourly cron + a concurrency group = back-to-back runs, publishing every 10 min
 # to the small `mrp-data` branch (not the 4.6 GB `data` branch), where mrp/REPORT.md is regenerated.
-# Kit, docs and analyzer live in mrp/ (merged from the `mrp` branch).
+# Kit, docs and analyzer live in mrp/ (merged from the `mrp` branch). v0.2: public calls use the gateway host.
 name: mrp-record
 on:
   schedule:
