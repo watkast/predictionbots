@@ -1,11 +1,11 @@
 # Mr. P — sports radar
 
-Updated 2026-10-29T21:14:45Z by `run-20261029T1721-40913591931` (last 7 days). Read-only scanner of every sports market on Polymarket US and Kalshi — it never places orders.
+Updated 2026-10-29T21:24:52Z by `run-20261029T1721-40913591931` (last 7 days). Read-only scanner of every sports market on Polymarket US and Kalshi — it never places orders.
 Kit: `mrp/mrp_sports_radar.py` on the `mrp` branch. Raw tape: `mrp/radar/<run>/`.
 
 # Sports radar report
 
-records 123,291 | 2026-10-29 15:47Z → 21:14Z | runs 8 | pairs matched 287 | errors none
+records 127,266 | 2026-10-29 15:47Z → 21:24Z | runs 8 | pairs matched 287 | errors none
 
 ## Catalogue (latest inventory, 20:56Z)
 
@@ -83,17 +83,17 @@ Polymarket US sports events 4104 of 5584 active events; Kalshi near-term sports 
 | dutch_k | 1 | 114 | 0.1744 | 29 min | 0/0 |
 | dutch_pm | 14 | 310 | 0.9786 | 89 min | 0/0 |
 | implication_k | 53 | 5067 | 0.5153 | 29 min | 0/0 |
-| lag_k_settled | 160 | 2183 | 0.9573 | 44 min | 1155/2016 |
+| lag_k_settled | 161 | 2302 | 0.9573 | 44 min | 1274/2135 |
 | lag_k_settled_closed | 5 | 63 | 0.7785 | 49 min | 0/63 |
 
 Top by persistence × hits:
 
 - **lag_k_settled** esports — eBattles: Arsenal (chevare) vs. Liverpool (llulle) — bid 0.29 ask 0.30 sell_yes @ 0.29 | margin 0.7577 | 44 min, 220 hits | fresh bbo 0.21/0.25 depth 3/5 | score 3-3 2H
 - **lag_k_settled** esports — eBattles: Arsenal (chevare) vs. Liverpool (llulle) — bid 0.26 ask 0.27 buy_yes @ 0.27 | margin 0.8832 | 44 min, 220 hits | fresh bbo 0.19/0.22 depth 5/4 | score 3-3 2H
+- **lag_k_settled** esports — eBattles: France (noeN) vs. England (tizzy) — bid 0.12 ask 0.49 sell_yes @ 0.12 | margin 0.3440 | 29 min, 195 hits | fresh bbo 0.13/0.95 depth 6/2 | score 0-0 
+- **lag_k_settled** esports — eBattles: France (noeN) vs. England (tizzy) — bid 0.46 ask 0.70 buy_yes @ 0.7 | margin 0.2854 | 29 min, 195 hits | fresh bbo 0.42/0.69 depth 11/4 | score 0-0 
 - **dutch_pm** football — Week 8 Passing Yards Leader — Σask 0.040 | margin 0.9573 | 89 min, 90 hits | score - 
 - **lag_k_settled** esports — eBattles: Arsenal (chevare) vs. Liverpool (llulle) — bid 0.51 ask 0.52 sell_yes @ 0.51 | margin 0.4926 | 35 min, 143 hits | fresh bbo 0.51/0.52 depth 2/2 | score 3-3 2H
-- **lag_k_settled** esports — eBattles: France (noeN) vs. England (tizzy) — bid 0.36 ask 0.41 sell_yes @ 0.36 | margin 0.3440 | 20 min, 155 hits | fresh bbo 0.12/0.49 depth 4/4 | score 0-0 
-- **lag_k_settled** esports — eBattles: France (noeN) vs. England (tizzy) — bid 0.40 ask 0.71 buy_yes @ 0.71 | margin 0.2757 | 20 min, 155 hits | fresh bbo 0.46/0.70 depth 11/3 | score 0-0 
 - **dutch_pm** football — Week 8 Top TE Fantasy Football (PPR) — Σask 0.830 | margin 0.1152 | 79 min, 80 hits | score - 
 - **dutch_k** 🔒  — Fiorentina vs Juventus — Σask 0.790 | margin 0.1744 | 29 min, 114 hits | score - 
 - **implication_k** 🔒  — 26OCT31UDIROM — | margin 0.2196 | 29 min, 114 hits | score - 
@@ -116,7 +116,7 @@ Top by persistence × hits:
 
 ## Decided-state engine (contracts the live score already settled, still trading)
 
-105 contracts decided while active; 11 had a price leaving > 0.4c after fees; 3 of those were mispriced AFTER the score was stable (lock tier)
+107 contracts decided while active; 11 had a price leaving > 0.4c after fees; 3 of those were mispriced AFTER the score was stable (lock tier)
 
 | sport | game | contract | decided | reason | max margin | mispriced for | lock margin | lock depth |
 |---|---|---|---|---|---|---|---|---|
@@ -152,25 +152,26 @@ Kalshi: settlement_ts − close_time per series (negative = settled before the s
 
 | series | n | median | p90 |
 |---|---|---|---|
-| KXESOCCERGAME eSoccer Game | 339 | 4.0 min | 4.1 min |
-| KXCOPADELREYTOTAL Copa del Rey Total | 131 | 4.0 min | 4.1 min |
-| KXCOPADELREYSPREAD Copa Del Rey Spread | 100 | 1.5 min | 1.6 min |
+| KXESOCCERGAME eSoccer Game | 348 | 4.0 min | 4.1 min |
+| KXCOPADELREYTOTAL Copa del Rey Total | 207 | 4.0 min | 4.1 min |
+| KXCOPADELREYSPREAD Copa Del Rey Spread | 137 | 1.5 min | 1.6 min |
+| KXCOPADELREYGAME Copa Del Rey Game | 90 | 0.7 min | 1.1 min |
 | KXCS2MAP Counter-Strike 2 Map Winner  | 86 | 3.0 min | 3.0 min |
+| KXCS2GAME Counter-Strike 2 Game | 74 | 2.9 min | 3.0 min |
 | KXLIGAPROMATCH Russia Liga Pro Match | 72 | 4.0 min | 4.1 min |
-| KXCS2GAME Counter-Strike 2 Game | 72 | 2.9 min | 3.0 min |
 | KXITFWMATCH ITF Women's Match | 66 | 2.0 min | 2.1 min |
-| KXCOPADELREYGAME Copa Del Rey Game | 63 | 1.0 min | 1.1 min |
+| KXCOPADELREYADVANCE Copa Del Rey To Advance | 60 | 1.4 min | 1.8 min |
 | KXPGA3BALL PGA 3-Ball | 55 | 6.0 min | 6.0 min |
-| KXITFWDOUBLES ITF Women's Doubles Match | 42 | 2.0 min | 2.1 min |
+| KXITFWDOUBLES ITF Women's Doubles Match | 44 | 2.0 min | 2.1 min |
 | KXEBASKETBALLGAME eBasketball Game | 42 | 4.0 min | 4.0 min |
 | KXITFMATCH ITF Men's Match | 42 | 2.0 min | 2.1 min |
-| KXCOPADELREYADVANCE Copa Del Rey To Advance | 40 | 1.8 min | 1.8 min |
 | KXKNVBCUPTOTAL Point Total | 40 | 4.0 min | 4.0 min |
 | KXSERIEAGOAL Goalscorer | 40 | 6.0 min | 6.1 min |
 | KXNFLNEXTTEAM Player Next Team | 33 | 3.0 min | 3.0 min |
+| KXITFDOUBLES ITF Doubles Match | 30 | 2.0 min | 2.1 min |
 | KXSERIEA1HSCORE 1st Half Correct Score | 30 | 6.0 min | 6.0 min |
 | KXSERIEASCORE Correct Score | 30 | 6.0 min | 6.0 min |
-| KXITFDOUBLES ITF Doubles Match | 28 | 2.0 min | 2.1 min |
+| KXCOPADELREYBTTS BTTS | 29 | 6.0 min | 6.1 min |
 | KXATPEXACTMATCH ATP Exact Match Score | 28 | 6.0 min | 6.1 min |
 | KXSAUDIPLTOTAL Saudi Pro League Total | 27 | 4.0 min | 4.1 min |
 | KXWNBAPTS WNBA Player Points | 27 | 6.0 min | 6.1 min |
@@ -178,18 +179,17 @@ Kalshi: settlement_ts − close_time per series (negative = settled before the s
 | KXKNVBCUPSPREAD Spread | 26 | 1.5 min | 1.6 min |
 | KXCS2SPREAD CS2 Spread | 24 | 4.0 min | 4.1 min |
 | KXWNBAREB Women's Pro Basketball Player  | 24 | 6.0 min | 6.0 min |
+| KXDOTA2MAP Dota 2 Map Winner | 22 | 3.0 min | 3.0 min |
 | KXCS2TOTALMAPS CS2 Total Maps | 21 | 3.0 min | 3.0 min |
 | KXATPGSPREAD ATP Game Spread | 21 | 6.0 min | 6.1 min |
 | KXATPGTOTAL ATP Total Games | 21 | 6.0 min | 6.1 min |
 | KXEFOOTBALLGAME eFootball Game | 20 | 31.0 min | 31.1 min |
 | KXATPCHALLENGERMATCH Challenger ATP  | 20 | 2.0 min | 2.0 min |
-| KXDOTA2MAP Dota 2 Map Winner | 20 | 3.0 min | 3.0 min |
 | KXALLSVENSKANTOTAL Point Total | 20 | 4.0 min | 4.0 min |
 | KXSERIEAFIRSTGOAL First Goal | 20 | 6.0 min | 6.0 min |
 | KXSAUDIPLSPREAD Saudi Pro League Game | 19 | 1.5 min | 1.6 min |
 | KXWNBATEAMTOTAL WNBA Team Totals | 19 | 6.0 min | 6.0 min |
 | KXKNVBCUPGAME KNVB Cup Game | 18 | 1.1 min | 1.1 min |
-| KXCOPADELREYBTTS BTTS | 17 | 6.0 min | 6.1 min |
 | KXDARTSMATCH Darts Match | 16 | 6.0 min | 6.0 min |
 | KXATPMATCH ATP Tennis Match | 16 | 2.0 min | 2.1 min |
 
@@ -199,59 +199,59 @@ change% = share of scan cycles (60 s) where the best quote moved; react = median
 
 | venue | sport | markets | snapshots | two-sided | med spread | change% | react (min) | round sizes | med size |
 |---|---|---|---|---|---|---|---|---|---|
-| pm | tennis | 325 | 18583 | 92% | 0.010 | 31% | 0.7 (n=10353) | - | - |
-| pm | soccer | 114 | 10020 | 87% | 0.010 | 19% | 0.8 (n=160) | - | - |
-| pm | esports | 309 | 7812 | 80% | 0.020 | 26% | 0.7 (n=1543) | - | - |
-| pm | football | 363 | 6524 | 24% | 0.020 | 20% | - (n=0) | - | - |
-| pm | table-tennis | 300 | 4834 | 88% | 0.010 | 39% | 0.5 (n=2140) | - | - |
-| pm | basketball | 70 | 1398 | 61% | 0.020 | 27% | 0.5 (n=383) | - | - |
+| pm | tennis | 325 | 19102 | 92% | 0.010 | 31% | 0.7 (n=10653) | - | - |
+| pm | soccer | 114 | 10227 | 87% | 0.010 | 18% | 1.0 (n=169) | - | - |
+| pm | esports | 317 | 8070 | 80% | 0.020 | 26% | 0.7 (n=1584) | - | - |
+| pm | football | 363 | 6858 | 24% | 0.020 | 23% | - (n=0) | - | - |
+| pm | table-tennis | 302 | 4955 | 89% | 0.010 | 39% | 0.5 (n=2226) | - | - |
+| pm | basketball | 70 | 1427 | 61% | 0.020 | 27% | 0.5 (n=395) | - | - |
 | pm | golf | 159 | 1266 | 0% | - | 0% | - (n=0) | - | - |
-| pm | ice-hockey | 26 | 1228 | 85% | 0.070 | 16% | 1.0 (n=56) | - | - |
-| pm | climate | 54 | 804 | 64% | 0.030 | 22% | - (n=0) | - | - |
-| pm | cricket | 6 | 341 | 85% | 0.060 | 8% | 2.9 (n=31) | - | - |
+| pm | ice-hockey | 26 | 1229 | 85% | 0.070 | 16% | 1.0 (n=56) | - | - |
+| pm | climate | 54 | 822 | 64% | 0.030 | 22% | - (n=0) | - | - |
+| pm | cricket | 6 | 349 | 86% | 0.060 | 8% | 3.0 (n=32) | - | - |
 | pm | beach-volleyball | 6 | 332 | 91% | 0.010 | 30% | 0.5 (n=190) | - | - |
-| pm | darts | 16 | 203 | 73% | 0.270 | 45% | 1.0 (n=26) | - | - |
-| pm | macro | 5 | 70 | 0% | - | 7% | - (n=0) | - | - |
-| k | KXCS2MAP Counter-Strike 2 Map Win | 224 | 15208 | 91% | 0.840 | 8% | - | 25% | 95 |
-| k | KXESOCCERGAME eSoccer Game | 372 | 4251 | 22% | 0.360 | 10% | - | 20% | 10 |
+| pm | darts | 16 | 204 | 73% | 0.270 | 45% | 1.0 (n=26) | - | - |
+| pm | macro | 5 | 75 | 0% | - | 8% | - (n=0) | - | - |
+| k | KXCS2MAP Counter-Strike 2 Map Win | 224 | 15742 | 92% | 0.850 | 8% | - | 25% | 96 |
+| k | KXESOCCERGAME eSoccer Game | 372 | 4371 | 21% | 0.360 | 10% | - | 20% | 10 |
 | k | KXATPSETWINNER ATP Set Winner | 58 | 3938 | 89% | 0.020 | 9% | - | 13% | 427 |
-| k | KXITFWMATCH ITF Women's Match | 160 | 2994 | 77% | 0.030 | 21% | - | 8% | 116 |
+| k | KXITFWMATCH ITF Women's Match | 160 | 3006 | 77% | 0.030 | 21% | - | 8% | 116 |
 | k | KXSAUDIPLTOTAL Saudi Pro League Total | 63 | 2676 | 76% | 0.010 | 5% | - | 8% | 1230 |
-| k | KXITFMATCH ITF Men's Match | 142 | 2205 | 78% | 0.030 | 20% | - | 10% | 71 |
+| k | KXITFMATCH ITF Men's Match | 142 | 2217 | 78% | 0.030 | 20% | - | 10% | 71 |
+| k | KXATPCHALLENGERMATCH Challenger ATP  | 44 | 2080 | 89% | 0.010 | 11% | - | 4% | 3106 |
 | k | KXALLSVENSKANTOTAL Point Total | 20 | 2074 | 69% | 0.010 | 19% | - | 14% | 1343 |
-| k | KXATPCHALLENGERMATCH Challenger ATP  | 44 | 2052 | 90% | 0.010 | 12% | - | 4% | 3101 |
 | k | KXSERIEASCORE Correct Score | 150 | 1937 | 55% | 0.010 | 3% | - | 4% | 985 |
-| k | KXSERIEA1HSCORE 1st Half Correct Score | 75 | 1332 | 27% | 0.030 | 1% | - | 39% | 137 |
-| k | KXDOTA2MAP Dota 2 Map Winner | 36 | 1186 | 79% | 0.840 | 11% | - | 3% | 1 |
-| k | KXCOPADELREYTOTAL Copa del Rey Total | 156 | 1085 | 0% | - | 0% | - | 0% | - |
-| k | KXUCLWTOTAL Point Total | 26 | 1018 | 64% | 0.010 | 12% | - | 4% | 1724 |
+| k | KXSERIEA1HSCORE 1st Half Correct Score | 75 | 1452 | 27% | 0.030 | 1% | - | 40% | 137 |
+| k | KXCOPADELREYTOTAL Copa del Rey Total | 209 | 1362 | 0% | - | 0% | - | 0% | - |
+| k | KXDOTA2MAP Dota 2 Map Winner | 36 | 1192 | 78% | 0.840 | 11% | - | 3% | 1 |
+| k | KXUCLWTOTAL Point Total | 26 | 1021 | 64% | 0.010 | 12% | - | 4% | 1724 |
 | k | KXEGYPLTOTAL Point Total | 31 | 938 | 74% | 0.010 | 6% | - | 12% | 1000 |
+| k | KXCOPADELREYSPREAD Copa Del Rey Spread | 137 | 870 | 0% | - | 0% | - | 0% | - |
 | k | KXSERIEATOTAL Serie A Total | 75 | 846 | 89% | 0.010 | 1% | - | 5% | 1562 |
-| k | KXCS2GAME Counter-Strike 2 Game | 72 | 766 | 2% | 0.295 | 52% | - | 0% | 5 |
-| k | KXLIGAPROMATCH Russia Liga Pro Match | 72 | 754 | 0% | - | 0% | - | 0% | - |
+| k | KXCS2GAME Counter-Strike 2 Game | 74 | 794 | 2% | 0.295 | 52% | - | 0% | 5 |
+| k | KXLIGAPROMATCH Russia Liga Pro Match | 72 | 774 | 0% | - | 0% | - | 0% | - |
 | k | KXSERIEAGAME Serie A Game | 66 | 708 | 95% | 0.010 | 2% | - | 17% | 836 |
-| k | KXPGA3BALL PGA 3-Ball | 55 | 685 | 0% | - | 0% | - | 0% | - |
-| k | KXCOPADELREYSPREAD Copa Del Rey Spread | 104 | 681 | 0% | - | 0% | - | 0% | - |
-| k | KXATPEXACTMATCH ATP Exact Match Score | 52 | 660 | 53% | 0.020 | 18% | - | 12% | 363 |
+| k | KXPGA3BALL PGA 3-Ball | 55 | 687 | 0% | - | 0% | - | 0% | - |
+| k | KXATPEXACTMATCH ATP Exact Match Score | 52 | 668 | 52% | 0.020 | 18% | - | 12% | 363 |
 | k | KXSERIEAGOAL Goalscorer | 40 | 520 | 0% | - | 0% | - | 0% | - |
+| k | KXCOPADELREYGAME Copa Del Rey Game | 90 | 516 | 0% | - | 0% | - | 0% | - |
 | k | KXSERIEASPREAD Serie A Spread | 51 | 473 | 79% | 0.020 | 1% | - | 7% | 2013 |
+| k | KXITFWDOUBLES ITF Women's Doubles Matc | 82 | 471 | 24% | 0.320 | 11% | - | 5% | 3 |
 | k | KXSERIEATEAMTOTAL Team Total | 29 | 465 | 73% | 0.020 | 8% | - | 5% | 231 |
-| k | KXITFWDOUBLES ITF Women's Doubles Matc | 82 | 449 | 26% | 0.320 | 11% | - | 5% | 3 |
-| k | KXATPGTOTAL ATP Total Games | 36 | 449 | 50% | 0.050 | 21% | - | 17% | 17 |
+| k | KXATPGTOTAL ATP Total Games | 36 | 455 | 49% | 0.050 | 21% | - | 17% | 17 |
 | k | KXBUNDESLIGAWTOTAL Total | 7 | 414 | 51% | 0.020 | 27% | - | 13% | 353 |
-| k | KXATPGSPREAD ATP Game Spread | 36 | 399 | 45% | 0.030 | 18% | - | 11% | 46 |
-| k | KXCOPADELREYGAME Copa Del Rey Game | 63 | 387 | 0% | - | 0% | - | 0% | - |
-| k | KXATPCHALLENGERDOUBLES ATP Challenger Doubles M | 20 | 370 | 73% | 0.180 | 18% | - | 10% | 56 |
-| k | KXEBASKETBALLGAME eBasketball Game | 42 | 368 | 0% | - | 0% | - | 0% | - |
-| k | KXSERIEA1H Serie A First Half Winne | 15 | 366 | 84% | 0.020 | 1% | - | 5% | 2665 |
+| k | KXATPGSPREAD ATP Game Spread | 36 | 405 | 44% | 0.030 | 18% | - | 11% | 46 |
+| k | KXSERIEA1H Serie A First Half Winne | 15 | 390 | 83% | 0.020 | 1% | - | 5% | 2616 |
+| k | KXEBASKETBALLGAME eBasketball Game | 42 | 384 | 0% | - | 0% | - | 0% | - |
+| k | KXATPCHALLENGERDOUBLES ATP Challenger Doubles M | 20 | 378 | 71% | 0.180 | 18% | - | 10% | 56 |
+| k | KXATPMATCH ATP Tennis Match | 26 | 356 | 54% | 0.010 | 18% | - | 4% | 9540 |
 | k | KXWNBAPTS WNBA Player Points | 27 | 351 | 0% | - | 0% | - | 0% | - |
-| k | KXATPMATCH ATP Tennis Match | 26 | 348 | 56% | 0.010 | 18% | - | 4% | 9540 |
-| k | KXSERIEA1HTOTAL 1st Half Total | 15 | 316 | 81% | 0.020 | 1% | - | 2% | 1087 |
+| k | KXSERIEA1HTOTAL 1st Half Total | 15 | 342 | 81% | 0.020 | 1% | - | 2% | 1087 |
+| k | KXPERLIGA1TOTAL Point Total | 21 | 339 | 61% | 0.010 | 14% | - | 8% | 961 |
+| k | KXCOPADELREYADVANCE Copa Del Rey To Advance | 60 | 332 | 0% | - | 0% | - | 0% | - |
+| k | KXWTACHALLENGERMATCH Challenger WTA | 28 | 314 | 60% | 0.010 | 11% | - | 6% | 1590 |
 | k | KXWNBAREB Women's Pro Basketball P | 24 | 312 | 0% | - | 0% | - | 0% | - |
-| k | KXWTACHALLENGERMATCH Challenger WTA | 28 | 310 | 61% | 0.010 | 11% | - | 6% | 1590 |
-| k | KXALLSVENSKANGAME Allsvenskan Game | 30 | 302 | 52% | 0.010 | 4% | - | 9% | 942 |
-| k | KXITFDOUBLES ITF Doubles Match | 68 | 296 | 24% | 0.415 | 17% | - | 1% | 8 |
-| k | KXEUROLEAGUESPREAD EuroLeague Spread | 36 | 280 | 59% | 0.160 | 22% | - | 11% | 61 |
+| k | KXITFDOUBLES ITF Doubles Match | 68 | 308 | 23% | 0.415 | 17% | - | 1% | 8 |
 
 ## Schema notes (raw keys seen)
 
