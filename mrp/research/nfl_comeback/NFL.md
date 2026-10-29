@@ -1,11 +1,18 @@
 # NFL in-game underdog study (KXNFLGAME)
 
-Updated 2026-10-29 19:01Z. 482 games, 904 team-markets with 1-min candles (skipped: 56 no kickoff time, 4 no candles). ESPN play-by-play matched for 454 games: their phases come from the real quarter and clock (Q4 late = under 7:30 left); others use minutes since kickoff. Buying at the ask, Kalshi taker fee 0.07·p·(1−p). One entry per team per game per rule.
+Updated 2026-10-29 19:22Z. 482 games, 904 team-markets with 1-min candles (skipped: 56 no kickoff time, 4 no candles). ESPN play-by-play matched for 454 games: their phases come from the real quarter and clock (Q4 late = under 7:30 left); others use minutes since kickoff. Buying at the ask, Kalshi taker fee 0.07·p·(1−p). One entry per team per game per rule.
 
 ## A. Calibration — does a team priced X actually win X% of the time?
 
 | phase | ask bucket | n | avg paid | win rate | 95% low | edge/contract (after fee) |
 |---|---|---|---|---|---|---|
+| pre | 0.10–0.15 | 24 | 0.125 | 0.083 | 0.023 | -0.049 |
+| pre | 0.15–0.20 | 26 | 0.171 | 0.077 | 0.021 | -0.104 |
+| pre | 0.20–0.25 | 49 | 0.223 | 0.388 | 0.264 | +0.152 |
+| pre | 0.25–0.30 | 64 | 0.270 | 0.203 | 0.123 | -0.081 |
+| pre | 0.30–0.35 | 72 | 0.321 | 0.375 | 0.272 | +0.038 |
+| pre | 0.35–0.40 | 94 | 0.372 | 0.436 | 0.340 | +0.047 |
+| pre | 0.40–0.50 | 199 | 0.441 | 0.492 | 0.424 | +0.034 |
 | Q1 | 0.05–0.10 | 36 | 0.086 | 0.083 | 0.029 | -0.009 |
 | Q1 | 0.10–0.15 | 82 | 0.133 | 0.122 | 0.068 | -0.019 |
 | Q1 | 0.15–0.20 | 142 | 0.181 | 0.268 | 0.202 | +0.077 |
@@ -201,10 +208,130 @@ Edge is real only where the **95% low** win rate is above avg paid + fee. Positi
 | Q4 | 1..99 | 0.35–0.40 | 65 | 0.371 | 0.415 | 0.304 | +0.028 |
 | Q4 | 1..99 | 0.40–0.50 | 143 | 0.457 | 0.531 | 0.450 | +0.058 |
 
+## A3. Pregame favourite vs underdog, by in-game score state (anchoring test)
+
+Role = which side the market favoured in the 30 min before kickoff. If bettors anchor on the pregame favourite, trailing favourites are overpriced (negative edge) and leading underdogs underpriced (positive edge).
+
+| quarter | pregame role | score | ask | n | avg paid | win rate | 95% low | edge |
+|---|---|---|---|---|---|---|---|---|
+| Q1 | pregame dog | leading | 0.20–0.35 | 59 | 0.303 | 0.339 | 0.231 | +0.021 |
+| Q1 | pregame dog | leading | 0.35–0.50 | 136 | 0.432 | 0.500 | 0.417 | +0.050 |
+| Q1 | pregame dog | tied | 0.05–0.20 | 74 | 0.167 | 0.243 | 0.160 | +0.067 |
+| Q1 | pregame dog | tied | 0.20–0.35 | 253 | 0.292 | 0.312 | 0.258 | +0.006 |
+| Q1 | pregame dog | tied | 0.35–0.50 | 326 | 0.412 | 0.448 | 0.395 | +0.019 |
+| Q1 | pregame dog | trailing | 0.05–0.20 | 121 | 0.162 | 0.207 | 0.144 | +0.035 |
+| Q1 | pregame dog | trailing | 0.20–0.35 | 191 | 0.277 | 0.309 | 0.248 | +0.018 |
+| Q1 | pregame dog | trailing | 0.35–0.50 | 106 | 0.387 | 0.406 | 0.317 | +0.002 |
+| Q1 | pregame fav | tied | 0.35–0.50 | 89 | 0.478 | 0.416 | 0.319 | -0.080 |
+| Q1 | pregame fav | trailing | 0.20–0.35 | 44 | 0.321 | 0.318 | 0.200 | -0.018 |
+| Q1 | pregame fav | trailing | 0.35–0.50 | 105 | 0.448 | 0.381 | 0.294 | -0.085 |
+| Q2 | pregame dog | leading | 0.20–0.35 | 61 | 0.314 | 0.361 | 0.252 | +0.032 |
+| Q2 | pregame dog | leading | 0.35–0.50 | 150 | 0.440 | 0.507 | 0.427 | +0.049 |
+| Q2 | pregame dog | tied | 0.05–0.20 | 32 | 0.164 | 0.219 | 0.110 | +0.045 |
+| Q2 | pregame dog | tied | 0.20–0.35 | 98 | 0.294 | 0.337 | 0.251 | +0.028 |
+| Q2 | pregame dog | tied | 0.35–0.50 | 122 | 0.407 | 0.459 | 0.373 | +0.035 |
+| Q2 | pregame dog | trailing | 0.05–0.20 | 200 | 0.153 | 0.170 | 0.124 | +0.008 |
+| Q2 | pregame dog | trailing | 0.20–0.35 | 229 | 0.263 | 0.293 | 0.237 | +0.016 |
+| Q2 | pregame dog | trailing | 0.35–0.50 | 147 | 0.388 | 0.408 | 0.332 | +0.004 |
+| Q2 | pregame fav | leading | 0.35–0.50 | 24 | 0.473 | 0.333 | 0.180 | -0.157 |
+| Q2 | pregame fav | tied | 0.35–0.50 | 48 | 0.463 | 0.438 | 0.307 | -0.043 |
+| Q2 | pregame fav | trailing | 0.05–0.20 | 41 | 0.179 | 0.244 | 0.138 | +0.054 |
+| Q2 | pregame fav | trailing | 0.20–0.35 | 119 | 0.308 | 0.252 | 0.183 | -0.071 |
+| Q2 | pregame fav | trailing | 0.35–0.50 | 172 | 0.431 | 0.331 | 0.265 | -0.117 |
+| Q3 | pregame dog | leading | 0.20–0.35 | 34 | 0.306 | 0.412 | 0.264 | +0.091 |
+| Q3 | pregame dog | leading | 0.35–0.50 | 97 | 0.442 | 0.546 | 0.447 | +0.087 |
+| Q3 | pregame dog | tied | 0.20–0.35 | 38 | 0.308 | 0.421 | 0.279 | +0.098 |
+| Q3 | pregame dog | tied | 0.35–0.50 | 60 | 0.414 | 0.500 | 0.377 | +0.069 |
+| Q3 | pregame dog | trailing | 0.05–0.20 | 202 | 0.135 | 0.134 | 0.094 | -0.010 |
+| Q3 | pregame dog | trailing | 0.20–0.35 | 181 | 0.263 | 0.265 | 0.206 | -0.012 |
+| Q3 | pregame dog | trailing | 0.35–0.50 | 107 | 0.383 | 0.374 | 0.288 | -0.025 |
+| Q3 | pregame fav | leading | 0.35–0.50 | 17 | 0.461 | 0.529 | 0.310 | +0.051 |
+| Q3 | pregame fav | tied | 0.35–0.50 | 27 | 0.460 | 0.370 | 0.215 | -0.107 |
+| Q3 | pregame fav | trailing | 0.05–0.20 | 89 | 0.167 | 0.213 | 0.141 | +0.037 |
+| Q3 | pregame fav | trailing | 0.20–0.35 | 128 | 0.286 | 0.242 | 0.176 | -0.058 |
+| Q3 | pregame fav | trailing | 0.35–0.50 | 128 | 0.422 | 0.305 | 0.232 | -0.134 |
+| Q4 | pregame dog | leading | 0.20–0.35 | 47 | 0.301 | 0.319 | 0.204 | +0.004 |
+| Q4 | pregame dog | leading | 0.35–0.50 | 95 | 0.448 | 0.558 | 0.458 | +0.092 |
+| Q4 | pregame dog | tied | 0.05–0.20 | 16 | 0.156 | 0.125 | 0.035 | -0.040 |
+| Q4 | pregame dog | tied | 0.20–0.35 | 49 | 0.304 | 0.367 | 0.247 | +0.049 |
+| Q4 | pregame dog | tied | 0.35–0.50 | 70 | 0.429 | 0.471 | 0.359 | +0.025 |
+| Q4 | pregame dog | trailing | 0.05–0.20 | 206 | 0.128 | 0.121 | 0.084 | -0.015 |
+| Q4 | pregame dog | trailing | 0.20–0.35 | 172 | 0.264 | 0.262 | 0.202 | -0.016 |
+| Q4 | pregame dog | trailing | 0.35–0.50 | 113 | 0.388 | 0.416 | 0.329 | +0.012 |
+| Q4 | pregame fav | leading | 0.20–0.35 | 18 | 0.284 | 0.222 | 0.090 | -0.076 |
+| Q4 | pregame fav | leading | 0.35–0.50 | 51 | 0.450 | 0.471 | 0.341 | +0.003 |
+| Q4 | pregame fav | tied | 0.20–0.35 | 34 | 0.294 | 0.265 | 0.146 | -0.044 |
+| Q4 | pregame fav | tied | 0.35–0.50 | 62 | 0.452 | 0.387 | 0.276 | -0.082 |
+| Q4 | pregame fav | trailing | 0.05–0.20 | 155 | 0.141 | 0.148 | 0.101 | -0.001 |
+| Q4 | pregame fav | trailing | 0.20–0.35 | 156 | 0.279 | 0.263 | 0.200 | -0.030 |
+| Q4 | pregame fav | trailing | 0.35–0.50 | 141 | 0.412 | 0.355 | 0.280 | -0.075 |
+
+## A4. Out-of-sample check — calibration edge by season (same cells, split)
+
+An edge that is real should show in BOTH seasons. One season positive and the other flat = likely noise.
+
+| phase | ask bucket | 2025 n / edge | 2026 n / edge |
+|---|---|---|---|
+| pre | 0.05–0.10 | 4 / - | 0 / - |
+| pre | 0.10–0.15 | 22 / -0.087 | 2 / - |
+| pre | 0.15–0.20 | 21 / -0.133 | 5 / - |
+| pre | 0.20–0.25 | 41 / +0.129 | 8 / - |
+| pre | 0.25–0.30 | 47 / -0.073 | 17 / -0.104 |
+| pre | 0.30–0.35 | 59 / +0.070 | 13 / -0.107 |
+| pre | 0.35–0.40 | 66 / +0.005 | 28 / +0.147 |
+| pre | 0.40–0.50 | 121 / +0.020 | 78 / +0.056 |
+| Q1 | 0.05–0.10 | 30 / +0.008 | 6 / - |
+| Q1 | 0.10–0.15 | 66 / -0.035 | 16 / +0.047 |
+| Q1 | 0.15–0.20 | 101 / +0.077 | 41 / +0.077 |
+| Q1 | 0.20–0.25 | 146 / +0.042 | 58 / +0.074 |
+| Q1 | 0.25–0.30 | 184 / +0.010 | 77 / +0.074 |
+| Q1 | 0.30–0.35 | 208 / -0.011 | 96 / +0.066 |
+| Q1 | 0.35–0.40 | 221 / -0.014 | 116 / +0.040 |
+| Q1 | 0.40–0.50 | 287 / -0.028 | 166 / +0.006 |
+| Q2 | 0.05–0.10 | 87 / +0.028 | 34 / -0.002 |
+| Q2 | 0.10–0.15 | 116 / -0.008 | 50 / -0.019 |
+| Q2 | 0.15–0.20 | 151 / -0.006 | 71 / +0.036 |
+| Q2 | 0.20–0.25 | 175 / +0.026 | 90 / +0.065 |
+| Q2 | 0.25–0.30 | 187 / -0.002 | 96 / +0.058 |
+| Q2 | 0.30–0.35 | 211 / -0.048 | 115 / +0.009 |
+| Q2 | 0.35–0.40 | 223 / -0.064 | 114 / +0.017 |
+| Q2 | 0.40–0.50 | 269 / -0.036 | 142 / -0.004 |
+| Q3 | 0.05–0.10 | 129 / +0.018 | 52 / +0.054 |
+| Q3 | 0.10–0.15 | 121 / -0.000 | 72 / +0.021 |
+| Q3 | 0.15–0.20 | 153 / -0.009 | 81 / +0.038 |
+| Q3 | 0.20–0.25 | 161 / +0.001 | 88 / -0.009 |
+| Q3 | 0.25–0.30 | 167 / -0.009 | 88 / -0.023 |
+| Q3 | 0.30–0.35 | 169 / -0.015 | 89 / +0.001 |
+| Q3 | 0.35–0.40 | 178 / -0.010 | 81 / -0.026 |
+| Q3 | 0.40–0.50 | 201 / -0.024 | 93 / -0.051 |
+| Q4 early | 0.05–0.10 | 113 / +0.017 | 50 / -0.038 |
+| Q4 early | 0.10–0.15 | 105 / +0.002 | 48 / -0.007 |
+| Q4 early | 0.15–0.20 | 111 / -0.009 | 49 / +0.042 |
+| Q4 early | 0.20–0.25 | 113 / -0.038 | 53 / +0.032 |
+| Q4 early | 0.25–0.30 | 110 / -0.030 | 59 / -0.013 |
+| Q4 early | 0.30–0.35 | 116 / -0.024 | 57 / +0.017 |
+| Q4 early | 0.35–0.40 | 119 / -0.009 | 56 / +0.062 |
+| Q4 early | 0.40–0.50 | 146 / -0.037 | 72 / +0.009 |
+| Q4 late | 0.05–0.10 | 158 / +0.000 | 64 / +0.001 |
+| Q4 late | 0.10–0.15 | 135 / -0.009 | 70 / -0.057 |
+| Q4 late | 0.15–0.20 | 133 / +0.001 | 64 / -0.025 |
+| Q4 late | 0.20–0.25 | 137 / +0.001 | 64 / -0.062 |
+| Q4 late | 0.25–0.30 | 144 / +0.009 | 62 / -0.060 |
+| Q4 late | 0.30–0.35 | 140 / +0.020 | 68 / -0.069 |
+| Q4 late | 0.35–0.40 | 147 / +0.031 | 63 / -0.069 |
+| Q4 late | 0.40–0.50 | 172 / -0.006 | 87 / -0.003 |
+
+Note: about 194 cells are tested; at 95% confidence ~5% of them look significant by chance. Trust only patterns that repeat across neighbouring cells AND both seasons.
+
 ## B/C. Strategies — buy the first time the ask is ≤ P in the phase
 
 | phase | P | n | win% | hold: avg P&L/contract | bounce +10c | +15c | +20c | double | hit% (+15c) | worst-10 sum |
 |---|---|---|---|---|---|---|---|---|---|---|
+| pre | 0.15 | 31 | 6% | -0.075 | -0.041 | -0.042 | -0.046 | -0.051 | 35% | -1.58 |
+| pre | 0.20 | 52 | 13% | -0.033 | -0.038 | -0.040 | -0.040 | -0.044 | 40% | -2.08 |
+| pre | 0.25 | 102 | 25% | +0.047 | -0.027 | -0.027 | -0.010 | -0.017 | 50% | -2.63 |
+| pre | 0.30 | 148 | 25% | +0.012 | -0.030 | -0.037 | -0.024 | -0.029 | 51% | -3.10 |
+| pre | 0.35 | 205 | 29% | +0.018 | -0.024 | -0.030 | -0.017 | -0.027 | 57% | -3.64 |
 | Q1 | 0.15 | 100 | 12% | -0.029 | -0.038 | -0.051 | -0.055 | -0.051 | 33% | -1.59 |
 | Q1 | 0.20 | 166 | 24% | +0.049 | -0.030 | -0.032 | -0.033 | -0.029 | 45% | -2.11 |
 | Q1 | 0.25 | 241 | 26% | +0.028 | -0.020 | -0.028 | -0.025 | -0.014 | 53% | -2.63 |
@@ -237,6 +364,15 @@ P&L is per $1 contract. A +0.03 average on 25c entries is +12% per trade. Bounce
 
 Each cell: average P&L per contract if the whole position rests one sell at that price (unfilled -> held to the final whistle). The best level is the most profitable single exit; a ladder spreads across levels to smooth results.
 
+- **pre, entry ≤ 0.20** (n=52): best single exit 0.70: -0.020 (21% fill)
+  - 0.15: -0.032 (67% fill) · 0.20: -0.035 (61% fill) · 0.25: -0.025 (58% fill) · 0.30: -0.025 (48% fill) · 0.35: -0.054 (33% fill) · 0.40: -0.061 (27% fill) · 0.45: -0.056 (25% fill) · 0.50: -0.043 (25% fill) · 0.55: -0.041 (23% fill) · 0.60: -0.030 (23% fill)
+  - ladders (10c steps to 0.90): heavy-low -0.033 · equal -0.031 · halving -0.030 · heavy-high -0.030 · hold -0.033
+- **pre, entry ≤ 0.25** (n=102): best single exit 0.95: +0.053 (26% fill)
+  - 0.15: -0.032 (67% fill) · 0.20: -0.035 (61% fill) · 0.25: -0.014 (74% fill) · 0.30: -0.019 (64% fill) · 0.35: -0.028 (52% fill) · 0.40: -0.033 (44% fill) · 0.45: -0.020 (42% fill) · 0.50: -0.009 (40% fill) · 0.55: -0.010 (36% fill) · 0.60: -0.004 (34% fill)
+  - ladders (10c steps to 0.90): heavy-low -0.007 · equal +0.002 · halving -0.012 · heavy-high +0.011 · hold +0.047
+- **pre, entry ≤ 0.30** (n=148): best single exit 0.95: +0.012 (26% fill)
+  - 0.15: -0.032 (67% fill) · 0.20: -0.036 (60% fill) · 0.25: -0.016 (72% fill) · 0.30: -0.020 (71% fill) · 0.35: -0.025 (61% fill) · 0.40: -0.027 (53% fill) · 0.45: -0.021 (49% fill) · 0.50: -0.021 (44% fill) · 0.55: -0.024 (39% fill) · 0.60: -0.025 (36% fill)
+  - ladders (10c steps to 0.90): heavy-low -0.021 · equal -0.018 · halving -0.020 · heavy-high -0.015 · hold +0.012
 - **Q1, entry ≤ 0.20** (n=166): best single exit 0.95: +0.043 (24% fill)
   - 0.15: -0.041 (63% fill) · 0.20: -0.033 (75% fill) · 0.25: -0.023 (69% fill) · 0.30: -0.028 (55% fill) · 0.35: -0.036 (45% fill) · 0.40: -0.037 (39% fill) · 0.45: -0.031 (36% fill) · 0.50: -0.025 (34% fill) · 0.55: -0.018 (32% fill) · 0.60: -0.005 (31% fill)
   - ladders (10c steps to 0.90): heavy-low -0.013 · equal -0.001 · halving -0.022 · heavy-high +0.010 · hold +0.049
