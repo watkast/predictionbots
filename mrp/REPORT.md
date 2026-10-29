@@ -1,11 +1,11 @@
 # Mr. P — gate report
 
-Updated 2026-10-29T11:03:15Z by `run-20261029T1053-40861040693` (last 7 days of data). Read-only recorder — it never places orders.
+Updated 2026-10-29T11:13:23Z by `run-20261029T1053-40861040693` (last 7 days of data). Read-only recorder — it never places orders.
 Kit and docs: `mrp/README.md` on the `mrp` branch. Per-window detail: `mrp/windows.csv`.
 
 ```
 
-Mr. P — gate report   windows=4  lot=10  errors_logged=602
+Mr. P — gate report   windows=4  lot=10  errors_logged=1208
 data: mrp/data   csv: mrp/windows.csv
 
 settlement reproduction: our 60-sample average matched the exchange's settlementPrice in 0/4 windows  (anything < 100% means a feed gap or a rule mismatch)

@@ -1,5 +1,5 @@
 
-Mr. P — gate report   windows=4  lot=10  errors_logged=602
+Mr. P — gate report   windows=4  lot=10  errors_logged=1208
 data: mrp/data   csv: mrp/windows.csv
 
 settlement reproduction: our 60-sample average matched the exchange's settlementPrice in 0/4 windows  (anything < 100% means a feed gap or a rule mismatch)
