@@ -79,6 +79,7 @@ def main():
     k_snaps = defaultdict(list)                      # (series, ticker) -> [(t, yb, ya, ybq, yaq, status)]
     samples = {}
     decided = defaultdict(list)                      # kalshi ticker -> [(t, margin, lock, rec)]
+    p_entries, p_exits, reacts = {}, {}, []
     series_titles = {}
     matches = 0
     for r in load(a.root, a.days):
@@ -127,6 +128,12 @@ def main():
         elif k == "sp.sample":
             obj = d.get("event") or d.get("market") or {}
             samples[d.get("venue")] = sorted(obj.keys())[:60]
+        elif k == "sp.paper.entry":
+            p_entries[d["id"]] = (t, d)
+        elif k == "sp.paper.exit":
+            p_exits[d["id"]] = (t, d)
+        elif k == "sp.react":
+            reacts.append(d)
         elif k == "sp.decided":
             decided[d.get("market")].append((t, d.get("margin"), d.get("lock"), d))
         elif k == "sp.match":
@@ -184,6 +191,49 @@ def main():
             act = f" {d.get('action')} @ {d.get('price')}" if d.get("action") else ""
             print(f"- **{o['kind']}**{lk} {d.get('sport') or ''} — {desc[:70]} —{px}{act} | margin {fmt(o['max_margin'], 4)} | "
                   f"{o['max_persist'] // 60} min, {o['hits']} hits{bb} | score {d.get('score') or '-'} {d.get('period') or ''}")
+        print()
+
+    # ------------------------------------------------------------------ paper trading
+    print("## Live paper trades (no orders; Kalshi prices, taker fees)\n")
+    if not p_entries:
+        print("no paper trades yet\n")
+    else:
+        by_rule = defaultdict(lambda: {"n": 0, "closed": 0, "wins": 0, "cost": 0.0, "pnl": 0.0})
+        for pid, (t, d) in p_entries.items():
+            r = by_rule[d["rule"]]; r["n"] += 1
+            if pid in p_exits:
+                x = p_exits[pid][1]; r["closed"] += 1; r["cost"] += x["cost"]; r["pnl"] += x["pnl"]; r["wins"] += 1 if x["pnl"] > 0 else 0
+        tc = sum(r["cost"] for r in by_rule.values()); tp = sum(r["pnl"] for r in by_rule.values())
+        print(f"**Total closed P&L: ${tp:+.2f} on ${tc:.2f} staked ({(100 * tp / tc if tc else 0):+.1f}%)**\n")
+        print("| rule | entries | closed | winners | staked | P&L | ROI |\n|---|---|---|---|---|---|---|")
+        for rule in sorted(by_rule):
+            r = by_rule[rule]
+            print(f"| {rule} | {r['n']} | {r['closed']} | {r['wins']} | ${r['cost']:.2f} | ${r['pnl']:+.2f} | "
+                  f"{(100 * r['pnl'] / r['cost'] if r['cost'] else 0):+.0f}% |")
+        print("\n| time (UTC) | rule | game | team | entry | contracts | why | result |\n|---|---|---|---|---|---|---|---|")
+        for pid, (t, d) in sorted(p_entries.items(), key=lambda kv: -kv[1][0])[:40]:
+            x = p_exits.get(pid, (None, None))[1]
+            res = f"{x['how']}: {x['exit']:.2f}, ${x['pnl']:+.2f}" if x else "open"
+            print(f"| {datetime.fromtimestamp(t / 1000, tz=timezone.utc):%H:%M} | {d['rule']} | {str(d.get('title'))[:28]} | {d.get('team')} | "
+                  f"{d['entry']:.2f} | {d['n']} | {str(d.get('why'))[:60]} | {res} |")
+        print()
+    if reacts:
+        print("### Score reaction speed (live, 15 s): share of the 3-minute move done by +15 s / +30 s / +60 s\n")
+        rows = []
+        for r in reacts:
+            for tk, path in (r.get("path") or {}).items():
+                pts = [(dt, (b + a) / 2) for dt, b, a in path if b is not None and a is not None]
+                if len(pts) < 4:
+                    continue
+                p0, pend = pts[0][1], pts[-1][1]
+                if abs(pend - p0) < 0.03:
+                    continue
+                def at(s_):
+                    v = [p for dt, p in pts if dt <= s_]
+                    return (v[-1] - p0) / (pend - p0) if v else 0.0
+                rows.append((r.get("game"), r.get("score"), at(15), at(30), at(60)))
+        for g, sc, a15, a30, a60 in rows[-20:]:
+            print(f"- {g} {sc}: {100 * a15:.0f}% / {100 * a30:.0f}% / {100 * a60:.0f}%")
         print()
 
     # ------------------------------------------------------------------ decided-state engine
