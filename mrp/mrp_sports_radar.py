@@ -348,7 +348,9 @@ def detect_dead_pm(events: list[dict]) -> list[dict]:
         if ev.get("closed"):
             continue
         sc = ev.get("score")
-        nums = [int(x) for x in re.findall(r"\d+", sc)] if isinstance(sc, str) else []
+        # only plain "a-b" scores (basketball, soccer, hockey, darts legs...); tennis "3-6, 4-3:15-0" and cricket runs are excluded
+        mm = re.fullmatch(r"\s*(\d+)\s*-\s*(\d+)\s*", sc) if isinstance(sc, str) else None
+        nums = [int(mm.group(1)), int(mm.group(2))] if mm else []
         for m in ev["markets"]:
             if m.get("closed") or m.get("status") in ("CLOSED", "RESOLVED"):
                 continue
@@ -368,6 +370,8 @@ def detect_dead_pm(events: list[dict]) -> list[dict]:
                     opps.append({"kind": "dead_pm_total", "venue": "polymarket", "event": ev["slug"], "title": ev["title"],
                                  "sport": ev["sport"], "market": m["slug"], "q": m["q"], "type": m["type"], "line": m["line"],
                                  "score": sc, "period": ev.get("period"), "bid": bid, "ask": ask, "sides": m.get("sides"),
+                                 "margin_if_long_is_over": round(1 - ask - fee(pm_theta(m), ask), 4) if ask is not None else None,
+                                 "margin_if_long_is_under": round(bid - fee(pm_theta(m), bid), 4) if bid is not None else None,
                                  "note": "score already exceeds the total; Over is decided"})
     return opps
 
@@ -472,7 +476,11 @@ def detect_xvenue(pairs, K: Kalshi) -> list[dict]:
             if pmm.get("closed") or pmm.get("line") is not None or not ("moneyline" in t or "winner" in t or t in ("", "none")):
                 continue
             longs = [s for s in pmm.get("sides") or [] if s.get("long")]
-            long_t = tokens(longs[0]["desc"]) if longs else tokens(pmm["q"])
+            long_t = tokens(longs[0]["desc"]) if longs else set()
+            if not long_t and longs and longs[0].get("team"):      # Yes/No market (soccer 3-way): team via teamId
+                long_t = set().union(*[tokens(t["name"]) for t in pe.get("teams") or [] if t.get("id") == longs[0]["team"]] or [set()])
+            if not long_t:
+                continue
             for km in kms:
                 if km.get("status") != "active" or not (tokens(km["yes"]) & long_t):
                     continue
