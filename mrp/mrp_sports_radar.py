@@ -437,6 +437,37 @@ def sport_ok(pm_sport: str, series: str) -> bool:
     return ks == pm_sport
 
 
+CODE_SPORTS = ("tennis", "table-tennis")
+
+
+def name_codes(name: str) -> set:
+    """3-letter codes Kalshi may use for a player: first 3 letters of each word, and of 2-word surnames ('De Alba' -> DEA)."""
+    words = [w for w in re.sub(r"[^a-z ]", " ", (name or "").lower()).split() if w]
+    codes = {w[:3].upper() for w in words if len(w) >= 2}
+    codes |= {(a + b)[:3].upper() for a, b in zip(words, words[1:])}
+    return codes
+
+
+def code_cover(pe: dict, gk: str) -> bool:
+    """Individual sports: every 3-letter chunk of the Kalshi game key (after the date/time) must belong to exactly
+    one side's player names, and each side must own at least one chunk. 'ALTLEH' <- Altmaier / Lehecka."""
+    letters = re.sub(r"^\d{2}[A-Z]{3}\d{2}\d*", "", gk)
+    if not letters or len(letters) % 3:
+        return False
+    chunks = [letters[i:i + 3] for i in range(0, len(letters), 3)]
+    names = [t["name"] for t in pe.get("teams") or []][:2] or team_sides(pe["title"])
+    if len(names) != 2:
+        return False
+    side_codes = [set().union(*[name_codes(p) for p in re.split(r"\s*[/,&]\s*|\s+-\s+", n)]) for n in names]
+    owned = [0, 0]
+    for ch in chunks:
+        hit = [ch in side_codes[0], ch in side_codes[1]]
+        if hit[0] == hit[1]:
+            return False
+        owned[0 if hit[0] else 1] += 1
+    return owned[0] > 0 and owned[1] > 0
+
+
 def match_games(pm: list[dict], kms: list[dict]) -> list[tuple[dict, str, list[dict]]]:
     """Pair a Polymarket event with a Kalshi *game* (every Kalshi event sharing the game key, e.g. 26OCT29KHAHAZ:
     winner, totals, BTTS, 1H, set winners...). Both sides must hit distinctive tokens; the date must agree within 1 day."""
@@ -456,7 +487,9 @@ def match_games(pm: list[dict], kms: list[dict]) -> list[tuple[dict, str, list[d
         best, best_score = None, 0
         codes = pm_codes(pe)
         for gk, ms, kt, kd in idx:
-            if kd is None or (p_start and abs(p_start - kd) > 2 * 86400):
+            if kd is None or (p_start and abs(p_start - kd) > 1.5 * 86400):
+                continue
+            if pe.get("sport") in CODE_SPORTS and not code_cover(pe, gk):
                 continue
             if not sport_ok(pe.get("sport") or "", ms[0]["series"]):
                 continue
