@@ -28,6 +28,8 @@ publish() {
       fi
       mkdir -p "mrp/data/$RUN"
       cp -r "$MRP_DATA_DIR/." "mrp/data/$RUN/"
+      # publish gzipped (10x smaller; keeps every blob far below GitHub's 100 MB limit)
+      find "mrp/data/$RUN" -name "*.jsonl" -exec gzip -f {} \;
       python "$KIT/mrp_analyze.py" mrp/data --days 7 --csv mrp/windows.csv > mrp/REPORT.txt 2>&1 || true
       {
         echo "# Mr. P — gate report"

@@ -89,6 +89,7 @@ PM_KEY_ID = os.environ.get("POLYMARKET_KEY_ID")
 PM_SECRET = os.environ.get("POLYMARKET_SECRET_KEY")
 
 STOP = threading.Event()
+WS_DROPPED: dict[str, int] = {}      # throttled WebSocket frames, by kind (reported in the status line)
 
 
 # ----------------------------------------------------------------------------- helpers
@@ -149,15 +150,25 @@ class Writer:
         self.fh_key = None
         self.count = 0
 
+    ROTATE_BYTES = int(os.environ.get("MRP_ROTATE_BYTES", str(40 * 1024 * 1024)))
+
     def _file_for(self, t_ms: int):
         d = datetime.fromtimestamp(t_ms / 1000, tz=timezone.utc)
         key = (d.strftime("%Y-%m-%d"), d.strftime("%H"))
-        if key != self.fh_key:
+        if key != self.fh_key or (self.fh and self.fh.tell() > self.ROTATE_BYTES):
             if self.fh:
                 self.fh.close()
             path = os.path.join(self.root, key[0])
             os.makedirs(path, exist_ok=True)
-            self.fh = open(os.path.join(path, f"{key[1]}.jsonl"), "a", buffering=1, encoding="utf-8")
+            # HH.jsonl, then HH.1.jsonl, HH.2.jsonl ... once a part passes ROTATE_BYTES
+            n = 0
+            while True:
+                name = f"{key[1]}.jsonl" if n == 0 else f"{key[1]}.{n}.jsonl"
+                full = os.path.join(path, name)
+                if not os.path.exists(full) or os.path.getsize(full) < self.ROTATE_BYTES:
+                    break
+                n += 1
+            self.fh = open(full, "a", buffering=1, encoding="utf-8")
             self.fh_key = key
         return self.fh
 
@@ -610,8 +621,25 @@ async def pmus_ws_main():
     while not STOP.is_set():
         try:
             ws = client.ws.markets()
-            ws.on("market_data", lambda d: W.write("pmus.ws", d))
-            ws.on("market_data_lite", lambda d: W.write("pmus.ws", d))
+            last_ws: dict[str, float] = {}
+
+            def throttled(kind: str):
+                # full-book frames can arrive many times per second; one per second per market is all we need
+                def cb(d):
+                    try:
+                        slug = (d.get(kind) or {}).get("marketSlug") or ""
+                    except AttributeError:
+                        slug = ""
+                    now = time.time()
+                    k = f"{kind}:{slug}"
+                    if now - last_ws.get(k, 0) >= 1.0:
+                        last_ws[k] = now
+                        W.write("pmus.ws", d)
+                    else:
+                        WS_DROPPED[kind] = WS_DROPPED.get(kind, 0) + 1
+                return cb
+            ws.on("market_data", throttled("marketData"))
+            ws.on("market_data_lite", throttled("marketDataLite"))
             ws.on("trade", lambda d: W.write("pmus.ws", d))
             ws.on("error", lambda e: W.write("err", {"where": "pmus.ws", "msg": str(e)[:500]}))
             await ws.connect()
@@ -651,8 +679,12 @@ def status_loop():
         lb = S.last_brti
         ptb = S.ptb(live)
         d = round(lb[1] - ptb, 2) if (lb and ptb is not None) else None
-        log(f"status: lines={W.count} (+{W.count - last}/min) brti={lb} ptb={ptb} d={d} "
-            f"live={S.slug_for(live)} state={S.last_book_state.get(S.slug_for(live))}")
+        try:
+            size = W.fh.tell() if W.fh else 0
+        except Exception:  # noqa
+            size = 0
+        log(f"status: lines={W.count} (+{W.count - last}/min) file={size/1e6:.1f}MB ws_throttled={WS_DROPPED} "
+            f"brti={lb} ptb={ptb} d={d} live={S.slug_for(live)} state={S.last_book_state.get(S.slug_for(live))}")
         last = W.count
 
 

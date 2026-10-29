@@ -19,6 +19,7 @@ from __future__ import annotations
 import argparse
 import csv
 import glob
+import gzip
 import json
 import math
 import os
@@ -69,7 +70,8 @@ def taker_fee(contracts: float, p: float) -> float:
 def load(data_dir, days=None):
     """Every */YYYY-MM-DD/HH.jsonl under data_dir, any depth (one sub-folder per recorder run is fine).
     `days` keeps only date folders within the last N days."""
-    files = sorted(glob.glob(os.path.join(data_dir, "**", "*.jsonl"), recursive=True))
+    files = sorted(glob.glob(os.path.join(data_dir, "**", "*.jsonl"), recursive=True)
+                   + glob.glob(os.path.join(data_dir, "**", "*.jsonl.gz"), recursive=True))
     if days:
         cutoff = (datetime.now(timezone.utc).timestamp() - days * 86400)
         keep = []
@@ -84,7 +86,8 @@ def load(data_dir, days=None):
     if not files:
         raise SystemExit(f"no JSONL files under {data_dir}")
     for f in files:
-        with open(f, encoding="utf-8") as fh:
+        opener = gzip.open if f.endswith(".gz") else open
+        with opener(f, "rt", encoding="utf-8") as fh:
             for line in fh:
                 line = line.strip()
                 if not line:
