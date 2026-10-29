@@ -1,0 +1,4 @@
+requests>=2.31
+websockets>=12
+cryptography>=42
+polymarket-us>=2.4
