@@ -1,40 +1,31 @@
 
-Mr. P — gate report   windows=4  lot=10  errors_logged=2429
-data: mrp/data   csv: mrp/windows.csv
+Mr. P — gate report   records=1,273,143  windows=4  lot=10  errors_logged=2429
+data: mrp/data   index sources: {'btc': 'kalshi', 'link': 'kalshi', 'sui': 'kalshi', 'hype': 'kalshi', 'hbar': 'kalshi', 'bch': 'kalshi', 'aave': 'kalshi', 'vvv': 'kalshi', 'xlm': 'kalshi', 'near': 'kalshi', 'ltc': 'kalshi', 'pepeusd_rti': 'kalshi', 'ada': 'kalshi', 'dot': 'kalshi', 'wld': 'kalshi', 'uniusd_rti': 'kalshi', 'xrp': 'kalshi', 'bnb': 'kalshi', 'shib': 'kalshi', 'zec': 'kalshi', 'doge': 'kalshi', 'sol': 'kalshi', 'eth': 'kalshi'}
 
-settlement reproduction: our 60-sample average matched the exchange's settlementPrice in 0/4 windows  (anything < 100% means a feed gap or a rule mismatch)
+=== BTC 15-minute   windows=4   index=kalshi   settlement reproduced 0/4
+T-left    n  flip%  open% med|d|bps PM ask<=.99  <=.95 entry_ok ok&flip min|d|ok$ PM ask p50 K ask p50 K bid p50 lock>0 maxlock
+-------------------------------------------------------------------------------------------------------------------------------
+   600    3  66.7%     0%       2.8           0      0        0       0         -          -         -         -      0       -
+   300    3  33.3%     0%       5.1           0      0        0       0         -          -         -         -      0       -
+   180    4   0.0%    25%       6.4           1      0        1       0        76      0.990         -         -      0       -
+   120    4   0.0%   100%       5.8           3      3        2       0        21      0.780         -         -      0       -
+    90    4   0.0%   100%       5.2           3      3        3       0        13      0.870         -         -      0       -
+    60    4   0.0%   100%       7.2           2      1        0       0         -      0.960         -         -      0       -
+    45    4   0.0%   100%       8.6           1      1        0       0         -      0.400         -         -      0       -
+    30    4   0.0%   100%       9.5           0      0        0       0         -          -         -         -      0       -
+    20    4   0.0%   100%       9.7           0      0        0       0         -          -         -         -      0       -
+    15    4   0.0%   100%       9.6           0      0        0       0         -          -         -         -      0       -
+    10    4   0.0%   100%       9.3           0      0        0       0         -          -         -         -      0       -
+     5    4   0.0%   100%       9.1           0      0        0       0         -          -         -         -      0       -
+     3    4   0.0%   100%       8.9           0      0        0       0         -          -         -         -      0       -
+     2    4   0.0%   100%       8.9           0      0        0       0         -          -         -         -      0       -
+     1    4   0.0%   100%       8.9           0      0        0       0         -          -         -         -      0       -
+  index speed (kalshi, 3630 prints): 1s max 29.08 p99.9 13.22 | 5s max 39.03 p99.9 26.22 | 10s max 38.94 p99.9 26.75 | 15s max 39.62 p99.9 30.73 | 30s max 58.37 p99.9 58.21 | 60s max 102.92 p99.9 102.87
 
-T-left    n  flip%  open%  ask<=99 entry_ok  ok&flip  min|d|ok  med|d| ask p50 ask p90  net/lot
------------------------------------------------------------------------------------------------
-   600    3  66.7%   0.0%        0        0        0         -      22       -       -        -
-   300    3  33.3%   0.0%        0        0        0         -      41       -       -        -
-   180    4   0.0%  25.0%        1        1        0        76      51    0.99    0.99     0.09
-   120    4   0.0% 100.0%        3        2        0        21      46    0.78    0.93     1.66
-    90    4   0.0% 100.0%        3        3        0        13      42    0.87    0.95     1.22
-    60    4   0.0% 100.0%        2        0        0         -      58    0.96    0.96        -
-    45    4   0.0% 100.0%        1        0        0         -      69    0.40    0.40        -
-    30    4   0.0% 100.0%        0        0        0         -      76       -       -        -
-    20    4   0.0% 100.0%        0        0        0         -      77       -       -        -
-    15    4   0.0% 100.0%        0        0        0         -      76       -       -        -
-    10    4   0.0% 100.0%        0        0        0         -      74       -       -        -
-     5    4   0.0% 100.0%        0        0        0         -      73       -       -        -
-     3    4   0.0% 100.0%        0        0        0         -      72       -       -        -
-     2    4   0.0% 100.0%        0        0        0         -      71       -       -        -
-     1    4   0.0% 100.0%        0        0        0         -      71       -       -        -
+Columns: PM = Polymarket US (0.01 ticks, leader ask / count with >= lot contracts), K = Kalshi (0.001 ticks). lock>0 = checkpoints where buying the leader on one venue and selling it on the other cleared both fees.
+entry_ok = state OPEN, PM leader ask <= 0.99 with >= lot contracts, positive net. ok&flip must be ZERO with margin before anything goes live.
 
-flip% = leading side at T-left lost.  entry_ok = state OPEN, leader ask <= 0.99 with >= 10 contracts, positive net after fee (re-run with --min-d to test a settlement-gate threshold).
-ok&flip = entries that would have been taken AND lost — this column must be ZERO, with margin, before anything goes live.
-
-BRTI speed (max absolute move observed over a span, $):
-    1s  max=    2.33  p99.9=    2.18  p99=   1.69  median=  0.31  (n=3029)
-    5s  max=   10.92  p99.9=   10.53  p99=   8.25  median=  1.53  (n=3025)
-   10s  max=   21.04  p99.9=   20.73  p99=  16.16  median=  3.00  (n=3020)
-   15s  max=   30.76  p99.9=   30.63  p99=  24.60  median=  4.50  (n=3015)
-   30s  max=   58.37  p99.9=   58.25  p99=  51.11  median=  8.35  (n=3000)
-   60s  max=  102.92  p99.9=  102.90  p99=  96.42  median= 14.98  (n=2970)
-  -> a flip at T-left=k needs the remaining k prints to average 60/k x |d| away. Compare need_rem_move in windows.csv to the max k-second move above.
-
-market state transitions seen (from -> to, relative to window end):
-                                  None -> MARKET_STATE_OPEN                    before_end  x5
-                                  None -> MARKET_STATE_HALTED                  before_end  x5
-                     MARKET_STATE_OPEN -> MARKET_STATE_CLOSED                   after_end  x2
+Polymarket state transitions:
+                    None -> OPEN                     before_end  x5
+                    None -> HALTED                   before_end  x5
+                    OPEN -> CLOSED                    after_end  x2
