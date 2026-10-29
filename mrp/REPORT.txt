@@ -1,5 +1,5 @@
 
-Mr. P — gate report   windows=4  lot=10  errors_logged=1208
+Mr. P — gate report   windows=4  lot=10  errors_logged=1817
 data: mrp/data   csv: mrp/windows.csv
 
 settlement reproduction: our 60-sample average matched the exchange's settlementPrice in 0/4 windows  (anything < 100% means a feed gap or a rule mismatch)
@@ -36,5 +36,5 @@ BRTI speed (max absolute move observed over a span, $):
 
 market state transitions seen (from -> to, relative to window end):
                                   None -> MARKET_STATE_OPEN                    before_end  x5
-                                  None -> MARKET_STATE_HALTED                  before_end  x3
+                                  None -> MARKET_STATE_HALTED                  before_end  x4
                      MARKET_STATE_OPEN -> MARKET_STATE_CLOSED                   after_end  x2
