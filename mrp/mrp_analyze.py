@@ -28,7 +28,7 @@ from datetime import datetime, timezone
 CHECKPOINTS = [600, 300, 180, 120, 90, 60, 45, 30, 20, 15, 10, 5, 3, 2, 1]
 THETA_PM = 0.0695      # Polymarket US taker
 THETA_K = 0.07         # Kalshi taker
-SLUG_RE = re.compile(r"^cpc-([a-z0-9]+)-updown-(\d+)([mh])-")
+SLUG_RE = re.compile(r"^cpc[a-z0-9]*-([a-z0-9]+)-updown-(\d+)([mh])-")   # cpc-btc-..., cpceth-eth-..., cpcsol-sol-...
 
 
 def parse_amount(v):
@@ -153,7 +153,8 @@ def main():
     idx = defaultdict(dict)          # sym -> {sec: value}
     idx_src = {}                     # sym -> kalshi|pmus
     markets = {}                     # slug -> dict
-    books = defaultdict(list)        # slug -> [(t, book)]
+    books = defaultdict(list)        # slug -> [(t, book)]   REST + WebSocket (state, asks, depth)
+    books_ws = defaultdict(list)     # slug -> [(t, book)]   WebSocket only (real-time; used for cross-venue locks)
     kbooks = defaultdict(list)       # (sym, close) -> [(t, snap)]
     states = defaultdict(list)
     settle_avg = defaultdict(list)
@@ -202,6 +203,7 @@ def main():
             md = d.get("marketData")
             if md and md.get("marketSlug"):
                 books[md["marketSlug"]].append((t / 1000.0, md))
+                books_ws[md["marketSlug"]].append((t / 1000.0, md))
         elif k == "kalshi.book":
             kbooks[(d.get("sym"), int(d.get("close") or 0))].append((t / 1000.0, d))
         elif k == "pmus.state":
@@ -211,6 +213,8 @@ def main():
         elif k == "err":
             errors += 1
     for lst in books.values():
+        lst.sort(key=lambda x: x[0])
+    for lst in books_ws.values():
         lst.sort(key=lambda x: x[0])
     for lst in kbooks.values():
         lst.sort(key=lambda x: x[0])
@@ -239,10 +243,18 @@ def main():
             if px is None:
                 continue
             d = px - ptb
-            leader = "UP" if d >= 0 else "DOWN"
-            bk = nearest_before(bl, t, 3.0)
-            ks = nearest_before(kl, t, 3.0)
+            if tau <= 60:
+                done = [series[ts] for ts in range(end - 60, t + 1) if ts in series]
+                proj = (sum(done) + (60 - len(done)) * px) / 60 if done else px
+                leader = "UP" if proj >= ptb else "DOWN"
+            else:
+                leader = "UP" if d >= 0 else "DOWN"
+            max_age = 6.0 if tau < 180 else 20.0
+            bk = nearest_before(bl, t, max_age)
+            ks = nearest_before(kl, t, 3.0) if hz == 900 else None       # Kalshi only lists 15-minute windows
+            bw = nearest_before(books_ws.get(slug, []), t, 1.5)
             pm = pm_sides(bk) if bk else {}
+            pw = pm_sides(bw) if bw else {}
             kk = k_sides(ks) if ks else {}
             side = "up" if leader == "UP" else "down"
             l_ask, l_q = pm.get(f"ask_{side}"), pm.get(f"ask_{side}_q") or 0
@@ -255,11 +267,12 @@ def main():
             entry_ok = bool(bk and state == "MARKET_STATE_OPEN" and l_ask is not None and l_ask <= 0.99 and l_q >= min_depth
                             and net is not None and net > 0 and abs(d_bps) >= args.min_d_bps)
             # cross-venue lock on the leader: buy on one venue, sell on the other (same settlement index)
-            lock = None
-            if l_bid is not None and k_ask is not None:
-                lock = round(l_bid - k_ask - THETA_PM * l_bid * (1 - l_bid) - THETA_K * k_ask * (1 - k_ask), 4)
-            if l_ask is not None and k_bid is not None:
-                alt = round(k_bid - l_ask - THETA_PM * l_ask * (1 - l_ask) - THETA_K * k_bid * (1 - k_bid), 4)
+            lock = None      # real-time (WebSocket) Polymarket book vs Kalshi, same second, same contract
+            w_bid, w_ask = pw.get(f"bid_{side}"), pw.get(f"ask_{side}")
+            if w_bid is not None and k_ask is not None:
+                lock = round(w_bid - k_ask - THETA_PM * w_bid * (1 - w_bid) - THETA_K * k_ask * (1 - k_ask), 4)
+            if w_ask is not None and k_bid is not None:
+                alt = round(k_bid - w_ask - THETA_PM * w_ask * (1 - w_ask) - THETA_K * k_bid * (1 - k_bid), 4)
                 lock = alt if lock is None else max(lock, alt)
             need = None
             if tau <= 60:
@@ -331,6 +344,56 @@ def main():
           "lock>0 = checkpoints where buying the leader on one venue and selling it on the other cleared both fees.\n"
           "entry_ok = state OPEN, PM leader ask <= 0.99 with >= lot contracts, positive net"
           + (f", |d| >= {args.min_d_bps:g} bps" if args.min_d_bps else "") + ". ok&flip must be ZERO with margin before anything goes live.")
+    print("\nCross-venue lock scan — every second of the last 5 minutes, Polymarket WebSocket book vs Kalshi "
+          "snapshot (15-minute windows, same index):")
+    print(f"{'coin':>5} {'windows':>7} {'seconds':>8} {'lock>0.4c':>9} {'lock>1c':>8} {'longest run':>11} {'max margin':>10} {'max depth':>9}")
+    for sym in sorted({slug_parts(s_)[0] for s_ in markets}):
+        secs = hits1 = hits2 = 0; longest = run = 0; maxm = None; maxd = 0; nwin = 0
+        for slug, m in markets.items():
+            s_sym, hz = slug_parts(slug)
+            if s_sym != sym or hz != 900 or not m.get("end") or slug not in books_ws:
+                continue
+            end = int(round(m["end"]))
+            kl = kbooks.get((sym, end), [])
+            if not kl:
+                continue
+            kd = {int(tb): b for tb, b in kl}
+            nwin += 1
+            last_sec = None
+            for tb, bk in books_ws[slug]:
+                sec = int(tb); rem = end - tb
+                if rem > 300 or rem < 0 or sec == last_sec:
+                    continue
+                last_sec = sec
+                snap = kd.get(sec) or kd.get(sec - 1)
+                if not snap:
+                    continue
+                secs += 1
+                p_ = pm_sides(bk); k_ = k_sides(snap)
+                best = None; depth = 0
+                for pbid, kask, pq, kq in ((p_["bid_up"], k_["ask_up"], p_["bid_up_q"], k_["ask_up_q"]),):
+                    if pbid is not None and kask is not None:
+                        mg = pbid - kask - THETA_PM * pbid * (1 - pbid) - THETA_K * kask * (1 - kask)
+                        if best is None or mg > best:
+                            best, depth = mg, min(pq, kq)
+                for pask, kbid, pq, kq in ((p_["ask_up"], k_["bid_up"], p_["ask_up_q"], k_["bid_up_q"]),):
+                    if pask is not None and kbid is not None:
+                        mg = kbid - pask - THETA_PM * pask * (1 - pask) - THETA_K * kbid * (1 - kbid)
+                        if best is None or mg > best:
+                            best, depth = mg, min(pq, kq)
+                if best is not None and best > 0.004 and depth >= 10:
+                    hits1 += 1; run += 1; longest = max(longest, run)
+                    if best > 0.01:
+                        hits2 += 1
+                    if maxm is None or best > maxm:
+                        maxm, maxd = best, depth
+                else:
+                    run = 0
+        if nwin:
+            print(f"{sym:>5} {nwin:>7} {secs:>8} {hits1:>9} {hits2:>8} {longest:>11} {(f'{maxm:+.3f}' if maxm is not None else '-'):>10} {int(maxd):>9}")
+    print("A lock is a same-second pair where buying the Up side on one venue and selling it on the other clears both taker fees "
+          "with >= 10 contracts on both sides. 'longest run' = consecutive seconds it persisted.")
+
     trans = defaultdict(int)
     for slug, lst in states.items():
         end = (markets.get(slug) or {}).get("end")

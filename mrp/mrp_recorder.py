@@ -87,6 +87,9 @@ KALSHI_WS_URL = os.environ.get("KALSHI_WS_URL", "wss://external-api-ws.kalshi.co
 PM_KEY_ID = os.environ.get("POLYMARKET_KEY_ID")
 PM_SECRET = os.environ.get("POLYMARKET_SECRET_KEY")
 PM_WS_ON = bool(PM_KEY_ID and PM_SECRET)
+WS_MAX_SUBS = int(os.environ.get("MRP_WS_MAX_SUBS", "8"))          # gateway caps subscriptions per connection
+WS_WINDOW_SECONDS = int(os.environ.get("MRP_WS_WINDOW_SECONDS", "420"))
+WS_RECONNECT_SECONDS = int(os.environ.get("MRP_WS_RECONNECT_SECONDS", "1800"))
 
 # CF Benchmarks index id <-> coin symbol
 RTI_TO_SYM = {"BRTI": "btc"}
@@ -219,10 +222,11 @@ class PMUS:
                 raise RuntimeError("local rate cap")
             self.stamps.append(now)
 
-    def get(self, path: str, params: Any = None, timeout: float = 6.0) -> Any:
+    def get(self, path: str, params: Any = None, timeout: float = 6.0, counted: bool = True) -> Any:
         if time.time() < self.backoff_until:
             raise RuntimeError("backoff")
-        self._throttle()
+        if counted:
+            self._throttle()
         r = self.s.get(PMUS_BASE + path, params=params, timeout=timeout)
         if r.status_code == 429:
             self.backoff_until = time.time() + 2.0
@@ -246,8 +250,10 @@ class PMUS:
         found: dict[str, dict] = {}
         now = time.time()
         for page in range(max_pages):
+            if page:
+                time.sleep(0.3)
             data = self.get("/v1/markets", params={"categories": "crypto", "closed": "false",
-                                                   "limit": 200, "offset": page * 200}, timeout=12.0)
+                                                   "limit": 200, "offset": page * 200}, timeout=12.0, counted=False)
             ms = data.get("markets", [])
             for m in ms:
                 apt = m.get("assetPriceTerms") or {}
@@ -263,6 +269,15 @@ class PMUS:
             if len(ms) < 200:
                 break
         return found
+
+    def markets_by_slugs(self, slugs: list[str]) -> dict[str, dict]:
+        out: dict[str, dict] = {}
+        for i in range(0, len(slugs), 50):
+            data = self.get("/v1/markets", params=[("slug", x) for x in slugs[i:i + 50]] + [("limit", 50)],
+                            timeout=10.0, counted=False)
+            for m in data.get("markets", []):
+                out[m.get("slug")] = m
+        return out
 
     def book(self, slug: str) -> dict:
         return self.get(f"/v1/markets/{slug}/book").get("marketData", {})
@@ -358,16 +373,45 @@ def _fingerprint(m: dict) -> str:
                        "minq": m.get("minimumTradeQty")}, sort_keys=True, default=str)
 
 
+def gen_slugs(now: float) -> list[str]:
+    """Expected slugs for prev/live/next/next2 windows: cpc-btc-updown-15m-...z, cpceth-eth-updown-5m-...z, ..."""
+    out = []
+    for sym in PM_COINS:
+        prefix = "cpc" if sym == "btc" else f"cpc{sym}"
+        for hz, label in ((300, "5m"), (900, "15m"), (3600, "1h")):
+            base = int(now // hz) * hz
+            for k in (-1, 0, 1, 2):
+                d = datetime.fromtimestamp(base + k * hz, tz=timezone.utc)
+                out.append(f"{prefix}-{sym}-updown-{label}-{d:%Y-%m-%d-%H%M}z")
+    return out
+
+
+PM_COINS = [c.strip().lower() for c in os.environ.get("MRP_PM_COINS", "btc,eth,sol,xrp").split(",") if c.strip()]
+
+
 def discovery_loop():
     fps: dict[str, str] = {}
     last_universe = 0.0
+    last_broad = 0.0
     while not STOP.is_set():
         t0 = time.time()
         try:
-            found = PM.discover_updown()
+            found: dict[str, dict] = {}
+            if t0 - last_broad > 600:          # broad paged discovery every 10 min (learns new coins/patterns)
+                last_broad = t0
+                try:
+                    found.update(PM.discover_updown())
+                except Exception as e:  # noqa
+                    W.err("discovery.broad", e)
+            try:                                # targeted refresh every minute: cheap, precise, cap-exempt
+                found.update(PM.markets_by_slugs(gen_slugs(t0)))
+            except Exception as e:  # noqa
+                W.err("discovery.slugs", e)
             with S.lock:
                 for slug, m in found.items():
-                    S.pm[slug] = Mkt(m)
+                    mk = Mkt(m)
+                    if mk.start and mk.end and mk.hz:
+                        S.pm[slug] = mk
             for slug, m in found.items():
                 fp = _fingerprint(m)
                 if fps.get(slug) != fp:
@@ -728,21 +772,29 @@ async def pmus_ws_main():
             log("Polymarket US WS connected")
             subs: dict[str, str] = {}     # slug -> request id
             n = 0
+            connected_at = time.time()
             while not STOP.is_set():
                 now = time.time()
-                want = {m.slug for m in S.live(now)} | {m.slug for m in S.upcoming(now, 150)}
+                # nearest expiries first; the gateway caps subscriptions per connection
+                cand = sorted([m for m in S.live(now) if m.end - now <= WS_WINDOW_SECONDS] + S.upcoming(now, 60),
+                              key=lambda m: m.end)
+                want = {m.slug for m in cand[:WS_MAX_SUBS]}
+                for slug in sorted(set(subs) - want):
+                    rid = subs.pop(slug)
+                    try:
+                        await ws.unsubscribe("md-" + rid)
+                    except Exception as e:  # noqa
+                        W.err("pmus.ws.unsub", e)
                 for slug in sorted(want - set(subs)):
                     n += 1
                     await ws.subscribe(f"md-{n}", "SUBSCRIPTION_TYPE_MARKET_DATA", [slug])
-                    await ws.subscribe(f"tr-{n}", "SUBSCRIPTION_TYPE_TRADE", [slug])
                     subs[slug] = f"{n}"
-                for slug in sorted(set(subs) - want):
-                    rid = subs.pop(slug)
-                    for pre in ("md-", "tr-"):
-                        try:
-                            await ws.unsubscribe(pre + rid)
-                        except Exception as e:  # noqa
-                            W.err("pmus.ws.unsub", e)
+                if now - connected_at > WS_RECONNECT_SECONDS and not any(m.end - now < 240 for m in cand):
+                    log("Polymarket US WS: periodic reconnect")
+                    try:
+                        await ws.close()
+                    finally:
+                        break
                 await asyncio.sleep(5)
         except Exception as e:  # noqa
             W.err("pmus.ws", e)
