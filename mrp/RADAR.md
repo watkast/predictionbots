@@ -1,11 +1,11 @@
 # Mr. P — sports radar
 
-Updated 2026-10-30T01:29:28Z by `run-20261029T2306-40957646050` (last 7 days). Read-only scanner of every sports market on Polymarket US and Kalshi — it never places orders.
+Updated 2026-10-30T01:39:44Z by `run-20261029T2306-40957646050` (last 7 days). Read-only scanner of every sports market on Polymarket US and Kalshi — it never places orders.
 Kit: `mrp/mrp_sports_radar.py` on the `mrp` branch. Raw tape: `mrp/radar/<run>/`.
 
 # Sports radar report
 
-records 437,315 | 2026-10-29 15:47Z → 01:29Z | runs 13 | pairs matched 341 | errors none
+records 473,327 | 2026-10-29 15:47Z → 01:39Z | runs 13 | pairs matched 342 | errors none
 
 ## Catalogue (latest inventory, 23:59Z)
 
@@ -81,15 +81,15 @@ Polymarket US sports events 4118 of 5598 active events; Kalshi near-term sports 
 | dead_pm | 7 | 79 | - | 19 min | 0/79 |
 | decided_k | 63 | 1954 | 0.9893 | 39 min | 0/0 |
 | decided_pm | 1 | 4 | 0.9893 | 0 min | 0/4 |
-| dutch_k | 3 | 431 | 0.1744 | 29 min | 0/0 |
+| dutch_k | 3 | 507 | 0.1744 | 34 min | 0/0 |
 | dutch_pm | 20 | 644 | 0.9786 | 89 min | 0/0 |
-| implication_k | 365 | 21903 | 0.9147 | 40 min | 0/0 |
-| lag_k_settled | 176 | 5227 | 0.9573 | 91 min | 4180/5060 |
+| implication_k | 366 | 21908 | 0.9147 | 40 min | 0/0 |
+| lag_k_settled | 176 | 5267 | 0.9573 | 101 min | 4220/5100 |
 | lag_k_settled_closed | 17 | 323 | 0.9043 | 50 min | 0/323 |
 
 Top by persistence × hits:
 
-- **lag_k_settled** darts — Scott Campbell vs. Andy Baetens — bid 0.28 ask 0.37 buy_yes @ 0.37 | margin 0.6546 | 91 min, 392 hits | fresh bbo 0.28/0.37 depth 6/7 | score 0-0 
+- **lag_k_settled** darts — Scott Campbell vs. Andy Baetens — bid 0.28 ask 0.37 buy_yes @ 0.37 | margin 0.8202 | 101 min, 432 hits | fresh bbo 0.28/0.37 depth 6/7 | score 0-0 
 - **lag_k_settled** tennis — Oz - Tikhonova vs. Garcia - Zamburek — bid 0.79 ask 0.87 buy_yes @ 0.87 | margin 0.1221 | 40 min, 265 hits | fresh bbo 0.79/0.87 depth 3/4 | score 0-0 
 - **lag_k_settled** esports — eBattles: England (tizzy) vs. France (noeN) — bid - ask 0.31 buy_yes @ 0.31 | margin 0.9043 | 30 min, 246 hits | fresh bbo -/0.31 depth 0/4 | score 6-1 2H
 - **dutch_k** 🔒  — Fiorentina vs Juventus — Σask 0.790 | margin 0.1744 | 29 min, 241 hits | score - 
@@ -117,17 +117,19 @@ Top by persistence × hits:
 
 ## Live paper trades (no orders; Kalshi prices, taker fees)
 
-**Total closed P&L: $-335.22 on $677.61 staked (-49.5%)**
+**Total closed P&L: $-335.59 on $687.57 staked (-48.8%)**
 
 | rule | entries | closed | winners | staked | P&L | ROI |
 |---|---|---|---|---|---|---|
 | R1 anchor | 2 | 0 | 0 | $0.00 | $+0.00 | +0% |
 | R2 q1cheap | 3 | 0 | 0 | $0.00 | $+0.00 | +0% |
-| R5 react | 30 | 30 | 1 | $145.63 | $-9.25 | -6% |
+| R5 react | 32 | 32 | 1 | $155.60 | $-9.62 | -6% |
 | R6 decided | 35 | 32 | 10 | $531.98 | $-325.98 | -61% |
 
 | time (UTC) | rule | game | team | entry | contracts | why | result |
 |---|---|---|---|---|---|---|---|
+| 01:33 | R5 react | CAR Panthers vs. GB Packers | Green Bay | 0.82 | 6 | 10-20 score, buy scorer at first ask | timed exit at bid: 0.81, $-0.19 |
+| 01:32 | R5 react | CAR Panthers vs. GB Packers | Green Bay | 0.82 | 6 | 10-19 score, buy scorer at first ask | timed exit at bid: 0.81, $-0.19 |
 | 01:16 | R5 react | CAR Panthers vs. GB Packers | Green Bay | 0.66 | 7 | 10-13 score, buy scorer at first ask | timed exit at bid: 0.65, $-0.29 |
 | 01:15 | R5 react | CAR Panthers vs. GB Packers | Green Bay | 0.65 | 7 | 10-12 score, buy scorer at first ask | timed exit at bid: 0.65, $-0.22 |
 | 01:14 | R5 react | Florida Atlantic vs. North T | Florida Atlantic | 0.25 | 20 | 24-24 score, buy scorer at first ask | timed exit at bid: 0.24, $-0.72 |
@@ -166,8 +168,6 @@ Top by persistence × hits:
 | 00:33 | R6 decided | WPG Jets vs. TBL Lightning | Over 1.5 goals | 0.61 | 32 | score 1-2 total 3 > 1.5 | kalshi settled: 1.00, $+11.95 |
 | 00:33 | R6 decided | UTA Mammoth vs. PIT Penguins | Over 2.5 goals | 0.19 | 105 | score 2-1 total 3 > 2.5 | kalshi settled: 0.00, $-21.08 |
 | 00:33 | R6 decided | UTA Mammoth vs. PIT Penguins | Over 1.5 goals | 0.55 | 36 | score 2-1 total 3 > 1.5 | kalshi settled: 0.00, $-20.42 |
-| 00:33 | R6 decided | CBJ Blue Jackets vs. CAR Hur | Over 1.5 goals | 0.71 | 28 | score 0-2 total 2 > 1.5 | kalshi settled: 0.00, $-20.28 |
-| 00:33 | R6 decided | CHI Blackhawks vs. DET Red W | Over 0.5 goals | 0.90 | 6 | score 1-0 total 1 > 0.5 | kalshi settled: 1.00, $+0.56 |
 
 ### Score reaction speed (live, 15 s): share of the 3-minute move done by +15 s / +30 s / +60 s
 
@@ -215,20 +215,20 @@ Kalshi: settlement_ts − close_time per series (negative = settled before the s
 
 | series | n | median | p90 |
 |---|---|---|---|
-| KXESOCCERGAME eSoccer Game | 606 | 4.0 min | 4.1 min |
+| KXESOCCERGAME eSoccer Game | 615 | 4.0 min | 4.1 min |
 | KXCOPADELREYTOTAL Copa del Rey Total | 256 | 4.0 min | 4.1 min |
 | KXCOPADELREYSPREAD Copa Del Rey Spread | 174 | 1.5 min | 1.6 min |
 | KXPGAR1TOP5 PGA Round 1 Top 5 FInishers | 123 | 6.0 min | 6.1 min |
 | KXPGAR1TOP10 PGA Round 1 Top 10 FInishers | 123 | 6.0 min | 6.1 min |
 | KXPGAR1LEAD PGA Round 1 Leader | 121 | 1.1 min | 1.1 min |
-| KXLIGAPROMATCH Russia Liga Pro Match | 118 | 4.0 min | 4.1 min |
+| KXLIGAPROMATCH Russia Liga Pro Match | 120 | 4.0 min | 4.1 min |
 | KXCOPADELREYGAME Copa Del Rey Game | 111 | 1.0 min | 1.1 min |
 | KXPGA3BALL PGA 3-Ball | 109 | 6.0 min | 6.0 min |
 | KXCS2MAP Counter-Strike 2 Map Winner  | 96 | 3.0 min | 3.0 min |
 | KXITFWMATCH ITF Women's Match | 92 | 2.0 min | 2.1 min |
 | KXCS2GAME Counter-Strike 2 Game | 92 | 3.0 min | 3.0 min |
 | KXSERIEAGOAL Goalscorer | 83 | 6.0 min | 6.1 min |
-| KXEBASKETBALLGAME eBasketball Game | 76 | 4.0 min | 4.1 min |
+| KXEBASKETBALLGAME eBasketball Game | 80 | 4.0 min | 4.1 min |
 | KXCOPADELREYADVANCE Copa Del Rey To Advance | 74 | 1.7 min | 1.8 min |
 | KXITFWDOUBLES ITF Women's Doubles Match | 66 | 2.0 min | 2.1 min |
 | KXKNVBCUPTOTAL Point Total | 60 | 4.0 min | 4.0 min |
@@ -236,25 +236,25 @@ Kalshi: settlement_ts − close_time per series (negative = settled before the s
 | KXBRASILEIROSCORE Correct Score | 60 | 6.0 min | 6.0 min |
 | KXITFMATCH ITF Men's Match | 56 | 2.0 min | 2.1 min |
 | KXITFDOUBLES ITF Doubles Match | 44 | 2.0 min | 2.1 min |
+| KXNCAAF1HSPREAD College Football 1st Half Spre | 44 | 4.0 min | 4.1 min |
+| KXNBA1HTEAMTOTAL NBA 1st Half Team Total | 44 | 2.5 min | 2.6 min |
 | KXSERIEAFIRSTGOAL First Goal | 43 | 6.0 min | 6.1 min |
 | KXNHL1PTOTAL NHL 1st Period Total | 40 | 2.0 min | 2.1 min |
 | KXKNVBCUPSPREAD Spread | 39 | 1.5 min | 1.6 min |
+| KXEFOOTBALLGAME eFootball Game | 38 | 31.0 min | 31.1 min |
+| KXNBA1HTOTAL NBA 1st Half Total | 38 | 2.5 min | 2.6 min |
+| KXNBA1HSPREAD NBA 1st Half Spread | 38 | 2.5 min | 2.6 min |
 | KXCOPADELREYBTTS BTTS | 37 | 6.0 min | 6.1 min |
-| KXEFOOTBALLGAME eFootball Game | 36 | 31.0 min | 31.1 min |
 | KXATPEXACTMATCH ATP Exact Match Score | 36 | 6.0 min | 6.0 min |
 | KXEUROLEAGUESPREAD EuroLeague Spread | 36 | 4.0 min | 4.1 min |
+| KXDARTSMATCH Darts Match | 34 | 6.0 min | 6.0 min |
 | KXATPSETWINNER ATP Set Winner | 34 | 6.0 min | 6.0 min |
 | KXCS2SPREAD CS2 Spread | 34 | 4.0 min | 4.1 min |
 | KXNFLNEXTTEAM Player Next Team | 33 | 3.0 min | 3.0 min |
 | KXEUROLEAGUETOTAL EuroLeague Total | 33 | 4.0 min | 4.0 min |
-| KXDARTSMATCH Darts Match | 32 | 6.0 min | 6.0 min |
 | KXUCLWTOTAL Point Total | 32 | 4.0 min | 4.1 min |
 | KXLOLDRAGONKILLS LOL Dragon Kills | 32 | 6.0 min | 6.0 min |
-| KXDOTA2MAP Dota 2 Map Winner | 30 | 3.0 min | 3.0 min |
-| KXSERIEA1HSCORE 1st Half Correct Score | 30 | 6.0 min | 6.0 min |
-| KXSAUDIPLTOTAL Saudi Pro League Total | 27 | 4.0 min | 4.1 min |
-| KXCS2TOTALMAPS CS2 Total Maps | 27 | 3.0 min | 3.0 min |
-| KXATPGSPREAD ATP Game Spread | 27 | 6.0 min | 6.0 min |
+| KXNCAAF1HTOTAL College Football 1st Half Tota | 31 | 4.0 min | 4.1 min |
 
 ## Participant fingerprint (per sport; 60 s snapshots)
 
@@ -262,60 +262,60 @@ change% = share of scan cycles (60 s) where the best quote moved; react = median
 
 | venue | sport | markets | snapshots | two-sided | med spread | change% | react (min) | round sizes | med size |
 |---|---|---|---|---|---|---|---|---|---|
-| pm | tennis | 387 | 26823 | 92% | 0.010 | 30% | 0.6 (n=14730) | - | - |
-| pm | esports | 598 | 14198 | 79% | 0.020 | 24% | 0.5 (n=2629) | - | - |
-| pm | soccer | 129 | 13791 | 87% | 0.010 | 18% | 0.7 (n=216) | - | - |
-| pm | football | 363 | 11853 | 25% | 0.020 | 23% | 2.2 (n=27) | - | - |
-| pm | table-tennis | 397 | 8311 | 87% | 0.020 | 38% | 0.5 (n=3422) | - | - |
-| pm | basketball | 104 | 2384 | 61% | 0.020 | 27% | 0.5 (n=605) | - | - |
+| pm | tennis | 388 | 26935 | 92% | 0.010 | 30% | 0.6 (n=14786) | - | - |
+| pm | esports | 604 | 14355 | 79% | 0.020 | 24% | 0.5 (n=2651) | - | - |
+| pm | soccer | 138 | 13983 | 87% | 0.010 | 18% | 0.7 (n=216) | - | - |
+| pm | football | 363 | 12100 | 25% | 0.020 | 22% | 1.8 (n=29) | - | - |
+| pm | table-tennis | 402 | 8408 | 87% | 0.020 | 38% | 0.5 (n=3456) | - | - |
+| pm | basketball | 104 | 2412 | 62% | 0.020 | 27% | 0.5 (n=623) | - | - |
 | pm | golf | 159 | 2167 | 3% | 0.029 | 33% | - (n=0) | - | - |
-| pm | ice-hockey | 26 | 1854 | 89% | 0.050 | 14% | 0.7 (n=99) | - | - |
-| pm | climate | 54 | 1812 | 66% | 0.020 | 22% | - (n=0) | - | - |
-| pm | cricket | 6 | 512 | 90% | 0.050 | 6% | 3.0 (n=40) | - | - |
-| pm | darts | 17 | 434 | 83% | 0.120 | 32% | 1.0 (n=66) | - | - |
+| pm | ice-hockey | 26 | 1948 | 89% | 0.050 | 14% | 0.7 (n=103) | - | - |
+| pm | climate | 54 | 1842 | 66% | 0.020 | 22% | - (n=0) | - | - |
+| pm | cricket | 6 | 516 | 90% | 0.050 | 6% | 3.0 (n=40) | - | - |
+| pm | darts | 18 | 448 | 83% | 0.130 | 32% | 1.0 (n=70) | - | - |
 | pm | beach-volleyball | 15 | 344 | 88% | 0.010 | 30% | 0.5 (n=190) | - | - |
 | pm | macro | 5 | 130 | 0% | - | 13% | - (n=0) | - | - |
-| pm | baseball | 1 | 9 | 100% | 0.010 | 75% | - (n=0) | - | - |
-| k | KXNHLGOAL NHL Goalscorer | 703 | 31289 | 82% | 0.080 | 13% | - | 24% | 50 |
-| k | KXNCAAFTEAMTOTAL College Football Team To | 1235 | 24104 | 99% | 0.030 | 2% | - | 29% | 130 |
+| pm | baseball | 1 | 10 | 100% | 0.010 | 29% | - (n=0) | - | - |
+| k | KXNHLGOAL NHL Goalscorer | 703 | 31291 | 82% | 0.080 | 13% | - | 24% | 50 |
+| k | KXNCAAFTEAMTOTAL College Football Team To | 1235 | 27421 | 99% | 0.030 | 2% | - | 29% | 130 |
+| k | KXNCAAFGAME College Football Game | 480 | 24414 | 100% | 0.020 | 1% | - | 10% | 231 |
 | k | KXNFLRECYDS Pro Football Receiving Y | 1340 | 23521 | 99% | 0.040 | 6% | - | 32% | 100 |
-| k | KXNCAAFGAME College Football Game | 480 | 23062 | 100% | 0.020 | 1% | - | 10% | 234 |
-| k | KXCS2MAP Counter-Strike 2 Map Win | 224 | 16813 | 91% | 0.860 | 8% | - | 26% | 100 |
-| k | KXNFLREC Pro Football Player Rece | 735 | 12815 | 96% | 0.040 | 5% | - | 30% | 100 |
-| k | KXESOCCERGAME eSoccer Game | 669 | 10398 | 36% | 0.510 | 10% | - | 21% | 10 |
-| k | KXNFLTD Pro Football Touchdowns | 582 | 8353 | 89% | 0.010 | 2% | - | 24% | 486 |
-| k | KXNHLTEAMTOTAL NHL Team Goals Scored Du | 200 | 8162 | 85% | 0.140 | 11% | - | 9% | 150 |
-| k | KXBRASILEIROSCORE Correct Score | 150 | 7798 | 50% | 0.020 | 6% | - | 12% | 581 |
-| k | KXNCAAF1H College Football 1st Hal | 720 | 6944 | 98% | 0.300 | 0% | - | 39% | 284 |
-| k | KXNFLFIRSTTD Pro Football First Touch | 337 | 5470 | 76% | 0.020 | 1% | - | 36% | 1000 |
-| k | KXNFLGAME NFL Game | 58 | 5362 | 100% | 0.010 | 1% | - | 4% | 96747 |
-| k | KXNFLRECYDSPROT Receiving Yards Protecte | 1366 | 5161 | 84% | 0.150 | 1% | - | 11% | 25 |
+| k | KXCS2MAP Counter-Strike 2 Map Win | 224 | 16817 | 91% | 0.860 | 8% | - | 26% | 100 |
+| k | KXNFLREC Pro Football Player Rece | 735 | 12824 | 96% | 0.040 | 5% | - | 30% | 100 |
+| k | KXESOCCERGAME eSoccer Game | 669 | 10530 | 36% | 0.510 | 10% | - | 21% | 10 |
+| k | KXNFLTD Pro Football Touchdowns | 583 | 10175 | 88% | 0.010 | 2% | - | 24% | 486 |
+| k | KXNFLRECYDSPROT Receiving Yards Protecte | 1366 | 8544 | 85% | 0.150 | 1% | - | 11% | 25 |
+| k | KXNCAAF1H College Football 1st Hal | 720 | 8450 | 98% | 0.320 | 0% | - | 39% | 292 |
+| k | KXNHLTEAMTOTAL NHL Team Goals Scored Du | 200 | 8194 | 85% | 0.140 | 11% | - | 9% | 150 |
+| k | KXBRASILEIROSCORE Correct Score | 150 | 7892 | 49% | 0.020 | 6% | - | 12% | 581 |
+| k | KXNFLFIRSTTD Pro Football First Touch | 337 | 6137 | 77% | 0.020 | 1% | - | 37% | 986 |
+| k | KXNFLGAME NFL Game | 58 | 5647 | 100% | 0.010 | 1% | - | 4% | 94369 |
+| k | KXNBAREB NBA Player Rebounds | 169 | 5480 | 96% | 0.100 | 18% | - | 16% | 30 |
+| k | KXNBAPTS NBA Player Points | 146 | 5267 | 97% | 0.050 | 19% | - | 15% | 37 |
+| k | KXNFLRECPROT Receptions Protected | 790 | 5145 | 80% | 0.140 | 2% | - | 10% | 24 |
+| k | KXNCAAF1HSPREAD College Football 1st Hal | 1106 | 5027 | 94% | 0.050 | 1% | - | 30% | 22 |
 | k | KXNHLFIRSTGOAL NHL First Goal | 259 | 4802 | 53% | 0.020 | 4% | - | 14% | 115 |
 | k | KXATPSETWINNER ATP Set Winner | 62 | 4730 | 88% | 0.020 | 7% | - | 15% | 350 |
-| k | KXBRASILEIROTOTAL Brasileiro Total | 87 | 3994 | 86% | 0.020 | 4% | - | 15% | 341 |
-| k | KXNBAREB NBA Player Rebounds | 169 | 3725 | 96% | 0.090 | 17% | - | 16% | 32 |
-| k | KXNHL1PTOTAL NHL 1st Period Total | 85 | 3572 | 60% | 0.040 | 7% | - | 21% | 102 |
-| k | KXNBAPTS NBA Player Points | 145 | 3563 | 97% | 0.050 | 17% | - | 14% | 37 |
-| k | KXNBAAST NBA Player Assists | 140 | 3422 | 96% | 0.070 | 16% | - | 20% | 22 |
-| k | KXNFLTEAMTOTAL Pro Football Team Total  | 377 | 3409 | 95% | 0.020 | 2% | - | 33% | 804 |
-| k | KXITFWMATCH ITF Women's Match | 160 | 3316 | 70% | 0.030 | 21% | - | 8% | 116 |
+| k | KXNBAAST NBA Player Assists | 140 | 4589 | 95% | 0.080 | 16% | - | 20% | 22 |
+| k | KXNFLTEAMTOTAL Pro Football Team Total  | 377 | 4496 | 95% | 0.020 | 2% | - | 33% | 750 |
+| k | KXNBA3PT NBA Player Threes | 184 | 4247 | 93% | 0.080 | 14% | - | 26% | 47 |
+| k | KXBRASILEIROTOTAL Brasileiro Total | 87 | 4018 | 86% | 0.020 | 4% | - | 15% | 341 |
+| k | KXNCAAF1HTOTAL College Football 1st Hal | 728 | 3779 | 94% | 0.050 | 1% | - | 5% | 72 |
+| k | KXNHL1PTOTAL NHL 1st Period Total | 85 | 3608 | 60% | 0.040 | 7% | - | 21% | 102 |
+| k | KXNFLTDPROT Pro Football Touchdowns  | 583 | 3447 | 73% | 0.120 | 1% | - | 36% | 43 |
+| k | KXITFWMATCH ITF Women's Match | 160 | 3320 | 70% | 0.030 | 21% | - | 8% | 116 |
 | k | KXCOPADELREYTOTAL Copa del Rey Total | 256 | 3191 | 0% | - | 0% | - | 0% | - |
-| k | KXNFLRECPROT Receptions Protected | 790 | 3095 | 80% | 0.140 | 2% | - | 10% | 22 |
 | k | KXSERIEASCORE Correct Score | 150 | 3018 | 47% | 0.020 | 2% | - | 6% | 944 |
-| k | KXNCAAF1HSPREAD College Football 1st Hal | 1106 | 2730 | 92% | 0.050 | 1% | - | 30% | 24 |
 | k | KXSAUDIPLTOTAL Saudi Pro League Total | 63 | 2676 | 76% | 0.010 | 5% | - | 8% | 1230 |
-| k | KXNBA3PT NBA Player Threes | 184 | 2657 | 94% | 0.070 | 12% | - | 26% | 50 |
-| k | KXITFMATCH ITF Men's Match | 160 | 2583 | 75% | 0.030 | 21% | - | 10% | 71 |
+| k | KXITFMATCH ITF Men's Match | 160 | 2593 | 75% | 0.030 | 21% | - | 10% | 71 |
+| k | KXNBAREBPROT NBA Player Rebounds Prot | 166 | 2395 | 68% | 0.140 | 6% | - | 22% | 405 |
+| k | KXNFLTEAMFIRSTTD Pro Football First Touch | 288 | 2227 | 91% | 0.690 | 0% | - | 51% | 80 |
 | k | KXCOPADELREYSPREAD Copa Del Rey Spread | 174 | 2188 | 0% | - | 0% | - | 0% | - |
 | k | KXATPCHALLENGERMATCH Challenger ATP  | 44 | 2176 | 85% | 0.010 | 11% | - | 4% | 3106 |
 | k | KXALLSVENSKANTOTAL Point Total | 20 | 2074 | 69% | 0.010 | 19% | - | 14% | 1343 |
-| k | KXNFLTDPROT Pro Football Touchdowns  | 583 | 2043 | 73% | 0.120 | 1% | - | 36% | 43 |
-| k | KXNHL1P NHL 1st Period Winner | 69 | 1983 | 84% | 0.100 | 6% | - | 16% | 125 |
-| k | KXNCAAF1HTOTAL College Football 1st Hal | 728 | 1892 | 92% | 0.050 | 2% | - | 6% | 72 |
-| k | KXNHL2PTOTAL 2nd Period Total | 85 | 1780 | 69% | 0.060 | 11% | - | 11% | 55 |
-| k | KXBRASILEIROTEAMTOTAL Team Total | 35 | 1756 | 77% | 0.080 | 14% | - | 8% | 12 |
-| k | KXSERIEA1HSCORE 1st Half Correct Score | 75 | 1692 | 26% | 0.040 | 1% | - | 41% | 137 |
-| k | KXNFLTEAMFIRSTTD Pro Football First Touch | 288 | 1675 | 91% | 0.690 | 0% | - | 51% | 80 |
+| k | KXNBA3PTPROT NBA Player Threes Protec | 184 | 2058 | 65% | 0.130 | 5% | - | 24% | 400 |
+| k | KXNHL1P NHL 1st Period Winner | 69 | 2007 | 83% | 0.100 | 6% | - | 16% | 125 |
+| k | KXNBAASTPROT NBA Player Assists Prote | 136 | 1965 | 62% | 0.140 | 5% | - | 26% | 250 |
 
 ## Schema notes (raw keys seen)
 
