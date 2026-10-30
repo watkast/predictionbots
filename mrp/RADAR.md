@@ -1,11 +1,11 @@
 # Mr. P — sports radar
 
-Updated 2026-10-30T07:32:44Z by `run-20261030T0446-40985287536` (last 7 days). Read-only scanner of every sports market on Polymarket US and Kalshi — it never places orders.
+Updated 2026-10-30T07:43:04Z by `run-20261030T0446-40985287536` (last 7 days). Read-only scanner of every sports market on Polymarket US and Kalshi — it never places orders.
 Kit: `mrp/mrp_sports_radar.py` on the `mrp` branch. Raw tape: `mrp/radar/<run>/`.
 
 # Sports radar report
 
-records 956,081 | 2026-10-29 15:47Z → 07:32Z | runs 14 | pairs matched 376 | errors none
+records 958,732 | 2026-10-29 15:47Z → 07:42Z | runs 14 | pairs matched 376 | errors none
 
 ## Catalogue (latest inventory, 04:49Z)
 
@@ -84,8 +84,8 @@ Polymarket US sports events 4112 of 5592 active events; Kalshi near-term sports 
 | dutch_k | 3 | 543 | 0.1744 | 140 min | 0/0 |
 | dutch_pm | 21 | 646 | 0.9786 | 89 min | 0/0 |
 | implication_k | 1557 | 83953 | 0.9786 | 141 min | 0/0 |
-| lag_k_settled | 186 | 6285 | 0.9786 | 105 min | 5230/6118 |
-| lag_k_settled_closed | 21 | 358 | 0.9786 | 111 min | 0/358 |
+| lag_k_settled | 186 | 6326 | 0.9786 | 105 min | 5271/6159 |
+| lag_k_settled_closed | 21 | 400 | 0.9786 | 111 min | 0/400 |
 
 Top by persistence × hits:
 
@@ -219,7 +219,7 @@ Kalshi: settlement_ts − close_time per series (negative = settled before the s
 | series | n | median | p90 |
 |---|---|---|---|
 | KXNFLPASSYDSPRECISE Pass Yards Precise | 1108 | 4.0 min | 4.1 min |
-| KXESOCCERGAME eSoccer Game | 942 | 4.0 min | 4.1 min |
+| KXESOCCERGAME eSoccer Game | 954 | 4.0 min | 4.1 min |
 | KXNHLGOAL NHL Goalscorer | 718 | 3.0 min | 3.1 min |
 | KXNHLPTS Pro Hockey Points | 494 | 3.0 min | 3.1 min |
 | KXNHLFIRSTGOAL NHL First Goal | 408 | 6.0 min | 6.0 min |
@@ -227,7 +227,7 @@ Kalshi: settlement_ts − close_time per series (negative = settled before the s
 | KXCOPADELREYTOTAL Copa del Rey Total | 256 | 4.0 min | 4.1 min |
 | KXNBA3PT NBA Player Threes | 192 | 2.0 min | 2.1 min |
 | KXNBA3PTPROT NBA Player Threes Protected | 189 | 2.5 min | 2.6 min |
-| KXLIGAPROMATCH Russia Liga Pro Match | 182 | 4.0 min | 4.1 min |
+| KXLIGAPROMATCH Russia Liga Pro Match | 186 | 4.0 min | 4.1 min |
 | KXNBAREB NBA Player Rebounds | 179 | 2.0 min | 2.1 min |
 | KXCOPADELREYSPREAD Copa Del Rey Spread | 174 | 1.5 min | 1.6 min |
 | KXNBAREBPROT NBA Player Rebounds Protected | 169 | 2.5 min | 2.6 min |
@@ -265,32 +265,32 @@ change% = share of scan cycles (60 s) where the best quote moved; react = median
 
 | venue | sport | markets | snapshots | two-sided | med spread | change% | react (min) | round sizes | med size |
 |---|---|---|---|---|---|---|---|---|---|
-| pm | tennis | 472 | 35021 | 92% | 0.010 | 27% | 0.5 (n=19171) | - | - |
-| pm | esports | 864 | 20686 | 77% | 0.030 | 22% | 0.5 (n=4010) | - | - |
-| pm | soccer | 243 | 16596 | 86% | 0.010 | 17% | 0.7 (n=243) | - | - |
+| pm | tennis | 474 | 35265 | 92% | 0.010 | 27% | 0.5 (n=19292) | - | - |
+| pm | esports | 870 | 20887 | 77% | 0.030 | 22% | 0.5 (n=4056) | - | - |
+| pm | soccer | 255 | 16632 | 86% | 0.010 | 17% | 0.7 (n=243) | - | - |
 | pm | football | 363 | 15526 | 24% | 0.023 | 19% | 1.7 (n=43) | - | - |
-| pm | table-tennis | 520 | 12812 | 89% | 0.020 | 31% | 0.5 (n=5386) | - | - |
+| pm | table-tennis | 524 | 13101 | 90% | 0.020 | 31% | 0.5 (n=5534) | - | - |
 | pm | golf | 159 | 3598 | 2% | 0.029 | 5% | - (n=0) | - | - |
-| pm | basketball | 128 | 3521 | 69% | 0.020 | 25% | 0.5 (n=997) | - | - |
-| pm | climate | 54 | 2916 | 68% | 0.020 | 20% | - (n=0) | - | - |
-| pm | ice-hockey | 49 | 2783 | 88% | 0.030 | 14% | 0.7 (n=150) | - | - |
-| pm | cricket | 6 | 955 | 95% | 0.060 | 7% | 1.8 (n=111) | - | - |
-| pm | darts | 31 | 622 | 87% | 0.110 | 36% | 1.0 (n=71) | - | - |
-| pm | beach-volleyball | 22 | 446 | 84% | 0.010 | 26% | 0.5 (n=254) | - | - |
+| pm | basketball | 138 | 3556 | 69% | 0.020 | 25% | 0.5 (n=1008) | - | - |
+| pm | climate | 54 | 2940 | 67% | 0.020 | 20% | - (n=0) | - | - |
+| pm | ice-hockey | 49 | 2787 | 88% | 0.030 | 14% | 0.7 (n=150) | - | - |
+| pm | cricket | 6 | 985 | 95% | 0.060 | 7% | 1.6 (n=116) | - | - |
+| pm | darts | 31 | 624 | 87% | 0.110 | 36% | 1.0 (n=71) | - | - |
+| pm | beach-volleyball | 23 | 464 | 82% | 0.010 | 26% | 0.5 (n=259) | - | - |
 | pm | macro | 5 | 175 | 0% | - | 19% | - (n=0) | - | - |
 | pm | baseball | 1 | 19 | 100% | 0.010 | 38% | - (n=0) | - | - |
-| pm | pickleball | 3 | 3 | 0% | - | 0% | - (n=0) | - | - |
-| k | KXNCAAFGAME College Football Game | 482 | 72632 | 100% | 0.020 | 1% | - | 10% | 223 |
+| pm | pickleball | 4 | 4 | 0% | - | 0% | - (n=0) | - | - |
+| k | KXNCAAFGAME College Football Game | 482 | 73804 | 100% | 0.030 | 1% | - | 10% | 220 |
 | k | KXNCAAFTEAMTOTAL College Football Team To | 1237 | 48474 | 98% | 0.030 | 2% | - | 28% | 139 |
 | k | KXNHLGOAL NHL Goalscorer | 718 | 40007 | 64% | 0.080 | 13% | - | 24% | 50 |
 | k | KXNFLRECYDS Pro Football Receiving Y | 1347 | 25347 | 92% | 0.040 | 6% | - | 32% | 100 |
-| k | KXCS2MAP Counter-Strike 2 Map Win | 256 | 21710 | 93% | 0.890 | 8% | - | 23% | 125 |
+| k | KXCS2MAP Counter-Strike 2 Map Win | 256 | 21718 | 93% | 0.890 | 8% | - | 23% | 125 |
 | k | KXNCAAFSPREAD College Football Spread | 2391 | 21415 | 94% | 0.030 | 1% | - | 22% | 500 |
 | k | KXNBA3PT NBA Player Threes | 284 | 20601 | 80% | 0.090 | 15% | - | 22% | 40 |
 | k | KXNBAPTS NBA Player Points | 234 | 18961 | 84% | 0.060 | 21% | - | 16% | 37 |
 | k | KXNBAREB NBA Player Rebounds | 256 | 16969 | 83% | 0.120 | 17% | - | 18% | 30 |
-| k | KXNFLGAME NFL Game | 58 | 15934 | 100% | 0.010 | 1% | - | 5% | 79437 |
-| k | KXESOCCERGAME eSoccer Game | 1044 | 15786 | 32% | 0.430 | 10% | - | 21% | 10 |
+| k | KXNFLGAME NFL Game | 58 | 16153 | 100% | 0.010 | 1% | - | 5% | 77220 |
+| k | KXESOCCERGAME eSoccer Game | 1044 | 15915 | 32% | 0.430 | 10% | - | 21% | 10 |
 | k | KXNBAAST NBA Player Assists | 210 | 15502 | 82% | 0.090 | 14% | - | 21% | 25 |
 | k | KXNFLREC Pro Football Player Rece | 799 | 14908 | 88% | 0.040 | 6% | - | 29% | 100 |
 | k | KXNFLPASSYDSPRECISE Pass Yards Precise | 1204 | 13783 | 0% | - | 0% | - | 0% | - |
