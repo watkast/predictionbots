@@ -538,11 +538,15 @@ def detect_decided(pairs, pm_all: list[dict], score_age: dict[str, float]) -> li
             if dec is None:
                 continue
             e = D.edge(dec, km.get("yb"), km.get("ya"), K_FEE_DEFAULT)
+            # Risk guard: a "certain" outcome the market prices as unlikely means our model is probably wrong
+            # (wrong period, wrong team, wrong rule) — real repricing lags are small. Never call that a lock.
+            contradiction = bool(e) and ((e[0] == "buy_yes" and e[1] < 0.60) or (e[0] == "sell_yes" and e[1] > 0.40))
             rec = {"kind": "decided_k", "venue": "kalshi", "event": km["ev"], "market": km["t"], "game": gk, "pm_event": pe["slug"],
                    "title": pe["title"], "sport": pe["sport"], "k_yes": km["yes"], "decided_yes": dec.yes, "reason": dec.reason,
                    "yb": km.get("yb"), "ya": km.get("ya"), "ybq": km.get("ybq"), "yaq": km.get("yaq"),
                    "score": pe.get("score"), "period": pe.get("period"), "score_age_s": int(g.score_age_s),
-                   "lock": (not dec.score_dependent) or g.score_age_s >= D.SETTLE_AGE.get(g.sport, 120)}
+                   "lock": ((not dec.score_dependent) or g.score_age_s >= D.SETTLE_AGE.get(g.sport, 120)) and not contradiction,
+                   "contradiction": contradiction}
             if e:
                 rec.update(action=e[0], price=e[1], margin=e[2], depth=km.get("yaq") if e[0] == "buy_yes" else km.get("ybq"))
             W.write("sp.decided", rec)                     # every decided-but-active market: repricing latency study
