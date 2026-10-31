@@ -205,7 +205,8 @@ def main():
     else:
         by_rule = defaultdict(lambda: {"n": 0, "closed": 0, "wins": 0, "cost": 0.0, "pnl": 0.0})
         for pid, (t, d) in p_entries.items():
-            r = by_rule[d["rule"]]; r["n"] += 1
+            lg = str(d.get("game") or "").split(":")[0] if ":" in str(d.get("game") or "") else "other"
+            r = by_rule[f'{d["rule"]} [{lg}]']; r["n"] += 1
             if pid in p_exits:
                 x = p_exits[pid][1]; r["closed"] += 1; r["cost"] += x["cost"]; r["pnl"] += x["pnl"]; r["wins"] += 1 if x["pnl"] > 0 else 0
         tc = sum(r["cost"] for r in by_rule.values()); tp = sum(r["pnl"] for r in by_rule.values())
