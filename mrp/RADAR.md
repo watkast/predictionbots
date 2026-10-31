@@ -1,6 +1,6 @@
 # Mr. P — sports radar
 
-Updated 2026-10-31T14:54:26Z by `run-20261031T0913-41186411188` (last 7 days). Read-only scanner of every sports market on Polymarket US and Kalshi — it never places orders.
+Updated 2026-10-31T14:55:08Z by `run-20261031T0913-41186411188` (last 7 days). Read-only scanner of every sports market on Polymarket US and Kalshi — it never places orders.
 Kit: `mrp/mrp_sports_radar.py` on the `mrp` branch. Raw tape: `mrp/radar/<run>/`.
 
 # Sports radar report
