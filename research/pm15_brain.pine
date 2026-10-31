@@ -1,72 +1,77 @@
 //@version=6
 // =============================================================================
-//  PM15 BRAIN  v1.2 — Polymarket US 15-minute BTC Up/Down, one script
+//  PM15 BRAIN  v2.0 — Polymarket US 15-minute BTC Up/Down · 1-min Coinbase BTC-USD
 //  ---------------------------------------------------------------------------
-//  Replaces "Velocity Reach vs Target" + "Alpha Engine v6.x" on the chart.
-//  Built on what the Oct 27 screen recordings showed:
-//    • Polymarket's displayed price = the 60-second trailing AVERAGE of spot,
-//      ~2 s delayed, plus a basis offset (fit error $0.34 vs Coinbase).
-//    • The final price is that average at the bell. The price-to-beat is that
-//      average at the open, i.e. the previous round's settlement.
-//    • So in the last minute part of the result is already in the books.
-//  Language rules (v1.2):
-//    • Nothing is ever "100%" or a SURE THING unless it is mechanically
-//      impossible to flip: even if BTC moved at its RECORD pace (fastest ever
-//      seen, up or down) for every second left, the settlement average could
-//      not get back across the target. That is the only time the HUD says SAFE.
-//    • UP / DOWN are "for now". A side is never "winning" or "ahead": the
-//      button price can fall to the floor with no delay the moment BTC crosses.
-//    • In a position the top line is the safety status:
-//        SAFE → nothing can flip it, ride to the bell
-//        PROCEED WITH CAUTION → a flip is possible: the fastest it could happen
-//          (record pace), the chance before the bell in plain words, and what
-//          would trigger GET OUT
-//        GET OUT → the flip is building (chance up, BTC heading for the target,
-//          or within one routine minute's move) — sell while the bid is high
-//        SELL NOW → it has flipped
-//    • Buys: SURE THING (mechanical) or "WITH CAUTION" (the math likes it but a
-//      flip is still possible, chance stated). The EF rule and the Alpha gate
-//      are kept as caution plays.
-//    • BUY-IN row: "if I bought the favorite now" — win chance if held to the
-//      bell (the math), the chance the display flips against you first (the
-//      scare), cents won if right / lost if wrong, the edge after fee, the
-//      asks that make the same buy break-even / GOOD / GREAT, ¼-Kelly size,
-//      and the best edge seen this round. Lower ask = more reward; the edge
-//      says whether the extra risk is paid for.
-//  Odds come from the settlement-average model (vol-based, momentum credited
-//  for 45 s at most). The momentum post is kept as a VIEW, never as odds.
-//  The label on the post (between the spot and the target) says how many
-//  minutes BTC would need to reach the target at its AVERAGE speed this round
-//  (dollars traversed per minute) and at the FASTEST it has ever moved
-//  (record up / down moves over 1–15 min from the chart's history plus 5-min
-//  and 15-min bars), and compares that with the time left:
-//    red = NOT POSSIBLE (needs more than the time left even at record pace)
-//    orange = UNLIKELY · yellow = EASILY · green = MOST LIKELY (touch odds).
-//  Live ticks: on the realtime bar the script records every tick (varip) so the
-//  60-s average and the known part of the settlement window are exact; on
-//  history it uses the bar's OHLC blend.
-//  Built for a 1-min chart on Coinbase BTC-USD.
+//  What settles the market (Polymarket US rules, checked Oct 31 2026): the
+//  average of 60 one-second CF Benchmarks BRTI readings in the last minute
+//  before each quarter-hour; price to beat = last round's settlement. During
+//  the final minute part of the result is already in the books — the only
+//  "future" anyone can know. BTC's own direction over the next 30 s is not
+//  predictable and this script never pretends it is.
+//
+//  v2.0 vs v1.2
+//   • KILL LINE (red): the level BTC must AVERAGE for the rest of the settlement
+//     window to flip the result. It runs away from spot as the window fills.
+//     Cushion = spot → kill line. This is the hold/sell number.
+//   • LOOKAHEAD: where the PM line will read in 30 s if BTC holds (32 of those
+//     60 s are already known) ±1σ — dotted stub + dot on the chart; BTC's move
+//     over the last 10 s / 30 s from live ticks. The 14-bar velocity could not
+//     see a flash move; it now only drives the momentum post.
+//   • In a position the verdict is one word — LOCKED (hold, ignore the button),
+//     HOLD, SELL. SELL = model win chance under your floor, or BTC's last-10-s
+//     pace reaches the kill line within N s, or (last 2 min) the cushion is
+//     thinner than a 1-in-100-minutes adverse move, or the typed bid pays more
+//     than the math. SELL NOW = settlement already projected against you.
+//     v1.2 fired GET OUT the moment spot crossed the target even when the
+//     average was already locked (that was the panic sell), never checked the
+//     cushion inside the last minute, and fired GET OUT under 85% — right after
+//     an EF buy at 85¢.
+//   • LOCKED needs cushion > record move for the time left × margin + target
+//     error + index-vs-Coinbase slack. Settlement window = [bell−60 s, bell];
+//     the 2-s display lag only moves the PM line (v1.2 cut 2 s off the window).
+//   • Typed inputs belong to the round you typed them in: a target >0.15% from
+//     the estimate is ignored as stale; asks, bid and Side are dropped when the
+//     round changes. The learned basis offset only comes from a tick-grade
+//     estimate and is clamped ±$50. The HUD shows target quality.
+//   • Momentum credit in the odds defaults to 0 (no evidence it predicts).
+//   • UI: HUD wraps (v1.2 rows ran to 300 chars and covered the chart), 7 rows
+//     + optional tech; everything drawn in chart dollars (v1.2 plotted the PM
+//     line offset from the target line); labels hug the last bar; the post
+//     keeps its minute ticks with one small label; the lock-ETA search no
+//     longer re-scans the tick buffer 300× per tick.
+//  Language rules unchanged: "100%" only when LOCKED; UP / DOWN are "for now".
 // =============================================================================
-indicator("PM15 Brain", shorttitle = "PM15 Brain", overlay = true,
-     max_lines_count = 500, max_labels_count = 500, max_polylines_count = 5)
+indicator("PM15 Brain", shorttitle = "PM15 Brain", overlay = true, max_lines_count = 500, max_labels_count = 500)
 
 // ─────────────────────────────── Inputs ───────────────────────────────
 gT = "Target (price to beat)"
-tgtTyped = input.float(0.0, "Target from your PM screen ($, 0 = estimate it)", step = 0.01, group = gT)
-tgtAdj   = input.float(0.0, "Basis offset ($) = PM target − chart estimate (learned automatically once you type a target)", step = 0.5, group = gT, display = display.none)
+tgtTyped = input.float(0.0, "Target from the PM screen ($, 0 = estimate it)", step = 0.01, group = gT)
+tgtAdj   = input.float(0.0, "Basis offset ($) = PM price − Coinbase (used until one is learned)", step = 0.5, group = gT, display = display.none)
+tgtSlack = input.float(5.0, "Index-vs-Coinbase slack ($) the cushion must also beat before LOCKED", minval = 0, step = 1, group = gT, display = display.none)
 
-gM = "Market (type what Polymarket shows, optional)"
+gM = "Market (type what Polymarket shows — this round only)"
 mktUp   = input.float(0.0, "UP ask (¢, 0 = off)", minval = 0, maxval = 100, step = 1, group = gM, display = display.none)
 mktDn   = input.float(0.0, "DOWN ask (¢, 0 = off)", minval = 0, maxval = 100, step = 1, group = gM, display = display.none)
 maxLock = input.int(97, "Max to pay for a SURE THING (¢)", minval = 50, maxval = 99, group = gM, display = display.none)
-lockPct = input.float(99.5, "Math lock = model win probability ≥ (%) (technical rows only; never called 100%)", minval = 90, maxval = 99.99, step = 0.1, group = gM, display = display.none)
 feeCoef = input.float(0.0695, "Taker fee coefficient", minval = 0, maxval = 0.2, step = 0.0005, group = gM, display = display.none)
 
-gE = "Entry rules"
+gP = "In position (set after you buy — this round only)"
+posSide  = input.string("None", "Side", options = ["None", "Up", "Down"], group = gP, display = display.none)
+posEntry = input.float(78.0, "Entry price (¢)", step = 1, minval = 1, maxval = 99, group = gP, display = display.none)
+posUsd   = input.float(20.0, "Dollars in", step = 10, group = gP, display = display.none)
+posBid   = input.float(0.0, "SELL button shows (¢, 0 = unknown)", minval = 0, maxval = 100, step = 1, group = gP, display = display.none)
+
+gX = "Hold / sell"
+holdMinP = input.int(75, "SELL when the model win chance drops under (%)", minval = 50, maxval = 95, group = gX, display = display.none)
+etaWarnS = input.int(30, "SELL when BTC's last-10-s pace would reach the kill line within (s)", minval = 5, maxval = 120, group = gX, display = display.none)
+badPct   = input.int(99, "Last 2 min: SELL if the cushion is under this percentile of 1-min adverse moves (24 h)", minval = 90, maxval = 100, group = gX, display = display.none)
+lookS    = input.int(30, "Lookahead for the PM line (s)", minval = 10, maxval = 60, group = gX, display = display.none)
+
+gE = "Entry rules (no position)"
 useEF    = input.bool(true, "Early Favorite rule: at 13:00 / 12:00 left buy the favorite if it shows 80–94¢", group = gE, display = display.none)
 efLo     = input.int(80, "EF: favorite ask at least (¢)", minval = 50, maxval = 98, group = gE, display = display.none)
 efHi     = input.int(94, "EF: and at most (¢)", minval = 51, maxval = 99, group = gE, display = display.none)
-useAlpha = input.bool(true, "Alpha conviction gate (lights below)", group = gE, display = display.none)
+useAlpha = input.bool(true, "Alpha conviction gate (lights in the tech rows)", group = gE, display = display.none)
 minConv  = input.int(5, "Alpha: lights needed (of 6)", minval = 1, maxval = 6, group = gE, display = display.none)
 buffer   = input.float(20.0, "Alpha: lead / TWAP buffer vs target ($)", step = 1, group = gE, display = display.none)
 chopBand = input.float(10.0, "Alpha: chop band ($)", step = 1, group = gE, display = display.none)
@@ -80,47 +85,40 @@ atrLen    = input.int(14, "ATR length", group = gE, display = display.none)
 atrMult   = input.float(2.5, "Stand down if ATR > x · ATR avg(100)", step = 0.1, group = gE, display = display.none)
 volLen    = input.int(60, "Realised-vol window (bars)", minval = 10, group = gE, display = display.none)
 
-gP = "In position (set after you buy)"
-posSide  = input.string("None", "Side", options = ["None", "Up", "Down"], group = gP, display = display.none)
-posEntry = input.float(78.0, "Entry price (¢)", step = 1, minval = 1, maxval = 99, group = gP, display = display.none)
-posUsd   = input.float(20.0, "Dollars in", step = 10, group = gP, display = display.none)
-
-gV = "Physics"
-velLen    = input.int(14, "Velocity lookback (bars)", minval = 1, group = gV, display = display.none)
-smoothLen = input.int(5, "Smoothing (EMA)", minval = 1, group = gV, display = display.none)
-driftW    = input.float(0.3, "Momentum credited in the odds (0–1, 45 s at most)", minval = 0, maxval = 1, step = 0.1, group = gV, display = display.none)
-
-gR = "Reach: minutes to the target at BTC's record pace"
-recScale    = input.float(1.0, "Record margin (× the fastest move seen; 1 = as seen)", minval = 0.5, maxval = 3.0, step = 0.1, group = gR, display = display.none)
-reachGreen  = input.int(50, "MOST LIKELY when the touch odds are at least (%)", minval = 1, maxval = 99, group = gR, display = display.none)
-reachYellow = input.int(10, "EASILY when the touch odds are at least (%) — below that UNLIKELY; beyond the record NOT POSSIBLE", minval = 1, maxval = 99, group = gR, display = display.none)
-
-gX = "Getting out (in a position)"
-getOutOdds = input.int(25, "GET OUT when the chance of a flip before the bell reaches (%)", minval = 5, maxval = 60, group = gX, display = display.none)
-crossSecs  = input.int(90, "GET OUT when BTC would reach the target within (s) at its current pace", minval = 15, maxval = 300, group = gX, display = display.none)
-cushionX   = input.float(2.0, "GET OUT when BTC is within × one routine minute's move of the target (outside the last minute)", minval = 0.5, maxval = 5, step = 0.5, group = gX, display = display.none)
+gV = "Model"
+dispLag  = input.int(2, "PM line display lag (s) — display only; the settlement window ends at the bell", minval = 0, maxval = 10, group = gV, display = display.none)
+driftW   = input.float(0.0, "Momentum credited in the odds (0–1; 0 recommended)", minval = 0, maxval = 1, step = 0.1, group = gV, display = display.none)
+recScale = input.float(1.5, "LOCKED margin (× the biggest move in the loaded history)", minval = 1.0, maxval = 3.0, step = 0.1, group = gV, display = display.none)
+reachGreen  = input.int(50, "Post: MOST LIKELY when the touch odds are at least (%)", minval = 1, maxval = 99, group = gV, display = display.none)
+reachYellow = input.int(10, "Post: EASILY when the touch odds are at least (%) — below that UNLIKELY; beyond the record NOT POSSIBLE", minval = 1, maxval = 99, group = gV, display = display.none)
+velLen    = input.int(14, "Post: velocity lookback (bars)", minval = 1, group = gV, display = display.none)
+smoothLen = input.int(5, "Post: smoothing (EMA)", minval = 1, group = gV, display = display.none)
 
 gH = "HUD / chart"
-hudPos   = input.string("Middle right", "HUD position", options = ["Middle right", "Middle left", "Top right", "Top left", "Bottom right", "Bottom left"], group = gH, display = display.none)
-hudSize  = input.string("normal", "HUD text size", options = ["small", "normal", "large"], group = gH, display = display.none)
-showTech = input.bool(false, "Show the technical rows (odds, checks, physics, reach)", group = gH, display = display.none)
+hudPos   = input.string("Top left", "HUD position", options = ["Top left", "Top right", "Middle left", "Middle right", "Bottom left", "Bottom right"], group = gH, display = display.none)
+hudSize  = input.string("small", "HUD text size", options = ["tiny", "small", "normal", "large"], group = gH, display = display.none)
+hudW     = input.int(44, "HUD line width (characters)", minval = 24, maxval = 90, group = gH, display = display.none)
+hudCompact = input.bool(false, "Compact HUD (verdict, timing, why, lookahead, kill)", group = gH, display = display.none)
+showTech = input.bool(false, "Show the technical rows", group = gH, display = display.none)
+showKill = input.bool(true, "Kill line", group = gH, display = display.none)
+showAhead = input.bool(true, "PM line lookahead stub", group = gH, display = display.none)
 showPost = input.bool(true, "Momentum post with minute ticks", group = gH, display = display.none)
-showTwap = input.bool(true, "TWAP line", group = gH, display = display.none)
-showPM   = input.bool(true, "Line: what Polymarket shows (60-s average)", group = gH, display = display.none)
+showPM   = input.bool(true, "PM line (60-s average, chart dollars)", group = gH, display = display.none)
+showTwap = input.bool(false, "TWAP line", group = gH, display = display.none)
 shadeRounds = input.bool(true, "Shade rounds and mark each 15-min boundary", group = gH, display = display.none)
 
 gC = "Colors"
-colTgt  = input.color(#ffb020, "Target line (brightest)", group = gC)
-colPM   = input.color(#62ccff, "Polymarket shows", group = gC)
+colTgt  = input.color(#ffb020, "Target line", group = gC)
+colKill = input.color(#ff4b5c, "Kill line", group = gC)
+colPM   = input.color(#62ccff, "PM line", group = gC)
 colPost = input.color(#b57cff, "Momentum post", group = gC)
 colOk   = input.color(#28d978, "Good", group = gC)
-colEasy = input.color(#ffe14d, "Easily (reach label, yellow)", group = gC)
-colWarn = input.color(#ff8a1f, "Caution", group = gC)
+colEasy = input.color(#ffe14d, "Caution (yellow)", group = gC)
+colWarn = input.color(#ff8a1f, "Warning (orange)", group = gC)
 colBad  = input.color(#ff4b5c, "Bad", group = gC)
 
 // ─────────────────────────────── Helpers ───────────────────────────────
 WIN = 60
-DELAY = 2
 fmtP(x) => str.tostring(x, "#,###.00")
 fmt0(x) => str.tostring(x, "#")
 fmt1(x) => str.tostring(x, "#.#")
@@ -129,8 +127,10 @@ fmtClock(s) =>
     int m   = int(tot / 60)
     int sec = tot - m * 60
     str.tostring(m) + ":" + (sec < 10 ? "0" : "") + str.tostring(sec)
-secsTxt(s) => s < 60 ? fmt0(math.ceil(s)) + "s" : fmtClock(s)
+secsTxt(s) => s < 60 ? fmt0(math.ceil(s)) + " s" : fmtClock(s)
 pctTxt(p) => na(p) ? "—" : (p > 0.99 or p < 0.01 ? str.tostring(p * 100, "#.00") : str.tostring(p * 100, "#.#")) + "%"
+sgnTxt(x) => x >= 0 ? "+" : "−"
+usd(x) => na(x) ? "—" : sgnTxt(x) + "$" + fmt0(math.abs(x))
 fPhi(x) =>
     t = 1.0 / (1.0 + 0.2316419 * math.abs(x))
     d = 0.3989422804014327 * math.exp(-x * x / 2.0)
@@ -141,18 +141,36 @@ tblPos(s) =>
     s == "Top right" ? position.top_right : s == "Top left" ? position.top_left :
          s == "Middle right" ? position.middle_right : s == "Middle left" ? position.middle_left :
          s == "Bottom right" ? position.bottom_right : position.bottom_left
-hudTxt = hudSize == "small" ? size.small : hudSize == "large" ? size.large : size.normal
+hudTxt = hudSize == "tiny" ? size.tiny : hudSize == "small" ? size.small : hudSize == "large" ? size.large : size.normal
+// greedy word wrap so no HUD row is wider than a phone screen
+wrap(s, w) =>
+    words = str.split(s, " ")
+    string out = ""
+    string ln = ""
+    if array.size(words) > 0
+        for i = 0 to array.size(words) - 1
+            wd = array.get(words, i)
+            if str.length(ln) == 0
+                ln := wd
+            else if str.length(ln) + 1 + str.length(wd) <= w
+                ln := ln + " " + wd
+            else
+                out := out + (str.length(out) > 0 ? "\n" : "") + ln
+                ln := wd
+    out + (str.length(out) > 0 ? "\n" : "") + ln
 
 // ─────────────────────── Round clock (quarter hours, UTC) ───────────────────────
 roundMs    = 900000
 roundStart = math.floor(time / 900000.0) * roundMs
 roundEnd   = roundStart + roundMs
 isNewRound = ta.change(roundStart) != 0
-nowMs      = barstate.isrealtime ? timenow : time + 60000
+barMs      = timeframe.in_seconds() * 1000
+nowMs      = barstate.isrealtime ? timenow : time + barMs
 secsLeft   = math.max(0.0, (roundEnd - nowMs) / 1000.0)
 secsElapsed = 900.0 - secsLeft
 minsElapsed = secsElapsed / 60.0
 secIntoBar  = barstate.isrealtime ? math.max(0.0, math.min(60.0, (timenow - time) / 1000.0)) : 60.0
+is1m = timeframe.isminutes and timeframe.multiplier == 1
 
 // ─────────────────────── Live tick buffer (realtime only) ───────────────────────
 varip array<int>   tkT = array.new<int>()
@@ -160,7 +178,7 @@ varip array<float> tkP = array.new<float>()
 if barstate.isrealtime
     array.push(tkT, timenow)
     array.push(tkP, close)
-    while array.size(tkT) > 0 and timenow - array.get(tkT, 0) > 140000
+    while array.size(tkT) > 0 and timenow - array.get(tkT, 0) > 150000
         array.shift(tkT)
         array.shift(tkP)
 // time-weighted average of the ticks inside [fromMs, toMs]; returns [avg, coverage 0..1]
@@ -178,58 +196,81 @@ tickAvg(fromMs, toMs) =>
                 acc += array.get(tkP, i) * (b - a)
                 dur += (b - a)
     [dur > 0 ? acc / dur : float(na), toMs > fromMs ? dur / (toMs - fromMs) : 0.0]
+// the price `secs` seconds ago from the ticks (na on history or when the buffer is too short)
+pxAgo(secs) =>
+    float out = na
+    n = array.size(tkT)
+    if n > 0 and barstate.isrealtime
+        tCut = timenow - secs * 1000
+        if array.get(tkT, 0) <= tCut
+            for i = n - 1 to 0
+                if array.get(tkT, i) <= tCut
+                    out := array.get(tkP, i)
+                    break
+    out
 
-// bar-based stand-in for a minute's time-average (history, and before the tick buffer fills)
-barAvg = 0.5 * ohlc4 + 0.5 * hl2
-// what Polymarket shows now: ticks when they cover the window, else the two-bar blend
-[tkAvgNow, tkCovNow] = tickAvg(nowMs - (WIN + DELAY) * 1000, nowMs - DELAY * 1000)
-pmBars  = ((60.0 - secIntoBar) * barAvg[1] + secIntoBar * barAvg) / 60.0
-pmRaw   = tkCovNow >= 0.9 ? tkAvgNow : pmBars
+// ─────────────────────── What the PM line reads now (chart dollars) ───────────────────────
+barAvg = 0.5 * ohlc4 + 0.5 * hl2                        // bar stand-in for a minute's time-average (history, thin buffer)
+[dAvg, dCov] = tickAvg(nowMs - (WIN + dispLag) * 1000, nowMs - dispLag * 1000)
+pmBars = ((60.0 - secIntoBar) * barAvg[1] + secIntoBar * barAvg) / 60.0
+pmRaw  = dCov >= 0.9 ? dAvg : pmBars
 
 // ─────────────────────────────── Target ───────────────────────────────
-var float tgtEst = na          // chart estimate of the price-to-beat (the minute before the open)
-var int   typedRound = na      // the round that was live when you last changed settings: the typed target belongs to it
-var float offLearn = na        // basis offset learned from a typed target
+var float tgtEst   = na          // chart estimate of the price-to-beat = last round's settlement-window average
+var bool  tgtTicks = false       // true when that estimate came from live ticks (±$2) rather than bars (±$25)
+var int   typedRound = na        // the round live when you last changed settings: typed inputs belong to it
+var float offLearn = na          // basis offset learned from a typed target (PM − chart)
 if isNewRound
-    [a, c] = tickAvg(roundStart - (WIN + DELAY) * 1000, roundStart - DELAY * 1000)
-    tgtEst := c >= 0.9 ? a : barAvg[1]
+    [a, c] = tickAvg(roundStart - WIN * 1000, roundStart)
+    tgtTicks := c >= 0.9
+    tgtEst   := tgtTicks ? a : barAvg[1]
 if barstate.isrealtime and na(typedRound)
     typedRound := roundStart
-if tgtTyped > 0 and roundStart == typedRound and not na(tgtEst)
-    offLearn := tgtTyped - tgtEst
-offset   = not na(offLearn) ? offLearn : tgtAdj
-typedNow = tgtTyped > 0 and roundStart == typedRound
-target   = typedNow ? tgtTyped : tgtEst + offset
-tgtSrc   = typedNow ? "typed" : not na(offLearn) ? "estimate + learned offset" : tgtAdj != 0 ? "estimate + offset" : "estimate (no offset yet)"
-pmShown  = pmRaw + offset
+fresh      = roundStart == typedRound                   // typed inputs are for this round
+typedThis  = tgtTyped > 0 and fresh
+typedStale = typedThis and not na(tgtEst) and math.abs(tgtTyped - tgtEst) > close * 0.0015   // >0.15% off: a stale number
+typedNow   = typedThis and not typedStale
+if typedNow and tgtTicks and not na(tgtEst)
+    offLearn := math.max(-50.0, math.min(50.0, tgtTyped - tgtEst))
+offset   = not na(offLearn) ? offLearn : tgtAdj         // PM dollars = chart dollars + offset
+target   = typedNow ? tgtTyped : tgtEst + offset        // PM dollars
+tgtChart = target - offset                              // the same level in chart dollars (where everything is drawn)
+tgtErr   = typedNow ? 0.5 : tgtTicks ? 2.0 : 25.0       // how far the target could be off ($)
+tgtSrc   = typedNow ? "typed" : tgtTicks ? "from ticks ±$2" : "from bars ±$25 — type it"
+pmShown  = pmRaw + offset                               // PM dollars
+mktUpN   = fresh ? mktUp : 0.0
+mktDnN   = fresh ? mktDn : 0.0
+posBidN  = fresh ? posBid : 0.0
 
-// ─────────────────── Volatility (per √second), symmetric and adverse ───────────────────
+// ─────────────────── Volatility, ATR, TWAP, "bad minute" ───────────────────
 r1     = math.log(close / close[1])
 up1    = r1 > 0 ? r1 : 0.0
 dn1    = r1 < 0 ? r1 : 0.0
 sigBar = ta.stdev(r1, volLen) * close                                   // $ per √bar
 sigUpB = math.sqrt(ta.sma(up1 * up1, volLen)) * math.sqrt(2.0) * close
 sigDnB = math.sqrt(ta.sma(dn1 * dn1, volLen)) * math.sqrt(2.0) * close
-sigS   = math.max(sigBar / math.sqrt(60.0), 0.5)                          // $ per √s
+sigS   = math.max(nz(sigBar) / math.sqrt(60.0), 0.5)                   // $ per √s
 atr    = ta.atr(atrLen)
 atrAvg = ta.sma(atr, 100)
 volDanger = atr > atrAvg * atrMult
 range3 = ta.highest(high, 3) - ta.lowest(low, 3)
 twap   = ta.sma(close, twapLen)
+// a "bad minute" = the badPct percentile of one-minute adverse excursions (prev close → bar extreme) over the last 24 h, in $
+dnX1  = nz((close[1] - low) / close[1])
+upX1  = nz((high - close[1]) / close[1])
+badDn = nz(ta.percentile_nearest_rank(dnX1, 1440, badPct), 3.0 * nz(sigDnB) / close) * close
+badUp = nz(ta.percentile_nearest_rank(upX1, 1440, badPct), 3.0 * nz(sigUpB) / close) * close
 
-// ─────────────────── Velocity / acceleration (the physics view) ───────────────────
+// ─────────────────── Momentum post physics (view only, never odds) ───────────────────
 rawVel = (close - close[velLen]) / velLen
 vel    = ta.ema(rawVel, smoothLen)                 // $ per bar
 accEma = ta.ema(ta.change(vel), smoothLen)
 velS   = vel / 60.0                                // $ per second
 proj(p, v, a, t) => p + v * t + 0.5 * a * t * t
 
-// ─────────────────── Record pace: the most BTC has ever moved in 1…15 minutes ───────────────────
-// Moves are kept as a fraction of price so old history scales to today's price. Every horizon comes
-// from the chart's own 1-min bars (all the history TradingView loads: the move from the close before
-// an h-bar window to the highest high / lowest low inside it); the 5 / 10 / 15-minute horizons are
-// also checked against 5-min and 15-min bars, which reach back hundreds of days. Up and down are
-// tracked separately: BTC falls faster than it rises.
+// ─────────────────── Record pace: the most BTC has moved in 1…15 minutes (loaded history) ───────────────────
+// Fractions of price so old history scales to today. 1-min bars give every horizon; 5-min and 15-min bars (hundreds of
+// days) back up the 5 / 10 / 15-minute horizons. Up and down are tracked separately: BTC falls faster than it rises.
 upRec(h) => ta.max(nz((ta.highest(high, h) - close[h]) / close[h]))
 dnRec(h) => ta.max(nz((close[h] - ta.lowest(low, h)) / close[h]))
 rUp1  = upRec(1)
@@ -272,7 +313,7 @@ rDn15 = dnRec(15)
       bar_index])
 [rUp15c, rDn15c, bars15] = request.security(syminfo.tickerid, "15",
      [ta.max(nz((high - close[1]) / close[1])), ta.max(nz((close[1] - low) / close[1])), bar_index])
-// dollars reachable by minute 0…15 at record pace (index = minutes), never shrinking with the horizon
+// dollars reachable by minute 0…15 at record pace × margin (index = minutes), never shrinking with the horizon
 recTable(up) =>
     f = up ? array.from(0.0, rUp1, rUp2, rUp3, rUp4, rUp5, rUp6, rUp7, rUp8, rUp9, rUp10, rUp11, rUp12, rUp13, rUp14, rUp15) : array.from(0.0, rDn1, rDn2, rDn3, rDn4, rDn5, rDn6, rDn7, rDn8, rDn9, rDn10, rDn11, rDn12, rDn13, rDn14, rDn15)
     array.set(f, 5,  math.max(array.get(f, 5),  up ? rUp5b  : rDn5b))
@@ -296,8 +337,8 @@ needMins(dist, rec) =>
                 t := (h - 1) + (b > a ? (dist - a) / (b - a) : 0.0)
                 break
     t
-// the most BTC has moved in `mins` minutes (fractional), at record pace
-// anything under a minute is assumed able to see the whole 1-minute record (flash moves happen in seconds), so SAFE stays honest
+// the most BTC has moved in `mins` minutes at record pace; anything under a minute gets the whole 1-minute record
+// (flash moves happen in seconds), so LOCKED stays honest
 recAt(mins, rec) =>
     float out = 0.0
     if mins >= 15
@@ -311,65 +352,138 @@ recAt(mins, rec) =>
         out := lo + (hi - lo) * (mins - k)
     out
 
-// ─────────────────── Settlement average: mean and sd at time `atMs` ───────────────────
-// S = offset + mean(spot over [T-62, T-2]).  Known part from the tick buffer (or the bar blend), future part
-// from the current spot with momentum credited for at most 45 s; sd from Brownian motion.
-settle(atMs, spot, sig) =>
-    wStart = roundEnd - (WIN + DELAY) * 1000
-    wEnd   = roundEnd - DELAY * 1000
-    rp     = (wEnd - atMs) / 1000.0
+// ─────────────────── Settlement window [bell−60 s, bell]: known part, KILL price, cushions ───────────────────
+wStartMs = roundEnd - WIN * 1000
+rpAll = (roundEnd - nowMs) / 1000.0                   // seconds to the bell
+rpWin = math.max(0.0, math.min(WIN, rpAll))           // seconds of the settlement window still ahead
+[kA, kC] = tickAvg(wStartMs, nowMs)
+knownAvg = rpWin < WIN ? (kC >= 0.8 ? kA : barAvg) : close   // chart $ average of the part already in the books
+// KILL price: what BTC must AVERAGE for the rest of the window to land the settlement exactly on the target (chart $)
+killPx = rpWin >= WIN ? tgtChart : rpWin > 0 ? (WIN * tgtChart - (WIN - rpWin) * knownAvg) / rpWin : float(na)
+cushUp = close - killPx          // $ BTC must fall (and hold) to flip UP;  < 0 = UP is already projected to lose
+cushDn = killPx - close          // $ BTC must climb (and hold) to flip DOWN
+// settlement average: mean and sd (sig = $/√s); the known part is fixed, the future is Brownian, momentum credit optional
+settle(spot, sig) =>
     float mean = na
     float sd = na
-    float known = 0.0
-    if rp <= 0
-        [a, c] = tickAvg(wStart, wEnd)
-        mean := offset + (c >= 0.9 ? a : barAvg)
+    if rpAll <= 0
+        mean := offset + knownAvg
         sd := 0.0
-        known := 1.0
-    else if rp >= WIN
-        driftH = math.min(math.max(rp - WIN / 2.0, 0.0), 45.0)
+    else if rpAll >= WIN
+        driftH = math.min(math.max(rpAll - WIN / 2.0, 0.0), 45.0)
         mean := offset + spot + driftW * velS * driftH
-        sd := sig * math.sqrt(rp - WIN + WIN / 3.0)
+        sd := sig * math.sqrt(rpAll - WIN + WIN / 3.0)
     else
-        [a, c] = tickAvg(wStart, atMs)
-        knownAvg = c >= 0.8 ? a : barAvg
-        known := (WIN - rp) / WIN
-        futMean = spot + driftW * velS * (rp / 2.0)
-        mean := offset + known * knownAvg + (rp / WIN) * futMean
-        sd := sig * math.sqrt(rp * rp * rp / 3.0) / WIN
-    [mean, sd, known]
-
-[sMean, sSd, sKnown] = settle(nowMs, close, sigS)
-gap  = sMean - target                       // settlement mean vs target (+ = UP side)
+        futMean = spot + driftW * velS * (rpAll / 2.0)
+        mean := offset + ((WIN - rpAll) * knownAvg + rpAll * futMean) / WIN
+        sd := sig * math.sqrt(rpAll * rpAll * rpAll / 3.0) / WIN
+    [mean, sd]
+[sMean, sSd] = settle(close, sigS)
+sKnown = rpAll <= 0 ? 1.0 : rpAll >= WIN ? 0.0 : (WIN - rpAll) / WIN
+gap  = sMean - target                       // settlement mean vs target, PM $ (+ = UP side)
 zS   = sSd > 0 ? gap / sSd : (gap >= 0 ? 99.0 : -99.0)
 pUp  = sSd > 0 ? fPhi(zS) : (gap >= 0 ? 1.0 : 0.0)
 pDn  = 1.0 - pUp
 lean = pUp >= 0.5 ? 1 : -1
 favTxt = lean > 0 ? "UP" : "DOWN"
 pFav = lean > 0 ? pUp : pDn
-// conservative survival probability for the leaning side, using the adverse-side vol
 sigAdvB = lean > 0 ? sigDnB : sigUpB
-sigAdvS = math.max(sigAdvB / math.sqrt(60.0), 0.5)
-[sMeanA, sSdA, sKnownA] = settle(nowMs, close, sigAdvS)
+sigAdvS = math.max(nz(sigAdvB) / math.sqrt(60.0), 0.5)
+[sMeanA, sSdA] = settle(close, sigAdvS)
 pSafe = sSdA > 0 ? fPhi(math.abs(sMeanA - target) / sSdA) : 1.0
-dev   = close + offset - target             // basis-adjusted spot vs target
-lead  = math.abs(dev)
+dev  = close - tgtChart                     // spot vs target, chart $ (+ = above)
+lead = math.abs(dev)
+spotSide = dev >= 0 ? 1 : -1
+needMove = tgtChart - close                 // $ the spot must move to reach the target (+ = up)
 
-// ─────────────────────── Market price vs fair ───────────────────────
-lockP   = lockPct / 100.0                   // the math lock: shown in the technical rows only, never as 100%
-mktFav  = lean > 0 ? mktUp : mktDn
+// ─────────────────── Lookahead: the PM line in lookS seconds if BTC holds; BTC's last 10 s / 30 s ───────────────────
+lookEff = math.max(1.0, math.min(lookS, rpAll))                      // never past the bell
+fwStart = nowMs - int((WIN + dispLag - lookEff) * 1000)              // start of the window the line will show then (already past)
+[fA, fC] = tickAvg(fwStart, nowMs)
+fKnownS = math.max(0.0, math.min(WIN, (nowMs - fwStart) / 1000.0))
+fKnownA = fC >= 0.8 ? fA : barAvg
+fFutS   = WIN - fKnownS
+pmAhead   = (fKnownS * fKnownA + fFutS * close) / WIN                 // chart $
+pmAheadSd = sigS * math.sqrt(fFutS * fFutS * fFutS / 3.0) / WIN
+mv10 = close - pxAgo(10)
+mv30 = close - pxAgo(30)
+
+// ─────────────────── LOCKED, lock ETA, fastest flip, reach (last bar only) ───────────────────
+slack = tgtErr + tgtSlack
+var float recUpLeft = na        // biggest UP move seen for the time left ($, × margin)
+var float recDnLeft = na
+var bool  lockUp = false
+var bool  lockDn = false
+var float lockEtaUp = na        // seconds until UP locks if BTC holds here (0 = now, na = not before the bell at this cushion)
+var float lockEtaDn = na
+var float fastUp = na           // minutes a record-pace move needs to reach UP's kill line
+var float fastDn = na
+var float reachMins = na
+var float reachOdds = na
+var int   reachTier = 0
+var string reachWord = "—"
+// seconds until a cushion beats the record for the time left: the cushion grows as cushion·rpWin/rp′ while the record shrinks
+lockEta(cush, recTab) =>
+    float eta = na
+    if secsLeft > 1 and cush > 0
+        for s = 1 to int(math.min(secsLeft, 600))
+            sl  = secsLeft - s
+            rp2 = math.max(0.0, math.min(WIN, sl))
+            c2  = rp2 >= WIN ? cush : rp2 > 0 ? cush * rpWin / rp2 : 1.0e9
+            if c2 > recAt(sl / 60.0, recTab) + slack
+                eta := s
+                break
+    eta
+if barstate.islast and not na(target) and secsLeft > 0
+    upTab = recTable(true)
+    dnTab = recTable(false)
+    mLeft = secsLeft / 60.0
+    recUpLeft := recAt(mLeft, upTab)
+    recDnLeft := recAt(mLeft, dnTab)
+    lockUp := cushUp > recDnLeft + slack              // UP survives even a record DROP held for the rest of the window
+    lockDn := cushDn > recUpLeft + slack
+    lockEtaUp := lockUp ? 0.0 : lockEta(cushUp, dnTab)
+    lockEtaDn := lockDn ? 0.0 : lockEta(cushDn, upTab)
+    fastUp := needMins(cushUp, dnTab)
+    fastDn := needMins(cushDn, upTab)
+    // the momentum post: minutes to the target at record pace in the needed direction, and the touch odds
+    rmUp = needMins(math.abs(needMove), upTab)
+    rmDn = needMins(math.abs(needMove), dnTab)
+    reachMins := needMove >= 0 ? rmUp : rmDn
+    recTow  = needMove >= 0 ? recUpLeft : recDnLeft
+    sigTowS = math.max((needMove >= 0 ? nz(sigUpB) : nz(sigDnB)) / math.sqrt(60.0), 0.5)
+    zT = math.abs(needMove) / (sigTowS * math.sqrt(secsLeft))
+    reachOdds := math.min(1.0, 2.0 * (1.0 - fPhi(zT)))
+    reachTier := math.abs(needMove) > recTow ? 0 : reachOdds < reachYellow / 100.0 ? 1 : reachOdds < reachGreen / 100.0 ? 2 : 3
+    reachWord := reachTier == 0 ? "NOT POSSIBLE" : reachTier == 1 ? "UNLIKELY" : reachTier == 2 ? "EASILY" : "MOST LIKELY"
+reachCol = reachTier == 0 ? colBad : reachTier == 1 ? colWarn : reachTier == 2 ? colEasy : colOk
+reachMinsTxt = na(reachMins) ? "> 15 min" : reachMins < 0.1 ? "< 0.1 min" : fmt1(reachMins) + " min"
+
+// ─────────────────── Average speed this round: dollars traversed per minute (tech row) ───────────────────
+var float pathClosed   = 0.0
+var float prevRoundAvg = na
+if isNewRound
+    prevRoundAvg := pathClosed / 15.0
+    pathClosed := 0.0
+barMove   = math.abs(close - nz(close[1], close))
+pathRound = pathClosed + barMove
+pathClosed += barMove
+avgSpeed  = minsElapsed >= 1 ? pathRound / minsElapsed : prevRoundAvg
+avgMins   = not na(avgSpeed) and avgSpeed > 0 ? math.abs(needMove) / avgSpeed : float(na)
+avgMinsTxt = na(avgMins) ? "—" : avgMins > 99 ? "99+ min" : avgMins < 0.1 ? "< 0.1 min" : fmt1(avgMins) + " min"
+avgTxt    = na(avgSpeed) ? "avg speed: no data yet" : avgMinsTxt + " at avg speed ($" + fmt0(avgSpeed) + "/min this round)"
+
+// ─────────────────────── Market price vs fair · Alpha lights · EF window ───────────────────────
+mktFav  = lean > 0 ? mktUpN : mktDnN
 favAsk  = mktFav > 0 ? mktFav / 100.0 : float(na)
 hasAsk  = not na(favAsk)
-mathLock = pFav >= lockP
-
-// ─────────────────────── Alpha conviction lights (6) ───────────────────────
 twapC   = twap[1]
 slopeT  = twapC - twap[4]
 slopeP  = close[1] - close[4]
 cleanRun = (slopeT > 0 and slopeP > 0 and close[1] > twapC) or (slopeT < 0 and slopeP < 0 and close[1] < twapC)
 revRisk  = (slopeT > 0 and close[1] < twapC) or (slopeT < 0 and close[1] > twapC)
 l1 = lead >= buffer
-l2 = lean > 0 ? twap + offset > target + buffer : twap + offset < target - buffer
+l2 = lean > 0 ? twap > tgtChart + buffer : twap < tgtChart - buffer
 l3 = cleanRun
 l4 = not volDanger and range3 < lead
 l5 = pSafe >= safeP
@@ -382,126 +496,50 @@ inChop   = lead < chopBand
 efCheck  = useEF and ((secsElapsed >= 110 and secsElapsed <= 150) or (secsElapsed >= 170 and secsElapsed <= 210))
 efOk     = efCheck and hasAsk and favAsk * 100 >= efLo and favAsk * 100 <= efHi
 
-// ─────────────────────── Position ───────────────────────
-posDir  = posSide == "Up" ? 1 : posSide == "Down" ? -1 : 0
+// ─────────────────────── Position: cushion, lock, hold/sell triggers ───────────────────────
+sideName(s) => s > 0 ? "UP" : "DOWN"
+posSet  = posSide != "None"
+posDir  = fresh and posSide == "Up" ? 1 : fresh and posSide == "Down" ? -1 : 0
 pMine   = posDir > 0 ? pUp : posDir < 0 ? pDn : float(na)
 posShares = posDir != 0 ? posUsd / (posEntry / 100.0) : 0.0
 posVal  = posDir != 0 ? posShares * pMine : float(na)
-posPnl  = posDir != 0 ? posVal - posUsd : float(na)
+posCush = posDir > 0 ? cushUp : posDir < 0 ? cushDn : float(na)
+posLock = posDir > 0 ? lockUp : posDir < 0 ? lockDn : false
+posEta  = posDir > 0 ? lockEtaUp : posDir < 0 ? lockEtaDn : float(na)
+posFast = posDir > 0 ? fastUp : posDir < 0 ? fastDn : float(na)
+posRec  = posDir > 0 ? recDnLeft : posDir < 0 ? recUpLeft : float(na)   // the record move AGAINST you for the time left
+posBad  = posDir > 0 ? badDn : badUp                                     // a 1-in-100-minutes move against you
+towardKill = posDir > 0 ? nz(mv10) < 0 : nz(mv10) > 0
+pace10  = math.abs(nz(mv10)) / 10.0                                     // $/s over the last 10 s
+etaKill = posDir != 0 and towardKill and pace10 > 0.05 and posCush > 0 ? posCush / pace10 : float(na)
+bidNet  = posBidN > 0 ? posBidN / 100.0 - fee(posBidN / 100.0) : float(na)
+sellVal = posDir != 0 and not na(bidNet) ? posShares * bidNet : float(na)
+marketPaysMore = posDir != 0 and not na(bidNet) and bidNet > pMine + 0.02
+sellNow = posDir != 0 and not posLock and (posCush <= 0 or pMine < 0.5)
+thin    = posDir != 0 and secsLeft <= 120 and posCush < posBad
+getOut  = posDir != 0 and not posLock and not sellNow and (pMine < holdMinP / 100.0 or (not na(etaKill) and etaKill <= etaWarnS) or thin or marketPaysMore)
 
-// ─────────────────────── Reach: record pace vs the time left (last bar only) ───────────────────────
-// How long BTC would need to reach the target at the fastest it has ever moved in that direction, and
-// whether that fits in the time left. Red = it does not fit even at record pace. The other three tiers
-// use the touch odds: the chance a path with today's adverse-side vol touches the target before the bell.
-needMove  = target - offset - close                 // $ the spot must move (+ = up)
-
-// ─────────────────── Average speed this round: dollars traversed per minute ───────────────────
-// |close − close[1]| summed over this round's bars (path length, not net move) ÷ minutes elapsed. Until the round has a
-// minute of data it shows last round's average. "Time at avg speed" = the gap ÷ that, as if every minute went the right way.
-var float pathClosed   = 0.0
-var float prevRoundAvg = na
-if isNewRound
-    prevRoundAvg := pathClosed / 15.0
-    pathClosed := 0.0
-barMove   = math.abs(close - nz(close[1], close))
-pathRound = pathClosed + barMove
-pathClosed += barMove
-avgSpeed  = minsElapsed >= 1 ? pathRound / minsElapsed : prevRoundAvg          // $ per minute this round
-avgMins   = not na(avgSpeed) and avgSpeed > 0 ? math.abs(needMove) / avgSpeed : float(na)
-avgMinsTxt = na(avgMins) ? "—" : avgMins > 99 ? "99+ min" : avgMins < 0.1 ? "< 0.1 min" : fmt1(avgMins) + " min"
-avgTxt    = na(avgSpeed) ? "avg speed: no data yet" : avgMinsTxt + " at avg speed · $" + fmt0(avgSpeed) + "/min this round"
-var float reachMins = na
-var float reachOdds = na
-var float recLeft   = na
-var int   reachTier = 0
-var string reachWord = "NOT POSSIBLE"
-if barstate.islast and not na(target)
-    rec = recTable(needMove >= 0)
-    reachMins := needMins(math.abs(needMove), rec)
-    recLeft   := recAt(secsLeft / 60.0, rec)
-    sigDirS = math.max((needMove >= 0 ? sigUpB : sigDnB) / math.sqrt(60.0), 0.5)
-    zT = secsLeft > 0 ? math.abs(needMove) / (sigDirS * math.sqrt(secsLeft)) : 99.0
-    reachOdds := math.min(1.0, 2.0 * (1.0 - fPhi(zT)))
-    reachTier := secsLeft <= 0 or math.abs(needMove) > recLeft ? 0 : reachOdds < reachYellow / 100.0 ? 1 : reachOdds < reachGreen / 100.0 ? 2 : 3   // red = more than the record for the time left
-    reachWord := reachTier == 0 ? "NOT POSSIBLE" : reachTier == 1 ? "UNLIKELY" : reachTier == 2 ? "EASILY" : "MOST LIKELY"
-reachCol  = reachTier == 0 ? colBad : reachTier == 1 ? colWarn : reachTier == 2 ? colEasy : colOk
-reachMinsTxt = na(reachMins) ? "> 15 min" : reachMins < 0.1 ? "< 0.1 min" : fmt1(reachMins) + " min"
-
-// ─────────────────────── Plain-English safety (last bar only) ───────────────────────
-// SURE THING = even if BTC moved at its record pace (up or down) for every second left, the settlement
-// average could not get back across the target. That is the only "100%" the HUD will ever show.
-spotSide = needMove >= 0 ? -1 : 1                     // which side the SPOT is on right now (−1 = below the target = DOWN)
-sideName(s) => s > 0 ? "UP" : "DOWN"
-chanceWord(p) => p >= 0.5 ? "likely" : p >= 0.25 ? "a real chance" : p >= 0.10 ? "possible" : p >= 0.03 ? "unlikely" : p >= 0.005 ? "rare" : "very rare"
-chanceTxt(p) => na(p) ? "unknown" : (p < 0.005 ? "under 1%" : p > 0.995 ? "over 99%" : fmt0(p * 100) + "%") + " (" + chanceWord(p) + ")"
-fastTxt(m) => na(m) ? "more than 15 min" : m <= 0 ? "right now" : m < 1 ? fmt0(math.ceil(m * 60)) + " s" : fmt1(m) + " min"
-sigTowB  = needMove >= 0 ? sigUpB : sigDnB            // one routine minute's move toward the target ($, 1σ)
-cushion  = math.max(20.0, cushionX * sigTowB)
-velTow   = velS * (needMove >= 0 ? 1 : -1)            // $/s toward the target (+ = BTC heading for it)
-crossEta = velTow > 0.01 ? math.abs(needMove) / velTow : float(na)   // seconds to the target at the current pace
-moveTxt  = math.abs(velS) < 0.05 ? "barely moving" : (velTow > 0 ? "heading for the target" : "moving away") + " at $" + fmt0(math.abs(velS) * 60) + "/min"
-whereTxt = "BTC is $" + fmt0(lead) + " " + (needMove >= 0 ? "below" : "above") + " the target, " + moveTxt
-// worst-case settlement average at time `atMs` if BTC jumped to `spotW` and stayed there
-// (ticks already in the window + the spot held until `atMs` + spotW for the rest)
-worstCase(atMs, spotW) =>
-    wStart = roundEnd - (WIN + DELAY) * 1000
-    wEnd   = roundEnd - DELAY * 1000
-    tTick  = math.max(0.0, math.min(WIN, (math.min(atMs, nowMs) - wStart) / 1000.0))
-    tHold  = math.max(0.0, math.min(WIN - tTick, (math.min(atMs, wEnd) - math.max(nowMs, wStart)) / 1000.0))
-    tFut   = WIN - tTick - tHold
-    [a, c] = tickAvg(wStart, wStart + int(tTick * 1000))
-    kAvg   = c >= 0.8 ? a : barAvg
-    offset + (kAvg * tTick + close * tHold + spotW * tFut) / WIN
-var bool  sureUp  = false
-var bool  sureDn  = false
-var float sureEta = na
-if barstate.islast and not na(target)
-    upTab = recTable(true)
-    dnTab = recTable(false)
-    hiWorst = worstCase(nowMs, close + recAt(secsLeft / 60.0, upTab))
-    loWorst = worstCase(nowMs, close - recAt(secsLeft / 60.0, dnTab))
-    sureUp := secsLeft > 0 and loWorst > target
-    sureDn := secsLeft > 0 and hiWorst < target
-    sureEta := na
-    if secsLeft > 3 and not (lean > 0 ? sureUp : sureDn)
-        for s = 2 to int(math.min(secsLeft, 600)) by 2
-            mLeft = (secsLeft - s) / 60.0
-            okS = lean > 0 ? worstCase(nowMs + s * 1000, close - recAt(mLeft, dnTab)) > target : worstCase(nowMs + s * 1000, close + recAt(mLeft, upTab)) < target
-            if okS
-                sureEta := s
-                break
-sureThing = lean > 0 ? sureUp : sureDn
-posSure   = posDir > 0 ? sureUp : posDir < 0 ? sureDn : false
-// flip risk for a side: the chance before the bell, the fastest it could happen (record pace), and whether BTC has already crossed
-flipOf(x) =>
-    crossed = x != spotSide
-    odds    = crossed ? 1.0 - (x > 0 ? pUp : pDn) : reachOdds
-    fastest = crossed ? 0.0 : reachMins
-    [odds, fastest, crossed]
-[favFlip, favFast, favCrossed] = flipOf(lean)
-[posFlip, posFast, posCrossed] = flipOf(posDir == 0 ? lean : posDir)
-// GET OUT = the flip is building; SELL NOW = it has flipped
-getOut  = posDir != 0 and not posSure and (posCrossed or posFlip >= getOutOdds / 100.0 or (not na(crossEta) and crossEta <= crossSecs) or (secsLeft > 60 and lead < cushion) or pMine < 0.85)
-sellNow = posDir != 0 and pMine < 0.5
-
-// ─────────────────────── Buy-in risk / reward: "if I bought the favorite now" ───────────────────────
-// win chance if held to the bell = the math (never 100% unless SURE); the scare = the chance the price display flips
-// against you before the bell (touch odds); edge = win chance − ask − fee, in cents per share; the ladder = the asks
-// that would make the same buy break-even / GOOD / GREAT; ¼-Kelly for size.
+// ─────────────────────── Favorite: sure thing, flip risk, buy-in math ───────────────────────
+sureThing = lean > 0 ? lockUp : lockDn
+sureEta   = lean > 0 ? lockEtaUp : lockEtaDn
+favCush   = lean > 0 ? cushUp : cushDn
+favRec    = lean > 0 ? recDnLeft : recUpLeft
+favBad    = lean > 0 ? badDn : badUp
+favFlip   = 1.0 - pFav                                   // the real flip: the settlement lands on the other side
+favScare  = lean != spotSide ? 1.0 : reachOdds           // the button scare: the spot crosses the target before the bell
 winHold = sureThing ? 1.0 : math.min(pFav, 0.995)
-scare   = favFlip
 bePrice(q, e) =>
     float p = q - e
     p := q - e - fee(p)
     p := q - e - fee(p)
     math.max(0.0, p)
-askNow   = hasAsk ? favAsk : float(na)
-edgeNow  = hasAsk ? winHold - askNow - fee(askNow) : float(na)
-beP      = bePrice(winHold, 0.0)
-goodP    = bePrice(winHold, 0.04)
-greatP   = bePrice(winHold, 0.08)
-kellyF   = hasAsk and edgeNow > 0 and askNow < 1 ? edgeNow / (1.0 - askNow) : 0.0
-scary    = scare >= 0.25
+askNow  = hasAsk ? favAsk : float(na)
+edgeNow = hasAsk ? winHold - askNow - fee(askNow) : float(na)
+beP     = bePrice(winHold, 0.0)
+goodP   = bePrice(winHold, 0.04)
+greatP  = bePrice(winHold, 0.08)
+kellyF  = hasAsk and edgeNow > 0 and askNow < 1 ? edgeNow / (1.0 - askNow) : 0.0
+scary   = favScare >= 0.25
 buyGrade = na(edgeNow) ? "" : edgeNow >= 0.08 ? "GREAT" : edgeNow >= 0.04 ? "GOOD" : edgeNow >= 0.01 ? "FAIR" : "POOR"
 varip float bestEdge = na
 varip float bestAsk  = na
@@ -515,52 +553,54 @@ if barstate.islast and hasAsk and not na(edgeNow) and (na(bestEdge) or edgeNow >
     bestAsk := askNow
     bestLeft := secsLeft
 
+// ─────────────────────── Plain-English pieces ───────────────────────
+chanceWord(p) => p >= 0.5 ? "likely" : p >= 0.25 ? "a real chance" : p >= 0.10 ? "possible" : p >= 0.03 ? "unlikely" : p >= 0.005 ? "rare" : "very rare"
+chanceTxt(p) => na(p) ? "unknown" : (p < 0.005 ? "under 1%" : p > 0.995 ? "over 99%" : fmt0(p * 100) + "%") + " (" + chanceWord(p) + ")"
+fastTxt(m) => na(m) ? "more than 15 min" : m <= 0 ? "right now" : m < 1 ? fmt0(math.ceil(m * 60)) + " s" : fmt1(m) + " min"
+etaTxt(e) => na(e) ? "no lock before the bell at this cushion" : e <= 0 ? "locked now" : "locks in ~" + secsTxt(e) + " if BTC holds here"
+
 // ─────────────────────── The command ───────────────────────
 string cmd = "WAIT"
 string why = ""
 string timing = ""
 color  cmdCol = color.new(color.gray, 60)
-string grade = pFav >= 0.995 ? "A+" : pFav >= 0.99 ? "A" : pFav >= 0.97 ? "B" : pFav >= 0.90 ? "C" : "D"
 efWin = secsTxt(secsElapsed < 160 ? 150 - secsElapsed : 210 - secsElapsed)
+posWord  = sideName(posDir)
+dropWord = posDir > 0 ? "drop" : "climb"
+favDrop  = lean > 0 ? "drop" : "climb"
 if na(target)
     cmd := "WAITING FOR THE FIRST ROUND BOUNDARY"
-    why := "The target is estimated from the minute before the open."
+    why := "The target is estimated from the minute before the open. Type it from the PM screen to start now."
 else if secsLeft <= 0
     cmd := "ROUND OVER — SETTLING"
-    why := "Next target = this round's settlement average."
+    why := "Next target = this round's settlement average. Reset Side, asks and bid for the new round."
 else if posDir != 0
-    posWord = sideName(posDir)
-    if posSure
-        cmd := "SAFE — " + posWord + " CAN'T LOSE FROM HERE"
-        why := "Even a record move in the next " + fmtClock(secsLeft) + " can't bring the average back across the target. Nothing can flip this; ride it to the bell."
+    if posLock
+        cmd := "LOCKED — HOLD " + posWord
+        why := "Nothing can flip it. BTC would have to " + dropWord + " $" + fmt0(posCush) + " and stay there; the biggest " + dropWord + " ever seen for " + secsTxt(secsLeft) + " is $" + fmt0(posRec) + " (margin included). Ignore the button — a low bid now is other people's panic, not information."
         timing := "Settles in " + fmtClock(secsLeft) + " · 100% — the only time that number appears"
         cmdCol := color.new(colOk, 15)
     else if sellNow
-        cmd := "SELL " + posWord + " NOW — IT HAS FLIPPED"
-        why := "BTC is on the other side of the target and the average is following. The button price falls with no delay; take the bid."
-        timing := "Settles against you in " + fmtClock(secsLeft)
+        cmd := "SELL " + posWord + " NOW"
+        why := (posCush <= 0 ? "If BTC stays here the average lands on the other side (cushion " + usd(posCush) + ")." : "The math has your side at " + pctTxt(pMine) + ".") + " Take whatever bid is left."
+        timing := "Settles in " + fmtClock(secsLeft)
         cmdCol := color.new(colBad, 10)
     else if getOut
-        reason = posCrossed ? "BTC has already crossed the target; the average is still on your side, but not for long." : posFlip >= getOutOdds / 100.0 ? "The chance of a flip before the bell is up to " + chanceTxt(posFlip) + "." : not na(crossEta) and crossEta <= crossSecs ? "BTC is heading for the target at $" + fmt0(velTow * 60) + "/min and gets there in ~" + secsTxt(crossEta) + " at this pace." : secsLeft > 60 and lead < cushion ? "BTC is within $" + fmt0(lead) + " of the target — about " + (cushionX == 1.0 ? "one" : fmt1(cushionX)) + " routine minute's move." : "The math has your side down to " + pctTxt(pMine) + "."
-        cmd := "GET OUT — " + posWord + " IS SLIPPING"
-        why := reason + " Sell while the bid is still high."
-        timing := "Fastest possible flip " + fastTxt(posFast) + " · " + fmtClock(secsLeft) + " left"
+        reason = pMine < holdMinP / 100.0 ? "Win chance " + pctTxt(pMine) + " is under your " + str.tostring(holdMinP) + "% floor." : (not na(etaKill) and etaKill <= etaWarnS) ? "BTC moved " + usd(mv10) + " in the last 10 s — at that pace it reaches the kill line in ~" + secsTxt(etaKill) + "." : thin ? "Cushion $" + fmt0(posCush) + " is thinner than a 1-in-100-minutes " + dropWord + " ($" + fmt0(posBad) + ")." : "The bid (" + fmt0(posBidN) + "¢) pays more than the math (" + pctTxt(pMine) + ")."
+        cmd := "SELL " + posWord + " — FLIP BUILDING"
+        why := reason + " Sell while the bid is still high." + (not na(sellVal) ? " Selling keeps ≈$" + fmt0(sellVal) + "; holding is worth ≈$" + fmt0(posVal) + " (model)." : "")
+        timing := "Fastest flip at record pace " + fastTxt(posFast) + " · " + fmtClock(secsLeft) + " left"
         cmdCol := color.new(colBad, 25)
     else
-        cmd := "PROCEED WITH CAUTION — IN " + posWord
-        why := "A flip is still possible. " + whereTxt + ". At its record pace BTC could get back in " + fastTxt(posFast) + "; with today's choppiness the chance before the bell is " + chanceTxt(posFlip) + "."
-        timing := not na(sureEta) ? "Becomes SAFE in ~" + secsTxt(sureEta) + " if BTC holds here · " + fmtClock(secsLeft) + " left" : "Settles in " + fmtClock(secsLeft) + " · not SAFE at this gap"
+        cmd := "HOLD " + posWord
+        why := "To flip you BTC must " + dropWord + " $" + fmt0(posCush) + " and hold it. Chance before the bell " + chanceTxt(1.0 - pMine) + ". A bad minute (1-in-100) is $" + fmt0(posBad) + ", the record $" + fmt0(posRec) + ". Last 10 s: " + (na(mv10) ? "live only" : usd(mv10)) + "."
+        timing := etaTxt(posEta) + " · " + fmtClock(secsLeft) + " left"
         cmdCol := color.new(colEasy, 25)
-else if volDanger
-    cmd := "STAND DOWN — BTC IS TOO WILD RIGHT NOW"
-    why := "It's swinging " + fmt1(atr / atrAvg) + "× its usual range. Nothing is a sure thing in a spike."
-    timing := "Round ends in " + fmtClock(secsLeft)
-    cmdCol := color.new(color.maroon, 10)
 else if sureThing and secsLeft > 4 and (not hasAsk or favAsk <= maxLock / 100.0)
     payUp = hasAsk ? favAsk : maxLock / 100.0
     net   = 1.0 - payUp - fee(payUp)
     cmd := "SURE THING — BUY " + favTxt + (hasAsk ? " AT " + fmt0(favAsk * 100) + "¢" : " UP TO " + str.tostring(maxLock) + "¢")
-    why := "Even a record move in the next " + fmtClock(secsLeft) + " can't bring the average back across the target. Nothing can flip this. +" + str.tostring(net * 100, "#.#") + "¢/share after fee; size 10–20% of bankroll."
+    why := "Locked: even a record move in the next " + secsTxt(secsLeft) + " cannot bring the average back across the target. +" + str.tostring(net * 100, "#.#") + "¢/share after fee."
     timing := "You have " + fmtClock(math.max(0.0, secsLeft - 5)) + " to get filled · ride to the bell"
     cmdCol := color.new(colOk, 10)
 else if sureThing and hasAsk
@@ -568,30 +608,35 @@ else if sureThing and hasAsk
     why := "Above your " + str.tostring(maxLock) + "¢ max. Net would be " + str.tostring((1.0 - favAsk - fee(favAsk)) * 100, "#.#") + "¢/share."
     timing := "Settles in " + fmtClock(secsLeft)
     cmdCol := color.new(colWarn, 40)
+else if volDanger
+    cmd := "STAND DOWN — BTC IS TOO WILD"
+    why := "It is swinging " + fmt1(atr / atrAvg) + "× its usual range. Nothing is a sure thing in a spike."
+    timing := "Round ends in " + fmtClock(secsLeft)
+    cmdCol := color.new(color.maroon, 10)
 else if lateKill
     cmd := "ROUND ENDING — NO NEW BUYS"
-    why := favTxt + " for now, not a sure thing: flip chance " + chanceTxt(favFlip) + ". " + fmt0(sKnown * 100) + "% of the average is in the books."
-    timing := "Bell in " + fmtClock(secsLeft)
+    why := favTxt + " for now, not locked: real flip chance " + chanceTxt(favFlip) + ". " + fmt0(sKnown * 100) + "% of the average is in the books."
+    timing := "Bell in " + fmtClock(secsLeft) + " · " + etaTxt(sureEta)
     cmdCol := color.new(color.purple, 30)
 else if efOk
     cmd := "EF RULE — BUY " + favTxt + " AT " + fmt0(favAsk * 100) + "¢ WITH CAUTION"
-    why := "Your tested rule (Oct 6–22): favorite at " + str.tostring(efLo) + "–" + str.tostring(efHi) + "¢ at 13:00 / 12:00 left, hold to the end. Not a sure thing: flip chance " + chanceTxt(favFlip) + ", fastest possible flip " + fastTxt(favFast) + "."
+    why := "Your tested rule (Oct 6–22): favorite at " + str.tostring(efLo) + "–" + str.tostring(efHi) + "¢ at 13:00 / 12:00 left, hold to the end. Not a sure thing: real flip chance " + chanceTxt(favFlip) + ", button scare " + chanceTxt(favScare) + "."
     timing := "Check window closes in " + efWin
     cmdCol := color.new(colPM, 20)
 else if efCheck
-    cmd := "EF CHECK — " + favTxt + " FOR NOW: buy only if the button shows " + str.tostring(efLo) + "–" + str.tostring(efHi) + "¢"
-    why := (hasAsk ? "Typed ask " + fmt0(favAsk * 100) + "¢ is outside the band. " : "Type the ask in settings, or read it off the button. ") + "Flip chance before the bell " + chanceTxt(favFlip) + "."
+    cmd := "EF CHECK — " + favTxt + " FOR NOW: buy only at " + str.tostring(efLo) + "–" + str.tostring(efHi) + "¢"
+    why := (hasAsk ? "Typed ask " + fmt0(favAsk * 100) + "¢ is outside the band. " : "Type the ask in settings, or read it off the button. ") + "Real flip chance " + chanceTxt(favFlip) + "."
     timing := "Check window closes in " + efWin
     cmdCol := color.new(colPM, 55)
 else if pFav >= 0.97
-    cmd := "GET READY — " + favTxt + " IS CLOSE TO A SURE THING"
-    why := "The math likes it, but a flip is still possible: " + whereTxt + ". Chance before the bell " + chanceTxt(favFlip) + ". Buying now is a caution play."
-    timing := not na(sureEta) ? "Becomes a SURE THING in ~" + secsTxt(sureEta) + " if BTC holds here" : "Needs a bigger gap first · " + fmtClock(secsLeft) + " left"
+    cmd := "GET READY — " + favTxt + " IS CLOSE TO LOCKED"
+    why := "To flip it BTC must " + favDrop + " $" + fmt0(favCush) + " and hold; the record for the time left is $" + fmt0(favRec) + ". Real flip chance " + chanceTxt(favFlip) + ", button scare " + chanceTxt(favScare) + ". Buying now is a caution play."
+    timing := etaTxt(sureEta) + " · " + fmtClock(secsLeft) + " left"
     cmdCol := color.new(colWarn, 35)
 else if useAlpha and inWindow and not inChop and conv >= minConv
     cmd := "BUY " + favTxt + " WITH CAUTION — " + str.tostring(conv) + " OF 6 CHECKS PASS"
-    why := "Not a sure thing. " + whereTxt + ". Flip chance before the bell " + chanceTxt(favFlip) + ", fastest possible flip " + fastTxt(favFast) + "." + (hasAsk ? " Ask " + fmt0(favAsk * 100) + "¢." : "")
-    timing := not na(sureEta) ? "Becomes SAFE in ~" + secsTxt(sureEta) + " if BTC holds here" : "Round ends in " + fmtClock(secsLeft)
+    why := "Not a sure thing. BTC is $" + fmt0(lead) + " " + (dev >= 0 ? "above" : "below") + " the target. Real flip chance " + chanceTxt(favFlip) + ", button scare " + chanceTxt(favScare) + "." + (hasAsk ? " Ask " + fmt0(favAsk * 100) + "¢." : "")
+    timing := etaTxt(sureEta) + " · " + fmtClock(secsLeft) + " left"
     cmdCol := lean > 0 ? color.new(colOk, 45) : color.new(colBad, 45)
 else if inChop
     cmd := "WAIT — BTC IS HUGGING THE TARGET"
@@ -600,19 +645,18 @@ else if inChop
     cmdCol := color.new(colWarn, 70)
 else
     cmd := "WAIT — " + favTxt + " FOR NOW"
-    why := "Flip chance before the bell " + chanceTxt(favFlip) + ". " + (useAlpha and inWindow ? str.tostring(conv) + " of 6 checks pass. " : "Outside the entry window. ") + "The sure thing usually shows up inside the last 2 minutes."
-    timing := not na(sureEta) ? "Could become a SURE THING in ~" + secsTxt(sureEta) + " if BTC holds here" : "Round ends in " + fmtClock(secsLeft)
+    why := "Real flip chance " + chanceTxt(favFlip) + ". " + (useAlpha and inWindow ? str.tostring(conv) + " of 6 checks pass. " : "Outside the entry window. ") + "The sure thing usually shows up inside the last 2 minutes."
+    timing := etaTxt(sureEta) + " · " + fmtClock(secsLeft) + " left"
     cmdCol := color.new(color.gray, 70)
 
-// ─────────────────────── Chart layers ───────────────────────
-plot(showPM ? pmShown : na, "Polymarket shows (60-s avg)", color = colPM, linewidth = 2)
+// ─────────────────────── Chart layers (all in chart dollars) ───────────────────────
+plot(showPM ? pmRaw : na, "PM line (60-s avg, chart $)", color = colPM, linewidth = 2)
 plot(showTwap ? twap : na, "TWAP", color = color.new(color.green, 40), linewidth = 1)
-// round shading + settlement window
 roundIdx = int(roundStart / roundMs)
 slot = roundIdx % 4
 hueCol = slot == 0 ? color.rgb(41, 121, 255) : slot == 1 ? color.rgb(171, 71, 188) : slot == 2 ? color.rgb(0, 172, 193) : color.rgb(255, 167, 38)
 isCurRound = roundStart == math.floor(timenow / 900000.0) * roundMs
-inSettleWin = secsLeft <= WIN + DELAY and secsLeft > 0
+inSettleWin = secsLeft <= WIN and secsLeft > 0
 bgcolor(shadeRounds ? color.new(hueCol, isCurRound ? 84 : 91) : na, title = "Round shading")
 bgcolor(inSettleWin ? color.new(colPM, 80) : na, title = "Settlement window (last 60 s)")
 var array<line> marks = array.new<line>()
@@ -621,33 +665,44 @@ if shadeRounds and isNewRound
     if array.size(marks) > 60
         line.delete(array.shift(marks))
 
-var line  tgtLine = na
-var label tgtLbl  = na
-var label tgtTag  = na
+var line  tgtLine  = na
+var label tgtLbl   = na
+var line  killLine = na
+var label killLbl  = na
+var line  aheadLn  = na
+var label aheadDot = na
 var line  postLine = na
 var label postLbl  = na
-var array<line>  tick = array.new<line>()
-var array<label> tickL = array.new<label>()
+var array<line> tick = array.new<line>()
 if barstate.islast and not na(target)
     line.delete(tgtLine)
     label.delete(tgtLbl)
-    label.delete(tgtTag)
+    line.delete(killLine)
+    label.delete(killLbl)
+    line.delete(aheadLn)
+    label.delete(aheadDot)
     line.delete(postLine)
     label.delete(postLbl)
     for l in tick
         line.delete(l)
     array.clear(tick)
-    for lb in tickL
-        label.delete(lb)
-    array.clear(tickL)
-    tgtPlot = target - offset                       // plotted in spot dollars (basis-adjusted) so it sits where the candles live
-    tgtLine := line.new(bar_index - 100, tgtPlot, bar_index + 20, tgtPlot, xloc = xloc.bar_index, extend = extend.both, color = colTgt, style = line.style_dashed, width = 3)
-    tgtLbl  := label.new(bar_index + 16, tgtPlot, "TARGET " + fmtP(target) + "  (" + tgtSrc + ")", xloc = xloc.bar_index, style = label.style_label_left, color = colTgt, textcolor = color.black, size = size.normal)
-    tgtTag  := label.new(bar_index - 2, tgtPlot, (dev >= 0 ? "spot $" + fmt1(lead) + " above ▲" : "spot $" + fmt1(lead) + " below ▼"), xloc = xloc.bar_index, style = dev >= 0 ? label.style_label_down : label.style_label_up, color = color.new(colTgt, 40), textcolor = color.black, size = size.small)
+    killShown = showKill and not na(killPx) and rpWin < WIN and math.abs(killPx - close) < 3.0 * math.max(nz(recUpLeft), nz(recDnLeft)) + 100.0
+    // target: dashed line, one short label hugging the last bar (PM dollars in the text, chart dollars on the chart)
+    tgtLine := line.new(bar_index - 100, tgtChart, bar_index + 20, tgtChart, xloc = xloc.bar_index, extend = extend.both, color = colTgt, style = line.style_dashed, width = 2)
+    tgtLbl  := label.new(bar_index + 1, tgtChart, "TARGET " + fmtP(target) + (typedNow ? "" : " est") + (rpWin >= WIN ? " · kill" : ""), xloc = xloc.bar_index, style = label.style_label_left, color = colTgt, textcolor = color.black, size = size.small)
+    // kill line: where BTC must average for the rest of the window to flip the result — it runs away from spot as the window fills
+    if killShown
+        killLine := line.new(bar_index - 40, killPx, bar_index + 10, killPx, xloc = xloc.bar_index, color = colKill, style = line.style_solid, width = 2)
+        killLbl  := label.new(bar_index + 1, killPx, "KILL " + fmtP(killPx + offset) + " · " + usd(killPx - close), xloc = xloc.bar_index, style = label.style_label_left, color = colKill, textcolor = color.white, size = size.small)
+    // lookahead stub: where the PM line will read in lookS seconds if BTC holds (dotted) and a dot at that reading
+    if showAhead
+        aheadLn  := line.new(bar_index, pmRaw, bar_index + 1, pmAhead, xloc = xloc.bar_index, color = colPM, style = line.style_dotted, width = 2)
+        aheadDot := label.new(bar_index + 1, pmAhead, "", xloc = xloc.bar_index, style = label.style_circle, color = colPM, size = size.tiny)
+    // momentum post: spot → target with minute ticks; one small label at the spot end, away from the target label
     if showPost
         xp = bar_index + 3
-        postLine := line.new(xp, close, xp, tgtPlot, xloc = xloc.bar_index, color = colPost, width = 4)
-        dirP = tgtPlot >= close ? 1 : -1
+        postLine := line.new(xp, close, xp, tgtChart, xloc = xloc.bar_index, color = colPost, width = 3)
+        dirP = tgtChart >= close ? 1 : -1
         float run = close
         maxM = int(math.max(1.0, math.min(15.0, math.ceil(secsLeft / 60.0))))
         for m = 1 to maxM
@@ -655,57 +710,60 @@ if barstate.islast and not na(target)
             if (p - run) * dirP <= 0
                 break
             run := p
-            if (p - tgtPlot) * dirP > 0
+            if (p - tgtChart) * dirP > 0
                 break
             array.push(tick, line.new(xp - 1, p, xp + 1, p, xloc = xloc.bar_index, color = color.new(colPost, 20), width = 2))
-            array.push(tickL, label.new(xp + 1, p, str.tostring(m) + "m", xloc = xloc.bar_index, style = label.style_label_left, color = color.new(color.black, 100), textcolor = color.new(colPost, 20), size = size.small))
-        // the label between the spot and the target: minutes to get there at BTC's record pace, judged against the time left
-        postLbl := label.new(xp, (close + tgtPlot) / 2, reachMinsTxt + " at record pace\n" + avgTxt + "\n" + reachWord + " · " + fmtClock(secsLeft) + " left", xloc = xloc.bar_index, style = label.style_label_left, color = color.new(reachCol, 0), textcolor = reachTier >= 2 ? color.black : color.white, size = size.small)
+        postLbl := label.new(xp, close, reachMinsTxt + " at record pace\n" + reachWord + " · " + fmtClock(secsLeft) + " left", xloc = xloc.bar_index, style = dirP < 0 ? label.style_label_down : label.style_label_up, color = color.new(reachCol, 0), textcolor = reachTier >= 2 ? color.black : color.white, size = size.small)
 
 // ─────────────────────── HUD ───────────────────────
-var table hud = table.new(tblPos(hudPos), 1, 11, bgcolor = color.new(color.black, 15), border_width = 1, border_color = color.new(color.gray, 70))
+var table hud = table.new(tblPos(hudPos), 1, 10, bgcolor = color.new(color.black, 15), border_width = 1, border_color = color.new(color.gray, 70))
 row(r, txt, c, bg) =>
-    table.cell(hud, 0, r, txt, text_color = c, text_size = hudTxt, text_halign = text.align_left, bgcolor = bg)
+    table.cell(hud, 0, r, wrap(txt, hudW), text_color = c, text_size = hudTxt, text_halign = text.align_left, bgcolor = bg)
 if barstate.islast
     blackBg = color.new(color.black, 100)
-    // the safety line: the side that matters (yours if you are in, else the one for now), in plain words
-    sideX  = posDir != 0 ? posDir : lean
-    sureX  = posDir != 0 ? posSure : sureThing
-    flipX  = posDir != 0 ? posFlip : favFlip
-    fastX  = posDir != 0 ? posFast : favFast
-    safetyTxt = na(target) or secsLeft <= 0 ? "SAFETY  —" : sureX ? "SAFETY  SAFE — nothing can flip " + sideName(sideX) + " now, not even a record move." : "SAFETY  A flip is possible · fastest at record pace " + fastTxt(fastX) + " · chance before the bell " + chanceTxt(flipX) + (posDir != 0 ? " · GET OUT fires at " + str.tostring(getOutOdds) + "%, within $" + fmt0(cushion) + " of the target, or if BTC would reach it inside " + str.tostring(crossSecs) + " s at its pace" : "")
-    safetyCol = na(target) or secsLeft <= 0 ? color.silver : sureX ? colOk : (posDir != 0 and (getOut or sellNow)) ? colBad : colEasy
-    factsTxt = fmtClock(secsLeft) + " left · " + favTxt + " for now · " + whereTxt + " · PM shows $" + fmt1(math.abs(pmShown - target)) + " " + (pmShown >= target ? "above" : "below") + " · avg speed $" + fmt0(nz(avgSpeed)) + "/min this round (target in " + avgMinsTxt + " at that pace) · target " + fmtP(target) + " (" + tgtSrc + ")"
-    posTxt = posDir != 0 ? "In " + sideName(posDir) + " @" + fmt0(posEntry) + "¢ for $" + fmt0(posUsd) + " · worth about $" + fmt0(posVal) + " now (" + (posPnl >= 0 ? "+$" : "−$") + fmt0(math.abs(posPnl)) + ") · pays $" + fmt0(posShares) + " if it holds" : "No position — set Side in settings after you buy"
+    sideX = posDir != 0 ? posDir : lean
+    cushX = posDir != 0 ? posCush : favCush
+    recX  = posDir != 0 ? posRec : favRec
+    badX  = posDir != 0 ? posBad : favBad
+    etaX  = posDir != 0 ? posEta : sureEta
+    lockX = posDir != 0 ? posLock : sureThing
+    moveW = sideX > 0 ? "drop" : "climb"
+    aheadTxt = "NEXT " + fmt0(lookEff) + " S  PM line → " + fmtP(pmAhead + offset) + " (" + usd(pmAhead - tgtChart) + " vs target, ±$" + fmt0(pmAheadSd) + ")" + (lookEff < lookS ? " — that is the bell" : "") + " · BTC last 10 s " + (na(mv10) ? "—" : usd(mv10)) + " · 30 s " + (na(mv30) ? "— (live only)" : usd(mv30))
+    killTxt = na(killPx) ? "KILL  —" : cushX <= 0 ? "KILL  " + sideName(sideX) + " is already past the kill line by $" + fmt0(-cushX) + " — if BTC holds here it loses" : "KILL  to flip " + sideName(sideX) + " BTC must " + moveW + " $" + fmt0(cushX) + " to " + fmtP(killPx + offset) + " and hold it · bad minute $" + fmt0(badX) + " · record $" + fmt0(recX) + " · " + etaTxt(etaX)
+    oddsTxt = "ODDS  hold to bell UP " + pctTxt(pUp) + " · DOWN " + pctTxt(pDn) + (secsLeft < WIN ? " · " + fmt0(sKnown * 100) + "% in the books" : "") + " · button scare " + chanceTxt(favScare) + " · PM line " + usd(pmShown - target) + " vs target · target " + fmtP(target) + " (" + tgtSrc + ")"
+    buyTxt = "BUY-IN  " + (hasAsk ? favTxt + " at " + fmt0(askNow * 100) + "¢: " + buyGrade + (scary and buyGrade != "POOR" ? " BUT SCARY" : "") + " · +" + fmt0((1.0 - askNow - fee(askNow)) * 100) + "¢ if right, −" + fmt0(askNow * 100) + "¢ if wrong · edge " + sgnTxt(edgeNow) + fmt1(math.abs(edgeNow) * 100) + "¢ · ¼-Kelly " + fmt0(kellyF * 25) + "% · " : "type the ask to grade a buy · ") + "win if held " + (sureThing ? "100%" : fmt0(winHold * 100) + "%") + " · break-even " + fmt0(beP * 100) + "¢ · GOOD < " + fmt0(goodP * 100) + "¢ · GREAT < " + fmt0(greatP * 100) + "¢"
+    posTxt = posDir != 0 ? "IN " + sideName(posDir) + " @" + fmt0(posEntry) + "¢ for $" + fmt0(posUsd) + " · worth ≈$" + fmt0(posVal) + " (" + usd(posVal - posUsd) + ") · pays $" + fmt0(posShares) + " if it holds" + (not na(sellVal) ? " · selling at " + fmt0(posBidN) + "¢ keeps ≈$" + fmt0(sellVal) : " · type the SELL bid to compare") : buyTxt
+    posBg  = posDir != 0 ? (posLock ? color.new(colOk, 70) : sellNow or getOut ? color.new(colBad, 60) : blackBg) : blackBg
+    posCol = posDir != 0 ? color.white : not hasAsk ? color.silver : buyGrade == "POOR" ? colBad : buyGrade == "FAIR" or scary ? colEasy : colOk
     row(0, cmd, color.white, cmdCol)
     row(1, timing, color.yellow, blackBg)
     row(2, why, color.white, blackBg)
-    row(3, safetyTxt, safetyCol, blackBg)
-    row(4, factsTxt, color.silver, blackBg)
-    row(5, posTxt, posDir != 0 ? color.white : color.gray, posDir != 0 ? (posSure ? color.new(colOk, 70) : sellNow or getOut ? color.new(colBad, 60) : blackBg) : blackBg)
-    buyTxt = "BUY-IN  " + (hasAsk ? "if you buy " + favTxt + " now at " + fmt0(askNow * 100) + "¢: " + buyGrade + (scary and buyGrade != "POOR" ? " BUT SCARY" : "") + " · +" + fmt0((1.0 - askNow - fee(askNow)) * 100) + "¢/share if right (+" + fmt0((1.0 - askNow - fee(askNow)) / askNow * 100) + "%), −" + fmt0(askNow * 100) + "¢ if wrong · edge " + (edgeNow >= 0 ? "+" : "−") + fmt1(math.abs(edgeNow) * 100) + "¢ · size ¼-Kelly " + fmt0(kellyF * 25) + "% of bankroll · " : "type the ask in settings to grade a buy-in · ") + "win if held to the bell " + (sureThing ? "100%" : fmt0(winHold * 100) + "%") + " · display flips against you " + chanceTxt(scare) + " · break-even " + fmt0(beP * 100) + "¢ · GOOD under " + fmt0(goodP * 100) + "¢ · GREAT under " + fmt0(greatP * 100) + "¢" + (not na(bestEdge) ? " · best this round " + (bestEdge >= 0 ? "+" : "−") + fmt1(math.abs(bestEdge) * 100) + "¢ at " + fmt0(bestAsk * 100) + "¢ with " + fmtClock(bestLeft) + " left" : "")
-    buyCol = not hasAsk ? color.silver : buyGrade == "POOR" ? colBad : buyGrade == "FAIR" or scary ? colEasy : colOk
-    row(6, buyTxt, buyCol, blackBg)
+    row(3, aheadTxt, colPM, blackBg)
+    row(4, killTxt, lockX ? colOk : cushX <= 0 ? colBad : colEasy, blackBg)
+    if not hudCompact
+        row(5, oddsTxt, color.silver, blackBg)
+        row(6, posTxt, posCol, posBg)
+    warn = (is1m ? "" : "Not a 1-minute chart — the clock and the records assume 1-min bars. ") + (typedStale ? "Typed target " + fmtP(tgtTyped) + " is $" + fmt0(math.abs(tgtTyped - tgtEst)) + " from the estimate — ignored as stale; zero it or retype. " : "") + (not tgtTicks and not typedNow and not na(tgtEst) ? "Target is from bars (±$25): type it from the PM screen before trusting LOCKED. " : "") + (posSet and not fresh ? "Side is set from an earlier round — reset it or re-enter it. " : "") + (bar_index < 1440 ? "Under a day of 1-min history loaded — bad-minute and record levels are thin. " : "")
+    row(7, str.length(warn) > 0 ? "⚠ " + warn : "", colWarn, blackBg)
     if showTech
-        pathTxt = "momentum: " + (math.sign(velS) == math.sign(needMove) and math.abs(velS) > 0.01 ? "crosses in ~" + secsTxt(math.abs(needMove / velS)) + " at this pace" : "not on this path") + " · v " + (vel >= 0 ? "+" : "") + fmt1(vel) + "/bar · a " + (accEma >= 0 ? "+" : "") + str.tostring(accEma, "#.##")
-        upTxt = "UP " + fmt0(pUp * 100) + "¢ fair" + (mktUp > 0 ? " (mkt " + fmt0(mktUp) + ", edge " + (pUp * 100 - mktUp >= 0 ? "+" : "") + fmt0(pUp * 100 - mktUp) + ")" : "")
-        dnTxt = "DOWN " + fmt0(pDn * 100) + "¢ fair" + (mktDn > 0 ? " (mkt " + fmt0(mktDn) + ", edge " + (pDn * 100 - mktDn >= 0 ? "+" : "") + fmt0(pDn * 100 - mktDn) + ")" : "")
-        lights = (l1 ? "Lead ✓" : "Lead ✗") + "  " + (l2 ? "Trend ✓" : "Trend ✗") + "  " + (l3 ? "Momentum ✓" : "Momentum ✗") + "  " + (l4 ? "Calm ✓" : "Calm ✗") + "  " + (l5 ? "Safe ✓" : "Safe ✗") + "  " + (l6 ? "Headroom ✓" : "Headroom ✗") + "  (" + str.tostring(conv) + "/6)"
-        reachTxt = "REACH  " + reachWord + " — the target is $" + fmt0(math.abs(needMove)) + " " + (needMove >= 0 ? "up" : "down") + ": " + reachMinsTxt + " at record pace vs " + fmtClock(secsLeft) + " left · touch odds " + pctTxt(reachOdds) + " · record move in that time $" + fmt0(recLeft) + " · history " + fmt0(bar_index / 1440.0) + "d 1-min, " + fmt0(bars5 / 288.0) + "d 5-min, " + fmt0(bars15 / 96.0) + "d 15-min"
-        row(7, "MATH  UP " + pctTxt(pUp) + " · DOWN " + pctTxt(pDn) + " (model, never a guarantee) · safe " + pctTxt(pSafe) + " on adverse vol · avg " + (gap >= 0 ? "+$" : "−$") + fmt1(math.abs(gap)) + " vs target, 3σ $" + fmt1(sSd * 3) + (inSettleWin ? " · " + fmt0(sKnown * 100) + "% in the books" : "") + " · grade " + grade + (mathLock ? " · math lock (still not a sure thing unless SAFE)" : "") + " · " + upTxt + "   " + dnTxt, color.silver, blackBg)
+        lights = (l1 ? "Lead ✓" : "Lead ✗") + " " + (l2 ? "Trend ✓" : "Trend ✗") + " " + (l3 ? "Momentum ✓" : "Momentum ✗") + " " + (l4 ? "Calm ✓" : "Calm ✗") + " " + (l5 ? "Safe ✓" : "Safe ✗") + " " + (l6 ? "Headroom ✓" : "Headroom ✗") + " (" + str.tostring(conv) + "/6)" + (useAlpha and inWindow ? "" : " · outside the Alpha window")
+        techTxt = "TECH  safe on adverse vol " + pctTxt(pSafe) + " · settle avg " + usd(gap) + " vs target, 3σ $" + fmt1(sSd * 3) + " · 1σ/min $" + fmt0(nz(sigBar)) + " (adverse $" + fmt0(nz(sigAdvB)) + ") · ATR " + fmt1(atr / atrAvg) + "× · last 3 min range $" + fmt0(range3) + (volDanger ? " · WILD" : cleanRun ? " · clean trend" : revRisk ? " · turning" : "") + " · post " + reachWord + ": $" + fmt0(math.abs(needMove)) + " " + (needMove >= 0 ? "up" : "down") + " to target, " + reachMinsTxt + " at record pace, touch odds " + pctTxt(reachOdds) + " · " + avgTxt + " · history " + fmt0(bar_index / 1440.0) + "d 1-min, " + fmt0(bars5 / 288.0) + "d 5-min, " + fmt0(bars15 / 96.0) + "d 15-min" + (mktUpN > 0 ? " · UP mkt " + fmt0(mktUpN) + " vs fair " + fmt0(pUp * 100) : "") + (mktDnN > 0 ? " · DOWN mkt " + fmt0(mktDnN) + " vs fair " + fmt0(pDn * 100) : "") + (not na(bestEdge) ? " · best edge this round " + sgnTxt(bestEdge) + fmt1(math.abs(bestEdge) * 100) + "¢ at " + fmt0(bestAsk * 100) + "¢ with " + fmtClock(bestLeft) + " left" : "")
         row(8, lights, conv >= minConv ? colOk : color.silver, blackBg)
-        row(9, pathTxt + " · last 3 min range $" + fmt0(range3) + " · adverse swing $" + fmt0(sigAdvB) + "/min" + (volDanger ? " · WILD" : cleanRun ? " · clean trend" : revRisk ? " · turning" : ""), color.silver, blackBg)
-        row(10, reachTxt, reachCol, blackBg)
+        row(9, techTxt, color.silver, blackBg)
 
 // ─────────────────────── Alerts ───────────────────────
 sureOn = sureThing and posDir == 0 and secsLeft > 4 and (not hasAsk or favAsk <= maxLock / 100.0)
-alertcondition(sureOn and not sureOn[1], "SURE THING for sale", "PM15 Brain: SURE THING — nothing can flip the favorite; buy and ride to the bell")
+lockOn = posDir != 0 and posLock
+alertcondition(sureOn and not sureOn[1], "SURE THING for sale", "PM15 Brain: SURE THING — locked; buy the favorite and ride to the bell")
+alertcondition(lockOn and not lockOn[1], "Position LOCKED", "PM15 Brain: LOCKED — nothing can flip your side; hold to the bell, ignore the button")
 alertcondition(efOk and not efOk[1], "EF rule fires", "PM15 Brain: Early Favorite rule — buy the favorite with caution and hold")
-alertcondition(sellNow and not sellNow[1], "SELL NOW", "PM15 Brain: your side has flipped — sell now")
-alertcondition(getOut and not getOut[1], "GET OUT", "PM15 Brain: GET OUT — the flip is building, sell while the bid is high")
+alertcondition(sellNow and not sellNow[1], "SELL NOW", "PM15 Brain: SELL NOW — the settlement is projected against you")
+alertcondition(getOut and not getOut[1], "SELL — flip building", "PM15 Brain: SELL — the flip is building, take the bid while it is high")
 if sureOn and not sureOn[1]
     alert("PM15 Brain: SURE THING — buy " + favTxt + (hasAsk ? " at " + fmt0(favAsk * 100) + "¢" : "") + ", " + fmtClock(secsLeft) + " left", alert.freq_once_per_bar)
+if lockOn and not lockOn[1]
+    alert("PM15 Brain: LOCKED — " + sideName(posDir) + " cannot be flipped, " + fmtClock(secsLeft) + " left; hold, ignore the button", alert.freq_once_per_bar)
 if sellNow and not sellNow[1]
-    alert("PM15 Brain: SELL " + sideName(posDir) + " NOW — it has flipped, " + fmtClock(secsLeft) + " left", alert.freq_once_per_bar)
+    alert("PM15 Brain: SELL " + sideName(posDir) + " NOW — settlement projected against you, " + fmtClock(secsLeft) + " left", alert.freq_once_per_bar)
 if getOut and not getOut[1]
-    alert("PM15 Brain: GET OUT of " + sideName(posDir) + " — the flip is building, " + fmtClock(secsLeft) + " left", alert.freq_once_per_bar)
+    alert("PM15 Brain: SELL " + sideName(posDir) + " — flip building (cushion $" + fmt0(posCush) + "), " + fmtClock(secsLeft) + " left", alert.freq_once_per_bar)

@@ -55,8 +55,19 @@ record-pace BTC move could not get the average back across the target; otherwise
 NOW with the fastest possible flip and the chance before the bell), an "if I bought the favorite now" card (win chance if
 held, the scare, cents won/lost, edge after fee, the asks that make the buy GOOD/GREAT, ¼-Kelly size, best edge this
 round), safety-rated plays, paper bets that buy the sure thing (or the math lock, or an edge of N¢+) and sell on GET OUT,
-and the next/past rounds. `research/pm15_brain.pine` is the same brain as a TradingView
-indicator (one HUD, technical rows behind a switch). `scripts/pm15_relay_worker.js` is the Cloudflare
+and the next/past rounds. `research/pm15_brain.pine` is the TradingView indicator, now **v2.0** and ahead of
+the HTML cockpit: the settlement rule was confirmed against the Polymarket US market rules on 2026-10-31
+(average of 60 one-second CF Benchmarks BRTI readings in the last minute before each boundary; price to beat =
+last round's settlement). v2.0 adds a red KILL line (the level BTC must *average* for the rest of the settlement
+window to flip the result — it runs away from spot as the window fills; cushion = spot → kill line, the hold/sell
+number), a NEXT-30-S row (where the PM line will read in 30 s if BTC holds, 32 of those 60 s already known, ±1σ,
+plus BTC's last-10-s / 30-s tick moves), and a one-word in-position verdict LOCKED / HOLD / SELL (SELL = model
+win chance under a floor, last-10-s pace reaching the kill line within N s, cushion thinner than a 1-in-100-minutes
+adverse move in the last 2 min, or a typed bid paying more than the math). It fixes v1.2's panic sell (GET OUT the
+instant spot crossed the target even when the average was locked), the 2-s-short settlement window, the PM line
+plotted offset from the target, stale typed inputs surviving a reload, and the 300-char HUD rows (now wrapped, 7
+rows + tech behind a switch). The HTML cockpit still runs the v1.2 logic and needs the same port.
+`scripts/pm15_relay_worker.js` is the Cloudflare
 Worker that forwards the two read-only gateway endpoints with CORS for the page.
 Companion chart tool: `research/velocity_reach_vs_target.pine` (TradingView — projects BTC's velocity /
 acceleration forward, draws a vertical reach post with a 1m/2m/3m… time ruler up through the target and
