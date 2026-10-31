@@ -27,6 +27,8 @@ import time
 from typing import Any, Optional
 
 THETA = 0.07
+LEDGER = "L2-2026-11-01"      # bump to start a clean scoreboard (report shows only the latest ledger)
+R5_TRADE = False              # score-speed trades retired (97 trades, 2 wins): reaction paths are still observed
 NFL_SERIES = ("KXNFLGAME", "KXNCAAFGAME")
 STAKE = {"R1 anchor": 10.0, "R2 q1cheap": 5.0, "R3 blowout": 20.0, "R4 halftime": 5.0, "R5 react": 5.0, "R6 decided": 20.0}
 
@@ -63,9 +65,14 @@ class Paper:
         self.st: dict = {"open": {}, "fired": [], "pre": {}, "half": {}, "last_score": {}, "react": {}, "closed": 0, "pnl": 0.0}
         try:
             with open(self.path) as fh:
-                self.st.update(json.load(fh))
+                saved = json.load(fh)
+            if saved.get("ledger") == LEDGER:
+                self.st.update(saved)
+            else:                       # new ledger: keep pregame mids only, drop old positions/score
+                self.st["pre"] = saved.get("pre", {})
         except (OSError, ValueError):
             pass
+        self.st["ledger"] = LEDGER
 
     def save(self):
         try:
@@ -92,7 +99,7 @@ class Paper:
         if n < 1:
             return None
         pid = f"{rule}|{km['t']}|{int(now)}"
-        pos = {"id": pid, "rule": rule, "game": game, "ticker": km["t"], "team": km.get("yes"), "title": title, "entry": ask,
+        pos = {"id": pid, "ledger": LEDGER, "rule": rule, "game": game, "ticker": km["t"], "team": km.get("yes"), "title": title, "entry": ask,
                "n": n, "cost": round(n * ask + n * fee(ask), 4), "t": int(now), "why": why, "depth": depth}
         if extra:
             pos.update({k: v for k, v in extra.items() if k != "cap_depth"})
@@ -160,7 +167,7 @@ class Paper:
                 self.st["react"][rid] = {"game": gk, "scorer": scorer, "t0": now, "score": key_sc, "period": per,
                                          "path": {str(km["t"]): [[0, km.get("yb"), km.get("ya")]] for _, km in teams}}
                 km_s = next(km for i, km in teams if i == scorer)
-                if not self.fired(f"R5|{rid}"):
+                if R5_TRADE and not self.fired(f"R5|{rid}"):
                     self.st["fired"].append(f"R5|{rid}")
                     self.buy("R5 react", tag, km_s, title, f"{key_sc} score, buy scorer at first ask", now, {"exit_at": now + 120})
             self.st["last_score"][gk] = key_sc
