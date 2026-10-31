@@ -47,28 +47,31 @@ the paper / record / backtest / carry / bounty schedules are off, `workflow_disp
 live line of research is **Early Favorite** on Polymarket US 15-min BTC: `research/early_favorite_playbook.md`,
 `scripts/early_favorite_tracker.py` (forward test, `polyus.yml`), `scripts/ef_autobuyer.py` (live-book
 paper fills, `ef-autobuyer.yml`), `research/early_favorite_signal.pine` (the TradingView HUD).
-Live cockpit: `research/pm15_copilot.html` (open in a browser on the iPad; also published as a claude.ai artifact) — one
-Polymarket US 15-min BTC round at a time on the Coinbase feed, with the settlement model fitted from screen recordings
-(PM's price = 60-s trailing average of spot, ~2 s delayed, plus a basis offset; the final price is that average at the
-bell and the next target is this round's settlement), a plain-English safety headline (SURE THING only when even a
-record-pace BTC move could not get the average back across the target; otherwise PROCEED WITH CAUTION / GET OUT / SELL
-NOW with the fastest possible flip and the chance before the bell), an "if I bought the favorite now" card (win chance if
-held, the scare, cents won/lost, edge after fee, the asks that make the buy GOOD/GREAT, ¼-Kelly size, best edge this
-round), safety-rated plays, paper bets that buy the sure thing (or the math lock, or an edge of N¢+) and sell on GET OUT,
-and the next/past rounds. `research/pm15_brain.pine` is the TradingView indicator, now **v2.0** and ahead of
-the HTML cockpit: the settlement rule was confirmed against the Polymarket US market rules on 2026-10-31
-(average of 60 one-second CF Benchmarks BRTI readings in the last minute before each boundary; price to beat =
-last round's settlement). v2.0 adds a red KILL line (the level BTC must *average* for the rest of the settlement
-window to flip the result — it runs away from spot as the window fills; cushion = spot → kill line, the hold/sell
-number), a NEXT-30-S row (where the PM line will read in 30 s if BTC holds, 32 of those 60 s already known, ±1σ,
-plus BTC's last-10-s / 30-s tick moves), and a one-word in-position verdict LOCKED / HOLD / SELL (SELL = model
-win chance under a floor, last-10-s pace reaching the kill line within N s, cushion thinner than a 1-in-100-minutes
-adverse move in the last 2 min, or a typed bid paying more than the math). It fixes v1.2's panic sell (GET OUT the
-instant spot crossed the target even when the average was locked), the 2-s-short settlement window, the PM line
-plotted offset from the target, stale typed inputs surviving a reload, and the 300-char HUD rows (now wrapped, 7
-rows + tech behind a switch). The HTML cockpit still runs the v1.2 logic and needs the same port.
-`scripts/pm15_relay_worker.js` is the Cloudflare
-Worker that forwards the two read-only gateway endpoints with CORS for the page.
+Live cockpit: `research/pm15_copilot.html` **v2.0** (open in a browser on the iPad; also published as a claude.ai artifact) — one
+Polymarket US 15-min BTC round at a time. What settles the market was verified on the recorder's own data (2026-10-31):
+the final price equals the mean of the 60 one-second CF Benchmarks index prints with timestamps in [T−60, T) to $0.005
+(the v1 model's [T−62, T−2) window was off by up to $7.5), and the exchange's public `/v1/asset-prices/history` 1-s series
+*is* that 60-print trailing average — its value at T−1 is the settlement, ~1 s after the bell (the API's `settlementPrice`
+lands 20 s to several minutes later). The cockpit therefore runs two feeds: Coinbase spot (WebSocket, leads the index by
+~1 s: the early warning and every "if BTC holds here" number) and the index series through the relay (the exact PM line,
+the exact final price and next target, and a live basis offset index − Coinbase refreshed every second, median ± MAD).
+The brain: a red **kill line** (the level BTC must *average* for the rest of the window to flip the result; cushion =
+spot → kill line), a **lookahead** (where the PM line reads in 30 s if BTC holds, 32 of those 60 s already known, plus
+BTC's last-10-s / 30-s moves), **LOCKED** (cushion beats the biggest move seen for the time left × 1.5 margin + target
+error + basis slack — the only 100% on the page), and in a position a one-word verdict **LOCKED / HOLD / SELL / SELL
+NOW**: SELL when the fat-tail-adjusted win chance drops under the floor, when a move bigger than noise would reach the
+kill line inside the warning window plus your sell latency, or when the live bid pays more than holding is worth; a thin
+cushion in the last two minutes is a warning with the exact bid above which selling beats holding, not a blanket sell.
+The win chance is the Gaussian settlement model capped by the empirical ladder of one-minute adverse moves (5 days of
+Coinbase 1-min bars), with volatility floored at 60% of the 5-day typical minute. It keeps a **lock record** on the device
+(every LOCKED call judged against the real settlement; series settlements cross-checked against the API), voice and
+sound alerts, a sell-latency setting, a feed watchdog, and `scripts/pm15_copilot_selftest.js` (a headless DOM-stub run
+of the whole pipeline across four synthetic rounds). The paper bot buys the locked side and sells on SELL.
+`research/pm15_brain.pine` is the TradingView version of the same brain (kill line, lookahead, LOCKED/HOLD/SELL; it
+cannot read the index series, so there the target is typed or estimated and the basis is a setting).
+`scripts/pm15_relay_worker.js` is the Cloudflare Worker that forwards the three read-only gateway endpoints with CORS for
+the page — redeploy it for v2.0, which needs `/v1/asset-prices/history` (query passthrough, ~30–40k requests/day around
+the clock; the free tier allows 100k).
 Companion chart tool: `research/velocity_reach_vs_target.pine` (TradingView — projects BTC's velocity /
 acceleration forward, draws a vertical reach post with a 1m/2m/3m… time ruler up through the target and
 marks the tick where the target is hit, in whichever direction the target lies; the target defaults to the round's price-to-beat estimated the

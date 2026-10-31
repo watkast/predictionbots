@@ -4,7 +4,7 @@
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@600;700;800&family=IBM+Plex+Sans:wght@400;500;600&family=IBM+Plex+Mono:wght@500;600&display=swap">
 <style>
 /* Layout: a dark cockpit for one 15-minute market. Header band = the market itself; the DO NOW card
-   sits above everything; chart left, dictation/positions right on wide screens, stacked on a phone. */
+   sits above everything beside the KILL LINE card; chart left, feed/positions right on wide screens, stacked on a phone. */
 :root {
   --bg: #0a0d14;          /* near-black, blue bias (PM's own ground) */
   --surface: #121723;
@@ -15,6 +15,7 @@
   --spot: #9b8cff;        /* Coinbase spot: purple-blue */
   --pm: #62ccff;          /* what Polymarket shows: light blue */
   --target: #ffb020;      /* the price-to-beat: bright yellow-orange, the brightest thing on the page */
+  --kill: #ff4b5c;        /* the kill line: red */
   --post: #b57cff;        /* the ruler post: glowing purple */
   --good: #28d978;
   --warn: #ff8a1f;
@@ -65,9 +66,9 @@ input, select { background: var(--bg); border: 1px solid var(--line); border-rad
 .chip i { width: 7px; height: 7px; border-radius: 50%; background: var(--muted); display: inline-block; }
 .chip.ok i { background: var(--good); } .chip.warn i { background: var(--warn); } .chip.bad i { background: var(--bad); }
 
-/* ===== DO NOW ===== */
+/* ===== DO NOW / KILL LINE ===== */
 .donow { display: grid; grid-template-columns: 1.6fr 1fr; gap: 12px; }
-.do { border-radius: 14px; border: 2px solid var(--line); padding: 14px 16px; background: var(--surface); display: grid; gap: 6px; min-width: 0; }
+.do { border-radius: 14px; border: 2px solid var(--line); padding: 14px 16px; background: var(--surface); display: grid; gap: 6px; min-width: 0; align-content: start; }
 .do .label { font: 700 13px/1 var(--font-display); letter-spacing: .14em; }
 .do .head { font: 800 clamp(30px, 5.2vw, 58px)/1 var(--font-display); letter-spacing: .01em; text-wrap: balance; }
 .do .sub { font-size: 15px; color: var(--fg); }
@@ -86,11 +87,18 @@ input, select { background: var(--bg); border: 1px solid var(--line); border-rad
 .do.safe .head, .do.safe .label { color: var(--good); }
 .do.caution { border-color: #ffe14d; background: linear-gradient(180deg, #2a2510, #1d1a10); }
 .do.caution .head, .do.caution .label { color: #ffe14d; }
-.do.next .head { font-size: clamp(22px, 3.4vw, 34px); color: var(--fg); }
+.do.next .head { font-size: clamp(24px, 3.6vw, 38px); color: var(--fg); }
 .do.next .label { color: var(--muted); }
+.do.next .sub { font-size: 13.5px; }
+.do.next .time { font-size: clamp(15px, 2vw, 19px); }
+.do.next.k-lock { border-color: var(--good); } .do.next.k-lock .head { color: var(--good); }
+.do.next.k-thin { border-color: var(--warn); } .do.next.k-thin .head { color: var(--warn); }
+.do.next.k-gone { border-color: var(--bad); } .do.next.k-gone .head { color: var(--bad); }
 @keyframes pulse { 0%,100% { box-shadow: 0 0 0 0 #28d97855; } 50% { box-shadow: 0 0 0 10px #28d97800; } }
+@keyframes pulse-red { 0%,100% { box-shadow: 0 0 0 0 #ff4b5c66; } 50% { box-shadow: 0 0 0 12px #ff4b5c00; } }
 .do.lock { animation: pulse 1.4s ease-out infinite; }
-@media (prefers-reduced-motion: reduce) { .do.lock { animation: none; } }
+.do.sell { animation: pulse-red 0.9s ease-out infinite; }
+@media (prefers-reduced-motion: reduce) { .do.lock, .do.sell { animation: none; } }
 
 /* ===== Main grid ===== */
 .main { display: grid; grid-template-columns: minmax(0, 1.5fr) minmax(300px, 1fr); gap: 12px; align-items: start; }
@@ -98,7 +106,7 @@ input, select { background: var(--bg); border: 1px solid var(--line); border-rad
 .chart-top { display: flex; flex-wrap: wrap; gap: 8px 14px; align-items: baseline; justify-content: space-between; padding: 0 4px 6px; }
 .legend { display: flex; flex-wrap: wrap; gap: 10px; font-size: 12px; color: var(--muted); }
 .legend span::before { content: ""; display: inline-block; width: 18px; height: 3px; border-radius: 2px; margin-right: 6px; vertical-align: middle; background: currentColor; }
-.legend .l-spot { color: var(--spot); } .legend .l-pm { color: var(--pm); } .legend .l-target { color: var(--target); } .legend .l-post { color: var(--post); }
+.legend .l-spot { color: var(--spot); } .legend .l-pm { color: var(--pm); } .legend .l-target { color: var(--target); } .legend .l-kill { color: var(--kill); } .legend .l-post { color: var(--post); }
 .legend .l-target::before { height: 0; border-top: 3px dashed currentColor; }
 .canvas-box { position: relative; width: 100%; aspect-ratio: 16 / 9; max-height: 60vh; min-height: 300px; }
 canvas { position: absolute; inset: 0; width: 100%; height: 100%; display: block; border-radius: 8px; }
@@ -160,6 +168,7 @@ td.n, th.n { text-align: right; font-family: var(--font-mono); font-variant-nume
 .btn-primary { background: var(--pm); color: #06131c; border-color: transparent; font-weight: 600; }
 .btn-danger { background: #3e1a20; color: var(--bad); }
 .hint { font-size: 12px; color: var(--muted); }
+.warnline { font-size: 12px; color: var(--warn); padding: 6px 10px; border-radius: 8px; background: #2a1d0f; border-left: 3px solid var(--warn); }
 
 /* next / past */
 .next .v { font: 600 20px/1.1 var(--font-mono); font-variant-numeric: tabular-nums; color: var(--target); }
@@ -168,12 +177,17 @@ td.n, th.n { text-align: right; font-family: var(--font-mono); font-variant-nume
 .pill b { font: 700 16px/1 var(--font-display); }
 .pill.up b { color: var(--good); } .pill.down b { color: var(--bad); }
 .pill.locked { border-color: var(--good); }
+.pill.failed { border-color: var(--bad); background: #2c1216; }
+.lockrec { font-size: 13px; margin-bottom: 8px; }
+.lockrec b { font-family: var(--font-mono); }
+.lockrec.bad { color: var(--bad); }
 
 details.settings { border: 1px solid var(--line); border-radius: 12px; padding: 8px 14px; background: var(--surface); }
 details.settings summary { cursor: pointer; font: 700 15px/1.4 var(--font-display); letter-spacing: .06em; text-transform: uppercase; color: var(--muted); }
 .settings .grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(170px, 1fr)); gap: 10px; margin-top: 10px; }
 .settings label { display: grid; gap: 3px; font-size: 11px; color: var(--muted); }
 .settings .wide { grid-column: 1 / -1; }
+.settings h4 { grid-column: 1 / -1; margin: 6px 0 -4px; font: 700 12px/1 var(--font-display); letter-spacing: .1em; text-transform: uppercase; color: var(--muted); }
 .toast { position: fixed; left: 50%; bottom: calc(16px + env(safe-area-inset-bottom, 0px)); transform: translateX(-50%); background: var(--surface-2); border: 1px solid var(--line); padding: 8px 14px; border-radius: 10px; font-size: 13px; z-index: 20; }
 
 @media (max-width: 860px) {
@@ -198,21 +212,23 @@ details.settings summary { cursor: pointer; font: 700 15px/1.4 var(--font-displa
     </div>
     <div class="mkt-stats">
       <div class="stat"><div class="label">Target · price to beat</div><div class="v target num" id="h-target">—</div><small id="h-target-src">waiting for data</small></div>
-      <div class="stat"><div class="label">Polymarket shows (60-s average)</div><div class="v pm num" id="h-pm">—</div><small id="h-pm-diff">—</small></div>
-      <div class="stat"><div class="label">Coinbase spot (what the market trades on)</div><div class="v spot num" id="h-spot">—</div><small id="h-spot-diff">—</small></div>
-      <div class="stat"><div class="label">For now · settles UP if PM's final ≥ target</div><div class="v num" id="h-lead">—</div><small id="h-lead-p">—</small></div>
+      <div class="stat"><div class="label">Polymarket shows (60-s index average)</div><div class="v pm num" id="h-pm">—</div><small id="h-pm-diff">—</small></div>
+      <div class="stat"><div class="label">Coinbase spot (leads the index by ~1 s)</div><div class="v spot num" id="h-spot">—</div><small id="h-spot-diff">—</small></div>
+      <div class="stat"><div class="label">For now · settles UP if the final average ≥ target</div><div class="v num" id="h-lead">—</div><small id="h-lead-p">—</small></div>
     </div>
     <div class="chips">
       <span class="chip" id="chip-cb"><i></i>Coinbase: connecting</span>
       <span class="chip" id="chip-pm"><i></i>PM API: not tried</span>
-      <span class="chip" id="chip-off"><i></i>Basis offset: unknown</span>
+      <span class="chip" id="chip-series"><i></i>PM index series: not tried</span>
+      <span class="chip" id="chip-off"><i></i>Basis: unknown</span>
       <span class="chip" id="chip-vol"><i></i>Vol: —</span>
-      <button id="btn-sound" title="Beep when a sure thing appears">🔇 Sound off</button>
+      <button id="btn-sound" title="Beep on LOCKED / SURE THING / SELL">🔇 Sound off</button>
+      <button id="btn-voice" title="Say the verdict out loud when it changes">🗣 Voice off</button>
       <button id="btn-wake" title="Keep the screen on">Keep screen on</button>
     </div>
   </header>
 
-  <!-- ===== DO NOW / NEXT ===== -->
+  <!-- ===== DO NOW / KILL LINE ===== -->
   <section class="donow">
     <div class="do wait" id="do">
       <div class="label" id="do-label">DO NOW</div>
@@ -221,12 +237,13 @@ details.settings summary { cursor: pointer; font: 700 15px/1.4 var(--font-displa
       <div class="time" id="do-time"></div>
     </div>
     <div class="do next" id="nx">
-      <div class="label">NEXT</div>
+      <div class="label" id="nx-label">KILL LINE</div>
       <div class="head" id="nx-head">—</div>
       <div class="sub" id="nx-sub"></div>
       <div class="time" id="nx-time"></div>
     </div>
   </section>
+  <div class="warnline" id="warn" hidden></div>
 
   <main class="main">
     <!-- ===== Chart ===== -->
@@ -234,9 +251,10 @@ details.settings summary { cursor: pointer; font: 700 15px/1.4 var(--font-displa
       <div class="chart-top">
         <div class="legend">
           <span class="l-target">Target (price to beat)</span>
+          <span class="l-kill">Kill line (what BTC must average to flip it)</span>
           <span class="l-spot">Coinbase spot</span>
-          <span class="l-pm">Polymarket shows</span>
-          <span class="l-post">Post: minutes to the target at BTC's record pace and at this round's avg speed · 1m ticks at current pace</span>
+          <span class="l-pm">Polymarket shows · dotted stub = where it reads in 30 s</span>
+          <span class="l-post">Post: minutes to the target at record pace · 1m ticks at current pace</span>
         </div>
         <div class="hint">Shaded band on the right = the part of the settlement average already in the books.</div>
       </div>
@@ -257,7 +275,7 @@ details.settings summary { cursor: pointer; font: 700 15px/1.4 var(--font-displa
       <section class="card">
         <h3>Script's own bets (paper)</h3>
         <div class="paper">
-          <div class="cell" id="p-cell"><div class="big" id="p-status">Watching the round</div><div class="small" id="p-note">Buys the sure thing (record pace can't flip it) with the stake in Settings; sells on GET OUT or a flip.</div></div>
+          <div class="cell" id="p-cell"><div class="big" id="p-status">Watching the round</div><div class="small" id="p-note">Buys the sure thing (record pace can't flip it) with the stake in Settings; sells on SELL.</div></div>
           <div class="cell"><div class="kv">
             <span class="k">Position</span><span class="n" id="p-side">none</span>
             <span class="k">Shares</span><span class="n" id="p-shares">0</span>
@@ -285,7 +303,7 @@ details.settings summary { cursor: pointer; font: 700 15px/1.4 var(--font-displa
           <thead><tr><th>Play</th><th class="n">Win</th><th class="n">Net if right</th><th>Safety</th></tr></thead>
           <tbody id="plays"><tr><td colspan="4" class="hint">Waiting for prices.</td></tr></tbody>
         </table></div>
-        <div class="hint" id="plays-note">Win = the math (settlement-average model), capped at 99.5% — it is never 100% unless the play is a SURE THING (even a record move can't flip it). Net = per $1 contract after Polymarket's taker fee. Grades A+ ≥ 99.5% · A ≥ 99% · B ≥ 97% · C ≥ 90% · D below, all "by the math".</div>
+        <div class="hint" id="plays-note">Win = the math (settlement-average model), capped at 99.5% — it is never 100% unless the play is LOCKED (even a record move can't flip it). Net = per $1 contract after Polymarket's taker fee. Grades A+ ≥ 99.5% · A ≥ 99% · B ≥ 97% · C ≥ 90% · D below, all "by the math".</div>
       </section>
 
       <!-- my position -->
@@ -301,7 +319,8 @@ details.settings summary { cursor: pointer; font: 700 15px/1.4 var(--font-displa
         <div class="kv" style="margin-top:8px">
           <span class="k">Holding</span><span class="n" id="my-hold">nothing</span>
           <span class="k">Cost</span><span class="n" id="my-cost">—</span>
-          <span class="k">Current (model · PM bid)</span><span class="n" id="my-worth">—</span>
+          <span class="k">Worth (model · bid)</span><span class="n" id="my-worth">—</span>
+          <span class="k">Sell now keeps</span><span class="n" id="my-sell">—</span>
           <span class="k">To win</span><span class="n" id="my-win">—</span>
         </div>
       </section>
@@ -319,36 +338,49 @@ details.settings summary { cursor: pointer; font: 700 15px/1.4 var(--font-displa
 
       <!-- past -->
       <section class="card">
-        <h3>Past rounds (this session)</h3>
+        <h3>Past rounds (this device)</h3>
+        <div class="lockrec" id="lockrec">Lock record: no LOCKED calls settled yet.</div>
         <div class="past" id="past"><span class="hint">None yet.</span></div>
       </section>
     </aside>
   </main>
 
   <details class="settings" id="settings">
-    <summary>Settings · target / quotes / relay</summary>
+    <summary>Settings · target / quotes / relay / rules</summary>
     <div class="grid">
-      <label>Target from your PM screen ($)<input id="s-target" type="number" inputmode="decimal" step="0.01" placeholder="79566.79"></label>
+      <h4>This round (cleared at the bell)</h4>
+      <label>Target from your PM screen ($) — only needed when the API and the index series are both off<input id="s-target" type="number" inputmode="decimal" step="0.01" placeholder="79566.79"></label>
       <label>Favorite's Ask on PM (¢, 0 = unknown)<input id="s-ask" type="number" inputmode="decimal" min="0" max="100" step="1" value="0"></label>
       <label>Favorite's Bid on PM (¢, 0 = unknown)<input id="s-bid" type="number" inputmode="decimal" min="0" max="100" step="1" value="0"></label>
-      <label>Script stake per lock ($)<input id="s-stake" type="number" inputmode="decimal" min="1" step="1" value="20"></label>
-      <label>Math lock = model win probability ≥ (%) · only used when the paper bot is set to "math lock"<input id="s-lockp" type="number" inputmode="decimal" min="90" max="99.99" step="0.1" value="99.5"></label>
+      <h4>Hold / sell</h4>
+      <label>Sell latency: seconds from reading SELL to being filled on the phone<input id="s-latency" type="number" inputmode="decimal" min="0" max="60" step="1" value="8"></label>
+      <label>SELL when the model win chance drops under (%)<input id="s-holdmin" type="number" inputmode="decimal" min="50" max="95" step="1" value="75"></label>
+      <label>SELL when BTC's last-10-s pace would reach the kill line within (s, after latency)<input id="s-etawarn" type="number" inputmode="decimal" min="5" max="120" step="5" value="30"></label>
+      <label>Last 2 min: SELL if the cushion is under this percentile of 1-min adverse moves (5 days)<input id="s-badpct" type="number" inputmode="decimal" min="90" max="100" step="0.5" value="99"></label>
+      <label>Lookahead for the PM line (s)<input id="s-look" type="number" inputmode="decimal" min="10" max="60" step="5" value="30"></label>
+      <h4>LOCKED</h4>
+      <label>Record margin (× the biggest move seen in the loaded history)<input id="s-recmargin" type="number" inputmode="decimal" min="1" max="3" step="0.1" value="1.5"></label>
+      <label>Index-vs-Coinbase slack ($) the cushion must also beat<input id="s-slack" type="number" inputmode="decimal" min="0" max="50" step="1" value="3"></label>
       <label>Max price to pay for a sure thing (¢)<input id="s-maxask" type="number" inputmode="decimal" min="50" max="99" step="1" value="97"></label>
-      <label>Momentum drift weight (0–1)<input id="s-drift" type="number" inputmode="decimal" min="0" max="1" step="0.1" value="0.5"></label>
+      <label>No new buys in the last (s)<input id="s-killsecs" type="number" inputmode="decimal" min="0" max="300" step="5" value="45"></label>
+      <h4>Entry rules · model</h4>
+      <label>EF rule: favorite ask at least (¢) at 13:00 / 12:00 left<input id="s-eflo" type="number" inputmode="decimal" min="50" max="98" step="1" value="80"></label>
+      <label>EF rule: and at most (¢)<input id="s-efhi" type="number" inputmode="decimal" min="51" max="99" step="1" value="94"></label>
+      <label>Momentum drift weight (0–1; 0 recommended — BTC's next 30 s have no predictable direction)<input id="s-drift" type="number" inputmode="decimal" min="0" max="1" step="0.1" value="0"></label>
       <label>Taker fee coefficient<input id="s-fee" type="number" inputmode="decimal" min="0" max="0.2" step="0.0005" value="0.0695"></label>
-      <label class="wide">PM API relay URL (leave empty to try the gateway directly)<input id="s-relay" type="url" placeholder="https://your-worker.workers.dev"></label>
-      <label>Basis offset PM − Coinbase ($, auto when the target is known)<input id="s-offset" type="number" inputmode="decimal" step="0.01" placeholder="auto"></label>
-      <label>Record margin (× the fastest move seen, 1 = as seen)<input id="s-recmargin" type="number" inputmode="decimal" min="0.5" max="3" step="0.1" value="1"></label>
       <label>MOST LIKELY when touch odds ≥ (%)<input id="s-reach-green" type="number" inputmode="decimal" min="1" max="99" step="1" value="50"></label>
       <label>EASILY when touch odds ≥ (%) · below = UNLIKELY<input id="s-reach-yellow" type="number" inputmode="decimal" min="1" max="99" step="1" value="10"></label>
+      <h4>Paper bot</h4>
+      <label>Script stake per lock ($)<input id="s-stake" type="number" inputmode="decimal" min="1" step="1" value="20"></label>
       <label>Paper bot buys on<select id="s-paperon"><option value="sure">Sure thing (record pace can't flip it)</option><option value="math">Math lock (model %, not a sure thing)</option><option value="edge">Best edge (edge after fee ≥ N¢, scare ≤ M%)</option></select></label>
+      <label>Math lock = model win probability ≥ (%)<input id="s-lockp" type="number" inputmode="decimal" min="90" max="99.99" step="0.1" value="99.5"></label>
       <label>Edge mode: edge after fee at least (¢)<input id="s-edgemin" type="number" inputmode="decimal" min="1" max="30" step="1" value="6"></label>
-      <label>Edge mode: scare (display-flip chance) at most (%)<input id="s-edgescare" type="number" inputmode="decimal" min="1" max="50" step="1" value="15"></label>
-      <label>GET OUT when the flip chance reaches (%)<input id="s-getout" type="number" inputmode="decimal" min="5" max="60" step="1" value="25"></label>
-      <label>GET OUT when BTC would reach the target within (s) at its pace<input id="s-cross" type="number" inputmode="decimal" min="15" max="300" step="5" value="90"></label>
-      <label>GET OUT when BTC is within × one routine minute's move (outside the last minute)<input id="s-cushion" type="number" inputmode="decimal" min="0.5" max="5" step="0.5" value="2"></label>
-      <div class="wide hint" id="s-note">Everything saves on this device. PM's price is modeled as the 60-second average of Coinbase spot, 2 s delayed, plus a basis offset that recalibrates each round from the exact target (API or the number you type). The post label = minutes BTC would need to reach the target at the fastest it has moved in that direction (record up/down moves over 1–15 min from Coinbase 1-min, 5-min and 15-min history, rescanned every 6 h and bumped live); red = NOT POSSIBLE in the time left even at record pace.</div>
-      <div class="wide row"><button id="s-save" class="btn-primary">Save</button><button id="s-reset-hist">Clear session history</button></div>
+      <label>Edge mode: button scare at most (%)<input id="s-edgescare" type="number" inputmode="decimal" min="1" max="50" step="1" value="15"></label>
+      <h4>Data</h4>
+      <label class="wide">PM API relay URL (the Cloudflare worker in scripts/pm15_relay_worker.js; it must forward /v1/asset-prices/history for the exact index series)<input id="s-relay" type="url" placeholder="https://your-worker.workers.dev"></label>
+      <label>Basis override: index − Coinbase ($, blank = live from the index series)<input id="s-offset" type="number" inputmode="decimal" step="0.01" placeholder="auto"></label>
+      <div class="wide hint" id="s-note">Everything saves on this device. Settlement = the average of the 60 one-second index prints in the last minute before the bell (Polymarket US rules; verified on recorded settlements to $0.005). With the relay the page reads that index series straight from the exchange: the PM line, the final price, the next target and the basis vs Coinbase are exact. Without it they are modeled from Coinbase plus a basis offset. The record pace comes from Coinbase 1-min (5 d), 5-min (30 d) and 15-min (120 d) history, rescanned every 6 h and bumped live; "bad minute" = the chosen percentile of 1-minute adverse moves over those 5 days.</div>
+      <div class="wide row"><button id="s-save" class="btn-primary">Save</button><button id="s-reset-hist">Clear history &amp; lock record</button></div>
     </div>
   </details>
 </div>
@@ -357,31 +389,43 @@ details.settings summary { cursor: pointer; font: 700 15px/1.4 var(--font-displa
 <script>
 'use strict';
 /* =====================================================================================
-   PM15 Copilot — one Polymarket US 15-minute BTC round at a time.
-   Model (fitted on screen recordings, mean abs error $0.34):
-     PM "Current" = offset + mean(Coinbase spot over the last 60 s), ~2 s delayed.
-     Final price   = that average at the bell.  Price-to-beat = that average at the open.
-   Language rules:
-     • Nothing is "100%" or a SURE THING unless it is mechanically impossible to flip: even if BTC moved at its
-       record pace (fastest ever seen, up or down) for every second left, the settlement average could not get
-       back across the target. That is the only time the page says SAFE.
-     • UP / DOWN are "for now" — never "winning" or "ahead": the button price falls to the floor with no delay
-       the moment BTC crosses.
-     • In a position: SAFE → PROCEED WITH CAUTION (fastest possible flip, chance before the bell in plain words,
-       what triggers GET OUT) → GET OUT (the flip is building) → SELL NOW (it has flipped).
+   PM15 Copilot v2.0 — one Polymarket US 15-minute BTC round at a time.
+
+   What settles the market (rules + verified on recorded settlements to $0.005):
+     Final price = mean of the 60 one-second CF Benchmarks index prints with timestamps in [T-60, T).
+     Price-to-beat = last round's final price. The exchange's public /v1/asset-prices/history (1-s bucket)
+     is that 60-print trailing average itself: its value at T-1 IS the settlement.
+   Two feeds, two jobs:
+     • Coinbase spot (WebSocket, sub-second) leads the index by about a second: it is the early warning and
+       the basis for every "what if BTC holds here" number.
+     • The index series (through the relay) is the ground truth: the PM line, the final price, the next target,
+       and a live basis offset (index − Coinbase) refreshed every second.
+   The brain:
+     • KILL LINE = the level BTC must AVERAGE for the rest of the settlement window to flip the result.
+       Cushion = spot → kill line. It runs away from spot as the window fills.
+     • LOCKED = cushion beats the biggest move ever seen for the time left (× margin) + target error + basis
+       slack. The only time the page says 100%.
+     • In a position: LOCKED (hold, ignore the button) · HOLD · SELL (win chance under the floor, BTC's last-10-s
+       pace reaching the kill line inside the warning window after your sell latency, cushion thinner than a bad
+       minute in the last 2 min, or the bid paying more than the math) · SELL NOW (the settlement is already
+       projected against you).
+     • UP / DOWN are "for now". Nothing predicts BTC's direction 30 s out; the lead comes from the mechanics of
+       the average, so the decision point is 2:00–1:00 left, not 0:30.
    ===================================================================================== */
 const $ = id => document.getElementById(id);
-const ROUND = 900, WIN = 60, DELAY = 2;
+const ROUND = 900, WIN = 60;
 const SLUG = ws => { const d = new Date(ws * 1000); const p = n => String(n).padStart(2, '0');
   return `cpc-btc-updown-15m-${d.getUTCFullYear()}-${p(d.getUTCMonth()+1)}-${p(d.getUTCDate())}-${p(d.getUTCHours())}${p(d.getUTCMinutes())}z`; };
 
 // ---------- settings (per device) ----------
-const DEF = { stake: 20, lockP: 99.5, maxAsk: 97, drift: 0.5, fee: 0.0695, relay: '', offset: null, sound: false, recMargin: 1, reachGreen: 50, reachYellow: 10, paperOn: 'sure', getOutOdds: 25, crossSecs: 90, cushionX: 2, edgeMin: 6, edgeScare: 15 };
+const DEF = { stake: 20, lockP: 99.5, maxAsk: 97, drift: 0, fee: 0.0695, relay: '', offset: null, sound: false, voice: false, recMargin: 1.5, reachGreen: 50, reachYellow: 10, paperOn: 'sure', edgeMin: 6, edgeScare: 15,
+  latency: 8, holdMinP: 75, etaWarnS: 30, badPct: 99, lookS: 30, slack: 3, killSecs: 45, efLo: 80, efHi: 94 };
 let S = Object.assign({}, DEF);
 try { Object.assign(S, JSON.parse(localStorage.getItem('pm15.settings') || '{}')); } catch (e) {}
+if (S.recMargin < 1) S.recMargin = DEF.recMargin;      // v1 allowed 0.5; a margin under 1 is not a margin
 const saveS = () => { try { localStorage.setItem('pm15.settings', JSON.stringify(S)); } catch (e) {} };
 
-// ---------- price store: per-second last price, plus raw ticks for the chart ----------
+// ---------- price store: Coinbase per-second last price ----------
 const secs = new Map();          // second (int) -> last spot price in that second
 let firstSec = Infinity, lastTickMs = 0, spotNow = NaN;
 function addPrice(ms, price) {
@@ -395,7 +439,7 @@ function priceAt(sec) {          // last known price at or before `sec` (carry-f
   for (let k = 0; k < 600; k++) { const v = secs.get(sec - k); if (v !== undefined) return v; }
   return NaN;
 }
-function avgRange(from, to, assumeAfter = Infinity, assumeVal = NaN) {   // mean over [from, to) seconds
+function avgRange(from, to, assumeAfter = Infinity, assumeVal = NaN) {   // mean over [from, to) integer seconds, carry-forward
   let sum = 0, n = 0, last = priceAt(Math.floor(from));
   for (let s = Math.floor(from); s < to; s++) {
     let v = s >= assumeAfter ? assumeVal : secs.get(s);
@@ -404,15 +448,16 @@ function avgRange(from, to, assumeAfter = Infinity, assumeVal = NaN) {   // mean
   }
   return n ? sum / n : NaN;
 }
-function velocity(nowS) {        // $/s over the last 15 s
-  const a = priceAt(nowS - 15), b = priceAt(nowS);
-  return (a > 0 && b > 0) ? (b - a) / 15 : 0;
+function coverage(from, to) {    // share of integer seconds in [from, to) that have a real Coinbase print
+  let n = 0, k = 0; for (let s = Math.floor(from); s < to; s++) { k++; if (secs.get(s) > 0) n++; } return k ? n / k : 0;
 }
+const moveOver = (sec, k) => { const a = priceAt(sec - k), b = priceAt(sec); return (a > 0 && b > 0) ? b - a : NaN; };   // $ over the last k seconds
+function velocity(nowS) { const m = moveOver(nowS, 15); return Number.isFinite(m) ? m / 15 : 0; }   // $/s over the last 15 s (post only)
 let sigmaCache = { at: 0, v: 6 };
-function sigma(nowS) {           // $ per sqrt(second), robust (MAD) over the last 10 minutes, blended with the plain std
+function sigma(nowS) {           // $ per sqrt(second): robust (MAD) over the last 10 minutes, blended with the plain std; gaps scaled by sqrt(dt)
   if (nowS - sigmaCache.at < 5) return sigmaCache.v;
-  const r = []; let prev = NaN;
-  for (let s = nowS - 600; s <= nowS; s++) { const v = secs.get(s); if (v > 0) { if (prev > 0) r.push(Math.log(v / prev)); prev = v; } }
+  const r = []; let prev = NaN, prevS = 0;
+  for (let s = nowS - 600; s <= nowS; s++) { const v = secs.get(s); if (v > 0) { if (prev > 0) r.push(Math.log(v / prev) / Math.sqrt(Math.max(1, s - prevS))); prev = v; prevS = s; } }
   let out = sigmaCache.v;
   if (r.length > 60) {
     const sorted = r.map(Math.abs).sort((a, b) => a - b); const mad = sorted[Math.floor(sorted.length / 2)] * 1.4826;
@@ -423,21 +468,30 @@ function sigma(nowS) {           // $ per sqrt(second), robust (MAD) over the la
 }
 function Phi(x) { const t = 1 / (1 + 0.2316419 * Math.abs(x)); const d = 0.3989422804014327 * Math.exp(-x * x / 2);
   const p = d * t * (0.319381530 + t * (-0.356563782 + t * (1.781477937 + t * (-1.821255978 + t * 1.330274429)))); return x >= 0 ? 1 - p : p; }
+const median = a => { if (!a.length) return NaN; const s = a.slice().sort((x, y) => x - y); const m = s.length >> 1; return s.length % 2 ? s[m] : (s[m - 1] + s[m]) / 2; };
+const quantile = (sorted, q) => sorted.length ? sorted[Math.min(sorted.length - 1, Math.max(0, Math.floor(q * sorted.length)))] : NaN;
+
+// ---------- the index series: PM's own 60-print average, 1 point per second (exact when the relay forwards it) ----------
+const pmA = new Map();           // second -> index average A(t) = mean of the 60 prints in [t-59, t]; A(T-1) = the settlement
+const IDX = { ok: null, at: 0, latest: 0, busy: false, offs: [], note: '', fails: 0 };
+function latestA(maxAge, sec) { for (let t = sec - 1; t >= sec - maxAge; t--) { const v = pmA.get(t); if (v > 0) return { t, v }; } return null; }
 
 // ---------- record pace: the most BTC has ever moved in 1…15 minutes, up and down separately ----------
-// Kept as a fraction of price (index = minutes, [0] = 0) so old history scales to today's price. Filled from a
-// Coinbase candle scan (1-min for the last 5 days → every horizon; 5-min for 30 days → 5/10/15; 15-min for 120
-// days → 15), bumped live from the per-second feed, cached on the device and rescanned every 6 hours.
-const REC = { up: new Array(16).fill(0), dn: new Array(16).fill(0), at: 0, ready: false, spans: { m1: 0, m5: 0, m15: 0 }, scanning: false, progress: 0, note: '' };
-try { const j = JSON.parse(localStorage.getItem('pm15.records') || 'null'); if (j && Array.isArray(j.up) && j.up.length === 16) { Object.assign(REC, { up: j.up, dn: j.dn, at: j.at || 0, spans: j.spans || REC.spans }); REC.ready = j.up[15] > 0; } } catch (e) {}
-const saveRec = () => { try { localStorage.setItem('pm15.records', JSON.stringify({ up: REC.up, dn: REC.dn, at: REC.at, spans: REC.spans })); } catch (e) {} };
+// Fractions of price (index = minutes, [0] = 0) so old history scales to today's price. From a Coinbase candle scan
+// (1-min for the last 5 days → every horizon + the "bad minute" percentiles; 5-min for 30 days → 5/10/15; 15-min for
+// 120 days → 15), bumped live from the per-second feed, cached on the device and rescanned every 6 hours.
+const REC = { up: new Array(16).fill(0), dn: new Array(16).fill(0), at: 0, ready: false, spans: { m1: 0, m5: 0, m15: 0 }, scanning: false, progress: 0, note: '', bad: null };
+try { const j = JSON.parse(localStorage.getItem('pm15.records') || 'null'); if (j && Array.isArray(j.up) && j.up.length === 16) { Object.assign(REC, { up: j.up, dn: j.dn, at: j.at || 0, spans: j.spans || REC.spans, bad: j.bad || null }); REC.ready = j.up[15] > 0; } } catch (e) {}
+const saveRec = () => { try { localStorage.setItem('pm15.records', JSON.stringify({ up: REC.up, dn: REC.dn, at: REC.at, spans: REC.spans, bad: REC.bad })); } catch (e) {} };
 function recMonotone() { for (let h = 1; h <= 15; h++) { REC.up[h] = Math.max(REC.up[h], REC.up[h - 1]); REC.dn[h] = Math.max(REC.dn[h], REC.dn[h - 1]); } REC.ready = REC.up[15] > 0 && REC.dn[15] > 0; }
 function recBump(h, upFrac, dnFrac) { let hit = false; if (upFrac > REC.up[h]) { REC.up[h] = upFrac; hit = true; } if (dnFrac > REC.dn[h]) { REC.dn[h] = dnFrac; hit = true; } return hit; }
-// records from an ascending candle list [t, lo, hi, op, cl] of `barMins`-minute bars, windows of 1…maxBars bars
+// records from an ascending candle list [t, lo, hi, op, cl] of `barMins`-minute bars, windows of 1…maxBars bars;
+// for 1-min bars also the distribution of one-minute adverse moves (the "bad minute")
 function recFromCandles(c, barMins, maxBars) {
   let hit = false;
   const run = new Array(c.length).fill(0);                              // consecutive on-grid bars ending at i
   for (let i = 1; i < c.length; i++) run[i] = c[i][0] - c[i - 1][0] === barMins * 60 ? run[i - 1] + 1 : 0;
+  const ups = [], dns = [];
   for (let w = 1; w <= maxBars; w++) {
     const hMin = w * barMins; if (hMin > 15) break;
     for (let i = w; i < c.length; i++) {
@@ -445,10 +499,29 @@ function recFromCandles(c, barMins, maxBars) {
       const start = c[i - w][4]; if (!(start > 0)) continue;
       let hi = -Infinity, lo = Infinity;
       for (let k = i - w + 1; k <= i; k++) { if (c[k][2] > hi) hi = c[k][2]; if (c[k][1] < lo) lo = c[k][1]; }
-      if (recBump(hMin, (hi - start) / start, (start - lo) / start)) hit = true;
+      const uf = (hi - start) / start, df = (start - lo) / start;
+      if (recBump(hMin, uf, df)) hit = true;
+      if (barMins === 1 && w === 1) { ups.push(uf); dns.push(df); }
     }
   }
+  if (ups.length > 500) { ups.sort((a, b) => a - b); dns.sort((a, b) => a - b);
+    const all = ups.concat(dns).sort((a, b) => a - b);
+    REC.bad = { n: ups.length, at: Date.now(), med: quantile(all, 0.5), up: [0.9, 0.95, 0.99, 0.995, 0.999].map(q => quantile(ups, q)), dn: [0.9, 0.95, 0.99, 0.995, 0.999].map(q => quantile(dns, q)) }; }
   return hit;
+}
+const BADQ = [90, 95, 99, 99.5, 99.9];
+function badFrac(pctWanted, arr) {   // interpolate the stored percentiles
+  if (!arr) return NaN; if (pctWanted <= BADQ[0]) return arr[0]; if (pctWanted >= BADQ[4]) return arr[4];
+  for (let i = 1; i < 5; i++) if (pctWanted <= BADQ[i]) { const f = (pctWanted - BADQ[i - 1]) / (BADQ[i] - BADQ[i - 1]); return arr[i - 1] + (arr[i] - arr[i - 1]) * f; }
+  return arr[4];
+}
+// the empirical chance that a one-minute adverse move exceeds `x` dollars, from the percentile ladder (NaN below the
+// 90th percentile — the Gaussian model is fine for the body; the ladder is for the fat tail the Gaussian misses)
+function tailProb(x, lad) {
+  if (!lad || !(x > 0) || x <= lad[0]) return NaN;
+  const P = [0.10, 0.05, 0.01, 0.005, 0.001];
+  for (let i = 1; i < 5; i++) if (x <= lad[i]) { const f = lad[i] > lad[i - 1] ? (x - lad[i - 1]) / (lad[i] - lad[i - 1]) : 1; return Math.exp(Math.log(P[i - 1]) + (Math.log(P[i]) - Math.log(P[i - 1])) * f); }
+  return Math.max(1e-5, 0.001 * Math.pow(lad[4] / x, 2));          // beyond the biggest tabulated move: a power-law guess, never zero
 }
 async function fetchCandles(gran, startS, endS) {
   const u = 'https://api.exchange.coinbase.com/products/BTC-USD/candles?granularity=' + gran + '&start=' + new Date(startS * 1000).toISOString() + '&end=' + new Date(endS * 1000).toISOString();
@@ -483,16 +556,17 @@ function liveRecordCheck(sec) {
   }
   if (hit) { recMonotone(); saveRec(); }
 }
-// the record move (in $) over `mins` minutes, interpolated between whole minutes
-// anything under a minute is assumed able to see the whole 1-minute record (flash moves happen in seconds), so SAFE stays honest
+// the record move (in $) over `mins` minutes, interpolated between whole minutes; anything under a minute gets the
+// whole 1-minute record (flash moves happen in seconds), so LOCKED stays honest
 function recAt(mins, rec) { if (mins >= 15) return rec[15]; if (mins <= 0) return 0; if (mins <= 1) return rec[1]; const k = Math.floor(mins); return rec[k] + (rec[k + 1] - rec[k]) * (mins - k); }
-// minutes to the target at record pace + the four-tier verdict against the time left
+// minutes a record-pace move needs to cover `dist` dollars (interpolated); NaN = more than 15 minutes, never seen
+function needMins(dist, rec) { if (dist <= 0) return 0; for (let h = 1; h <= 15; h++) { const a = rec[h - 1], b = rec[h]; if (b >= dist) return (h - 1) + (b > a ? (dist - a) / (b - a) : 0); } return NaN; }
+// minutes to the target at record pace + the four-tier verdict against the time left (the momentum post)
 function reachInfo(E) {
   if (!Number.isFinite(E.target) || !Number.isFinite(E.spot)) return null;
-  const need = (E.target - E.off) - E.spot, dist = Math.abs(need);
-  const rec = (need >= 0 ? REC.up : REC.dn).map(f => f * E.spot * (S.recMargin || 1));
-  let mins = NaN;
-  if (dist <= 0) mins = 0; else for (let h = 1; h <= 15; h++) { const a = rec[h - 1], b = rec[h]; if (b >= dist) { mins = (h - 1) + (b > a ? (dist - a) / (b - a) : 0); break; } }
+  const need = E.tgtChart - E.spot, dist = Math.abs(need);
+  const rec = need >= 0 ? E.recUpT : E.recDnT;
+  const mins = needMins(dist, rec);
   const rMin = E.r / 60, recLeft = recAt(rMin, rec);
   const z = E.r > 0 ? dist / (Math.max(E.sig, 0.5) * Math.sqrt(E.r)) : 99, odds = Math.min(1, 2 * (1 - Phi(z)));
   const tier = !REC.ready ? -1 : (E.r <= 0 || dist > recLeft) ? 0 : odds < (S.reachYellow || 10) / 100 ? 1 : odds < (S.reachGreen || 50) / 100 ? 2 : 3;   // red = more than the record for the time left
@@ -502,21 +576,22 @@ function reachInfo(E) {
   return { need, dist, mins, minsTxt, rMin, recLeft, odds, tier, word, col, text };
 }
 function renderReach(E) {
-  const el = $('reach'); const RI = reachInfo(E);
+  const el = $('reach'); const RI = E.reach;
   if (!RI) { el.innerHTML = '<b class="tx">REACH</b> waiting for the target.'; return; }
   const hist = (REC.spans.m1 ? Math.round(REC.spans.m1) + 'd of 1-min' : 'no 1-min') + ' · ' + (REC.spans.m5 ? Math.round(REC.spans.m5) + 'd of 5-min' : 'no 5-min') + ' · ' + (REC.spans.m15 ? Math.round(REC.spans.m15) + 'd of 15-min' : 'no 15-min') + (REC.scanning ? ' · scanning ' + Math.round(REC.progress * 100) + '%' : REC.at ? ' · scanned ' + Math.max(1, Math.round((Date.now() - REC.at) / 60000)) + ' min ago' : '') + (REC.note ? ' · ' + REC.note : '');
   if (RI.tier < 0) { el.innerHTML = '<b class="tx">REACH</b> record pace not known yet — ' + hist; return; }
-  el.innerHTML = '<b class="t' + RI.tier + '">' + RI.word + '</b> the target is <span class="n">' + fmtS(RI.dist).replace('+', '') + '</span> ' + (RI.need >= 0 ? 'up' : 'down') + ': BTC needs <span class="n">' + RI.minsTxt.replace('<', '&lt;').replace('>', '&gt;') + '</span> at record pace vs <span class="n">' + clock(E.r) + '</span> left · <span class="n">' + avgMinsTxt(E.avgMins).replace('<', '&lt;') + '</span> at this round\'s avg speed of <span class="n">$' + fmt$(E.avgSpeed, 0) + '/min</span> · touch odds <span class="n">' + pct(RI.odds) + '</span> · the most it has moved in that time: <span class="n">' + fmtS(RI.recLeft).replace('+', '') + '</span> · history ' + hist;
+  el.innerHTML = '<b class="t' + RI.tier + '">' + RI.word + '</b> the target is <span class="n">' + fmtS(RI.dist).replace('+', '') + '</span> ' + (RI.need >= 0 ? 'up' : 'down') + ': BTC needs <span class="n">' + RI.minsTxt.replace('<', '&lt;').replace('>', '&gt;') + '</span> at record pace vs <span class="n">' + clock(E.r) + '</span> left · <span class="n">' + avgMinsTxt(E.avgMins).replace('<', '&lt;') + '</span> at this round\'s avg speed of <span class="n">$' + fmt$(E.avgSpeed, 0) + '/min</span> · touch odds <span class="n">' + pct(RI.odds) + '</span> · the most it has moved in that time: <span class="n">' + fmtS(RI.recLeft).replace('+', '') + '</span> (margin ×' + S.recMargin + ') · bad minute (p' + S.badPct + ') <span class="n">' + (Number.isFinite(E.badDn) ? '−$' + fmt$(E.badDn, 0) + ' / +$' + fmt$(E.badUp, 0) : '—') + '</span> · history ' + hist;
 }
 
-// Settlement average S = offset + mean(spot over [T-62, T-2]).  Returns its mean and sd at time `now`.
-function settleDist(now, T, spot, offset, sig, vel, driftW, assumeAfter = Infinity) {
-  const wStart = T - WIN - DELAY, wEnd = T - DELAY, rp = wEnd - now;
-  if (rp <= 0) return { mean: offset + avgRange(wStart, wEnd, assumeAfter, spot), sd: 0, known: 1 };
-  if (rp >= WIN) { const driftH = Math.min(Math.max(rp - WIN / 2, 0), 45); return { mean: offset + spot + driftW * vel * driftH, sd: sig * Math.sqrt(rp - WIN + WIN / 3), known: 0 }; }
-  const knownW = (WIN - rp) / WIN, knownAvg = avgRange(wStart, now, assumeAfter, spot);
-  const futMean = spot + driftW * vel * (rp / 2);
-  return { mean: offset + knownW * knownAvg + (rp / WIN) * futMean, sd: sig * Math.sqrt(rp * rp * rp / 3) / WIN, known: knownW };
+// ---------- settlement model: mean and sd of the final average, given the known prints and a Brownian future ----------
+// Window = the 60 prints in [T-60, T). Known part from Coinbase + basis (or exact from the index series' own history
+// when the window is over), future part = the current spot (momentum credit optional, default 0), sd from Brownian motion.
+function settleDist(E, spot, sig, driftW) {
+  const off = E.off, rp = E.T - E.nowS;
+  if (E.knownN >= WIN || rp <= 0) return { mean: Number.isFinite(E.settleExact) ? E.settleExact : off + avgRange(E.T - WIN, E.T), sd: 0, known: 1 };
+  if (E.knownN <= 0) { const driftH = Math.min(Math.max(rp - WIN / 2, 0), 45); return { mean: off + spot + driftW * E.vel * driftH, sd: sig * Math.sqrt(Math.max(0, rp - WIN) + WIN / 3), known: 0 }; }
+  const rpW = WIN - E.knownN, futMean = spot + driftW * E.vel * (rpW / 2);
+  return { mean: off + (E.knownN * E.knownAvg + rpW * futMean) / WIN, sd: sig * Math.sqrt(rpW * rpW * rpW / 3) / WIN, known: E.knownN / WIN };
 }
 const pUpFrom = (d, target) => d.sd > 0 ? Phi((d.mean - target) / d.sd) : (d.mean >= target ? 1 : 0);
 const fee = (px, coef) => coef * px * (1 - px);
@@ -524,9 +599,9 @@ const gradeOf = p => p >= 0.995 ? ['A+', 'gA', 'math 99.5%+'] : p >= 0.99 ? ['A'
 
 // ---------- formatting ----------
 const fmt$ = (v, d = 2) => Number.isFinite(v) ? v.toLocaleString('en-US', { minimumFractionDigits: d, maximumFractionDigits: d }) : '—';
-const fmtS = v => Number.isFinite(v) ? (v >= 0 ? '+$' : '−$') + fmt$(Math.abs(v)) : '—';
+const fmtS = (v, d = 2) => Number.isFinite(v) ? (v >= 0 ? '+$' : '−$') + fmt$(Math.abs(v), d) : '—';
 const clock = s => { s = Math.max(0, Math.ceil(s)); return Math.floor(s / 60) + ':' + String(s % 60).padStart(2, '0'); };
-const secsTxt = s => s < 60 ? Math.max(0, Math.ceil(s)) + 's' : clock(s);
+const secsTxt = s => s < 60 ? Math.max(0, Math.ceil(s)) + ' s' : clock(s);
 const pct = p => Number.isFinite(p) ? (p * 100).toFixed(p > 0.99 || p < 0.01 ? 2 : 1) + '%' : '—';
 const cents = v => Number.isFinite(v) ? Math.round(v * 100) + '¢' : '—';
 const etFmt = new Intl.DateTimeFormat('en-US', { timeZone: 'America/New_York', hour: 'numeric', minute: '2-digit' });
@@ -534,37 +609,47 @@ const etDay = new Intl.DateTimeFormat('en-US', { timeZone: 'America/New_York', m
 const locFmt = new Intl.DateTimeFormat([], { hour: 'numeric', minute: '2-digit' });
 const winTxt = (T0, f) => f.format(new Date(T0 * 1000)).replace(/ (AM|PM)$/, '') + '–' + f.format(new Date((T0 + ROUND) * 1000));
 function toast(msg) { const t = $('toast'); t.textContent = msg; t.hidden = false; clearTimeout(toast.h); toast.h = setTimeout(() => t.hidden = true, 3500); }
+const chanceWord = p => p >= 0.5 ? 'likely' : p >= 0.25 ? 'a real chance' : p >= 0.10 ? 'possible' : p >= 0.03 ? 'unlikely' : p >= 0.005 ? 'rare' : 'very rare';
+const chanceTxt = p => !Number.isFinite(p) ? 'unknown' : (p < 0.005 ? 'under 1%' : p > 0.995 ? 'over 99%' : Math.round(p * 100) + '%') + ' (' + chanceWord(p) + ')';
+const fastTxt = m => !Number.isFinite(m) ? 'more than 15 min' : m <= 0 ? 'right now' : m < 1 ? Math.ceil(m * 60) + ' s' : m.toFixed(1) + ' min';
+const etaTxt = e => !Number.isFinite(e) ? 'no lock before the bell at this cushion' : e <= 0 ? 'locked now' : 'locks in ~' + secsTxt(e) + ' if BTC holds here';
+const avgMinsTxt = m => !Number.isFinite(m) ? '—' : m > 99 ? '99+ min' : m < 0.1 ? '< 0.1 min' : m.toFixed(1) + ' min';
 
 // ---------- round state ----------
-const R = { T0: 0, T: 0, slug: '', target: NaN, targetSrc: 'none', offset: S.offset, offsetSrc: S.offset == null ? 'none' : 'saved',
-  apiOk: null, book: null, bookAt: 0, lockAt: null, lockAsk: NaN, result: null, settle: NaN, lockBeeped: false, bestEdge: NaN, bestAsk: NaN, bestLeft: NaN };
+const R = { T0: 0, T: 0, slug: '', target: NaN, targetSrc: 'none', targetApi: NaN, offset: S.offset, offsetSrc: S.offset == null ? 'none' : 'override', offsetSd: NaN,
+  apiOk: null, book: null, bookAt: 0, lockAt: null, lockAsk: NaN, lockCall: null, lockBeeped: false, bestEdge: NaN, bestAsk: NaN, bestLeft: NaN, note: '' };
 let history = []; try { history = JSON.parse(localStorage.getItem('pm15.history') || '[]'); } catch (e) {}
+let lockStats = { calls: 0, held: 0, failed: 0, exact: 0, checked: 0 }; try { Object.assign(lockStats, JSON.parse(localStorage.getItem('pm15.lockstats') || '{}')); } catch (e) {}
+const saveLock = () => { try { localStorage.setItem('pm15.lockstats', JSON.stringify(lockStats)); } catch (e) {} };
 let myPos = null; try { myPos = JSON.parse(localStorage.getItem('pm15.mypos') || 'null'); } catch (e) {}
 const paper = { side: null, shares: 0, cost: 0, px: NaN, modelFill: false, state: 'idle', armAt: 0, armPct: 0, sellPlan: null, roundPnl: 0, totalPnl: 0, note: '', boughtT0: 0 };
 try { paper.totalPnl = Number(localStorage.getItem('pm15.paperTotal')) || 0; } catch (e) {}
 
 function startRound(T0) {
-  // close out the previous one
   if (R.T0 && R.T0 !== T0) finishRound();
-  Object.assign(R, { T0, T: T0 + ROUND, slug: SLUG(T0), target: NaN, targetSrc: 'none', book: null, bookAt: 0, lockAt: null, lockAsk: NaN, result: null, settle: NaN, lockBeeped: false, bestEdge: NaN, bestAsk: NaN, bestLeft: NaN });
+  Object.assign(R, { T0, T: T0 + ROUND, slug: SLUG(T0), target: NaN, targetSrc: 'none', targetApi: NaN, book: null, bookAt: 0, lockAt: null, lockAsk: NaN, lockCall: null, lockBeeped: false, bestEdge: NaN, bestAsk: NaN, bestLeft: NaN, note: '' });
   paper.roundPnl = 0; paper.state = 'idle'; paper.note = '';
   if (myPos && myPos.T0 !== T0) { myPos = null; try { localStorage.removeItem('pm15.mypos'); } catch (e) {} }
-  // the new target is the previous round's settlement average, if we computed one
+  $('s-target').value = ''; $('s-ask').value = 0; $('s-bid').value = 0;           // typed numbers belong to the round they were typed in
+  // the new target = last round's final price: exact from the index series when it is there, else the previous record, else estimated
+  const a = pmA.get(T0 - 1);
   const prev = history.length ? history[history.length - 1] : null;
-  if (prev && prev.T0 === T0 - ROUND && Number.isFinite(prev.settle)) { R.target = prev.settle; R.targetSrc = prev.settleSrc === 'api' ? 'api' : 'est'; }
-  pmFetchMarket(); pmFetchBook();
+  if (a > 0) { R.target = a; R.targetSrc = 'series'; }
+  else if (prev && prev.T0 === T0 - ROUND && Number.isFinite(prev.settle)) { R.target = prev.settle; R.targetSrc = prev.settleSrc === 'api' || prev.settleSrc === 'series' ? prev.settleSrc : 'est'; }
+  pmFetchMarket(); pmFetchBook(); pmFetchSeries();
   $('slug').textContent = R.slug;
   $('win-et').textContent = etDay.format(new Date(T0 * 1000)) + ', ' + winTxt(T0, etFmt);
   $('win-local').textContent = winTxt(T0, locFmt);
   $('n-win').textContent = winTxt(T0 + ROUND, etFmt) + ' ET';
 }
 function finishRound() {
-  const nowS = Date.now() / 1000;
-  const d = settleDist(R.T, R.T, spotNow, R.offset || 0, sigma(Math.floor(nowS)), 0, 0);
-  const settle = Number.isFinite(R.settle) ? R.settle : d.mean;
-  const rec = { T0: R.T0, target: R.target, targetSrc: R.targetSrc, settle, settleSrc: Number.isFinite(R.settle) ? 'api' : 'est',
+  const exact = pmA.get(R.T - 1);
+  const off = Number.isFinite(R.offset) ? R.offset : 0;
+  const settle = exact > 0 ? exact : off + avgRange(R.T - WIN, R.T);
+  const rec = { T0: R.T0, target: R.target, targetSrc: R.targetSrc, settle, settleSrc: exact > 0 ? 'series' : 'est',
     result: Number.isFinite(settle) && Number.isFinite(R.target) ? (settle >= R.target ? 'UP' : 'DOWN') : null,
-    margin: settle - R.target, lockAt: R.lockAt, lockAsk: R.lockAsk, paperPnl: 0 };
+    margin: settle - R.target, lockAt: R.lockAt, lockAsk: R.lockAsk, lockCall: R.lockCall, lockJudged: false, paperPnl: 0 };
+  judgeLock(rec);
   // settle the paper position
   if (paper.side && paper.shares > 0 && rec.result) {
     const won = paper.side === rec.result; const pnl = (won ? paper.shares : 0) - paper.cost;
@@ -572,9 +657,26 @@ function finishRound() {
     try { localStorage.setItem('pm15.paperTotal', String(paper.totalPnl)); } catch (e) {}
     paper.side = null; paper.shares = 0; paper.cost = 0; paper.state = 'idle';
   }
-  history.push(rec); if (history.length > 40) history.shift();
-  try { localStorage.setItem('pm15.history', JSON.stringify(history)); } catch (e) {}
-  renderPast();
+  history.push(rec); if (history.length > 60) history.shift();
+  saveHistory(); renderPast();
+}
+const saveHistory = () => { try { localStorage.setItem('pm15.history', JSON.stringify(history)); } catch (e) {} };
+// the lock record: every LOCKED call (either side, first second it fired) judged against the real result — the one stat that matters
+function judgeLock(rec) {
+  if (rec.lockJudged || !rec.lockCall || !rec.result || (rec.settleSrc !== 'series' && rec.settleSrc !== 'api')) return;
+  rec.lockJudged = true; lockStats.calls++;
+  if (rec.lockCall.side === rec.result) lockStats.held++; else { lockStats.failed++; lockStats.lastFail = { T0: rec.T0, side: rec.lockCall.side, at: rec.lockCall.at, cush: rec.lockCall.cush, margin: rec.margin }; }
+  saveLock();
+}
+// when the exact final price lands (the index series, ~1–3 s after the bell), fix the record, the next target and the lock judgement
+function settleFromSeries() {
+  for (const h of history.slice(-3)) {
+    const T = h.T0 + ROUND, a = pmA.get(T - 1);
+    if (!(a > 0) || h.settleSrc === 'api' || (h.settleSrc === 'series' && h.settle === a)) continue;
+    h.settle = a; h.settleSrc = 'series'; h.result = Number.isFinite(h.target) ? (a >= h.target ? 'UP' : 'DOWN') : null; h.margin = a - h.target;
+    judgeLock(h); saveHistory();
+    if (R.T0 === T && R.targetSrc !== 'api' && R.targetSrc !== 'manual') { R.target = a; R.targetSrc = 'series'; }
+  }
 }
 
 // ---------- Polymarket US gateway (direct, or through the relay) ----------
@@ -585,6 +687,7 @@ async function pmGet(path) {
   if (!r.ok) throw new Error('HTTP ' + r.status);
   return r.json();
 }
+const corsBlocked = e => !S.relay && /TypeError|Failed to fetch|NetworkError|Load failed/.test(String(e));
 let pmBusy = false;
 async function pmFetchMarket(slugArg) {
   const slug = slugArg || R.slug; if (!slug) return;
@@ -595,15 +698,20 @@ async function pmFetchMarket(slugArg) {
     R.apiOk = true;
     if (Number.isFinite(fc) && fc > 0 && fc < 0.5 && Math.abs(fc - S.fee) > 1e-9) { S.fee = fc; saveS(); }
     if (slug === R.slug) {
-      if (Number.isFinite(ptb)) { R.target = ptb; R.targetSrc = 'api'; calibrateOffset(); }
-    } else {  // previous round: its settlement is this round's target, and it recalibrates the basis
+      if (Number.isFinite(ptb)) {
+        R.targetApi = ptb;
+        if (R.targetSrc === 'series' && Math.abs(ptb - R.target) > 0.011) R.note = 'API target ' + fmt$(ptb) + ' differs from the index series ' + fmt$(R.target) + ' by ' + fmtS(ptb - R.target) + ' — using the API number.';
+        R.target = ptb; R.targetSrc = 'api'; calibrateOffsetRound();
+      }
+    } else {  // a previous round: its settlement is the record of truth (and this round's target if nothing better)
       const prev = history.find(h => SLUG(h.T0) === slug);
-      if (prev && Number.isFinite(sp)) { prev.settle = sp; prev.settleSrc = 'api'; prev.result = sp >= prev.target ? 'UP' : 'DOWN'; prev.margin = sp - prev.target; renderPast(); }
-      if (Number.isFinite(sp) && !Number.isFinite(R.target)) { R.target = sp; R.targetSrc = 'api'; calibrateOffset(); }
+      if (prev && Number.isFinite(sp)) {
+        if (prev.settleSrc === 'series') { lockStats.checked++; if (Math.abs(prev.settle - sp) <= 0.011) lockStats.exact++; else R.note = 'Series settlement ' + fmt$(prev.settle) + ' vs API ' + fmt$(sp) + ' (' + fmtS(sp - prev.settle) + ')'; saveLock(); }
+        prev.settle = sp; prev.settleSrc = 'api'; prev.result = sp >= prev.target ? 'UP' : 'DOWN'; prev.margin = sp - prev.target; judgeLock(prev); saveHistory(); renderPast();
+      }
+      if (Number.isFinite(sp) && R.T0 === (prev ? prev.T0 + ROUND : -1) && R.targetSrc !== 'api' && R.targetSrc !== 'manual') { R.target = sp; R.targetSrc = 'api'; calibrateOffsetRound(); }
     }
-  } catch (e) {
-    if (R.apiOk === null && !S.relay && /TypeError|Failed to fetch|NetworkError/.test(String(e))) R.apiOk = false; // blocked by CORS or offline
-  }
+  } catch (e) { if (R.apiOk === null && corsBlocked(e)) R.apiOk = false; }
 }
 async function pmFetchBook() {
   if (!R.slug || pmBusy) return; pmBusy = true;
@@ -616,16 +724,48 @@ async function pmFetchBook() {
       R.book = { upAsk: offers.length ? offers[0][0] : NaN, upBid: bids.length ? bids[0][0] : NaN, upAskQty: offers.length ? offers[0][1] : 0, upBidQty: bids.length ? bids[0][1] : 0 };
       R.bookAt = Date.now(); R.apiOk = true;
     }
-  } catch (e) {
-    if (R.apiOk === null && !S.relay && /TypeError|Failed to fetch|NetworkError/.test(String(e))) R.apiOk = false;
-  } finally { pmBusy = false; }
+  } catch (e) { if (R.apiOk === null && corsBlocked(e)) R.apiOk = false; }
+  finally { pmBusy = false; }
 }
-function calibrateOffset() {
-  if (!Number.isFinite(R.target)) return;
-  const a = avgRange(R.T0 - WIN - DELAY, R.T0 - DELAY);
-  if (Number.isFinite(a)) { R.offset = R.target - a; R.offsetSrc = 'this round'; S.offset = R.offset; saveS(); }
+// the index series: the last `span` seconds of PM's 60-print average, 1 point per second
+async function pmFetchSeries(span) {
+  if (IDX.busy) return; IDX.busy = true;
+  const nowS = Math.floor(Date.now() / 1000), from = nowS - (span || 240);
+  try {
+    const j = await pmGet('/v1/asset-prices/history?assets=crypto:btc&from=' + from + '&to=0&bucket=ASSET_PRICE_BUCKET_1S');
+    let n = 0;
+    for (const ser of (j && j.series) || []) {
+      const sym = String(((ser.asset || {}).symbol) || '').toLowerCase(); if (sym && sym !== 'btc') continue;
+      for (const c of ser.candles || []) { const ts = Number(c.timestamp), v = Number(c.close); if (Number.isFinite(ts) && v > 1000 && !pmA.has(ts)) { pmA.set(ts, v); n++; if (ts > IDX.latest) IDX.latest = ts; } }
+    }
+    IDX.ok = true; IDX.at = Date.now(); IDX.fails = 0; R.apiOk = true;
+    if (n) { calibrateLive(nowS); settleFromSeries(); if (!Number.isFinite(R.target) && pmA.get(R.T0 - 1) > 0) { R.target = pmA.get(R.T0 - 1); R.targetSrc = 'series'; } }
+    if (pmA.size > 14400) for (const t of pmA.keys()) { if (t < nowS - 10800) pmA.delete(t); }   // keep 3 h
+  } catch (e) { IDX.fails++; if (IDX.ok === null && corsBlocked(e)) IDX.ok = false; IDX.note = String(e).slice(0, 80); }
+  finally { IDX.busy = false; }
 }
-// quotes for a side: from the book if fresh, else from the manual fields; fee-aware helpers
+// live basis: index average minus the same 60-second Coinbase average, one sample per second, median of the last 90
+function calibrateLive(nowS) {
+  for (let t = nowS - 95; t <= nowS - 2; t++) {
+    const a = pmA.get(t); if (!(a > 0) || IDX.offs.some(o => o[0] === t)) continue;
+    if (coverage(t - 59, t + 1) < 0.8) continue;                      // Coinbase has to cover the same minute
+    const cb = avgRange(t - 59, t + 1); if (!(cb > 0)) continue;
+    IDX.offs.push([t, a - cb]);
+  }
+  IDX.offs.sort((x, y) => x[0] - y[0]); while (IDX.offs.length > 90) IDX.offs.shift();
+  if (IDX.offs.length >= 20 && S.offset == null) {
+    const v = IDX.offs.map(o => o[1]); const m = median(v); const mad = median(v.map(x => Math.abs(x - m))) * 1.4826;
+    R.offset = m; R.offsetSd = mad; R.offsetSrc = 'live';
+  }
+}
+// per-round basis (when the series is off): the exact target against Coinbase's average of the minute before the open
+function calibrateOffsetRound() {
+  if (R.offsetSrc === 'live' || S.offset != null || !Number.isFinite(R.target)) return;
+  if (coverage(R.T0 - WIN, R.T0) < 0.8) return;
+  const a = avgRange(R.T0 - WIN, R.T0);
+  if (Number.isFinite(a)) { R.offset = R.target - a; R.offsetSrc = 'round'; R.offsetSd = NaN; }
+}
+// quotes for a side: from the book if fresh, else from the typed fields
 function quotes(side) {
   const fresh = R.book && Date.now() - R.bookAt < 15000;
   if (fresh) {
@@ -647,81 +787,132 @@ function connectWS() {
   ws.onclose = () => { cbState = 'reconnecting'; clearTimeout(wsTimer); wsTimer = setTimeout(connectWS, 2000); };
   ws.onerror = () => { try { ws.close(); } catch (e) {} };
 }
-async function backfill() {
+let backfillBusy = false;
+async function backfill(tradesOnly) {
   // recent trades (seconds), then 1-minute candles (hours) for the chart's left edge and the previous-minute averages
+  if (backfillBusy) return; backfillBusy = true;
   try {
     const tr = await (await fetch('https://api.exchange.coinbase.com/products/BTC-USD/trades?limit=1000')).json();
     if (Array.isArray(tr)) for (const t of tr) addPrice(Date.parse(t.time), parseFloat(t.price));
   } catch (e) {}
-  try {
+  if (!tradesOnly) try {
     const c = await (await fetch('https://api.exchange.coinbase.com/products/BTC-USD/candles?granularity=60')).json();
     if (Array.isArray(c)) for (const k of c) { const [t, lo, hi, op, cl] = k; const base = t;
-      for (let s = 0; s < 60; s++) if (!secs.has(base + s)) secs.set(base + s, s < 30 ? (op + cl) / 2 : cl); if (base < firstSec) firstSec = base; }
+      for (let s = 0; s < 60; s++) if (!secs.has(base + s)) secs.set(base + s, op + (cl - op) * (s + 0.5) / 60); if (base < firstSec) firstSec = base; }
   } catch (e) {}
-  if (Number.isFinite(R.target)) calibrateOffset();
+  backfillBusy = false;
+  calibrateOffsetRound();
 }
+// feed watchdog: a socket that is open but silent gets kicked; a tab coming back from the background refills the gap
+setInterval(() => { if (ws && ws.readyState === 1 && Date.now() - lastTickMs > 8000) { try { ws.close(); } catch (e) {} } }, 3000);
+document.addEventListener('visibilitychange', () => { if (!document.hidden) { backfill(true); pmFetchSeries(900); pmFetchMarket(); } });
 
 // ---------- the brain: one evaluation per frame ----------
-let lastEval = null, doHold = { key: '', since: 0 };
+let lastEval = null;
 function evaluate() {
   const nowMs = Date.now(), nowS = nowMs / 1000, sec = Math.floor(nowS);
   const T0 = Math.floor(nowS / ROUND) * ROUND; if (T0 !== R.T0) startRound(T0);
-  const r = R.T - nowS, spot = spotNow, fresh = nowMs - lastTickMs < 4000;
+  const T = R.T, r = T - nowS, spot = spotNow, fresh = nowMs - lastTickMs < 4000;
   const off = Number.isFinite(R.offset) ? R.offset : 0, offKnown = Number.isFinite(R.offset);
-  const sig = sigma(sec), vel = velocity(sec);
-  const pmShown = off + avgRange(sec - WIN - DELAY, sec - DELAY);
-  // target fallback: estimated from the minute before the open
-  if (!Number.isFinite(R.target) && Number.isFinite(spot)) { const a = avgRange(R.T0 - WIN - DELAY, R.T0 - DELAY); if (Number.isFinite(a)) { R.target = a + off; R.targetSrc = 'est'; } }
-  const target = R.target;
-  const d = settleDist(nowS, R.T, spot, off, sig, vel, S.drift);
+  // vol: the last 10 minutes, floored at 60% of the 5-day typical minute so a quiet patch cannot make the model overconfident
+  const sigFloor = REC.bad && REC.bad.med > 0 && spot > 0 ? 0.6 * REC.bad.med * spot / (0.8 * Math.sqrt(60)) : 0;
+  const sigLive = sigma(sec), sig = Math.max(sigLive, sigFloor), vel = velocity(sec);
+  // the settlement window: prints with timestamps in [T-60, T); the ones for completed seconds are in the books
+  const knownN = Math.max(0, Math.min(WIN, sec - (T - WIN)));
+  const knownAvg = knownN > 0 ? avgRange(T - WIN, T - WIN + knownN) : NaN;           // chart $
+  const settleExact = r <= 0 ? pmA.get(T - 1) : NaN;
+  // what PM shows: the index series when it is fresh, else the modeled 60-s Coinbase average + basis
+  const la = latestA(6, sec);
+  const pmShown = la ? la.v : off + avgRange(sec - WIN, sec), pmSrc = la ? 'series' : 'model', pmAge = la ? sec - la.t : NaN;
+  // target: estimated from Coinbase if nothing better arrived yet
+  if (!Number.isFinite(R.target) && Number.isFinite(spot) && coverage(T0 - WIN, T0) >= 0.8) { const a = avgRange(T0 - WIN, T0); if (Number.isFinite(a)) { R.target = a + off; R.targetSrc = 'est'; } }
+  const target = R.target, tgtChart = target - off;
+  const E = { nowMs, nowS, sec, T0, T, r, spot, fresh, off, offKnown, sig, sigLive, sigFloor, vel, knownN, knownAvg, settleExact, pmShown, pmSrc, pmAge, target, tgtChart };
+  // KILL price: what BTC must AVERAGE for the rest of the window to land the final price exactly on the target (chart $)
+  const rpW = WIN - knownN;
+  E.killPx = !Number.isFinite(target) ? NaN : knownN <= 0 ? tgtChart : rpW > 0 ? (WIN * tgtChart - knownN * knownAvg) / rpW : NaN;
+  E.cushUp = spot - E.killPx; E.cushDn = E.killPx - spot;                              // $ BTC must fall / climb (and hold) to flip that side
+  // the model
+  const d = settleDist(E, spot, sig, S.drift); E.d = d;
   const pUp = Number.isFinite(target) && Number.isFinite(spot) ? pUpFrom(d, target) : NaN;
-  const fav = pUp >= 0.5 ? 'UP' : 'DOWN', pFav = fav === 'UP' ? pUp : 1 - pUp, dog = fav === 'UP' ? 'DOWN' : 'UP';
-  // how far the settlement mean sits from the target, in $ and in sd
-  const gap = d.mean - target, z = d.sd > 0 ? gap / d.sd : (gap >= 0 ? 99 : -99);
-  // effective lag: how long ago the spot last equalled what PM shows now
-  let lagS = NaN; if (Number.isFinite(pmShown)) { const want = pmShown - off; let prev = priceAt(sec);
-    for (let k = 1; k <= 180; k++) { const v = priceAt(sec - k); if (!(v > 0)) break; if ((prev - want) * (v - want) <= 0) { lagS = k; break; } prev = v; } }
-  // ---- plain-English safety ----
-  // SURE THING = even if BTC moved at its record pace (up or down) for every second left, the settlement average
-  // could not get back across the target. The only "100%" the page will ever show.
-  const need = Number.isFinite(target) && Number.isFinite(spot) ? (target - off) - spot : NaN;   // $ the spot must move to the target (+ = up)
-  const lead = Math.abs(need), spotSide = need >= 0 ? 'DOWN' : 'UP';                             // which side the spot sits on now
-  const margin = S.recMargin || 1, recUpT = REC.up.map(f => f * spot * margin), recDnT = REC.dn.map(f => f * spot * margin);
-  const reach = reachInfo({ target, spot, off, r, sig });                                        // minutes at record pace to the target + touch odds
-  let sureUp = false, sureDn = false, sureEta = NaN;
-  if (REC.ready && Number.isFinite(need) && r > 0) {
-    const hiWorst = settleDist(nowS, R.T, spot + recAt(r / 60, recUpT), off, sig, 0, 0).mean;
-    const loWorst = settleDist(nowS, R.T, spot - recAt(r / 60, recDnT), off, sig, 0, 0).mean;
-    sureUp = loWorst > target; sureDn = hiWorst < target;
-    const sureFav = fav === 'UP' ? sureUp : sureDn;
-    if (!sureFav && r > 3) for (let s = 1; s <= Math.min(r, 600); s += 1) {   // when the side for now becomes a sure thing if BTC holds here
-      const left = (r - s) / 60;
-      const ok = fav === 'UP' ? settleDist(nowS + s, R.T, spot - recAt(left, recDnT), off, sig, 0, 0, sec).mean > target
-                              : settleDist(nowS + s, R.T, spot + recAt(left, recUpT), off, sig, 0, 0, sec).mean < target;
-      if (ok) { sureEta = s; break; }
-    }
-  }
+  E.pUp = pUp; E.pDn = 1 - pUp; E.fav = pUp >= 0.5 ? 'UP' : 'DOWN'; E.dog = E.fav === 'UP' ? 'DOWN' : 'UP'; E.pFav = E.fav === 'UP' ? pUp : 1 - pUp;
+  E.gap = d.mean - target;
+  E.need = tgtChart - spot; E.lead = Math.abs(E.need); E.spotSide = E.need >= 0 ? 'DOWN' : 'UP';
+  // the lookahead: where the PM line reads in lookS seconds if BTC holds here (most of that minute is already known)
+  const L = Math.max(1, Math.min(S.lookS || 30, Math.max(1, r)));
+  const fKnown = Math.max(0, WIN - Math.ceil(L)), fAvg = fKnown > 0 ? avgRange(sec - fKnown, sec) : NaN;
+  E.lookS = L; E.pmAhead = off + ((fKnown > 0 ? fKnown * fAvg : 0) + (WIN - fKnown) * spot) / WIN; E.pmAheadSd = sig * Math.sqrt(L * L * L / 3) / WIN;
+  E.mv10 = moveOver(sec, 10); E.mv30 = moveOver(sec, 30);
+  // record pace ($, with margin) and the "bad minute"
+  const margin = Math.max(1, S.recMargin || 1.5); E.recUpT = REC.up.map(f => f * spot * margin); E.recDnT = REC.dn.map(f => f * spot * margin);
+  E.recUpLeft = recAt(r / 60, E.recUpT); E.recDnLeft = recAt(r / 60, E.recDnT);
+  E.badUp = REC.bad ? badFrac(S.badPct, REC.bad.up) * spot : 3 * sig * Math.sqrt(60); E.badDn = REC.bad ? badFrac(S.badPct, REC.bad.dn) * spot : 3 * sig * Math.sqrt(60);
+  E.badLadUp = REC.bad ? REC.bad.up.map(f => f * spot) : null; E.badLadDn = REC.bad ? REC.bad.dn.map(f => f * spot) : null;
+  // LOCKED: the cushion beats the biggest adverse move seen for the time left, plus the target's error and the basis slack
+  const tgtErr = R.targetSrc === 'series' || R.targetSrc === 'api' ? 0.02 : R.targetSrc === 'manual' ? 0.5 : 15;
+  E.slack = tgtErr + (S.slack || 0) + (Number.isFinite(R.offsetSd) ? 2 * R.offsetSd : (offKnown ? 2 : 8));
+  E.lockUp = REC.ready && r > 0 && Number.isFinite(E.cushUp) && E.cushUp > E.recDnLeft + E.slack;
+  E.lockDn = REC.ready && r > 0 && Number.isFinite(E.cushDn) && E.cushDn > E.recUpLeft + E.slack;
+  // seconds until a side locks if BTC holds here: the cushion grows as cushion·rp/rp'(s) while the record for the time left shrinks
+  const rpNow = Math.max(0, Math.min(WIN, r));
+  const lockEta = (cush, rec, locked) => { if (locked) return 0; if (!REC.ready || !(cush > 0) || r <= 1) return NaN;
+    for (let s = 1; s <= Math.min(r, 600); s++) { const sl = r - s, rp2 = Math.max(0, Math.min(WIN, sl)); const c2 = rp2 >= WIN ? cush : rp2 > 0 ? cush * rpNow / rp2 : 1e9; if (c2 > recAt(sl / 60, rec) + E.slack) return s; } return NaN; };
+  E.lockEtaUp = lockEta(E.cushUp, E.recDnT, E.lockUp); E.lockEtaDn = lockEta(E.cushDn, E.recUpT, E.lockDn);
+  E.fastUp = needMins(E.cushUp, E.recDnT); E.fastDn = needMins(E.cushDn, E.recUpT);   // minutes a record-pace move needs to reach the kill line
+  E.reach = reachInfo(E);
   // average speed this round: dollars traversed per minute in 1-minute steps (path length, not net move); last round's until a minute is in
   const elapsed = ROUND - r;
-  const avgSpeed = elapsed >= 60 ? roundPath(R.T0, sec) / (elapsed / 60) : (roundPath(R.T0 - ROUND, R.T0) > 0 ? roundPath(R.T0 - ROUND, R.T0) / 15 : NaN);
-  const avgMins = Number.isFinite(avgSpeed) && avgSpeed > 0 && Number.isFinite(lead) ? lead / avgSpeed : NaN;
-  const velTow = vel * (need >= 0 ? 1 : -1), crossEta = velTow > 0.01 ? lead / velTow : NaN;    // toward the target: $/s and seconds to get there at this pace
-  const cushion = Math.max(20, (S.cushionX || 2) * sig * Math.sqrt(60));                        // "one routine minute's move" × the setting
-  const flipOf = side => { const crossed = side !== spotSide; const pSide = side === 'UP' ? pUp : 1 - pUp;
-    return { crossed, odds: crossed ? 1 - pSide : reach ? reach.odds : NaN, fastest: crossed ? 0 : reach ? reach.mins : NaN, pSide, sure: side === 'UP' ? sureUp : sureDn }; };
-  // "if I bought the favorite now": win chance if held to the bell (the math, never 100% unless SURE), the scare (the chance the
-  // display flips against you first), edge after fee at the current ask, the asks that make the same buy break-even / GOOD / GREAT
-  const sureFav = fav === 'UP' ? sureUp : sureDn, winHold = sureFav ? 1 : Math.min(pFav, 0.995);
-  const scare = (() => { const f = flipOf(fav); return f.odds; })();
-  const qNow = Number.isFinite(pUp) ? quotes(fav) : { ask: NaN, src: 'none' }, askNow = qNow.ask;
+  E.avgSpeed = elapsed >= 60 ? roundPath(T0, sec) / (elapsed / 60) : (roundPath(T0 - ROUND, T0) > 0 ? roundPath(T0 - ROUND, T0) / 15 : NaN);
+  E.avgMins = Number.isFinite(E.avgSpeed) && E.avgSpeed > 0 && Number.isFinite(E.lead) ? E.lead / E.avgSpeed : NaN;
+  // per side: everything the verdict needs
+  E.sideInfo = side => {
+    const up = side === 'UP';
+    const p = up ? pUp : 1 - pUp, cush = up ? E.cushUp : E.cushDn, locked = up ? E.lockUp : E.lockDn, rec = up ? E.recDnLeft : E.recUpLeft, bad = up ? E.badDn : E.badUp;
+    const eta = up ? E.lockEtaUp : E.lockEtaDn, fast = up ? E.fastUp : E.fastDn, crossed = side !== E.spotSide;
+    // fat tails (last 2 minutes): a flip needs the remaining prints to AVERAGE past the kill line, i.e. an end-to-end move of
+    // about 1.3× the cushion over the time left; in one-minute units that is 1.3·cushion·√(60/rp). The empirical ladder of
+    // one-minute adverse moves says how often BTC does that; the win chance is capped by it. Below the ladder the Gaussian stands.
+    const rpW = E.knownN > 0 ? Math.max(1, WIN - E.knownN) : WIN;
+    const needExc = r <= 120 && cush > 0 ? 1.3 * cush * Math.sqrt(WIN / rpW) : NaN;
+    const tail = Number.isFinite(needExc) ? tailProb(needExc, up ? E.badLadDn : E.badLadUp) : NaN;
+    const pAdj = Number.isFinite(tail) ? Math.min(p, 1 - tail) : p;
+    const thin = !locked && r <= 120 && cush > 0 && cush < bad;
+    const sellAbove = Number.isFinite(pAdj) ? Math.min(0.99, pAdj + fee(pAdj, S.fee)) : NaN;   // a bid above this nets more than holding is worth
+    // the pace: a move toward the kill line that is both fast and bigger than noise (2.5σ for its length), and its ETA at that pace
+    const sig10 = 2.5 * sig * Math.sqrt(10), sig30 = 2.5 * sig * Math.sqrt(30);
+    const paceOf = (mv, k, thr) => { const tow = up ? mv < 0 : mv > 0; return tow && Math.abs(mv) >= thr ? Math.abs(mv) / k : 0; };
+    const pace10 = paceOf(E.mv10, 10, sig10), pace30 = paceOf(E.mv30, 30, sig30), pace = Math.max(pace10, pace30), paceK = pace10 >= pace30 ? 10 : 30;
+    const etaKill = pace > 0 && cush > 0 ? cush / pace : NaN;
+    const scare = crossed ? 1 : (E.reach ? E.reach.odds : NaN);                                   // the button scare: spot crossing the target before the bell
+    return { side, p, pAdj, tail, thin, sellAbove, cush, locked, rec, bad, eta, fast, crossed, pace, paceK, etaKill, scare, dropWord: up ? 'drop' : 'climb', killPM: Number.isFinite(E.killPx) ? E.killPx + off : NaN };
+  };
+  // the exit rules for a held side
+  E.exitCheck = side => {
+    const f = E.sideInfo(side), q = quotes(side), bidNet = Number.isFinite(q.bid) ? q.bid - fee(q.bid, S.fee) : NaN;
+    const lat = S.latency || 0;
+    const sellNow = !f.locked && (f.cush <= 0 || f.p < 0.5);
+    let getOut = false, reason = '';
+    if (!f.locked && !sellNow) {
+      if (f.pAdj < (S.holdMinP || 75) / 100) { getOut = true; reason = 'Win chance ' + pct(f.pAdj) + (f.pAdj < f.p - 0.005 ? ' (fat-tail adjusted)' : '') + ' is under your ' + (S.holdMinP || 75) + '% floor.'; }
+      else if (Number.isFinite(f.etaKill) && f.etaKill <= (S.etaWarnS || 30) + lat) { getOut = true; reason = 'BTC moved ' + fmtS(f.paceK === 10 ? E.mv10 : E.mv30, 0) + ' in the last ' + f.paceK + ' s — at that pace it reaches the kill line in ~' + secsTxt(f.etaKill) + (lat ? ' (you need ' + lat + ' s to sell)' : '') + '.'; }
+      else if (Number.isFinite(bidNet) && bidNet > f.pAdj + 0.01) { getOut = true; reason = 'The bid (' + cents(q.bid) + ') pays more than holding is worth (' + pct(f.pAdj) + (f.thin ? ', thin cushion' : '') + ').'; }
+    }
+    return Object.assign(f, { sellNow, getOut, reason, bid: q.bid, bidNet, bidSrc: q.src });
+  };
+  // "if I bought the favorite now"
+  const fav = E.sideInfo(E.fav); E.favInfo = fav; E.pFavAdj = fav.pAdj;
+  const winHold = fav.locked ? 1 : Math.min(fav.pAdj, 0.995);
+  const qNow = Number.isFinite(pUp) ? quotes(E.fav) : { ask: NaN, src: 'none' }, askNow = qNow.ask;
   const edgeNow = Number.isFinite(askNow) ? winHold - askNow - fee(askNow, S.fee) : NaN;
   const bePrice = e => { let p = winHold - e; p = winHold - e - fee(p, S.fee); p = winHold - e - fee(p, S.fee); return Math.max(0, p); };
-  const buyIn = Number.isFinite(pUp) && r > 0 ? { ask: askNow, src: qNow.src, winHold, scare, edge: edgeNow, scary: scare >= 0.25,
+  E.buyIn = Number.isFinite(pUp) && r > 0 ? { ask: askNow, src: qNow.src, askQty: qNow.askQty, winHold, scare: fav.scare, flip: 1 - fav.pAdj, edge: edgeNow, scary: fav.scare >= 0.25,
     grade: !Number.isFinite(edgeNow) ? '' : edgeNow >= 0.08 ? 'GREAT' : edgeNow >= 0.04 ? 'GOOD' : edgeNow >= 0.01 ? 'FAIR' : 'POOR',
     be: bePrice(0), good: bePrice(0.04), great: bePrice(0.08), kelly: Number.isFinite(edgeNow) && edgeNow > 0 && askNow < 1 ? edgeNow / (1 - askNow) : 0 } : null;
-  if (buyIn && Number.isFinite(edgeNow) && (!Number.isFinite(R.bestEdge) || edgeNow > R.bestEdge)) { R.bestEdge = edgeNow; R.bestAsk = askNow; R.bestLeft = r; }
-  lastEval = { nowS, sec, r, spot, fresh, off, offKnown, sig, vel, pmShown, target, d, pUp, pFav, fav, dog, gap, z, lagS, need, lead, spotSide, reach, sureUp, sureDn, sureEta, velTow, crossEta, cushion, flipOf, avgSpeed, avgMins, buyIn };
-  return lastEval;
+  if (E.buyIn && Number.isFinite(edgeNow) && (!Number.isFinite(R.bestEdge) || edgeNow > R.bestEdge)) { R.bestEdge = edgeNow; R.bestAsk = askNow; R.bestLeft = r; }
+  // the lock record: remember the first LOCKED call of the round (either side)
+  if (!R.lockCall && r > 0 && (E.lockUp || E.lockDn)) R.lockCall = { side: E.lockUp ? 'UP' : 'DOWN', at: r, cush: E.lockUp ? E.cushUp : E.cushDn, rec: E.lockUp ? E.recDnLeft : E.recUpLeft };
+  lastEval = E;
+  return E;
 }
 // dollars traversed between T0 and `upto`, in 1-minute steps plus the partial minute
 function roundPath(T0, upto) {
@@ -730,58 +921,35 @@ function roundPath(T0, upto) {
   if (upto > T0 + 60 * K) { const last = priceAt(upto); if (prev > 0 && last > 0) path += Math.abs(last - prev); }
   return path;
 }
-const avgMinsTxt = m => !Number.isFinite(m) ? '—' : m > 99 ? '99+ min' : m < 0.1 ? '< 0.1 min' : m.toFixed(1) + ' min';
-const avgTxt = E => !Number.isFinite(E.avgSpeed) ? 'avg speed: no data yet' : avgMinsTxt(E.avgMins) + ' at avg speed · $' + fmt$(E.avgSpeed, 0) + '/min this round';
-// the four words for a flip chance, and the sentence for where BTC is
-const chanceWord = p => p >= 0.5 ? 'likely' : p >= 0.25 ? 'a real chance' : p >= 0.10 ? 'possible' : p >= 0.03 ? 'unlikely' : p >= 0.005 ? 'rare' : 'very rare';
-const chanceTxt = p => !Number.isFinite(p) ? 'unknown' : (p < 0.005 ? 'under 1%' : p > 0.995 ? 'over 99%' : Math.round(p * 100) + '%') + ' (' + chanceWord(p) + ')';
-const fastTxt = m => !Number.isFinite(m) ? 'more than 15 min' : m <= 0 ? 'right now' : m < 1 ? Math.ceil(m * 60) + ' s' : m.toFixed(1) + ' min';
-const whereTxt = E => 'BTC is $' + fmt$(E.lead, 0) + ' ' + (E.need >= 0 ? 'below' : 'above') + ' the target, ' + (Math.abs(E.vel) < 0.05 ? 'barely moving' : (E.velTow > 0 ? 'heading for the target' : 'moving away') + ' at $' + fmt$(Math.abs(E.vel) * 60, 0) + '/min');
-// the exit rules for a held side: GET OUT when the flip is building, SELL NOW when it has flipped
-function exitCheck(E, side) {
-  const f = E.flipOf(side); const getOutOdds = (S.getOutOdds || 25) / 100, crossSecs = S.crossSecs || 90;
-  const sellNow = f.pSide < 0.5;
-  let getOut = false, reason = '';
-  if (!f.sure && !sellNow) {
-    if (f.crossed) { getOut = true; reason = 'BTC has already crossed the target; the average is still on your side, but not for long.'; }
-    else if (f.odds >= getOutOdds) { getOut = true; reason = 'The chance of a flip before the bell is up to ' + chanceTxt(f.odds) + '.'; }
-    else if (Number.isFinite(E.crossEta) && E.crossEta <= crossSecs) { getOut = true; reason = 'BTC is heading for the target at $' + fmt$(E.velTow * 60, 0) + '/min and gets there in ~' + secsTxt(E.crossEta) + ' at this pace.'; }
-    else if (E.r > 60 && E.lead < E.cushion) { getOut = true; reason = 'BTC is within $' + fmt$(E.lead, 0) + ' of the target — about ' + ((S.cushionX || 2) === 1 ? 'one' : (S.cushionX || 2)) + ' routine minute\'s move.'; }
-    else if (f.pSide < 0.85) { getOut = true; reason = 'The math has your side down to ' + pct(f.pSide) + '.'; }
-  }
-  return Object.assign(f, { sellNow, getOut, reason });
-}
+const whereTxt = E => 'BTC is $' + fmt$(E.lead, 0) + ' ' + (E.need >= 0 ? 'below' : 'above') + ' the target' + (Number.isFinite(E.mv10) ? ', ' + fmtS(E.mv10, 0) + ' in the last 10 s' : '');
 
 // ---------- paper engine ----------
 function paperStep(E) {
   const q = quotes(E.fav); const lockP = S.lockP / 100, maxAsk = S.maxAsk / 100;
   if (E.r <= 0) return;
   if (!paper.side) {
-    // buys the sure thing (record pace can't flip it) — or, if you switch the setting, the old math lock
-    const trigger = S.paperOn === 'math' ? E.pFav >= lockP : S.paperOn === 'edge' ? (E.buyIn && Number.isFinite(E.buyIn.edge) && E.buyIn.edge >= (S.edgeMin || 6) / 100 && E.buyIn.scare <= (S.edgeScare || 15) / 100 && E.r > 60) : (E.fav === 'UP' ? E.sureUp : E.sureDn);
-    const go = trigger && E.fresh && E.r > 4 && paper.boughtT0 !== R.T0 && !(q.src === 'book' && !Number.isFinite(q.ask));
+    const trigger = S.paperOn === 'math' ? E.pFav >= lockP : S.paperOn === 'edge' ? (E.buyIn && Number.isFinite(E.buyIn.edge) && E.buyIn.edge >= (S.edgeMin || 6) / 100 && E.buyIn.scare <= (S.edgeScare || 15) / 100 && E.r > 60) : E.favInfo.locked;
+    const go = trigger && E.fresh && E.r > (S.latency || 0) + 2 && paper.boughtT0 !== R.T0 && !(q.src === 'book' && !Number.isFinite(q.ask));
     if (go) {
       const ask = Number.isFinite(q.ask) ? q.ask : NaN;
       if (!Number.isFinite(ask) || ask <= maxAsk) {
         const px = Number.isFinite(ask) ? ask : maxAsk; const shares = S.stake / px;
         Object.assign(paper, { side: E.fav, shares, cost: S.stake + fee(px, S.fee) * shares, px, modelFill: !Number.isFinite(ask), state: 'holding', armAt: 0, sellPlan: null, boughtT0: R.T0 });
-        paper.note = 'Bought ' + E.fav + ' ' + shares.toFixed(1) + ' sh @' + cents(px) + (paper.modelFill ? ' (model fill: no live book)' : '') + ' at ' + clock(E.r) + ' left' + (S.paperOn === 'math' ? ' (math lock)' : S.paperOn === 'edge' ? ' (edge ' + (E.buyIn.edge * 100).toFixed(1) + '¢)' : ' (sure thing)');
+        paper.note = 'Bought ' + E.fav + ' ' + shares.toFixed(1) + ' sh @' + cents(px) + (paper.modelFill ? ' (model fill: no live book)' : '') + ' at ' + clock(E.r) + ' left' + (S.paperOn === 'math' ? ' (math lock)' : S.paperOn === 'edge' ? ' (edge ' + (E.buyIn.edge * 100).toFixed(1) + '¢)' : ' (locked)');
         if (R.lockAt == null) { R.lockAt = E.r; R.lockAsk = px; }
       }
     }
     return;
   }
-  // holding: the same exit rules as the DO NOW card — GET OUT or SELL NOW sells everything; otherwise ride to the bell
   const pMine = paper.side === 'UP' ? E.pUp : 1 - E.pUp;
-  const x = exitCheck(E, paper.side);
+  const x = E.exitCheck(paper.side);
   let wantPct = 0, why = '';
-  if (x.sellNow) { wantPct = 100; why = paper.side + ' has flipped'; }
-  else if (x.getOut) { wantPct = 100; why = 'GET OUT: ' + x.reason; }
+  if (x.sellNow) { wantPct = 100; why = paper.side + ' is projected to lose'; }
+  else if (x.getOut) { wantPct = 100; why = 'SELL: ' + x.reason; }
   if (wantPct > 0) {
-    if (paper.state !== 'armed' && paper.state !== 'firing') { paper.state = 'armed'; paper.armAt = E.nowS + 3; paper.armPct = wantPct; paper.sellPlan = why; }
-    else if (paper.state === 'armed' && E.nowS >= paper.armAt) {
-      paper.state = 'firing'; paper.armAt = E.nowS + 0.8;
-    } else if (paper.state === 'firing' && E.nowS >= paper.armAt) {
+    if (paper.state !== 'armed' && paper.state !== 'firing') { paper.state = 'armed'; paper.armAt = E.nowS + Math.max(1, S.latency || 0); paper.armPct = wantPct; paper.sellPlan = why; }
+    else if (paper.state === 'armed' && E.nowS >= paper.armAt) { paper.state = 'firing'; paper.armAt = E.nowS + 0.8; }
+    else if (paper.state === 'firing' && E.nowS >= paper.armAt) {
       const qq = quotes(paper.side); const bid = Number.isFinite(qq.bid) ? qq.bid : Math.max(0.01, Math.min(0.99, pMine));
       const sh = paper.shares * paper.armPct / 100; const proceeds = sh * bid - fee(bid, S.fee) * sh;
       const costPart = paper.cost * paper.armPct / 100; const pnl = proceeds - costPart;
@@ -793,91 +961,118 @@ function paperStep(E) {
     }
   } else if (paper.state === 'armed') { paper.state = 'holding'; paper.sellPlan = null; }
   else if (paper.state === 'sold' && E.nowS >= paper.armAt) paper.state = paper.side ? 'holding' : 'idle';
-  // what it is watching while it holds
-  if (paper.state === 'holding') paper.sellPlan = x.sure ? 'SAFE — riding ' + paper.side + ' to the bell' : 'Holding ' + paper.side + ' with caution · flip chance ' + chanceTxt(x.odds) + ' · fastest possible flip ' + fastTxt(x.fastest);
+  if (paper.state === 'holding') paper.sellPlan = x.locked ? 'LOCKED — riding ' + paper.side + ' to the bell' : 'Holding ' + paper.side + (x.thin ? ' (thin)' : '') + ' · cushion $' + fmt$(x.cush, 0) + ' · flip chance ' + chanceTxt(1 - x.pAdj) + ' · ' + etaTxt(x.eta);
 }
 
 // ---------- dictation ----------
+let lastSpoken = { key: '', at: 0 };
+function announce(key, text) {
+  if (lastSpoken.key === key && Date.now() - lastSpoken.at < 20000) return;
+  lastSpoken = { key, at: Date.now() };
+  if (key === 'sure' || key === 'locked') beep(2); else if (key === 'sell' || key === 'sellnow') beep(3);
+  speak(text);
+}
 function dictate(E) {
-  const el = $('do'), maxAsk = S.maxAsk / 100;
-  let cls = 'wait', label = 'DO NOW', head = '', sub = '', time = '';
-  const q = quotes(E.fav), ask = q.ask;
-  const favF = E.flipOf ? E.flipOf(E.fav) : null, sureFav = favF ? favF.sure : false;
+  const el = $('do'), maxAsk = S.maxAsk / 100, lat = S.latency || 0;
+  let cls = 'wait', label = 'DO NOW', head = '', sub = '', time = '', key = '';
+  const q = quotes(E.fav), ask = q.ask, fav = E.favInfo;
   const efWin = ROUND - E.r; const efCheck = efWin >= 110 && efWin <= 210 && !(efWin > 150 && efWin < 170);
-  const efOk = efCheck && Number.isFinite(ask) && ask * 100 >= 80 && ask * 100 <= 94;
+  const efOk = efCheck && Number.isFinite(ask) && ask * 100 >= S.efLo && ask * 100 <= S.efHi;
+  const efClose = secsTxt(efWin < 160 ? 150 - efWin : 210 - efWin);
   if (!E.fresh || !Number.isFinite(E.spot)) { head = cbState === 'live' ? 'Feed stalled' : 'Connecting to Coinbase…'; sub = 'No price in the last few seconds. Nothing to act on until it returns.'; }
-  else if (!Number.isFinite(E.target)) { head = 'Need the target'; sub = 'Type the price-to-beat from your Polymarket screen in Settings. The basis offset calibrates from it.'; }
-  else if (E.r <= 0) { cls = 'wait'; head = 'Round over'; sub = 'Settling. The next round starts on the quarter hour.'; }
+  else if (!Number.isFinite(E.target)) { head = 'Need the target'; sub = 'The API and the index series have not given the price-to-beat yet. If the relay is off, type it from your Polymarket screen in Settings.'; }
+  else if (E.r <= 0) { head = 'Round over'; sub = 'Settling: the final price is the index series value at the bell.' + (Number.isFinite(E.settleExact) ? ' It landed at ' + fmt$(E.settleExact) + '.' : ''); }
   else if (myPos) {
-    const x = exitCheck(E, myPos.side);
-    if (x.sure) { cls = 'safe'; head = 'SAFE — ' + myPos.side + ' can\'t lose from here'; sub = 'Even a record move in the next ' + clock(E.r) + ' can\'t bring the average back across the target. Nothing can flip this; ride it to the bell.'; time = 'Settles in <b>' + clock(E.r) + '</b> · 100% — the only time that number appears'; }
-    else if (x.sellNow) { cls = 'sell'; head = 'SELL ' + myPos.side + ' NOW — it has flipped'; sub = 'BTC is on the other side of the target and the average is following. The button price falls with no delay; take the bid.'; time = 'Settles against you in <b>' + clock(E.r) + '</b>'; }
-    else if (x.getOut) { cls = 'sell'; label = 'GET OUT'; head = 'GET OUT — ' + myPos.side + ' is slipping'; sub = x.reason + ' Sell while the bid is still high.'; time = 'Fastest possible flip <b>' + fastTxt(x.fastest) + '</b> · <b>' + clock(E.r) + '</b> left'; }
-    else { cls = 'caution'; label = 'PROCEED WITH CAUTION'; head = 'In ' + myPos.side + ' — a flip is still possible'; sub = whereTxt(E) + '. At its record pace BTC could get back in ' + fastTxt(x.fastest) + '; with today\'s choppiness the chance before the bell is ' + chanceTxt(x.odds) + '. GET OUT fires at ' + (S.getOutOdds || 25) + '%, within $' + fmt$(E.cushion, 0) + ' of the target, or if BTC would reach it inside ' + (S.crossSecs || 90) + ' s at its pace.'; time = Number.isFinite(E.sureEta) && (E.fav === myPos.side) ? 'Becomes SAFE in ~<b>' + secsTxt(E.sureEta) + '</b> if BTC holds here · <b>' + clock(E.r) + '</b> left' : 'Settles in <b>' + clock(E.r) + '</b> · not SAFE at this gap'; }
+    const x = E.exitCheck(myPos.side); const w = x.dropWord;
+    if (x.locked) { cls = 'safe'; label = 'LOCKED'; key = 'locked'; head = 'LOCKED — HOLD ' + myPos.side; sub = 'Nothing can flip it. BTC would have to ' + w + ' $' + fmt$(x.cush, 0) + ' and stay there; the biggest ' + w + ' ever seen for ' + secsTxt(E.r) + ' is $' + fmt$(x.rec, 0) + ' (margin ×' + S.recMargin + ' included). Ignore the button — a low bid now is other people\'s panic, not information.'; time = 'Settles in <b>' + clock(E.r) + '</b> · 100% — the only time that number appears'; }
+    else if (x.sellNow) { cls = 'sell'; label = 'SELL NOW'; key = 'sellnow'; head = 'SELL ' + myPos.side + ' NOW'; sub = (x.cush <= 0 ? 'If BTC stays here the average lands on the other side (cushion ' + fmtS(x.cush, 0) + ').' : 'The math has your side at ' + pct(x.p) + '.') + ' Take whatever bid is left.'; time = 'Settles in <b>' + clock(E.r) + '</b>' + (Number.isFinite(x.bid) ? ' · bid <b>' + cents(x.bid) + '</b>' : ''); }
+    else if (x.getOut) { cls = 'sell'; label = 'SELL'; key = 'sell'; head = 'SELL ' + myPos.side + ' — FLIP BUILDING'; sub = x.reason + ' Sell while the bid is still high.' + (Number.isFinite(x.bidNet) ? ' Selling keeps ≈$' + fmt$(myPos.shares * x.bidNet, 0) + '; holding is worth ≈$' + fmt$(myPos.shares * x.p, 0) + ' (model).' : ''); time = 'Fastest flip at record pace <b>' + fastTxt(x.fast) + '</b> · <b>' + clock(E.r) + '</b> left'; }
+    else {
+      cls = 'caution'; label = x.thin ? 'HOLD · THIN' : 'HOLD'; key = 'hold'; head = 'HOLD ' + myPos.side + (x.thin ? ' — thin' : '');
+      sub = 'To flip you BTC must ' + w + ' $' + fmt$(x.cush, 0) + ' and hold it. Chance before the bell ' + chanceTxt(1 - x.pAdj) + (x.pAdj < x.p - 0.005 ? ' allowing for fat tails' : '') + '. A bad minute (p' + S.badPct + ') is $' + fmt$(x.bad, 0) + ', the record $' + fmt$(x.rec, 0) + '. Last 10 s: ' + fmtS(E.mv10, 0) + '.'
+        + (x.thin ? ' Thin: a bad minute could flip it. Sell if the bid is at least ' + cents(x.sellAbove) + ' (that beats holding); below that, holding is still worth more.' : '');
+      time = '<b>' + etaTxt(x.eta) + '</b> · <b>' + clock(E.r) + '</b> left' + (Number.isFinite(x.bid) ? ' · bid <b>' + cents(x.bid) + '</b>' : '');
+    }
   }
-  else if (!REC.ready) { cls = 'wait'; head = 'Learning BTC\'s record pace…'; sub = 'The sure-thing check needs the Coinbase history scan (a few seconds). Until then nothing can be called safe.'; time = 'Round ends in <b>' + clock(E.r) + '</b>'; }
-  else if (sureFav && q.src === 'book' && !Number.isFinite(ask)) { cls = 'ready'; head = E.fav + ' is a sure thing — but sold out'; sub = 'Nothing can flip ' + E.fav + ' now, and nobody is offering it under $1. Watch the button; sellers show up when the spot wobbles.'; time = 'Settles in <b>' + clock(E.r) + '</b>'; }
-  else if (sureFav && E.r > 4 && (!Number.isFinite(ask) || ask <= maxAsk)) {
-    cls = 'lock'; label = 'SURE THING · DO NOW';
+  else if (!REC.ready) { head = 'Learning BTC\'s record pace…'; sub = 'The LOCKED check needs the Coinbase history scan (a few seconds). Until then nothing can be called safe.'; time = 'Round ends in <b>' + clock(E.r) + '</b>'; }
+  else if (fav.locked && q.src === 'book' && !Number.isFinite(ask)) { cls = 'ready'; head = E.fav + ' is LOCKED — but sold out'; sub = 'Nothing can flip ' + E.fav + ' now, and nobody is offering it under $1. Watch the button; sellers show up when the spot wobbles.'; time = 'Settles in <b>' + clock(E.r) + '</b>'; }
+  else if (fav.locked && E.r > lat + 2 && (!Number.isFinite(ask) || ask <= maxAsk)) {
+    cls = 'lock'; label = 'SURE THING · DO NOW'; key = 'sure';
     const payUp = Number.isFinite(ask) ? ask : maxAsk; const net = 1 - payUp - fee(payUp, S.fee);
     head = 'BUY ' + E.fav + (Number.isFinite(ask) ? ' at ' + cents(ask) : ' up to ' + cents(maxAsk));
-    sub = 'Even a record move in the next ' + clock(E.r) + ' can\'t bring the average back across the target. Nothing can flip this. '
+    sub = 'Locked: even a record ' + fav.dropWord + ' in the next ' + secsTxt(E.r) + ' cannot bring the average back across the target (it would take $' + fmt$(fav.cush, 0) + ', the record is $' + fmt$(fav.rec, 0) + '). '
       + (Number.isFinite(ask) ? '+' + (net * 100).toFixed(1) + '¢ per share after fee (' + (net / payUp * 100).toFixed(1) + '% in ' + clock(E.r) + ').' : 'Each cent under $1 on the button is yours.')
-      + (Number.isFinite(q.askQty) ? ' ' + Math.round(q.askQty) + ' shares offered at ' + cents(ask) + '.' : '') + ' Size 10–20% of bankroll.';
-    time = 'You have <b>' + clock(Math.max(0, E.r - 5)) + '</b> to get filled · ride to the bell';
-    if (!R.lockBeeped) { beep(); R.lockBeeped = true; }
+      + (Number.isFinite(q.askQty) ? ' ' + Math.round(q.askQty) + ' shares offered at ' + cents(ask) + '.' : '');
+    time = 'You have <b>' + clock(Math.max(0, E.r - lat)) + '</b> to get filled · ride to the bell';
   }
-  else if (sureFav && Number.isFinite(ask)) { cls = 'ready'; head = E.fav + ' is a sure thing but costs ' + cents(ask); sub = 'Above your max of ' + cents(maxAsk) + '. Net would be ' + ((1 - ask - fee(ask, S.fee)) * 100).toFixed(1) + '¢/share — raise the max in Settings if that is still worth it.'; time = 'Settles in <b>' + clock(E.r) + '</b>'; }
-  else if (E.r <= 45) { cls = 'wait'; head = 'Round ending — no new buys'; sub = E.fav + ' for now, not a sure thing: flip chance ' + chanceTxt(favF.odds) + '. ' + Math.round(E.d.known * 100) + '% of the average is in the books.'; time = 'Bell in <b>' + clock(E.r) + '</b>'; }
-  else if (efOk) { cls = 'hold'; label = 'EF RULE · WITH CAUTION'; head = 'BUY ' + E.fav + ' at ' + cents(ask) + ' with caution'; sub = 'Your tested rule (Oct 6–22): favorite at 80–94¢ at 13:00 / 12:00 left, hold to the end. Not a sure thing: flip chance ' + chanceTxt(favF.odds) + ', fastest possible flip ' + fastTxt(favF.fastest) + '.'; time = 'Check window closes in <b>' + secsTxt(efWin < 160 ? 150 - efWin : 210 - efWin) + '</b>'; }
-  else if (efCheck) { cls = 'hold'; head = 'EF check — ' + E.fav + ' for now'; sub = 'Buy only if the button shows 80–94¢' + (Number.isFinite(ask) ? ' (it shows ' + cents(ask) + ')' : ' (no ask known: read it off the button)') + '. Flip chance before the bell ' + chanceTxt(favF.odds) + '.'; time = 'Check window closes in <b>' + secsTxt(efWin < 160 ? 150 - efWin : 210 - efWin) + '</b>'; }
-  else if (E.pFav >= 0.97) { cls = 'ready'; head = 'GET READY — ' + E.fav + ' is close to a sure thing'; sub = 'The math likes it, but a flip is still possible: ' + whereTxt(E) + '. Chance before the bell ' + chanceTxt(favF.odds) + '. Buying now is a caution play' + (Number.isFinite(ask) ? '; the button shows ' + cents(ask) + '.' : '.'); time = Number.isFinite(E.sureEta) ? 'Becomes a SURE THING in ~<b>' + secsTxt(E.sureEta) + '</b> if BTC holds here' : 'Needs a bigger gap first · <b>' + clock(E.r) + '</b> left'; }
-  else if (E.lead < 10) { cls = 'wait'; head = 'WAIT — BTC is hugging the target'; sub = E.fav + ' for now by $' + fmt$(E.lead, 0) + '. A coin flip until the gap opens.'; time = 'Round ends in <b>' + clock(E.r) + '</b>'; }
-  else {
-    cls = 'wait'; head = 'WAIT — ' + E.fav + ' for now';
-    sub = 'Flip chance before the bell ' + chanceTxt(favF.odds) + ' — ' + whereTxt(E) + '. The sure thing usually shows up inside the last 2 minutes.';
-    time = Number.isFinite(E.sureEta) ? 'Could become a SURE THING in ~<b>' + secsTxt(E.sureEta) + '</b> if BTC holds here' : 'Round ends in <b>' + clock(E.r) + '</b>';
-  }
+  else if (fav.locked && Number.isFinite(ask)) { cls = 'ready'; head = E.fav + ' is LOCKED but costs ' + cents(ask); sub = 'Above your max of ' + cents(maxAsk) + '. Net would be ' + ((1 - ask - fee(ask, S.fee)) * 100).toFixed(1) + '¢/share — raise the max in Settings if that is still worth it.'; time = 'Settles in <b>' + clock(E.r) + '</b>'; }
+  else if (E.r <= (S.killSecs || 45)) { head = 'Round ending — no new buys'; sub = E.fav + ' for now, not locked: real flip chance ' + chanceTxt(E.buyIn ? E.buyIn.flip : NaN) + '. ' + Math.round(E.d.known * 100) + '% of the average is in the books.'; time = 'Bell in <b>' + clock(E.r) + '</b> · ' + etaTxt(fav.eta); }
+  else if (efOk) { cls = 'hold'; label = 'EF RULE · WITH CAUTION'; head = 'BUY ' + E.fav + ' at ' + cents(ask) + ' with caution'; sub = 'Your tested rule (Oct 6–22): favorite at ' + S.efLo + '–' + S.efHi + '¢ at 13:00 / 12:00 left, hold to the end. Not a sure thing: real flip chance ' + chanceTxt(1 - E.pFavAdj) + ', button scare ' + chanceTxt(fav.scare) + '.'; time = 'Check window closes in <b>' + efClose + '</b>'; }
+  else if (efCheck) { cls = 'hold'; head = 'EF check — ' + E.fav + ' for now'; sub = 'Buy only if the button shows ' + S.efLo + '–' + S.efHi + '¢' + (Number.isFinite(ask) ? ' (it shows ' + cents(ask) + ')' : ' (no ask known: read it off the button)') + '. Real flip chance ' + chanceTxt(1 - E.pFavAdj) + '.'; time = 'Check window closes in <b>' + efClose + '</b>'; }
+  else if (E.pFav >= 0.97) { cls = 'ready'; head = 'GET READY — ' + E.fav + ' is close to LOCKED'; sub = 'To flip it BTC must ' + fav.dropWord + ' $' + fmt$(fav.cush, 0) + ' and hold; the record for the time left is $' + fmt$(fav.rec, 0) + '. Real flip chance ' + chanceTxt(1 - E.pFavAdj) + ', button scare ' + chanceTxt(fav.scare) + '. Buying now is a caution play' + (Number.isFinite(ask) ? '; the button shows ' + cents(ask) + '.' : '.'); time = '<b>' + etaTxt(fav.eta) + '</b> · <b>' + clock(E.r) + '</b> left'; }
+  else if (E.lead < 10) { head = 'WAIT — BTC is hugging the target'; sub = E.fav + ' for now by $' + fmt$(E.lead, 0) + '. A coin flip until the gap opens.'; time = 'Round ends in <b>' + clock(E.r) + '</b>'; }
+  else { head = 'WAIT — ' + E.fav + ' for now'; sub = 'Real flip chance ' + chanceTxt(1 - E.pFavAdj) + ' — ' + whereTxt(E) + '. The sure thing usually shows up inside the last 2 minutes.'; time = '<b>' + etaTxt(fav.eta) + '</b> · <b>' + clock(E.r) + '</b> left'; }
   el.className = 'do ' + cls; $('do-label').textContent = label; $('do-head').textContent = head; $('do-sub').textContent = sub; $('do-time').innerHTML = time;
+  if (key === 'sure' || key === 'locked' || key === 'sell' || key === 'sellnow') announce(key, head);
 
-  // NEXT
-  let nh = '', ns = '', nt = '';
-  if (E.r > 0 && Number.isFinite(E.target)) {
-    if (E.r <= WIN + DELAY) { nh = 'Round settles · next target forming'; ns = 'The last 60 s set the next price-to-beat: ' + fmt$(E.d.mean) + ' so far. Decide now; buying stops at the bell.'; nt = 'Bell in <b>' + clock(E.r) + '</b>'; }
-    else if (myPos) { const x = exitCheck(E, myPos.side); nh = x.sure ? 'Then: ride it to the bell' : 'Then: watch for GET OUT'; ns = x.sure ? 'Nothing can flip it now. The only thing left is the bell.' : 'It fires at a ' + (S.getOutOdds || 25) + '% flip chance, within $' + fmt$(E.cushion, 0) + ' of the target, or if BTC would reach the target inside ' + (S.crossSecs || 90) + ' s at its pace. Sell the moment it shows.'; nt = 'Bell in <b>' + clock(E.r) + '</b>'; }
-    else { nh = Number.isFinite(E.sureEta) ? 'Sure thing may open' : 'Sure-thing check keeps running'; ns = Number.isFinite(E.sureEta) ? E.fav + ' becomes a sure thing if BTC holds this gap. Have the ' + E.fav + ' button ready.' : 'A sure thing needs the target out of reach even at record pace for the time left. It usually opens in the final 2 minutes.'; nt = Number.isFinite(E.sureEta) ? 'in ~<b>' + secsTxt(E.sureEta) + '</b>' : 'Bell in <b>' + clock(E.r) + '</b>'; }
-  } else if (E.r <= 0) { nh = 'Next round'; ns = 'Target = this round\'s settlement average.'; nt = ''; }
-  $('nx-head').textContent = nh; $('nx-sub').textContent = ns; $('nx-time').innerHTML = nt;
+  // KILL LINE card: the side that matters (mine if I am in, else the one for now)
+  const nx = $('nx'); let ncls = 'do next', nl = 'KILL LINE', nh = '—', ns = '', nt = '';
+  if (E.r > 0 && Number.isFinite(E.target) && Number.isFinite(E.spot)) {
+    const side = myPos ? myPos.side : E.fav, x = E.sideInfo(side);
+    nl = 'KILL LINE · ' + side + (myPos ? ' (mine)' : ' (for now)');
+    if (!Number.isFinite(x.cush)) { nh = '—'; }
+    else if (x.cush <= 0) { ncls += ' k-gone'; nh = side + ' is past the kill line by $' + fmt$(-x.cush, 0); ns = 'If BTC holds here the final average lands on the other side.'; }
+    else {
+      ncls += x.locked ? ' k-lock' : x.thin ? ' k-thin' : '';
+      nh = '$' + fmt$(x.cush, 0) + ' ' + x.dropWord + ' flips ' + side;
+      ns = 'BTC must average ' + (side === 'UP' ? 'below' : 'above') + ' ' + fmt$(x.killPM) + ' for the rest of the window' + (E.knownN > 0 ? ' (' + E.knownN + ' of 60 prints in the books)' : '') + ' · bad minute $' + fmt$(x.bad, 0) + ' · record $' + fmt$(x.rec, 0) + ' · ' + (x.locked ? 'LOCKED' : etaTxt(x.eta)) + (Number.isFinite(x.etaKill) ? ' · at the last-' + x.paceK + '-s pace BTC reaches it in ~' + secsTxt(x.etaKill) : '') + (x.thin ? ' · THIN: sell above ' + cents(x.sellAbove) : '');
+    }
+    nt = 'PM line in <b>' + Math.round(E.lookS) + ' s</b> → <b>' + fmt$(E.pmAhead) + '</b> (' + fmtS(E.pmAhead - E.target, 0) + ' vs target, ±$' + fmt$(E.pmAheadSd, 0) + ')' + (E.lookS < (S.lookS || 30) ? ' — the bell' : '') + ' · BTC last 10 s <b>' + fmtS(E.mv10, 0) + '</b> · 30 s <b>' + fmtS(E.mv30, 0) + '</b>';
+  } else if (E.r <= 0) { nh = 'Next round'; ns = 'Target = this round\'s final price (the index series value at the bell).'; }
+  nx.className = ncls; $('nx-label').textContent = nl; $('nx-head').textContent = nh; $('nx-sub').textContent = ns; $('nx-time').innerHTML = nt;
 }
 
 // ---------- panels ----------
+function renderWarn(E) {
+  const w = [];
+  if (IDX.ok === false || (IDX.ok === null && S.relay === '')) w.push('Index series off (no relay' + (IDX.ok === false ? ', blocked' : '') + '): the PM line, the final price and the basis are modeled from Coinbase. Deploy scripts/pm15_relay_worker.js and set the relay URL for exact numbers.');
+  else if (IDX.ok && Number.isFinite(E.pmAge) && E.pmAge > 8) w.push('Index series is ' + E.pmAge + ' s stale — using the Coinbase model meanwhile.');
+  else if (IDX.ok && !Number.isFinite(E.pmAge)) w.push('Index series: no fresh point yet.');
+  if (IDX.ok && IDX.latest && IDX.latest - E.sec > 2) w.push('Your clock looks ' + (IDX.latest - E.sec) + ' s behind the exchange. Fix the device time; the countdown and the window are off by that much.');
+  if (R.targetSrc === 'est') w.push('Target is estimated from Coinbase (±$15): LOCKED needs the exact one. Type it from the PM screen or turn the relay on.');
+  if (R.note) w.push(R.note);
+  if (REC.ready && !REC.bad) w.push('Bad-minute percentiles not scanned yet (rescan runs on load); using 3σ meanwhile.');
+  if (lockStats.failed) w.push('LOCK FAILURE on record: ' + lockStats.failed + ' LOCKED call(s) lost. Raise the record margin / slack before trusting LOCKED.');
+  const el = $('warn'); el.hidden = !w.length; el.textContent = w.join('  ·  ');
+}
 function renderHeader(E) {
   const r = E.r, tm = $('timer');
   tm.textContent = r > 0 ? clock(r) : 'ENDED'; tm.className = 'timer num' + (r <= 60 ? ' closing' : '') + (r <= 10 ? ' final' : '');
-  $('timer-sub').textContent = r > 0 ? (r <= WIN + DELAY ? Math.round(E.d.known * 100) + '% of the settlement average is in the books' : 'left in this round') : 'settling';
+  $('timer-sub').textContent = r > 0 ? (E.knownN > 0 ? E.knownN + ' of 60 prints in the books' : 'left in this round') : 'settling';
   $('h-target').textContent = fmt$(E.target);
-  $('h-target-src').textContent = R.targetSrc === 'api' ? 'exact (Polymarket API)' : R.targetSrc === 'manual' ? 'typed from your screen' : R.targetSrc === 'est' ? 'estimated: 60-s average before the open' + (E.offKnown ? '' : ' (no basis offset yet)') : 'unknown';
-  $('h-pm').textContent = fmt$(E.pmShown); $('h-pm-diff').textContent = Number.isFinite(E.pmShown) && Number.isFinite(E.target) ? fmtS(E.pmShown - E.target) + ' vs target' : '—';
-  $('h-spot').textContent = fmt$(E.spot); $('h-spot-diff').textContent = Number.isFinite(E.spot) && Number.isFinite(E.target) ? fmtS(E.spot + E.off - E.target) + ' vs target (basis-adjusted)' : '—';
+  $('h-target-src').textContent = R.targetSrc === 'api' ? 'exact (Polymarket API)' : R.targetSrc === 'series' ? 'exact (index series at the last bell)' : R.targetSrc === 'manual' ? 'typed from your screen' : R.targetSrc === 'est' ? 'estimated: Coinbase 60-s average before the open' + (E.offKnown ? ' + basis' : ' (no basis yet)') : 'unknown';
+  $('h-pm').textContent = fmt$(E.pmShown); $('h-pm-diff').textContent = (Number.isFinite(E.pmShown) && Number.isFinite(E.target) ? fmtS(E.pmShown - E.target) + ' vs target' : '—') + (E.pmSrc === 'series' ? ' · exact' : ' · modeled');
+  $('h-spot').textContent = fmt$(E.spot); $('h-spot-diff').textContent = Number.isFinite(E.spot) && Number.isFinite(E.target) ? fmtS(E.spot - E.tgtChart) + ' vs target (basis-adjusted)' : '—';
   const lead = $('h-lead'); lead.textContent = Number.isFinite(E.pUp) ? E.fav : '—'; lead.className = 'v num ' + (E.fav === 'UP' ? 'up' : 'down');
-  $('h-lead-p').textContent = Number.isFinite(E.pUp) && E.flipOf ? (() => { const f = E.flipOf(E.fav); return f.sure ? 'SURE THING — nothing can flip it now' : 'not a sure thing · flip chance before the bell ' + chanceTxt(f.odds) + ' · fastest possible flip ' + fastTxt(f.fastest); })() : '—';
+  $('h-lead-p').textContent = Number.isFinite(E.pUp) ? (E.favInfo.locked ? 'LOCKED — nothing can flip it now' : 'not locked · real flip chance ' + chanceTxt(1 - E.pFavAdj) + ' · button scare ' + chanceTxt(E.favInfo.scare) + ' · cushion $' + fmt$(E.favInfo.cush, 0)) : '—';
   const chip = (id, cls, txt) => { const c = $(id); c.className = 'chip ' + cls; c.lastChild.textContent = txt; };
   chip('chip-cb', E.fresh ? 'ok' : cbState === 'live' ? 'warn' : 'bad', 'Coinbase: ' + (E.fresh ? 'live' : cbState));
-  chip('chip-pm', R.apiOk === true ? 'ok' : R.apiOk === false ? 'bad' : 'warn', 'PM API: ' + (R.apiOk === true ? (R.book ? 'live book' : 'market data') : R.apiOk === false ? 'blocked (CORS) · use a relay or type the target' : 'trying…'));
-  chip('chip-off', E.offKnown ? 'ok' : 'warn', 'Basis offset: ' + (E.offKnown ? fmtS(E.off) + ' (' + R.offsetSrc + ')' : 'unknown'));
-  chip('chip-vol', 'ok', 'Vol: ' + fmt$(E.sig, 1) + '/√s · ±' + fmt$(E.sig * Math.sqrt(60), 0) + ' per min (1σ)');
+  chip('chip-pm', R.apiOk === true ? 'ok' : R.apiOk === false ? 'bad' : 'warn', 'PM API: ' + (R.apiOk === true ? (R.book && Date.now() - R.bookAt < 15000 ? 'live book' : 'market data') : R.apiOk === false ? 'blocked (CORS) · use a relay' : 'trying…'));
+  chip('chip-series', IDX.ok && Number.isFinite(E.pmAge) && E.pmAge <= 8 ? 'ok' : IDX.ok ? 'warn' : 'bad', 'PM index series: ' + (IDX.ok ? (Number.isFinite(E.pmAge) ? 'live (' + E.pmAge + ' s old)' : 'no point yet') : IDX.ok === false ? 'blocked · modeled' : S.relay ? 'trying…' : 'needs the relay'));
+  chip('chip-off', E.offKnown ? (R.offsetSrc === 'live' ? 'ok' : 'warn') : 'warn', 'Basis index−Coinbase: ' + (E.offKnown ? fmtS(E.off) + (Number.isFinite(R.offsetSd) ? ' ±' + fmt$(R.offsetSd, 2) : '') + ' (' + R.offsetSrc + ')' : 'unknown'));
+  chip('chip-vol', 'ok', 'Vol: ' + fmt$(E.sig, 1) + '/√s · ±' + fmt$(E.sig * Math.sqrt(60), 0) + ' per min (1σ)' + (E.sig > E.sigLive ? ' · floored (quiet patch)' : ''));
 }
 function renderFeed(E) {
   $('f-spot').textContent = fmt$(E.spot); $('f-pm').textContent = fmt$(E.pmShown);
-  const lag = $('f-lag'); lag.innerHTML = Number.isFinite(E.lagS) ? 'Polymarket is showing a price from <b>' + E.lagS + ' s</b> ago, <b>' + fmtS((E.spot + E.off) - E.pmShown) + '</b> from the spot (basis-adjusted)' : 'PM lag: <b>—</b> (it shows a 60-s average: ~30 s behind a steady move)';
+  const lag = $('f-lag'); lag.innerHTML = 'The PM line is a 60-print average: ~30 s behind a steady move · now <b>' + fmtS(E.spot + E.off - E.pmShown) + '</b> from the spot (basis-adjusted) · ' + (E.pmSrc === 'series' ? 'exact from the exchange' : 'modeled from Coinbase');
   const ins = $('f-insight'); let txt = '', cls = '';
   if (Number.isFinite(E.target) && Number.isFinite(E.spot)) {
     const spotAdj = E.spot + E.off, spotSide = spotAdj >= E.target ? 'UP' : 'DOWN', pmSide = E.pmShown >= E.target ? 'UP' : 'DOWN';
     const away = Math.abs(spotAdj - E.target) - Math.abs(E.pmShown - E.target);
-    if (spotSide !== pmSide) { txt = 'Spot has crossed to the ' + spotSide + ' side but Polymarket still shows ' + pmSide + ' for now. The button prices will follow the spot within ~' + (Number.isFinite(E.lagS) ? E.lagS : 30) + ' s; the settlement average moves slower than either.'; cls = 'warn'; }
-    else if (away > 1) { txt = 'Spot is pulling away from the target faster than PM shows (' + fmtS(away).replace('+', '+') + ' more). PM\'s number will keep moving ' + spotSide + ' even if BTC stops now, so ' + spotSide + ' is strengthening.'; cls = 'good'; }
-    else if (away < -1) { txt = 'Spot has turned back toward the target; PM\'s number has not shown it yet. Expect ' + pmSide + ' to weaken over the next ~' + (Number.isFinite(E.lagS) ? E.lagS : 30) + ' s' + (Math.abs(E.vel) > 0.05 ? ' (moving ' + fmtS(E.vel * 60).replace('+', '+') + '/min)' : '') + '.'; cls = 'bad'; }
-    else { txt = 'Spot and PM agree: ' + spotSide + ' for now, by ' + fmtS(Math.abs(spotAdj - E.target)).replace('+', '') + '. Moving ' + fmtS(E.vel * 60) + '/min' + (Math.abs(E.vel * 60) < 5 ? ' — calm.' : (Math.sign(E.vel) === (spotSide === 'UP' ? 1 : -1) ? ' — away from the target.' : ' — back toward the target.')); cls = ''; }
+    if (spotSide !== pmSide) { txt = 'Spot has crossed to the ' + spotSide + ' side but the PM line still shows ' + pmSide + '. The button prices follow the spot, not the line; the settlement average moves slower than either — check the KILL LINE card before reacting.'; cls = 'warn'; }
+    else if (away > 1) { txt = 'Spot is pulling away from the target faster than the line shows (' + fmtS(away, 0) + ' more). The line keeps moving ' + spotSide + ' even if BTC stops now.'; cls = 'good'; }
+    else if (away < -1) { txt = 'Spot has turned back toward the target; the line has not shown it yet. Expect ' + pmSide + ' to weaken over the next ~30 s' + (Number.isFinite(E.mv30) ? ' (' + fmtS(E.mv30, 0) + ' in the last 30 s)' : '') + '.'; cls = 'bad'; }
+    else { txt = 'Spot and the line agree: ' + spotSide + ' for now, by ' + fmtS(Math.abs(spotAdj - E.target), 0).replace('+', '') + '. Last 30 s ' + fmtS(E.mv30, 0) + (Math.abs(E.mv30) < 10 ? ' — calm.' : (Math.sign(E.mv30) === (spotSide === 'UP' ? 1 : -1) ? ' — away from the target.' : ' — back toward the target.')); cls = ''; }
   } else txt = 'Waiting for the target.';
   ins.textContent = txt; ins.className = 'insight ' + cls;
 }
@@ -888,7 +1083,7 @@ function renderPaper(E) {
   else if (paper.state === 'firing') { cls += ' firing'; s = 'SELLING!'; n = paper.sellPlan || ''; }
   else if (paper.state === 'sold') { cls += ' done'; s = 'Sold'; }
   else if (paper.side) { s = paper.sellPlan || ('Holding ' + paper.side + ' to the bell'); n = paper.note; }
-  else { const sureFav = E.fav === 'UP' ? E.sureUp : E.sureDn; s = E.r > 0 ? (S.paperOn === 'math' ? (E.pFav >= S.lockP / 100 ? 'Math lock seen — buying' : 'Watching for a math lock') : S.paperOn === 'edge' ? 'Watching for an edge of ' + (S.edgeMin || 6) + '¢+' : (sureFav ? 'Sure thing seen — buying' : 'Watching for a sure thing')) : 'Round over'; n = paper.note || (S.paperOn === 'math' ? 'Buys when the math says ' + S.lockP + '%+ (not a sure thing); sells on GET OUT or a flip.' : S.paperOn === 'edge' ? 'Buys the favorite when the edge after fee is ' + (S.edgeMin || 6) + '¢+ and the scare is under ' + (S.edgeScare || 15) + '%; sells on GET OUT or a flip.' : 'Buys the sure thing (record pace can\'t flip it) with the stake in Settings; sells on GET OUT or a flip.'); }
+  else { s = E.r > 0 ? (S.paperOn === 'math' ? (E.pFav >= S.lockP / 100 ? 'Math lock seen — buying' : 'Watching for a math lock') : S.paperOn === 'edge' ? 'Watching for an edge of ' + (S.edgeMin || 6) + '¢+' : (E.favInfo.locked ? 'LOCKED seen — buying' : 'Watching for a lock')) : 'Round over'; n = paper.note || (S.paperOn === 'math' ? 'Buys when the math says ' + S.lockP + '%+ (not a sure thing); sells on SELL.' : S.paperOn === 'edge' ? 'Buys the favorite when the edge after fee is ' + (S.edgeMin || 6) + '¢+ and the scare is under ' + (S.edgeScare || 15) + '%; sells on SELL.' : 'Buys the locked side with the stake in Settings; sells on SELL (after your latency).'); }
   cell.className = cls; st.textContent = s; note.textContent = n;
   const pMine = paper.side ? (paper.side === 'UP' ? E.pUp : 1 - E.pUp) : NaN; const q = paper.side ? quotes(paper.side) : { bid: NaN };
   const mark = Number.isFinite(q.bid) ? q.bid : pMine; const value = paper.shares * (Number.isFinite(mark) ? mark : 0);
@@ -900,17 +1095,16 @@ function renderPaper(E) {
 function renderPlays(E) {
   const tb = $('plays'); if (!Number.isFinite(E.pUp) || E.r <= 0) { tb.innerHTML = '<tr><td colspan="4" class="hint">' + (E.r <= 0 ? 'Round over.' : 'Waiting for the target.') + '</td></tr>'; return; }
   const rows = [];
-  // Win = the math (never a guarantee); Safety = SURE THING when record pace can't flip it, otherwise the flip chance in plain words
-  const add = (name, side, p, px, kind) => { const [g, gc] = gradeOf(p); const f = E.flipOf(side); const net = Number.isFinite(px) ? (kind === 'sell' ? px - fee(px, S.fee) : (f.sure ? 1 : p) - px - fee(px, S.fee)) : NaN;
-    const safety = f.sure ? '<span class="grade gA">SURE</span> nothing can flip it' : '<span class="grade ' + gc + '">' + g + '</span> flip chance ' + chanceTxt(f.odds);
-    rows.push('<tr><td>' + name + '</td><td class="n">' + (f.sure ? '100%' : pct(Math.min(p, 0.995))) + '</td><td class="n">' + (Number.isFinite(net) ? (net >= 0 ? '+' : '') + (net * 100).toFixed(1) + '¢' : 'need a price') + '</td><td>' + safety + '</td></tr>'); };
+  const add = (name, side, p0, px, kind) => { const f = E.sideInfo(side); const p = Number.isFinite(f.pAdj) ? f.pAdj : p0; const [g, gc] = gradeOf(p); const net = Number.isFinite(px) ? (kind === 'sell' ? px - fee(px, S.fee) : (f.locked ? 1 : p) - px - fee(px, S.fee)) : NaN;
+    const safety = f.locked ? '<span class="grade gA">LOCKED</span> nothing can flip it' : '<span class="grade ' + gc + '">' + g + '</span> flip chance ' + chanceTxt(1 - p) + ' · cushion $' + fmt$(f.cush, 0) + (f.thin ? ' (thin)' : '');
+    rows.push('<tr><td>' + name + '</td><td class="n">' + (f.locked ? '100%' : pct(Math.min(p, 0.995))) + '</td><td class="n">' + (Number.isFinite(net) ? (net >= 0 ? '+' : '') + (net * 100).toFixed(1) + '¢' : 'need a price') + '</td><td>' + safety + '</td></tr>'); };
   const qf = quotes(E.fav), qd = quotes(E.dog);
   add('Buy ' + E.fav + ' (for now)' + (Number.isFinite(qf.ask) ? ' @' + cents(qf.ask) : ''), E.fav, E.pFav, qf.ask, 'buy');
   add('Buy ' + E.dog + ' (other side)' + (Number.isFinite(qd.ask) ? ' @' + cents(qd.ask) : ''), E.dog, 1 - E.pFav, qd.ask, 'buy');
   if (myPos) { const pm = myPos.side === 'UP' ? E.pUp : 1 - E.pUp; const qm = quotes(myPos.side);
     add('Hold my ' + myPos.side + ' to the bell', myPos.side, pm, myPos.price, 'buy');
-    rows.push('<tr><td>Sell my ' + myPos.side + ' now' + (Number.isFinite(qm.bid) ? ' @' + cents(qm.bid) : '') + '</td><td class="n">—</td><td class="n">' + (Number.isFinite(qm.bid) ? fmtS(qm.bid * myPos.shares - fee(qm.bid, S.fee) * myPos.shares - myPos.spent) : 'need a bid') + '</td><td><span class="grade gA">SURE</span> cash now, gives up ' + (Number.isFinite(qm.bid) ? ((pm - qm.bid) * 100).toFixed(1) + '¢/share' : 'the rest') + '</td></tr>'); }
-  const elapsed = ROUND - E.r; if (elapsed >= 110 && elapsed <= 200) { const [g, gc] = gradeOf(E.pFav); rows.push('<tr><td>Early Favorite rule (13:00/12:00 left, fav at 80–94¢)</td><td class="n">' + pct(Math.min(E.pFav, 0.995)) + '</td><td class="n">tested Oct 6–22</td><td><span class="grade ' + gc + '">' + g + '</span> with caution · flip chance ' + chanceTxt(E.flipOf(E.fav).odds) + '</td></tr>'); }
+    rows.push('<tr><td>Sell my ' + myPos.side + ' now' + (Number.isFinite(qm.bid) ? ' @' + cents(qm.bid) : '') + '</td><td class="n">—</td><td class="n">' + (Number.isFinite(qm.bid) ? fmtS(qm.bid * myPos.shares - fee(qm.bid, S.fee) * myPos.shares - myPos.spent) : 'need a bid') + '</td><td><span class="grade gA">CASH</span> now, gives up ' + (Number.isFinite(qm.bid) ? ((pm - qm.bid) * 100).toFixed(1) + '¢/share vs the math' : 'the rest') + '</td></tr>'); }
+  const elapsed = ROUND - E.r; if (elapsed >= 110 && elapsed <= 210) { const [g, gc] = gradeOf(E.pFav); rows.push('<tr><td>Early Favorite rule (13:00/12:00 left, fav at ' + S.efLo + '–' + S.efHi + '¢)</td><td class="n">' + pct(Math.min(E.pFav, 0.995)) + '</td><td class="n">tested Oct 6–22</td><td><span class="grade ' + gc + '">' + g + '</span> with caution · flip chance ' + chanceTxt(1 - E.pFavAdj) + '</td></tr>'); }
   tb.innerHTML = rows.join('');
 }
 function renderBuyIn(E) {
@@ -921,32 +1115,35 @@ function renderBuyIn(E) {
     const win = 1 - b.ask - fee(b.ask, S.fee);
     head.className = 'b-head ' + b.grade.toLowerCase();
     head.textContent = b.grade + (b.scary && b.grade !== 'POOR' ? ' BUT SCARY' : '') + ' — ' + E.fav + ' at ' + c(b.ask) + (b.src === 'book' ? '' : ' (typed)');
-    sub.innerHTML = 'Right: <span class="n">+' + c(win) + '</span>/share (+' + Math.round(win / b.ask * 100) + '%). Wrong: <span class="n">−' + c(b.ask) + '</span>/share. Win if held to the bell <span class="n">' + (b.winHold >= 1 ? '100%' : Math.round(b.winHold * 100) + '%') + '</span>; the display flips against you first <span class="n">' + chanceTxt(b.scare) + '</span>. Edge after fee <span class="n">' + (b.edge >= 0 ? '+' : '−') + (Math.abs(b.edge) * 100).toFixed(1) + '¢</span>/share' + (b.edge > 0 ? ' · size ¼-Kelly <span class="n">' + Math.round(b.kelly * 25) + '%</span> of bankroll' : ' · no size: overpriced for the risk') + '.';
+    sub.innerHTML = 'Right: <span class="n">+' + c(win) + '</span>/share (+' + Math.round(win / b.ask * 100) + '%). Wrong: <span class="n">−' + c(b.ask) + '</span>/share. Win if held to the bell <span class="n">' + (b.winHold >= 1 ? '100% (locked)' : pct(Math.min(b.winHold, 0.995))) + '</span>; the button scares you first (spot crosses) <span class="n">' + chanceTxt(b.scare) + '</span>. Edge after fee <span class="n">' + (b.edge >= 0 ? '+' : '−') + (Math.abs(b.edge) * 100).toFixed(1) + '¢</span>/share' + (b.edge > 0 ? ' · size ¼-Kelly <span class="n">' + Math.round(b.kelly * 25) + '%</span> of bankroll' : ' · no size: overpriced for the risk') + '.';
   } else {
     head.className = 'b-head none'; head.textContent = 'No ask yet — read the ' + E.fav + ' button';
-    sub.innerHTML = 'Win if held to the bell <span class="n">' + (b.winHold >= 1 ? '100%' : Math.round(b.winHold * 100) + '%') + '</span>; the display flips against you first <span class="n">' + chanceTxt(b.scare) + '</span>. Type the ask in Settings (or use the relay) to grade it.';
+    sub.innerHTML = 'Win if held to the bell <span class="n">' + (b.winHold >= 1 ? '100% (locked)' : pct(Math.min(b.winHold, 0.995))) + '</span>; the button scares you first <span class="n">' + chanceTxt(b.scare) + '</span>. Type the ask in Settings (or use the relay) to grade it.';
   }
   lad.innerHTML = '<span class="great">GREAT under <b>' + c(b.great) + '</b></span><span class="good">GOOD under <b>' + c(b.good) + '</b></span><span class="be">break-even <b>' + c(b.be) + '</b></span>';
   best.textContent = Number.isFinite(R.bestEdge) ? 'Best buy-in seen this round: ' + (R.bestEdge >= 0 ? '+' : '−') + (Math.abs(R.bestEdge) * 100).toFixed(1) + '¢ edge at ' + c(R.bestAsk) + ' with ' + clock(R.bestLeft) + ' left.' : 'Lower ask = more reward; the edge says whether the extra risk is paid for.';
 }
 function renderMine(E) {
-  if (!myPos) { $('my-hold').textContent = 'nothing'; $('my-cost').textContent = '—'; $('my-worth').textContent = '—'; $('my-win').textContent = '—'; return; }
-  const pm = myPos.side === 'UP' ? E.pUp : 1 - E.pUp; const q = quotes(myPos.side);
+  if (!myPos) { $('my-hold').textContent = 'nothing'; $('my-cost').textContent = '—'; $('my-worth').textContent = '—'; $('my-sell').textContent = '—'; $('my-win').textContent = '—'; return; }
+  const x = E.exitCheck(myPos.side); const pmShow = x.locked ? 1 : Math.min(x.pAdj, 0.995);
   $('my-hold').textContent = myPos.side + ' · ' + myPos.shares.toFixed(1) + ' shares';
   $('my-cost').textContent = cents(myPos.price) + ' · $' + fmt$(myPos.spent);
-  const fm = E.flipOf ? E.flipOf(myPos.side) : null, pmShow = fm && fm.sure ? 1 : Math.min(pm, 0.995);
-  $('my-worth').textContent = (Number.isFinite(pm) ? (fm && fm.sure ? '100% (sure thing)' : pct(pmShow) + ' by the math') + ' · $' + fmt$(myPos.shares * pmShow) + ' (' + fmtS(myPos.shares * pmShow - myPos.spent) + ')' : '—') + (Number.isFinite(q.bid) ? ' · bid ' + cents(q.bid) : '');
+  $('my-worth').textContent = (Number.isFinite(x.p) ? (x.locked ? '100% (locked)' : pct(pmShow) + ' by the math') + ' · $' + fmt$(myPos.shares * pmShow) + ' (' + fmtS(myPos.shares * pmShow - myPos.spent) + ')' : '—') + (Number.isFinite(x.bid) ? ' · bid ' + cents(x.bid) : '');
+  $('my-sell').textContent = Number.isFinite(x.bidNet) ? '$' + fmt$(myPos.shares * x.bidNet) + ' (' + fmtS(myPos.shares * x.bidNet - myPos.spent) + ') at ' + cents(x.bid) + (x.bidSrc === 'typed' ? ' typed' : '') : 'type the bid, or use the relay';
   $('my-win').textContent = '$' + fmt$(myPos.shares) + ' (' + fmtS(myPos.shares - myPos.spent) + ')';
 }
 function renderNext(E) {
-  if (!Number.isFinite(E.d.mean)) return;
-  const soFar = E.r <= WIN + DELAY ? E.d.mean : NaN;
-  $('n-target').textContent = Number.isFinite(soFar) ? fmt$(soFar) + ' (' + Math.round(E.d.known * 100) + '% set)' : 'forms in ' + clock(E.r - WIN - DELAY);
-  $('n-hint').textContent = Number.isFinite(soFar) ? 'Whatever the average lands on at the bell becomes the next target. If spot sits far from it, the next round may open with a lead already.' : 'The next price-to-beat is this round\'s settlement average. In the final minute it is already taking shape.';
+  if (!E.d || !Number.isFinite(E.d.mean)) return;
+  const soFar = E.knownN > 0 ? E.d.mean : NaN;
+  $('n-target').textContent = Number.isFinite(soFar) ? fmt$(soFar) + ' (' + E.knownN + ' of 60 prints)' : 'forms in ' + clock(E.r - WIN);
+  $('n-hint').textContent = Number.isFinite(soFar) ? 'Whatever the average lands on at the bell becomes the next target. If spot sits far from it, the next round opens with a lead already.' : 'The next price-to-beat is this round\'s final price. In the final minute it is already taking shape.';
 }
 function renderPast() {
-  const box = $('past'); if (!history.length) { box.innerHTML = '<span class="hint">None yet.</span>'; return; }
-  box.innerHTML = history.slice(-12).reverse().map(h => '<span class="pill ' + (h.result === 'UP' ? 'up' : h.result === 'DOWN' ? 'down' : '') + (h.lockAt != null ? ' locked' : '') + '"><b>' + (h.result === 'UP' ? '↑' : h.result === 'DOWN' ? '↓' : '·') + '</b><span>' + etFmt.format(new Date(h.T0 * 1000)).replace(/ (AM|PM)$/, '') + '</span><span>' + (Number.isFinite(h.margin) ? fmtS(h.margin) : '—') + '</span><span>' + (h.lockAt != null ? 'bought ' + clock(h.lockAt) + ' left' : 'no buy') + '</span></span>').join('');
+  const box = $('past'); const lr = $('lockrec');
+  lr.className = 'lockrec' + (lockStats.failed ? ' bad' : '');
+  lr.innerHTML = 'Lock record: <b>' + lockStats.held + '</b> LOCKED calls held, <b>' + lockStats.failed + '</b> lost' + (lockStats.checked ? ' · series settlement matched the API <b>' + lockStats.exact + '/' + lockStats.checked + '</b>' : '') + (lockStats.lastFail ? ' · last loss ' + etFmt.format(new Date(lockStats.lastFail.T0 * 1000)) + ' ' + lockStats.lastFail.side + ' called at ' + clock(lockStats.lastFail.at) + ' left with $' + fmt$(lockStats.lastFail.cush, 0) + ' cushion' : '');
+  if (!history.length) { box.innerHTML = '<span class="hint">None yet.</span>'; return; }
+  box.innerHTML = history.slice(-12).reverse().map(h => { const fail = h.lockCall && h.result && h.lockJudged && h.lockCall.side !== h.result; return '<span class="pill ' + (h.result === 'UP' ? 'up' : h.result === 'DOWN' ? 'down' : '') + (h.lockCall ? ' locked' : '') + (fail ? ' failed' : '') + '" title="' + (h.settleSrc || '') + '"><b>' + (h.result === 'UP' ? '↑' : h.result === 'DOWN' ? '↓' : '·') + '</b><span>' + etFmt.format(new Date(h.T0 * 1000)).replace(/ (AM|PM)$/, '') + '</span><span>' + (Number.isFinite(h.margin) ? fmtS(h.margin) : '—') + '</span><span>' + (h.lockCall ? (fail ? 'LOCK LOST ' : 'locked ') + h.lockCall.side + ' ' + clock(h.lockCall.at) + ' left' : 'no lock') + '</span></span>'; }).join('');
 }
 
 // ---------- chart ----------
@@ -956,15 +1153,16 @@ function drawChart(E) {
   if (cv.width !== Math.round(W * dpr) || cv.height !== Math.round(H * dpr)) { cv.width = Math.round(W * dpr); cv.height = Math.round(H * dpr); }
   ctx.setTransform(dpr, 0, 0, dpr, 0, 0); ctx.clearRect(0, 0, W, H);
   ctx.fillStyle = '#0d1119'; ctx.fillRect(0, 0, W, H);
-  const padR = 92, padL = 10, padT = 18, padB = 26, iw = W - padL - padR, ih = H - padT - padB;
+  const padR = 96, padL = 10, padT = 18, padB = 26, iw = W - padL - padR, ih = H - padT - padB;
   const t0 = R.T0 - 120, t1 = R.T + 20; const xOf = t => padL + (t - t0) / (t1 - t0) * iw;
-  // series
-  const pts = [], pm = []; const off = E.off; let lo = Infinity, hi = -Infinity;
+  const off = E.off, target = E.target;
+  // series (chart dollars): spot, and the PM line (exact where the index series has a point, modeled elsewhere)
+  const pts = [], pm = []; let lo = Infinity, hi = -Infinity;
   for (let s = Math.max(t0, firstSec); s <= E.sec; s++) { const v = secs.get(s); if (v > 0) { pts.push([s, v]); lo = Math.min(lo, v); hi = Math.max(hi, v); } }
   if (pts.length < 2) { ctx.fillStyle = '#8f9ab4'; ctx.font = '14px IBM Plex Sans, sans-serif'; ctx.fillText('Waiting for Coinbase prices…', padL + 10, padT + 24); return; }
-  for (let s = Math.max(t0, firstSec + WIN + DELAY); s <= E.sec; s += 2) { const v = off + avgRange(s - WIN - DELAY, s - DELAY); if (v > 0) pm.push([s, v]); }
-  const target = E.target; if (Number.isFinite(target)) { lo = Math.min(lo, target - off); hi = Math.max(hi, target - off); }
-  // y-scale is in SPOT dollars; PM-side values are shown basis-adjusted (minus offset) so one axis serves both
+  for (let s = Math.max(t0, firstSec + WIN); s <= E.sec; s += 2) { const a = pmA.get(s); const v = a > 0 ? a - off : avgRange(s - WIN, s); if (v > 0) pm.push([s, v, a > 0]); }
+  if (Number.isFinite(target)) { lo = Math.min(lo, E.tgtChart); hi = Math.max(hi, E.tgtChart); }
+  if (Number.isFinite(E.killPx) && Math.abs(E.killPx - E.spot) < 3 * Math.max(E.recUpLeft, E.recDnLeft) + 100) { lo = Math.min(lo, E.killPx); hi = Math.max(hi, E.killPx); }
   let span = Math.max(hi - lo, 20); lo -= span * 0.12; hi += span * 0.12; span = hi - lo;
   const yOf = v => padT + (hi - v) / span * ih;
   // grid: price
@@ -975,51 +1173,62 @@ function drawChart(E) {
   ctx.textAlign = 'center'; ctx.textBaseline = 'top';
   for (let t = Math.ceil(t0 / 60) * 60; t <= t1; t += 60) { const x = xOf(t); const isQ = t % ROUND === 0; ctx.strokeStyle = isQ ? '#3a4668' : '#161c2a'; ctx.lineWidth = isQ ? 1.5 : 1; ctx.beginPath(); ctx.moveTo(x, padT); ctx.lineTo(x, H - padB); ctx.stroke();
     if (t % 300 === 0 || isQ) { ctx.fillStyle = isQ ? '#aeb8d0' : '#6f7a93'; ctx.fillText(etFmt.format(new Date(t * 1000)).replace(/ (AM|PM)$/, ''), x, H - padB + 6); } }
-  // settlement window band: the part already known
-  if (E.r > 0 && E.r <= WIN + DELAY) { const a = xOf(R.T - WIN - DELAY), b = xOf(Math.min(E.sec, R.T - DELAY)); ctx.fillStyle = '#62ccff14'; ctx.fillRect(a, padT, b - a, ih); ctx.fillStyle = '#62ccff22'; ctx.fillRect(xOf(R.T - WIN - DELAY), padT, xOf(R.T - DELAY) - xOf(R.T - WIN - DELAY), 3); }
-  else if (E.r > 0) { ctx.fillStyle = '#62ccff22'; ctx.fillRect(xOf(R.T - WIN - DELAY), padT, xOf(R.T - DELAY) - xOf(R.T - WIN - DELAY), 3); }
-  // PM line
-  if (pm.length > 1) { ctx.strokeStyle = '#62ccff'; ctx.lineWidth = 2; ctx.beginPath(); pm.forEach((p, i) => { const x = xOf(p[0]), y = yOf(p[1] - off); i ? ctx.lineTo(x, y) : ctx.moveTo(x, y); }); ctx.stroke(); }
+  // settlement window band: [T-60, T), the part already in the books shaded
+  const xa = xOf(R.T - WIN), xb = xOf(R.T);
+  ctx.fillStyle = '#62ccff22'; ctx.fillRect(xa, padT, xb - xa, 3);
+  if (E.knownN > 0 && E.r > 0) { ctx.fillStyle = '#62ccff14'; ctx.fillRect(xa, padT, xOf(R.T - WIN + E.knownN) - xa, ih); }
+  // PM line: exact points solid, modeled points slightly dimmer
+  if (pm.length > 1) { ctx.lineWidth = 2; for (let i = 1; i < pm.length; i++) { ctx.strokeStyle = pm[i][2] ? '#62ccff' : '#62ccff99'; ctx.beginPath(); ctx.moveTo(xOf(pm[i - 1][0]), yOf(pm[i - 1][1])); ctx.lineTo(xOf(pm[i][0]), yOf(pm[i][1])); ctx.stroke(); } }
   // spot line
   ctx.strokeStyle = '#9b8cff'; ctx.lineWidth = 2; ctx.beginPath(); pts.forEach((p, i) => { const x = xOf(p[0]), y = yOf(p[1]); i ? ctx.lineTo(x, y) : ctx.moveTo(x, y); }); ctx.stroke();
   const last = pts[pts.length - 1], xs = xOf(last[0]), ys = yOf(last[1]);
-  // target line: the brightest thing on the chart
-  if (Number.isFinite(target)) { const yt = yOf(target - off); ctx.save(); ctx.setLineDash([8, 6]); ctx.strokeStyle = '#ffb020'; ctx.lineWidth = 2.5; ctx.shadowColor = '#ffb020'; ctx.shadowBlur = 10; ctx.beginPath(); ctx.moveTo(padL, yt); ctx.lineTo(W - padR, yt); ctx.stroke(); ctx.restore();
+  // lookahead stub: from the PM line now to where it reads in lookS seconds if BTC holds
+  if (pm.length && E.r > 0 && Number.isFinite(E.pmAhead)) { const pl = pm[pm.length - 1]; const xe = xOf(Math.min(E.sec + E.lookS, R.T)), ye = yOf(E.pmAhead - off);
+    ctx.save(); ctx.setLineDash([3, 4]); ctx.strokeStyle = '#62ccff'; ctx.lineWidth = 2; ctx.beginPath(); ctx.moveTo(xOf(pl[0]), yOf(pl[1])); ctx.lineTo(xe, ye); ctx.stroke(); ctx.restore();
+    ctx.beginPath(); ctx.fillStyle = '#62ccff'; ctx.arc(xe, ye, 3.5, 0, Math.PI * 2); ctx.fill(); }
+  if (Number.isFinite(target)) {
+    // target line: the brightest thing on the chart
+    const yt = yOf(E.tgtChart); ctx.save(); ctx.setLineDash([8, 6]); ctx.strokeStyle = '#ffb020'; ctx.lineWidth = 2.5; ctx.shadowColor = '#ffb020'; ctx.shadowBlur = 10; ctx.beginPath(); ctx.moveTo(padL, yt); ctx.lineTo(W - padR, yt); ctx.stroke(); ctx.restore();
     ctx.fillStyle = '#ffb020'; ctx.fillRect(W - padR + 2, yt - 11, padR - 4, 22); ctx.fillStyle = '#1a1000'; ctx.font = 'bold 12px IBM Plex Mono, monospace'; ctx.textAlign = 'left'; ctx.textBaseline = 'middle'; ctx.fillText(fmt$(target), W - padR + 6, yt);
-    ctx.fillStyle = '#ffb020'; ctx.font = 'bold 11px IBM Plex Sans, sans-serif'; ctx.fillText('TARGET ' + (last[1] + off >= target ? '▼ spot above' : '▲ spot below'), padL + 8, yt + (last[1] + off >= target ? 12 : -12));
-    // the post: from the spot to the target, with minute ticks at the current pace; in the middle, the minutes BTC
-    // would need to reach the target at its record pace, colored against the time left
-    const xp = Math.min(xs + 22, W - padR - 6); const yTop = Math.min(ys, yt), yBot = Math.max(ys, yt);
+    ctx.fillStyle = '#ffb020'; ctx.font = 'bold 11px IBM Plex Sans, sans-serif'; ctx.fillText('TARGET ' + (last[1] >= E.tgtChart ? '▼ spot above' : '▲ spot below'), padL + 8, yt + (last[1] >= E.tgtChart ? 12 : -12));
+    // kill line: what BTC must average for the rest of the window to flip it — drawn from the window's start, running away as prints land
+    if (Number.isFinite(E.killPx) && E.knownN > 0 && E.r > 0 && E.killPx > lo && E.killPx < hi) {
+      const yk = yOf(E.killPx), side = myPos ? myPos.side : E.fav, cush = side === 'UP' ? E.cushUp : E.cushDn;
+      ctx.save(); ctx.strokeStyle = '#ff4b5c'; ctx.lineWidth = 2.5; ctx.shadowColor = '#ff4b5c'; ctx.shadowBlur = 8; ctx.beginPath(); ctx.moveTo(xa - 30, yk); ctx.lineTo(W - padR, yk); ctx.stroke(); ctx.restore();
+      ctx.fillStyle = '#ff4b5c'; ctx.fillRect(W - padR + 2, yk - 11, padR - 4, 22); ctx.fillStyle = '#fff'; ctx.font = 'bold 11px IBM Plex Mono, monospace'; ctx.textAlign = 'left'; ctx.fillText('KILL ' + fmtS(-cush, 0), W - padR + 6, yk);
+      ctx.fillStyle = '#ff4b5c'; ctx.font = 'bold 11px IBM Plex Sans, sans-serif'; ctx.textAlign = 'right'; ctx.fillText('KILL ' + side + ' · must average ' + (side === 'UP' ? 'below' : 'above'), xa - 34, yk + (yk < yt ? -10 : 12)); ctx.textAlign = 'left';
+    }
+    // the post: from the spot to the target, with minute ticks at the current pace; the label at the spot end
+    const xp = Math.min(xs + 22, W - padR - 6);
     ctx.save(); ctx.strokeStyle = '#b57cff'; ctx.shadowColor = '#b57cff'; ctx.shadowBlur = 12; ctx.lineWidth = 3; ctx.beginPath(); ctx.moveTo(xp, ys); ctx.lineTo(xp, yt); ctx.stroke(); ctx.restore();
     ctx.strokeStyle = '#d9c4ff'; ctx.lineWidth = 1.5; ctx.fillStyle = '#d9c4ff'; ctx.font = '10px IBM Plex Mono, monospace'; ctx.textAlign = 'left'; ctx.textBaseline = 'middle';
-    const dir = Math.sign((target - off) - last[1]) || 1; let run = last[1];
-    for (let m = 1; m <= Math.ceil(E.r / 60); m++) { const proj = last[1] + E.vel * 60 * m; if ((proj - run) * dir <= 0) break; run = proj; if ((proj - (target - off)) * dir > 0) break; const y = yOf(proj); ctx.beginPath(); ctx.moveTo(xp - 5, y); ctx.lineTo(xp + 5, y); ctx.stroke(); ctx.fillText(m + 'm', xp + 8, y); }
-    if (Math.abs(E.vel) < 0.02) for (let m = 1; m <= Math.min(Math.ceil(E.r / 60), 15); m++) { const y = yTop + (yBot - yTop) * m / Math.max(1, Math.ceil(E.r / 60)); if (y > yBot) break; ctx.beginPath(); ctx.moveTo(xp - 3, y); ctx.lineTo(xp + 3, y); ctx.stroke(); }
-    const RI = reachInfo(E); const ym = (ys + yt) / 2;
+    const dir = Math.sign(E.tgtChart - last[1]) || 1; let run = last[1];
+    for (let m = 1; m <= Math.ceil(E.r / 60); m++) { const proj = last[1] + E.vel * 60 * m; if ((proj - run) * dir <= 0) break; run = proj; if ((proj - E.tgtChart) * dir > 0) break; const y = yOf(proj); ctx.beginPath(); ctx.moveTo(xp - 5, y); ctx.lineTo(xp + 5, y); ctx.stroke(); ctx.fillText(m + 'm', xp + 8, y); }
+    const RI = E.reach;
     const l1 = RI && RI.tier >= 0 ? RI.minsTxt + ' at record pace' : 'record pace: scanning…';
-    const l2 = avgTxt(E);
-    const l3 = RI && RI.tier >= 0 ? RI.word + ' · ' + clock(E.r) + ' left' : 'Coinbase 1 / 5 / 15-min history';
-    ctx.font = 'bold 12px IBM Plex Mono, monospace'; const tw1 = ctx.measureText(l1).width; ctx.font = '11px IBM Plex Mono, monospace'; const tw2 = ctx.measureText(l2).width; ctx.font = 'bold 11px IBM Plex Sans, sans-serif'; const tw = Math.max(tw1, tw2, ctx.measureText(l3).width);
-    const cx = Math.max(padL + tw / 2 + 8, Math.min(xp, W - padR - tw / 2 - 8)), bx = cx - tw / 2 - 7, by = ym - 23;
-    ctx.fillStyle = RI && RI.tier >= 0 ? RI.col : '#1a0f2e'; ctx.fillRect(bx, by, tw + 14, 46); ctx.strokeStyle = RI && RI.tier >= 0 ? RI.col : '#b57cff'; ctx.lineWidth = 1; ctx.strokeRect(bx, by, tw + 14, 46);
-    ctx.fillStyle = RI && RI.tier >= 0 ? RI.text : '#e6d6ff'; ctx.textAlign = 'center'; ctx.font = 'bold 12px IBM Plex Mono, monospace'; ctx.fillText(l1, cx, ym - 15); ctx.font = '11px IBM Plex Mono, monospace'; ctx.fillText(l2, cx, ym); ctx.font = 'bold 11px IBM Plex Sans, sans-serif'; ctx.fillText(l3, cx, ym + 15);
+    const l2 = RI && RI.tier >= 0 ? RI.word + ' · ' + clock(E.r) + ' left' : 'Coinbase 1 / 5 / 15-min history';
+    ctx.font = 'bold 12px IBM Plex Mono, monospace'; const tw1 = ctx.measureText(l1).width; ctx.font = 'bold 11px IBM Plex Sans, sans-serif'; const tw = Math.max(tw1, ctx.measureText(l2).width);
+    const above = ys <= yt;                                            // label on the spot end, pointing away from the target
+    const cx = Math.max(padL + tw / 2 + 8, Math.min(xp, W - padR - tw / 2 - 8)), by = above ? ys - 40 : ys + 8, cy = by + 16;
+    ctx.fillStyle = RI && RI.tier >= 0 ? RI.col : '#1a0f2e'; ctx.fillRect(cx - tw / 2 - 7, by, tw + 14, 32); ctx.strokeStyle = RI && RI.tier >= 0 ? RI.col : '#b57cff'; ctx.lineWidth = 1; ctx.strokeRect(cx - tw / 2 - 7, by, tw + 14, 32);
+    ctx.fillStyle = RI && RI.tier >= 0 ? RI.text : '#e6d6ff'; ctx.textAlign = 'center'; ctx.font = 'bold 12px IBM Plex Mono, monospace'; ctx.fillText(l1, cx, cy - 7); ctx.font = 'bold 11px IBM Plex Sans, sans-serif'; ctx.fillText(l2, cx, cy + 8);
   }
-  // PM "is here" marker: where the spot last sat at what PM now shows
-  if (Number.isFinite(E.lagS)) { const xl = xOf(E.sec - E.lagS); ctx.save(); ctx.setLineDash([3, 4]); ctx.strokeStyle = '#62ccff'; ctx.lineWidth = 1.5; ctx.beginPath(); ctx.moveTo(xl, padT); ctx.lineTo(xl, H - padB); ctx.stroke(); ctx.restore();
-    ctx.fillStyle = '#62ccff'; ctx.font = 'bold 10px IBM Plex Sans, sans-serif'; ctx.textAlign = 'center'; ctx.textBaseline = 'top'; ctx.fillText('PM is here (−' + E.lagS + 's)', xl, padT + 2); }
   // end dots + price tags
   ctx.beginPath(); ctx.fillStyle = '#9b8cff'; ctx.arc(xs, ys, 4, 0, Math.PI * 2); ctx.fill();
-  if (pm.length) { const pl = pm[pm.length - 1]; ctx.beginPath(); ctx.fillStyle = '#62ccff'; ctx.arc(xOf(pl[0]), yOf(pl[1] - off), 4, 0, Math.PI * 2); ctx.fill(); }
+  if (pm.length) { const pl = pm[pm.length - 1]; ctx.beginPath(); ctx.fillStyle = '#62ccff'; ctx.arc(xOf(pl[0]), yOf(pl[1]), 4, 0, Math.PI * 2); ctx.fill(); }
   ctx.font = 'bold 11px IBM Plex Mono, monospace'; ctx.textAlign = 'left'; ctx.textBaseline = 'middle';
   ctx.fillStyle = '#9b8cff'; ctx.fillRect(W - padR + 2, ys - 9, padR - 4, 18); ctx.fillStyle = '#0d1119'; ctx.fillText(fmt$(last[1], 1), W - padR + 6, ys);
-  if (pm.length) { const pl = pm[pm.length - 1], yp = yOf(pl[1] - off); if (Math.abs(yp - ys) > 18) { ctx.fillStyle = '#62ccff'; ctx.fillRect(W - padR + 2, yp - 9, padR - 4, 18); ctx.fillStyle = '#0d1119'; ctx.fillText(fmt$(pl[1], 1), W - padR + 6, yp); } }
+  if (pm.length) { const pl = pm[pm.length - 1], yp = yOf(pl[1]); if (Math.abs(yp - ys) > 18) { ctx.fillStyle = '#62ccff'; ctx.fillRect(W - padR + 2, yp - 9, padR - 4, 18); ctx.fillStyle = '#0d1119'; ctx.fillText(fmt$(pl[1] + off, 1), W - padR + 6, yp); } }
 }
 
-// ---------- audio / wake lock ----------
+// ---------- audio / voice / wake lock ----------
 let audio = null;
-function beep() { if (!S.sound) return; try { audio = audio || new (window.AudioContext || window.webkitAudioContext)(); const o = audio.createOscillator(), g = audio.createGain(); o.frequency.value = 880; o.connect(g); g.connect(audio.destination); g.gain.value = 0.2; o.start(); setTimeout(() => { o.frequency.value = 1320; }, 140); setTimeout(() => { o.stop(); }, 320); } catch (e) {} }
-$('btn-sound').onclick = () => { S.sound = !S.sound; saveS(); $('btn-sound').textContent = S.sound ? '🔔 Sound on' : '🔇 Sound off'; if (S.sound) beep(); };
+function beep(n = 1) { if (!S.sound) return; try { audio = audio || new (window.AudioContext || window.webkitAudioContext)(); for (let i = 0; i < n; i++) { const o = audio.createOscillator(), g = audio.createGain(); o.frequency.value = n >= 3 ? 660 : 880; o.connect(g); g.connect(audio.destination); g.gain.value = 0.2; const t = audio.currentTime + i * 0.28; o.start(t); o.frequency.setValueAtTime(n >= 3 ? 520 : 1320, t + 0.14); o.stop(t + 0.24); } } catch (e) {} }
+function speak(text) { if (!S.voice || !('speechSynthesis' in window)) return; try { speechSynthesis.cancel(); const u = new SpeechSynthesisUtterance(text.replace(/—/g, ',').replace(/¢/g, ' cents')); u.rate = 1.1; speechSynthesis.speak(u); } catch (e) {} }
+$('btn-sound').onclick = () => { S.sound = !S.sound; saveS(); $('btn-sound').textContent = S.sound ? '🔔 Sound on' : '🔇 Sound off'; if (S.sound) beep(1); };
 $('btn-sound').textContent = S.sound ? '🔔 Sound on' : '🔇 Sound off';
+$('btn-voice').onclick = () => { S.voice = !S.voice; saveS(); $('btn-voice').textContent = S.voice ? '🗣 Voice on' : '🗣 Voice off'; if (S.voice) speak('Voice on. I will say locked, sell, and sure thing.'); };
+$('btn-voice').textContent = S.voice ? '🗣 Voice on' : '🗣 Voice off';
 let wake = null;
 $('btn-wake').onclick = async () => { try { wake = await navigator.wakeLock.request('screen'); $('btn-wake').textContent = 'Screen stays on'; } catch (e) { toast('Screen lock not available here'); } };
 
@@ -1029,36 +1238,49 @@ document.querySelectorAll('#my-seg button').forEach(b => b.onclick = () => { myS
 document.querySelector('#my-seg button.up').classList.add('on');
 $('my-set').onclick = () => { const price = Number($('my-price').value) / 100, spent = Number($('my-spent').value);
   if (!(price > 0 && price < 1) || !(spent > 0)) { toast('Enter the price you paid and the dollars spent'); return; }
-  myPos = { T0: R.T0, side: mySide, price, spent, shares: spent / price }; try { localStorage.setItem('pm15.mypos', JSON.stringify(myPos)); } catch (e) {} toast('Tracking your ' + mySide + ' position'); };
+  myPos = { T0: R.T0, side: mySide, price, spent, shares: spent / price }; try { localStorage.setItem('pm15.mypos', JSON.stringify(myPos)); } catch (e) {} lastSpoken = { key: '', at: 0 }; toast('Tracking your ' + mySide + ' position'); };
 $('my-clear').onclick = () => { myPos = null; try { localStorage.removeItem('pm15.mypos'); } catch (e) {} };
-function loadSettings() { $('s-stake').value = S.stake; $('s-lockp').value = S.lockP; $('s-maxask').value = S.maxAsk; $('s-drift').value = S.drift; $('s-fee').value = S.fee; $('s-relay').value = S.relay || ''; $('s-offset').value = S.offset == null ? '' : S.offset.toFixed(2);
+function loadSettings() {
+  $('s-stake').value = S.stake; $('s-lockp').value = S.lockP; $('s-maxask').value = S.maxAsk; $('s-drift').value = S.drift; $('s-fee').value = S.fee; $('s-relay').value = S.relay || ''; $('s-offset').value = S.offset == null ? '' : S.offset.toFixed(2);
   $('s-recmargin').value = S.recMargin; $('s-reach-green').value = S.reachGreen; $('s-reach-yellow').value = S.reachYellow;
-  $('s-paperon').value = S.paperOn || 'sure'; $('s-getout').value = S.getOutOdds; $('s-cross').value = S.crossSecs; $('s-cushion').value = S.cushionX; $('s-edgemin').value = S.edgeMin; $('s-edgescare').value = S.edgeScare; }
+  $('s-paperon').value = S.paperOn || 'sure'; $('s-edgemin').value = S.edgeMin; $('s-edgescare').value = S.edgeScare;
+  $('s-latency').value = S.latency; $('s-holdmin').value = S.holdMinP; $('s-etawarn').value = S.etaWarnS; $('s-badpct').value = S.badPct; $('s-look').value = S.lookS; $('s-slack').value = S.slack; $('s-killsecs').value = S.killSecs; $('s-eflo').value = S.efLo; $('s-efhi').value = S.efHi;
+}
+const num = (id, lo, hi, def) => { const v = Number($(id).value); return Number.isFinite(v) && $(id).value !== '' ? Math.min(hi, Math.max(lo, v)) : def; };
 $('s-save').onclick = () => {
-  S.stake = Math.max(1, Number($('s-stake').value) || DEF.stake); S.lockP = Math.min(99.99, Math.max(90, Number($('s-lockp').value) || DEF.lockP)); S.maxAsk = Math.min(99, Math.max(50, Number($('s-maxask').value) || DEF.maxAsk));
-  S.drift = Math.min(1, Math.max(0, Number($('s-drift').value))); S.fee = Number($('s-fee').value) || DEF.fee; S.relay = ($('s-relay').value || '').trim();
-  S.recMargin = Math.min(3, Math.max(0.5, Number($('s-recmargin').value) || DEF.recMargin)); S.reachGreen = Math.min(99, Math.max(1, Number($('s-reach-green').value) || DEF.reachGreen)); S.reachYellow = Math.min(S.reachGreen, Math.max(1, Number($('s-reach-yellow').value) || DEF.reachYellow));
-  S.paperOn = ['math', 'edge'].includes($('s-paperon').value) ? $('s-paperon').value : 'sure'; S.edgeMin = Math.min(30, Math.max(1, Number($('s-edgemin').value) || DEF.edgeMin)); S.edgeScare = Math.min(50, Math.max(1, Number($('s-edgescare').value) || DEF.edgeScare)); S.getOutOdds = Math.min(60, Math.max(5, Number($('s-getout').value) || DEF.getOutOdds)); S.crossSecs = Math.min(300, Math.max(15, Number($('s-cross').value) || DEF.crossSecs)); S.cushionX = Math.min(5, Math.max(0.5, Number($('s-cushion').value) || DEF.cushionX));
-  const offIn = $('s-offset').value.trim(); if (offIn !== '') { S.offset = Number(offIn); R.offset = S.offset; R.offsetSrc = 'typed'; }
-  const tIn = Number($('s-target').value); if (tIn > 1000) { R.target = tIn; R.targetSrc = 'manual'; calibrateOffset(); }
-  saveS(); R.apiOk = null; pmFetchMarket(); pmFetchBook(); toast('Saved');
+  S.stake = num('s-stake', 1, 1e6, DEF.stake); S.lockP = num('s-lockp', 90, 99.99, DEF.lockP); S.maxAsk = num('s-maxask', 50, 99, DEF.maxAsk);
+  S.drift = num('s-drift', 0, 1, DEF.drift); S.fee = num('s-fee', 0, 0.2, DEF.fee); S.relay = ($('s-relay').value || '').trim();
+  S.recMargin = num('s-recmargin', 1, 3, DEF.recMargin); S.reachGreen = num('s-reach-green', 1, 99, DEF.reachGreen); S.reachYellow = Math.min(S.reachGreen, num('s-reach-yellow', 1, 99, DEF.reachYellow));
+  S.paperOn = ['math', 'edge'].includes($('s-paperon').value) ? $('s-paperon').value : 'sure'; S.edgeMin = num('s-edgemin', 1, 30, DEF.edgeMin); S.edgeScare = num('s-edgescare', 1, 50, DEF.edgeScare);
+  S.latency = num('s-latency', 0, 60, DEF.latency); S.holdMinP = num('s-holdmin', 50, 95, DEF.holdMinP); S.etaWarnS = num('s-etawarn', 5, 120, DEF.etaWarnS); S.badPct = num('s-badpct', 90, 100, DEF.badPct); S.lookS = num('s-look', 10, 60, DEF.lookS);
+  S.slack = num('s-slack', 0, 50, DEF.slack); S.killSecs = num('s-killsecs', 0, 300, DEF.killSecs); S.efLo = num('s-eflo', 50, 98, DEF.efLo); S.efHi = Math.max(S.efLo + 1, num('s-efhi', 51, 99, DEF.efHi));
+  const offIn = $('s-offset').value.trim(); if (offIn !== '') { S.offset = Number(offIn); R.offset = S.offset; R.offsetSrc = 'override'; R.offsetSd = NaN; } else if (S.offset != null) { S.offset = null; R.offsetSrc = 'none'; R.offset = NaN; }
+  const tIn = Number($('s-target').value); if (tIn > 1000) { R.target = tIn; R.targetSrc = 'manual'; calibrateOffsetRound(); }
+  saveS(); R.apiOk = null; IDX.ok = null; pmFetchMarket(); pmFetchBook(); pmFetchSeries(); toast('Saved');
 };
-$('s-reset-hist').onclick = () => { history = []; try { localStorage.removeItem('pm15.history'); localStorage.removeItem('pm15.paperTotal'); } catch (e) {} paper.totalPnl = 0; renderPast(); toast('History cleared'); };
+$('s-reset-hist').onclick = () => { history = []; lockStats = { calls: 0, held: 0, failed: 0, exact: 0, checked: 0 }; saveLock(); try { localStorage.removeItem('pm15.history'); localStorage.removeItem('pm15.paperTotal'); } catch (e) {} paper.totalPnl = 0; renderPast(); toast('History cleared'); };
 loadSettings();
 if (myPos && myPos.T0 !== Math.floor(Date.now() / 1000 / ROUND) * ROUND) myPos = null;
 
 // ---------- loops ----------
-connectWS(); backfill();
-// record scan: now (unless the cached one is under 6 h old), then every 6 h
-if (!REC.ready || Date.now() - REC.at > 6 * 3600 * 1000) scanRecords();
+connectWS(); backfill(); pmFetchSeries(900);
+// record scan: now (unless the cached one is under 6 h old and has the bad-minute percentiles), then every 6 h
+if (!REC.ready || !REC.bad || Date.now() - REC.at > 6 * 3600 * 1000) scanRecords();
 setInterval(() => { if (Date.now() - REC.at > 6 * 3600 * 1000) scanRecords(); }, 15 * 60 * 1000);
-setInterval(() => { pmFetchBook(); }, 2500);
-setInterval(() => { if (!Number.isFinite(R.target) || R.targetSrc === 'est') pmFetchMarket(); const prevSlug = SLUG(R.T0 - ROUND); const prev = history.find(h => SLUG(h.T0) === prevSlug); if (prev && prev.settleSrc !== 'api') pmFetchMarket(prevSlug); }, 6000);
+// the exchange: book 1/s in the last 2 minutes, else every 10 s; the index series every 2 s in the last 3 minutes (and the first 10 s,
+// for the exact final price of the round just ended), else every 10 s; market terms when the target is still unknown or estimated
+let pollN = 0;
+setInterval(() => {
+  pollN++; const r = R.T - Date.now() / 1000;
+  if (r <= 120 || pollN % 10 === 0) pmFetchBook();
+  if (r <= 180 || r >= ROUND - 12 || pollN % 10 === 5) { if (pollN % 2 === 0 || r <= 20 || r >= ROUND - 12) pmFetchSeries(); }
+  if (pollN % 6 === 3) { if (!Number.isFinite(R.target) || R.targetSrc === 'est' || R.targetSrc === 'series') pmFetchMarket(); const prevSlug = SLUG(R.T0 - ROUND); const prev = history.find(h => SLUG(h.T0) === prevSlug); if (prev && prev.settleSrc !== 'api') pmFetchMarket(prevSlug); }
+}, 1000);
 let frame = 0;
 function tick() {
   const E = evaluate();
-  if (Number.isFinite(E.spot)) { liveRecordCheck(E.sec); paperStep(E); dictate(E); renderHeader(E); renderPaper(E); if (frame % 3 === 0) { renderFeed(E); renderPlays(E); renderBuyIn(E); renderMine(E); renderNext(E); renderReach(E); } if (frame % 2 === 0) drawChart(E); }
-  else { $('timer').textContent = clock(E.r); renderHeader(E); dictate(E); }
+  if (Number.isFinite(E.spot)) { liveRecordCheck(E.sec); paperStep(E); dictate(E); renderHeader(E); renderPaper(E); if (frame % 3 === 0) { renderFeed(E); renderPlays(E); renderBuyIn(E); renderMine(E); renderNext(E); renderReach(E); renderWarn(E); } if (frame % 2 === 0) drawChart(E); }
+  else { renderHeader(E); dictate(E); if (frame % 4 === 0) renderWarn(E); }
   frame++;
 }
 setInterval(tick, 250);
