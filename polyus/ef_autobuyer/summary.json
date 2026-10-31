@@ -1,5 +1,5 @@
 {
- "rounds_observed": 712,
+ "rounds_observed": 713,
  "entries": 90,
  "scored": 90,
  "by_stake": {
@@ -19,6 +19,6 @@
    "ret_per_dollar": -0.0274
   }
  },
- "live_minus_display_c": 1.08,
+ "live_minus_display_c": 1.05,
  "entries_read_late": 11
 }
