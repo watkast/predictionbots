@@ -29,7 +29,7 @@ publish() {
       mkdir -p "mrp/radar/$RUN"
       cp -r "$MRP_DATA_DIR/." "mrp/radar/$RUN/"
       find "mrp/radar/$RUN" -name "*.jsonl" -exec gzip -f {} \;
-      python "$KIT/mrp_radar_report.py" mrp/radar --days 7 > mrp/RADAR.body.md 2>&1 || true
+      ( ulimit -v 4000000; timeout 300 python "$KIT/mrp_radar_report.py" mrp/radar --days 3 ) > mrp/RADAR.body.md 2>&1 || echo "(report skipped: over memory/time budget)" >> mrp/RADAR.body.md
       {
         echo "# Mr. P — sports radar"
         echo

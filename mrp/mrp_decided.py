@@ -130,8 +130,17 @@ def winner(g: Game) -> Optional[int]:
     return None
 
 
+PERIOD_TOKEN = re.compile(r"[1-9](Q|P|H|I)(?=TOTAL|SPREAD|WINNER|BTTS|GAME|$)|QTR|PERIOD|INNING")
+
+
 def classify_k(series: str, ticker: str) -> str:
     s = series.upper()
+    core = s[2:] if s.startswith("KX") else s
+    # Period-scoped markets (NBA 1Q/2H totals, NHL 2P totals, ...) are NOT decided by the full-game score.
+    # Only soccer-style 1H markets (BTTS / total / winner / spread on '...1H...') are handled, via first_half().
+    m = PERIOD_TOKEN.search(core)
+    if m and m.group(0) != "1H":
+        return "period_other"
     if "SETWINNER" in s:
         return "set_winner"
     if s.endswith("TOTALMAPS"):
@@ -161,6 +170,8 @@ def classify_k(series: str, ticker: str) -> str:
 
 def decide_k(g: Game, km: dict) -> Optional[Decision]:
     kind = classify_k(km.get("series") or "", km.get("t") or "")
+    if kind == "period_other" or (kind.startswith("h1") and g.sport != "soccer"):
+        return None                      # period-scoped market: the full-game score does not decide it
     tick = str(km.get("t") or "")
     is_tie = tick.endswith("-TIE")
     strike = km.get("strike")
