@@ -13,10 +13,10 @@
   "hold": "settlement"
  },
  "forward_start": "2026-10-23T00:00:00Z",
- "generated": "2026-10-31T12:19:10Z",
+ "generated": "2026-10-31T17:43:13Z",
  "rounds_scored": 137,
- "rounds_skipped_rule_not_met": 672,
- "rounds_pending": 9,
+ "rounds_skipped_rule_not_met": 691,
+ "rounds_pending": 11,
  "wins": 113,
  "win_rate": 0.8248,
  "avg_ask": 0.8433,
@@ -152,6 +152,16 @@
   {
    "slug": "cpc-btc-updown-15m-2026-10-29-1145z",
    "window_start": "2026-10-29T11:45:00Z",
+   "reason": "minute 2-3 prices not stored yet"
+  },
+  {
+   "slug": "cpc-btc-updown-15m-2026-10-31-1715z",
+   "window_start": "2026-10-31T17:15:00Z",
+   "reason": "minute 2-3 prices not stored yet"
+  },
+  {
+   "slug": "cpc-btc-updown-15m-2026-10-31-1730z",
+   "window_start": "2026-10-31T17:30:00Z",
    "reason": "minute 2-3 prices not stored yet"
   }
  ]

@@ -1,7 +1,7 @@
 # Early Favorite v2 - forward test
 
 Rule (frozen): at 2:00 elapsed (13:00 left), else 3:00, buy the leading side if its ask is 0.80-0.95; $100 per round; hold to settlement; taker fee 0.0695*p*(1-p). Paper only.
-Forward test started 2026-10-23T00:00:00Z. Updated 2026-10-31T12:19:10Z.
+Forward test started 2026-10-23T00:00:00Z. Updated 2026-10-31T17:43:13Z.
 
 **Losing: forward win rate is below break-even at the prices paid.**
 
@@ -17,7 +17,7 @@ Forward test started 2026-10-23T00:00:00Z. Updated 2026-10-31T12:19:10Z.
 | Longest losing streak | 3 | 2 |
 | Entry timing | 13:00 / 12:00 left | same |
 
-Rounds where the rule did not trigger: 672. Pending (not settled or not fetched yet): 9.
+Rounds where the rule did not trigger: 691. Pending (not settled or not fetched yet): 11.
 
 ## By day (UTC)
 
