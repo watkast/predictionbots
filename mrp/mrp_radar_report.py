@@ -195,6 +195,11 @@ def main():
 
     # ------------------------------------------------------------------ paper trading
     print("## Live paper trades (no orders; Kalshi prices, taker fees)\n")
+    ledgers = sorted({d.get("ledger") or "L1" for _, d in p_entries.values()})
+    if ledgers:
+        cur = ledgers[-1]
+        p_entries = {k: v for k, v in p_entries.items() if (v[1].get("ledger") or "L1") == cur}
+        print(f"Ledger {cur} (earlier ledgers excluded: {', '.join(ledgers[:-1]) or 'none'})\n")
     if not p_entries:
         print("no paper trades yet\n")
     else:

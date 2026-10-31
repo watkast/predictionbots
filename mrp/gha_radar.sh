@@ -19,6 +19,9 @@ else
   git worktree add -q --orphan -b "$DATA_BRANCH" "$WT"
 fi
 
+# carry paper positions across runs (state lives on mrp-data between runs)
+[ -f "$WT/mrp/radar/paper_state.json" ] && cp "$WT/mrp/radar/paper_state.json" "$MRP_DATA_DIR/paper_state.json"
+
 publish() {
   (
     cd "$WT" || exit 0
@@ -29,6 +32,7 @@ publish() {
       mkdir -p "mrp/radar/$RUN"
       cp -r "$MRP_DATA_DIR/." "mrp/radar/$RUN/"
       find "mrp/radar/$RUN" -name "*.jsonl" -exec gzip -f {} \;
+      [ -f "$MRP_DATA_DIR/paper_state.json" ] && cp "$MRP_DATA_DIR/paper_state.json" mrp/radar/paper_state.json
       ( ulimit -v 4000000; timeout 300 python "$KIT/mrp_radar_report.py" mrp/radar --days 3 ) > mrp/RADAR.body.md 2>&1 || echo "(report skipped: over memory/time budget)" >> mrp/RADAR.body.md
       {
         echo "# Mr. P — sports radar"
