@@ -1,11 +1,11 @@
 # Mr. P — sports radar
 
-Updated 2026-10-31T13:07:46Z by `run-20261031T0913-41186411188` (last 7 days). Read-only scanner of every sports market on Polymarket US and Kalshi — it never places orders.
+Updated 2026-10-31T13:18:25Z by `run-20261031T0913-41186411188` (last 7 days). Read-only scanner of every sports market on Polymarket US and Kalshi — it never places orders.
 Kit: `mrp/mrp_sports_radar.py` on the `mrp` branch. Raw tape: `mrp/radar/<run>/`.
 
 # Sports radar report
 
-records 2,893,997 | 2026-10-29 15:47Z → 13:07Z | runs 20 | pairs matched 796 | errors {'radar': 2}
+records 2,902,012 | 2026-10-29 15:47Z → 13:17Z | runs 20 | pairs matched 800 | errors {'radar': 2}
 
 ## Catalogue (latest inventory, 12:59Z)
 
@@ -79,15 +79,15 @@ Polymarket US sports events 4342 of 5826 active events; Kalshi near-term sports 
 | kind | distinct | hits | max margin $/contract | max persistence | fresh-BBO still open |
 |---|---|---|---|---|---|
 | dead_pm | 7 | 79 | - | 19 min | 0/79 |
-| decided_k | 780 | 63234 | 0.9893 | 69 min | 0/0 |
-| decided_pm | 6 | 228 | 0.9893 | 28 min | 27/228 |
+| decided_k | 783 | 63238 | 0.9893 | 69 min | 0/0 |
+| decided_pm | 8 | 274 | 0.9893 | 28 min | 65/274 |
 | decided_pm_closed | 5 | 79 | 0.9893 | 30 min | 0/79 |
 | dutch_k | 11 | 576 | 0.1744 | 140 min | 0/0 |
 | dutch_k_sell | 2 | 4 | 0.0107 | 0 min | 0/0 |
 | dutch_pm | 46 | 2019 | 0.9786 | 89 min | 0/0 |
 | implication_k | 7712 | 476554 | 0.9786 | 141 min | 0/0 |
-| lag_k_settled | 250 | 17841 | 0.9893 | 120 min | 16659/17674 |
-| lag_k_settled_closed | 75 | 1236 | 0.9893 | 111 min | 0/1236 |
+| lag_k_settled | 250 | 17925 | 0.9893 | 120 min | 16743/17758 |
+| lag_k_settled_closed | 76 | 1256 | 0.9893 | 111 min | 0/1256 |
 
 Top by persistence × hits:
 
@@ -119,61 +119,17 @@ Top by persistence × hits:
 
 ## Live paper trades (no orders; Kalshi prices, taker fees)
 
-Ledger L1 (earlier ledgers excluded: none)
+Ledger L2-2026-11-01 (earlier ledgers excluded: L1)
 
-**Total closed P&L: $-5331.22 on $11033.06 staked (-48.3%)**
+**Total closed P&L: $+0.00 on $0.00 staked (+0.0%)**
 
 | rule | entries | closed | winners | staked | P&L | ROI |
 |---|---|---|---|---|---|---|
-| R1 anchor | 5 | 5 | 2 | $51.03 | $-16.03 | -31% |
-| R2 q1cheap | 5 | 4 | 1 | $20.80 | $+20.20 | +97% |
-| R3 blowout | 1 | 1 | 0 | $21.25 | $-21.25 | -100% |
-| R4 halftime | 1 | 1 | 0 | $4.92 | $-4.92 | -100% |
-| R5 react | 97 | 96 | 2 | $470.43 | $-51.60 | -11% |
-| R6 decided | 665 | 583 | 200 | $10464.62 | $-5257.62 | -50% |
+| R6 decided | 1 | 0 | 0 | $0.00 | $+0.00 | +0% |
 
 | time (UTC) | rule | game | team | entry | contracts | why | result |
 |---|---|---|---|---|---|---|---|
-| 10:54 | R6 decided | Aliona Falei vs. Ekaterina Y | Aliona Falei | 0.98 | 20 | set 2 final 6-4 | kalshi settled: 1.00, $+0.37 |
-| 10:34 | R6 decided | Mariia Tkacheva vs. Rada Zol | Rada Zolotareva | 0.84 | 2 | set 2 final 1-2 | open |
-| 07:09 | R6 decided | Anyang Jungkwanjang Red Boos | KT Sonicboom | 0.89 | 6 | ended 90-92 | kalshi settled: 1.00, $+0.62 |
-| 07:09 | R6 decided | Diana Shnaider vs. Mia Pohan | Diana Shnaider | 0.91 | 1 | set 2 final 7-6 | kalshi settled: 1.00, $+0.08 |
-| 05:34 | R5 react | Kent State vs. Sacramento St | Sacramento St. | 0.94 | 5 | 10-24 score, buy scorer at first ask | timed exit at bid: 0.93, $-0.09 |
-| 05:33 | R5 react | Kent State vs. Sacramento St | Sacramento St. | 0.95 | 5 | 10-23 score, buy scorer at first ask | timed exit at bid: 0.93, $-0.14 |
-| 05:08 | R5 react | Kent State vs. Sacramento St | Sacramento St. | 0.68 | 7 | 10-17 score, buy scorer at first ask | timed exit at bid: 0.67, $-0.28 |
-| 05:07 | R5 react | Kent State vs. Sacramento St | Sacramento St. | 0.62 | 8 | 10-15 score, buy scorer at first ask | timed exit at bid: 0.64, $-0.10 |
-| 05:07 | R1 anchor | Kent State vs. Sacramento St | Sacramento St. | 0.62 | 16 | pregame dog (mid 0.28) leads 10-15 in Q3, ask 0.62 | final score (pending Kalshi settlement): 1.00, $+5.82 |
-| 04:55 | R5 react | Kent State vs. Sacramento St | Sacramento St. | 0.33 | 15 | 10-9 score, buy scorer at first ask | timed exit at bid: 0.31, $-0.76 |
-| 04:52 | R6 decided | LA Lakers vs. GS Warriors | Over 47.5 points | 0.01 | 2000 | score 95-112 total 207 > 47.5 | kalshi settled: 0.00, $-21.39 |
-| 04:52 | R6 decided | LA Lakers vs. GS Warriors | Over 45.5 points | 0.01 | 2000 | score 95-112 total 207 > 45.5 | kalshi settled: 0.00, $-21.39 |
-| 04:52 | R6 decided | LA Lakers vs. GS Warriors | Over 43.5 points | 0.01 | 2000 | score 95-112 total 207 > 43.5 | kalshi settled: 0.00, $-21.39 |
-| 04:52 | R6 decided | LA Lakers vs. GS Warriors | Over 67.5 points | 0.01 | 2000 | score 95-112 total 207 > 67.5 | kalshi settled: 0.00, $-21.39 |
-| 04:52 | R6 decided | LA Lakers vs. GS Warriors | Over 65.5 points | 0.01 | 2000 | score 95-112 total 207 > 65.5 | kalshi settled: 0.00, $-21.39 |
-| 04:52 | R6 decided | LA Lakers vs. GS Warriors | Over 63.5 points | 0.01 | 2000 | score 95-112 total 207 > 63.5 | kalshi settled: 0.00, $-21.39 |
-| 04:52 | R6 decided | LA Lakers vs. GS Warriors | Over 61.5 points | 0.01 | 2000 | score 95-112 total 207 > 61.5 | kalshi settled: 0.00, $-21.39 |
-| 04:52 | R6 decided | LA Lakers vs. GS Warriors | Over 59.5 points | 0.01 | 2000 | score 95-112 total 207 > 59.5 | kalshi settled: 0.00, $-21.39 |
-| 04:52 | R6 decided | LA Lakers vs. GS Warriors | Over 57.5 points | 0.01 | 2000 | score 95-112 total 207 > 57.5 | kalshi settled: 0.00, $-21.39 |
-| 04:52 | R6 decided | LA Lakers vs. GS Warriors | Over 55.5 points | 0.01 | 2000 | score 95-112 total 207 > 55.5 | kalshi settled: 0.00, $-21.39 |
-| 04:52 | R6 decided | LA Lakers vs. GS Warriors | Over 53.5 points | 0.01 | 2000 | score 95-112 total 207 > 53.5 | kalshi settled: 0.00, $-21.39 |
-| 04:52 | R6 decided | LA Lakers vs. GS Warriors | Over 51.5 points | 0.01 | 2000 | score 95-112 total 207 > 51.5 | kalshi settled: 0.00, $-21.39 |
-| 04:52 | R6 decided | LA Lakers vs. GS Warriors | Over 49.5 points | 0.01 | 2000 | score 95-112 total 207 > 49.5 | kalshi settled: 0.00, $-21.39 |
-| 04:39 | R6 decided | LA Lakers vs. GS Warriors | Over 97.5 points | 0.99 | 20 | score 91-104 total 195 > 97.5 | kalshi settled: 1.00, $+0.19 |
-| 04:39 | R6 decided | LA Lakers vs. GS Warriors | Over 95.5 points | 0.98 | 20 | score 91-104 total 195 > 95.5 | kalshi settled: 1.00, $+0.37 |
-| 04:39 | R6 decided | LA Lakers vs. GS Warriors | Over 131.5 points | 0.02 | 1000 | score 91-104 total 195 > 131.5 | kalshi settled: 0.00, $-21.37 |
-| 04:39 | R6 decided | LA Lakers vs. GS Warriors | Over 129.5 points | 0.02 | 1000 | score 91-104 total 195 > 129.5 | kalshi settled: 0.00, $-21.37 |
-| 04:39 | R6 decided | LA Lakers vs. GS Warriors | Over 127.5 points | 0.02 | 1000 | score 91-104 total 195 > 127.5 | kalshi settled: 0.00, $-21.37 |
-| 04:39 | R6 decided | LA Lakers vs. GS Warriors | Over 125.5 points | 0.02 | 439 | score 91-104 total 195 > 125.5 | kalshi settled: 0.00, $-9.38 |
-| 04:39 | R6 decided | LA Lakers vs. GS Warriors | Over 123.5 points | 0.03 | 666 | score 91-104 total 195 > 123.5 | kalshi settled: 0.00, $-21.34 |
-| 04:39 | R6 decided | LA Lakers vs. GS Warriors | Over 121.5 points | 0.04 | 500 | score 91-104 total 195 > 121.5 | kalshi settled: 0.00, $-21.34 |
-| 04:39 | R6 decided | LA Lakers vs. GS Warriors | Over 119.5 points | 0.05 | 400 | score 91-104 total 195 > 119.5 | kalshi settled: 0.00, $-21.33 |
-| 04:39 | R6 decided | LA Lakers vs. GS Warriors | Over 117.5 points | 0.07 | 285 | score 91-104 total 195 > 117.5 | kalshi settled: 0.00, $-21.25 |
-| 04:39 | R6 decided | LA Lakers vs. GS Warriors | Over 115.5 points | 0.10 | 47 | score 91-104 total 195 > 115.5 | kalshi settled: 0.00, $-5.00 |
-| 04:39 | R6 decided | LA Lakers vs. GS Warriors | Over 113.5 points | 0.18 | 111 | score 91-104 total 195 > 113.5 | kalshi settled: 0.00, $-21.13 |
-| 04:39 | R6 decided | LA Lakers vs. GS Warriors | Over 111.5 points | 0.28 | 71 | score 91-104 total 195 > 111.5 | kalshi settled: 0.00, $-20.88 |
-| 04:39 | R6 decided | LA Lakers vs. GS Warriors | Over 109.5 points | 0.42 | 47 | score 91-104 total 195 > 109.5 | kalshi settled: 0.00, $-20.54 |
-| 04:39 | R6 decided | LA Lakers vs. GS Warriors | Over 107.5 points | 0.53 | 37 | score 91-104 total 195 > 107.5 | kalshi settled: 0.00, $-20.26 |
-| 04:39 | R6 decided | LA Lakers vs. GS Warriors | Over 105.5 points | 0.69 | 28 | score 91-104 total 195 > 105.5 | kalshi settled: 0.00, $-19.74 |
-| 04:39 | R6 decided | LA Lakers vs. GS Warriors | Over 103.5 points | 0.81 | 24 | score 91-104 total 195 > 103.5 | kalshi settled: 0.00, $-19.70 |
+| 13:11 | R6 decided | Juan Manuel Cerundolo vs. Al | Juan Manuel Cerundolo | 0.67 | 29 | set 1 final 7-6 | open |
 
 ### Score reaction speed (live, 15 s): share of the 3-minute move done by +15 s / +30 s / +60 s
 
@@ -200,7 +156,7 @@ Ledger L1 (earlier ledgers excluded: none)
 
 ## Decided-state engine (contracts the live score already settled, still trading)
 
-1712 contracts decided while active; 780 had a price leaving > 0.4c after fees; 707 of those were mispriced AFTER the score was stable (lock tier)
+1724 contracts decided while active; 783 had a price leaving > 0.4c after fees; 709 of those were mispriced AFTER the score was stable (lock tier)
 
 | sport | game | contract | decided | reason | max margin | mispriced for | lock margin | lock depth |
 |---|---|---|---|---|---|---|---|---|
@@ -236,7 +192,7 @@ Kalshi: settlement_ts − close_time per series (negative = settled before the s
 
 | series | n | median | p90 |
 |---|---|---|---|
-| KXESOCCERGAME eSoccer Game | 2673 | 4.0 min | 4.1 min |
+| KXESOCCERGAME eSoccer Game | 2688 | 4.0 min | 4.1 min |
 | KXNFLPASSYDSPRECISE Pass Yards Precise | 1108 | 4.0 min | 4.1 min |
 | KXNHLGOAL NHL Goalscorer | 914 | 3.0 min | 3.1 min |
 | KXNBA3PT NBA Player Threes | 755 | 2.0 min | 2.1 min |
@@ -245,7 +201,7 @@ Kalshi: settlement_ts − close_time per series (negative = settled before the s
 | KXNBAREBPROT NBA Player Rebounds Protected | 655 | 2.5 min | 2.6 min |
 | KXNHLPTS Pro Hockey Points | 627 | 3.0 min | 3.1 min |
 | KXNBAPTS NBA Player Points | 578 | 2.0 min | 2.1 min |
-| KXLIGAPROMATCH Russia Liga Pro Match | 564 | 4.0 min | 4.1 min |
+| KXLIGAPROMATCH Russia Liga Pro Match | 566 | 4.0 min | 4.1 min |
 | KXNBAAST NBA Player Assists | 564 | 2.0 min | 2.1 min |
 | KXNBAPTSPROT NBA Player Points Protected | 564 | 2.5 min | 2.6 min |
 | KXNBATEAMTOTAL NBA Team Total | 543 | 2.5 min | 2.6 min |
@@ -257,7 +213,7 @@ Kalshi: settlement_ts − close_time per series (negative = settled before the s
 | KXEBASKETBALLGAME eBasketball Game | 352 | 4.0 min | 4.1 min |
 | KXNBASTL NBA Player Steals | 292 | 2.0 min | 2.1 min |
 | KXNBA1HTEAMTOTAL NBA 1st Half Team Total | 286 | 2.5 min | 2.6 min |
-| KXCS2MAP Counter-Strike 2 Map Winner  | 264 | 3.0 min | 3.0 min |
+| KXCS2MAP Counter-Strike 2 Map Winner  | 266 | 3.0 min | 3.0 min |
 | KXCOPADELREYTOTAL Copa del Rey Total | 256 | 4.0 min | 4.1 min |
 | KXNBA1HTOTAL NBA 1st Half Total | 247 | 2.5 min | 2.6 min |
 | KXNBA1HSPREAD NBA 1st Half Spread | 247 | 2.5 min | 2.6 min |
@@ -265,7 +221,7 @@ Kalshi: settlement_ts − close_time per series (negative = settled before the s
 | KXNBA2HSPREAD NBA 2nd Half Spread | 247 | 2.5 min | 2.6 min |
 | KXITFWMATCH ITF Women's Match | 240 | 2.0 min | 2.1 min |
 | KXNBAPRA NBA Player Points + Rebounds + | 236 | 2.5 min | 2.6 min |
-| KXCS2GAME Counter-Strike 2 Game | 204 | 3.0 min | 3.0 min |
+| KXCS2GAME Counter-Strike 2 Game | 206 | 3.0 min | 3.0 min |
 | KXITFMATCH ITF Men's Match | 200 | 2.0 min | 2.1 min |
 | KXEFOOTBALLGAME eFootball Game | 194 | 31.0 min | 31.1 min |
 | KXNCAAFSPREAD College Football Spread | 191 | 4.0 min | 4.1 min |
@@ -283,35 +239,35 @@ change% = share of scan cycles (60 s) where the best quote moved; react = median
 
 | venue | sport | markets | snapshots | two-sided | med spread | change% | react (min) | round sizes | med size |
 |---|---|---|---|---|---|---|---|---|---|
-| pm | soccer | 1137 | 88623 | 89% | 0.020 | 18% | 0.5 (n=1336) | - | - |
-| pm | tennis | 723 | 87659 | 92% | 0.010 | 25% | 0.5 (n=49308) | - | - |
-| pm | esports | 2187 | 59988 | 76% | 0.030 | 21% | 0.5 (n=12550) | - | - |
-| pm | table-tennis | 1029 | 38965 | 94% | 0.020 | 29% | 0.5 (n=18761) | - | - |
-| pm | basketball | 374 | 17890 | 75% | 0.040 | 23% | 0.5 (n=5053) | - | - |
-| pm | football | 468 | 17044 | 31% | 0.010 | 18% | 1.5 (n=83) | - | - |
-| pm | ice-hockey | 91 | 7712 | 88% | 0.060 | 16% | 0.7 (n=395) | - | - |
-| pm | climate | 108 | 6756 | 71% | 0.030 | 17% | - (n=0) | - | - |
+| pm | soccer | 1152 | 90348 | 89% | 0.010 | 18% | 0.5 (n=1361) | - | - |
+| pm | tennis | 765 | 88102 | 92% | 0.010 | 25% | 0.5 (n=49491) | - | - |
+| pm | esports | 2195 | 60126 | 76% | 0.030 | 21% | 0.5 (n=12567) | - | - |
+| pm | table-tennis | 1037 | 39255 | 94% | 0.020 | 29% | 0.5 (n=18905) | - | - |
+| pm | basketball | 374 | 17953 | 75% | 0.040 | 24% | 0.5 (n=5069) | - | - |
+| pm | football | 468 | 17063 | 31% | 0.010 | 18% | 1.5 (n=83) | - | - |
+| pm | ice-hockey | 92 | 7736 | 88% | 0.060 | 16% | 0.7 (n=396) | - | - |
+| pm | climate | 108 | 6768 | 71% | 0.030 | 17% | - (n=0) | - | - |
 | pm | golf | 159 | 4999 | 2% | 0.040 | 3% | - (n=0) | - | - |
-| pm | cricket | 7 | 3420 | 96% | 0.040 | 9% | 1.2 (n=494) | - | - |
-| pm | beach-volleyball | 42 | 1890 | 86% | 0.010 | 22% | 0.5 (n=1061) | - | - |
+| pm | cricket | 7 | 3446 | 96% | 0.040 | 9% | 1.2 (n=501) | - | - |
+| pm | beach-volleyball | 42 | 1907 | 86% | 0.010 | 22% | 0.5 (n=1072) | - | - |
 | pm | darts | 46 | 1429 | 91% | 0.090 | 30% | 0.5 (n=178) | - | - |
 | pm | macro | 63 | 349 | 0% | - | 3% | - (n=0) | - | - |
+| pm | mma | 11 | 312 | 100% | 0.020 | 0% | - (n=0) | - | - |
 | pm | baseball | 1 | 310 | 96% | 0.060 | 30% | 0.5 (n=6) | - | - |
-| pm | mma | 10 | 306 | 100% | 0.020 | 0% | - (n=0) | - | - |
-| pm | rugby | 18 | 276 | 80% | 0.430 | 25% | - (n=0) | - | - |
-| pm | motorsports | 22 | 110 | 30% | 0.280 | 0% | - (n=0) | - | - |
+| pm | rugby | 18 | 278 | 80% | 0.430 | 25% | - (n=0) | - | - |
+| pm | motorsports | 22 | 132 | 30% | 0.280 | 1% | - (n=0) | - | - |
+| pm | boxing | 3 | 73 | 100% | 0.040 | 55% | - (n=0) | - | - |
 | pm | pickleball | 10 | 72 | 61% | 0.285 | 8% | - (n=0) | - | - |
-| pm | boxing | 3 | 70 | 100% | 0.040 | 54% | - (n=0) | - | - |
-| k | KXNCAAFGAME College Football Game | 490 | 331687 | 99% | 0.020 | 1% | - | 9% | 284 |
+| k | KXNCAAFGAME College Football Game | 490 | 333659 | 99% | 0.020 | 1% | - | 9% | 290 |
 | k | KXNBA3PT NBA Player Threes | 870 | 112069 | 84% | 0.070 | 16% | - | 23% | 25 |
 | k | KXNCAAFTEAMTOTAL College Football Team To | 1245 | 80179 | 97% | 0.020 | 1% | - | 27% | 246 |
-| k | KXCS2MAP Counter-Strike 2 Map Win | 422 | 76240 | 94% | 0.700 | 7% | - | 19% | 101 |
+| k | KXCS2MAP Counter-Strike 2 Map Win | 422 | 76943 | 94% | 0.690 | 7% | - | 19% | 101 |
 | k | KXNBAAST NBA Player Assists | 666 | 63069 | 85% | 0.070 | 16% | - | 24% | 23 |
 | k | KXNBAPTS NBA Player Points | 669 | 62029 | 84% | 0.050 | 21% | - | 21% | 38 |
-| k | KXNFLGAME NFL Game | 58 | 60790 | 100% | 0.010 | 1% | - | 4% | 72007 |
+| k | KXNFLGAME NFL Game | 58 | 61071 | 100% | 0.010 | 1% | - | 4% | 72398 |
 | k | KXNBAREB NBA Player Rebounds | 730 | 60570 | 83% | 0.090 | 19% | - | 20% | 35 |
 | k | KXNHLGOAL NHL Goalscorer | 914 | 48222 | 64% | 0.070 | 13% | - | 23% | 50 |
-| k | KXESOCCERGAME eSoccer Game | 2754 | 44841 | 30% | 0.490 | 7% | - | 20% | 10 |
+| k | KXESOCCERGAME eSoccer Game | 2754 | 44985 | 30% | 0.490 | 7% | - | 20% | 10 |
 | k | KXNBA3PTPROT NBA Player Threes Protec | 863 | 40610 | 40% | 0.140 | 2% | - | 17% | 30 |
 | k | KXNCAAFSPREAD College Football Spread | 2433 | 35623 | 92% | 0.030 | 2% | - | 19% | 464 |
 | k | KXNBA1HTEAMTOTAL NBA 1st Half Team Total | 418 | 25838 | 59% | 0.250 | 9% | - | 17% | 50 |
@@ -327,9 +283,9 @@ change% = share of scan cycles (60 s) where the best quote moved; react = median
 | k | KXNCAAF1HSPREAD College Football 1st Hal | 1106 | 16040 | 90% | 0.050 | 2% | - | 33% | 50 |
 | k | KXNCAAF1H College Football 1st Hal | 735 | 15548 | 98% | 0.310 | 1% | - | 41% | 292 |
 | k | KXNBAPRA NBA Player Points + Rebo | 287 | 15227 | 74% | 0.310 | 19% | - | 10% | 8 |
+| k | KXATPSETWINNER ATP Set Winner | 214 | 15143 | 91% | 0.020 | 5% | - | 10% | 310 |
 | k | KXNFLREC Pro Football Player Rece | 799 | 14908 | 88% | 0.040 | 6% | - | 29% | 100 |
-| k | KXATPSETWINNER ATP Set Winner | 214 | 14666 | 91% | 0.020 | 5% | - | 10% | 303 |
-| k | KXWTASETWINNER WTA Set Winner | 136 | 14284 | 78% | 0.030 | 5% | - | 16% | 100 |
+| k | KXWTASETWINNER WTA Set Winner | 136 | 14393 | 78% | 0.030 | 6% | - | 16% | 100 |
 | k | KXNFLPASSYDSPRECISE Pass Yards Precise | 1204 | 13783 | 0% | - | 0% | - | 0% | - |
 | k | KXNBA3QSPREAD NBA 3rd Quarter Spread | 247 | 13170 | 76% | 0.050 | 7% | - | 30% | 127 |
 | k | KXNBASTL NBA Player Steals | 292 | 12834 | 72% | 0.290 | 15% | - | 13% | 1 |
