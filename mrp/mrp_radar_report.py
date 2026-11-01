@@ -80,6 +80,7 @@ def main():
     samples = {}
     decided = defaultdict(list)                      # kalshi ticker -> [(t, margin, lock, rec)]
     p_entries, p_exits, reacts = {}, {}, []
+    lats, rfills = [], []
     series_titles = {}
     matches = 0
     for r in load(a.root, a.days):
@@ -132,6 +133,10 @@ def main():
             p_entries[d["id"]] = (t, d)
         elif k == "sp.paper.exit":
             p_exits[d["id"]] = (t, d)
+        elif k == "sp.lat":
+            lats.append(d)
+        elif k == "sp.restfill":
+            rfills.append(d)
         elif k == "sp.react":
             reacts.append(d)
         elif k == "sp.decided":
@@ -241,6 +246,28 @@ def main():
         for g, sc, a15, a30, a60 in rows[-20:]:
             print(f"- {g} {sc}: {100 * a15:.0f}% / {100 * a30:.0f}% / {100 * a60:.0f}%")
         print()
+
+    # ------------------------------------------------------------------ bot latency map (Dead Man's Ticket v2)
+    print("## Bot latency map: seconds from the score to Kalshi repricing a decided market\n")
+    if not lats:
+        print("no decided markets watched on the live stream yet\n")
+    else:
+        grp = defaultdict(list)
+        for d in lats:
+            grp[(d.get("sport"), d.get("series"))].append(d)
+        print("| sport | series | decided | median s to reprice | <= 15 s | <= 60 s | never (closed/timeout) | cheapest ask seen | "
+              "resting bid @0.97: contracts / $ | @0.99: contracts / $ |\n|---|---|---|---|---|---|---|---|---|---|")
+        for (sp_, se), xs in sorted(grp.items(), key=lambda kv: -len(kv[1])):
+            rep_ = [x["latency_s"] for x in xs if x.get("how") == "repriced"]
+            never = sum(1 for x in xs if x.get("how") != "repriced")
+            mins = [x["min_ask"] for x in xs if x.get("min_ask") is not None]
+            f97 = [x["fills"].get("0.97", {}) for x in xs]; f99 = [x["fills"].get("0.99", {}) for x in xs]
+            print(f"| {sp_} | {se} | {len(xs)} | {fmt(med(rep_), 0)} | {sum(1 for r in rep_ if r <= 15)} | {sum(1 for r in rep_ if r <= 60)} | "
+                  f"{never} | {fmt(min(mins), 2) if mins else '-'} | {sum(f.get('q', 0) for f in f97):.0f} / ${sum(f.get('profit', 0) for f in f97):.2f} | "
+                  f"{sum(f.get('q', 0) for f in f99):.0f} / ${sum(f.get('profit', 0) for f in f99):.2f} |")
+        print("\nLatency counts from when OUR score feed changed (Polymarket's feed lags reality, so true bot speed is faster). "
+              "Resting-bid columns: contracts that sellers dumped below that price after the decision, and the profit a resting bid "
+              "there would have made (maker fee ignored).\n")
 
     # ------------------------------------------------------------------ decided-state engine
     print("## Decided-state engine (contracts the live score already settled, still trading)\n")

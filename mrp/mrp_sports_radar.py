@@ -58,6 +58,8 @@ import mrp_recorder as R  # Writer, parse_ts, log, hosts, .env  # noqa: E402
 import mrp_decided as D  # noqa: E402
 from mrp_implications import Leg, implication_locks  # noqa: E402
 import mrp_paper  # noqa: E402
+import mrp_stream  # noqa: E402
+STREAM: Optional["mrp_stream.Stream"] = None
 
 W = R.W
 log = R.log
@@ -550,6 +552,10 @@ def detect_decided(pairs, pm_all: list[dict], score_age: dict[str, float]) -> li
             if e:
                 rec.update(action=e[0], price=e[1], margin=e[2], depth=km.get("yaq") if e[0] == "buy_yes" else km.get("ybq"))
             W.write("sp.decided", rec)                     # every decided-but-active market: repricing latency study
+            if STREAM is not None and not contradiction:
+                STREAM.decided(km["t"], dec.yes, time.time() - g.score_age_s,
+                               {"sport": pe["sport"], "series": km["series"], "game": gk, "reason": dec.reason,
+                                "title": pe["title"], "lock": rec["lock"]})
             if e and e[2] > MIN_MARGIN:
                 opps.append(rec)
     return opps
@@ -730,6 +736,9 @@ def main():
     n_cycle = 0
     pm_delta, k_delta = Delta("sp.pm.event", every=20), Delta("sp.k.market", every=20)
     paper = mrp_paper.Paper(W, R.DATA_DIR, D)
+    global STREAM
+    STREAM = mrp_stream.Stream()
+    STREAM.start()
 
     def _stop(*_):
         STOP.set()
@@ -820,6 +829,11 @@ def main():
             live_or_ended = [pe for pe in pm_all if pe.get("live") or pe.get("ended")]
             pairs = match_games(live_or_ended, kms)
             hot_series = {m["series"] for _, _, ms in pairs for m in ms}
+            if STREAM is not None and STREAM.on:
+                STREAM.set_tickers({m["t"] for _, _, ms in pairs for m in ms if m.get("status") == "active"})
+                for m in kms:
+                    if m.get("status"):
+                        STREAM.mark_status(m["t"], m["status"])
             for pe, gk, ms in pairs:
                 key = f"{pe['slug']}|{gk}"
                 if key not in seen_pairs:
@@ -876,6 +890,8 @@ def main():
             kinds: dict[str, int] = {}
             for o in opps:
                 kinds[o["kind"]] = kinds.get(o["kind"], 0) + 1
+            if STREAM is not None and STREAM.on and n_cycle % 40 == 1:
+                W.write("sp.stream.stats", dict(STREAM.stats, watching=len(STREAM.watch), books=len(STREAM.books), want=len(STREAM.want)))
             if n_cycle % 4 == 1 or opps:
                 log(f"cycle {n_cycle}: pm live {len(live_raw)} ended-open {len(ended_pm)} near {len(near_pm)} | kalshi {len(kms)} "
                     f"hot {len(hot_series)} | pairs {len(pairs)} opps {kinds or '-'} | MB {BYTES['pm']/1e6:.0f}/{BYTES['k']/1e6:.0f} "

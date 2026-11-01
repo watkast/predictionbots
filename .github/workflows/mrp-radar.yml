@@ -1,4 +1,4 @@
-# Mr. P sports radar (read-only; never places orders; public endpoints only — no secrets).
+# Mr. P sports radar (read-only; never places orders; public REST endpoints + read-only Kalshi WebSocket).
 # Scans every sports market on Polymarket US and Kalshi for outcome-already-known contracts,
 # dutch books, cross-venue gaps and settlement lag, and records 60 s snapshots to fingerprint
 # who quotes each market. Same shape as mrp-record.yml: ~5.6 h per run, hourly cron + concurrency
@@ -29,6 +29,9 @@ jobs:
     timeout-minutes: 355
     env:
       MRP_DATA_DIR: ${{ github.workspace }}/radardata
+      # read-only Kalshi WebSocket for the live latency map (no order endpoints are ever called)
+      KALSHI_KEY_ID: ${{ secrets.KALSHI_KEY_ID }}
+      KALSHI_PRIVATE_KEY_PEM: ${{ secrets.KALSHI_PRIVATE_KEY_PEM }}
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-python@v5
