@@ -1,11 +1,11 @@
 # Mr. P — sports radar
 
-Updated 2026-11-01T14:21:43Z by `run-20261101T0844-41281223448` (last 7 days). Read-only scanner of every sports market on Polymarket US and Kalshi — it never places orders.
+Updated 2026-11-01T14:22:49Z by `run-20261101T0844-41281223448` (last 7 days). Read-only scanner of every sports market on Polymarket US and Kalshi — it never places orders.
 Kit: `mrp/mrp_sports_radar.py` on the `mrp` branch. Raw tape: `mrp/radar/<run>/`.
 
 # Sports radar report
 
-records 4,384,145 | 2026-10-29 15:47Z → 14:20Z | runs 27 | pairs matched 1502 | errors {'radar': 13}
+records 4,384,437 | 2026-10-29 15:47Z → 14:21Z | runs 27 | pairs matched 1502 | errors {'radar': 13}
 
 ## Catalogue (latest inventory, 12:52Z)
 
@@ -79,7 +79,7 @@ Polymarket US sports events 4557 of 6044 active events; Kalshi near-term sports 
 | kind | distinct | hits | max margin $/contract | max persistence | fresh-BBO still open |
 |---|---|---|---|---|---|
 | dead_pm | 7 | 79 | - | 19 min | 0/79 |
-| decided_k | 856 | 64233 | 0.9893 | 69 min | 0/0 |
+| decided_k | 856 | 64234 | 0.9893 | 69 min | 0/0 |
 | decided_pm | 20 | 466 | 0.9947 | 28 min | 159/466 |
 | decided_pm_closed | 11 | 137 | 0.9893 | 30 min | 0/137 |
 | dutch_k | 16 | 594 | 0.1744 | 140 min | 0/0 |
@@ -207,23 +207,23 @@ Ledger L2-2026-11-01 (earlier ledgers excluded: L1)
 | tennis | KXWTASETWINNER | 694 | 46 | 126 | 362 | 0 | - | 0 / $0.00 | 155 / $1.56 |
 | tennis | KXATPSETWINNER | 592 | 68 | 100 | 274 | 0 | - | 0 / $0.00 | 306 / $3.06 |
 | soccer | KXTHAIL1TOTAL | 550 | 727 | 4 | 17 | 0 | 0.96 | 0 / $0.00 | 0 / $0.00 |
-| soccer | KXBUNDESLIGA2TOTAL | 362 | 345 | 8 | 31 | 0 | - | 0 / $0.00 | 543 / $5.43 |
-| soccer | KXALLSVENSKANTOTAL | 278 | 1571 | 4 | 16 | 0 | - | 0 / $0.00 | 0 / $0.00 |
+| soccer | KXBUNDESLIGA2TOTAL | 370 | 337 | 8 | 35 | 0 | - | 0 / $0.00 | 586 / $5.86 |
+| soccer | KXALLSVENSKANTOTAL | 284 | 1555 | 4 | 16 | 0 | - | 0 / $0.00 | 0 / $0.00 |
 | soccer | KXTFF1LIGTOTAL | 252 | 1052 | 3 | 11 | 1 | 0.88 | 1148 / $34.44 | 1148 / $11.48 |
 | soccer | KXHUNNB1TOTAL | 248 | 1861 | 2 | 6 | 0 | - | 0 / $0.00 | 0 / $0.00 |
-| soccer | KXEREDIVISIETOTAL | 228 | 197 | 17 | 54 | 0 | - | 0 / $0.00 | 0 / $0.00 |
+| soccer | KXEREDIVISIETOTAL | 238 | 197 | 17 | 54 | 0 | - | 0 / $0.00 | 0 / $0.00 |
 | soccer | KXMYSLTOTAL | 223 | 528 | 2 | 8 | 0 | - | 0 / $0.00 | 0 / $0.00 |
-| tennis | KXATPCHALLENGERMATCH | 208 | 135 | 13 | 48 | 0 | - | 0 / $0.00 | 0 / $0.00 |
+| tennis | KXATPCHALLENGERMATCH | 212 | 135 | 13 | 48 | 0 | - | 0 / $0.00 | 0 / $0.00 |
 | soccer | KXKLEAGUETOTAL | 192 | 556 | 3 | 12 | 0 | - | 0 / $0.00 | 0 / $0.00 |
 | tennis | KXATPEXACTMATCH | 150 | 226 | 3 | 12 | 0 | - | 0 / $0.00 | 0 / $0.00 |
-| soccer | KXDENSUPERLIGATOTAL | 138 | 1108 | 2 | 8 | 0 | - | 0 / $0.00 | 0 / $0.00 |
-| soccer | KXBELGIANPLTOTAL | 119 | 468 | 1 | 5 | 0 | 0.93 | 0 / $0.00 | 0 / $0.00 |
-| soccer | KXAUTBUNDESTOTAL | 115 | 300 | 3 | 12 | 0 | - | 0 / $0.00 | 0 / $0.00 |
+| soccer | KXDENSUPERLIGATOTAL | 142 | 1062 | 2 | 8 | 0 | - | 0 / $0.00 | 0 / $0.00 |
+| soccer | KXBELGIANPLTOTAL | 123 | 472 | 1 | 5 | 0 | 0.93 | 0 / $0.00 | 0 / $0.00 |
+| soccer | KXAUTBUNDESTOTAL | 119 | 301 | 3 | 12 | 0 | - | 0 / $0.00 | 0 / $0.00 |
 | tennis | KXATPMATCH | 108 | 211 | 4 | 16 | 0 | - | 0 / $0.00 | 0 / $0.00 |
 | soccer | KXCZEFLTOTAL | 95 | 408 | 0 | 2 | 0 | - | 0 / $0.00 | 0 / $0.00 |
-| soccer | KXCZEFNLTOTAL | 85 | 1487 | 0 | 0 | 0 | - | 0 / $0.00 | 0 / $0.00 |
+| soccer | KXCZEFNLTOTAL | 87 | 1503 | 0 | 0 | 0 | - | 0 / $0.00 | 0 / $0.00 |
 | soccer | KXSERIECSPREAD | 76 | 5590 | 0 | 0 | 0 | - | 0 / $0.00 | 0 / $0.00 |
-| soccer | KXELITESERIENTOTAL | 68 | 340 | 3 | 9 | 0 | - | 0 / $0.00 | 0 / $0.00 |
+| soccer | KXELITESERIENTOTAL | 70 | 355 | 3 | 9 | 0 | - | 0 / $0.00 | 0 / $0.00 |
 | soccer | KXIDNSLBTTS | 22 | 595 | 0 | 0 | 0 | - | 0 / $0.00 | 0 / $0.00 |
 | soccer | KXBUNDESLIGA2BTTS | 19 | 236 | 0 | 0 | 0 | - | 0 / $0.00 | 0 / $0.00 |
 
@@ -315,7 +315,7 @@ change% = share of scan cycles (60 s) where the best quote moved; react = median
 | venue | sport | markets | snapshots | two-sided | med spread | change% | react (min) | round sizes | med size |
 |---|---|---|---|---|---|---|---|---|---|
 | pm | soccer | 1830 | 219660 | 88% | 0.020 | 19% | 0.5 (n=3430) | - | - |
-| pm | tennis | 1317 | 126093 | 92% | 0.010 | 24% | 0.5 (n=67365) | - | - |
+| pm | tennis | 1317 | 126094 | 92% | 0.010 | 24% | 0.5 (n=67365) | - | - |
 | pm | esports | 3301 | 88670 | 76% | 0.030 | 20% | 0.5 (n=18446) | - | - |
 | pm | table-tennis | 1492 | 60020 | 94% | 0.020 | 30% | 0.5 (n=29525) | - | - |
 | pm | basketball | 762 | 47890 | 81% | 0.050 | 25% | 0.5 (n=9530) | - | - |
@@ -334,9 +334,9 @@ change% = share of scan cycles (60 s) where the best quote moved; react = median
 | pm | rugby | 20 | 352 | 74% | 0.450 | 23% | - (n=0) | - | - |
 | pm | boxing | 4 | 165 | 95% | 0.030 | 56% | - (n=0) | - | - |
 | pm | pickleball | 12 | 99 | 64% | 0.280 | 10% | - (n=0) | - | - |
-| k | KXNCAAFGAME College Football Game | 704 | 598065 | 98% | 0.020 | 1% | - | 8% | 149 |
+| k | KXNCAAFGAME College Football Game | 704 | 598122 | 98% | 0.030 | 1% | - | 8% | 149 |
 | k | KXNBA3PT NBA Player Threes | 1131 | 138777 | 82% | 0.080 | 17% | - | 24% | 27 |
-| k | KXNFLGAME NFL Game | 58 | 114473 | 100% | 0.010 | 1% | - | 3% | 124815 |
+| k | KXNFLGAME NFL Game | 58 | 114476 | 100% | 0.010 | 1% | - | 3% | 124768 |
 | k | KXCS2MAP Counter-Strike 2 Map Win | 524 | 111981 | 94% | 0.580 | 6% | - | 20% | 101 |
 | k | KXNCAAFTEAMTOTAL College Football Team To | 1319 | 103824 | 84% | 0.020 | 2% | - | 27% | 230 |
 | k | KXNCAAFSPREAD College Football Spread | 2707 | 79139 | 62% | 0.040 | 3% | - | 16% | 129 |
@@ -373,7 +373,7 @@ change% = share of scan cycles (60 s) where the best quote moved; react = median
 | k | KXNFLREC Pro Football Player Rece | 799 | 14908 | 88% | 0.040 | 6% | - | 29% | 100 |
 | k | KXNBASTL NBA Player Steals | 425 | 14541 | 65% | 0.290 | 15% | - | 13% | 1 |
 | k | KXNBA3QTOTAL NBA 3rd Quarter Total | 260 | 14530 | 72% | 0.050 | 9% | - | 35% | 145 |
-| k | KXATPCHALLENGERMATCH Challenger ATP  | 242 | 14185 | 87% | 0.010 | 7% | - | 5% | 550 |
+| k | KXATPCHALLENGERMATCH Challenger ATP  | 242 | 14213 | 87% | 0.010 | 7% | - | 5% | 550 |
 
 ## Schema notes (raw keys seen)
 
