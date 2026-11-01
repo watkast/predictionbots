@@ -25,6 +25,7 @@
   --font-body: "IBM Plex Sans", "Helvetica Neue", Arial, sans-serif;
   --font-mono: "IBM Plex Mono", "SF Mono", Menlo, Consolas, monospace;
   color-scheme: dark;
+  --chart-h: 240px;       /* fixed chart height (phone); 320px on wide screens */
 }
 * { box-sizing: border-box; }
 html, body { height: 100%; }
@@ -108,7 +109,7 @@ input, select { background: var(--bg); border: 1px solid var(--line); border-rad
 .legend span::before { content: ""; display: inline-block; width: 18px; height: 3px; border-radius: 2px; margin-right: 6px; vertical-align: middle; background: currentColor; }
 .legend .l-spot { color: var(--spot); } .legend .l-pm { color: var(--pm); } .legend .l-target { color: var(--target); } .legend .l-kill { color: var(--kill); } .legend .l-post { color: var(--post); }
 .legend .l-target::before { height: 0; border-top: 3px dashed currentColor; }
-.canvas-box { position: relative; width: 100%; aspect-ratio: 16 / 9; max-height: 60vh; min-height: 300px; }
+.canvas-box { position: relative; width: 100%; height: var(--chart-h); }
 canvas { position: absolute; inset: 0; width: 100%; height: 100%; display: block; border-radius: 8px; }
 .reach { font-size: 12px; color: var(--muted); padding: 8px 4px 0; line-height: 1.4; }
 .reach b { font: 700 13px/1 var(--font-display); letter-spacing: .08em; padding: 2px 7px; border-radius: 5px; color: #140800; margin-right: 4px; }
@@ -197,19 +198,100 @@ details.settings summary { cursor: pointer; font: 700 15px/1.4 var(--font-displa
   .timer, .timer-sub { text-align: left; }
   .paper { grid-template-columns: 1fr; }
 }
+/* ===== HERO: what predicts the flip, furthest ahead first ===== */
+.hero { display: grid; gap: 10px; padding: 12px 14px 14px; background: linear-gradient(180deg, #151a28, #0f1320); border: 1px solid var(--line); border-radius: 14px; }
+.hero-top { display: grid; grid-template-columns: auto 1fr; gap: 6px 16px; align-items: end; }
+.hero-top .timer { text-align: left; font-size: clamp(52px, 12vw, 84px); line-height: .95; }
+.hero-top .timer-sub { text-align: left; }
+.hero-top .mkt-win { text-align: right; align-self: start; }
+.hero .do { padding: 12px 14px; }
+.hero .do .head { font-size: clamp(34px, 8.5vw, 64px); }
+.hero .do .sub { font-size: clamp(14px, 3.6vw, 16px); }
+.chartwrap { display: grid; gap: 4px; }
+.chart-bar { display: flex; justify-content: space-between; align-items: center; gap: 8px; font-size: 11px; color: var(--muted); }
+.chart-bar .legend { gap: 8px; font-size: 11px; }
+.chart-bar button { padding: 3px 9px; font-size: 11px; border-radius: 999px; }
+.radar { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 8px; }
+.tile { border: 2px solid var(--line); border-radius: 12px; padding: 10px 12px; background: var(--surface); display: grid; gap: 3px; align-content: start; min-width: 0; }
+.tile .t-label { font: 700 11px/1 var(--font-display); letter-spacing: .12em; text-transform: uppercase; color: var(--muted); display: flex; justify-content: space-between; gap: 6px; }
+.tile .t-label span { font-weight: 600; letter-spacing: .04em; text-transform: none; color: var(--muted); opacity: .8; }
+.tile .t-big { font: 800 clamp(26px, 7vw, 40px)/1 var(--font-display); letter-spacing: .01em; color: var(--fg); font-variant-numeric: tabular-nums; }
+.tile .t-mid { font: 700 clamp(14px, 3.8vw, 17px)/1.15 var(--font-display); letter-spacing: .02em; color: var(--fg); }
+.tile .t-sub { font-size: 12px; color: var(--muted); line-height: 1.3; }
+.tile.ok { border-color: var(--good); } .tile.ok .t-big { color: var(--good); }
+.tile.thin { border-color: #ffe14d; } .tile.thin .t-big { color: #ffe14d; }
+.tile.warn { border-color: var(--warn); } .tile.warn .t-big { color: var(--warn); }
+.tile.bad { border-color: var(--bad); background: linear-gradient(180deg, #2c1216, #1c1216); } .tile.bad .t-big { color: var(--bad); }
+.posbar { display: flex; flex-wrap: wrap; gap: 8px; align-items: center; padding: 8px 12px; border: 1px solid var(--line); border-radius: 12px; background: var(--surface); }
+.posbar label { display: grid; gap: 2px; font-size: 10px; color: var(--muted); flex: 1 1 70px; max-width: 150px; min-width: 0; }
+.posbar input { padding: 7px 8px; font-size: 15px; }
+.posbar button { padding: 8px 12px; font-size: 14px; }
+.posbar .seg button { padding: 8px 14px; font-weight: 600; }
+.posbar .pos-line { flex: 1 1 100%; font-size: 13px; color: var(--muted); }
+.posbar .pos-line b { color: var(--fg); font-family: var(--font-mono); }
+.fine { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 12px; align-items: start; }
+.fine .card { font-size: 13px; }
+.fine .card h3 { font-size: 13px; }
+.facts .mkt-stats { grid-template-columns: repeat(auto-fit, minmax(140px, 1fr)); }
+.facts .stat .v { font-size: 18px; }
+.facts .chips { margin-top: 10px; }
+@media (min-width: 861px) { :root { --chart-h: 320px; } }
+@media (max-width: 860px) {
+  .radar { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .fine { grid-template-columns: 1fr; }
+  .hero-top { grid-template-columns: 1fr; }
+  .hero-top .mkt-win { text-align: left; }
+}
 </style>
 
 <div class="wrap">
-  <!-- ===== The market itself ===== -->
-  <header class="mkt" id="mkt">
-    <div>
-      <div class="mkt-name">BTC UP OR DOWN 15M</div>
-      <div class="mkt-win">Polymarket US · <b id="win-et">—</b> ET · <b id="win-local">—</b> local · round <span class="num" id="slug">—</span></div>
+  <!-- ===== HERO: timer, verdict, chart, flip radar (ordered by how far ahead each one sees), position ===== -->
+  <section class="hero">
+    <div class="hero-top">
+      <div>
+        <div class="timer num" id="timer">--:--</div>
+        <div class="timer-sub" id="timer-sub">left in this round</div>
+      </div>
+      <div class="mkt-win">BTC UP OR DOWN 15M · Polymarket US<br><b id="win-et">—</b> ET · <b id="win-local">—</b> local<br><span class="num" id="slug">—</span></div>
     </div>
-    <div>
-      <div class="timer num" id="timer">--:--</div>
-      <div class="timer-sub" id="timer-sub">left in this round</div>
+    <div class="do wait" id="do">
+      <div class="label" id="do-label">DO NOW</div>
+      <div class="head" id="do-head">Connecting to the feed…</div>
+      <div class="sub" id="do-sub">The Coinbase feed and the round clock come first; the dictation starts as soon as prices arrive.</div>
+      <div class="time" id="do-time"></div>
     </div>
+    <div class="chartwrap">
+      <div class="canvas-box"><canvas id="cv"></canvas></div>
+      <div class="chart-bar">
+        <div class="legend">
+          <span class="l-target">target</span>
+          <span class="l-kill">kill line</span>
+          <span class="l-spot">spot</span>
+          <span class="l-pm">PM line · dotted = in 30 s</span>
+          <span class="l-post">post: record pace</span>
+        </div>
+        <button id="btn-zoom" title="Zoom to the last 5 minutes when the round is inside 3:00">Zoom: auto</button>
+      </div>
+    </div>
+    <div class="radar">
+      <div class="tile" id="r-cush"><div class="t-label">Cushion <span>to the bell</span></div><div class="t-big" id="r-cush-big">—</div><div class="t-mid" id="r-cush-mid"></div><div class="t-sub" id="r-cush-sub">kill line: what BTC must average to flip it</div></div>
+      <div class="tile" id="r-odds"><div class="t-label">Flip chance <span>to the bell</span></div><div class="t-big" id="r-odds-big">—</div><div class="t-mid" id="r-odds-mid"></div><div class="t-sub" id="r-odds-sub">model + fat tails</div></div>
+      <div class="tile" id="r-pace"><div class="t-label">BTC pace <span>next seconds</span></div><div class="t-big" id="r-pace-big">—</div><div class="t-mid" id="r-pace-mid"></div><div class="t-sub" id="r-pace-sub">last 10 s · 30 s</div></div>
+      <div class="tile" id="r-line"><div class="t-label">PM line <span>in 30 s</span></div><div class="t-big" id="r-line-big">—</div><div class="t-mid" id="r-line-mid"></div><div class="t-sub" id="r-line-sub">where the button's number reads if BTC holds</div></div>
+    </div>
+    <div class="posbar">
+      <div class="seg" id="my-seg"><button class="up" data-side="UP">UP</button><button class="down" data-side="DOWN">DOWN</button></div>
+      <label>Paid ¢<input id="my-price" type="number" inputmode="decimal" min="1" max="99" step="1" placeholder="92"></label>
+      <label>Spent $<input id="my-spent" type="number" inputmode="decimal" min="1" step="1" placeholder="20"></label>
+      <button class="btn-primary" id="my-set">I'm in</button>
+      <button class="btn-danger" id="my-clear">Out</button>
+      <div class="pos-line" id="pos-line">No position — set it right after you buy; the verdict switches to LOCKED / HOLD / SELL.</div>
+    </div>
+  </section>
+  <div class="warnline" id="warn" hidden></div>
+
+  <!-- ===== Fine print: facts, feeds, money, history ===== -->
+  <section class="card facts">
     <div class="mkt-stats">
       <div class="stat"><div class="label">Target · price to beat</div><div class="v target num" id="h-target">—</div><small id="h-target-src">waiting for data</small></div>
       <div class="stat"><div class="label">Polymarket shows (60-s index average)</div><div class="v pm num" id="h-pm">—</div><small id="h-pm-diff">—</small></div>
@@ -226,123 +308,75 @@ details.settings summary { cursor: pointer; font: 700 15px/1.4 var(--font-displa
       <button id="btn-voice" title="Say the verdict out loud when it changes">🗣 Voice off</button>
       <button id="btn-wake" title="Keep the screen on">Keep screen on</button>
     </div>
-  </header>
-
-  <!-- ===== DO NOW / KILL LINE ===== -->
-  <section class="donow">
-    <div class="do wait" id="do">
-      <div class="label" id="do-label">DO NOW</div>
-      <div class="head" id="do-head">Connecting to the feed…</div>
-      <div class="sub" id="do-sub">The Coinbase feed and the round clock come first; the dictation starts as soon as prices arrive.</div>
-      <div class="time" id="do-time"></div>
-    </div>
-    <div class="do next" id="nx">
-      <div class="label" id="nx-label">KILL LINE</div>
-      <div class="head" id="nx-head">—</div>
-      <div class="sub" id="nx-sub"></div>
-      <div class="time" id="nx-time"></div>
-    </div>
+    <div class="reach" id="reach">Record pace: scanning Coinbase history…</div>
   </section>
-  <div class="warnline" id="warn" hidden></div>
 
-  <main class="main">
-    <!-- ===== Chart ===== -->
-    <section class="card chartcard">
-      <div class="chart-top">
-        <div class="legend">
-          <span class="l-target">Target (price to beat)</span>
-          <span class="l-kill">Kill line (what BTC must average to flip it)</span>
-          <span class="l-spot">Coinbase spot</span>
-          <span class="l-pm">Polymarket shows · dotted stub = where it reads in 30 s</span>
-          <span class="l-post">Post: minutes to the target at record pace · 1m ticks at current pace</span>
-        </div>
-        <div class="hint">Shaded band on the right = the part of the settlement average already in the books.</div>
-      </div>
-      <div class="canvas-box"><canvas id="cv"></canvas></div>
-      <div class="reach" id="reach">Record pace: scanning Coinbase history…</div>
+  <main class="fine">
+    <section class="card feed">
+      <div class="spot"><div class="label">Coinbase spot</div><div class="v" id="f-spot">—</div></div>
+      <div class="pm"><div class="label">Polymarket shows</div><div class="v" id="f-pm">—</div></div>
+      <div class="lag" id="f-lag">PM is <b>—</b> s and <b>—</b> behind the spot</div>
+      <div class="insight" id="f-insight">Waiting for prices.</div>
     </section>
 
-    <aside class="side">
-      <!-- feed row -->
-      <section class="card feed">
-        <div class="spot"><div class="label">Coinbase spot</div><div class="v" id="f-spot">—</div></div>
-        <div class="pm"><div class="label">Polymarket shows</div><div class="v" id="f-pm">—</div></div>
-        <div class="lag" id="f-lag">PM is <b>—</b> s and <b>—</b> behind the spot</div>
-        <div class="insight" id="f-insight">Waiting for prices.</div>
-      </section>
+    <section class="card">
+      <h3>My position on Polymarket</h3>
+      <div class="kv">
+        <span class="k">Holding</span><span class="n" id="my-hold">nothing</span>
+        <span class="k">Cost</span><span class="n" id="my-cost">—</span>
+        <span class="k">Worth (model · bid)</span><span class="n" id="my-worth">—</span>
+        <span class="k">Sell now keeps</span><span class="n" id="my-sell">—</span>
+        <span class="k">To win</span><span class="n" id="my-win">—</span>
+      </div>
+    </section>
 
-      <!-- paper engine -->
-      <section class="card">
-        <h3>Script's own bets (paper)</h3>
-        <div class="paper">
-          <div class="cell" id="p-cell"><div class="big" id="p-status">Watching the round</div><div class="small" id="p-note">Buys the sure thing (record pace can't flip it) with the stake in Settings; sells on SELL.</div></div>
-          <div class="cell"><div class="kv">
-            <span class="k">Position</span><span class="n" id="p-side">none</span>
-            <span class="k">Shares</span><span class="n" id="p-shares">0</span>
-            <span class="k">Buy-in cost</span><span class="n" id="p-cost">$0.00</span>
-            <span class="k">Value now</span><span class="n" id="p-value">$0.00</span>
-            <span class="k">P&amp;L</span><span class="n" id="p-pnl">—</span>
-            <span class="k">Round / total</span><span class="n" id="p-total">—</span>
-          </div></div>
-        </div>
-      </section>
+    <section class="card buyin" id="buyin">
+      <h3>If I bought the favorite now</h3>
+      <div class="b-head" id="b-head">Waiting for prices.</div>
+      <div class="b-sub" id="b-sub"></div>
+      <div class="b-ladder" id="b-ladder"></div>
+      <div class="hint" id="b-best"></div>
+    </section>
 
-      <!-- if I bought now -->
-      <section class="card buyin" id="buyin">
-        <h3>If I bought the favorite now</h3>
-        <div class="b-head" id="b-head">Waiting for prices.</div>
-        <div class="b-sub" id="b-sub"></div>
-        <div class="b-ladder" id="b-ladder"></div>
-        <div class="hint" id="b-best"></div>
-      </section>
+    <section class="card">
+      <h3>Plays right now · safety rating</h3>
+      <div class="tablebox"><table>
+        <thead><tr><th>Play</th><th class="n">Win</th><th class="n">Net if right</th><th>Safety</th></tr></thead>
+        <tbody id="plays"><tr><td colspan="4" class="hint">Waiting for prices.</td></tr></tbody>
+      </table></div>
+      <div class="hint" id="plays-note">Win = the math (settlement-average model), capped at 99.5% — it is never 100% unless the play is LOCKED (even a record move can't flip it). Net = per $1 contract after Polymarket's taker fee. Grades A+ ≥ 99.5% · A ≥ 99% · B ≥ 97% · C ≥ 90% · D below, all "by the math".</div>
+    </section>
 
-      <!-- plays -->
-      <section class="card">
-        <h3>Plays right now · safety rating</h3>
-        <div class="tablebox"><table>
-          <thead><tr><th>Play</th><th class="n">Win</th><th class="n">Net if right</th><th>Safety</th></tr></thead>
-          <tbody id="plays"><tr><td colspan="4" class="hint">Waiting for prices.</td></tr></tbody>
-        </table></div>
-        <div class="hint" id="plays-note">Win = the math (settlement-average model), capped at 99.5% — it is never 100% unless the play is LOCKED (even a record move can't flip it). Net = per $1 contract after Polymarket's taker fee. Grades A+ ≥ 99.5% · A ≥ 99% · B ≥ 97% · C ≥ 90% · D below, all "by the math".</div>
-      </section>
+    <section class="card">
+      <h3>Script's own bets (paper)</h3>
+      <div class="paper">
+        <div class="cell" id="p-cell"><div class="big" id="p-status">Watching the round</div><div class="small" id="p-note">Buys the sure thing (record pace can't flip it) with the stake in Settings; sells on SELL.</div></div>
+        <div class="cell"><div class="kv">
+          <span class="k">Position</span><span class="n" id="p-side">none</span>
+          <span class="k">Shares</span><span class="n" id="p-shares">0</span>
+          <span class="k">Buy-in cost</span><span class="n" id="p-cost">$0.00</span>
+          <span class="k">Value now</span><span class="n" id="p-value">$0.00</span>
+          <span class="k">P&amp;L</span><span class="n" id="p-pnl">—</span>
+          <span class="k">Round / total</span><span class="n" id="p-total">—</span>
+        </div></div>
+      </div>
+    </section>
 
-      <!-- my position -->
-      <section class="card">
-        <h3>My position on Polymarket</h3>
-        <div class="row">
-          <div class="seg" id="my-seg"><button class="up" data-side="UP">UP</button><button class="down" data-side="DOWN">DOWN</button></div>
-          <label>Paid (¢ per share)<input id="my-price" type="number" inputmode="decimal" min="1" max="99" step="1" placeholder="92"></label>
-          <label>Spent ($)<input id="my-spent" type="number" inputmode="decimal" min="1" step="1" placeholder="20"></label>
-          <button class="btn-primary" id="my-set">I'm in</button>
-          <button class="btn-danger" id="my-clear">Out</button>
-        </div>
-        <div class="kv" style="margin-top:8px">
-          <span class="k">Holding</span><span class="n" id="my-hold">nothing</span>
-          <span class="k">Cost</span><span class="n" id="my-cost">—</span>
-          <span class="k">Worth (model · bid)</span><span class="n" id="my-worth">—</span>
-          <span class="k">Sell now keeps</span><span class="n" id="my-sell">—</span>
-          <span class="k">To win</span><span class="n" id="my-win">—</span>
-        </div>
-      </section>
+    <section class="card next">
+      <h3>Next round</h3>
+      <div class="kv">
+        <span class="k">Window</span><span class="n" id="n-win">—</span>
+        <span class="k">Its target forms from</span><span class="n">the last 60 s of this round</span>
+        <span class="k">Target so far</span><span class="n v" id="n-target">—</span>
+      </div>
+      <div class="hint" id="n-hint">The next price-to-beat is this round's settlement average. In the final minute it is already taking shape.</div>
+    </section>
 
-      <!-- next round -->
-      <section class="card next">
-        <h3>Next round</h3>
-        <div class="kv">
-          <span class="k">Window</span><span class="n" id="n-win">—</span>
-          <span class="k">Its target forms from</span><span class="n">the last 60 s of this round</span>
-          <span class="k">Target so far</span><span class="n v" id="n-target">—</span>
-        </div>
-        <div class="hint" id="n-hint">The next price-to-beat is this round's settlement average. In the final minute it is already taking shape.</div>
-      </section>
-
-      <!-- past -->
-      <section class="card">
-        <h3>Past rounds (this device)</h3>
-        <div class="lockrec" id="lockrec">Lock record: no LOCKED calls settled yet.</div>
-        <div class="past" id="past"><span class="hint">None yet.</span></div>
-      </section>
-    </aside>
+    <section class="card">
+      <h3>Past rounds (this device)</h3>
+      <div class="lockrec" id="lockrec">Lock record: no LOCKED calls settled yet.</div>
+      <div class="past" id="past"><span class="hint">None yet.</span></div>
+    </section>
   </main>
 
   <details class="settings" id="settings">
@@ -423,7 +457,7 @@ const HOSTED_URL = DEFAULT_RELAY + '/';                                       //
 const T_BOOT = Date.now();
 // an origin that blocks outbound connections (the claude.ai artifact viewer): no Coinbase tick AND the relay failing, 15 s after load
 const sandboxed = () => Date.now() - T_BOOT > 12000 && !lastTickMs && (cbState === 'down' || IDX.fails >= 2 || IDX.ok === false) && location.href.indexOf(DEFAULT_RELAY) !== 0;
-const DEF = { stake: 20, lockP: 99.5, maxAsk: 97, drift: 0, fee: 0.0695, relay: DEFAULT_RELAY, offset: null, sound: false, voice: false, recMargin: 1.5, reachGreen: 50, reachYellow: 10, paperOn: 'sure', edgeMin: 6, edgeScare: 15,
+const DEF = { stake: 20, lockP: 99.5, maxAsk: 97, drift: 0, fee: 0.0695, relay: DEFAULT_RELAY, offset: null, zoom: 'auto', sound: false, voice: false, recMargin: 1.5, reachGreen: 50, reachYellow: 10, paperOn: 'sure', edgeMin: 6, edgeScare: 15,
   latency: 8, holdMinP: 75, etaWarnS: 30, badPct: 99, lookS: 30, slack: 3, killSecs: 45, efLo: 80, efHi: 94 };
 let S = Object.assign({}, DEF);
 try { Object.assign(S, JSON.parse(localStorage.getItem('pm15.settings') || '{}')); } catch (e) {}
@@ -1027,21 +1061,51 @@ function dictate(E) {
   else $('do-sub').textContent = sub;
   if (key === 'sure' || key === 'locked' || key === 'sell' || key === 'sellnow') announce(key, head);
 
-  // KILL LINE card: the side that matters (mine if I am in, else the one for now)
-  const nx = $('nx'); let ncls = 'do next', nl = 'KILL LINE', nh = '—', ns = '', nt = '';
-  if (E.r > 0 && Number.isFinite(E.target) && Number.isFinite(E.spot)) {
-    const side = myPos ? myPos.side : E.fav, x = E.sideInfo(side);
-    nl = 'KILL LINE · ' + side + (myPos ? ' (mine)' : ' (for now)');
-    if (!Number.isFinite(x.cush)) { nh = '—'; }
-    else if (x.cush <= 0) { ncls += ' k-gone'; nh = side + ' is past the kill line by $' + fmt$(-x.cush, 0); ns = 'If BTC holds here the final average lands on the other side.'; }
-    else {
-      ncls += x.locked ? ' k-lock' : x.thin ? ' k-thin' : '';
-      nh = '$' + fmt$(x.cush, 0) + ' ' + x.dropWord + ' flips ' + side;
-      ns = 'BTC must average ' + (side === 'UP' ? 'below' : 'above') + ' ' + fmt$(x.killPM) + ' for the rest of the window' + (E.knownN > 0 ? ' (' + E.knownN + ' of 60 prints in the books)' : '') + ' · bad minute $' + fmt$(x.bad, 0) + ' · record $' + fmt$(x.rec, 0) + ' · ' + (x.locked ? 'LOCKED' : etaTxt(x.eta)) + (Number.isFinite(x.etaKill) ? ' · at the last-' + x.paceK + '-s pace BTC reaches it in ~' + secsTxt(x.etaKill) : '') + (x.thin ? ' · THIN: sell above ' + cents(x.sellAbove) : '');
-    }
-    nt = 'PM line in <b>' + Math.round(E.lookS) + ' s</b> → <b>' + fmt$(E.pmAhead) + '</b> (' + fmtS(E.pmAhead - E.target, 0) + ' vs target, ±$' + fmt$(E.pmAheadSd, 0) + ')' + (E.lookS < (S.lookS || 30) ? ' — the bell' : '') + ' · BTC last 10 s <b>' + fmtS(E.mv10, 0) + '</b> · 30 s <b>' + fmtS(E.mv30, 0) + '</b>';
-  } else if (E.r <= 0) { nh = 'Next round'; ns = 'Target = this round\'s final price (the index series value at the bell).'; }
-  nx.className = ncls; $('nx-label').textContent = nl; $('nx-head').textContent = nh; $('nx-sub').textContent = ns; $('nx-time').innerHTML = nt;
+}
+
+// ---------- the flip radar: four tiles, ordered by how far ahead each one sees ----------
+// 1 CUSHION (to the bell): the kill line is mechanical — the move BTC must make AND hold to flip the result; it only
+//   grows as prints land, so it is the longest-range signal there is, and LOCKED is its end state.
+// 2 FLIP CHANCE (to the bell): the odds the remaining prints average past the kill line, Gaussian capped by the fat tail.
+// 3 BTC PACE (the next seconds): Coinbase leads the index by ~1 s and the PM line by ~30 s; a move bigger than noise
+//   toward the kill line is the earliest warning that the picture is changing.
+// 4 PM LINE IN 30 S: where the button's number will read if BTC holds — the scare, not the settlement.
+function tile(id, cls, big, mid, sub) { const el = $(id); el.className = 'tile' + (cls ? ' ' + cls : ''); $(id + '-big').textContent = big; $(id + '-mid').textContent = mid; $(id + '-sub').textContent = sub; }
+function renderRadar(E) {
+  const live = E.r > 0 && Number.isFinite(E.target) && Number.isFinite(E.spot);
+  if (!live) {
+    const why = E.r <= 0 ? 'round over — the next target is this round\'s final price' : !Number.isFinite(E.spot) ? 'waiting for Coinbase' : 'waiting for the target';
+    tile('r-cush', '', '—', '', why); tile('r-odds', '', '—', '', why); tile('r-pace', '', '—', '', why); tile('r-line', '', '—', '', why);
+    return;
+  }
+  const side = myPos ? myPos.side : E.fav, x = E.sideInfo(side), who = side + (myPos ? ' (mine)' : ' (for now)');
+  // 1 cushion
+  if (!Number.isFinite(x.cush)) tile('r-cush', '', '—', who, 'no kill line yet');
+  else if (x.cush <= 0) tile('r-cush', 'bad', '−$' + fmt$(-x.cush, 0), side + ' is past the kill line', 'if BTC holds here the final average lands on the other side · ' + who);
+  else tile('r-cush', x.locked ? 'ok' : x.thin ? 'thin' : '', '$' + fmt$(x.cush, 0), x.dropWord + ' flips ' + side + (x.locked ? ' — LOCKED' : ''),
+    'must average ' + (side === 'UP' ? 'below' : 'above') + ' ' + fmt$(x.killPM) + (E.knownN > 0 ? ' · ' + E.knownN + '/60 prints in' : '') + ' · ' + (x.locked ? 'nothing can flip it' : etaTxt(x.eta)) + (x.thin ? ' · THIN: sell above ' + cents(x.sellAbove) : ''));
+  // 2 flip chance
+  const flip = 1 - x.pAdj, fw = x.locked ? '' : flip >= 0.25 ? 'bad' : flip >= 0.10 ? 'warn' : flip >= 0.03 ? 'thin' : '';
+  tile('r-odds', x.locked ? 'ok' : fw, x.locked ? '0%' : flip < 0.005 ? '<1%' : flip > 0.995 ? '>99%' : Math.round(flip * 100) + '%',
+    x.locked ? 'locked' : chanceWord(flip) + (x.pAdj < x.p - 0.005 ? ' · fat tails' : ''),
+    'bad minute (p' + S.badPct + ') $' + fmt$(x.bad, 0) + ' · record for ' + secsTxt(E.r) + ' $' + fmt$(x.rec, 0) + ' · ' + who);
+  // 3 pace
+  const toward = x.pace > 0, etaK = x.etaKill, lat = S.latency || 0;
+  const pcls = toward && Number.isFinite(etaK) && etaK <= (S.etaWarnS || 30) + lat ? 'bad' : toward ? 'warn' : '';
+  tile('r-pace', pcls, Number.isFinite(E.mv10) ? fmtS(E.mv10, 0) : '—',
+    toward ? 'toward the kill line · there in ~' + secsTxt(etaK) : Math.abs(E.mv10 || 0) < 2 ? 'flat' : (side === 'UP' ? E.mv10 > 0 : E.mv10 < 0) ? 'away from the kill line' : 'toward it, inside noise',
+    'last 10 s · 30 s ' + (Number.isFinite(E.mv30) ? fmtS(E.mv30, 0) : '—') + ' · noise 2.5σ/10 s ±$' + fmt$(2.5 * E.sig * Math.sqrt(10), 0) + (lat ? ' · you need ' + lat + ' s to sell' : ''));
+  // 4 the line in 30 s
+  const aheadVs = E.pmAhead - E.target, pmSideAhead = aheadVs >= 0 ? 'UP' : 'DOWN', nowVs = E.pmShown - E.target;
+  const lcls = (nowVs >= 0) !== (aheadVs >= 0) ? 'warn' : '';
+  tile('r-line', lcls, fmtS(aheadVs, 0), 'vs target in ' + Math.round(E.lookS) + ' s' + (E.lookS < (S.lookS || 30) ? ' (the bell)' : '') + (lcls ? ' — the button flips to ' + pmSideAhead : ''),
+    'reads ' + fmt$(E.pmAhead) + ' ±$' + fmt$(E.pmAheadSd, 0) + ' if BTC holds · now ' + fmtS(nowVs, 0) + ' (' + (E.pmSrc === 'series' ? 'exact' : 'modeled') + ')');
+}
+function renderPosLine(E) {
+  const el = $('pos-line');
+  if (!myPos) { el.innerHTML = 'No position — set it right after you buy; the verdict switches to LOCKED / HOLD / SELL.'; return; }
+  const x = E.exitCheck ? E.exitCheck(myPos.side) : null;
+  el.innerHTML = 'IN <b>' + myPos.side + '</b> @<b>' + cents(myPos.price) + '</b> for <b>$' + fmt$(myPos.spent, 0) + '</b> · pays <b>$' + fmt$(myPos.shares, 0) + '</b> if it holds' + (x && Number.isFinite(x.p) ? ' · worth <b>' + (x.locked ? '100%' : pct(Math.min(x.pAdj, 0.995))) + '</b> by the math' : '') + (x && Number.isFinite(x.bid) ? ' · bid <b>' + cents(x.bid) + '</b>' : '');
 }
 
 // ---------- panels ----------
@@ -1167,8 +1231,9 @@ function drawChart(E) {
   if (cv.width !== Math.round(W * dpr) || cv.height !== Math.round(H * dpr)) { cv.width = Math.round(W * dpr); cv.height = Math.round(H * dpr); }
   ctx.setTransform(dpr, 0, 0, dpr, 0, 0); ctx.clearRect(0, 0, W, H);
   ctx.fillStyle = '#0d1119'; ctx.fillRect(0, 0, W, H);
-  const padR = 96, padL = 10, padT = 18, padB = 26, iw = W - padL - padR, ih = H - padT - padB;
-  const t0 = R.T0 - 120, t1 = R.T + 20; const xOf = t => padL + (t - t0) / (t1 - t0) * iw;
+  const padR = W < 520 ? 80 : 96, padL = 10, padT = 18, padB = 24, iw = W - padL - padR, ih = H - padT - padB;
+  const zoomed = S.zoom !== 'round' && E.r > 0 && E.r <= 180;
+  const t0 = zoomed ? R.T - 300 : R.T0 - 120, t1 = R.T + (zoomed ? 8 : 20); const xOf = t => padL + (t - t0) / (t1 - t0) * iw;
   const off = E.off, target = E.target;
   // series (chart dollars): spot, and the PM line (exact where the index series has a point, modeled elsewhere)
   const pts = [], pm = []; let lo = Infinity, hi = -Infinity;
@@ -1186,7 +1251,7 @@ function drawChart(E) {
   // grid: minutes + round boundaries
   ctx.textAlign = 'center'; ctx.textBaseline = 'top';
   for (let t = Math.ceil(t0 / 60) * 60; t <= t1; t += 60) { const x = xOf(t); const isQ = t % ROUND === 0; ctx.strokeStyle = isQ ? '#3a4668' : '#161c2a'; ctx.lineWidth = isQ ? 1.5 : 1; ctx.beginPath(); ctx.moveTo(x, padT); ctx.lineTo(x, H - padB); ctx.stroke();
-    if (t % 300 === 0 || isQ) { ctx.fillStyle = isQ ? '#aeb8d0' : '#6f7a93'; ctx.fillText(etFmt.format(new Date(t * 1000)).replace(/ (AM|PM)$/, ''), x, H - padB + 6); } }
+    if (t % (zoomed ? 60 : 300) === 0 || isQ) { ctx.fillStyle = isQ ? '#aeb8d0' : '#6f7a93'; ctx.fillText(etFmt.format(new Date(t * 1000)).replace(/ (AM|PM)$/, ''), x, H - padB + 6); } }
   // settlement window band: [T-60, T), the part already in the books shaded
   const xa = xOf(R.T - WIN), xb = xOf(R.T);
   ctx.fillStyle = '#62ccff22'; ctx.fillRect(xa, padT, xb - xa, 3);
@@ -1223,7 +1288,8 @@ function drawChart(E) {
     const l2 = RI && RI.tier >= 0 ? RI.word + ' · ' + clock(E.r) + ' left' : 'Coinbase 1 / 5 / 15-min history';
     ctx.font = 'bold 12px IBM Plex Mono, monospace'; const tw1 = ctx.measureText(l1).width; ctx.font = 'bold 11px IBM Plex Sans, sans-serif'; const tw = Math.max(tw1, ctx.measureText(l2).width);
     const above = ys <= yt;                                            // label on the spot end, pointing away from the target
-    const cx = Math.max(padL + tw / 2 + 8, Math.min(xp, W - padR - tw / 2 - 8)), by = above ? ys - 40 : ys + 8, cy = by + 16;
+    // the label sits left of the post when there is room (clear of the price tags on the right), else clamped inside the plot
+    const cx = xp - 10 - tw / 2 - 7 > padL + 4 ? xp - 10 - tw / 2 - 7 : Math.max(padL + tw / 2 + 8, Math.min(xp, W - padR - tw / 2 - 8)), by = above ? ys - 40 : ys + 8, cy = by + 16;
     ctx.fillStyle = RI && RI.tier >= 0 ? RI.col : '#1a0f2e'; ctx.fillRect(cx - tw / 2 - 7, by, tw + 14, 32); ctx.strokeStyle = RI && RI.tier >= 0 ? RI.col : '#b57cff'; ctx.lineWidth = 1; ctx.strokeRect(cx - tw / 2 - 7, by, tw + 14, 32);
     ctx.fillStyle = RI && RI.tier >= 0 ? RI.text : '#e6d6ff'; ctx.textAlign = 'center'; ctx.font = 'bold 12px IBM Plex Mono, monospace'; ctx.fillText(l1, cx, cy - 7); ctx.font = 'bold 11px IBM Plex Sans, sans-serif'; ctx.fillText(l2, cx, cy + 8);
   }
@@ -1243,6 +1309,8 @@ $('btn-sound').onclick = () => { S.sound = !S.sound; saveS(); $('btn-sound').tex
 $('btn-sound').textContent = S.sound ? '🔔 Sound on' : '🔇 Sound off';
 $('btn-voice').onclick = () => { S.voice = !S.voice; saveS(); $('btn-voice').textContent = S.voice ? '🗣 Voice on' : '🗣 Voice off'; if (S.voice) speak('Voice on. I will say locked, sell, and sure thing.'); };
 $('btn-voice').textContent = S.voice ? '🗣 Voice on' : '🗣 Voice off';
+$('btn-zoom').onclick = () => { S.zoom = S.zoom === 'round' ? 'auto' : 'round'; saveS(); $('btn-zoom').textContent = S.zoom === 'round' ? 'Zoom: whole round' : 'Zoom: auto'; if (lastEval) drawChart(lastEval); };
+$('btn-zoom').textContent = S.zoom === 'round' ? 'Zoom: whole round' : 'Zoom: auto';
 let wake = null;
 $('btn-wake').onclick = async () => { try { wake = await navigator.wakeLock.request('screen'); $('btn-wake').textContent = 'Screen stays on'; } catch (e) { toast('Screen lock not available here'); } };
 
@@ -1293,8 +1361,8 @@ setInterval(() => {
 let frame = 0;
 function tick() {
   const E = evaluate();
-  if (Number.isFinite(E.spot)) { liveRecordCheck(E.sec); paperStep(E); dictate(E); renderHeader(E); renderPaper(E); if (frame % 3 === 0) { renderFeed(E); renderPlays(E); renderBuyIn(E); renderMine(E); renderNext(E); renderReach(E); renderWarn(E); } if (frame % 2 === 0) drawChart(E); }
-  else { renderHeader(E); dictate(E); if (frame % 4 === 0) renderWarn(E); }
+  if (Number.isFinite(E.spot)) { liveRecordCheck(E.sec); paperStep(E); dictate(E); renderRadar(E); renderHeader(E); renderPaper(E); if (frame % 3 === 0) { renderFeed(E); renderPlays(E); renderBuyIn(E); renderMine(E); renderPosLine(E); renderNext(E); renderReach(E); renderWarn(E); } if (frame % 2 === 0) drawChart(E); }
+  else { renderHeader(E); dictate(E); renderRadar(E); if (frame % 4 === 0) { renderWarn(E); renderPosLine(E); } }
   frame++;
 }
 setInterval(tick, 250);
