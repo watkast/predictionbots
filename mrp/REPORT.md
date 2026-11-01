@@ -1,6 +1,6 @@
 # Mr. P — gate report
 
-Updated 2026-11-01T08:20:09Z by `run-20261101T0309-41252935556` (last 7 days of data). Read-only recorder — it never places orders.
+Updated 2026-11-01T08:31:42Z by `run-20261101T0309-41252935556` (last 7 days of data). Read-only recorder — it never places orders.
 Kit and docs: `mrp/README.md` on the `mrp` branch. Per-window detail: `mrp/windows.csv`.
 
 ```
