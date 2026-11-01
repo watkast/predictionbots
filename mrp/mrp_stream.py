@@ -37,6 +37,7 @@ class Stream:
         self.want: set[str] = set()                 # tickers to subscribe (set by the radar)
         self.books: dict[str, Any] = {}
         self.watch: dict[str, dict] = {}            # ticker -> decided-market watch record
+        self.done: set[str] = set()                 # tickers already measured once (never re-registered)
         self.status: dict[str, str] = {}
         self.stats = {"trades": 0, "deltas": 0, "reconnects": 0}
         self.thread: Optional[threading.Thread] = None
@@ -49,11 +50,11 @@ class Stream:
     def decided(self, ticker: str, certain_yes: bool, t_score: float, meta: dict):
         """Register a market the engine has called certain (idempotent)."""
         with self.lock:
-            if ticker in self.watch:
+            if ticker in self.watch or ticker in self.done:
                 return
             self.watch[ticker] = {"ticker": ticker, "certain_yes": certain_yes, "t_score": t_score, "t_dec": time.time(),
                                   "min_ask": None, "min_ask_q": 0.0, "ask_seen_s": 0, "fills": {str(l): [0.0, 0.0] for l in LEVELS},
-                                  "sells": 0, **meta}
+                                  "sells": 0, "checks": 0, **meta}
             self.want.add(ticker)
 
     def mark_status(self, ticker: str, status: str):
@@ -116,23 +117,35 @@ class Stream:
     def _check_watches(self, now: float):
         done = []
         for tk, w in self.watch.items():
+            if tk not in self.books:
+                continue                              # wait for the first book snapshot
             ask, q = self._book_state(w)
+            w["checks"] += 1
+            if w["checks"] == 1 and ask is not None and ask < 0.60:
+                # live book strongly disagrees with "certain": our score/model is probably wrong (seen: a
+                # Polymarket score of 5-2 where the real total stayed under 6.5). Never measure or trade it.
+                W.write("sp.lat", dict({k: v for k, v in w.items() if k != "fills"}, how="contradiction", min_ask=ask,
+                                       min_ask_q=q, latency_s=None, after_dec_s=round(now - w["t_dec"], 1)))
+                done.append(tk)
+                continue
             if ask is not None and ask < 0.99:
                 if w["min_ask"] is None or ask < w["min_ask"]:
                     w["min_ask"], w["min_ask_q"] = ask, q
                 w["ask_seen_s"] += 1
-            repriced = (ask is None or ask >= 0.99) and tk in self.books
+            repriced = ask is None or ask >= 0.99
             closed = self.status.get(tk) in ("closed", "determined", "finalized", "settled")
             age = now - w["t_dec"]
             if repriced or closed or age > WATCH_MAX_S:
                 rec = {k: v for k, v in w.items() if k != "fills"}
                 rec.update(fills={l: {"q": round(v[0], 2), "profit": round(v[1], 2)} for l, v in w["fills"].items()},
-                           how="repriced" if repriced else ("closed" if closed else "timeout"),
+                           how=("already" if (repriced and w["checks"] == 1) else "repriced") if repriced
+                           else ("closed" if closed else "timeout"),
                            latency_s=round(now - w["t_score"], 1), after_dec_s=round(age, 1))
                 W.write("sp.lat", rec)
                 done.append(tk)
         for tk in done:
             self.watch.pop(tk, None)
+            self.done.add(tk)
 
     # ------------------------------------------------------------------ websocket loop
     async def _main(self):
