@@ -422,7 +422,7 @@ const DEFAULT_RELAY = 'https://pm15-relay-worker.machwonder.workers.dev';   // N
 const HOSTED_URL = DEFAULT_RELAY + '/';                                       // the same worker serves this page from GitHub main
 const T_BOOT = Date.now();
 // an origin that blocks outbound connections (the claude.ai artifact viewer): no Coinbase tick AND the relay failing, 15 s after load
-const sandboxed = () => Date.now() - T_BOOT > 15000 && !lastTickMs && (IDX.fails >= 3 || IDX.ok === false) && location.href.indexOf(DEFAULT_RELAY) !== 0;
+const sandboxed = () => Date.now() - T_BOOT > 12000 && !lastTickMs && (cbState === 'down' || IDX.fails >= 2 || IDX.ok === false) && location.href.indexOf(DEFAULT_RELAY) !== 0;
 const DEF = { stake: 20, lockP: 99.5, maxAsk: 97, drift: 0, fee: 0.0695, relay: DEFAULT_RELAY, offset: null, sound: false, voice: false, recMargin: 1.5, reachGreen: 50, reachYellow: 10, paperOn: 'sure', edgeMin: 6, edgeScare: 15,
   latency: 8, holdMinP: 75, etaWarnS: 30, badPct: 99, lookS: 30, slack: 3, killSecs: 45, efLo: 80, efHi: 94 };
 let S = Object.assign({}, DEF);
@@ -987,7 +987,7 @@ function dictate(E) {
   const efClose = secsTxt(efWin < 160 ? 150 - efWin : 210 - efWin);
   if (!E.fresh || !Number.isFinite(E.spot)) {
     if (sandboxed()) { cls = 'ready'; head = 'This page cannot reach the feeds from here'; sub = 'SANDBOX'; }
-    else { head = cbState === 'live' ? 'Feed stalled' : 'Connecting to Coinbase…'; sub = 'No price in the last few seconds. Nothing to act on until it returns.' + (!lastTickMs && Date.now() - T_BOOT > 8000 ? ' If this never connects, open the hosted copy: ' + HOSTED_URL : ''); }
+    else { head = cbState === 'live' ? 'Feed stalled' : 'Connecting to Coinbase…'; sub = !lastTickMs && Date.now() - T_BOOT > 6000 && location.href.indexOf(DEFAULT_RELAY) !== 0 ? 'HINT' : 'No price in the last few seconds. Nothing to act on until it returns.'; }
   }
   else if (!Number.isFinite(E.target)) { head = 'Need the target'; sub = 'The API and the index series have not given the price-to-beat yet. If the relay is off, type it from your Polymarket screen in Settings.'; }
   else if (E.r <= 0) { head = 'Round over'; sub = 'Settling: the final price is the index series value at the bell.' + (Number.isFinite(E.settleExact) ? ' It landed at ' + fmt$(E.settleExact) + '.' : ''); }
@@ -1022,7 +1022,8 @@ function dictate(E) {
   else if (E.lead < 10) { head = 'WAIT — BTC is hugging the target'; sub = E.fav + ' for now by $' + fmt$(E.lead, 0) + '. A coin flip until the gap opens.'; time = 'Round ends in <b>' + clock(E.r) + '</b>'; }
   else { head = 'WAIT — ' + E.fav + ' for now'; sub = 'Real flip chance ' + chanceTxt(1 - E.pFavAdj) + ' — ' + whereTxt(E) + '. The sure thing usually shows up inside the last 2 minutes.'; time = '<b>' + etaTxt(fav.eta) + '</b> · <b>' + clock(E.r) + '</b> left'; }
   el.className = 'do ' + cls; $('do-label').textContent = label; $('do-head').textContent = head; $('do-time').innerHTML = time;
-  if (sub === 'SANDBOX') $('do-sub').innerHTML = 'Coinbase and the relay are both blocked by this host (the claude.ai artifact viewer allows no outbound connections). Open the hosted copy instead — same page, served by the relay worker straight from GitHub: <a href="' + HOSTED_URL + '" style="color:var(--pm);font-weight:600">' + HOSTED_URL + '</a> — then Share → Add to Home Screen.';
+  if (sub === 'HINT') $('do-sub').innerHTML = 'No price yet. If this never connects, this host is blocking the feeds — open the hosted copy in Safari: <a href="' + HOSTED_URL + '" target="_blank" rel="noopener" style="color:var(--pm);font-weight:600">' + HOSTED_URL + '</a>';
+  else if (sub === 'SANDBOX') $('do-sub').innerHTML = 'Coinbase and the relay are both blocked by this host (the claude.ai artifact viewer allows no outbound connections). Open the hosted copy instead — same page, served by the relay worker straight from GitHub: <a href="' + HOSTED_URL + '" target="_blank" rel="noopener" style="color:var(--pm);font-weight:600">' + HOSTED_URL + '</a> — then Share → Add to Home Screen.';
   else $('do-sub').textContent = sub;
   if (key === 'sure' || key === 'locked' || key === 'sell' || key === 'sellnow') announce(key, head);
 
