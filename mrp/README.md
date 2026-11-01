@@ -95,6 +95,11 @@ Optional layers (set env vars; see `.env.example`):
   the live and next window. Keys: polymarket.us/developer.
 
 ## Analyze (after >= 1 night)
+v2.1 (2026-11-01) streams: one float array per coin for the index prints, books reduced to top-of-book as they
+are read and kept only for the last 700 s of their window, heavy frames skipped before parsing. Two days of data
+run in ~30 s and ~300 MB (v2 needed > 4 GB and died with a MemoryError, which is why `mrp/REPORT.md` on the
+`mrp-data` branch was a traceback from Oct 30 to Nov 1). `gha_record.sh` now reports the last 3 days
+(`MRP_REPORT_DAYS`).
 ```bash
 python3 mrp_analyze.py ./data --lot 10
 python3 mrp_analyze.py ./data --lot 10 --min-d 100     # test a settlement-gate threshold of $100

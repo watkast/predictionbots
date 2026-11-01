@@ -11,15 +11,23 @@ seconds-left checkpoint:
   PHYSICS          fastest index moves over 1/5/10/15/30/60 s from the true (Kalshi) prints
 
 Usage:  python3 mrp_analyze.py [DATA_DIR] [--lot 10] [--days 7] [--min-d-bps 0] [--csv windows.csv]
+
+Memory: v2.1 streams. Index prints go into one float array per coin (8 bytes a second), order books are
+reduced to top-of-book tuples as they are read and kept only for the last 700 s of their own window (the
+window end is in the slug), and heavy frames the report never uses (kalshi.ws, kalshi.ticker, next-window
+books) are skipped before json.loads. Two days of data: ~250 MB and ~1 min instead of 4 GB+ and a MemoryError.
 """
 from __future__ import annotations
 
 import argparse
+from array import array
+from calendar import timegm
 from decimal import Decimal, ROUND_HALF_UP
 import csv
 import glob
 import gzip
 import json
+import math
 import os
 import re
 import statistics
@@ -67,6 +75,83 @@ def slug_parts(slug):
     return m.group(1), n * (60 if u == "m" else 3600)
 
 
+SLUG_T_RE = re.compile(r"-(\d{4})-(\d{2})-(\d{2})-(\d{2})(\d{2})z$")
+_slug_end_cache = {}
+
+
+def slug_end(slug):
+    """Window end (unix s) from the slug's start stamp + horizon; None when the slug has no stamp."""
+    if slug in _slug_end_cache:
+        return _slug_end_cache[slug]
+    m = SLUG_T_RE.search(slug or "")
+    end = None
+    if m:
+        y, mo, d, hh, mm = (int(x) for x in m.groups())
+        end = timegm((y, mo, d, hh, mm, 0)) + slug_parts(slug)[1]
+    _slug_end_cache[slug] = end
+    return end
+
+
+class Series:
+    """One float per second in a flat array (NaN = no print): 2 days of 1 Hz prints is 1.4 MB, not 300 MB of dict."""
+    __slots__ = ("base", "arr", "n")
+
+    def __init__(self):
+        self.base = None
+        self.arr = array("d")
+        self.n = 0
+
+    def set(self, sec, v):
+        if self.base is None:
+            self.base = sec
+        if sec < self.base:
+            if self.base - sec > 1_000_000:
+                return
+            self.arr = array("d", [math.nan]) * (self.base - sec) + self.arr
+            self.base = sec
+        i = sec - self.base
+        if i >= len(self.arr):
+            if i - len(self.arr) > 1_000_000:
+                return
+            self.arr.extend(array("d", [math.nan]) * (i - len(self.arr) + 1))
+        if self.arr[i] != self.arr[i]:
+            self.n += 1
+        self.arr[i] = v
+
+    def get(self, sec):
+        if self.base is None:
+            return None
+        i = sec - self.base
+        if 0 <= i < len(self.arr):
+            v = self.arr[i]
+            if v == v:
+                return v
+        return None
+
+    def __contains__(self, sec):
+        return self.get(sec) is not None
+
+    def __getitem__(self, sec):
+        v = self.get(sec)
+        if v is None:
+            raise KeyError(sec)
+        return v
+
+    def __len__(self):
+        return self.n
+
+    def seconds(self):
+        b = self.base or 0
+        return [b + i for i, v in enumerate(self.arr) if v == v]
+
+
+HEAD_RE = re.compile(r'^\{"t":(\d+),"k":"([^"]+)"')
+SLUG_IN_LINE_RE = re.compile(r'"(?:marketSlug|slug)":"([a-z0-9-]+)"')
+CLOSE_IN_LINE_RE = re.compile(r'"close":(\d+)')
+SKIP_KINDS = frozenset(("kalshi.ws", "kalshi.ticker", "kalshi.markets", "pmus.universe", "rec.start", "rec.slug_pattern", "pmus.book404", "pmus.market_universe"))
+TAIL = 700          # seconds before a window's end worth keeping for the checkpoints and the lock scan
+
+
 def fee(theta, contracts, p):
     return round(theta * contracts * p * (1 - p) + 1e-12, 2)
 
@@ -94,38 +179,58 @@ def load(data_dir, days=None):
                 line = line.strip()
                 if not line:
                     continue
+                # cheap triage before json.loads: the kind sits at the start of every line the recorder writes
+                m = HEAD_RE.match(line)
+                if m:
+                    kind = m.group(2)
+                    if kind in SKIP_KINDS:
+                        continue
+                    if kind in ("pmus.book", "pmus.ws", "kalshi.book"):
+                        t = int(m.group(1)) / 1000.0
+                        if kind == "kalshi.book":
+                            cm = CLOSE_IN_LINE_RE.search(line)
+                            end = int(cm.group(1)) if cm else None
+                        else:
+                            sm = SLUG_IN_LINE_RE.search(line)
+                            end = slug_end(sm.group(1)) if sm else None
+                        if end is not None and not (end - TAIL <= t <= end + 5):
+                            continue            # a next-window book or stale frame: never used by the report
                 try:
                     yield json.loads(line)
-                except json.JSONDecodeError:
+                except (json.JSONDecodeError, MemoryError):
                     continue
 
 
-def pm_sides(book):
-    """Polymarket books quote one Up instrument: buying DOWN = shorting Up at the bid."""
+def pm_top(book):
+    """Reduce a Polymarket book (REST payload or WebSocket marketData) to (state, ask_up, ask_up_q, bid_up, bid_up_q)."""
     offers = [(parse_amount(o.get("px")), float(o.get("qty") or 0)) for o in (book.get("offers") or [])]
     bids = [(parse_amount(b.get("px")), float(b.get("qty") or 0)) for b in (book.get("bids") or [])]
     offers = [(p, q) for p, q in offers if p is not None and q > 0]
     bids = [(p, q) for p, q in bids if p is not None and q > 0]
     ask_up = min(offers)[0] if offers else None
     bid_up = max(bids)[0] if bids else None
-    return {"ask_up": ask_up, "ask_up_q": sum(q for p, q in offers if ask_up is not None and abs(p - ask_up) < 1e-9),
-            "bid_up": bid_up, "bid_up_q": sum(q for p, q in bids if bid_up is not None and abs(p - bid_up) < 1e-9),
-            "ask_down": round(1 - bid_up, 4) if bid_up is not None else None,
-            "ask_down_q": sum(q for p, q in bids if bid_up is not None and abs(p - bid_up) < 1e-9),
-            "bid_down": round(1 - ask_up, 4) if ask_up is not None else None,
-            "bid_down_q": sum(q for p, q in offers if ask_up is not None and abs(p - ask_up) < 1e-9)}
+    return (book.get("state"), ask_up,
+            sum(q for p, q in offers if ask_up is not None and abs(p - ask_up) < 1e-9),
+            bid_up, sum(q for p, q in bids if bid_up is not None and abs(p - bid_up) < 1e-9))
 
 
-def k_sides(snap):
+def k_top(snap):
+    """Reduce a Kalshi top-10 snapshot (yes-leg) to (None, ask_up, ask_up_q, bid_up, bid_up_q)."""
     yb = snap.get("yb") or []
     ya = snap.get("ya") or []
-    out = {"ask_up": ya[0][0] if ya else None, "ask_up_q": ya[0][1] if ya else 0,
-           "bid_up": yb[0][0] if yb else None, "bid_up_q": yb[0][1] if yb else 0}
-    out["ask_down"] = round(1 - out["bid_up"], 4) if out["bid_up"] is not None else None
-    out["ask_down_q"] = out["bid_up_q"]
-    out["bid_down"] = round(1 - out["ask_up"], 4) if out["ask_up"] is not None else None
-    out["bid_down_q"] = out["ask_up_q"]
-    return out
+    return (None, ya[0][0] if ya else None, ya[0][1] if ya else 0, yb[0][0] if yb else None, yb[0][1] if yb else 0)
+
+
+def sides(top):
+    """Both sides from a top-of-book tuple. One Up instrument: buying DOWN = shorting Up at the bid."""
+    _, ask_up, ask_up_q, bid_up, bid_up_q = top
+    return {"ask_up": ask_up, "ask_up_q": ask_up_q, "bid_up": bid_up, "bid_up_q": bid_up_q,
+            "ask_down": round(1 - bid_up, 4) if bid_up is not None else None, "ask_down_q": bid_up_q,
+            "bid_down": round(1 - ask_up, 4) if ask_up is not None else None, "bid_down_q": ask_up_q}
+
+
+pm_sides = sides
+k_sides = sides
 
 
 def nearest_before(lst, t, max_age):
@@ -151,29 +256,31 @@ def main():
     lot = args.lot
     min_depth = args.min_depth if args.min_depth is not None else lot
 
-    idx = defaultdict(dict)          # sym -> {sec: value}
+    idx = defaultdict(Series)        # sym -> second-indexed prints (one float array per coin)
     idx_src = {}                     # sym -> kalshi|pmus
     markets = {}                     # slug -> dict
-    books = defaultdict(list)        # slug -> [(t, book)]   REST + WebSocket (state, asks, depth)
-    books_ws = defaultdict(list)     # slug -> [(t, book)]   WebSocket only (real-time; used for cross-venue locks)
-    kbooks = defaultdict(list)       # (sym, close) -> [(t, snap)]
+    books = defaultdict(list)        # slug -> [(t, top)]   REST + WebSocket, window tail only (state, asks, depth)
+    books_ws = defaultdict(list)     # slug -> [(t, top)]   WebSocket only (real-time; used for cross-venue locks)
+    kbooks = defaultdict(list)       # (sym, close) -> [(t, top)]
     states = defaultdict(list)
-    settle_avg = defaultdict(list)
+    settle_avg = defaultdict(list)   # slug -> [(t, need_rem_move)]  final 61 s only
     errors = 0
     n_rec = 0
     for r in load(args.data_dir, args.days):
         n_rec += 1
         k, d, t = r.get("k"), r.get("d"), r.get("t")
+        if not isinstance(d, dict) or t is None:
+            continue
         if k == "kalshi.idx":
             try:
-                idx[d["sym"]][int(d["t"])] = float(d["v"]); idx_src[d["sym"]] = "kalshi"
+                idx[d["sym"]].set(int(d["t"]), float(d["v"])); idx_src[d["sym"]] = "kalshi"
             except (KeyError, TypeError, ValueError):
                 pass
         elif k == "pmus.idx":
             try:
                 sym = d.get("sym", "btc")
                 if idx_src.get(sym) != "kalshi":
-                    idx[sym][int(d["ts"])] = float(d["c"]); idx_src.setdefault(sym, "pmus")
+                    idx[sym].set(int(d["ts"]), float(d["c"])); idx_src.setdefault(sym, "pmus")
             except (KeyError, TypeError, ValueError):
                 pass
         elif k == "pmus.market":
@@ -199,18 +306,27 @@ def main():
                 m["end"] = d["end"]
             m["settle_latency_s"] = d.get("latency_s")
         elif k == "pmus.book":
-            books[d.get("slug")].append((t / 1000.0, d.get("book") or {}))
+            slug = d.get("slug"); end = slug_end(slug)
+            if end is None or end - TAIL <= t / 1000.0 <= end + 5:
+                books[slug].append((t / 1000.0, pm_top(d.get("book") or {})))
         elif k == "pmus.ws":
             md = d.get("marketData")
             if md and md.get("marketSlug"):
-                books[md["marketSlug"]].append((t / 1000.0, md))
-                books_ws[md["marketSlug"]].append((t / 1000.0, md))
+                slug = md["marketSlug"]; end = slug_end(slug)
+                if end is None or end - TAIL <= t / 1000.0 <= end + 5:
+                    top = pm_top(md)
+                    books[slug].append((t / 1000.0, top))
+                    books_ws[slug].append((t / 1000.0, top))
         elif k == "kalshi.book":
-            kbooks[(d.get("sym"), int(d.get("close") or 0))].append((t / 1000.0, d))
+            close = int(d.get("close") or 0)
+            if close - TAIL <= t / 1000.0 <= close + 5:
+                kbooks[(d.get("sym"), close)].append((t / 1000.0, k_top(d)))
         elif k == "pmus.state":
             states[d.get("slug")].append((t / 1000.0, d.get("from"), d.get("to")))
         elif k in ("settle_avg", "pmus.settle_avg"):
-            settle_avg[d.get("slug")].append((t / 1000.0, d))
+            rem = d.get("rem")
+            if rem is None or rem <= 61:
+                settle_avg[d.get("slug")].append((t / 1000.0, d.get("need_rem_move")))
         elif k == "err":
             errors += 1
     for lst in books.values():
@@ -231,7 +347,7 @@ def main():
         if sp is None and settle is None:
             continue
         outcome = ("UP" if settle >= 0.5 else "DOWN") if settle is not None else ("UP" if sp >= ptb else "DOWN")
-        series = idx.get(sym, {})
+        series = idx.get(sym) or Series()
         mine = [series[ts] for ts in range(end - 60, end) if ts in series]
         # exact decimal average, half-up to the cent (float round() turned 81599.075 into .07; the exchange printed .08)
         my_close = float((sum(Decimal(str(x)) for x in mine) / 60).quantize(Decimal("0.01"), ROUND_HALF_UP)) if len(mine) == 60 else None
@@ -264,7 +380,7 @@ def main():
             k_ask, k_q, k_bid = kk.get(f"ask_{side}"), kk.get(f"ask_{side}_q") or 0, kk.get(f"bid_{side}")
             f_pm = fee(THETA_PM, lot, l_ask) if l_ask else None
             net = round(lot * (1 - l_ask) - f_pm, 2) if l_ask else None
-            state = bk.get("state") if bk else None
+            state = bk[0] if bk else None
             d_bps = 1e4 * d / ptb if ptb else 0
             entry_ok = bool(bk and state == "MARKET_STATE_OPEN" and l_ask is not None and l_ask <= 0.99 and l_q >= min_depth
                             and net is not None and net > 0 and abs(d_bps) >= args.min_d_bps)
@@ -279,11 +395,11 @@ def main():
             need = None
             if tau <= 60:
                 best = None
-                for ta, sa in settle_avg.get(slug, []):
+                for ta, nd in settle_avg.get(slug, []):
                     if abs(ta - t) <= 1.5 and (best is None or abs(ta - t) < abs(best[0] - t)):
-                        best = (ta, sa)
+                        best = (ta, nd)
                 if best:
-                    need = best[1].get("need_rem_move")
+                    need = best[1]
             rows.append({"slug": slug, "sym": sym, "hz_min": hz // 60,
                          "end_utc": datetime.fromtimestamp(end, tz=timezone.utc).strftime("%Y-%m-%d %H:%M"),
                          "tau": tau, "ptb": ptb, "idx": px, "idx_src": idx_src.get(sym), "d": round(d, 4), "d_bps": round(d_bps, 1),
@@ -333,14 +449,16 @@ def main():
                   f"{len(ok):>8} {okflip:>7} {(f'{mind:.0f}' if mind is not None else '-'):>9} {f(pa):>10} {f(ka):>9} {f(kb):>9} "
                   f"{sum(1 for x in locks if x > 0):>6} {(f'{max(locks):+.3f}' if locks else '-'):>7}")
         # physics from the true prints
-        series = idx.get(sym, {})
-        if len(series) > 600:
-            ks = sorted(series)
+        series = idx.get(sym)
+        if series is not None and len(series) > 600:
+            a = series.arr
             out = []
             for span in (1, 5, 10, 15, 30, 60):
-                mv = sorted(abs(series[t + span] - series[t]) for t in ks if (t + span) in series)
-                if mv:
+                mv = array("d", (abs(a[i + span] - a[i]) for i in range(len(a) - span) if a[i] == a[i] and a[i + span] == a[i + span]))
+                if len(mv):
+                    mv = sorted(mv)
                     out.append(f"{span}s max {mv[-1]:.2f} p99.9 {mv[int(len(mv)*.999)]:.2f}")
+                del mv
             print(f"  index speed ({idx_src.get(sym)}, {len(series)} prints): " + " | ".join(out))
     print("\nColumns: PM = Polymarket US (0.01 ticks, leader ask / count with >= lot contracts), K = Kalshi (0.001 ticks). "
           "lock>0 = checkpoints where buying the leader on one venue and selling it on the other cleared both fees.\n"

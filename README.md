@@ -70,8 +70,9 @@ of the whole pipeline across four synthetic rounds). The paper bot buys the lock
 `research/pm15_brain.pine` is the TradingView version of the same brain (kill line, lookahead, LOCKED/HOLD/SELL; it
 cannot read the index series, so there the target is typed or estimated and the basis is a setting).
 `scripts/pm15_relay_worker.js` is the Cloudflare Worker that forwards the three read-only gateway endpoints with CORS for
-the page — redeploy it for v2.0, which needs `/v1/asset-prices/history` (query passthrough, ~30–40k requests/day around
-the clock; the free tier allows 100k).
+the page; Noah's deployment (`pm15-relay-worker.machwonder.workers.dev`) is baked in as the page's default relay
+(Settings: blank = that worker, `direct` = no relay). Redeploy it for v2.0, which needs `/v1/asset-prices/history`
+(query passthrough, ~30–40k requests/day around the clock; the free tier allows 100k).
 Companion chart tool: `research/velocity_reach_vs_target.pine` (TradingView — projects BTC's velocity /
 acceleration forward, draws a vertical reach post with a 1m/2m/3m… time ruler up through the target and
 marks the tick where the target is hit, in whichever direction the target lies; the target defaults to the round's price-to-beat estimated the

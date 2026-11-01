@@ -30,12 +30,13 @@ publish() {
       cp -r "$MRP_DATA_DIR/." "mrp/data/$RUN/"
       # publish gzipped (10x smaller; keeps every blob far below GitHub's 100 MB limit)
       find "mrp/data/$RUN" -name "*.jsonl" -exec gzip -f {} \;
-      # bounded: the 7-day analyzer grew past the runner's memory and killed whole runs (Oct 30-31)
-      ( ulimit -v 4000000; timeout 300 python "$KIT/mrp_analyze.py" mrp/data --days 2 --csv mrp/windows.csv ) > mrp/REPORT.txt 2>&1 || echo "(report skipped: analyzer over memory or time budget)" >> mrp/REPORT.txt
+      # bounded: the analyzer streams since v2.1 (~300 MB and ~30 s for 2 days); the limits stay as a backstop
+      DAYS="${MRP_REPORT_DAYS:-3}"
+      ( ulimit -v 4000000; timeout 600 python "$KIT/mrp_analyze.py" mrp/data --days "$DAYS" --csv mrp/windows.csv ) > mrp/REPORT.txt 2>&1 || echo "(report skipped: analyzer over memory or time budget)" >> mrp/REPORT.txt
       {
         echo "# Mr. P — gate report"
         echo
-        echo "Updated $(date -u +%FT%TZ) by \`$RUN\` (last 7 days of data). Read-only recorder — it never places orders."
+        echo "Updated $(date -u +%FT%TZ) by \`$RUN\` (last $DAYS days of data). Read-only recorder — it never places orders."
         echo "Kit and docs: \`mrp/README.md\` on the \`mrp\` branch. Per-window detail: \`mrp/windows.csv\`."
         echo
         echo '```'

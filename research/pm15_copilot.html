@@ -377,7 +377,7 @@ details.settings summary { cursor: pointer; font: 700 15px/1.4 var(--font-displa
       <label>Edge mode: edge after fee at least (¢)<input id="s-edgemin" type="number" inputmode="decimal" min="1" max="30" step="1" value="6"></label>
       <label>Edge mode: button scare at most (%)<input id="s-edgescare" type="number" inputmode="decimal" min="1" max="50" step="1" value="15"></label>
       <h4>Data</h4>
-      <label class="wide">PM API relay URL (the Cloudflare worker in scripts/pm15_relay_worker.js; it must forward /v1/asset-prices/history for the exact index series)<input id="s-relay" type="url" placeholder="https://your-worker.workers.dev"></label>
+      <label class="wide">PM API relay URL (your Cloudflare worker, scripts/pm15_relay_worker.js — redeploy it for v2.0 so it forwards /v1/asset-prices/history; blank = the default worker, "direct" = no relay)<input id="s-relay" type="text" placeholder="https://pm15-relay-worker.machwonder.workers.dev"></label>
       <label>Basis override: index − Coinbase ($, blank = live from the index series)<input id="s-offset" type="number" inputmode="decimal" step="0.01" placeholder="auto"></label>
       <div class="wide hint" id="s-note">Everything saves on this device. Settlement = the average of the 60 one-second index prints in the last minute before the bell (Polymarket US rules; verified on recorded settlements to $0.005). With the relay the page reads that index series straight from the exchange: the PM line, the final price, the next target and the basis vs Coinbase are exact. Without it they are modeled from Coinbase plus a basis offset. The record pace comes from Coinbase 1-min (5 d), 5-min (30 d) and 15-min (120 d) history, rescanned every 6 h and bumped live; "bad minute" = the chosen percentile of 1-minute adverse moves over those 5 days.</div>
       <div class="wide row"><button id="s-save" class="btn-primary">Save</button><button id="s-reset-hist">Clear history &amp; lock record</button></div>
@@ -418,11 +418,13 @@ const SLUG = ws => { const d = new Date(ws * 1000); const p = n => String(n).pad
   return `cpc-btc-updown-15m-${d.getUTCFullYear()}-${p(d.getUTCMonth()+1)}-${p(d.getUTCDate())}-${p(d.getUTCHours())}${p(d.getUTCMinutes())}z`; };
 
 // ---------- settings (per device) ----------
-const DEF = { stake: 20, lockP: 99.5, maxAsk: 97, drift: 0, fee: 0.0695, relay: '', offset: null, sound: false, voice: false, recMargin: 1.5, reachGreen: 50, reachYellow: 10, paperOn: 'sure', edgeMin: 6, edgeScare: 15,
+const DEFAULT_RELAY = 'https://pm15-relay-worker.machwonder.workers.dev';   // Noah's Cloudflare worker (scripts/pm15_relay_worker.js)
+const DEF = { stake: 20, lockP: 99.5, maxAsk: 97, drift: 0, fee: 0.0695, relay: DEFAULT_RELAY, offset: null, sound: false, voice: false, recMargin: 1.5, reachGreen: 50, reachYellow: 10, paperOn: 'sure', edgeMin: 6, edgeScare: 15,
   latency: 8, holdMinP: 75, etaWarnS: 30, badPct: 99, lookS: 30, slack: 3, killSecs: 45, efLo: 80, efHi: 94 };
 let S = Object.assign({}, DEF);
 try { Object.assign(S, JSON.parse(localStorage.getItem('pm15.settings') || '{}')); } catch (e) {}
 if (S.recMargin < 1) S.recMargin = DEF.recMargin;      // v1 allowed 0.5; a margin under 1 is not a margin
+if (!S.relay) S.relay = DEFAULT_RELAY;                 // v1 saved an empty relay; the worker is the default now ('direct' = no relay)
 const saveS = () => { try { localStorage.setItem('pm15.settings', JSON.stringify(S)); } catch (e) {} };
 
 // ---------- price store: Coinbase per-second last price ----------
@@ -680,14 +682,14 @@ function settleFromSeries() {
 }
 
 // ---------- Polymarket US gateway (direct, or through the relay) ----------
-const pmBase = () => (S.relay || 'https://gateway.polymarket.us').replace(/\/$/, '');
+const pmBase = () => (S.relay && S.relay !== 'direct' ? S.relay : 'https://gateway.polymarket.us').replace(/\/$/, '');
 const val = v => (v && typeof v === 'object') ? Number(v.value) : Number(v);
 async function pmGet(path) {
   const r = await fetch(pmBase() + path, { headers: { 'Accept': 'application/json' } });
   if (!r.ok) throw new Error('HTTP ' + r.status);
   return r.json();
 }
-const corsBlocked = e => !S.relay && /TypeError|Failed to fetch|NetworkError|Load failed/.test(String(e));
+const corsBlocked = e => (!S.relay || S.relay === 'direct') && /TypeError|Failed to fetch|NetworkError|Load failed/.test(String(e));
 let pmBusy = false;
 async function pmFetchMarket(slugArg) {
   const slug = slugArg || R.slug; if (!slug) return;
@@ -741,7 +743,7 @@ async function pmFetchSeries(span) {
     IDX.ok = true; IDX.at = Date.now(); IDX.fails = 0; R.apiOk = true;
     if (n) { calibrateLive(nowS); settleFromSeries(); if (!Number.isFinite(R.target) && pmA.get(R.T0 - 1) > 0) { R.target = pmA.get(R.T0 - 1); R.targetSrc = 'series'; } }
     if (pmA.size > 14400) for (const t of pmA.keys()) { if (t < nowS - 10800) pmA.delete(t); }   // keep 3 h
-  } catch (e) { IDX.fails++; if (IDX.ok === null && corsBlocked(e)) IDX.ok = false; IDX.note = String(e).slice(0, 80); }
+  } catch (e) { IDX.fails++; if (IDX.ok === null && corsBlocked(e)) IDX.ok = false; IDX.note = /HTTP 404/.test(String(e)) ? 'HTTP 404 — the worker is the old build' : String(e).replace(/^\w*Error:\s*/, '').slice(0, 80); }
   finally { IDX.busy = false; }
 }
 // live basis: index average minus the same 60-second Coinbase average, one sample per second, median of the last 90
@@ -1035,7 +1037,8 @@ function dictate(E) {
 // ---------- panels ----------
 function renderWarn(E) {
   const w = [];
-  if (IDX.ok === false || (IDX.ok === null && S.relay === '')) w.push('Index series off (no relay' + (IDX.ok === false ? ', blocked' : '') + '): the PM line, the final price and the basis are modeled from Coinbase. Deploy scripts/pm15_relay_worker.js and set the relay URL for exact numbers.');
+  if (IDX.ok === false || (IDX.ok === null && S.relay === 'direct')) w.push('Index series off (' + (S.relay === 'direct' ? 'no relay' : 'relay not answering' + (IDX.note ? ': ' + IDX.note : '')) + '): the PM line, the final price and the basis are modeled from Coinbase. The relay must be the v2.0 worker (it forwards /v1/asset-prices/history).');
+  else if (IDX.ok === null && IDX.fails >= 3) w.push('Index series: ' + IDX.fails + ' failed requests to the relay (' + (IDX.note || 'no detail') + ') — if the worker is still the v1 build it returns 404 for the series; redeploy scripts/pm15_relay_worker.js.');
   else if (IDX.ok && Number.isFinite(E.pmAge) && E.pmAge > 8) w.push('Index series is ' + E.pmAge + ' s stale — using the Coinbase model meanwhile.');
   else if (IDX.ok && !Number.isFinite(E.pmAge)) w.push('Index series: no fresh point yet.');
   if (IDX.ok && IDX.latest && IDX.latest - E.sec > 2) w.push('Your clock looks ' + (IDX.latest - E.sec) + ' s behind the exchange. Fix the device time; the countdown and the window are off by that much.');
@@ -1058,7 +1061,7 @@ function renderHeader(E) {
   const chip = (id, cls, txt) => { const c = $(id); c.className = 'chip ' + cls; c.lastChild.textContent = txt; };
   chip('chip-cb', E.fresh ? 'ok' : cbState === 'live' ? 'warn' : 'bad', 'Coinbase: ' + (E.fresh ? 'live' : cbState));
   chip('chip-pm', R.apiOk === true ? 'ok' : R.apiOk === false ? 'bad' : 'warn', 'PM API: ' + (R.apiOk === true ? (R.book && Date.now() - R.bookAt < 15000 ? 'live book' : 'market data') : R.apiOk === false ? 'blocked (CORS) · use a relay' : 'trying…'));
-  chip('chip-series', IDX.ok && Number.isFinite(E.pmAge) && E.pmAge <= 8 ? 'ok' : IDX.ok ? 'warn' : 'bad', 'PM index series: ' + (IDX.ok ? (Number.isFinite(E.pmAge) ? 'live (' + E.pmAge + ' s old)' : 'no point yet') : IDX.ok === false ? 'blocked · modeled' : S.relay ? 'trying…' : 'needs the relay'));
+  chip('chip-series', IDX.ok && Number.isFinite(E.pmAge) && E.pmAge <= 8 ? 'ok' : IDX.ok ? 'warn' : 'bad', 'PM index series: ' + (IDX.ok ? (Number.isFinite(E.pmAge) ? 'live (' + E.pmAge + ' s old)' : 'no point yet') : IDX.ok === false ? 'blocked · modeled' : S.relay === 'direct' ? 'needs the relay' : IDX.fails ? 'relay failing (' + IDX.fails + ')' : 'trying…'));
   chip('chip-off', E.offKnown ? (R.offsetSrc === 'live' ? 'ok' : 'warn') : 'warn', 'Basis index−Coinbase: ' + (E.offKnown ? fmtS(E.off) + (Number.isFinite(R.offsetSd) ? ' ±' + fmt$(R.offsetSd, 2) : '') + ' (' + R.offsetSrc + ')' : 'unknown'));
   chip('chip-vol', 'ok', 'Vol: ' + fmt$(E.sig, 1) + '/√s · ±' + fmt$(E.sig * Math.sqrt(60), 0) + ' per min (1σ)' + (E.sig > E.sigLive ? ' · floored (quiet patch)' : ''));
 }
@@ -1249,7 +1252,7 @@ function loadSettings() {
 const num = (id, lo, hi, def) => { const v = Number($(id).value); return Number.isFinite(v) && $(id).value !== '' ? Math.min(hi, Math.max(lo, v)) : def; };
 $('s-save').onclick = () => {
   S.stake = num('s-stake', 1, 1e6, DEF.stake); S.lockP = num('s-lockp', 90, 99.99, DEF.lockP); S.maxAsk = num('s-maxask', 50, 99, DEF.maxAsk);
-  S.drift = num('s-drift', 0, 1, DEF.drift); S.fee = num('s-fee', 0, 0.2, DEF.fee); S.relay = ($('s-relay').value || '').trim();
+  S.drift = num('s-drift', 0, 1, DEF.drift); S.fee = num('s-fee', 0, 0.2, DEF.fee); S.relay = ($('s-relay').value || '').trim() || DEFAULT_RELAY;
   S.recMargin = num('s-recmargin', 1, 3, DEF.recMargin); S.reachGreen = num('s-reach-green', 1, 99, DEF.reachGreen); S.reachYellow = Math.min(S.reachGreen, num('s-reach-yellow', 1, 99, DEF.reachYellow));
   S.paperOn = ['math', 'edge'].includes($('s-paperon').value) ? $('s-paperon').value : 'sure'; S.edgeMin = num('s-edgemin', 1, 30, DEF.edgeMin); S.edgeScare = num('s-edgescare', 1, 50, DEF.edgeScare);
   S.latency = num('s-latency', 0, 60, DEF.latency); S.holdMinP = num('s-holdmin', 50, 95, DEF.holdMinP); S.etaWarnS = num('s-etawarn', 5, 120, DEF.etaWarnS); S.badPct = num('s-badpct', 90, 100, DEF.badPct); S.lookS = num('s-look', 10, 60, DEF.lookS);
@@ -1263,7 +1266,7 @@ loadSettings();
 if (myPos && myPos.T0 !== Math.floor(Date.now() / 1000 / ROUND) * ROUND) myPos = null;
 
 // ---------- loops ----------
-connectWS(); backfill(); pmFetchSeries(900);
+connectWS(); backfill(); pmFetchSeries(1200);
 // record scan: now (unless the cached one is under 6 h old and has the bad-minute percentiles), then every 6 h
 if (!REC.ready || !REC.bad || Date.now() - REC.at > 6 * 3600 * 1000) scanRecords();
 setInterval(() => { if (Date.now() - REC.at > 6 * 3600 * 1000) scanRecords(); }, 15 * 60 * 1000);
