@@ -419,6 +419,10 @@ const SLUG = ws => { const d = new Date(ws * 1000); const p = n => String(n).pad
 
 // ---------- settings (per device) ----------
 const DEFAULT_RELAY = 'https://pm15-relay-worker.machwonder.workers.dev';   // Noah's Cloudflare worker (scripts/pm15_relay_worker.js)
+const HOSTED_URL = DEFAULT_RELAY + '/';                                       // the same worker serves this page from GitHub main
+const T_BOOT = Date.now();
+// an origin that blocks outbound connections (the claude.ai artifact viewer): no Coinbase tick AND the relay failing, 15 s after load
+const sandboxed = () => Date.now() - T_BOOT > 15000 && !lastTickMs && (IDX.fails >= 3 || IDX.ok === false) && location.href.indexOf(DEFAULT_RELAY) !== 0;
 const DEF = { stake: 20, lockP: 99.5, maxAsk: 97, drift: 0, fee: 0.0695, relay: DEFAULT_RELAY, offset: null, sound: false, voice: false, recMargin: 1.5, reachGreen: 50, reachYellow: 10, paperOn: 'sure', edgeMin: 6, edgeScare: 15,
   latency: 8, holdMinP: 75, etaWarnS: 30, badPct: 99, lookS: 30, slack: 3, killSecs: 45, efLo: 80, efHi: 94 };
 let S = Object.assign({}, DEF);
@@ -981,7 +985,10 @@ function dictate(E) {
   const efWin = ROUND - E.r; const efCheck = efWin >= 110 && efWin <= 210 && !(efWin > 150 && efWin < 170);
   const efOk = efCheck && Number.isFinite(ask) && ask * 100 >= S.efLo && ask * 100 <= S.efHi;
   const efClose = secsTxt(efWin < 160 ? 150 - efWin : 210 - efWin);
-  if (!E.fresh || !Number.isFinite(E.spot)) { head = cbState === 'live' ? 'Feed stalled' : 'Connecting to Coinbase…'; sub = 'No price in the last few seconds. Nothing to act on until it returns.'; }
+  if (!E.fresh || !Number.isFinite(E.spot)) {
+    if (sandboxed()) { cls = 'ready'; head = 'This page cannot reach the feeds from here'; sub = 'SANDBOX'; }
+    else { head = cbState === 'live' ? 'Feed stalled' : 'Connecting to Coinbase…'; sub = 'No price in the last few seconds. Nothing to act on until it returns.' + (!lastTickMs && Date.now() - T_BOOT > 8000 ? ' If this never connects, open the hosted copy: ' + HOSTED_URL : ''); }
+  }
   else if (!Number.isFinite(E.target)) { head = 'Need the target'; sub = 'The API and the index series have not given the price-to-beat yet. If the relay is off, type it from your Polymarket screen in Settings.'; }
   else if (E.r <= 0) { head = 'Round over'; sub = 'Settling: the final price is the index series value at the bell.' + (Number.isFinite(E.settleExact) ? ' It landed at ' + fmt$(E.settleExact) + '.' : ''); }
   else if (myPos) {
@@ -1014,7 +1021,9 @@ function dictate(E) {
   else if (E.pFav >= 0.97) { cls = 'ready'; head = 'GET READY — ' + E.fav + ' is close to LOCKED'; sub = 'To flip it BTC must ' + fav.dropWord + ' $' + fmt$(fav.cush, 0) + ' and hold; the record for the time left is $' + fmt$(fav.rec, 0) + '. Real flip chance ' + chanceTxt(1 - E.pFavAdj) + ', button scare ' + chanceTxt(fav.scare) + '. Buying now is a caution play' + (Number.isFinite(ask) ? '; the button shows ' + cents(ask) + '.' : '.'); time = '<b>' + etaTxt(fav.eta) + '</b> · <b>' + clock(E.r) + '</b> left'; }
   else if (E.lead < 10) { head = 'WAIT — BTC is hugging the target'; sub = E.fav + ' for now by $' + fmt$(E.lead, 0) + '. A coin flip until the gap opens.'; time = 'Round ends in <b>' + clock(E.r) + '</b>'; }
   else { head = 'WAIT — ' + E.fav + ' for now'; sub = 'Real flip chance ' + chanceTxt(1 - E.pFavAdj) + ' — ' + whereTxt(E) + '. The sure thing usually shows up inside the last 2 minutes.'; time = '<b>' + etaTxt(fav.eta) + '</b> · <b>' + clock(E.r) + '</b> left'; }
-  el.className = 'do ' + cls; $('do-label').textContent = label; $('do-head').textContent = head; $('do-sub').textContent = sub; $('do-time').innerHTML = time;
+  el.className = 'do ' + cls; $('do-label').textContent = label; $('do-head').textContent = head; $('do-time').innerHTML = time;
+  if (sub === 'SANDBOX') $('do-sub').innerHTML = 'Coinbase and the relay are both blocked by this host (the claude.ai artifact viewer allows no outbound connections). Open the hosted copy instead — same page, served by the relay worker straight from GitHub: <a href="' + HOSTED_URL + '" style="color:var(--pm);font-weight:600">' + HOSTED_URL + '</a> — then Share → Add to Home Screen.';
+  else $('do-sub').textContent = sub;
   if (key === 'sure' || key === 'locked' || key === 'sell' || key === 'sellnow') announce(key, head);
 
   // KILL LINE card: the side that matters (mine if I am in, else the one for now)
@@ -1037,7 +1046,8 @@ function dictate(E) {
 // ---------- panels ----------
 function renderWarn(E) {
   const w = [];
-  if (IDX.ok === false || (IDX.ok === null && S.relay === 'direct')) w.push('Index series off (' + (S.relay === 'direct' ? 'no relay' : 'relay not answering' + (IDX.note ? ': ' + IDX.note : '')) + '): the PM line, the final price and the basis are modeled from Coinbase. The relay must be the v2.0 worker (it forwards /v1/asset-prices/history).');
+  if (sandboxed()) w.push('This host blocks outbound connections: nothing here is live. Open ' + HOSTED_URL + ' instead.');
+  else if (IDX.ok === false || (IDX.ok === null && S.relay === 'direct')) w.push('Index series off (' + (S.relay === 'direct' ? 'no relay' : 'relay not answering' + (IDX.note ? ': ' + IDX.note : '')) + '): the PM line, the final price and the basis are modeled from Coinbase. The relay must be the v2.0 worker (it forwards /v1/asset-prices/history).');
   else if (IDX.ok === null && IDX.fails >= 3) w.push('Index series: ' + IDX.fails + ' failed requests to the relay (' + (IDX.note || 'no detail') + ') — if the worker is still the v1 build it returns 404 for the series; redeploy scripts/pm15_relay_worker.js.');
   else if (IDX.ok && Number.isFinite(E.pmAge) && E.pmAge > 8) w.push('Index series is ' + E.pmAge + ' s stale — using the Coinbase model meanwhile.');
   else if (IDX.ok && !Number.isFinite(E.pmAge)) w.push('Index series: no fresh point yet.');

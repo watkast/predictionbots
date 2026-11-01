@@ -47,7 +47,10 @@ the paper / record / backtest / carry / bounty schedules are off, `workflow_disp
 live line of research is **Early Favorite** on Polymarket US 15-min BTC: `research/early_favorite_playbook.md`,
 `scripts/early_favorite_tracker.py` (forward test, `polyus.yml`), `scripts/ef_autobuyer.py` (live-book
 paper fills, `ef-autobuyer.yml`), `research/early_favorite_signal.pine` (the TradingView HUD).
-Live cockpit: `research/pm15_copilot.html` **v2.0** (open in a browser on the iPad; also published as a claude.ai artifact) — one
+Live cockpit: `research/pm15_copilot.html` **v2.0** — open it at **https://pm15-relay-worker.machwonder.workers.dev/** (the relay
+worker serves this file straight from `main`, wrapped with the mobile viewport; Safari → Share → Add to Home Screen). The
+claude.ai artifact copy only shows the layout: that origin blocks outbound connections, so neither Coinbase nor the relay
+is reachable from it. One
 Polymarket US 15-min BTC round at a time. What settles the market was verified on the recorder's own data (2026-10-31):
 the final price equals the mean of the 60 one-second CF Benchmarks index prints with timestamps in [T−60, T) to $0.005
 (the v1 model's [T−62, T−2) window was off by up to $7.5), and the exchange's public `/v1/asset-prices/history` 1-s series
@@ -69,10 +72,12 @@ sound alerts, a sell-latency setting, a feed watchdog, and `scripts/pm15_copilot
 of the whole pipeline across four synthetic rounds). The paper bot buys the locked side and sells on SELL.
 `research/pm15_brain.pine` is the TradingView version of the same brain (kill line, lookahead, LOCKED/HOLD/SELL; it
 cannot read the index series, so there the target is typed or estimated and the basis is a setting).
-`scripts/pm15_relay_worker.js` is the Cloudflare Worker that forwards the three read-only gateway endpoints with CORS for
-the page; Noah's deployment (`pm15-relay-worker.machwonder.workers.dev`) is baked in as the page's default relay
-(Settings: blank = that worker, `direct` = no relay). Redeploy it for v2.0, which needs `/v1/asset-prices/history`
-(query passthrough, ~30–40k requests/day around the clock; the free tier allows 100k).
+`scripts/pm15_relay_worker.js` is the Cloudflare Worker behind that URL: it serves the cockpit at `/` (from GitHub `main`,
+60-s edge cache; `?ref=<branch>` for another revision, `?fresh=1` to bypass the cache) and forwards the three read-only
+gateway endpoints with CORS (`/v1/market/slug/{slug}`, `/v1/markets/{slug}/book`, `/v1/asset-prices/history` with query
+passthrough; ~30–40k requests/day around the clock, free tier 100k). The worker URL is baked into the page as the default
+relay (Settings: blank = that worker, `direct` = no relay). Changing the page needs no worker redeploy; changing the
+worker does (paste the file in the Cloudflare dashboard).
 Companion chart tool: `research/velocity_reach_vs_target.pine` (TradingView — projects BTC's velocity /
 acceleration forward, draws a vertical reach post with a 1m/2m/3m… time ruler up through the target and
 marks the tick where the target is hit, in whichever direction the target lies; the target defaults to the round's price-to-beat estimated the
