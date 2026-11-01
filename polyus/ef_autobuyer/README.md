@@ -1,9 +1,9 @@
 # Early Favorite auto-buyer v1 (paper)
 
 Paper only. Reads the live Polymarket US book at 13:00 left, else 12:00 left; buys the favorite if its ask is 80-95c with a limit at ask+1c, filled only against size actually resting on the book.
-Updated 2026-11-01T23:27:19Z.
+Updated 2026-11-01T23:37:22Z.
 
-Rounds watched: 841. Entries: 106. Settled: 106.
+Rounds watched: 842. Entries: 107. Settled: 106.
 
 Win rate: 90/106 = 84.9%
 
@@ -13,13 +13,12 @@ Win rate: 90/106 = 84.9%
 | $100 | 99% | 100% | 0.845 | $-56.25 | -0.53% |
 | $250 | 94% | 98% | 0.846 | $-231.91 | -0.89% |
 
-Live $100 fill price minus the backtest's display price: +1.06c average over 104 entries (the backtest edge was about +4.2c, so this gap is what it must survive).
+Live $100 fill price minus the backtest's display price: +1.06c average over 105 entries (the backtest edge was about +4.2c, so this gap is what it must survive).
 
 ## Last 20 entries
 
 | Window (UTC) | Left | Side | Ask | Depth at ask | $100 fill | Result | P&L $100 |
 |---|---|---|---|---|---|---|---|
-| 10-31T06:00 | 12:00 | Up | 0.86 | 508 | 100% @ 0.860 | WIN | +15.31 |
 | 10-31T06:45 | 12:00 | Up | 0.89 | 5 | 100% @ 0.899 | WIN | +10.47 |
 | 10-31T10:00 | 12:00 | Down | 0.81 | 354 | 100% @ 0.810 | LOSS | -101.32 |
 | 10-31T11:15 | 13:00 | Up | 0.80 | 323 | 100% @ 0.800 | WIN | +23.61 |
@@ -39,6 +38,7 @@ Live $100 fill price minus the backtest's display price: +1.06c average over 104
 | 11-01T12:00 | 13:00 | Up | 0.87 | 185 | 100% @ 0.870 | WIN | +14.04 |
 | 11-01T12:15 | 13:00 | Down | 0.92 | 1730 | 100% @ 0.920 | WIN | +8.14 |
 | 11-01T16:15 | 12:00 | Up | 0.82 | 119 | 100% @ 0.820 | WIN | +20.66 |
+| 11-01T23:30 | 12:00 | Up | 0.80 | 41 | 100% @ 0.807 | - | +0.00 |
 
-Book reads: 1644, failed: 486, re-tried: 439, median latency 0.04s.
-Entries read more than 20 s after their target second: 13 of 106 (avg 30 s late).
+Book reads: 1646, failed: 487, re-tried: 441, median latency 0.04s.
+Entries read more than 20 s after their target second: 14 of 107 (avg 30 s late).
