@@ -1,11 +1,11 @@
 # Mr. P — sports radar
 
-Updated 2026-11-01T08:30:34Z by `run-20261101T0255-41265685999` (last 7 days). Read-only scanner of every sports market on Polymarket US and Kalshi — it never places orders.
+Updated 2026-11-01T08:41:45Z by `run-20261101T0255-41265685999` (last 7 days). Read-only scanner of every sports market on Polymarket US and Kalshi — it never places orders.
 Kit: `mrp/mrp_sports_radar.py` on the `mrp` branch. Raw tape: `mrp/radar/<run>/`.
 
 # Sports radar report
 
-records 4,190,505 | 2026-10-29 15:47Z → 08:29Z | runs 25 | pairs matched 1381 | errors {'radar': 13}
+records 4,191,080 | 2026-10-29 15:47Z → 08:32Z | runs 25 | pairs matched 1381 | errors {'radar': 13}
 
 ## Catalogue (latest inventory, 06:40Z)
 
@@ -286,18 +286,18 @@ change% = share of scan cycles (60 s) where the best quote moved; react = median
 
 | venue | sport | markets | snapshots | two-sided | med spread | change% | react (min) | round sizes | med size |
 |---|---|---|---|---|---|---|---|---|---|
-| pm | soccer | 1719 | 189606 | 87% | 0.020 | 18% | 0.5 (n=2988) | - | - |
-| pm | tennis | 1242 | 113883 | 92% | 0.010 | 25% | 0.5 (n=61424) | - | - |
-| pm | esports | 3094 | 82584 | 76% | 0.030 | 20% | 0.5 (n=17247) | - | - |
-| pm | table-tennis | 1409 | 54494 | 94% | 0.020 | 30% | 0.5 (n=26576) | - | - |
-| pm | basketball | 706 | 38468 | 80% | 0.040 | 25% | 0.5 (n=8837) | - | - |
+| pm | soccer | 1719 | 189663 | 87% | 0.020 | 18% | 0.5 (n=2988) | - | - |
+| pm | tennis | 1242 | 113929 | 92% | 0.010 | 25% | 0.5 (n=61442) | - | - |
+| pm | esports | 3094 | 82614 | 76% | 0.030 | 20% | 0.5 (n=17253) | - | - |
+| pm | table-tennis | 1409 | 54521 | 94% | 0.020 | 30% | 0.5 (n=26594) | - | - |
+| pm | basketball | 706 | 38469 | 80% | 0.040 | 25% | 0.5 (n=8837) | - | - |
 | pm | football | 479 | 35518 | 62% | 0.005 | 17% | 1.1 (n=1011) | - | - |
 | pm | climate | 162 | 10374 | 74% | 0.040 | 21% | - (n=0) | - | - |
 | pm | ice-hockey | 105 | 10371 | 86% | 0.060 | 15% | 0.7 (n=566) | - | - |
 | pm | golf | 159 | 4999 | 2% | 0.040 | 3% | - (n=0) | - | - |
-| pm | cricket | 11 | 3968 | 95% | 0.040 | 10% | 1.0 (n=578) | - | - |
+| pm | cricket | 11 | 3976 | 95% | 0.040 | 10% | 1.0 (n=578) | - | - |
 | pm | misc | 47 | 3509 | 93% | 0.010 | 12% | - (n=0) | - | - |
-| pm | beach-volleyball | 60 | 2566 | 86% | 0.010 | 24% | 0.5 (n=1434) | - | - |
+| pm | beach-volleyball | 60 | 2571 | 86% | 0.010 | 24% | 0.5 (n=1438) | - | - |
 | pm | darts | 48 | 1553 | 90% | 0.090 | 29% | 0.5 (n=196) | - | - |
 | pm | motorsports | 159 | 923 | 48% | 0.080 | 6% | - (n=0) | - | - |
 | pm | mma | 14 | 759 | 95% | 0.020 | 4% | - (n=0) | - | - |
@@ -306,11 +306,11 @@ change% = share of scan cycles (60 s) where the best quote moved; react = median
 | pm | rugby | 20 | 345 | 75% | 0.450 | 24% | - (n=0) | - | - |
 | pm | boxing | 4 | 165 | 95% | 0.030 | 56% | - (n=0) | - | - |
 | pm | pickleball | 10 | 95 | 64% | 0.280 | 10% | - (n=0) | - | - |
-| k | KXNCAAFGAME College Football Game | 704 | 557916 | 98% | 0.020 | 2% | - | 8% | 200 |
+| k | KXNCAAFGAME College Football Game | 704 | 558283 | 98% | 0.020 | 2% | - | 8% | 199 |
 | k | KXNBA3PT NBA Player Threes | 1131 | 138777 | 82% | 0.080 | 17% | - | 24% | 27 |
 | k | KXNCAAFTEAMTOTAL College Football Team To | 1319 | 103824 | 84% | 0.020 | 2% | - | 27% | 230 |
 | k | KXCS2MAP Counter-Strike 2 Map Win | 524 | 101029 | 93% | 0.630 | 6% | - | 19% | 101 |
-| k | KXNFLGAME NFL Game | 58 | 100329 | 100% | 0.010 | 1% | - | 3% | 115344 |
+| k | KXNFLGAME NFL Game | 58 | 100404 | 100% | 0.010 | 1% | - | 3% | 115392 |
 | k | KXNCAAFSPREAD College Football Spread | 2707 | 79139 | 62% | 0.040 | 3% | - | 16% | 129 |
 | k | KXNBAAST NBA Player Assists | 850 | 69562 | 82% | 0.070 | 16% | - | 25% | 23 |
 | k | KXNBAPTS NBA Player Points | 970 | 68885 | 80% | 0.050 | 22% | - | 22% | 39 |
