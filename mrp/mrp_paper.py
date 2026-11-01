@@ -207,7 +207,7 @@ class Paper:
                     continue
                 diff = sc[i] - sc[1 - i]
                 # R2 q1cheap
-                if per == 1 and 0.02 < ask <= 0.20 and not self.fired(f"R2|{gk}|{i}"):
+                if per == 1 and 0.15 <= ask <= 0.20 and not self.fired(f"R2|{gk}|{i}"):   # validated band only (NFL 15-20c)
                     self.st["fired"].append(f"R2|{gk}|{i}")
                     self.buy("R2 q1cheap", tag, km, title, f"Q1 ask {ask:.2f}, score {key_sc}", now)
                 # R1 anchor
