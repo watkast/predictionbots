@@ -1058,11 +1058,11 @@ function renderStrict(E, key) {
     let c = null;
     if (myPos) { const x = E.exitCheck(myPos.side), side = myPos.side;
       const all = myPos.shares.toFixed(1) + ' sh (all)';
-      if (key === 'sellnow') c = { kind: 'sell', text: 'SELL ' + side + ' NOW', size: all, sub: 'any bid · then tap Out', cls: 'sell' };
-      else if (key === 'sell' && Number.isFinite(x.bid) && x.bid >= x.sellAbove - 1e-9) c = { kind: 'sell', text: 'SELL ' + side + ' GTE ' + cents(x.sellAbove), size: all, sub: 'bid ' + cents(x.bid) + ' beats holding · then tap Out', cls: 'sell' }; }
+      if (key === 'sellnow') c = { kind: 'sell', side, px: null, sh: myPos.shares, now: true, text: 'SELL ' + side + ' NOW', size: all, sub: 'any bid · then tap Out', cls: 'sell' };
+      else if (key === 'sell' && Number.isFinite(x.bid) && x.bid >= x.sellAbove - 1e-9) c = { kind: 'sell', side, px: x.sellAbove, bid: x.bid, sh: myPos.shares, now: false, text: 'SELL ' + side + ' GTE ' + cents(x.sellAbove), size: all, sub: 'bid ' + cents(x.bid) + ' beats holding · then tap Out', cls: 'sell' }; }
     else if (!R.traded && key === 'buy' && E.entry && E.entry.qty >= 1 && E.r > lat + 2) {
       const en = E.entry, mult = Math.min(2, Math.max(0.5, en.edge / 0.04)), usd = (S.stake || 20) * mult, sh = Math.max(1, Math.min(Math.floor(usd / en.ask), Math.floor(en.qty)));
-      c = { kind: 'buy', text: 'BUY ' + en.side + ' LTE ' + cents(en.lim), size: sh + ' sh', sub: '$' + fmt$(sh * en.ask, 0) + ' at ' + cents(en.ask) + ' · ' + mult.toFixed(1) + '× stake' + (en.qty < usd / en.ask ? ' · only ' + Math.floor(en.qty) + ' offered' : '') + ' · then I\'m in', cls: en.side === 'UP' ? 'up' : 'down' }; }
+      c = { kind: 'buy', side: en.side, px: en.lim, ask: en.ask, sh, usd: sh * en.ask, edge: en.edge, p: en.p, text: 'BUY ' + en.side + ' LTE ' + cents(en.lim), size: sh + ' sh', sub: '$' + fmt$(sh * en.ask, 0) + ' at ' + cents(en.ask) + ' · ' + mult.toFixed(1) + '× stake' + (en.qty < usd / en.ask ? ' · only ' + Math.floor(en.qty) + ' offered' : '') + ' · then I\'m in', cls: en.side === 'UP' ? 'up' : 'down' }; }
     if (c) { strict.cmd = c; strict.since = now; strict.until = now + win; }
   }
   const el = $('strict'), C = $('st-cmd'), U = $('st-sub'), W = $('st-win'), Z = $('st-size');

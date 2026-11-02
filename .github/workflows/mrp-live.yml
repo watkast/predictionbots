@@ -1,0 +1,44 @@
+# Mr. P live (REAL MONEY, capped): runs the PM15 cockpit's brain in Node and executes only its STRICT ACTION commands on
+# Polymarket US — one discounted-favorite buy per round, one sell per position — with at most $MRP_LIVE_CAPITAL at risk.
+# Gate: the repo variable MRP_LIVE must be "on" (Settings → Secrets and variables → Actions → Variables); set it to anything
+# else and no new run trades (cancel the running job to stop at once; open orders are cancelled on the way out).
+# Same shape as mrp-record.yml: hourly cron + a concurrency group = back-to-back ~5.6 h runs; the log, state and LIVE.md are
+# published to the `mrp-data` branch under mrp/live/ every 10 minutes.
+name: mrp-live
+on:
+  schedule:
+    - cron: "7 * * * *"
+  workflow_dispatch:
+    inputs:
+      minutes:
+        description: "Minutes to run"
+        default: "335"
+      mode:
+        description: "live (orders) or dry (feeds + decisions only)"
+        default: "live"
+
+permissions:
+  contents: write
+
+concurrency:
+  group: mrp-live
+  cancel-in-progress: false
+
+jobs:
+  live:
+    if: ${{ vars.MRP_LIVE == 'on' || github.event.inputs.mode == 'dry' }}
+    runs-on: ubuntu-latest
+    timeout-minutes: 355
+    env:
+      POLYMARKET_KEY_ID: ${{ secrets.POLYMARKET_KEY_ID }}
+      POLYMARKET_SECRET_KEY: ${{ secrets.POLYMARKET_SECRET_KEY }}
+      MRP_LIVE_CAPITAL: ${{ vars.MRP_LIVE_CAPITAL || '20' }}
+      MRP_LIVE_DIR: ${{ github.workspace }}/mrplive
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "22"
+      - run: npm install --no-save --no-audit --no-fund ws@8
+      - name: Trade (publishing every 10 minutes)
+        run: bash mrp/gha_live.sh "${{ github.event.inputs.minutes || '335' }}" "${{ github.event.inputs.mode || 'live' }}"
