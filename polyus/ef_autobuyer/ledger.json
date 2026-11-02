@@ -33294,6 +33294,42 @@
 "up_ask": 0.72
 }
 ],
+"entry": null,
+"settled": "no_entry"
+},
+"cpc-btc-updown-15m-2026-11-02-0815z": {
+"slug": "cpc-btc-updown-15m-2026-11-02-0815z",
+"window_start": 1793607300,
+"checks": [
+{
+"at": 120,
+"t": 120.0,
+"latency_s": 0.034,
+"ok": true,
+"tries": 1,
+"state": "MARKET_STATE_OPEN",
+"fav": "Up",
+"fav_ask": 0.53,
+"long_px": 0.52,
+"short_px": 0.48,
+"up_bid": 0.52,
+"up_ask": 0.53
+},
+{
+"at": 180,
+"t": 180.0,
+"latency_s": 0.02,
+"ok": true,
+"tries": 1,
+"state": "MARKET_STATE_OPEN",
+"fav": "Up",
+"fav_ask": 0.61,
+"long_px": 0.58,
+"short_px": 0.42,
+"up_bid": 0.6,
+"up_ask": 0.61
+}
+],
 "entry": null
 }
 }
