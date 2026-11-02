@@ -58,3 +58,4 @@
 {"t":1793634309740,"k":"fill","d":{"slug":"cpceth-eth-updown-15m-2026-11-02-1545z","side":"DOWN","px":0.35,"qty":1}}
 {"t":1793634309905,"k":"rest","d":{"slug":"cpceth-eth-updown-15m-2026-11-02-1545z","side":"DOWN","sellAt":0.55,"id":"DFQ31NVG12VP"}}
 {"t":1793634328403,"k":"settle","d":{"slug":"cpceth-eth-updown-15m-2026-11-02-1530z","result":"DOWN","side":"UP","pnl":-0.35}}
+{"t":1793634454461,"k":"fill","d":{"slug":"cpceth-eth-updown-15m-2026-11-02-1545z","side":"DOWN","sold":0.55,"pnl":0.2}}
