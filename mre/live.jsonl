@@ -38,3 +38,8 @@
 {"t":1793630787790,"k":"fill","d":{"slug":"cpceth-eth-updown-15m-2026-11-02-1445z","side":"DOWN","px":0.35,"qty":1}}
 {"t":1793630787974,"k":"rest","d":{"slug":"cpceth-eth-updown-15m-2026-11-02-1445z","side":"DOWN","sellAt":0.55,"id":"DFP85TMG12W4"}}
 {"t":1793631011725,"k":"fill","d":{"slug":"cpceth-eth-updown-15m-2026-11-02-1445z","side":"DOWN","sold":0.55,"pnl":0.2}}
+{"t":1793631605184,"k":"rest","d":{"slug":"cpceth-eth-updown-15m-2026-11-02-1500z","side":"UP","at":0.35,"id":"DFPEDB6G12WE"}}
+{"t":1793631605333,"k":"rest","d":{"slug":"cpceth-eth-updown-15m-2026-11-02-1500z","side":"DOWN","at":0.35,"id":"DFPEDC9032WA"}}
+{"t":1793631609922,"k":"fill","d":{"slug":"cpceth-eth-updown-15m-2026-11-02-1500z","side":"DOWN","px":0.35,"qty":1}}
+{"t":1793631610272,"k":"rest","d":{"slug":"cpceth-eth-updown-15m-2026-11-02-1500z","side":"DOWN","sellAt":0.55,"id":"DFPEEJXG12WK"}}
+{"t":1793631694562,"k":"fill","d":{"slug":"cpceth-eth-updown-15m-2026-11-02-1500z","side":"DOWN","sold":0.55,"pnl":0.2}}
