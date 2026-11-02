@@ -370,9 +370,20 @@
    "buyLeft": 772,
    "exit": null,
    "pnl": null
+  },
+  {
+   "T0": 1793659500,
+   "slug": "cpceth-eth-updown-15m-2026-11-02-2245z",
+   "side": "DOWN",
+   "buyPx": 0.040000000000000036,
+   "buyLeft": 538,
+   "exit": "lost at the bell",
+   "pnl": -0.04,
+   "sellId": "DFX5ZYJ012TT",
+   "result": "UP"
   }
  ],
  "balanceStart": 17.4956,
- "balanceNow": 17.8756,
+ "balanceNow": 16.8856,
  "errors": 0
 }
