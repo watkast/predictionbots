@@ -276,7 +276,7 @@ details.settings summary { cursor: pointer; font: 700 15px/1.4 var(--font-displa
       <div class="ncell"><div class="nk">Basis · index − Coinbase</div><div class="nv" id="m-basis">—</div></div>
       <div class="ncell"><div class="nk">Volatility · 1σ per minute</div><div class="nv" id="m-vol">—</div></div>
       <div class="ncell"><div class="nk">Target source</div><div class="nv" id="m-tgtsrc">—</div></div>
-      <div class="ncell"><div class="nk">Feeds · Coinbase · book · series</div><div class="nv" id="m-feeds">—</div></div>
+      <div class="ncell"><div class="nk">Feeds · Coinbase · book age · series age</div><div class="nv" id="m-feeds">—</div></div>
       <div class="ncell"><div class="nk">Round (ET)</div><div class="nv" id="m-round">—</div></div>
       <div class="ncell"><div class="nk">Coinbase history · 1 / 5 / 15-min</div><div class="nv" id="m-hist">—</div></div>
       <div class="ncell full past-cell"><div class="nk">Past rounds · result · ET · margin · lock</div><div class="past" id="past"><span class="hint">None yet.</span></div></div>
@@ -587,7 +587,7 @@ try { paper.totalPnl = Number(localStorage.getItem('pm15.paperTotal')) || 0; } c
 
 function startRound(T0) {
   if (R.T0 && R.T0 !== T0) finishRound();
-  Object.assign(R, { T0, T: T0 + ROUND, slug: SLUG(T0), target: NaN, targetSrc: 'none', targetApi: NaN, book: null, bookAt: 0, lockAt: null, lockAsk: NaN, lockCall: null, lockBeeped: false, bestEdge: NaN, bestAsk: NaN, bestLeft: NaN, note: '', traded: false });
+  Object.assign(R, { T0, T: T0 + ROUND, slug: SLUG(T0), target: NaN, targetSrc: 'none', targetApi: NaN, book: null, bookAt: 0, lockAt: null, lockAsk: NaN, lockCall: null, lockBeeped: false, bestEdge: NaN, bestAsk: NaN, bestLeft: NaN, note: '', traded: false, bookCalls: 0 });
   paper.roundPnl = 0; paper.state = 'idle'; paper.note = '';
   if (myPos && myPos.T0 !== T0) { myPos = null; try { localStorage.removeItem('pm15.mypos'); } catch (e) {} }
   $('s-target').value = ''; $('s-ask').value = 0; $('s-bid').value = 0;           // typed numbers belong to the round they were typed in
@@ -671,7 +671,7 @@ async function pmFetchMarket(slugArg) {
   } catch (e) { if (R.apiOk === null && corsBlocked(e)) R.apiOk = false; }
 }
 async function pmFetchBook() {
-  if (!R.slug || pmBusy) return; pmBusy = true;
+  if (!R.slug || pmBusy) return; pmBusy = true; R.bookCalls = (R.bookCalls || 0) + 1;
   try {
     const j = await pmGet('/v1/markets/' + R.slug + '/book');
     const md = (j && j.marketData) || j || {};
@@ -1012,12 +1012,13 @@ function renderAct(key, ntR) {
   const sig = isBuy ? key + '|' + ntR : isSell ? 'sell|' + (myPos ? myPos.side : '') : '';
   const now = Date.now();
   if (sig !== act.sig) act = { sig, since: now };
-  const el = $('act'), L = $('act-l'), R = $('act-r'), F = $('act-fill');
-  if (!sig) { el.className = 'act none'; L.textContent = key === 'locked' ? 'no action needed — ride it' : key === 'hold' ? 'no action needed — sell only above the bid shown' : 'no action needed'; R.textContent = ''; F.style.width = '0%'; return; }
+  const el = $('act'), L = $('act-l'), Rc = $('act-r'), F = $('act-fill');
+  if (!sig) { el.className = 'act none'; L.textContent = key === 'locked' ? 'no action needed — ride it' : key === 'hold' ? 'no action needed — sell only above the bid shown' : 'no action needed'; Rc.textContent = ''; F.style.width = '0%'; return; }
   const t = (now - act.since) / 1000, p1 = S.latency || 8, p2 = Math.max(p1 + 1, S.actWindow || 15);
-  if (t < p1) { el.className = 'act max'; L.textContent = 'MAX ODDS · ' + (isBuy ? 'the price is fresh' : 'sell before the cushion moves'); R.textContent = Math.ceil(p1 - t) + ' s'; F.style.width = Math.max(0, 100 * (1 - t / p1)).toFixed(1) + '%'; }
-  else if (t < p2) { el.className = 'act go'; L.textContent = 'TAKE ACTION · under ' + Math.ceil(p2 - t) + ' s left'; R.textContent = Math.ceil(p2 - t) + ' s'; F.style.width = Math.max(0, 100 * (1 - (t - p1) / (p2 - p1))).toFixed(1) + '%'; }
-  else { el.className = 'act late'; L.textContent = 'LATE · ' + (isBuy ? 'still offered — check the price again' : 'if not sold yet: only at the price shown'); R.textContent = Math.floor(t) + ' s'; F.style.width = '100%'; }
+  const qAge = R.book && R.bookAt ? Math.max(0, Math.round((now - R.bookAt) / 1000)) : NaN, qTxt = Number.isFinite(qAge) ? (qAge <= 2 ? 'quote live' : 'quote ' + qAge + ' s old') : 'no live quote';
+  if (t < p1) { el.className = 'act max'; L.textContent = 'MAX ODDS · ' + qTxt + (isBuy ? ' · pay up to the ≤ price' : ' · sell before the cushion moves'); Rc.textContent = Math.ceil(p1 - t) + ' s'; F.style.width = Math.max(0, 100 * (1 - t / p1)).toFixed(1) + '%'; }
+  else if (t < p2) { el.className = 'act go'; L.textContent = 'TAKE ACTION · under ' + Math.ceil(p2 - t) + ' s left'; Rc.textContent = Math.ceil(p2 - t) + ' s'; F.style.width = Math.max(0, 100 * (1 - (t - p1) / (p2 - p1))).toFixed(1) + '%'; }
+  else { el.className = 'act late'; L.textContent = 'LATE · ' + qTxt + (isBuy ? ' · go by the button: only if ≤ the price shown' : ' · if not sold yet: only at the price shown'); Rc.textContent = Math.floor(t) + ' s'; F.style.width = '100%'; }
 }
 function dictate(E) {
   const el = $('do'), maxAsk = S.maxAsk / 100, lat = S.latency || 0;
@@ -1186,7 +1187,7 @@ function renderNumbers(E) {
   ncell('m-vol', Number.isFinite(E.sig) ? '±' + c$(E.sig * Math.sqrt(60)) + ' · ×' + (S.sigK || 1) + (E.sig > E.sigLive * (S.sigK || 1) + 1e-9 ? ' · floored' : '') : '—');
   ncell('m-tgtsrc', R.targetSrc === 'api' ? 'exact · Polymarket API' : R.targetSrc === 'series' ? 'exact · index series' : R.targetSrc === 'manual' ? 'typed' : R.targetSrc === 'est' ? 'estimated ±$15' : 'none yet', R.targetSrc === 'api' || R.targetSrc === 'series' ? 'ok' : 'warn');
   const bookLive = R.book && Date.now() - R.bookAt < 15000;
-  ncell('m-feeds', (E.fresh ? 'live' : cbState) + ' · ' + (bookLive ? 'live' : R.apiOk === false ? 'blocked' : R.apiOk ? 'stale' : 'off') + ' · ' + (IDX.ok && Number.isFinite(E.pmAge) ? E.pmAge + ' s old' : IDX.ok === false ? 'blocked' : IDX.fails ? 'failing' : 'off'), E.fresh && bookLive && IDX.ok && Number.isFinite(E.pmAge) && E.pmAge <= 8 ? 'ok' : 'warn');
+  ncell('m-feeds', (E.fresh ? 'live' : cbState) + ' · ' + (bookLive ? Math.round((Date.now() - R.bookAt) / 1000) + ' s' : R.apiOk === false ? 'blocked' : R.apiOk ? 'stale' : 'off') + ' · ' + (IDX.ok && Number.isFinite(E.pmAge) ? E.pmAge + ' s' : IDX.ok === false ? 'blocked' : IDX.fails ? 'failing' : 'off') + ' · ' + (R.bookCalls || 0) + ' calls', E.fresh && bookLive && IDX.ok && Number.isFinite(E.pmAge) && E.pmAge <= 8 ? 'ok' : 'warn');
   ncell('m-round', R.T0 ? etDay.format(new Date(R.T0 * 1000)) + ' ' + winTxt(R.T0, etFmt) : '—');
   ncell('m-hist', (REC.spans.m1 ? Math.round(REC.spans.m1) + 'd' : '0d') + ' / ' + (REC.spans.m5 ? Math.round(REC.spans.m5) + 'd' : '0d') + ' / ' + (REC.spans.m15 ? Math.round(REC.spans.m15) + 'd' : '0d') + (REC.scanning ? ' · scanning ' + Math.round(REC.progress * 100) + '%' : REC.ready && !REC.bad ? ' · no ladder' : ' · 1/5/15-min'), REC.ready && REC.bad ? '' : 'warn');
 }
@@ -1314,9 +1315,18 @@ let pollN = 0;
 // ≈ 460 requests a round ≈ 31 a minute ≈ 44k a day around the clock — book every 1 s in the last 2:00, every 3 s from
 // 5:00 to 2:00 (the harvest-sell zone), every 10 s before; series every 1–2 s in the last 3:00, every 10 s before;
 // market terms every 30 s (6 s only while the target is still unknown or estimated). Nothing is polled while hidden.
+// Hot polling: while a BUY / SELL is on screen the book is read every second (the human is acting on that price); when a
+// trade is within 3c of triggering, every 2 s. Capped at 450 book calls a round so a hovering ask cannot blow the relay budget.
+function bookHot() {
+  const E = lastEval; if (!E || !(E.r > 0) || !R.book) return 0;
+  const k = verdict.key; if (k === 'buy' || k === 'sell' || k === 'sellnow' || k === 'sure' || k === 'ef') return 1;
+  if (!myPos) { const b = E.buyIn; return b && Number.isFinite(b.ask) && Number.isFinite(b.lim) && b.ask - b.lim <= 0.03 ? 2 : 0; }
+  const x = E.exitCheck(myPos.side); return Number.isFinite(x.bid) && Number.isFinite(x.sellAbove) && x.sellAbove - x.bid <= 0.03 ? 2 : 0;
+}
 setInterval(() => {
   pollN++; if (document.hidden) return; const r = R.T - Date.now() / 1000;
-  if (r <= 120 || (r <= 300 && pollN % 3 === 0) || pollN % 10 === 0) pmFetchBook();
+  const hot = (R.bookCalls || 0) < 450 ? bookHot() : 0;
+  if (r <= 120 || hot === 1 || (hot === 2 && pollN % 2 === 0) || (r <= 300 && pollN % 3 === 0) || pollN % 10 === 0) pmFetchBook();
   if (r <= 20 || r >= ROUND - 12 || (r <= 180 && pollN % 2 === 0) || pollN % 10 === 5) pmFetchSeries();
   const needTarget = !Number.isFinite(R.target) || R.targetSrc === 'est';
   if ((needTarget && pollN % 6 === 3) || pollN % 30 === 3) { if (needTarget || R.targetSrc === 'series') pmFetchMarket(); const prevSlug = SLUG(R.T0 - ROUND); const prev = history.find(h => SLUG(h.T0) === prevSlug); if (prev && prev.settleSrc !== 'api') pmFetchMarket(prevSlug); }
