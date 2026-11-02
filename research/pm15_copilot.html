@@ -64,7 +64,7 @@ input, select { background: var(--bg); border: 1px solid var(--line); border-rad
 .timer-sub { text-align: right; color: var(--muted); font-size: 11px; line-height: 12px; height: 12px; white-space: nowrap; }
 
 /* DO NOW! — the instruction card; its color is the verdict */
-.do { border-radius: 14px; border: 2px solid var(--line); background: var(--surface); min-width: 0; height: 250px; overflow: hidden; display: grid; grid-template-rows: 56px 84px 24px 44px; gap: 8px; padding: 10px 12px 12px; }
+.do { border-radius: 14px; border: 2px solid var(--line); background: var(--surface); min-width: 0; height: 278px; overflow: hidden; display: grid; grid-template-rows: 56px 84px 24px 44px 20px; gap: 8px; padding: 10px 12px 12px; }
 .do .do-top { display: flex; justify-content: space-between; align-items: flex-start; height: 56px; }
 .do .label { font: 700 16px/20px var(--font-display); letter-spacing: .16em; padding-top: 2px; color: var(--muted); }
 .do .tm { text-align: right; }
@@ -96,6 +96,16 @@ input, select { background: var(--bg); border: 1px solid var(--line); border-rad
 .nt .ntl { font: 800 20px/1 var(--font-display); letter-spacing: .02em; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
 .nt .ntr { font: 800 22px/1 var(--font-display); letter-spacing: .02em; text-align: right; white-space: nowrap; font-variant-numeric: tabular-nums; }
 .nt.up .ntl, .nt.up .ntr { color: var(--up); } .nt.down .ntl, .nt.down .ntr { color: var(--down); } .nt.sell .ntl, .nt.sell .ntr { color: var(--orange); } .nt.none .ntl, .nt.none .ntr { color: var(--muted); }
+
+/* the action timer under the trade row: MAX ODDS (your sell latency) → TAKE ACTION (to 15 s) → LATE; a fill drains with it */
+.act { position: relative; height: 20px; border-radius: 6px; background: #0b121899; border: 1px solid var(--line); overflow: hidden; display: grid; grid-template-columns: 1fr auto; align-items: center; padding: 0 8px; }
+.act .fill { position: absolute; inset: 0; width: 0; background: #ffffff10; transition: width .25s linear; }
+.act .al, .act .ar { position: relative; font: 700 11px/18px var(--font-mono); letter-spacing: .06em; color: var(--muted); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.act .ar { text-align: right; font-variant-numeric: tabular-nums; font-size: 12px; }
+.act.max .fill { background: #2ed47a33; } .act.max .al, .act.max .ar { color: var(--up); }
+.act.go .fill { background: #ff8a1f33; } .act.go .al, .act.go .ar { color: var(--warn); }
+.act.late .fill { background: #ff5a4e22; width: 100%; transition: none; } .act.late .al, .act.late .ar { color: var(--bad); }
+.act.none .fill { width: 0; }
 
 /* DO NEXT — three rows: NEXT · THEN · LATER */
 .dn { display: grid; grid-template-rows: repeat(3, 44px); gap: 6px; padding: 8px 12px; border: 1px solid var(--line); border-radius: 12px; background: var(--surface); height: 154px; overflow: hidden; }
@@ -169,7 +179,7 @@ details.settings summary { cursor: pointer; font: 700 15px/1.4 var(--font-displa
 /* wide screens: one-line headline, DO NEXT as one row of three, four columns of numbers */
 @media (min-width: 861px) {
   :root { --chart-h: 320px; }
-  .do { height: 212px; grid-template-rows: 56px 56px 24px 44px; }
+  .do { height: 240px; grid-template-rows: 56px 56px 24px 44px 20px; }
   .do .head { font-size: 46px; line-height: 56px; height: 56px; -webkit-line-clamp: 1; white-space: nowrap; text-overflow: ellipsis; display: block; }
   .timer { font-size: 52px; }
   .dn { grid-template-rows: 44px; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 0 14px; height: 62px; }
@@ -193,6 +203,7 @@ details.settings summary { cursor: pointer; font: 700 15px/1.4 var(--font-displa
       <div class="head" id="do-head">Connecting to the feed…</div>
       <div class="confrow"><span class="confbadge" id="do-confn">—</span><span class="conf" id="do-conf">the instruction starts as soon as prices arrive</span></div>
       <div class="nt none" id="nt"><div class="ntl" id="nt-left">Next trade: —</div><div class="ntr" id="nt-right">—</div></div>
+      <div class="act none" id="act"><div class="fill" id="act-fill"></div><div class="al" id="act-l">no action needed</div><div class="ar" id="act-r"></div></div>
     </div>
     <div class="dn" id="dn">
       <div class="dnrow" id="dn1r"><span class="dnk">NEXT</span><span class="dnt" id="dn1">—</span><span class="dnc" id="dn1c"></span></div>
@@ -250,7 +261,7 @@ details.settings summary { cursor: pointer; font: 700 15px/1.4 var(--font-displa
       <div class="ncell"><div class="nk">Record pace to the target</div><div class="nv" id="m-reach">—</div></div>
       <div class="ncell"><div class="nk">Touch odds (button scare)</div><div class="nv" id="m-touch">—</div></div>
       <div class="ncell"><div class="nk">Favorite's ask now</div><div class="nv" id="m-buyin">—</div></div>
-      <div class="ncell"><div class="nk">Buy prices · great · good · even</div><div class="nv" id="m-ladder">—</div></div>
+      <div class="ncell"><div class="nk">Buy prices · rule · good · even</div><div class="nv" id="m-ladder">—</div></div>
       <div class="ncell"><div class="nk">Best edge seen this round</div><div class="nv" id="m-bestedge">—</div></div>
       <div class="ncell"><div class="nk">Discount buy window</div><div class="nv" id="m-window">—</div></div>
       <div class="ncell"><div class="nk">EF rule (13:00 / 12:00)</div><div class="nv" id="m-ef">—</div></div>
@@ -280,7 +291,8 @@ details.settings summary { cursor: pointer; font: 700 15px/1.4 var(--font-displa
       <label>Favorite's Ask on PM (¢, 0 = unknown)<input id="s-ask" type="number" inputmode="decimal" min="0" max="100" step="1" value="0"></label>
       <label>Favorite's Bid on PM (¢, 0 = unknown)<input id="s-bid" type="number" inputmode="decimal" min="0" max="100" step="1" value="0"></label>
       <h4>Hold / sell</h4>
-      <label>Sell latency: seconds from reading SELL to being filled on the phone<input id="s-latency" type="number" inputmode="decimal" min="0" max="60" step="1" value="8"></label>
+      <label>Sell latency: seconds from reading SELL to being filled on the phone — also the MAX ODDS countdown<input id="s-latency" type="number" inputmode="decimal" min="0" max="60" step="1" value="8"></label>
+      <label>Take-action window: seconds after an instruction appears before it counts as late<input id="s-actwindow" type="number" inputmode="decimal" min="5" max="60" step="1" value="15"></label>
       <label>SELL when the model win chance drops under (%)<input id="s-holdmin" type="number" inputmode="decimal" min="50" max="95" step="1" value="75"></label>
       <label>SELL when BTC's last-10-s pace would reach the kill line within (s, after latency)<input id="s-etawarn" type="number" inputmode="decimal" min="5" max="120" step="5" value="30"></label>
       <label>Last 2 min: SELL if the cushion is under this percentile of 1-min adverse moves (5 days)<input id="s-badpct" type="number" inputmode="decimal" min="90" max="100" step="0.5" value="99"></label>
@@ -364,7 +376,7 @@ const T_BOOT = Date.now();
 // an origin that blocks outbound connections (the claude.ai artifact viewer): no Coinbase tick AND the relay failing, 15 s after load
 const sandboxed = () => Date.now() - T_BOOT > 12000 && !lastTickMs && (cbState === 'down' || IDX.fails >= 2 || IDX.ok === false) && location.href.indexOf(DEFAULT_RELAY) !== 0;
 const DEF = { stake: 20, lockP: 99.5, maxAsk: 97, drift: 0, fee: 0.0695, relay: DEFAULT_RELAY, offset: null, zoom: 'auto', sound: false, voice: false, recMargin: 1.5, reachGreen: 50, reachYellow: 10, paperOn: 'edge', edgeMin: 6, edgeScare: 15,
-  latency: 8, holdMinP: 75, etaWarnS: 30, badPct: 99, lookS: 30, slack: 3, killSecs: 45, efLo: 80, efHi: 94, holdConf: 99, exitBy: 45, sigK: 1.3, sellEdge: 5, buyMinLeft: 300, buyMaxLeft: 840, dogBuy: false, entryEdge: 8, sellZone: 300, sellPersist: 2 };   // entry/exit knobs = the replay grid (fitted Oct 29–30, held up Oct 31–Nov 2)
+  latency: 8, holdMinP: 75, etaWarnS: 30, badPct: 99, lookS: 30, slack: 3, killSecs: 45, efLo: 80, efHi: 94, holdConf: 99, exitBy: 45, sigK: 1.3, sellEdge: 5, buyMinLeft: 300, buyMaxLeft: 840, dogBuy: false, entryEdge: 8, sellZone: 300, sellPersist: 2, actWindow: 15 };   // entry/exit knobs = the replay grid (fitted Oct 29–30, held up Oct 31–Nov 2)
 let S = Object.assign({}, DEF);
 try { Object.assign(S, JSON.parse(localStorage.getItem('pm15.settings') || '{}')); } catch (e) {}
 if (S.recMargin < 1) S.recMargin = DEF.recMargin;      // v1 allowed 0.5; a margin under 1 is not a margin
@@ -879,7 +891,7 @@ function evaluate() {
   }
   E.buyIn = Number.isFinite(pUp) && r > 0 ? { ask: askNow, src: qNow.src, askQty: qNow.askQty, winHold, scare: fav.scare, flip: 1 - fav.pAdj, edge: edgeNow, scary: fav.scare >= 0.25,
     grade: !Number.isFinite(edgeNow) ? '' : edgeNow >= 0.08 ? 'GREAT' : edgeNow >= 0.04 ? 'GOOD' : edgeNow >= 0.01 ? 'FAIR' : 'POOR',
-    be: bePrice(0), good: bePrice(0.04), great: bePrice(0.08), kelly: Number.isFinite(edgeNow) && edgeNow > 0 && askNow < 1 ? edgeNow / (1 - askNow) : 0 } : null;
+    be: bePrice(0), good: bePrice(0.04), great: bePrice(0.08), lim: bePrice((S.entryEdge == null ? 8 : S.entryEdge) / 100), kelly: Number.isFinite(edgeNow) && edgeNow > 0 && askNow < 1 ? edgeNow / (1 - askNow) : 0 } : null;
   if (E.buyIn && Number.isFinite(edgeNow) && (!Number.isFinite(R.bestEdge) || edgeNow > R.bestEdge)) { R.bestEdge = edgeNow; R.bestAsk = askNow; R.bestLeft = r; }
   // the lock record: remember the first LOCKED call of the round (either side)
   if (!R.lockCall && r > 0 && (E.lockUp || E.lockDn)) R.lockCall = { side: E.lockUp ? 'UP' : 'DOWN', at: r, cush: E.lockUp ? E.cushUp : E.cushDn, rec: E.lockUp ? E.recDnLeft : E.recUpLeft };
@@ -988,6 +1000,21 @@ function noBuyFor(E) {
   if (!c.length) return { secs: 0, why: 'the bell' };
   c.sort((a, b) => a[0] - b[0]); return { secs: Math.max(0, c[0][0]), why: c[0][1] };
 }
+// ---------- the action timer: from the moment an actionable instruction appears, MAX ODDS for your latency (8 s),
+// TAKE ACTION until the window closes (15 s), then LATE. Buys restart on a new price; sells run on through SELL → SELL NOW.
+let act = { sig: '', since: 0 };
+function renderAct(key, ntR) {
+  const isBuy = key === 'buy' || key === 'ef' || key === 'sure', isSell = key === 'sell' || key === 'sellnow';
+  const sig = isBuy ? key + '|' + ntR : isSell ? 'sell|' + (myPos ? myPos.side : '') : '';
+  const now = Date.now();
+  if (sig !== act.sig) act = { sig, since: now };
+  const el = $('act'), L = $('act-l'), R = $('act-r'), F = $('act-fill');
+  if (!sig) { el.className = 'act none'; L.textContent = key === 'locked' ? 'no action needed — ride it' : key === 'hold' ? 'no action needed — sell only above the bid shown' : 'no action needed'; R.textContent = ''; F.style.width = '0%'; return; }
+  const t = (now - act.since) / 1000, p1 = S.latency || 8, p2 = Math.max(p1 + 1, S.actWindow || 15);
+  if (t < p1) { el.className = 'act max'; L.textContent = 'MAX ODDS · ' + (isBuy ? 'the price is fresh' : 'sell before the cushion moves'); R.textContent = Math.ceil(p1 - t) + ' s'; F.style.width = Math.max(0, 100 * (1 - t / p1)).toFixed(1) + '%'; }
+  else if (t < p2) { el.className = 'act go'; L.textContent = 'TAKE ACTION · under ' + Math.ceil(p2 - t) + ' s left'; R.textContent = Math.ceil(p2 - t) + ' s'; F.style.width = Math.max(0, 100 * (1 - (t - p1) / (p2 - p1))).toFixed(1) + '%'; }
+  else { el.className = 'act late'; L.textContent = 'LATE · ' + (isBuy ? 'still offered — check the price again' : 'if not sold yet: only at the price shown'); R.textContent = Math.floor(t) + ' s'; F.style.width = '100%'; }
+}
 function dictate(E) {
   const el = $('do'), maxAsk = S.maxAsk / 100, lat = S.latency || 0;
   const live = verdictKey(E); let key = settle(live);
@@ -1021,7 +1048,7 @@ function dictate(E) {
   else if (key === 'ef') { cls = 'hold'; label = 'EF RULE · CAUTION'; head = 'BUY ' + E.fav + ' at ' + cents(ask) + ' (EF)'; const efWin = ROUND - E.r; conf = 'window closes in ' + secsTxt(efWin < 160 ? 150 - efWin : 210 - efWin) + ' · hold to the end'; ntCls = favNt; ntL = 'BUY ' + E.fav; ntR = 'at ' + cents(ask); why = 'Your tested rule (Oct 6–22): favorite at ' + S.efLo + '–' + S.efHi + '¢ at 13:00 / 12:00 left. Not a sure thing: real flip chance ' + chanceTxt(1 - E.pFavAdj) + ', button scare ' + chanceTxt(fav.scare) + '.'; }
   else if (key === 'efcheck') { cls = 'hold'; head = 'EF CHECK — ' + E.fav + ' only at ' + S.efLo + '–' + S.efHi + '¢'; const efWin = ROUND - E.r; conf = (Number.isFinite(ask) ? 'button shows ' + cents(ask) + ' — outside the band' : 'read the ask off the button') + ' · closes in ' + secsTxt(efWin < 160 ? 150 - efWin : 210 - efWin); ntCls = favNt; ntL = 'BUY ' + E.fav + ' only'; ntR = S.efLo + '–' + S.efHi + '¢'; why = 'Real flip chance ' + chanceTxt(1 - E.pFavAdj) + '. Outside the band the price does not pay for the risk.'; }
   else if (key === 'ready') { cls = 'ready'; head = 'WAIT — ' + E.fav + ' close to LOCKED'; conf = (Number.isFinite(fav.eta) ? 'locks in ~' + secsTxt(fav.eta) + ' if BTC holds' : 'no lock before the bell at this cushion') + ' · ' + clock(E.r) + ' left'; ntCls = favNt; ntL = 'BUY ' + E.fav + ' when LOCKED'; ntR = '≤ ' + cents(maxAsk); why = 'To flip it BTC must ' + fav.dropWord + ' $' + fmt$(fav.cush, 0) + ' and hold; record for the time left $' + fmt$(fav.rec, 0) + '. Real flip chance ' + chanceTxt(1 - E.pFavAdj) + ' — buying now is a caution play' + (Number.isFinite(ask) ? ' at ' + cents(ask) : '') + '.'; }
-  else { const nb = noBuyFor(E), b = E.buyIn; head = 'DON\'T BUY for ' + (nb.secs >= 60 ? clock(nb.secs) : nb.secs + ' s'); conf = (key === 'chop' ? 'coin flip · ' : E.fav + ' for now · ') + (b ? 'unless ' + E.fav + ' is offered ≤ ' + cents(b.good) + ' · ' : '') + 'next check: ' + nb.why; ntCls = favNt; ntL = 'BUY ' + E.fav + ' only'; ntR = b ? '≤ ' + cents(b.good) : '—'; why = 'Real flip chance ' + chanceTxt(1 - E.pFavAdj) + ' · button scare ' + chanceTxt(fav.scare) + '. Below ' + (b ? cents(b.good) : '—') + ' the price pays for that risk; the sure thing usually opens inside the last 2 minutes.'; }
+  else { const nb = noBuyFor(E), b = E.buyIn; head = 'DON\'T BUY for ' + (nb.secs >= 60 ? clock(nb.secs) : nb.secs + ' s'); conf = (key === 'chop' ? 'coin flip · ' : E.fav + ' for now · ') + (b ? 'unless ' + E.fav + ' is offered ≤ ' + cents(b.lim) + ' · ' : '') + 'next check: ' + nb.why; ntCls = favNt; ntL = 'BUY ' + E.fav + ' only'; ntR = b ? '≤ ' + cents(b.lim) : '—'; why = 'Real flip chance ' + chanceTxt(1 - E.pFavAdj) + ' · button scare ' + chanceTxt(fav.scare) + '. At ' + (b ? cents(b.lim) : '—') + ' or under the price leaves ' + (S.entryEdge == null ? 8 : S.entryEdge) + '¢ after fee for that risk (the replay-tested entry); the sure thing usually opens inside the last 2 minutes.'; }
   // ---- confidence badge: always the same number — the calibrated chance that the side in question wins at the bell
   //      (100% only when LOCKED: record pace cannot flip it, 224/224 on the replay). The label says what to make of it.
   let confN = '—', confL = '';
@@ -1044,7 +1071,7 @@ function dictate(E) {
   const sz = S.sellZone && S.sellZone < 900 ? 'inside ' + clock(S.sellZone) : 'any time';
   const kill = clock(S.killSecs || 45);
   const stakeX = en => Math.min(2, Math.max(0.5, en.edge / 0.04)).toFixed(1);
-  const dnBuy = E.buyIn ? 'Buy ' + E.fav + ' only if offered ≤ ' + cents(E.buyIn.good) : 'Buy only on BUY / SURE THING';
+  const dnBuy = E.buyIn ? 'Buy ' + E.fav + ' only if offered ≤ ' + cents(E.buyIn.lim) : 'Buy only on BUY / SURE THING';
   if (key === 'sandbox' || key === 'nofeed' || key === 'notarget' || key === 'learning') nx.push(['Wait for the feeds — nothing to act on', '', ''], ['Buy only on BUY or SURE THING', '', ''], ['Never open a position inside the last ' + kill, '', '']);
   else if (key === 'over') nx.push(['Next round opens · target = this final price', '', ''], ['First discount check from the open', '', ''], ['Sure things usually open in the last 2:00', '', '']);
   else if (myPos && xMine) {
@@ -1071,6 +1098,7 @@ function dictate(E) {
   el.className = 'do ' + cls; $('do-label').textContent = 'DO NOW!'; $('do-head').textContent = head; $('do-confn').textContent = confN; $('do-conf').textContent = confL || conf || ' '; $('do-conf').title = conf || '';
   $('nt').className = 'nt ' + ntCls; $('nt-left').textContent = ntL; $('nt-right').textContent = ntR;
   for (let i = 0; i < 3; i++) { $('dn' + (i + 1)).textContent = nx[i][0]; $('dn' + (i + 1) + 'c').textContent = nx[i][1]; $('dn' + (i + 1) + 'r').className = 'dnrow' + (nx[i][2] ? ' ' + nx[i][2] : ''); }
+  renderAct(key, ntR);
   E.whyTxt = why === 'HINT' ? 'If this never connects, this host blocks the feeds — open ' + HOSTED_URL + ' in Safari' : why === 'SANDBOX' ? 'This host (the artifact viewer) blocks the feeds — open ' + HOSTED_URL + ' in Safari, then Share → Add to Home Screen' : (conf ? conf + ' — ' : '') + why;
   E.linkHint = why === 'HINT' || why === 'SANDBOX';
   if (speakKey === 'sure' || speakKey === 'locked' || speakKey === 'sell' || speakKey === 'sellnow' || speakKey === 'buy') announce(speakKey, head);
@@ -1133,7 +1161,7 @@ function renderNumbers(E) {
   ncell('m-touch', RI && RI.tier >= 0 ? pct(RI.odds) + ' · ' + fmtS(RI.dist, 0).replace('+', '') + ' to the target' : '—');
   const b = E.buyIn;
   ncell('m-buyin', b && Number.isFinite(b.ask) ? cents(b.ask) + ' · ' + b.grade + ' · ' + (b.edge >= 0 ? '+' : '−') + fmt$(Math.abs(b.edge) * 100, 1) + '¢ edge' + (b.src === 'book' ? '' : ' · typed') : b ? 'no ask on the book' : '—', b && b.grade === 'POOR' ? 'bad' : b && (b.grade === 'GOOD' || b.grade === 'GREAT') ? 'ok' : '');
-  ncell('m-ladder', b ? cents(b.great) + ' · ' + cents(b.good) + ' · ' + cents(b.be) : '—');
+  ncell('m-ladder', b ? cents(b.lim) + ' · ' + cents(b.good) + ' · ' + cents(b.be) : '—');
   ncell('m-bestedge', Number.isFinite(R.bestEdge) ? (R.bestEdge >= 0 ? '+' : '−') + fmt$(Math.abs(R.bestEdge) * 100, 1) + '¢ at ' + cents(R.bestAsk) + ' · ' + clock(R.bestLeft) + ' left' : 'none yet', Number.isFinite(R.bestEdge) && R.bestEdge > 0 ? 'ok' : '');
   const lo = S.buyMinLeft || 0, hi = S.buyMaxLeft == null ? 900 : S.buyMaxLeft;
   ncell('m-window', clock(hi) + '→' + clock(lo) + ' · ' + (S.entryEdge == null ? 8 : S.entryEdge) + '¢+ · ' + (S.dogBuy === false ? 'fav only' : 'either side'), E.r > 0 && E.r >= lo && E.r <= hi ? 'ok' : '');
@@ -1250,7 +1278,7 @@ function loadSettings() {
   $('s-stake').value = S.stake; $('s-lockp').value = S.lockP; $('s-maxask').value = S.maxAsk; $('s-drift').value = S.drift; $('s-fee').value = S.fee; $('s-relay').value = S.relay || ''; $('s-offset').value = S.offset == null ? '' : S.offset.toFixed(2);
   $('s-recmargin').value = S.recMargin; $('s-reach-green').value = S.reachGreen; $('s-reach-yellow').value = S.reachYellow;
   $('s-paperon').value = S.paperOn || 'sure'; $('s-edgemin').value = S.edgeMin; $('s-edgescare').value = S.edgeScare;
-  $('s-sigk').value = S.sigK; $('s-entryedge').value = S.entryEdge; $('s-buymin').value = S.buyMinLeft; $('s-buymax').value = S.buyMaxLeft; $('s-dogbuy').value = S.dogBuy === false ? 0 : 1; $('s-selledge').value = S.sellEdge; $('s-sellzone').value = S.sellZone; $('s-sellpersist').value = S.sellPersist == null ? DEF.sellPersist : S.sellPersist; $('s-holdconf').value = S.holdConf; $('s-exitby').value = S.exitBy; $('s-latency').value = S.latency; $('s-holdmin').value = S.holdMinP; $('s-etawarn').value = S.etaWarnS; $('s-badpct').value = S.badPct; $('s-look').value = S.lookS; $('s-slack').value = S.slack; $('s-killsecs').value = S.killSecs; $('s-eflo').value = S.efLo; $('s-efhi').value = S.efHi;
+  $('s-sigk').value = S.sigK; $('s-entryedge').value = S.entryEdge; $('s-buymin').value = S.buyMinLeft; $('s-buymax').value = S.buyMaxLeft; $('s-dogbuy').value = S.dogBuy === false ? 0 : 1; $('s-selledge').value = S.sellEdge; $('s-sellzone').value = S.sellZone; $('s-sellpersist').value = S.sellPersist == null ? DEF.sellPersist : S.sellPersist; $('s-holdconf').value = S.holdConf; $('s-exitby').value = S.exitBy; $('s-latency').value = S.latency; $('s-actwindow').value = S.actWindow == null ? DEF.actWindow : S.actWindow; $('s-holdmin').value = S.holdMinP; $('s-etawarn').value = S.etaWarnS; $('s-badpct').value = S.badPct; $('s-look').value = S.lookS; $('s-slack').value = S.slack; $('s-killsecs').value = S.killSecs; $('s-eflo').value = S.efLo; $('s-efhi').value = S.efHi;
 }
 const num = (id, lo, hi, def) => { const v = Number($(id).value); return Number.isFinite(v) && $(id).value !== '' ? Math.min(hi, Math.max(lo, v)) : def; };
 $('s-save').onclick = () => {
@@ -1258,7 +1286,7 @@ $('s-save').onclick = () => {
   S.drift = num('s-drift', 0, 1, DEF.drift); S.fee = num('s-fee', 0, 0.2, DEF.fee); S.relay = ($('s-relay').value || '').trim() || DEFAULT_RELAY;
   S.recMargin = num('s-recmargin', 1, 3, DEF.recMargin); S.reachGreen = num('s-reach-green', 1, 99, DEF.reachGreen); S.reachYellow = Math.min(S.reachGreen, num('s-reach-yellow', 1, 99, DEF.reachYellow));
   S.paperOn = ['math', 'sure'].includes($('s-paperon').value) ? $('s-paperon').value : 'edge'; S.edgeMin = num('s-edgemin', 1, 30, DEF.edgeMin); S.edgeScare = num('s-edgescare', 1, 50, DEF.edgeScare);
-  S.latency = num('s-latency', 0, 60, DEF.latency); S.holdMinP = num('s-holdmin', 50, 95, DEF.holdMinP); S.etaWarnS = num('s-etawarn', 5, 120, DEF.etaWarnS); S.badPct = num('s-badpct', 90, 100, DEF.badPct); S.lookS = num('s-look', 10, 60, DEF.lookS);
+  S.latency = num('s-latency', 0, 60, DEF.latency); S.actWindow = Math.max(S.latency + 1, num('s-actwindow', 5, 60, DEF.actWindow)); S.holdMinP = num('s-holdmin', 50, 95, DEF.holdMinP); S.etaWarnS = num('s-etawarn', 5, 120, DEF.etaWarnS); S.badPct = num('s-badpct', 90, 100, DEF.badPct); S.lookS = num('s-look', 10, 60, DEF.lookS);
   S.sigK = num('s-sigk', 0.5, 3, DEF.sigK); S.entryEdge = num('s-entryedge', 0, 20, DEF.entryEdge); S.buyMinLeft = num('s-buymin', 0, 900, DEF.buyMinLeft); S.buyMaxLeft = num('s-buymax', 60, 900, DEF.buyMaxLeft); S.dogBuy = num('s-dogbuy', 0, 1, 1) >= 1; S.sellEdge = num('s-selledge', 0, 20, DEF.sellEdge); S.sellZone = num('s-sellzone', 60, 900, DEF.sellZone); S.sellPersist = num('s-sellpersist', 0, 10, DEF.sellPersist); S.holdConf = num('s-holdconf', 90, 99.9, DEF.holdConf); S.exitBy = num('s-exitby', 0, 180, DEF.exitBy); S.slack = num('s-slack', 0, 50, DEF.slack); S.killSecs = num('s-killsecs', 0, 300, DEF.killSecs); S.efLo = num('s-eflo', 50, 98, DEF.efLo); S.efHi = Math.max(S.efLo + 1, num('s-efhi', 51, 99, DEF.efHi));
   const offIn = $('s-offset').value.trim(); if (offIn !== '') { S.offset = Number(offIn); R.offset = S.offset; R.offsetSrc = 'override'; R.offsetSd = NaN; } else if (S.offset != null) { S.offset = null; R.offsetSrc = 'none'; R.offset = NaN; }
   const tIn = Number($('s-target').value); if (tIn > 1000) { R.target = tIn; R.targetSrc = 'manual'; calibrateOffsetRound(); }
@@ -1276,11 +1304,16 @@ setInterval(() => { if (Date.now() - REC.at > 6 * 3600 * 1000) scanRecords(); },
 // the exchange: book 1/s in the last 2 minutes, else every 10 s; the index series every 2 s in the last 3 minutes (and the first 10 s,
 // for the exact final price of the round just ended), else every 10 s; market terms when the target is still unknown or estimated
 let pollN = 0;
+// Relay budget (Cloudflare free tier: 100k requests/day, every call to the worker counts): per open page this is
+// ≈ 460 requests a round ≈ 31 a minute ≈ 44k a day around the clock — book every 1 s in the last 2:00, every 3 s from
+// 5:00 to 2:00 (the harvest-sell zone), every 10 s before; series every 1–2 s in the last 3:00, every 10 s before;
+// market terms every 30 s (6 s only while the target is still unknown or estimated). Nothing is polled while hidden.
 setInterval(() => {
-  pollN++; const r = R.T - Date.now() / 1000;
-  if (r <= 120 || pollN % 10 === 0) pmFetchBook();
-  if (r <= 180 || r >= ROUND - 12 || pollN % 10 === 5) { if (pollN % 2 === 0 || r <= 20 || r >= ROUND - 12) pmFetchSeries(); }
-  if (pollN % 6 === 3) { if (!Number.isFinite(R.target) || R.targetSrc === 'est' || R.targetSrc === 'series') pmFetchMarket(); const prevSlug = SLUG(R.T0 - ROUND); const prev = history.find(h => SLUG(h.T0) === prevSlug); if (prev && prev.settleSrc !== 'api') pmFetchMarket(prevSlug); }
+  pollN++; if (document.hidden) return; const r = R.T - Date.now() / 1000;
+  if (r <= 120 || (r <= 300 && pollN % 3 === 0) || pollN % 10 === 0) pmFetchBook();
+  if (r <= 20 || r >= ROUND - 12 || (r <= 180 && pollN % 2 === 0) || pollN % 10 === 5) pmFetchSeries();
+  const needTarget = !Number.isFinite(R.target) || R.targetSrc === 'est';
+  if ((needTarget && pollN % 6 === 3) || pollN % 30 === 3) { if (needTarget || R.targetSrc === 'series') pmFetchMarket(); const prevSlug = SLUG(R.T0 - ROUND); const prev = history.find(h => SLUG(h.T0) === prevSlug); if (prev && prev.settleSrc !== 'api') pmFetchMarket(prevSlug); }
 }, 1000);
 let frame = 0;
 function tick() {

@@ -75,7 +75,7 @@ the calibrated chance that the side in question wins at the bell — 100% only w
 price right) — then **DO NEXT** (the next three things in time order: NEXT / THEN / LATER, each with its moment), the
 position bar, the four prices (price to beat, what Polymarket shows, the index, Coinbase; Polymarket colors), the chart,
 and at the bottom **NUMBERS**: every metric in one grid, the field name above its value, one metric per cell, no prose.
-Every box keeps its height while the numbers update. Shipped entry/exit defaults come from the replay grid (fitted on
+Under the trade row an **action timer** runs from the moment a BUY / SELL appears: MAX ODDS for your sell latency (8 s), TAKE ACTION until 15 s, then LATE (buys restart on a new price; sells run on through SELL → SELL NOW). Every box keeps its height while the numbers update. Shipped entry/exit defaults come from the replay grid (fitted on
 Oct 29–30, held up on Oct 31–Nov 2): buy a side only when the ask leaves ≥ 8¢ after fee vs its calibrated chance, favorite
 only, between 14:00 and 5:00 left; harvest-sell only inside the last 5:00 when the bid beats the math by ≥ 5¢; SELL (not
 SELL NOW) must stay true for 2 s before it shows. Over all 224 recorded rounds at $20 a trade: +$922, 0 settlement
@@ -91,7 +91,7 @@ cannot read the index series, so there the target is typed or estimated and the 
 `scripts/pm15_relay_worker.js` is the Cloudflare Worker behind that URL: it serves the cockpit at `/` (from GitHub `main`,
 60-s edge cache; `?ref=<branch>` for another revision, `?fresh=1` to bypass the cache) and forwards the three read-only
 gateway endpoints with CORS (`/v1/market/slug/{slug}`, `/v1/markets/{slug}/book`, `/v1/asset-prices/history` with query
-passthrough; ~30–40k requests/day around the clock, free tier 100k). The worker URL is baked into the page as the default
+passthrough). Relay budget: each open page makes ≈ 480 requests a round ≈ 32 a minute ≈ 46k a day if it stays on screen around the clock (book every 1 s in the last 2:00, every 3 s from 5:00 to 2:00, every 10 s before; series every 1–2 s in the last 3:00, every 10 s before; market terms every 30 s; nothing while the tab is hidden) against the free tier's 100k/day — one always-on device is fine, two are close to the cap, so check the worker's Metrics tab or move to the $5 Workers Paid plan (10M/month) before running a second screen all day. The worker URL is baked into the page as the default
 relay (Settings: blank = that worker, `direct` = no relay). Changing the page needs no worker redeploy; changing the
 worker does (paste the file in the Cloudflare dashboard).
 Companion chart tool: `research/velocity_reach_vs_target.pine` (TradingView — projects BTC's velocity /
