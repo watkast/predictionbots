@@ -190,3 +190,8 @@
 {"t":1793656073947,"k":"fill","d":{"slug":"cpceth-eth-updown-15m-2026-11-02-2145z","side":"UP","px":0.35,"qty":1}}
 {"t":1793656074307,"k":"rest","d":{"slug":"cpceth-eth-updown-15m-2026-11-02-2145z","side":"UP","sellAt":0.55,"id":"DFW9385012WP"}}
 {"t":1793656586713,"k":"fill","d":{"slug":"cpceth-eth-updown-15m-2026-11-02-2145z","side":"UP","sold":0.55,"pnl":0.2}}
+{"t":1793656805543,"k":"rest","d":{"slug":"cpceth-eth-updown-15m-2026-11-02-2200z","side":"UP","at":0.35,"id":"DFWENRY012VX"}}
+{"t":1793656805729,"k":"rest","d":{"slug":"cpceth-eth-updown-15m-2026-11-02-2200z","side":"DOWN","at":0.35,"id":"DFWENTC012WP"}}
+{"t":1793656852136,"k":"fill","d":{"slug":"cpceth-eth-updown-15m-2026-11-02-2200z","side":"DOWN","px":0.35,"qty":1}}
+{"t":1793656853165,"k":"rest","d":{"slug":"cpceth-eth-updown-15m-2026-11-02-2200z","side":"DOWN","sellAt":0.55,"id":"DFWF1CZG12WQ"}}
+{"t":1793657056432,"k":"fill","d":{"slug":"cpceth-eth-updown-15m-2026-11-02-2200z","side":"DOWN","sold":0.55,"pnl":0.2}}
