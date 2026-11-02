@@ -351,9 +351,18 @@
    "exit": "sold at 55¢",
    "pnl": 0.2,
    "sellPx": 0.55
+  },
+  {
+   "T0": 1793657700,
+   "slug": "cpceth-eth-updown-15m-2026-11-02-2215z",
+   "side": "DOWN",
+   "buyPx": 0.35,
+   "buyLeft": 772,
+   "exit": null,
+   "pnl": null
   }
  ],
  "balanceStart": 17.4956,
- "balanceNow": 18.0256,
+ "balanceNow": 18.6756,
  "errors": 0
 }
