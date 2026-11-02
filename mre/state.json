@@ -120,11 +120,23 @@
    "side": "DOWN",
    "buyPx": 0.35,
    "buyLeft": 869,
-   "exit": null,
-   "pnl": null
+   "exit": "lost at the bell",
+   "pnl": -0.35,
+   "sellId": "DFQQT4G012WA",
+   "result": "UP"
+  },
+  {
+   "T0": 1793637900,
+   "slug": "cpceth-eth-updown-15m-2026-11-02-1645z",
+   "side": "DOWN",
+   "buyPx": 0.35,
+   "buyLeft": 811,
+   "exit": "sold at 55¢",
+   "pnl": 0.2,
+   "sellPx": 0.55
   }
  ],
  "balanceStart": 17.4956,
- "balanceNow": 18.4856,
+ "balanceNow": 17.6856,
  "errors": 0
 }
