@@ -20,7 +20,7 @@
 const fs = require('fs'), vm = require('vm');
 const args = process.argv.slice(2);
 const opt = (k, d) => { const i = args.indexOf('--' + k); return i >= 0 ? Number(args[i + 1]) : d; };
-const LAT = opt('latency', 8), STAKE = opt('stake', 20), WARM = opt('warmup', 480), TICK = opt('tick', 1), SIGK = opt('sigk', 1.3), QUIET = args.includes('--quiet'), EVNOW = args.includes('--evsellnow'), ETAWARN = opt('etawarn', 30), EXITBY = opt('exitby', 45);
+const LAT = opt('latency', 8), STAKE = opt('stake', 20), WARM = opt('warmup', 480), TICK = opt('tick', 1), SIGK = opt('sigk', 1.3)   // replay runs on index prints: 1.3 is their calibration (the page ships 1.1 for Coinbase ticks), QUIET = args.includes('--quiet'), EVNOW = args.includes('--evsellnow'), ETAWARN = opt('etawarn', 30), EXITBY = opt('exitby', 45);
 // strategy knobs passed straight into the page's settings (S.*), plus sim-side ones
 // (only the knobs given on the command line are overridden; the rest are the page's own defaults, so a plain run tests the page as shipped)
 const KN = {}; for (const [flag, key, map] of [['entryedge', 'entryEdge'], ['buymin', 'buyMinLeft'], ['buymax', 'buyMaxLeft'], ['dog', 'dogBuy', v => v >= 1], ['selledge', 'sellEdge'], ['sellzone', 'sellZone'], ['sellpersist', 'sellPersist']]) { const v = opt(flag, NaN); if (Number.isFinite(v)) KN[key] = map ? map(v) : v; }

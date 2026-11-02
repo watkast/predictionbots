@@ -352,7 +352,7 @@ details.settings summary { cursor: pointer; font: 700 15px/1.4 var(--font-displa
       <label>EF rule: favorite ask at least (¢) at 13:00 / 12:00 left<input id="s-eflo" type="number" inputmode="decimal" min="50" max="98" step="1" value="80"></label>
       <label>EF rule: and at most (¢)<input id="s-efhi" type="number" inputmode="decimal" min="51" max="99" step="1" value="94"></label>
       <label>Momentum drift weight (0–1; 0 recommended — BTC's next 30 s have no predictable direction)<input id="s-drift" type="number" inputmode="decimal" min="0" max="1" step="0.1" value="0"></label>
-      <label>Volatility multiplier for the odds (1.3 = calibrated on the Oct 29 – Nov 2 replay; 1.0 = raw)<input id="s-sigk" type="number" inputmode="decimal" min="0.5" max="3" step="0.1" value="1.3"></label>
+      <label>Volatility multiplier for the odds (1.1 live on Coinbase ticks = the 1.3 calibrated on index prints, which run ~17% calmer than Coinbase through this estimator; 1.0 = raw)<input id="s-sigk" type="number" inputmode="decimal" min="0.5" max="3" step="0.1" value="1.1"></label>
       <h4>Entry / exit (replay-tested)</h4>
       <label>Buy only when the ask leaves at least this edge after fee vs the calibrated chance (¢)<input id="s-entryedge" type="number" inputmode="decimal" min="0" max="20" step="1" value="8"></label>
       <label>Buy only with at least this many seconds left<input id="s-buymin" type="number" inputmode="decimal" min="0" max="900" step="30" value="300"></label>
@@ -421,7 +421,7 @@ const T_BOOT = Date.now();
 // an origin that blocks outbound connections (the claude.ai artifact viewer): no Coinbase tick AND the relay failing, 15 s after load
 const sandboxed = () => Date.now() - T_BOOT > 12000 && !lastTickMs && (cbState === 'down' || IDX.fails >= 2 || IDX.ok === false) && location.href.indexOf(DEFAULT_RELAY) !== 0;
 const DEF = { stake: 20, lockP: 99.5, maxAsk: 97, drift: 0, fee: 0.0695, relay: DEFAULT_RELAY, offset: null, zoom: 'auto', sound: false, voice: false, recMargin: 1.5, reachGreen: 50, reachYellow: 10, paperOn: 'edge', edgeMin: 6, edgeScare: 15,
-  latency: 8, holdMinP: 75, etaWarnS: 30, badPct: 99, lookS: 30, slack: 3, killSecs: 45, efLo: 80, efHi: 94, holdConf: 99, exitBy: 45, sigK: 1.3, sellEdge: 5, buyMinLeft: 300, buyMaxLeft: 840, dogBuy: false, entryEdge: 8, sellZone: 300, sellPersist: 2, buyPersist: 2, actWindow: 15 };   // entry/exit knobs = the replay grid (fitted Oct 29–30, held up Oct 31–Nov 2)
+  latency: 8, holdMinP: 75, etaWarnS: 30, badPct: 99, lookS: 30, slack: 3, killSecs: 45, efLo: 80, efHi: 94, holdConf: 99, exitBy: 45, sigK: 1.1, sellEdge: 5, buyMinLeft: 300, buyMaxLeft: 840, dogBuy: false, entryEdge: 8, sellZone: 300, sellPersist: 2, buyPersist: 2, actWindow: 15 };   // entry/exit knobs = the replay grid (fitted Oct 29–30, held up Oct 31–Nov 2)
 let S = Object.assign({}, DEF);
 try { Object.assign(S, JSON.parse(localStorage.getItem('pm15.settings') || '{}')); } catch (e) {}
 if (S.recMargin < 1) S.recMargin = DEF.recMargin;      // v1 allowed 0.5; a margin under 1 is not a margin
