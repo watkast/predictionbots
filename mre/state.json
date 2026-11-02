@@ -398,11 +398,22 @@
    "side": "DOWN",
    "buyPx": 0.30000000000000004,
    "buyLeft": 722,
+   "exit": "lost at the bell",
+   "pnl": -0.3,
+   "sellId": "DFXS68G012WQ",
+   "result": "UP"
+  },
+  {
+   "T0": 1793663100,
+   "slug": "cpceth-eth-updown-15m-2026-11-02-2345z",
+   "side": null,
+   "buyPx": null,
+   "buyLeft": null,
    "exit": null,
    "pnl": null
   }
  ],
  "balanceStart": 17.4956,
- "balanceNow": 18.3256,
+ "balanceNow": 17.3256,
  "errors": 0
 }
