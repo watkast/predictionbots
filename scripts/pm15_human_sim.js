@@ -20,11 +20,11 @@
 const fs = require('fs'), vm = require('vm');
 const args = process.argv.slice(2);
 const opt = (k, d) => { const i = args.indexOf('--' + k); return i >= 0 ? Number(args[i + 1]) : d; };
-const LAT = opt('latency', 8), STAKE = opt('stake', 20), WARM = opt('warmup', 480), TICK = opt('tick', 1), SIGK = opt('sigk', 1.3)   // replay runs on index prints: 1.3 is their calibration (the page ships 1.1 for Coinbase ticks), QUIET = args.includes('--quiet'), EVNOW = args.includes('--evsellnow'), ETAWARN = opt('etawarn', 30), EXITBY = opt('exitby', 45);
+const LAT = opt('latency', 8), STAKE = opt('stake', 20), WARM = opt('warmup', 480), TICK = opt('tick', 1), SIGK = opt('sigk', 1.3), QUIET = args.includes('--quiet'), EVNOW = args.includes('--evsellnow'), ETAWARN = opt('etawarn', 30), EXITBY = opt('exitby', 45);   // sigk 1.3 = the calibration on index prints (the page ships 1.1 for Coinbase ticks)
 // strategy knobs passed straight into the page's settings (S.*), plus sim-side ones
 // (only the knobs given on the command line are overridden; the rest are the page's own defaults, so a plain run tests the page as shipped)
 const KN = {}; for (const [flag, key, map] of [['entryedge', 'entryEdge'], ['buymin', 'buyMinLeft'], ['buymax', 'buyMaxLeft'], ['dog', 'dogBuy', v => v >= 1], ['selledge', 'sellEdge'], ['sellzone', 'sellZone'], ['sellpersist', 'sellPersist']]) { const v = opt(flag, NaN); if (Number.isFinite(v)) KN[key] = map ? map(v) : v; }
-const PERSIST = opt('persist', 0), BUYPERSIST = opt('buypersist', 0), SIZE = opt('size', 0), STRICT = opt('strict', 20), ONLY = (i => i >= 0 ? args[i + 1] : '')(args.indexOf('--only')), DAYS = (i => i >= 0 ? args[i + 1].split(',') : null)(args.indexOf('--days')), JSONOUT = args.includes('--json');
+const PERSIST = opt('persist', 0), BUYPERSIST = opt('buypersist', 0), NOMOM = opt('nomom', 0), SIZE = opt('size', 0), STRICT = opt('strict', 20), ONLY = (i => i >= 0 ? args[i + 1] : '')(args.indexOf('--only')), DAYS = (i => i >= 0 ? args[i + 1].split(',') : null)(args.indexOf('--days')), JSONOUT = args.includes('--json');
 const pagePath = args[0], dataPath = args[1];
 const html = fs.readFileSync(pagePath, 'utf8');
 const script = html.slice(html.indexOf('<script>') + 8, html.lastIndexOf('</script>'));
@@ -171,7 +171,8 @@ for (let wi = 0; wi < W.length; wi++) {
         } else if (r > LAT + 2 && !P.boughtThisRound) {
           const fav = E.fav;
           P.entryRun = E.entry && E.entry.qty >= 1 ? (P.entryRun || 0) + 1 : 0;   // --buypersist N: the discount must be there N+1 seconds running (a falling knife is not a discount)
-          if (P.buys.includes('edge') && E.entry && E.entry.qty >= 1 && P.entryRun >= BUYPERSIST + 1) P.pending = { kind: 'buy', side: E.entry.side, limit: E.entry.lim, at: sec + LAT, key: 'edge', stake: SIZE ? Math.min(STAKE * 2, STAKE * Math.max(0.5, E.entry.edge / 0.04)) : STAKE };
+          const against = E.entry ? (E.entry.side === 'UP' ? -E.mv30 : E.mv30) : 0;   // --nomom k: no entry while the spot moved against the side by more than k·σ√30 in the last 30 s (the discount is momentum, not mispricing)
+          if (P.buys.includes('edge') && E.entry && E.entry.qty >= 1 && P.entryRun >= BUYPERSIST + 1 && !(NOMOM > 0 && against > NOMOM * E.sig * Math.sqrt(30))) P.pending = { kind: 'buy', side: E.entry.side, limit: E.entry.lim, at: sec + LAT, key: 'edge', stake: SIZE ? Math.min(STAKE * 2, STAKE * Math.max(0.5, E.entry.edge / 0.04)) : STAKE };
           else if (key === 'sure' && P.buys.includes('sure')) P.pending = { kind: 'buy', side: fav, limit: Math.max(centsOf(ntR) || 0, 0.97), at: sec + LAT, key };
           else if (key === 'ef' && P.buys.includes('ef')) P.pending = { kind: 'buy', side: fav, limit: 0.94, at: sec + LAT, key };
           else if (P.buys.includes('row') && (key === 'wait' || key === 'chop' || key === 'ready' || key === 'efcheck')) {
