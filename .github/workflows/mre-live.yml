@@ -1,0 +1,39 @@
+# Mr. E live (REAL MONEY, 25¢ a round): rests a 1-share limit buy at 25¢ on both sides of the ETH 15-minute Up/Down market,
+# cancels the other side when one fills, rests a sell at 30¢, and lets what is still held settle at the bell. Nothing else.
+# Switch: the file mre/LIVE_ON on main (delete it to stop after the current run; cancel the running job to stop at once).
+# Report: mre/MRE.md on the `mrp-data` branch, every 10 minutes. Completely separate from mrp-live (own switch, own log).
+name: mre-live
+on:
+  workflow_dispatch:
+    inputs:
+      minutes:
+        description: "Minutes to run"
+        default: "335"
+      mode:
+        description: "live (orders) or dry"
+        default: "live"
+
+permissions:
+  contents: write
+  actions: write
+
+concurrency:
+  group: mre-live-${{ github.event.inputs.mode || 'live' }}
+  cancel-in-progress: false
+
+jobs:
+  live:
+    runs-on: ubuntu-latest
+    timeout-minutes: 355
+    env:
+      POLYMARKET_KEY_ID: ${{ secrets.POLYMARKET_KEY_ID }}
+      POLYMARKET_SECRET_KEY: ${{ secrets.POLYMARKET_SECRET_KEY }}
+      MRE_DIR: ${{ github.workspace }}/mredata
+      GH_TOKEN: ${{ github.token }}
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "22"
+      - name: Trade (publishing every 10 minutes)
+        run: bash mrp/gha_mre.sh "${{ github.event.inputs.minutes || '335' }}" "${{ github.event.inputs.mode || 'live' }}"
