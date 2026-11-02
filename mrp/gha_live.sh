@@ -3,7 +3,7 @@
 # to the `mrp-data` branch under mrp/live/ every 10 minutes (and at exit), carrying state over between runs.
 # Usage: bash mrp/gha_live.sh <minutes> <mode: live|dry>
 set -uo pipefail
-MINUTES="${1:-335}"; MODE="${2:-live}"
+MINUTES="${1:-335}"; MODE="${2:-live}"; START=$(date +%s)
 DATA_BRANCH="${MRP_DATA_BRANCH:-mrp-data}"
 export MRP_LIVE_DIR="${MRP_LIVE_DIR:-$GITHUB_WORKSPACE/mrplive}"
 export MRP_LIVE_CAPITAL="${MRP_LIVE_CAPITAL:-20}"
@@ -46,4 +46,12 @@ while kill -0 $BOT 2>/dev/null; do
 done
 wait $BOT; RC=$?
 publish
+# chain the next run while mrp/LIVE_ON exists on main (and this run was not a crash loop: it lasted over 5 minutes)
+if [ "$MODE" = "live" ] && [ $(( $(date +%s) - START )) -gt 300 ] && git fetch -q origin main && git cat-file -e origin/main:mrp/LIVE_ON 2>/dev/null; then
+  curl -sS -X POST -H "Authorization: Bearer ${GH_TOKEN:-}" -H "Accept: application/vnd.github+json" \
+    "https://api.github.com/repos/${GITHUB_REPOSITORY}/actions/workflows/mrp-live.yml/dispatches" \
+    -d "{\"ref\":\"main\",\"inputs\":{\"minutes\":\"335\",\"mode\":\"live\"}}" && echo "next run dispatched"
+else
+  echo "not chaining (mode=$MODE, LIVE_ON present: $(git cat-file -e origin/main:mrp/LIVE_ON 2>/dev/null && echo yes || echo no))"
+fi
 exit $RC
