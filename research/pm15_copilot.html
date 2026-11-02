@@ -170,6 +170,19 @@ canvas { position: absolute; inset: 0; width: 100%; height: 100%; display: block
 .legend .l-target::before { height: 0; border-top: 3px dashed currentColor; }
 .hero .chips { display: flex; flex-wrap: wrap; gap: 6px; justify-content: flex-end; height: 30px; overflow: hidden; }
 
+/* ===== BOT LOG: a terminal view of Mr. P live, read from the tail the bot publishes (the page never talks to the bot) ===== */
+.botlog { padding: 10px 12px 12px; }
+.botlog .bl-top { display: flex; justify-content: space-between; align-items: center; height: 20px; margin-bottom: 8px; gap: 10px; }
+.botlog h3 { margin: 0; white-space: nowrap; flex: 0 0 auto; }
+.botlog .bl-state { font: 600 10.5px/20px var(--font-mono); color: var(--muted); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; min-width: 0; text-align: right; }
+.botlog .bl-state.live { color: var(--up); } .botlog .bl-state.stale { color: var(--warn); } .botlog .bl-state.off { color: var(--bad); }
+.term { height: 260px; overflow-y: auto; overflow-x: hidden; background: #060a0e; border: 1px solid var(--line); border-radius: 10px; padding: 8px 10px; font: 500 12px/17px var(--font-mono); color: #b9c6d4; -webkit-overflow-scrolling: touch; }
+.term div { white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.term div.ev { white-space: normal; padding-left: 68px; text-indent: -68px; }
+.term .ts { color: #5e6f82; margin-right: 8px; }
+.term .snap { color: #7f8fa0; } .term .cmd { color: var(--yellow); } .term .order { color: var(--pm); } .term .fill { color: var(--up); font-weight: 700; } .term .sell { color: var(--orange); }
+.term .skip, .term .warn { color: var(--warn); } .term .error { color: var(--bad); font-weight: 700; } .term .win { color: var(--up); font-weight: 700; } .term .loss { color: var(--bad); font-weight: 700; } .term .sys { color: #5e6f82; }
+
 /* ===== NUMBERS: one metric per cell, the field above its value, same face ===== */
 .numbers { padding: 12px 12px 10px; }
 .numbers h3 { margin: 0 0 10px; }
@@ -262,6 +275,12 @@ details.settings summary { cursor: pointer; font: 700 15px/1.4 var(--font-displa
       <button id="btn-voice" title="Say the instruction out loud when it changes">🗣 Voice off</button>
       <button id="btn-wake" title="Keep the screen on">Keep screen on</button>
     </div>
+  </section>
+
+  <!-- ===== Mr. P live: the bot's own log for the market it is processing (read-only tail, 10-s poll) ===== -->
+  <section class="card botlog">
+    <div class="bl-top"><h3>Mr. P live</h3><div class="bl-state off" id="bl-state">no bot feed</div></div>
+    <div class="term" id="term"><div class="sys">waiting for the bot's log…</div></div>
   </section>
 
   <!-- ===== Numbers: every metric in one grid — the field above its value, one metric per cell ===== -->
@@ -1405,6 +1424,48 @@ setInterval(() => {
   const needTarget = !Number.isFinite(R.target) || R.targetSrc === 'est';
   if ((needTarget && pollN % 6 === 3) || pollN % 30 === 3) { if (needTarget || R.targetSrc === 'series') pmFetchMarket(); const prevSlug = SLUG(R.T0 - ROUND); const prev = history.find(h => SLUG(h.T0) === prevSlug); if (prev && prev.settleSrc !== 'api') pmFetchMarket(prevSlug); }
 }, 1000);
+// ---------- Mr. P live log: the bot force-pushes its last 150 events to the mrp-live-tail branch every 15 s; raw GitHub serves it with
+// CORS, so the page reads it straight — the bot never knows the page exists. Lines are shown for the market the bot is in.
+const BOT_TAIL = 'https://raw.githubusercontent.com/watkast/predictionbots/mrp-live-tail/tail.jsonl';
+let botSeen = '', botAt = 0, botTermScrolled = false;
+const botFmt = x => {
+  const d = x.d || {}, k = x.k;
+  const c = v => Number.isFinite(v) ? Math.round(v * 100) + '¢' : '—';
+  if (k === 'snap') return ['snap', clock(d.r) + ' ' + d.fav + ' ' + (Number.isFinite(d.p) ? Math.round(d.p * 100) + '%' : '—') + ' ask ' + (Number.isFinite(d.ask) ? Math.round(d.ask * 100) : '—') + ' lte ' + (Number.isFinite(d.lim) ? Math.round(d.lim * 100) : '—') + ' ' + (d.pos ? 'IN ' + d.pos : 'flat') + (d.bookAge > 3 ? ' book ' + d.bookAge + 's' : '')];
+  if (k === 'cmd') return ['cmd', 'CMD ' + d.text + (d.sh ? ' · ' + d.sh + ' sh' : '') + ' · ' + clock(d.left) + ' left'];
+  if (k === 'order') { if (d.cancel) return ['order', 'ORDER cancelled after the window · filled ' + d.filled]; if (d.unfilled) return ['order', 'ORDER not filled']; if (d.unfilledSell) return ['order', 'SELL not filled in the window']; if (d.kind === 'buy') return ['order', 'ORDER buy ' + d.side + ' ' + d.qty + ' sh LTE ' + c(d.lim) + ' · ask ' + c(d.ask) + ' · $' + d.usd + (d.dry ? ' · DRY' : '')]; return ['order sell', 'ORDER sell ' + d.side + ' ' + d.qty + ' sh at ' + c(d.px) + ' · bid ' + c(d.bid) + (d.now ? ' · NOW' : '')]; }
+  if (k === 'fill') return [d.kind === 'buy' ? 'fill' : 'fill sell', 'FILL ' + d.kind + ' ' + d.side + ' ' + d.qty + ' sh @ ' + c(d.px) + (d.usd != null ? ' · $' + d.usd : d.proceeds != null ? ' · +$' + d.proceeds : '')];
+  if (k === 'settle') return [d.pnl >= 0 ? 'win' : 'loss', 'SETTLED ' + d.result + ' · ' + d.side + ' ' + (d.pnl >= 0 ? 'won +$' : 'lost −$') + Math.abs(d.pnl).toFixed(2)];
+  if (k === 'skip') return ['skip', 'SKIP ' + d.why];
+  if (k === 'warn') return ['warn', 'warn ' + JSON.stringify(d).slice(0, 120)];
+  if (k === 'error') return ['error', 'ERROR ' + JSON.stringify(d).slice(0, 160)];
+  if (k === 'adopt') return ['order', 'ADOPTED ' + d.side + ' ' + d.qty + ' sh @ ' + c(d.px)];
+  if (k === 'balance') return ['sys', 'balance $' + Number(d.total).toFixed(2) + ' · buying power $' + Number(d.cash).toFixed(2)];
+  if (k === 'start') return ['sys', 'bot started · ' + d.mode + ' · cap $' + d.cap];
+  if (k === 'stop') return ['sys', 'bot stopped'];
+  if (k === 'ws') return ['sys', d.open ? 'book stream open · ' + d.open.replace('cpc-btc-updown-15m-', '') : d.close ? 'book stream closed' : 'book stream: ' + (d.error || '')];
+  if (k === 'preview') return ['sys', 'DOWN price check: ' + (d.conv || d.error || 'unknown')];
+  return null;
+};
+async function pollBot() {
+  const term = $('term'), st = $('bl-state');
+  try {
+    const r = await fetch(BOT_TAIL + '?t=' + Math.floor(Date.now() / 10000), { cache: 'no-store' }); if (!r.ok) throw new Error('HTTP ' + r.status);
+    const txt = await r.text(); if (txt === botSeen) { } else { botSeen = txt;
+      const rows = txt.trim().split('\n').map(l => { try { return JSON.parse(l); } catch (e) { return null; } }).filter(Boolean);
+      const last = rows[rows.length - 1]; botAt = last ? last.t : 0;
+      const cur = [...rows].reverse().find(x => x.k === 'snap' && x.d && x.d.slug); const slug = cur ? cur.d.slug : '';
+      const keep = rows.filter(x => !slug || x.k !== 'snap' || x.d.slug === slug).slice(-80);
+      term.innerHTML = keep.map(x => { const f = botFmt(x); if (!f) return ''; return '<div class="' + f[0] + (x.k === 'snap' ? '' : ' ev') + '"><span class="ts">' + etFmt.format(new Date(x.t)).replace(/ (AM|PM)$/, '') + ':' + String(new Date(x.t).getSeconds()).padStart(2, '0') + '</span>' + f[1].replace(/</g, '&lt;') + '</div>'; }).join('');
+      if (!botTermScrolled) term.scrollTop = term.scrollHeight; }
+    const age = botAt ? Math.round((Date.now() - botAt) / 1000) : NaN;
+    const snap = [...botSeen.trim().split('\n')].reverse().map(l => { try { return JSON.parse(l); } catch (e) { return null; } }).find(x => x && x.k === 'snap');
+    st.textContent = (snap ? snap.d.slug.replace(/^.*-(\d{4})z$/, '$1z') + ' · ' + (snap.d.pos ? 'IN ' + snap.d.pos : 'flat') + ' · ' : '') + (Number.isFinite(age) ? (age <= 90 ? 'live · ' + age + ' s ago' : 'stale · ' + (age >= 3600 ? Math.round(age / 3600) + ' h' : Math.round(age / 60) + ' min') + ' ago') : 'no bot feed');
+    st.className = 'bl-state ' + (Number.isFinite(age) && age <= 90 ? 'live' : Number.isFinite(age) ? 'stale' : 'off');
+  } catch (e) { st.textContent = 'no bot feed (' + String(e.message || e).slice(0, 40) + ')'; st.className = 'bl-state off'; }
+}
+if ($('term').addEventListener) $('term').addEventListener('scroll', () => { const t = $('term'); botTermScrolled = t.scrollTop + t.clientHeight < t.scrollHeight - 24; });
+if (!window.__noBotLog) { pollBot(); setInterval(pollBot, 10000); }   // the bot itself runs this page headless and sets the flag
 let frame = 0;
 function tick() {
   const E = evaluate();

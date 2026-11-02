@@ -74,7 +74,7 @@ const store = {}; const localStorage = { getItem: k => (k in store ? store[k] : 
 const ctxObj = {
   document, localStorage, console, Intl, Math, Number, JSON, Map, Set, Array, Object, String, Promise, Error, TypeError, RegExp, parseFloat, parseInt, isFinite, isNaN, Infinity, NaN, undefined,
   URL, URLSearchParams, AbortController, TextDecoder, TextEncoder, encodeURIComponent, decodeURIComponent,
-  window: { devicePixelRatio: 1, addEventListener() {} }, navigator: {}, location: { href: 'https://pm15-relay-worker.machwonder.workers.dev/' },
+  window: { devicePixelRatio: 1, addEventListener() {}, __noBotLog: true }, navigator: {}, location: { href: 'https://pm15-relay-worker.machwonder.workers.dev/' },
   performance: { now: () => Number(process.hrtime.bigint() / 1000000n) }
 };
 if (REPLAY) {   // frozen clock, no feeds, no timers: the harness drives every second
