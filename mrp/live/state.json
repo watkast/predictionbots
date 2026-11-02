@@ -2,14 +2,32 @@
  "startedAt": 1793610028415,
  "capital": 20,
  "mode": "live",
- "trades": [],
- "cmds": 3,
+ "trades": [
+  {
+   "T0": 1793615400,
+   "slug": "cpc-btc-updown-15m-2026-11-02-1030z",
+   "side": "UP",
+   "buyPx": 0.64,
+   "qty": 30,
+   "spent": 19.2,
+   "buyLeft": 566,
+   "p": 0.7437377610932975,
+   "edge": 0.10736356109329748,
+   "sellPx": 0.53,
+   "sellQty": 30,
+   "proceeds": 15.38,
+   "sellLeft": 527,
+   "pnl": -3.82,
+   "exit": "harvest"
+  }
+ ],
+ "cmds": 6,
  "skips": {
   "index series stale": 1
  },
  "errors": 0,
  "balanceStart": 23.7932,
- "balanceNow": 22.3232,
+ "balanceNow": 18.1232,
  "pos": null,
  "order": null,
  "shortConv": null

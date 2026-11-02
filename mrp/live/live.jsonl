@@ -110,3 +110,22 @@
 {"t":1793615400430,"k":"ws","d":{"open":"cpc-btc-updown-15m-2026-11-02-1030z"}}
 {"t":1793615417141,"k":"tick","d":{"r":883,"key":"chop","fav":"DOWN","p":0.5214584749438937,"book":{"upAsk":0.5,"upBid":0.49,"upAskQty":88,"upBidQty":1014.51},"pos":null}}
 {"t":1793615477289,"k":"tick","d":{"r":823,"key":"wait","fav":"UP","p":0.7144832775490533,"book":{"upAsk":0.7,"upBid":0.69,"upAskQty":1176.08,"upBidQty":201},"pos":null}}
+{"t":1793615537403,"k":"tick","d":{"r":763,"key":"efcheck","fav":"UP","p":0.5844656161969676,"book":{"upAsk":0.63,"upBid":0.62,"upAskQty":157.5,"upBidQty":25.03},"pos":null}}
+{"t":1793615597395,"k":"tick","d":{"r":703,"key":"efcheck","fav":"UP","p":0.7308624880432966,"book":{"upAsk":0.73,"upBid":0.72,"upAskQty":117.51,"upBidQty":484.68},"pos":null}}
+{"t":1793615657476,"k":"tick","d":{"r":643,"key":"wait","fav":"UP","p":0.7571418208880589,"book":{"upAsk":0.78,"upBid":0.77,"upAskQty":91.79,"upBidQty":208.07},"pos":null}}
+{"t":1793615717580,"k":"tick","d":{"r":583,"key":"wait","fav":"UP","p":0.7867585539136428,"book":{"upAsk":0.83,"upBid":0.82,"upAskQty":1541.98,"upBidQty":110.37},"pos":null}}
+{"t":1793615734266,"k":"cmd","d":{"kind":"buy","text":"BUY UP LTE 65¢","side":"UP","px":0.6478897431487018,"sh":32,"left":566}}
+{"t":1793615734486,"k":"order","d":{"kind":"buy","side":"UP","lim":0.6478897431487018,"ask":0.62,"qty":30,"usd":19.44,"edge":0.10736356109329748,"p":0.7437377610932975,"left":566,"dry":false,"o":{"marketSlug":"cpc-btc-updown-15m-2026-11-02-1030z","intent":"ORDER_INTENT_BUY_LONG","type":"ORDER_TYPE_LIMIT","price":{"value":"0.65","currency":"USD"},"quantity":30,"tif":"TIME_IN_FORCE_GOOD_TILL_CANCEL"}}}
+{"t":1793615734741,"k":"warn","d":{"order":"GET /v1/order/DFJNAPKG32TT -> HTTP 404 {\"code\":5, \"message\":\"Order not found\", \"details\":[]}"}}
+{"t":1793615735841,"k":"fill","d":{"kind":"buy","side":"UP","px":0.64,"qty":30,"usd":19.2}}
+{"t":1793615746291,"k":"cmd","d":{"kind":"sell","text":"SELL UP GTE 58¢","side":"UP","px":0.5804720093993361,"sh":30,"left":554}}
+{"t":1793615761301,"k":"order","d":{"unfilledSell":true}}
+{"t":1793615773581,"k":"cmd","d":{"kind":"sell","text":"SELL UP GTE 53¢","side":"UP","px":0.5322160103609593,"sh":30,"left":527}}
+{"t":1793615773582,"k":"order","d":{"kind":"sell","side":"UP","px":0.5322160103609593,"bid":0.54,"qty":30,"now":false,"left":527,"dry":false,"o":{"marketSlug":"cpc-btc-updown-15m-2026-11-02-1030z","intent":"ORDER_INTENT_SELL_LONG","type":"ORDER_TYPE_LIMIT","price":{"value":"0.53","currency":"USD"},"quantity":30,"tif":"TIME_IN_FORCE_IMMEDIATE_OR_CANCEL"}}}
+{"t":1793615774173,"k":"fill","d":{"kind":"sell","side":"UP","px":0.53,"qty":30,"proceeds":15.38}}
+{"t":1793615777702,"k":"tick","d":{"r":523,"key":"sell","fav":"UP","p":0.514870211286359,"book":{"upAsk":0.54,"upBid":0.53,"upAskQty":905.51,"upBidQty":105},"pos":null}}
+{"t":1793615837758,"k":"tick","d":{"r":463,"key":"done","fav":"UP","p":0.5092730700262917,"book":{"upAsk":0.5,"upBid":0.49,"upAskQty":0.89,"upBidQty":475.45},"pos":null}}
+{"t":1793615897812,"k":"tick","d":{"r":403,"key":"done","fav":"DOWN","p":0.5319874196451748,"book":{"upAsk":0.5,"upBid":0.49,"upAskQty":977.5,"upBidQty":84.23},"pos":null}}
+{"t":1793615957956,"k":"tick","d":{"r":342,"key":"done","fav":"DOWN","p":0.5369057165478595,"book":{"upAsk":0.46,"upBid":0.45,"upAskQty":893.01,"upBidQty":992.21},"pos":null}}
+{"t":1793616018043,"k":"tick","d":{"r":282,"key":"done","fav":"UP","p":0.6953131027185053,"book":{"upAsk":0.7,"upBid":0.69,"upAskQty":930.51,"upBidQty":20},"pos":null}}
+{"t":1793616078122,"k":"tick","d":{"r":222,"key":"done","fav":"UP","p":0.5393737020614869,"book":{"upAsk":0.6,"upBid":0.59,"upAskQty":966.75,"upBidQty":90},"pos":null}}
