@@ -49,8 +49,11 @@ def top(book):
     bids = [(p, q) for p, q in bids if p is not None and q > 0]
     ask = min(offers)[0] if offers else None
     bid = max(bids)[0] if bids else None
+    # depth within 5 cents of the top on each side, for order-flow / imbalance studies
+    bd = round(sum(q for p, q in bids if bid is not None and p >= bid - 0.05), 2) if bids else 0.0
+    ad = round(sum(q for p, q in offers if ask is not None and p <= ask + 0.05), 2) if offers else 0.0
     return [ask, round(sum(q for p, q in offers if ask is not None and abs(p - ask) < 1e-9), 2),
-            bid, round(sum(q for p, q in bids if bid is not None and abs(p - bid) < 1e-9), 2), book.get("state")]
+            bid, round(sum(q for p, q in bids if bid is not None and abs(p - bid) < 1e-9), 2), book.get("state"), bd, ad]
 
 
 def main(data_dir, out_dir):

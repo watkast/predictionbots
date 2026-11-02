@@ -93,6 +93,7 @@ WS_RECONNECT_SECONDS = int(os.environ.get("MRP_WS_RECONNECT_SECONDS", "1800"))
 
 # CF Benchmarks index id <-> coin symbol
 RTI_TO_SYM = {"BRTI": "btc"}
+TRADE_TAPE_RE = re.compile(os.environ.get("MRP_TRADE_TAPE", r"^cpc-btc-updown-15m-"))   # markets whose trade tape is recorded (pmus.ws, subscriptionType TRADE)
 for _c in ("eth", "sol", "xrp", "doge", "bnb", "hype", "near", "zec", "ltc", "link", "ada", "sui", "wld", "xlm", "bch", "dot", "hbar", "aave", "shib", "vvv"):
     RTI_TO_SYM[f"{_c.upper()}USD_RTI"] = _c
 SYM_TO_RTI = {v: k for k, v in RTI_TO_SYM.items()}
@@ -781,13 +782,19 @@ async def pmus_ws_main():
                 want = {m.slug for m in cand[:WS_MAX_SUBS]}
                 for slug in sorted(set(subs) - want):
                     rid = subs.pop(slug)
-                    try:
-                        await ws.unsubscribe("md-" + rid)
-                    except Exception as e:  # noqa
-                        W.err("pmus.ws.unsub", e)
+                    for prefix in ("md-", "tr-"):
+                        try:
+                            await ws.unsubscribe(prefix + rid)
+                        except Exception as e:  # noqa
+                            W.err("pmus.ws.unsub", e)
                 for slug in sorted(want - set(subs)):
                     n += 1
                     await ws.subscribe(f"md-{n}", "SUBSCRIPTION_TYPE_MARKET_DATA", [slug])
+                    if TRADE_TAPE_RE.search(slug):      # the trade tape too, for the markets we trade (order flow study)
+                        try:
+                            await ws.subscribe(f"tr-{n}", "SUBSCRIPTION_TYPE_TRADE", [slug])
+                        except Exception as e:  # noqa
+                            W.err("pmus.ws.trade", e)
                     subs[slug] = f"{n}"
                 if now - connected_at > WS_RECONNECT_SECONDS and not any(m.end - now < 240 for m in cand):
                     log("Polymarket US WS: periodic reconnect")
