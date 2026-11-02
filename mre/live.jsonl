@@ -132,3 +132,4 @@
 {"t":1793646916332,"k":"fill","d":{"slug":"cpceth-eth-updown-15m-2026-11-02-1915z","side":"DOWN","px":0.35,"qty":1}}
 {"t":1793646916504,"k":"rest","d":{"slug":"cpceth-eth-updown-15m-2026-11-02-1915z","side":"DOWN","sellAt":0.55,"id":"DFT37EXG32VC"}}
 {"t":1793646928311,"k":"settle","d":{"slug":"cpceth-eth-updown-15m-2026-11-02-1900z","result":"DOWN","side":"UP","pnl":-0.35}}
+{"t":1793647224091,"k":"fill","d":{"slug":"cpceth-eth-updown-15m-2026-11-02-1915z","side":"DOWN","sold":0.55,"pnl":0.2}}
