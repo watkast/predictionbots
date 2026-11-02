@@ -80,3 +80,8 @@
 {"t":1793637989460,"k":"fill","d":{"slug":"cpceth-eth-updown-15m-2026-11-02-1645z","side":"DOWN","px":0.35,"qty":1}}
 {"t":1793637989632,"k":"rest","d":{"slug":"cpceth-eth-updown-15m-2026-11-02-1645z","side":"DOWN","sellAt":0.55,"id":"DFQZ41R012WK"}}
 {"t":1793638027034,"k":"fill","d":{"slug":"cpceth-eth-updown-15m-2026-11-02-1645z","side":"DOWN","sold":0.55,"pnl":0.2}}
+{"t":1793638805178,"k":"rest","d":{"slug":"cpceth-eth-updown-15m-2026-11-02-1700z","side":"UP","at":0.35,"id":"DFR5B55012TT"}}
+{"t":1793638805357,"k":"rest","d":{"slug":"cpceth-eth-updown-15m-2026-11-02-1700z","side":"DOWN","at":0.35,"id":"DFR5B6J012VP"}}
+{"t":1793638847599,"k":"fill","d":{"slug":"cpceth-eth-updown-15m-2026-11-02-1700z","side":"DOWN","px":0.35,"qty":1}}
+{"t":1793638848742,"k":"rest","d":{"slug":"cpceth-eth-updown-15m-2026-11-02-1700z","side":"DOWN","sellAt":0.55,"id":"DFR5NRH012VX"}}
+{"t":1793639230561,"k":"fill","d":{"slug":"cpceth-eth-updown-15m-2026-11-02-1700z","side":"DOWN","sold":0.55,"pnl":0.2}}
