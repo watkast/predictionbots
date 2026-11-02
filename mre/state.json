@@ -381,9 +381,18 @@
    "pnl": -0.04,
    "sellId": "DFX5ZYJ012TT",
    "result": "UP"
+  },
+  {
+   "T0": 1793661300,
+   "slug": "cpceth-eth-updown-15m-2026-11-02-2315z",
+   "side": null,
+   "buyPx": null,
+   "buyLeft": null,
+   "exit": null,
+   "pnl": null
   }
  ],
  "balanceStart": 17.4956,
- "balanceNow": 16.8856,
+ "balanceNow": 17.3756,
  "errors": 0
 }
