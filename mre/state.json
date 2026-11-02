@@ -212,11 +212,22 @@
    "side": "DOWN",
    "buyPx": 0.35,
    "buyLeft": 868,
+   "exit": "lost at the bell",
+   "pnl": -0.35,
+   "sellId": "DFSNKQ8012VC",
+   "result": "UP"
+  },
+  {
+   "T0": 1793646000,
+   "slug": "cpceth-eth-updown-15m-2026-11-02-1900z",
+   "side": "UP",
+   "buyPx": 0.35,
+   "buyLeft": 794,
    "exit": null,
    "pnl": null
   }
  ],
  "balanceStart": 17.4956,
- "balanceNow": 19.1856,
+ "balanceNow": 17.8356,
  "errors": 0
 }
