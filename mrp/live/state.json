@@ -36,17 +36,34 @@
    "sellLeft": 242,
    "pnl": 0.31,
    "exit": "harvest"
+  },
+  {
+   "T0": 1793619900,
+   "slug": "cpc-btc-updown-15m-2026-11-02-1145z",
+   "side": "UP",
+   "buyPx": 0.44,
+   "qty": 4,
+   "spent": 1.76,
+   "buyLeft": 355,
+   "p": 0.5742148541102106,
+   "edge": 0.11709005411021056,
+   "sellPx": 0.19,
+   "sellQty": 4,
+   "proceeds": 0.72,
+   "sellLeft": 120,
+   "pnl": -1.04,
+   "exit": "SELL NOW"
   }
  ],
- "cmds": 8,
+ "cmds": 11,
  "skips": {
   "index series stale": 1
  },
  "errors": 0,
  "balanceStart": 23.7932,
- "balanceNow": 18.1932,
+ "balanceNow": 17.0832,
  "pos": null,
  "order": null,
  "shortConv": null,
- "cashNow": 18.1932
+ "cashNow": 17.0832
 }
