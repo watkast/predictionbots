@@ -1,16 +1,16 @@
 {
- "startedAt": 1793623387695,
+ "startedAt": 1793624167078,
  "capital": 2,
- "mode": "dry",
+ "mode": "live",
  "trades": [],
  "cmds": 0,
  "skips": {},
  "errors": 0,
- "balanceStart": 16.7432,
- "balanceNow": 16.7432,
+ "balanceStart": 16.7232,
+ "balanceNow": 6.2932,
  "pos": null,
  "order": null,
  "shortConv": null,
- "cashStart": 16.7432,
- "cashNow": 16.7432
+ "cashStart": 16.7232,
+ "cashNow": 6.2932
 }
