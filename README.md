@@ -100,6 +100,10 @@ recorded rounds with a mock exchange (224 rounds → 201 trades, +$1,255 at a $2
 (Settings → Secrets and variables → Actions → Variables); set it to anything else and no new run trades; cancel the running
 job to stop at once (open orders are cancelled on the way out). The progress report is **`mrp/live/LIVE.md` on the
 `mrp-data` branch** (every decision, order, fill and settlement in `mrp/live/live.jsonl`), refreshed every 10 minutes.
+**Loser-bounce study (Nov 2):** `research/replay/loser_bounce_2026-11-02.md` — buying the side that fell early and selling at
+the first flip, tested on BTC / ETH / SOL / XRP × 5-min / 15-min / 1-hour (`mrp/mrp_extract_windows.py` extracts every
+family; the 60-print settlement rule reproduces all 2,970 settlements). The flip is real (72% of 15-min rounds) but the
+market prices the trailing side 5–9¢ above its chance early in the round; no band or target is positive net of that.
 `research/pm15_brain.pine` is the TradingView version of the same brain (kill line, lookahead, LOCKED/HOLD/SELL; it
 cannot read the index series, so there the target is typed or estimated and the basis is a setting).
 `scripts/pm15_relay_worker.js` is the Cloudflare Worker behind that URL: it serves the cockpit at `/` (from GitHub `main`,
