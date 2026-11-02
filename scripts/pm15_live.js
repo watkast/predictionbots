@@ -174,11 +174,13 @@ async function onBuy(cmd, E) {
   const o = { marketSlug: slug, intent: intentFor(cmd.side, 'buy'), type: 'ORDER_TYPE_LIMIT', price: money(pxFor(cmd.side, payUpTo)), quantity: qty, tif: 'TIME_IN_FORCE_GOOD_TILL_CANCEL' };
   log('order', { kind: 'buy', side: cmd.side, lim: px, ask: cmd.ask, qty, usd: +(qty * px).toFixed(2), edge: cmd.edge, p: cmd.p, left: Math.round(E.r), dry: DRY, o });
   if (DRY) return;
-  let res; try { res = await ex.place(o); } catch (e) { state.errors++; return log('error', { place: e.message.slice(0, 400) }); }
+  const tPlace = Date.now(); let res; try { res = await ex.place(o); } catch (e) { state.errors++; return log('error', { place: e.message.slice(0, 400) }); }
   const id = res.id || (res.order && res.order.id); state.order = { id, slug, kind: 'buy', side: cmd.side, px, qty, at: now() }; saveState();
-  // watch the order for the action window, then cancel what is left
+  lat.order = Date.now() - tPlace;
+  // watch the order for the action window, then cancel what is left; a fill reported in the create response counts at once
   const windowMs = (run('S.actWindow') || 15) * 1000; let filled = 0, avg = NaN;
-  for (let i = 0; i < 60; i++) {
+  const ex0 = execFills(res); if (ex0.qty > 0) { filled = ex0.qty; avg = ex0.avg; }
+  for (let i = 0; i < 60 && filled < qty; i++) {
     let ord; try { ord = await ex.order(id); } catch (e) { log('warn', { order: e.message.slice(0, 200) }); }
     if (ord) { filled = Number(ord.cumQuantity || 0); avg = amt(ord.avgPx); if (/FILLED$|CANCELED|REJECTED|EXPIRED/.test(ord.state || '') && ord.state !== 'ORDER_STATE_PARTIALLY_FILLED') break; }
     if (now() - state.order.at > windowMs) { await ex.cancel(id, slug); log('order', { cancel: id, filled }); break; }
@@ -208,10 +210,12 @@ async function onSell(cmd, E) {
     const o = { marketSlug: slug, intent: intentFor(side, 'sell'), type: 'ORDER_TYPE_LIMIT', price: money(pxFor(side, px)), quantity: qty, tif: 'TIME_IN_FORCE_IMMEDIATE_OR_CANCEL' };
     log('order', { kind: 'sell', side, px, bid, qty: o.quantity, now: cmd.now, left: Math.round(E.r), dry: DRY, o });
     if (DRY) return;
-    let res; try { res = await ex.place(o); } catch (e) { state.errors++; log('error', { place: e.message.slice(0, 400) }); if (REPLAY) break; await sleep(1000); continue; }
-    const id = res.id || (res.order && res.order.id); await sleep(REPLAY ? 0 : 400);
-    let ord; try { ord = await ex.order(id); } catch (e) {}
-    if (ord) { const f = Number(ord.cumQuantity || 0); if (f > 0) { avg = Number.isFinite(avg) ? (avg * filled + amt(ord.avgPx) * f) / (filled + f) : amt(ord.avgPx); filled += f; } }
+    const tPlace = Date.now(); let res; try { res = await ex.place(o); } catch (e) { state.errors++; log('error', { place: e.message.slice(0, 400) }); if (REPLAY) break; await sleep(1000); continue; }
+    lat.order = Date.now() - tPlace;
+    const id = res.id || (res.order && res.order.id); let f = 0, fpx = NaN;
+    const ex0 = execFills(res); if (ex0.qty > 0) { f = ex0.qty; fpx = ex0.avg; }
+    else { await sleep(REPLAY ? 0 : 250); let ord; try { ord = await ex.order(id); } catch (e) {} if (ord) { f = Number(ord.cumQuantity || 0); fpx = amt(ord.avgPx); } }
+    if (f > 0) { avg = Number.isFinite(avg) ? (avg * filled + fpx * f) / (filled + f) : fpx; filled += f; }
     if (REPLAY) break;
   }
   if (filled > 0) {
@@ -249,6 +253,9 @@ async function settleIfDone() {
   state.pos = null; setPos(null); saveState();
 }
 const sleep = ms => new Promise(r => setTimeout(r, ms));
+// fills the exchange reports in the create response itself (immediate executions): quantity and average price
+function execFills(res) { const xs = (res && res.executions) || []; let q = 0, v = 0; for (const x of xs) { const sh = Number(x.lastShares || 0), px = amt(x.lastPx); if (sh > 0 && Number.isFinite(px)) { q += sh; v += sh * px; } } return { qty: q, avg: q ? v / q : NaN }; }
+const lat = { evalMs: 0, order: 0 };   // decision-loop cost and the last order round-trip, for the snapshot
 
 // ---------------------------------------------------------------- the report
 function etTime(ms) { return new Intl.DateTimeFormat('en-US', { timeZone: 'America/New_York', month: 'short', day: 'numeric', hour: 'numeric', minute: '2-digit' }).format(new Date(ms)); }
@@ -276,7 +283,7 @@ async function liveMain() {
   process.on('SIGTERM', stop); process.on('SIGINT', stop);
   setInterval(async () => {
     try {
-      const E = run('lastEval'); if (!E) return;
+      const tLoop = Date.now(); const E = run('lastEval'); if (!E) return;
       const slug = run('R.slug'); if (slug && slug !== wsSlug) connectBookWS(slug);
       if (Date.now() - lastRest > 5000 && slug && (!run('R.book') || Date.now() - run('R.bookAt') > 3000)) { lastRest = Date.now(); const b = await restBook(slug); if (b) setBook(b); }
       // adopt a position the exchange already holds for this round (restart safety)
@@ -284,8 +291,8 @@ async function liveMain() {
       const st = run('strict'); if (st.cmd && st.since !== lastCmdSince) { lastCmdSince = st.since; onCommand(st.cmd, E); }
       await settleIfDone();
       if (Date.now() - lastSnap > 10000) { lastSnap = Date.now(); const b = run('R.book') || {}; const fav = E.fav, favAsk = fav === 'UP' ? b.upAsk : (Number.isFinite(b.upBid) ? 1 - b.upBid : NaN);
-        tailPush({ t: Date.now(), k: 'snap', d: { slug, r: Math.round(E.r), key: run('verdict.key'), fav, p: E.pFavAdj, ask: favAsk, lim: E.buyIn ? E.buyIn.lim : NaN, bid: Number.isFinite(b.upBid) ? (fav === 'UP' ? b.upBid : 1 - b.upAsk) : NaN, pos: state.pos ? state.pos.side + ' ' + state.pos.qty + '@' + Math.round(state.pos.px * 100) : null, bookAge: +((Date.now() - run('R.bookAt')) / 1000).toFixed(1), pmAge: E.pmAge, cash: state.cashNow, sig: +Number(E.sig).toFixed(3), sigLive: +Number(E.sigLive).toFixed(3), sigFloor: +Number(E.sigFloor).toFixed(3), off: +Number(E.off).toFixed(2), spot: E.spot, target: E.target } }); }
-      flushTail();
+        tailPush({ t: Date.now(), k: 'snap', d: { slug, r: Math.round(E.r), key: run('verdict.key'), fav, p: E.pFavAdj, ask: favAsk, lim: E.buyIn ? E.buyIn.lim : NaN, bid: Number.isFinite(b.upBid) ? (fav === 'UP' ? b.upBid : 1 - b.upAsk) : NaN, pos: state.pos ? state.pos.side + ' ' + state.pos.qty + '@' + Math.round(state.pos.px * 100) : null, bookAge: +((Date.now() - run('R.bookAt')) / 1000).toFixed(1), pmAge: E.pmAge, cash: state.cashNow, loopMs: lat.evalMs, orderMs: lat.order, sig: +Number(E.sig).toFixed(3), sigLive: +Number(E.sigLive).toFixed(3), sigFloor: +Number(E.sigFloor).toFixed(3), off: +Number(E.off).toFixed(2), spot: E.spot, target: E.target } }); }
+      flushTail(); lat.evalMs = Date.now() - tLoop;
       if (Date.now() - lastReport > 60000) { lastReport = Date.now(); if (!DRY) { try { const b = await live.balances(); state.balanceNow = b.total; state.cashNow = b.cash; } catch (e) {} } report(); saveState(); log('tick', { r: Math.round(E.r), key: run('verdict.key'), fav: E.fav, p: E.pFavAdj, book: run('R.book'), pos: state.pos && state.pos.side }); }
       if (Date.now() > deadline) stop();
     } catch (e) { state.errors++; log('error', { loop: e.message.slice(0, 300) }); }
