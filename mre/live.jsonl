@@ -37,3 +37,4 @@
 {"t":1793630728676,"k":"settle","d":{"slug":"cpceth-eth-updown-15m-2026-11-02-1430z","result":"UP","side":"DOWN","pnl":-0.14}}
 {"t":1793630787790,"k":"fill","d":{"slug":"cpceth-eth-updown-15m-2026-11-02-1445z","side":"DOWN","px":0.35,"qty":1}}
 {"t":1793630787974,"k":"rest","d":{"slug":"cpceth-eth-updown-15m-2026-11-02-1445z","side":"DOWN","sellAt":0.55,"id":"DFP85TMG12W4"}}
+{"t":1793631011725,"k":"fill","d":{"slug":"cpceth-eth-updown-15m-2026-11-02-1445z","side":"DOWN","sold":0.55,"pnl":0.2}}
