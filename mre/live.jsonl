@@ -178,3 +178,4 @@
 {"t":1793654128618,"k":"settle","d":{"slug":"cpceth-eth-updown-15m-2026-11-02-2100z","result":"UP","side":"DOWN","pnl":-0.35}}
 {"t":1793654266905,"k":"fill","d":{"slug":"cpceth-eth-updown-15m-2026-11-02-2115z","side":"DOWN","px":0.35,"qty":1}}
 {"t":1793654267165,"k":"rest","d":{"slug":"cpceth-eth-updown-15m-2026-11-02-2115z","side":"DOWN","sellAt":0.55,"id":"DFVVA1R012WQ"}}
+{"t":1793654590735,"k":"fill","d":{"slug":"cpceth-eth-updown-15m-2026-11-02-2115z","side":"DOWN","sold":0.55,"pnl":0.2}}
