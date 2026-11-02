@@ -112,5 +112,11 @@
   "path": "/v1/markets/cpc-btc-updown-15m-2026-11-02-1030z/book",
   "status": 404,
   "body": "{\"code\":5, \"message\":\"market with slug \\\"cpc-btc-updown-15m-2026-11-02-1030z\\\" not found\", \"details\":[]}"
+ },
+ {
+  "t": "2026-11-02T11:47:00Z",
+  "path": "/v1/markets/cpc-btc-updown-15m-2026-11-02-1145z/book",
+  "status": 404,
+  "body": "{\"code\":5, \"message\":\"market with slug \\\"cpc-btc-updown-15m-2026-11-02-1145z\\\" not found\", \"details\":[]}"
  }
 ]
