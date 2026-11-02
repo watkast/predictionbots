@@ -411,7 +411,7 @@ const $ = id => document.getElementById(id);
 // ---------- which market: BTC (default) or ETH (#eth) — same brain, the asset's own feeds, slugs, scale and bot ----------
 const ASSETS = {
   btc: { sym: 'BTC', cb: 'BTC-USD', gw: 'crypto:btc', slug: 'cpc-btc-updown-15m-', minPx: 1000, K: 1, d0: 0, bot: 'Mr. P', tail: 'mrp-live-tail', key: 'pm15' },
-  eth: { sym: 'ETH', cb: 'ETH-USD', gw: 'crypto:eth', slug: 'cpceth-eth-updown-15m-', minPx: 100, K: 0.04, d0: 2, bot: 'Mr. E', tail: 'mre-live-tail', key: 'pm15eth' }
+  eth: { sym: 'ETH', cb: 'ETH-USD', gw: 'crypto:eth', slug: 'cpceth-eth-updown-15m-', minPx: 100, K: 0.04, d0: 2, bot: 'Mr. E', tail: 'mre-live-tail', key: 'pm15eth', buy: 0.35, sell: 0.55 }
 };
 const ASSET = ASSETS[String((typeof location !== 'undefined' && location.hash) || '').replace('#', '').toLowerCase()] || ASSETS.btc;
 const D0 = ASSET.d0;                       // dollar decimals in the small print (BTC whole dollars, ETH cents)
@@ -1084,20 +1084,20 @@ function renderAct(key, ntR) {
 // not change while the window is open and nothing else is ever shown. A missed command (no "I'm in" / "Out") may re-arm
 // after a 10-s pause, as the persona re-arms after a missed fill.
 let strict = { cmd: null, since: 0, until: 0, lastClear: 0 };
-// Mr. E's rule, for the ETH page: rest 1 share at 25¢ on both sides until 7:00 left, sell the first fill at 30¢, let the rest settle
+// Mr. E's rule, for the ETH page: rest 1 share at ASSET.buy on both sides until 7:00 left, sell the first fill at ASSET.sell, let the rest settle
 function renderStrictE(E) {
-  const el = $('strict'), C = $('st-cmd'), U = $('st-sub'), W = $('st-win'), Z = $('st-size'); const B = 0.25, SL = 0.30;
+  const el = $('strict'), C = $('st-cmd'), U = $('st-sub'), W = $('st-win'), Z = $('st-size'); const B = ASSET.buy, SL = ASSET.sell, bc = cents(B), sc = cents(SL);
   W.textContent = E.r > 0 ? clock(E.r) + ' left' : ''; Z.textContent = '';
-  if (!(E.r > 0) || !Number.isFinite(E.spot)) { el.className = 'strict quiet'; C.textContent = '—'; U.textContent = E.r <= 0 ? 'round over · next round: rest 25¢ again' : 'waiting for the feeds'; return; }
+  if (!(E.r > 0) || !Number.isFinite(E.spot)) { el.className = 'strict quiet'; C.textContent = '—'; U.textContent = E.r <= 0 ? 'round over · next round: rest ' + bc + ' again' : 'waiting for the feeds'; return; }
   const qu = quotes('UP'), qd = quotes('DOWN');
   if (myPos) { const side = myPos.side, bid = side === 'UP' ? qu.bid : qd.bid; Z.textContent = Math.round(myPos.shares) + ' sh';
-    if (Number.isFinite(bid) && bid >= SL - 1e-9) { el.className = 'strict sell'; C.textContent = 'SELL ' + side + ' at ' + cents(SL); U.textContent = 'bid ' + cents(bid) + ' · the 30¢ sell fills now · tap Out'; }
-    else { el.className = 'strict quiet'; C.textContent = 'RESTING SELL ' + side + ' ' + cents(SL); U.textContent = 'bid ' + (Number.isFinite(bid) ? cents(bid) : '—') + ' · stays to the close · else settles'; }
+    if (Number.isFinite(bid) && bid >= SL - 1e-9) { el.className = 'strict sell'; C.textContent = 'SELL ' + side + ' at ' + cents(SL); U.textContent = 'bid ' + cents(bid) + ' · the ' + sc + ' sell fills now · tap Out'; }
+    else { el.className = 'strict quiet'; C.textContent = 'RESTING SELL ' + side + ' ' + sc; U.textContent = 'bid ' + (Number.isFinite(bid) ? cents(bid) : '—') + ' · stays to the close · else settles'; }
     return; }
-  if (E.r <= 420) { el.className = 'strict quiet'; C.textContent = 'NO MORE BUYS'; U.textContent = 'last 7:00 · next round rests 25¢ again'; return; }
+  if (E.r <= 420) { el.className = 'strict quiet'; C.textContent = 'NO MORE BUYS'; U.textContent = 'last 7:00 · next round rests ' + bc + ' again'; return; }
   const hit = Number.isFinite(qu.ask) && qu.ask <= B + 1e-9 ? 'UP' : Number.isFinite(qd.ask) && qd.ask <= B + 1e-9 ? 'DOWN' : null;
-  if (hit) { el.className = 'strict ' + (hit === 'UP' ? 'up' : 'down'); C.textContent = 'BUY ' + hit + ' at 25¢'; Z.textContent = '1 sh'; U.textContent = 'ask ' + cents(hit === 'UP' ? qu.ask : qd.ask) + ' · then rest a sell at 30¢ · tap I\'m in'; }
-  else { el.className = 'strict quiet'; C.textContent = 'REST 25¢ · UP + DOWN'; Z.textContent = '1 sh each'; U.textContent = 'UP ' + cents(qu.ask) + ' · DOWN ' + cents(qd.ask) + ' · first fill → sell at 30¢'; }
+  if (hit) { el.className = 'strict ' + (hit === 'UP' ? 'up' : 'down'); C.textContent = 'BUY ' + hit + ' at ' + bc; Z.textContent = '1 sh'; U.textContent = 'ask ' + cents(hit === 'UP' ? qu.ask : qd.ask) + ' · then rest a sell at ' + sc + ' · tap I\'m in'; }
+  else { el.className = 'strict quiet'; C.textContent = 'REST ' + bc + ' · UP + DOWN'; Z.textContent = '1 sh each'; U.textContent = 'UP ' + cents(qu.ask) + ' · DOWN ' + cents(qd.ask) + ' · first fill → sell at ' + sc; }
 }
 function renderStrict(E, key) {
   if (ASSET.bot === 'Mr. E') return renderStrictE(E);
@@ -1455,7 +1455,7 @@ let botSeen = '', botAt = 0, botTermScrolled = false;
 const botFmt = x => {
   const d = x.d || {}, k = x.k;
   const c = v => Number.isFinite(v) ? Math.round(v * 100) + '¢' : '—';
-  if (k === 'snap' && d.bot === 'E') return ['snap', clock(d.r) + ' UP ask ' + (Number.isFinite(d.upAsk) ? Math.round(d.upAsk * 100) : '—') + ' DOWN ask ' + (Number.isFinite(d.dnAsk) ? Math.round(d.dnAsk * 100) : '—') + ' · ' + (d.held ? 'HELD ' + d.held + ' · sell at 30 resting' : d.resting && d.resting.length ? 'resting 25¢ ' + d.resting.join('+') : 'no orders')];
+  if (k === 'snap' && d.bot === 'E') return ['snap', clock(d.r) + ' UP ask ' + (Number.isFinite(d.upAsk) ? Math.round(d.upAsk * 100) : '—') + ' DOWN ask ' + (Number.isFinite(d.dnAsk) ? Math.round(d.dnAsk * 100) : '—') + ' · ' + (d.held ? 'HELD ' + d.held + ' · sell at ' + Math.round((ASSET.sell || 0) * 100) + ' resting' : d.resting && d.resting.length ? 'resting ' + Math.round((ASSET.buy || 0) * 100) + '¢ ' + d.resting.join('+') : 'no orders')];
   if (k === 'rest') return ['order', d.sellAt ? 'REST sell ' + d.side + ' at ' + c(d.sellAt) : 'REST buy ' + d.side + ' at ' + c(d.at) + ' · 1 sh'];
   if (k === 'round') return ['sys', d.exit ? 'round: ' + d.exit : d.buysPulled ? d.buysPulled : d.held ? 'held ' + d.held + ' @ ' + c(d.px) + ' to the bell' : JSON.stringify(d).slice(0, 80)];
   if (k === 'dry') return ['order', 'DRY ' + d.intent + ' ' + (d.price && d.price.value) + ' × ' + d.quantity];

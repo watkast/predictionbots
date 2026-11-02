@@ -1,20 +1,20 @@
 #!/usr/bin/env node
 // Mr. E — a deliberately simple bot on the Polymarket US 15-minute ETH Up/Down market, completely separate from Mr. P:
-//   each round, rest a limit BUY at 25¢ for 1 share on BOTH sides (Up, and Down = a short of Up at 75¢);
-//   the first one to fill wins — the other is cancelled — and a limit SELL at 30¢ for that share is rested at once;
-//   the resting buys are pulled with 7:00 left (no entries after that); the 30¢ sell stays until the window closes, and
-//   whatever is still held settles (a 25¢ share pays $1 or $0).
-//   Nothing else: no model, no exits, no sizing. Max at risk per round: 25¢.
+//   each round, rest a limit BUY at 35¢ for 1 share on BOTH sides (Up, and Down = a short of Up at 65¢);
+//   the first one to fill wins — the other is cancelled — and a limit SELL at 55¢ for that share is rested at once;
+//   the resting buys are pulled with 7:00 left (no entries after that); the 55¢ sell stays until the window closes, and
+//   whatever is still held settles (a 35¢ share pays $1 or $0). Prices: MRE_BUY / MRE_SELL (Nov 2 started at 25¢ / 30¢).
+//   Nothing else: no model, no exits, no sizing. Max at risk per round: the buy price.
 //
 //   node scripts/mre_live.js            # live (POLYMARKET_KEY_ID / POLYMARKET_SECRET_KEY)
 //   node scripts/mre_live.js --dry      # logs what it would do, places nothing
-// Env: MRE_DIR (log + MRE.md, default ./mre), MRE_MINUTES (stop after N minutes), MRE_BUY (default 0.25), MRE_SELL (0.30), MRE_QTY (1), MRE_NOBUY_LEFT (420 s),
+// Env: MRE_DIR (log + MRE.md, default ./mre), MRE_MINUTES (stop after N minutes), MRE_BUY (default 0.35), MRE_SELL (0.55), MRE_QTY (1), MRE_NOBUY_LEFT (420 s),
 //      MRE_SLUG_PREFIX (default cpceth-eth-updown-15m- : the ETH 15-minute market; cpc-btc-updown-15m- would be BTC)
 'use strict';
 const fs = require('fs'), path = require('path'), crypto = require('crypto');
 const DRY = process.argv.includes('--dry');
 const DIR = process.env.MRE_DIR || 'mre'; fs.mkdirSync(DIR, { recursive: true });
-const BUY = Number(process.env.MRE_BUY || 0.25), SELL = Number(process.env.MRE_SELL || 0.30), QTY = Number(process.env.MRE_QTY || 1);
+const BUY = Number(process.env.MRE_BUY || 0.35), SELL = Number(process.env.MRE_SELL || 0.55), QTY = Number(process.env.MRE_QTY || 1);
 const MINUTES = Number(process.env.MRE_MINUTES || 0) || 0, NOBUY_LEFT = Number(process.env.MRE_NOBUY_LEFT || 420);
 const KEY_ID = process.env.POLYMARKET_KEY_ID || '', SECRET = process.env.POLYMARKET_SECRET_KEY || '';
 const API = 'https://api.polymarket.us', GATEWAY = 'https://gateway.polymarket.us', ROUND = 900;
@@ -97,7 +97,7 @@ async function playRound(T0) {
       if (f.qty >= QTY) { const px = held.side === 'UP' ? f.px : 1 - f.px; rec.exit = 'sold at ' + Math.round(SELL * 100) + '¢'; rec.sellPx = px; rec.pnl = +((px - rec.buyPx) * QTY).toFixed(2); log('fill', { slug, side: held.side, sold: px, pnl: rec.pnl }); save(); return; }
     }
   }
-  for (const id of [ids.UP, ids.DOWN]) if (id) await ex.cancel(id, slug);   // the 30¢ sell stays until the window closes; the exchange closes it with the market
+  for (const id of [ids.UP, ids.DOWN]) if (id) await ex.cancel(id, slug);   // the sell stays until the window closes; the exchange closes it with the market
   if (!held) { rec.exit = 'no fill'; log('round', { slug, exit: 'no fill' }); save(); return; }
   rec.exit = 'held to the bell'; rec.sellId = sellId; save(); log('round', { slug, held: held.side, px: held.px });
   settleLater(rec);
