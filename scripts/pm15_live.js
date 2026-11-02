@@ -248,7 +248,7 @@ function etTime(ms) { return new Intl.DateTimeFormat('en-US', { timeZone: 'Ameri
 function report() {
   const tr = state.trades, done = tr.filter(t => t.pnl != null), pnl = done.reduce((s, t) => s + t.pnl, 0), wins = done.filter(t => t.pnl > 0).length;
   const lines = ['# Mr. P — live progress', '', `Mode **${state.mode}** · capital cap **$${CAP}** · started ${etTime(state.startedAt)} ET · updated ${etTime(now())} ET`,
-    state.balanceStart != null ? `Account: $${Number(state.balanceStart).toFixed(2)} at start → $${Number(state.balanceNow ?? state.balanceStart).toFixed(2)} now` : '',
+    state.balanceStart != null ? `Account balance: $${Number(state.balanceStart).toFixed(2)} at start → $${Number(state.balanceNow ?? state.balanceStart).toFixed(2)} now · buying power $${Number(state.cashNow ?? state.cashStart ?? 0).toFixed(2)} (the difference is cash held by open orders or positions, the bot's or yours)` : '',
     '', `**Trades ${done.length} closed (${tr.length} opened) · wins ${wins} · P&L from fills ${pnl >= 0 ? '+' : '−'}$${Math.abs(pnl).toFixed(2)}** · strict commands seen ${state.cmds} · skips ${JSON.stringify(state.skips)} · errors ${state.errors}`,
     state.pos ? `Open: ${state.pos.side} ${state.pos.qty} sh @ ${Math.round(state.pos.px * 100)}¢ ($${state.pos.spent}) bought with ${state.pos.left} s left` : 'Open: none', '',
     '| round (ET) | side | buy | qty | $ | exit | sell / settle | P&L |', '|---|---|---|---|---|---|---|---|'];
@@ -261,7 +261,7 @@ function report() {
 async function liveMain() {
   log('start', { mode: state.mode, cap: CAP, page: PAGE, node: process.version });
   if (!DRY) { try { await live.cancelAll(); } catch (e) {} }
-  try { const b = await live.balances(); if (state.balanceStart == null) state.balanceStart = b.total; state.balanceNow = b.total; log('balance', b.raw ? { cash: b.cash, total: b.total } : b); } catch (e) { log('error', { balances: e.message.slice(0, 300) }); if (!DRY) { console.error('cannot read the account — stopping'); process.exit(2); } }
+  try { const b = await live.balances(); if (state.balanceStart == null) { state.balanceStart = b.total; state.cashStart = b.cash; } state.balanceNow = b.total; state.cashNow = b.cash; log('balance', { cash: b.cash, total: b.total }); } catch (e) { log('error', { balances: e.message.slice(0, 300) }); if (!DRY) { console.error('cannot read the account — stopping'); process.exit(2); } }
   const deadline = MINUTES ? Date.now() + MINUTES * 60000 : Infinity;
   let lastReport = 0, lastRest = 0;
   setInterval(() => { try { if (run('R.slug')) run('pmFetchSeries()'); } catch (e) {} }, 2000);   // the exact PM line every 2 s (direct gateway; the page's own 10-s cadence was built for the relay budget)
@@ -276,7 +276,7 @@ async function liveMain() {
       if (!state.pos && !busy && E.r > 0 && E.r % 30 < 0.3 && !DRY) { const p = await live.position(slug).catch(() => null); if (p && p.net > 0 && Number.isFinite(p.avgPx)) { state.pos = { slug, T0: run('R.T0'), side: 'UP', qty: p.net, px: p.avgPx, spent: +(p.net * p.avgPx).toFixed(2), at: Date.now(), left: Math.round(E.r) }; setPos({ T0: run('R.T0'), side: 'UP', price: p.avgPx, spent: state.pos.spent, shares: p.net }); log('adopt', state.pos); } }
       const st = run('strict'); if (st.cmd && st.since !== lastCmdSince) { lastCmdSince = st.since; onCommand(st.cmd, E); }
       await settleIfDone();
-      if (Date.now() - lastReport > 60000) { lastReport = Date.now(); if (!DRY) { try { const b = await live.balances(); state.balanceNow = b.total; } catch (e) {} } report(); saveState(); log('tick', { r: Math.round(E.r), key: run('verdict.key'), fav: E.fav, p: E.pFavAdj, book: run('R.book'), pos: state.pos && state.pos.side }); }
+      if (Date.now() - lastReport > 60000) { lastReport = Date.now(); if (!DRY) { try { const b = await live.balances(); state.balanceNow = b.total; state.cashNow = b.cash; } catch (e) {} } report(); saveState(); log('tick', { r: Math.round(E.r), key: run('verdict.key'), fav: E.fav, p: E.pFavAdj, book: run('R.book'), pos: state.pos && state.pos.side }); }
       if (Date.now() > deadline) stop();
     } catch (e) { state.errors++; log('error', { loop: e.message.slice(0, 300) }); }
   }, 250);
