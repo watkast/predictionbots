@@ -248,26 +248,34 @@ def main():
         print()
 
     # ------------------------------------------------------------------ bot latency map (Dead Man's Ticket v2)
-    print("## Bot latency map: seconds from the score to Kalshi repricing a decided market\n")
+    print("## Bot latency map: how long a decided Kalshi market stays mispriced\n")
     if not lats:
         print("no decided markets watched on the live stream yet\n")
     else:
+        first = {}
+        for d in lats:                                 # one measurement per ticker (older tape re-registered)
+            first.setdefault(d["ticker"], d)
         grp = defaultdict(list)
-        for d in lats:
+        for d in first.values():
             grp[(d.get("sport"), d.get("series"))].append(d)
-        print("| sport | series | decided | median s to reprice | <= 15 s | <= 60 s | never (closed/timeout) | cheapest ask seen | "
-              "resting bid @0.97: contracts / $ | @0.99: contracts / $ |\n|---|---|---|---|---|---|---|---|---|---|")
+        print("| sport | series | markets | already priced | mispriced then fixed | median s mispriced | closed/timeout | "
+              "contradictions | cheapest ask (size) | resting @0.97 contracts / $ | settled right / wrong |\n|---|---|---|---|---|---|---|---|---|---|---|")
         for (sp_, se), xs in sorted(grp.items(), key=lambda kv: -len(kv[1])):
-            rep_ = [x["latency_s"] for x in xs if x.get("how") == "repriced"]
-            never = sum(1 for x in xs if x.get("how") != "repriced")
-            mins = [x["min_ask"] for x in xs if x.get("min_ask") is not None]
-            f97 = [x["fills"].get("0.97", {}) for x in xs]; f99 = [x["fills"].get("0.99", {}) for x in xs]
-            print(f"| {sp_} | {se} | {len(xs)} | {fmt(med(rep_), 0)} | {sum(1 for r in rep_ if r <= 15)} | {sum(1 for r in rep_ if r <= 60)} | "
-                  f"{never} | {fmt(min(mins), 2) if mins else '-'} | {sum(f.get('q', 0) for f in f97):.0f} / ${sum(f.get('profit', 0) for f in f97):.2f} | "
-                  f"{sum(f.get('q', 0) for f in f99):.0f} / ${sum(f.get('profit', 0) for f in f99):.2f} |")
-        print("\nLatency counts from when OUR score feed changed (Polymarket's feed lags reality, so true bot speed is faster). "
-              "Resting-bid columns: contracts that sellers dumped below that price after the decision, and the profit a resting bid "
-              "there would have made (maker fee ignored).\n")
+            fixed = [x for x in xs if x.get("how") == "repriced"]
+            secs = [x.get("after_dec_s") for x in fixed if x.get("after_dec_s") is not None]
+            cand = [x for x in xs if x.get("how") != "contradiction" and x.get("min_ask") is not None]
+            cheap = min(cand, key=lambda x: x["min_ask"]) if cand else None
+            f97 = [(x.get("fills") or {}).get("0.97", {}) for x in xs if x.get("how") != "contradiction"]
+            right = sum(1 for x in xs if x["ticker"] in k_settled and (k_settled[x["ticker"]].get("result") == "yes") == x.get("certain_yes"))
+            wrong = sum(1 for x in xs if x["ticker"] in k_settled and k_settled[x["ticker"]].get("result") in ("yes", "no")
+                        and (k_settled[x["ticker"]].get("result") == "yes") != x.get("certain_yes"))
+            print(f"| {sp_} | {se} | {len(xs)} | {sum(1 for x in xs if x.get('how') == 'already')} | {len(fixed)} | {fmt(med(secs), 0)} | "
+                  f"{sum(1 for x in xs if x.get('how') in ('closed', 'timeout'))} | {sum(1 for x in xs if x.get('how') == 'contradiction')} | "
+                  f"{(fmt(cheap['min_ask'], 2) + ' (' + str(int(cheap.get('min_ask_q') or 0)) + ')') if cheap else '-'} | "
+                  f"{sum(f.get('q', 0) for f in f97):.0f} / ${sum(f.get('profit', 0) for f in f97):.2f} | {right} / {wrong} |")
+        print("\n'Already priced' = the book was at 99c+ when we first looked (bots were faster than our score feed). 'Median s "
+              "mispriced' runs from our decision to the fix. 'Settled right / wrong' checks our certainty against Kalshi's result — "
+              "any 'wrong' means the score feed or the model failed.\n")
 
     # ------------------------------------------------------------------ decided-state engine
     print("## Decided-state engine (contracts the live score already settled, still trading)\n")
