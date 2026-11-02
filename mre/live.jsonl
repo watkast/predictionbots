@@ -222,3 +222,7 @@
 {"t":1793661667273,"k":"fill","d":{"slug":"cpceth-eth-updown-15m-2026-11-02-2315z","side":"DOWN","px":0.30000000000000004,"qty":1}}
 {"t":1793661667367,"k":"rest","d":{"slug":"cpceth-eth-updown-15m-2026-11-02-2315z","side":"DOWN","sellAt":0.55,"id":"DFXKRR7012WA"}}
 {"t":1793661687824,"k":"fill","d":{"slug":"cpceth-eth-updown-15m-2026-11-02-2315z","side":"DOWN","sold":0.55,"pnl":0.25}}
+{"t":1793662205116,"k":"rest","d":{"slug":"cpceth-eth-updown-15m-2026-11-02-2330z","side":"UP","at":0.3,"id":"DFXQW1BG52WP"}}
+{"t":1793662205279,"k":"rest","d":{"slug":"cpceth-eth-updown-15m-2026-11-02-2330z","side":"DOWN","at":0.3,"id":"DFXQW2M012VC"}}
+{"t":1793662377968,"k":"fill","d":{"slug":"cpceth-eth-updown-15m-2026-11-02-2330z","side":"DOWN","px":0.30000000000000004,"qty":1}}
+{"t":1793662378059,"k":"rest","d":{"slug":"cpceth-eth-updown-15m-2026-11-02-2330z","side":"DOWN","sellAt":0.55,"id":"DFXS68G012WQ"}}
