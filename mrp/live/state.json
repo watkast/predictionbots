@@ -1,0 +1,16 @@
+{
+ "startedAt": 1793610028415,
+ "capital": 20,
+ "mode": "dry",
+ "trades": [],
+ "cmds": 3,
+ "skips": {
+  "index series stale": 1
+ },
+ "errors": 0,
+ "balanceStart": 23.7932,
+ "balanceNow": 23.7932,
+ "pos": null,
+ "order": null,
+ "shortConv": null
+}

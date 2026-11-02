@@ -1,0 +1,16 @@
+{"t":1793610028792,"k":"start","d":{"mode":"dry","cap":20,"page":"research/pm15_copilot.html","node":"v22.23.4"}}
+{"t":1793610028948,"k":"balance","d":{"cash":23.7932,"total":23.7932}}
+{"t":1793610029226,"k":"tick","d":{"r":871,"key":"nofeed","fav":"UP","p":0.8423752396539917,"book":{"upAsk":0.73,"upBid":0.72,"upAskQty":71,"upBidQty":1189.34},"pos":null}}
+{"t":1793610029370,"k":"ws","d":{"open":"cpc-btc-updown-15m-2026-11-02-0900z"}}
+{"t":1793610063257,"k":"cmd","d":{"kind":"buy","text":"BUY UP LTE 70¢","side":"UP","px":0.6960063277868727,"sh":5,"left":837}}
+{"t":1793610063258,"k":"skip","d":{"why":"index series stale"}}
+{"t":1793610088304,"k":"cmd","d":{"kind":"buy","text":"BUY UP LTE 75¢","side":"UP","px":0.751149704894043,"sh":26,"left":812}}
+{"t":1793610088401,"k":"order","d":{"kind":"buy","side":"UP","lim":0.751149704894043,"ask":0.75,"qty":26,"usd":19.53,"edge":0.08109397275223035,"p":0.8441252227522303,"left":812,"dry":true,"o":{"marketSlug":"cpc-btc-updown-15m-2026-11-02-0900z","intent":"ORDER_INTENT_BUY_LONG","type":"ORDER_TYPE_LIMIT","price":{"value":"0.75","currency":"USD"},"quantity":26,"tif":"TIME_IN_FORCE_GOOD_TILL_CANCEL"}}}
+{"t":1793610089306,"k":"tick","d":{"r":811,"key":"buy","fav":"UP","p":0.8443213035081832,"book":{"upAsk":0.81,"upBid":0.8,"upAskQty":100.5,"upBidQty":25.03},"pos":null}}
+{"t":1793610137869,"k":"cmd","d":{"kind":"buy","text":"BUY UP LTE 70¢","side":"UP","px":0.7010461165485279,"sh":28,"left":762}}
+{"t":1793610137975,"k":"order","d":{"kind":"buy","side":"UP","lim":0.7010461165485279,"ask":0.7,"qty":27,"usd":18.93,"edge":0.08100548967246093,"p":0.7956004896724609,"left":762,"dry":true,"o":{"marketSlug":"cpc-btc-updown-15m-2026-11-02-0900z","intent":"ORDER_INTENT_BUY_LONG","type":"ORDER_TYPE_LIMIT","price":{"value":"0.70","currency":"USD"},"quantity":27,"tif":"TIME_IN_FORCE_GOOD_TILL_CANCEL"}}}
+{"t":1793610149384,"k":"tick","d":{"r":751,"key":"buy","fav":"UP","p":0.8274185057190941,"book":{"upAsk":0.73,"upBid":0.72,"upAskQty":5,"upBidQty":1420.58},"pos":null}}
+{"t":1793610209440,"k":"tick","d":{"r":691,"key":"ef","fav":"UP","p":0.9235174803975651,"book":{"upAsk":0.86,"upBid":0.85,"upAskQty":784.8,"upBidQty":8.52},"pos":null}}
+{"t":1793610269494,"k":"tick","d":{"r":631,"key":"wait","fav":"UP","p":0.8196481476312083,"book":{"upAsk":0.79,"upBid":0.78,"upAskQty":20.01,"upBidQty":584.53},"pos":null}}
+{"t":1793610329541,"k":"tick","d":{"r":571,"key":"wait","fav":"UP","p":0.7634574990178589,"book":{"upAsk":0.73,"upBid":0.72,"upAskQty":20.01,"upBidQty":94.5},"pos":null}}
+{"t":1793610389099,"k":"stop","d":{}}
