@@ -89,3 +89,22 @@ samples per band); the fair-price proxy is the cockpit's model, which calibrates
 realized) and was not re-calibrated per coin.
 
 Re-run: `python3 mrp/mrp_extract_windows.py <data dir> fams/` then `node research/replay/bounce.js fams/btc15m.json 900 BTC`.
+
+## Addendum (Nov 2): does the order book predict the next 30 seconds?
+
+Same data, every second with a full Polymarket book (49,661 seconds over 224 BTC 15-min rounds), imbalance = (bid depth −
+ask depth) / (bid + ask) within 5¢ of the top (`research/replay/imbalance.js`):
+
+| Up-book imbalance | n | index move, next 30 s | Up mid, next 30 s |
+|---|---|---|---|
+| ask-heavy (bottom 20%) | 9,933 | −$1.02 | −0.75¢ |
+| 20–40% | 9,932 | −$1.25 | −0.72¢ |
+| 40–60% | 9,932 | −$0.33 | −0.17¢ |
+| 60–80% | 9,932 | +$1.29 | −0.06¢ |
+| bid-heavy (top 20%) | 9,932 | +$1.73 | +0.65¢ |
+
+Correlation with the next-30-s index move: **0.04** (0.14 only inside the last two minutes, when the book is thin). A
+$2.75 spread between the extreme buckets against a typical 30-s move of $7–13 is noise for trading purposes. The leader's
+60-s price change by imbalance in its favour runs from −0.3¢ (book against it) to +1.9¢ (book for it), with the win rate
+confounded by the price level. Verdict: resting depth carries almost no information about the next half minute; not added
+to the decision. The trade tape (aggressor flow) is a better candidate and is being recorded from Nov 2 for a re-run.
