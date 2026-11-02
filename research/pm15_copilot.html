@@ -63,6 +63,25 @@ input, select { background: var(--bg); border: 1px solid var(--line); border-rad
 .timer.final { color: var(--bad); }
 .timer-sub { text-align: right; color: var(--muted); font-size: 11px; line-height: 12px; height: 12px; white-space: nowrap; }
 
+/* STRICT ACTION — the tested persona's trades only, each issued once and frozen for the action window */
+.strict { border-radius: 14px; border: 2px solid var(--line); background: var(--surface); height: 96px; overflow: hidden; display: grid; grid-template-rows: 16px 36px 20px; gap: 4px; padding: 8px 12px 10px; }
+.strict .st-top { display: flex; justify-content: space-between; align-items: center; height: 16px; }
+.strict .st-label { font: 700 13px/16px var(--font-display); letter-spacing: .16em; color: var(--muted); }
+.strict .st-win { font: 700 14px/16px var(--font-mono); font-variant-numeric: tabular-nums; color: var(--muted); white-space: nowrap; }
+.strict .st-cmd { font: 800 32px/36px var(--font-display); letter-spacing: .01em; height: 36px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; color: var(--fg); min-width: 0; }
+.strict .st-sub b { font: 800 17px/20px var(--font-display); font-variant-numeric: tabular-nums; color: var(--fg); margin-right: 8px; }
+.strict .st-sub b:empty { margin: 0; }
+.strict .st-sub { font: 600 12px/20px var(--font-body); color: var(--muted); height: 20px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.strict.quiet .st-cmd { color: var(--muted); font-size: 24px; }
+@media (max-width: 400px) { .strict .st-cmd { font-size: 29px; } }
+.strict.up { border-color: var(--up); background: linear-gradient(180deg, #0f2a1d, #10201a); } .strict.up .st-cmd, .strict.up .st-sub b, .strict.up .st-label, .strict.up .st-win { color: var(--up); }
+.strict.down { border-color: var(--down); background: linear-gradient(180deg, #2c1216, #1c1216); } .strict.down .st-cmd, .strict.down .st-sub b, .strict.down .st-label, .strict.down .st-win { color: var(--down); }
+.strict.sell { border-color: var(--orange); background: linear-gradient(180deg, #2a1a0f, #1d1510); } .strict.sell .st-cmd, .strict.sell .st-sub b, .strict.sell .st-label, .strict.sell .st-win { color: var(--orange); }
+.strict.late .st-win { color: var(--bad); }
+.strict.up, .strict.down, .strict.sell { animation: pulse-red 0.9s ease-out infinite; }
+@media (prefers-reduced-motion: reduce) { .strict.up, .strict.down, .strict.sell { animation: none; } }
+@media (min-width: 861px) { .strict .st-cmd { font-size: 40px; } }
+
 /* DO NOW! — the instruction card; its color is the verdict */
 .do { border-radius: 14px; border: 2px solid var(--line); background: var(--surface); min-width: 0; height: 278px; overflow: hidden; display: grid; grid-template-rows: 56px 84px 24px 44px 20px; gap: 8px; padding: 10px 12px 12px; }
 .do .do-top { display: flex; justify-content: space-between; align-items: flex-start; height: 56px; }
@@ -199,6 +218,11 @@ details.settings summary { cursor: pointer; font: 700 15px/1.4 var(--font-displa
 <div class="wrap">
   <!-- ===== DO NOW! (instruction + confidence + the trade) · DO NEXT (the next three things) · position · prices · chart ===== -->
   <section class="hero">
+    <div class="strict quiet" id="strict">
+      <div class="st-top"><span class="st-label">STRICT ACTION</span><span class="st-win" id="st-win"></span></div>
+      <div class="st-cmd" id="st-cmd">—</div>
+      <div class="st-sub"><b id="st-size"></b><span id="st-sub">waiting for the feeds</span></div>
+    </div>
     <div class="do wait" id="do">
       <div class="do-top"><div class="label" id="do-label">DO NOW!</div><div class="tm"><div class="timer num" id="timer">--:--</div><div class="timer-sub" id="timer-sub">left in this round</div></div></div>
       <div class="head" id="do-head">Connecting to the feed…</div>
@@ -215,7 +239,7 @@ details.settings summary { cursor: pointer; font: 700 15px/1.4 var(--font-displa
     <div class="posbar">
       <div class="seg" id="my-seg"><button class="up" data-side="UP">UP</button><button class="down" data-side="DOWN">DOWN</button></div>
       <label>Paid ¢ · top = live<select id="my-price"><option value="" id="my-price-now">—</option></select></label>
-      <label>Spent $<input id="my-spent" type="number" inputmode="decimal" min="1" step="1" placeholder="20"></label>
+      <label># Shares<input id="my-shares" type="number" inputmode="decimal" min="1" step="1" placeholder="40"></label>
       <button class="btn-primary" id="my-set">I'm in</button>
       <button class="btn-danger" id="my-clear">Out</button>
       <div class="pos-line" id="pos-line">No position — set it right after you buy.</div>
@@ -322,7 +346,7 @@ details.settings summary { cursor: pointer; font: 700 15px/1.4 var(--font-displa
       <label>MOST LIKELY when touch odds GTE (%)<input id="s-reach-green" type="number" inputmode="decimal" min="1" max="99" step="1" value="50"></label>
       <label>EASILY when touch odds GTE (%) · below = UNLIKELY<input id="s-reach-yellow" type="number" inputmode="decimal" min="1" max="99" step="1" value="10"></label>
       <h4>Paper bot</h4>
-      <label>Script stake per lock ($)<input id="s-stake" type="number" inputmode="decimal" min="1" step="1" value="20"></label>
+      <label>Base stake per trade ($) — STRICT ACTION and the paper bot size from this (× edge ÷ 4¢, between ½× and 2×)<input id="s-stake" type="number" inputmode="decimal" min="1" step="1" value="20"></label>
       <label>Paper bot<select id="s-paperon"><option value="edge">Discount entry + EV sells (the replay-tested persona)</option><option value="sure">Sure thing only (never buyable in the replay)</option><option value="math">Math lock (model %, not a sure thing)</option></select></label>
       <label>Math lock = model win probability GTE (%)<input id="s-lockp" type="number" inputmode="decimal" min="90" max="99.99" step="0.1" value="99.5"></label>
       <label>Edge mode: edge after fee at least (¢)<input id="s-edgemin" type="number" inputmode="decimal" min="1" max="30" step="1" value="6"></label>
@@ -1021,6 +1045,39 @@ function renderAct(key, ntR) {
   else if (t < p2) { el.className = 'act go'; L.textContent = 'TAKE ACTION · under ' + Math.ceil(p2 - t) + ' s left'; Rc.textContent = Math.ceil(p2 - t) + ' s'; F.style.width = Math.max(0, 100 * (1 - (t - p1) / (p2 - p1))).toFixed(1) + '%'; }
   else { el.className = 'act late'; L.textContent = 'LATE · ' + qTxt + (isBuy ? ' · go by the button: only if LTE the price shown' : ' · if not sold yet: only at the price shown'); Rc.textContent = Math.floor(t) + ' s'; F.style.width = '100%'; }
 }
+// ---------- STRICT ACTION: exactly the trades the replay-tested persona makes, nothing else ----------
+// BUY the discounted favorite once per round (first second the entry qualifies, 14:00–5:00 left); SELL once per position
+// when the bid beats the math (harvest) or on SELL NOW. A command is issued once and frozen for the action window; it does
+// not change while the window is open and nothing else is ever shown. A missed command (no "I'm in" / "Out") may re-arm
+// after a 10-s pause, as the persona re-arms after a missed fill.
+let strict = { cmd: null, since: 0, until: 0, lastClear: 0 };
+function renderStrict(E, key) {
+  const now = Date.now(), win = (S.actWindow || 15) * 1000, lat = S.latency || 0;
+  if (strict.cmd && (now >= strict.until || (strict.cmd.kind === 'buy' && myPos) || (strict.cmd.kind === 'sell' && !myPos) || E.r <= 0)) { strict.lastClear = now; strict.cmd = null; }
+  if (!strict.cmd && E.r > 0 && Number.isFinite(E.pUp) && now - strict.lastClear >= 10000) {
+    let c = null;
+    if (myPos) { const x = E.exitCheck(myPos.side), side = myPos.side;
+      const all = myPos.shares.toFixed(1) + ' sh (all)';
+      if (key === 'sellnow') c = { kind: 'sell', text: 'SELL ' + side + ' NOW', size: all, sub: 'any bid · then tap Out', cls: 'sell' };
+      else if (key === 'sell' && Number.isFinite(x.bid) && x.bid >= x.sellAbove - 1e-9) c = { kind: 'sell', text: 'SELL ' + side + ' GTE ' + cents(x.sellAbove), size: all, sub: 'bid ' + cents(x.bid) + ' beats holding · then tap Out', cls: 'sell' }; }
+    else if (!R.traded && key === 'buy' && E.entry && E.entry.qty >= 1 && E.r > lat + 2) {
+      const en = E.entry, mult = Math.min(2, Math.max(0.5, en.edge / 0.04)), usd = (S.stake || 20) * mult, sh = Math.max(1, Math.min(Math.floor(usd / en.ask), Math.floor(en.qty)));
+      c = { kind: 'buy', text: 'BUY ' + en.side + ' LTE ' + cents(en.lim), size: sh + ' sh', sub: '$' + fmt$(sh * en.ask, 0) + ' at ' + cents(en.ask) + ' · ' + mult.toFixed(1) + '× stake' + (en.qty < usd / en.ask ? ' · only ' + Math.floor(en.qty) + ' offered' : '') + ' · then I\'m in', cls: en.side === 'UP' ? 'up' : 'down' }; }
+    if (c) { strict.cmd = c; strict.since = now; strict.until = now + win; }
+  }
+  const el = $('strict'), C = $('st-cmd'), U = $('st-sub'), W = $('st-win'), Z = $('st-size');
+  if (strict.cmd) { const left = Math.max(0, Math.ceil((strict.until - now) / 1000)), t = (now - strict.since) / 1000;
+    el.className = 'strict ' + strict.cmd.cls + (t >= lat ? ' late' : ''); C.textContent = strict.cmd.text; Z.textContent = strict.cmd.size || ''; U.textContent = strict.cmd.sub; W.textContent = (t < lat ? 'MAX ODDS ' : 'ACT ') + left + ' s'; return; }
+  el.className = 'strict quiet'; W.textContent = ''; Z.textContent = '';
+  const lo = S.buyMinLeft || 0, hi = S.buyMaxLeft == null ? 900 : S.buyMaxLeft;
+  if (!Number.isFinite(E.spot) || !Number.isFinite(E.target)) { C.textContent = '—'; U.textContent = 'waiting for the feeds'; }
+  else if (E.r <= 0) { C.textContent = '—'; U.textContent = 'round over · next round starts fresh'; }
+  else if (myPos) { C.textContent = 'HOLDING ' + myPos.side; U.textContent = 'no action · a SELL shows here once, when the bid beats the math'; }
+  else if (R.traded) { C.textContent = 'DONE'; U.textContent = 'one trade a round · nothing more this round'; }
+  else if (E.r > hi) { C.textContent = '—'; U.textContent = 'no action · discount buys open at ' + clock(hi); }
+  else if (E.r < lo) { C.textContent = '—'; U.textContent = 'no action · the entry window closed at ' + clock(lo); }
+  else { C.textContent = '—'; U.textContent = 'no action · waiting for ' + E.fav + ' LTE ' + (E.buyIn ? cents(E.buyIn.lim) : '—'); }
+}
 function dictate(E) {
   const el = $('do'), maxAsk = S.maxAsk / 100, lat = S.latency || 0;
   const live = verdictKey(E); let key = settle(live);
@@ -1106,7 +1163,7 @@ function dictate(E) {
   el.className = 'do ' + cls; $('do-label').textContent = 'DO NOW!'; $('do-head').textContent = head; $('do-confn').textContent = confN; $('do-conf').textContent = confL || conf || ' '; $('do-conf').title = conf || '';
   $('nt').className = 'nt ' + ntCls; $('nt-left').textContent = ntL; $('nt-right').textContent = ntR;
   for (let i = 0; i < 3; i++) { $('dn' + (i + 1)).textContent = nx[i][0]; $('dn' + (i + 1) + 'c').textContent = nx[i][1]; $('dn' + (i + 1) + 'r').className = 'dnrow' + (nx[i][2] ? ' ' + nx[i][2] : ''); }
-  renderAct(key, ntR);
+  renderAct(key, ntR); renderStrict(E, key);
   E.whyTxt = why === 'HINT' ? 'If this never connects, this host blocks the feeds — open ' + HOSTED_URL + ' in Safari' : why === 'SANDBOX' ? 'This host (the artifact viewer) blocks the feeds — open ' + HOSTED_URL + ' in Safari, then Share → Add to Home Screen' : (conf ? conf + ' — ' : '') + why;
   E.linkHint = why === 'HINT' || why === 'SANDBOX';
   if (speakKey === 'sure' || speakKey === 'locked' || speakKey === 'sell' || speakKey === 'sellnow' || speakKey === 'buy') announce(speakKey, head);
@@ -1288,9 +1345,9 @@ function renderPriceNow() {
   if (o.textContent !== txt) o.textContent = txt;
   if (o.value !== val) { const onNow = sel.selectedIndex <= 0; o.value = val; if (onNow && document.activeElement !== sel) sel.selectedIndex = 0; }
 }
-$('my-set').onclick = () => { const price = Number($('my-price').value) / 100, spent = Number($('my-spent').value);
-  if (!(price > 0 && price < 1) || !(spent > 0)) { toast('Pick the price you paid and enter the dollars spent'); return; }
-  myPos = { T0: R.T0, side: mySide, price, spent, shares: spent / price }; R.traded = true; try { localStorage.setItem('pm15.mypos', JSON.stringify(myPos)); } catch (e) {} lastSpoken = { key: '', at: 0 }; toast('Tracking your ' + mySide + ' position'); };
+$('my-set').onclick = () => { const price = Number($('my-price').value) / 100, shares = Number($('my-shares').value), spent = shares * price;
+  if (!(price > 0 && price < 1) || !(shares > 0)) { toast('Pick the price you paid and enter the number of shares'); return; }
+  myPos = { T0: R.T0, side: mySide, price, spent, shares }; R.traded = true; try { localStorage.setItem('pm15.mypos', JSON.stringify(myPos)); } catch (e) {} lastSpoken = { key: '', at: 0 }; toast('Tracking your ' + mySide + ' position'); };
 $('my-clear').onclick = () => { myPos = null; try { localStorage.removeItem('pm15.mypos'); } catch (e) {} };
 function loadSettings() {
   $('s-stake').value = S.stake; $('s-lockp').value = S.lockP; $('s-maxask').value = S.maxAsk; $('s-drift').value = S.drift; $('s-fee').value = S.fee; $('s-relay').value = S.relay || ''; $('s-offset').value = S.offset == null ? '' : S.offset.toFixed(2);

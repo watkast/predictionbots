@@ -70,7 +70,7 @@ Coinbase 1-min bars), with volatility floored at 60% of the 5-day typical minute
 (every LOCKED call judged against the real settlement; series settlements cross-checked against the API), voice and
 sound alerts, a sell-latency setting, a feed watchdog, and `scripts/pm15_copilot_selftest.js` (a headless DOM-stub run
 of the whole pipeline across four synthetic rounds). The paper bot trades the page's own discount rule.
-**v4 layout:** **DO NOW!** at the top — the instruction, the round clock, a **confidence badge** (always the same number:
+**v4 layout:** **STRICT ACTION** at the very top — exactly the trades the replay-tested persona makes and nothing else: one BUY per round (the discounted favorite, first second it qualifies, with the ideal size in shares = base stake × edge ÷ 4¢ clamped to ½–2×, ÷ the ask) and one SELL per position (when the bid beats the math, or SELL NOW), each issued once and frozen for the action window, quiet otherwise; the replay confirms the panel's commands coincide with the persona's decisions (every persona trade has a strict command for the same opportunity; the panel's extra commands are re-arms after a missed fill). Then **DO NOW!** — the instruction, the round clock, a **confidence badge** (always the same number:
 the calibrated chance that the side in question wins at the bell — 100% only when LOCKED) and the trade row (side left,
 price right) — then **DO NEXT** (the next three things in time order: NEXT / THEN / LATER, each with its moment), the
 position bar, the four prices (price to beat, what Polymarket shows, the index, Coinbase; Polymarket colors), the chart,

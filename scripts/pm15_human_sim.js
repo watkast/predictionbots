@@ -120,8 +120,10 @@ for (let wi = 0; wi < W.length; wi++) {
       run('liveRecordCheck(' + sec + ');');
       // ---- each persona sees its own page state (its own position); evaluate once per persona with myPos set
       for (const P of personas) {
-        run('myPos = ' + (P.pos ? JSON.stringify({ T0: w.T0, side: P.pos.side, price: P.pos.price, spent: P.pos.spent, shares: P.pos.shares }) : 'null') + '; verdict = ' + JSON.stringify(P.verdict || { key: '', since: 0, pend: '', pendSince: 0 }) + ';');
+        run('myPos = ' + (P.pos ? JSON.stringify({ T0: w.T0, side: P.pos.side, price: P.pos.price, spent: P.pos.spent, shares: P.pos.shares }) : 'null') + '; verdict = ' + JSON.stringify(P.verdict || { key: '', since: 0, pend: '', pendSince: 0 }) + '; R.traded = ' + !!P.boughtThisRound + '; strict = ' + JSON.stringify(P.strict || { cmd: null, since: 0, until: 0, lastClear: 0 }) + ';');
         const E = run('evaluate()'); run('dictate(lastEval)');
+        P.strict = run('strict'); const stSig = P.strict.cmd ? P.strict.since + '|' + P.strict.cmd.kind : '';
+        if (scoring && stSig && stSig !== P.lastStrict) { P.strictCmds = P.strictCmds || []; P.strictCmds.push({ w: wi, sec, left: E.r, kind: P.strict.cmd.kind, text: P.strict.cmd.text }); } P.lastStrict = stSig;
         P.verdict = run('verdict');
         const key = run('verdict.key'), head = els['do-head'].textContent, ntL = els['nt-left'].textContent, ntR = els['nt-right'].textContent;
         const r = E.r;
@@ -142,16 +144,16 @@ for (let wi = 0; wi < W.length; wi++) {
           const o = P.pending; P.pending = null; const b = nearestBook(sec, STRICT);   // the fill needs a quote this fresh
           if (o.kind === 'buy' && b) {
             const ask = o.side === 'UP' ? b[0] : (b[2] != null ? 1 - b[2] : null), qty = o.side === 'UP' ? b[1] : b[3];
-            if (ask != null && ask <= o.limit + 1e-9 && qty >= 1) { const sh = Math.min((o.stake || STAKE) / ask, qty); const spent = sh * ask; P.cash -= spent + fee(ask) * sh; P.pos = { side: o.side, price: ask, spent, shares: sh, at: r, key: o.key }; P.boughtThisRound = true; P.trades.push({ w: wi, kind: 'buy', side: o.side, px: ask, sh, left: r, key: o.key }); }
+            if (ask != null && ask <= o.limit + 1e-9 && qty >= 1) { const sh = Math.min((o.stake || STAKE) / ask, qty); const spent = sh * ask; P.cash -= spent + fee(ask) * sh; P.pos = { side: o.side, price: ask, spent, shares: sh, at: r, key: o.key }; P.boughtThisRound = true; P.trades.push({ w: wi, kind: 'buy', side: o.side, px: ask, sh, left: r, key: o.key, dsec: o.at - LAT }); }
             else P.trades.push({ w: wi, kind: 'nofill', side: o.side, left: r, key: o.key, ask });
           } else if (o.kind === 'sell' && P.pos && b) {
             const bid = P.pos.side === 'UP' ? b[2] : (b[0] != null ? 1 - b[0] : null), qty = P.pos.side === 'UP' ? b[3] : b[1];
             if (bid != null && bid > 0 && qty >= 1) { const sh = Math.min(P.pos.shares, qty); const proceeds = sh * bid - fee(bid) * sh; P.cash += proceeds;
               const wouldWin = P.pos.side === outcome; const holdValue = wouldWin ? sh : 0;
               if (wouldWin) { P.sells.soldWinner++; P.sells.soldWinnerUsd += holdValue - proceeds; } else { P.sells.saved++; P.sells.savedUsd += proceeds; }
-              P.trades.push({ w: wi, kind: 'sell', side: P.pos.side, px: bid, sh, left: r, key: o.key, wouldWin });
+              P.trades.push({ w: wi, kind: 'sell', side: P.pos.side, px: bid, sh, left: r, key: o.key, wouldWin, dsec: o.at - LAT });
               P.pos.shares -= sh; if (P.pos.shares < 0.5) P.pos = null; }
-            else { P.sells.noBid++; P.trades.push({ w: wi, kind: 'nobid', side: P.pos.side, left: r, key: o.key }); }
+            else { P.sells.noBid++; P.trades.push({ w: wi, kind: 'nobid', side: P.pos.side, left: r, key: o.key, dsec: o.at - LAT }); }
           }
         }
         // ---- read the instruction, decide, queue after latency
@@ -201,7 +203,13 @@ const usd = x => (x >= 0 ? '+$' : '−$') + Math.abs(x).toFixed(2);
 if (JSONOUT) { const out = {}; for (const P of personas) { let worst = 0, prev = 0; for (const e of P.equity) { worst = Math.min(worst, e - prev); prev = e; } const buys = P.trades.filter(t => t.kind === 'buy').length, losses = P.trades.filter(t => t.kind === 'settle' && !t.won).length; // quick flips: a sell within 30 / 60 s of the buy — how often, and what the position would have been worth held to the bell
     const qf = { n30: 0, n60: 0, cash30: 0, hold30: 0, wouldWin30: 0 }; let lastBuy = null;
     for (const t of P.trades) { if (t.kind === 'buy') lastBuy = t; else if (t.kind === 'sell' && lastBuy && t.w === lastBuy.w) { const dt = lastBuy.left - t.left; if (dt <= 60) qf.n60++; if (dt <= 30) { qf.n30++; qf.cash30 += (t.px - fee(t.px)) * t.sh - lastBuy.px * t.sh; qf.hold30 += (t.wouldWin ? 1 : 0) * t.sh - lastBuy.px * t.sh; if (t.wouldWin) qf.wouldWin30++; } } }
-    out[P.name] = { rounds: P.rounds, buys, losses, pnl: +P.cash.toFixed(2), worst: +worst.toFixed(2), saved: +P.sells.savedUsd.toFixed(0), gaveUp: +(-P.sells.soldWinnerUsd).toFixed(0), quickFlips: { within30s: qf.n30, within60s: qf.n60, soldSideWouldHaveWon: qf.wouldWin30, cashFromSelling: +qf.cash30.toFixed(0), cashIfHeld: +qf.hold30.toFixed(0) } }; } console.log(JSON.stringify(out)); process.exit(0); }
+    // STRICT ACTION vs the persona: every persona decision should have a strict command of the same kind in the same round within 2 s, and vice versa
+    const sc = P.strictCmds || [], dec = P.trades.filter(t => (t.kind === 'buy' || t.kind === 'sell' || t.kind === 'nobid') && t.dsec != null);
+    const near = (a, kind, w, sec) => a.find(c => c.w === w && c.kind === kind && Math.abs(c.sec - sec) <= 2);
+    const matchedDec = dec.filter(t => near(sc, t.kind === 'buy' ? 'buy' : 'sell', t.w, t.dsec)).length, matchedCmd = sc.filter(c => dec.find(t => t.w === c.w && (t.kind === 'buy' ? 'buy' : 'sell') === c.kind && Math.abs(t.dsec - c.sec) <= 2)).length;
+    if (args.includes('--strictdump')) require('fs').writeFileSync(args[args.indexOf('--strictdump') + 1], JSON.stringify({ cmds: sc, decisions: dec.map(t => ({ w: t.w, kind: t.kind, dsec: t.dsec, left: t.left, key: t.key, px: t.px })) }));
+    const strictCheck = { strictCmds: sc.length, strictBuys: sc.filter(c => c.kind === 'buy').length, strictSells: sc.filter(c => c.kind === 'sell').length, personaDecisions: dec.length, decisionsWithCmd: matchedDec, cmdsWithDecision: matchedCmd };
+    out[P.name] = { rounds: P.rounds, buys, losses, pnl: +P.cash.toFixed(2), worst: +worst.toFixed(2), saved: +P.sells.savedUsd.toFixed(0), gaveUp: +(-P.sells.soldWinnerUsd).toFixed(0), strictCheck, quickFlips: { within30s: qf.n30, within60s: qf.n60, soldSideWouldHaveWon: qf.wouldWin30, cashFromSelling: +qf.cash30.toFixed(0), cashIfHeld: +qf.hold30.toFixed(0) } }; } console.log(JSON.stringify(out)); process.exit(0); }
 console.log(`\nPM15 cockpit — human replay   rounds scored ${scored} of ${W.length} (warm-up ${WARM} min)   latency ${LAT} s   stake $${STAKE}   ${W[0].slug.slice(20, 30)} → ${W[W.length - 1].slug.slice(20, 30)}`);
 console.log('page lock record (its own ledger):', JSON.stringify(G('lockStats')));
 console.log('\n== Personas (trade only on DO NEXT; obey = sell at any bid on SELL, ev = sell only when the bid beats holding) ==');
