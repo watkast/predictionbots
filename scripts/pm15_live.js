@@ -19,6 +19,7 @@ const CAP = Math.max(1, Number(process.env.MRP_LIVE_CAPITAL || 20));
 const DIR = process.env.MRP_LIVE_DIR || 'mrplive';
 const MINUTES = Number(process.env.MRP_LIVE_MINUTES || opt('minutes', 0)) || 0;
 const KEY_ID = process.env.POLYMARKET_KEY_ID || '', SECRET = process.env.POLYMARKET_SECRET_KEY || '';
+const KALSHI_KEY_ID = process.env.KALSHI_KEY_ID || '', KALSHI_PEM = (process.env.KALSHI_PRIVATE_KEY_PEM || '').replace(/\\n/g, '\n');
 const API = 'https://api.polymarket.us', GATEWAY = 'https://gateway.polymarket.us';
 const FEE = 0.0695, fee = p => FEE * p * (1 - p);
 fs.mkdirSync(DIR, { recursive: true });
@@ -116,6 +117,37 @@ function topOf(md) {
 }
 // REST top of book as a fallback for the WebSocket (public gateway)
 async function restBook(slug) { try { const r = await fetch(GATEWAY + '/v1/markets/' + slug + '/book'); const j = await r.json(); return topOf(j.marketData || j); } catch (e) { return null; } }
+
+// ---------------------------------------------------------------- the settlement index, live (Kalshi pushes CF Benchmarks' BRTI every second)
+// While BRTI prints arrive, they are the spot (basis 0, the print-calibrated σ ×1.3) and Coinbase ticks are ignored; if the feed
+// stalls for 3 s, Coinbase takes over again with the live basis and ×1.1. This is the series the market settles on, so with it the
+// kill line, the known-print average and the chance are exact rather than proxied.
+const brti = { at: 0, sec: 0, v: NaN, n: 0, src: 'coinbase', ws: null };
+function kalshiHeaders(method, p) {
+  const ts = String(Date.now()), msg = Buffer.from(ts + method.toUpperCase() + p), key = crypto.createPrivateKey(KALSHI_PEM);
+  const sig = key.asymmetricKeyType === 'rsa' ? crypto.sign('sha256', msg, { key, padding: crypto.constants.RSA_PKCS1_PSS_PADDING, saltLength: 32 }) : crypto.sign(null, msg, key);
+  return { 'KALSHI-ACCESS-KEY': KALSHI_KEY_ID, 'KALSHI-ACCESS-SIGNATURE': sig.toString('base64'), 'KALSHI-ACCESS-TIMESTAMP': ts };
+}
+run('__addPriceOrig = addPrice; __brtiAt = 0; addPrice = (ms, px) => { if (Date.now() - __brtiAt < 3000) return; __addPriceOrig(ms, px); };');
+const addBrti = run('(ms, v) => { __brtiAt = Date.now(); __addPriceOrig(ms, v); }');
+function connectBrti() {
+  if (REPLAY || !KALSHI_KEY_ID || !KALSHI_PEM) return;
+  const WSImpl = require('ws'); const p = '/trade-api/ws/v2'; let w;
+  try { w = new WSImpl('wss://external-api-ws.kalshi.com' + p, { headers: kalshiHeaders('GET', p) }); } catch (e) { log('brti', { error: String(e).slice(0, 200) }); return; }
+  brti.ws = w;
+  w.on('open', () => { w.send(JSON.stringify({ id: 1, cmd: 'subscribe', params: { channels: ['cfbenchmarks_value'], index_ids: ['all'] } })); log('brti', { open: true }); });
+  w.on('message', m => { try { const j = JSON.parse(m.toString()); if (j.type !== 'cfbenchmarks_value') return; const mm = j.msg || {}; const d = JSON.parse(mm.data || '{}'); const id = mm.index_id || d.id; if (id !== 'BRTI') return;
+    const ms = Number(d.time), v = Number(d.value); if (!(v > 1000) || !(ms > 0)) return; brti.at = Date.now(); brti.sec = Math.floor(ms / 1000); brti.v = v; brti.n++; addBrti(ms, v); } catch (e) {} });
+  w.on('close', () => { log('brti', { close: true }); brti.ws = null; setTimeout(connectBrti, 3000); });
+  w.on('error', e => log('brti', { error: String(e).slice(0, 200) }));
+}
+function syncSpotSource() {
+  const live = Date.now() - brti.at < 3000, src = live ? 'brti' : 'coinbase';
+  if (src === brti.src) return;
+  brti.src = src;
+  run(live ? "S.offset = 0; R.offset = 0; R.offsetSrc = 'override'; R.offsetSd = 0; S.sigK = 1.3;" : "S.offset = null; R.offsetSrc = 'none'; R.offset = NaN; S.sigK = 1.1;");
+  log('feed', { spot: src, brtiPrints: brti.n });
+}
 
 // ---------------------------------------------------------------- order semantics
 // The market's instrument is "Up". BUY UP = BUY_LONG at the Up ask. DOWN = the short side; whether the exchange quotes a short
@@ -273,7 +305,8 @@ function report() {
 
 // ---------------------------------------------------------------- main loops
 async function liveMain() {
-  log('start', { mode: state.mode, cap: CAP, page: PAGE, node: process.version });
+  log('start', { mode: state.mode, cap: CAP, page: PAGE, node: process.version, brtiFeed: !!(KALSHI_KEY_ID && KALSHI_PEM) });
+  connectBrti();
   if (!DRY) { try { await live.cancelAll(); } catch (e) {} }
   try { const b = await live.balances(); if (state.balanceStart == null) { state.balanceStart = b.total; state.cashStart = b.cash; } state.balanceNow = b.total; state.cashNow = b.cash; log('balance', { cash: b.cash, total: b.total }); } catch (e) { log('error', { balances: e.message.slice(0, 300) }); if (!DRY) { console.error('cannot read the account — stopping'); process.exit(2); } }
   const deadline = MINUTES ? Date.now() + MINUTES * 60000 : Infinity;
@@ -283,7 +316,7 @@ async function liveMain() {
   process.on('SIGTERM', stop); process.on('SIGINT', stop);
   setInterval(async () => {
     try {
-      const tLoop = Date.now(); const E = run('lastEval'); if (!E) return;
+      const tLoop = Date.now(); syncSpotSource(); const E = run('lastEval'); if (!E) return;
       const slug = run('R.slug'); if (slug && slug !== wsSlug) connectBookWS(slug);
       if (Date.now() - lastRest > 5000 && slug && (!run('R.book') || Date.now() - run('R.bookAt') > 3000)) { lastRest = Date.now(); const b = await restBook(slug); if (b) setBook(b); }
       // adopt a position the exchange already holds for this round (restart safety)
@@ -291,7 +324,7 @@ async function liveMain() {
       const st = run('strict'); if (st.cmd && st.since !== lastCmdSince) { lastCmdSince = st.since; onCommand(st.cmd, E); }
       await settleIfDone();
       if (Date.now() - lastSnap > 10000) { lastSnap = Date.now(); const b = run('R.book') || {}; const fav = E.fav, favAsk = fav === 'UP' ? b.upAsk : (Number.isFinite(b.upBid) ? 1 - b.upBid : NaN);
-        tailPush({ t: Date.now(), k: 'snap', d: { slug, r: Math.round(E.r), key: run('verdict.key'), fav, p: E.pFavAdj, ask: favAsk, lim: E.buyIn ? E.buyIn.lim : NaN, bid: Number.isFinite(b.upBid) ? (fav === 'UP' ? b.upBid : 1 - b.upAsk) : NaN, pos: state.pos ? state.pos.side + ' ' + state.pos.qty + '@' + Math.round(state.pos.px * 100) : null, bookAge: +((Date.now() - run('R.bookAt')) / 1000).toFixed(1), pmAge: E.pmAge, cash: state.cashNow, loopMs: lat.evalMs, orderMs: lat.order, sig: +Number(E.sig).toFixed(3), sigLive: +Number(E.sigLive).toFixed(3), sigFloor: +Number(E.sigFloor).toFixed(3), off: +Number(E.off).toFixed(2), spot: E.spot, target: E.target } }); }
+        tailPush({ t: Date.now(), k: 'snap', d: { slug, r: Math.round(E.r), key: run('verdict.key'), fav, p: E.pFavAdj, ask: favAsk, lim: E.buyIn ? E.buyIn.lim : NaN, bid: Number.isFinite(b.upBid) ? (fav === 'UP' ? b.upBid : 1 - b.upAsk) : NaN, pos: state.pos ? state.pos.side + ' ' + state.pos.qty + '@' + Math.round(state.pos.px * 100) : null, bookAge: +((Date.now() - run('R.bookAt')) / 1000).toFixed(1), pmAge: E.pmAge, cash: state.cashNow, loopMs: lat.evalMs, orderMs: lat.order, src: brti.src, brtiAge: brti.at ? +((Date.now() - brti.at) / 1000).toFixed(1) : null, sig: +Number(E.sig).toFixed(3), sigLive: +Number(E.sigLive).toFixed(3), sigFloor: +Number(E.sigFloor).toFixed(3), off: +Number(E.off).toFixed(2), spot: E.spot, target: E.target } }); }
       flushTail(); lat.evalMs = Date.now() - tLoop;
       if (Date.now() - lastReport > 60000) { lastReport = Date.now(); if (!DRY) { try { const b = await live.balances(); state.balanceNow = b.total; state.cashNow = b.cash; } catch (e) {} } report(); saveState(); log('tick', { r: Math.round(E.r), key: run('verdict.key'), fav: E.fav, p: E.pFavAdj, book: run('R.book'), pos: state.pos && state.pos.side }); }
       if (Date.now() > deadline) stop();

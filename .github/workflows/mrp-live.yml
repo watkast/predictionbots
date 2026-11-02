@@ -22,7 +22,7 @@ permissions:
   actions: write
 
 concurrency:
-  group: mrp-live
+  group: mrp-live-${{ github.event.inputs.mode || 'live' }}   # a dry run may overlap the live one; two live runs never do
   cancel-in-progress: false
 
 jobs:
@@ -33,6 +33,9 @@ jobs:
     env:
       POLYMARKET_KEY_ID: ${{ secrets.POLYMARKET_KEY_ID }}
       POLYMARKET_SECRET_KEY: ${{ secrets.POLYMARKET_SECRET_KEY }}
+      # the settlement index itself, pushed by Kalshi every second (same secrets the recorder uses); empty = Coinbase proxy
+      KALSHI_KEY_ID: ${{ secrets.KALSHI_KEY_ID }}
+      KALSHI_PRIVATE_KEY_PEM: ${{ secrets.KALSHI_PRIVATE_KEY_PEM }}
       MRP_LIVE_CAPITAL: ${{ vars.MRP_LIVE_CAPITAL || '2' }}   # $2 a trade for the first 48 hours (from Nov 2, 2026 04:00 MT); raise here when the record says so
       MRP_LIVE_DIR: ${{ github.workspace }}/mrplive
       GH_TOKEN: ${{ github.token }}
