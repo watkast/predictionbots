@@ -172,6 +172,17 @@ def decide_k(g: Game, km: dict) -> Optional[Decision]:
     kind = classify_k(km.get("series") or "", km.get("t") or "")
     if kind == "period_other" or (kind.startswith("h1") and g.sport != "soccer"):
         return None                      # period-scoped market: the full-game score does not decide it
+    text = " ".join(str(km.get(k) or "") for k in ("yes", "title", "evtitle")).lower()
+    # unit check: the market must be about the sport whose score we hold (an NFL 3-0 field goal is not 3 soccer goals)
+    if "goal" in text and g.sport not in ("soccer", "ice-hockey", "esports"):
+        return None
+    if ("point" in text or "touchdown" in text) and g.sport in ("soccer", "ice-hockey", "tennis"):
+        return None
+    if "map" in text and g.sport != "esports":
+        return None
+    # per-period conditions the full-game score cannot decide
+    if re.search(r"every (quarter|period|half|set|inning)|each (quarter|period|half|set|inning)|both halves", text):
+        return None
     tick = str(km.get("t") or "")
     is_tie = tick.endswith("-TIE")
     strike = km.get("strike")
