@@ -70,6 +70,12 @@ Coinbase 1-min bars), with volatility floored at 60% of the 5-day typical minute
 (every LOCKED call judged against the real settlement; series settlements cross-checked against the API), voice and
 sound alerts, a sell-latency setting, a feed watchdog, and `scripts/pm15_copilot_selftest.js` (a headless DOM-stub run
 of the whole pipeline across four synthetic rounds). The paper bot buys the locked side and sells on SELL.
+**Replay (2026-11-01):** `scripts/pm15_human_sim.js` runs the page unmodified against recorded rounds and simulates a human
+trading only on DO NEXT; `research/replay/pm15_human_sim_2026-11-01.md` has the results over 224 rounds — LOCKED held
+224/224 but is never buyable (first lock at a median 8 s left, no asks), the odds are calibrated after a ×1.3 volatility
+multiplier, the EF rule breaks even, and the only paying behaviour is buying the favorite at or under the GOOD price early
+and selling when the market overpays late (+$215–236 over 224 rounds at $20 a trade, worst round −$12, 0 settlement
+losses — promising, not proven).
 `research/pm15_brain.pine` is the TradingView version of the same brain (kill line, lookahead, LOCKED/HOLD/SELL; it
 cannot read the index series, so there the target is typed or estimated and the basis is a setting).
 `scripts/pm15_relay_worker.js` is the Cloudflare Worker behind that URL: it serves the cockpit at `/` (from GitHub `main`,

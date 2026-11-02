@@ -1,0 +1,136 @@
+
+PM15 cockpit — human replay   rounds scored 224 of 224 (warm-up 0 min)   latency 8 s   stake $20   026-10-29- → 026-11-02-
+page lock record (its own ledger): {"calls":224,"held":224,"failed":0,"exact":0,"checked":0}
+
+== Personas (trade only on DO NEXT; obey = sell at any bid on SELL, ev = sell only when the bid beats holding) ==
+persona        rounds buys  nofill wins losses sells saved(loss avoided) soldWinner(cost)  noBid   P&L      per round  worst round
+lock/obey         224     0      0     0      0     0      0       +$0.00          0    +$0.00     0     +$0.00     +$0.00     +$0.00
+ef+lock/obey      224    56      0     1      0    63     12     +$165.54         51  −$175.72     0     −$8.99     −$0.04     −$5.52
+row/obey          224   223     15     6      0   259    101    +$1469.11        158 −$1529.94     0   +$214.56     +$0.96    −$11.99
+lock/ev           224     0      0     0      0     0      0       +$0.00          0    +$0.00     0     +$0.00     +$0.00     +$0.00
+ef+lock/ev        224    56      0     3      0    62     12     +$161.21         50  −$168.75     0     −$6.34     −$0.03     −$5.52
+row/ev            224   223     15     7      0   256    100    +$1467.19        156 −$1506.60     0   +$235.98     +$1.05    −$11.99
+
+P&L by UTC day (rounds):
+persona          026-10-29-  026-10-30-  026-10-31-  026-11-01-  026-11-02-
+lock/obey      +$0.00 (39) +$0.00 (56) +$0.00 (30) +$0.00 (90)  +$0.00 (9)
+ef+lock/obey   −$2.54 (39) −$7.74 (56) +$3.42 (30) −$1.68 (90)  −$0.45 (9)
+row/obey      +$61.32 (39)+$45.88 (56) +$8.01 (30)+$97.86 (90)  +$1.50 (9)
+lock/ev        +$0.00 (39) +$0.00 (56) +$0.00 (30) +$0.00 (90)  +$0.00 (9)
+ef+lock/ev     −$2.86 (39) −$7.74 (56) +$6.16 (30) +$2.87 (90)  −$4.78 (9)
+row/ev        +$59.35 (39)+$47.95 (56)+$38.03 (30)+$91.96 (90)  −$1.30 (9)
+
+== Forecast accuracy ==
+LOCKED appeared in 224 of 224 rounds; held 224, lost 0. First lock: median 8 s left (p25 4, p75 13).
+  Buyable locks (an ask existed with more than 10 s left): 0; cheapest ask: median -; locks with an ask <= 97c: 0, <= 99c: 0
+  Rounds with no lock at all: 0 (0.0%)
+HOLD >= N s claims (favorite as if held, sampled every 5 s): 38162; cushion still positive after N s: 98.3% (claimed 99%); the side still won the round: 75.1%
+   N <= 15 s        n= 28102  held N s: 98.2%  won: 70.4%
+   15 < N <= 60 s   n=  6156  held N s: 99.2%  won: 87.8%
+   N > 60 s         n=  3904  held N s: 97.5%  won: 88.9%
+   final 2 min      n=  3629  held N s: 99.2%  won: 93.2%
+   earlier          n= 34533  held N s: 98.2%  won: 73.2%
+First SELL call per held position, by reason → real flips:
+   ef+lock · BTC moved +$109 in the last                   2 calls,   0 flips (0.0%)
+   ef+lock · BTC moved +$120 in the last                   2 calls,   0 flips (0.0%)
+   ef+lock · BTC moved +$13 in the last 1                  4 calls,   2 flips (50.0%)
+   ef+lock · BTC moved +$14 in the last 1                  2 calls,   0 flips (0.0%)
+   ef+lock · BTC moved +$18 in the last 1                  2 calls,   0 flips (0.0%)
+   ef+lock · BTC moved +$19 in the last 1                  2 calls,   0 flips (0.0%)
+   ef+lock · BTC moved +$20 in the last 1                  2 calls,   0 flips (0.0%)
+   ef+lock · BTC moved +$22 in the last 1                  2 calls,   0 flips (0.0%)
+   ef+lock · BTC moved +$34 in the last 1                  2 calls,   2 flips (100.0%)
+   ef+lock · BTC moved +$37 in the last 1                  2 calls,   0 flips (0.0%)
+   ef+lock · BTC moved +$41 in the last 1                  2 calls,   0 flips (0.0%)
+   ef+lock · BTC moved +$42 in the last 1                  2 calls,   0 flips (0.0%)
+   ef+lock · BTC moved +$70 in the last 1                  2 calls,   0 flips (0.0%)
+   ef+lock · BTC moved −$11 in the last 1                  2 calls,   0 flips (0.0%)
+   ef+lock · BTC moved −$13 in the last 1                  2 calls,   0 flips (0.0%)
+   ef+lock · BTC moved −$22 in the last 1                  2 calls,   0 flips (0.0%)
+   ef+lock · BTC moved −$25 in the last 1                  2 calls,   0 flips (0.0%)
+   ef+lock · BTC moved −$28 in the last 1                  2 calls,   0 flips (0.0%)
+   ef+lock · BTC moved −$30 in the last 1                  2 calls,   0 flips (0.0%)
+   ef+lock · BTC moved −$32 in the last 1                  2 calls,   0 flips (0.0%)
+   ef+lock · BTC moved −$41 in the last 1                  2 calls,   2 flips (100.0%)
+   ef+lock · The bid                                      54 calls,  12 flips (22.2%)
+   ef+lock · The cushion                                   2 calls,   0 flips (0.0%)
+   ef+lock · Win chance 61.1% is under yo                  2 calls,   0 flips (0.0%)
+   ef+lock · Win chance 64.2% is under yo                  2 calls,   0 flips (0.0%)
+   ef+lock · Win chance 69.0% is under yo                  2 calls,   0 flips (0.0%)
+   ef+lock · Win chance 70.5% is under yo                  2 calls,   0 flips (0.0%)
+   ef+lock · Win chance 71.5% is under yo                  2 calls,   0 flips (0.0%)
+   ef+lock · projected loss                                2 calls,   0 flips (0.0%)
+   row · BTC moved +$13 in the last 1                      4 calls,   2 flips (50.0%)
+   row · BTC moved +$14 in the last 1                      4 calls,   2 flips (50.0%)
+   row · BTC moved +$15 in the last 1                      2 calls,   0 flips (0.0%)
+   row · BTC moved +$18 in the last 1                      2 calls,   0 flips (0.0%)
+   row · BTC moved +$19 in the last 1                      4 calls,   0 flips (0.0%)
+   row · BTC moved +$20 in the last 1                      2 calls,   0 flips (0.0%)
+   row · BTC moved +$21 in the last 1                      2 calls,   0 flips (0.0%)
+   row · BTC moved +$22 in the last 1                      4 calls,   0 flips (0.0%)
+   row · BTC moved +$26 in the last 1                      2 calls,   0 flips (0.0%)
+   row · BTC moved +$37 in the last 1                      4 calls,   0 flips (0.0%)
+   row · BTC moved +$42 in the last 1                      2 calls,   0 flips (0.0%)
+   row · BTC moved +$70 in the last 1                      2 calls,   0 flips (0.0%)
+   row · BTC moved +$97 in the last 1                      2 calls,   0 flips (0.0%)
+   row · BTC moved −$10 in the last 1                      4 calls,   2 flips (50.0%)
+   row · BTC moved −$11 in the last 1                      2 calls,   0 flips (0.0%)
+   row · BTC moved −$13 in the last 1                      2 calls,   0 flips (0.0%)
+   row · BTC moved −$14 in the last 1                      2 calls,   2 flips (100.0%)
+   row · BTC moved −$15 in the last 1                      2 calls,   0 flips (0.0%)
+   row · BTC moved −$16 in the last 1                      2 calls,   0 flips (0.0%)
+   row · BTC moved −$17 in the last 1                      2 calls,   2 flips (100.0%)
+   row · BTC moved −$18 in the last 1                      2 calls,   0 flips (0.0%)
+   row · BTC moved −$22 in the last 1                      2 calls,   0 flips (0.0%)
+   row · BTC moved −$28 in the last 1                      2 calls,   0 flips (0.0%)
+   row · BTC moved −$32 in the last 1                      2 calls,   0 flips (0.0%)
+   row · BTC moved −$41 in the last 1                      2 calls,   2 flips (100.0%)
+   row · BTC moved −$42 in the last 3                      2 calls,   0 flips (0.0%)
+   row · BTC moved −$43 in the last 1                      2 calls,   2 flips (100.0%)
+   row · BTC moved −$57 in the last 1                      2 calls,   0 flips (0.0%)
+   row · BTC moved −$9 in the last 10                      2 calls,   2 flips (100.0%)
+   row · The bid                                         224 calls,  76 flips (33.9%)
+   row · The cushion                                       6 calls,   0 flips (0.0%)
+   row · Win chance 51.4% is under yo                      2 calls,   0 flips (0.0%)
+   row · Win chance 55.6% is under yo                      2 calls,   0 flips (0.0%)
+   row · Win chance 56.1% is under yo                      2 calls,   2 flips (100.0%)
+   row · Win chance 61.7% is under yo                      2 calls,   0 flips (0.0%)
+   row · Win chance 66.3% is under yo                      2 calls,   0 flips (0.0%)
+   row · Win chance 67.4% is under yo                      2 calls,   0 flips (0.0%)
+   row · Win chance 69.0% is under yo                      2 calls,   0 flips (0.0%)
+   row · Win chance 70.5% is under yo                      2 calls,   0 flips (0.0%)
+   row · projected loss                                  130 calls,  62 flips (47.7%)
+First SELL call per held position → was the side really going to lose?
+   ef+lock/ev sell            55 calls,   9 real flips (16.4%)
+   ef+lock/ev sellnow          1 calls,   0 real flips (0.0%)
+   ef+lock/obey sell          55 calls,   9 real flips (16.4%)
+   ef+lock/obey sellnow        1 calls,   0 real flips (0.0%)
+   row/ev sell               158 calls,  47 real flips (29.7%)
+   row/ev sellnow             65 calls,  31 real flips (47.7%)
+   row/obey sell             158 calls,  47 real flips (29.7%)
+   row/obey sellnow           65 calls,  31 real flips (47.7%)
+Favorite calibration (fat-tail-adjusted win chance → realized, flat view, one sample per second):
+   50– 55%  n= 24307  realized 51.2%
+   55– 60%  n= 20838  realized 54.6%
+   60– 65%  n= 16814  realized 60.0%
+   65– 70%  n= 15487  realized 68.8%
+   70– 75%  n= 13560  realized 73.6%
+   75– 80%  n= 13719  realized 75.2%
+   80– 85%  n= 12889  realized 79.6%
+   85– 90%  n= 14966  realized 85.4%
+   90– 95%  n= 17958  realized 92.7%
+   95–100%  n= 51460  realized 97.8%
+   99–104%  n=    50  realized 100.0%
+
+The eventual winner's ask by time left (every 5 s a book existed), with the page's win chance for it then:
+   600–900 s left  n= 8749  winner ask median 59c  p25 46c  ≤97c 100.0%  ≤99c 100.0%  page's chance for the winner: median 58.7%  favorite was the winner 67.1%
+   300–600 s left  n=13334  winner ask median 75c  p25 52c  ≤97c 94.6%  ≤99c 100.0%  page's chance for the winner: median 75.9%  favorite was the winner 76.7%
+   180–300 s left  n= 4651  winner ask median 87c  p25 63c  ≤97c 79.9%  ≤99c 100.0%  page's chance for the winner: median 85.5%  favorite was the winner 81.3%
+   120–180 s left  n= 1756  winner ask median 89c  p25 61c  ≤97c 80.5%  ≤99c 100.0%  page's chance for the winner: median 85.0%  favorite was the winner 79.8%
+    90–120 s left  n=  733  winner ask median 91c  p25 66c  ≤97c 75.6%  ≤99c 100.0%  page's chance for the winner: median 88.9%  favorite was the winner 81.0%
+    60– 90 s left  n=  524  winner ask median 92c  p25 74c  ≤97c 73.9%  ≤99c 100.0%  page's chance for the winner: median 87.2%  favorite was the winner 86.1%
+    45– 60 s left  n=  172  winner ask median 94c  p25 80c  ≤97c 70.9%  ≤99c 100.0%  page's chance for the winner: median 90.3%  favorite was the winner 87.2%
+    30– 45 s left  n=  106  winner ask median 96c  p25 86c  ≤97c 60.4%  ≤99c 100.0%  page's chance for the winner: median 92.0%  favorite was the winner 92.5%
+    20– 30 s left  n=   37  winner ask median 98c  p25 92c  ≤97c 45.9%  ≤99c 100.0%  page's chance for the winner: median 94.6%  favorite was the winner 89.2%
+    10– 20 s left  n=   16  winner ask median 99c  p25 96c  ≤97c 37.5%  ≤99c 100.0%  page's chance for the winner: median 95.4%  favorite was the winner 93.8%
+     0– 10 s left  n=    6  winner ask median 96c  p25 84c  ≤97c 66.7%  ≤99c 100.0%  page's chance for the winner: median 98.7%  favorite was the winner 100.0%
