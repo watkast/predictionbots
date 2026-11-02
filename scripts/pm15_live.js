@@ -57,7 +57,9 @@ const money = v => ({ value: (Math.round(v * 100) / 100).toFixed(2), currency: '
 // the live exchange (or the replay's mock, below)
 const live = {
   async balances() { const j = await api('GET', '/v1/account/balances'); const b = (j.balances && j.balances[0]) || j; return { cash: Number(b.buyingPower ?? b.currentBalance ?? NaN), total: Number(b.currentBalance ?? NaN), raw: b }; },
-  async position(slug) { const j = await api('GET', '/v1/portfolio/positions', null, { market: slug }); const p = j.positions && (j.positions[slug] || Object.values(j.positions)[0]); return p ? { net: Number(p.netPositionDecimal ?? p.netPosition ?? 0), avail: Number(p.qtyAvailableDecimal ?? p.qtyAvailable ?? 0), avgPx: amt(p.avgPx), expired: !!p.expired, realized: amt(p.realized), raw: p } : null; },
+  async position(slug) { const j = await api('GET', '/v1/portfolio/positions', null, { market: slug }); let p = null;
+    for (const [k, v] of Object.entries(j.positions || {})) { const ms = (v && v.marketMetadata && v.marketMetadata.slug) || k; if (ms === slug) { p = v; break; } }   // this market only
+    return p ? { net: Number(p.netPositionDecimal ?? p.netPosition ?? 0), avail: Number(p.qtyAvailableDecimal ?? p.qtyAvailable ?? 0), avgPx: amt(p.avgPx), expired: !!p.expired, realized: amt(p.realized), raw: p } : null; },
   async place(o) { return api('POST', '/v1/orders', o); },
   async order(id) { for (let i = 0; i < 4; i++) { try { const j = await api('GET', '/v1/order/' + id); return j.order || j; } catch (e) { if (!(e.status === 404 && i < 3)) throw e; await sleep(350); } } },
   async cancel(id, slug) { try { await api('POST', '/v1/order/' + id + '/cancel', { marketSlug: slug }); } catch (e) { if (!/HTTP 4/.test(e.message)) throw e; } },
@@ -153,16 +155,19 @@ function syncSpotSource() {
 // The market's instrument is "Up". BUY UP = BUY_LONG at the Up ask. DOWN = the short side; whether the exchange quotes a short
 // at its own price (1 - Up bid) or at the Up price is checked once with a preview before any DOWN order (state.shortConv).
 const intentFor = (side, kind) => side === 'UP' ? (kind === 'buy' ? 'ORDER_INTENT_BUY_LONG' : 'ORDER_INTENT_SELL_LONG') : (kind === 'buy' ? 'ORDER_INTENT_BUY_SHORT' : 'ORDER_INTENT_SELL_SHORT');
-const pxFor = (side, px) => side === 'UP' ? px : (state.shortConv === 'up' ? 1 - px : px);     // px is always the side's own price (Down = 1 - Up bid)
+const pxFor = (side, px) => side === 'UP' ? px : (state.shortConv === 'own' ? px : 1 - px);    // px is the side's own price (Down = 1 - Up bid); a short is quoted in Up terms unless the preview says otherwise
 async function detectShortConvention(slug, book) {
-  if (state.shortConv || DRY || REPLAY) return state.shortConv || 'own';
+  if (state.shortConv || DRY || REPLAY) return state.shortConv || 'up';
   const askDown = Number.isFinite(book.upBid) ? Math.round((1 - book.upBid) * 100) / 100 : 0.5;
   try {
     const j = await live.preview({ marketSlug: slug, intent: 'ORDER_INTENT_BUY_SHORT', type: 'ORDER_TYPE_LIMIT', price: money(askDown), quantity: 1, tif: 'TIME_IN_FORCE_GOOD_TILL_CANCEL' });
     const o = j.order || j, cash = amt(o.cashOrderQty), px = amt(o.price);
-    let conv = null;
+    // the exchange shows a BUY_SHORT as a SELL of the Up contract at the price sent: shorts are quoted in Up terms ('up');
+    // only a preview that comes back as a BUY at the Down price would mean the short's own price ('own')
+    let conv = 'up';
+    if (o.side === 'ORDER_SIDE_BUY' && Number.isFinite(px) && Math.abs(px - askDown) < 0.005) conv = 'own';
     if (Number.isFinite(cash) && cash > 0) conv = Math.abs(cash - askDown) <= Math.abs(cash - (1 - askDown)) ? 'own' : 'up';
-    log('preview', { askDown, px, cash, conv, raw: JSON.stringify(o).slice(0, 400) });
+    log('preview', { askDown, px, cash, side: o.side, conv, raw: JSON.stringify(o).slice(0, 300) });
     state.shortConv = conv; saveState(); return conv;
   } catch (e) { log('preview', { error: e.message.slice(0, 300) }); return null; }
 }
@@ -320,7 +325,7 @@ async function liveMain() {
       const slug = run('R.slug'); if (slug && slug !== wsSlug) connectBookWS(slug);
       if (Date.now() - lastRest > 5000 && slug && (!run('R.book') || Date.now() - run('R.bookAt') > 3000)) { lastRest = Date.now(); const b = await restBook(slug); if (b) setBook(b); }
       // adopt a position the exchange already holds for this round (restart safety)
-      if (!state.pos && !busy && E.r > 0 && E.r % 30 < 0.3 && !DRY) { const p = await live.position(slug).catch(() => null); if (p && p.net > 0 && Number.isFinite(p.avgPx)) { state.pos = { slug, T0: run('R.T0'), side: 'UP', qty: p.net, px: p.avgPx, spent: +(p.net * p.avgPx).toFixed(2), at: Date.now(), left: Math.round(E.r) }; setPos({ T0: run('R.T0'), side: 'UP', price: p.avgPx, spent: state.pos.spent, shares: p.net }); log('adopt', state.pos); } }
+      if (!state.pos && !busy && E.r > 0 && E.r % 30 < 0.3 && !DRY) { const p = await live.position(slug).catch(() => null); if (p && p.net > 0 && p.avail > 0 && Number.isFinite(p.avgPx) && p.raw && p.raw.marketMetadata && p.raw.marketMetadata.slug === slug && !p.expired) { state.pos = { slug, T0: run('R.T0'), side: 'UP', qty: Math.min(p.net, p.avail), px: p.avgPx, spent: +(Math.min(p.net, p.avail) * p.avgPx).toFixed(2), at: Date.now(), left: Math.round(E.r) }; setPos({ T0: run('R.T0'), side: 'UP', price: p.avgPx, spent: state.pos.spent, shares: state.pos.qty }); log('adopt', state.pos); } }
       const st = run('strict'); if (st.cmd && st.since !== lastCmdSince) { lastCmdSince = st.since; onCommand(st.cmd, E); }
       await settleIfDone();
       if (Date.now() - lastSnap > 10000) { lastSnap = Date.now(); const b = run('R.book') || {}; const fav = E.fav, favAsk = fav === 'UP' ? b.upAsk : (Number.isFinite(b.upBid) ? 1 - b.upBid : NaN);
