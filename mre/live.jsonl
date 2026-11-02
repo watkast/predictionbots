@@ -14,3 +14,7 @@
 {"t":1793627141186,"k":"rest","d":{"slug":"cpceth-eth-updown-15m-2026-11-02-1345z","side":"DOWN","at":0.25,"id":"DFNCBG8G12VC"}}
 {"t":1793627288534,"k":"fill","d":{"slug":"cpceth-eth-updown-15m-2026-11-02-1345z","side":"UP","px":0.25,"qty":1}}
 {"t":1793627288850,"k":"rest","d":{"slug":"cpceth-eth-updown-15m-2026-11-02-1345z","side":"UP","sellAt":0.3,"id":"DFNDFHW012WQ"}}
+{"t":1793627999502,"k":"round","d":{"slug":"cpceth-eth-updown-15m-2026-11-02-1345z","held":"UP","px":0.25}}
+{"t":1793628005231,"k":"rest","d":{"slug":"cpceth-eth-updown-15m-2026-11-02-1400z","side":"UP","at":0.25,"id":"DFNJYEKG12WQ"}}
+{"t":1793628005359,"k":"rest","d":{"slug":"cpceth-eth-updown-15m-2026-11-02-1400z","side":"DOWN","at":0.25,"id":"DFNJYFKG12VX"}}
+{"t":1793628029674,"k":"settle","d":{"slug":"cpceth-eth-updown-15m-2026-11-02-1345z","result":"DOWN","side":"UP","pnl":-0.25}}

@@ -8,6 +8,17 @@
    "side": "UP",
    "buyPx": 0.25,
    "buyLeft": 711,
+   "exit": "lost at the bell",
+   "pnl": -0.25,
+   "sellId": "DFNDFHW012WQ",
+   "result": "DOWN"
+  },
+  {
+   "T0": 1793628000,
+   "slug": "cpceth-eth-updown-15m-2026-11-02-1400z",
+   "side": null,
+   "buyPx": null,
+   "buyLeft": null,
    "exit": null,
    "pnl": null
   }
