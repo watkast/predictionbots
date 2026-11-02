@@ -179,3 +179,7 @@
 {"t":1793654266905,"k":"fill","d":{"slug":"cpceth-eth-updown-15m-2026-11-02-2115z","side":"DOWN","px":0.35,"qty":1}}
 {"t":1793654267165,"k":"rest","d":{"slug":"cpceth-eth-updown-15m-2026-11-02-2115z","side":"DOWN","sellAt":0.55,"id":"DFVVA1R012WQ"}}
 {"t":1793654590735,"k":"fill","d":{"slug":"cpceth-eth-updown-15m-2026-11-02-2115z","side":"DOWN","sold":0.55,"pnl":0.2}}
+{"t":1793655005229,"k":"rest","d":{"slug":"cpceth-eth-updown-15m-2026-11-02-2130z","side":"UP","at":0.35,"id":"DFW0Y7ZG12WA"}}
+{"t":1793655005455,"k":"rest","d":{"slug":"cpceth-eth-updown-15m-2026-11-02-2130z","side":"DOWN","at":0.35,"id":"DFW0Y9R072WA"}}
+{"t":1793655012218,"k":"fill","d":{"slug":"cpceth-eth-updown-15m-2026-11-02-2130z","side":"DOWN","px":0.35,"qty":1}}
+{"t":1793655012467,"k":"rest","d":{"slug":"cpceth-eth-updown-15m-2026-11-02-2130z","side":"DOWN","sellAt":0.55,"id":"DFW100HG12WK"}}
