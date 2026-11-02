@@ -183,3 +183,9 @@
 {"t":1793655005455,"k":"rest","d":{"slug":"cpceth-eth-updown-15m-2026-11-02-2130z","side":"DOWN","at":0.35,"id":"DFW0Y9R072WA"}}
 {"t":1793655012218,"k":"fill","d":{"slug":"cpceth-eth-updown-15m-2026-11-02-2130z","side":"DOWN","px":0.35,"qty":1}}
 {"t":1793655012467,"k":"rest","d":{"slug":"cpceth-eth-updown-15m-2026-11-02-2130z","side":"DOWN","sellAt":0.55,"id":"DFW100HG12WK"}}
+{"t":1793655898895,"k":"round","d":{"slug":"cpceth-eth-updown-15m-2026-11-02-2130z","held":"DOWN","px":0.35}}
+{"t":1793655905244,"k":"rest","d":{"slug":"cpceth-eth-updown-15m-2026-11-02-2145z","side":"UP","at":0.35,"id":"DFW7SZBG12WP"}}
+{"t":1793655905369,"k":"rest","d":{"slug":"cpceth-eth-updown-15m-2026-11-02-2145z","side":"DOWN","at":0.35,"id":"DFW7T0B012WA"}}
+{"t":1793655929144,"k":"settle","d":{"slug":"cpceth-eth-updown-15m-2026-11-02-2130z","result":"UP","side":"DOWN","pnl":-0.35}}
+{"t":1793656073947,"k":"fill","d":{"slug":"cpceth-eth-updown-15m-2026-11-02-2145z","side":"UP","px":0.35,"qty":1}}
+{"t":1793656074307,"k":"rest","d":{"slug":"cpceth-eth-updown-15m-2026-11-02-2145z","side":"UP","sellAt":0.55,"id":"DFW9385012WP"}}

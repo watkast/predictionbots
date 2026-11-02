@@ -327,11 +327,22 @@
    "side": "DOWN",
    "buyPx": 0.35,
    "buyLeft": 888,
+   "exit": "lost at the bell",
+   "pnl": -0.35,
+   "sellId": "DFW100HG12WK",
+   "result": "UP"
+  },
+  {
+   "T0": 1793655900,
+   "slug": "cpceth-eth-updown-15m-2026-11-02-2145z",
+   "side": "UP",
+   "buyPx": 0.35,
+   "buyLeft": 726,
    "exit": null,
    "pnl": null
   }
  ],
  "balanceStart": 17.4956,
- "balanceNow": 18.6256,
+ "balanceNow": 17.2756,
  "errors": 0
 }
