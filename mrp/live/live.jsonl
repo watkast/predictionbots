@@ -30,3 +30,15 @@
 {"t":1793611150904,"k":"tick","d":{"r":649,"key":"wait","fav":"DOWN","p":0.6390318585362424,"book":{"upAsk":0.36,"upBid":0.35,"upAskQty":827.53,"upBidQty":88},"pos":null}}
 {"t":1793611210989,"k":"tick","d":{"r":589,"key":"wait","fav":"DOWN","p":0.7410736829255501,"book":{"upAsk":0.28,"upBid":0.27,"upAskQty":1065.11,"upBidQty":70},"pos":null}}
 {"t":1793611271149,"k":"tick","d":{"r":529,"key":"wait","fav":"DOWN","p":0.8002224599988488,"book":{"upAsk":0.2,"upBid":0.19,"upAskQty":625,"upBidQty":1363.51},"pos":null}}
+{"t":1793611331191,"k":"tick","d":{"r":469,"key":"wait","fav":"DOWN","p":0.8934410549518019,"book":{"upAsk":0.11,"upBid":0.1,"upAskQty":1176.46,"upBidQty":1305.51},"pos":null}}
+{"t":1793611391269,"k":"tick","d":{"r":409,"key":"wait","fav":"DOWN","p":0.9333261653685607,"book":{"upAsk":0.06,"upBid":0.05,"upAskQty":3081.5,"upBidQty":728},"pos":null}}
+{"t":1793611451393,"k":"tick","d":{"r":349,"key":"wait","fav":"DOWN","p":0.7795777175505165,"book":{"upAsk":0.16,"upBid":0.15,"upAskQty":51.41,"upBidQty":1480.5},"pos":null}}
+{"t":1793611511508,"k":"tick","d":{"r":289,"key":"wait","fav":"DOWN","p":0.9198038226999012,"book":{"upAsk":0.06,"upBid":0.05,"upAskQty":53,"upBidQty":1658.5},"pos":null}}
+{"t":1793611571610,"k":"tick","d":{"r":229,"key":"ready","fav":"DOWN","p":0.9833673658921234,"book":{"upAsk":0.02,"upBid":0.01,"upAskQty":1378.54,"upBidQty":2838.72},"pos":null}}
+{"t":1793611631643,"k":"tick","d":{"r":169,"key":"ready","fav":"DOWN","p":0.9979631215264666,"book":{"upAsk":0.01,"upBid":null,"upAskQty":1380.5,"upBidQty":0},"pos":null}}
+{"t":1793611691783,"k":"tick","d":{"r":108,"key":"ready","fav":"DOWN","p":0.9840354932919796,"book":{"upAsk":0.01,"upBid":null,"upAskQty":17893.08,"upBidQty":0},"pos":null}}
+{"t":1793611751891,"k":"tick","d":{"r":48,"key":"ready","fav":"DOWN","p":0.9977626536656587,"book":{"upAsk":0.01,"upBid":null,"upAskQty":14803.08,"upBidQty":0},"pos":null}}
+{"t":1793611800469,"k":"ws","d":{"close":"cpc-btc-updown-15m-2026-11-02-0915z"}}
+{"t":1793611800571,"k":"ws","d":{"open":"cpc-btc-updown-15m-2026-11-02-0930z"}}
+{"t":1793611812019,"k":"tick","d":{"r":888,"key":"wait","fav":"DOWN","p":0.5465719132791311,"book":{"upAsk":0.47,"upBid":0.46,"upAskQty":118.5,"upBidQty":992.01},"pos":null}}
+{"t":1793611872141,"k":"tick","d":{"r":828,"key":"chop","fav":"DOWN","p":0.5120564618142415,"book":{"upAsk":0.49,"upBid":0.48,"upAskQty":1098.54,"upBidQty":15.81},"pos":null}}
