@@ -8,3 +8,9 @@
 {"t":1793626205005,"k":"rest","d":{"slug":"cpceth-eth-updown-15m-2026-11-02-1330z","side":"UP","at":0.25,"id":"dry-1793626205005"}}
 {"t":1793626205005,"k":"dry","d":{"marketSlug":"cpceth-eth-updown-15m-2026-11-02-1330z","intent":"ORDER_INTENT_BUY_SHORT","type":"ORDER_TYPE_LIMIT","price":{"value":"0.75","currency":"USD"},"quantity":1,"tif":"TIME_IN_FORCE_GOOD_TILL_CANCEL"}}
 {"t":1793626205006,"k":"rest","d":{"slug":"cpceth-eth-updown-15m-2026-11-02-1330z","side":"DOWN","at":0.25,"id":"dry-1793626205005"}}
+{"t":1793627140389,"k":"start","d":{"mode":"live","market":"cpceth-eth-updown-15m-","buy":0.25,"sell":0.3,"qty":1,"node":"v22.23.4"}}
+{"t":1793627140772,"k":"balance","d":{"cash":17.4956,"total":17.4956}}
+{"t":1793627141068,"k":"rest","d":{"slug":"cpceth-eth-updown-15m-2026-11-02-1345z","side":"UP","at":0.25,"id":"DFNCBFAG52TT"}}
+{"t":1793627141186,"k":"rest","d":{"slug":"cpceth-eth-updown-15m-2026-11-02-1345z","side":"DOWN","at":0.25,"id":"DFNCBG8G12VC"}}
+{"t":1793627288534,"k":"fill","d":{"slug":"cpceth-eth-updown-15m-2026-11-02-1345z","side":"UP","px":0.25,"qty":1}}
+{"t":1793627288850,"k":"rest","d":{"slug":"cpceth-eth-updown-15m-2026-11-02-1345z","side":"UP","sellAt":0.3,"id":"DFNDFHW012WQ"}}

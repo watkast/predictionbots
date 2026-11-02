@@ -1,27 +1,18 @@
 {
- "startedAt": 1793626023274,
- "mode": "dry",
+ "startedAt": 1793627140389,
+ "mode": "live",
  "rounds": [
   {
-   "T0": 1793625300,
-   "slug": "cpceth-eth-updown-15m-2026-11-02-1315z",
-   "side": null,
-   "buyPx": null,
-   "buyLeft": null,
-   "exit": "no fill",
-   "pnl": null
-  },
-  {
-   "T0": 1793626200,
-   "slug": "cpceth-eth-updown-15m-2026-11-02-1330z",
-   "side": null,
-   "buyPx": null,
-   "buyLeft": null,
+   "T0": 1793627100,
+   "slug": "cpceth-eth-updown-15m-2026-11-02-1345z",
+   "side": "UP",
+   "buyPx": 0.25,
+   "buyLeft": 711,
    "exit": null,
    "pnl": null
   }
  ],
- "balanceStart": null,
- "balanceNow": null,
+ "balanceStart": 17.4956,
+ "balanceNow": 17.2456,
  "errors": 0
 }
