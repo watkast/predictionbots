@@ -145,3 +145,17 @@
 {"t":1793617319700,"k":"tick","d":{"r":781,"key":"efcheck","fav":"UP","p":0.5752042771852796,"book":{"upAsk":0.63,"upBid":0.62,"upAskQty":171.06,"upBidQty":5.96},"pos":null}}
 {"t":1793617379774,"k":"tick","d":{"r":721,"key":"efcheck","fav":"UP","p":0.574452689698789,"book":{"upAsk":0.62,"upBid":0.61,"upAskQty":158.7,"upBidQty":5.03},"pos":null}}
 {"t":1793617439913,"k":"tick","d":{"r":660,"key":"chop","fav":"DOWN","p":0.5274591381060867,"book":{"upAsk":0.5,"upBid":0.49,"upAskQty":906.5,"upBidQty":87.73},"pos":null}}
+{"t":1793618168829,"k":"start","d":{"mode":"live","cap":2,"page":"research/pm15_copilot.html","node":"v22.23.4"}}
+{"t":1793618168975,"k":"balance","d":{"cash":18.1232,"total":18.1232}}
+{"t":1793618169269,"k":"ws","d":{"open":"cpc-btc-updown-15m-2026-11-02-1115z"}}
+{"t":1793618169270,"k":"tick","d":{"r":831,"key":"chop","fav":"DOWN","p":0.5043346649377127,"book":{"upAsk":0.53,"upBid":0.52,"upAskQty":122.19,"upBidQty":893.91},"pos":null}}
+{"t":1793618229394,"k":"tick","d":{"r":771,"key":"efcheck","fav":"DOWN","p":0.6514251338472775,"book":{"upAsk":0.33,"upBid":0.32,"upAskQty":948.25,"upBidQty":191.6},"pos":null}}
+{"t":1793618289455,"k":"tick","d":{"r":711,"key":"ef","fav":"DOWN","p":0.7650599490855496,"book":{"upAsk":0.23,"upBid":0.22,"upAskQty":1338.27,"upBidQty":128.51},"pos":null}}
+{"t":1793618349553,"k":"tick","d":{"r":651,"key":"wait","fav":"DOWN","p":0.813908908993235,"book":{"upAsk":0.17,"upBid":0.16,"upAskQty":1645.47,"upBidQty":25},"pos":null}}
+{"t":1793618409689,"k":"tick","d":{"r":591,"key":"wait","fav":"DOWN","p":0.797314878393078,"book":{"upAsk":0.16,"upBid":0.15,"upAskQty":1591.41,"upBidQty":217.5},"pos":null}}
+{"t":1793618469791,"k":"tick","d":{"r":531,"key":"wait","fav":"DOWN","p":0.859830883784669,"book":{"upAsk":0.1,"upBid":0.09,"upAskQty":1120.7,"upBidQty":236.51},"pos":null}}
+{"t":1793618529829,"k":"tick","d":{"r":470,"key":"wait","fav":"DOWN","p":0.8199299095533416,"book":{"upAsk":0.1,"upBid":0.09,"upAskQty":83.04,"upBidQty":474.5},"pos":null}}
+{"t":1793618589952,"k":"tick","d":{"r":410,"key":"wait","fav":"DOWN","p":0.8038124118008521,"book":{"upAsk":0.12,"upBid":0.11,"upAskQty":1385.5,"upBidQty":101.16},"pos":null}}
+{"t":1793618650002,"k":"tick","d":{"r":350,"key":"wait","fav":"DOWN","p":0.7905381415925211,"book":{"upAsk":0.09,"upBid":0.08,"upAskQty":1332.51,"upBidQty":385.5},"pos":null}}
+{"t":1793618710107,"k":"tick","d":{"r":290,"key":"wait","fav":"DOWN","p":0.7956784516383214,"book":{"upAsk":0.08,"upBid":0.07,"upAskQty":502.51,"upBidQty":185.48},"pos":null}}
+{"t":1793618770261,"k":"tick","d":{"r":230,"key":"wait","fav":"DOWN","p":0.9190472963565408,"book":{"upAsk":0.04,"upBid":0.03,"upAskQty":1053.25,"upBidQty":131.51},"pos":null}}
