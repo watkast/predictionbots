@@ -133,3 +133,8 @@
 {"t":1793646916504,"k":"rest","d":{"slug":"cpceth-eth-updown-15m-2026-11-02-1915z","side":"DOWN","sellAt":0.55,"id":"DFT37EXG32VC"}}
 {"t":1793646928311,"k":"settle","d":{"slug":"cpceth-eth-updown-15m-2026-11-02-1900z","result":"DOWN","side":"UP","pnl":-0.35}}
 {"t":1793647224091,"k":"fill","d":{"slug":"cpceth-eth-updown-15m-2026-11-02-1915z","side":"DOWN","sold":0.55,"pnl":0.2}}
+{"t":1793647805131,"k":"rest","d":{"slug":"cpceth-eth-updown-15m-2026-11-02-1930z","side":"UP","at":0.35,"id":"DFTA0DB012TT"}}
+{"t":1793647805572,"k":"rest","d":{"slug":"cpceth-eth-updown-15m-2026-11-02-1930z","side":"DOWN","at":0.35,"id":"DFTA0GT012WA"}}
+{"t":1793647807781,"k":"fill","d":{"slug":"cpceth-eth-updown-15m-2026-11-02-1930z","side":"DOWN","px":0.32999999999999996,"qty":1}}
+{"t":1793647807992,"k":"rest","d":{"slug":"cpceth-eth-updown-15m-2026-11-02-1930z","side":"DOWN","sellAt":0.55,"id":"DFTA13Q012WK"}}
+{"t":1793647903184,"k":"fill","d":{"slug":"cpceth-eth-updown-15m-2026-11-02-1930z","side":"DOWN","sold":0.55,"pnl":0.22}}
