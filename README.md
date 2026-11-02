@@ -89,6 +89,17 @@ trading only on DO NEXT; `research/replay/pm15_human_sim_2026-11-01.md` has the 
 multiplier, the EF rule breaks even, and the only paying behaviour is buying the favorite at or under the GOOD price early
 and selling when the market overpays late (+$215–236 over 224 rounds at $20 a trade, worst round −$12, 0 settlement
 losses — promising, not proven).
+**Mr. P live (real money, capped):** `scripts/pm15_live.js` runs the cockpit page unmodified in Node — the same brain
+the phone shows — with real feeds (Coinbase WebSocket, gateway series and market terms direct, the exchange book over the
+authenticated market-data WebSocket) and executes only its STRICT ACTION commands on Polymarket US: one limit BUY of the
+discounted favorite per round (sized to the capital cap, cancelled after the action window), one SELL per position (IOC at
+the bid; SELL NOW chases a little); every order passes the page's guards (Coinbase fresh, index series fresh, target exact,
+book under 3 s). At most `MRP_LIVE_CAPITAL` (default $20) is ever at risk. `--replay` runs the same order path offline against
+recorded rounds with a mock exchange (224 rounds → 201 trades, +$1,255 at a $20 cap, 0 settlement losses, worst −$16).
+`.github/workflows/mrp-live.yml` runs it hourly back-to-back (~5.6 h per run) while the repo variable **`MRP_LIVE`** is `on`
+(Settings → Secrets and variables → Actions → Variables); set it to anything else and no new run trades; cancel the running
+job to stop at once (open orders are cancelled on the way out). The progress report is **`mrp/live/LIVE.md` on the
+`mrp-data` branch** (every decision, order, fill and settlement in `mrp/live/live.jsonl`), refreshed every 10 minutes.
 `research/pm15_brain.pine` is the TradingView version of the same brain (kill line, lookahead, LOCKED/HOLD/SELL; it
 cannot read the index series, so there the target is typed or estimated and the basis is a setting).
 `scripts/pm15_relay_worker.js` is the Cloudflare Worker behind that URL: it serves the cockpit at `/` (from GitHub `main`,
