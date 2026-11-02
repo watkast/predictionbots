@@ -68,3 +68,4 @@
 {"t":1793636105927,"k":"rest","d":{"slug":"cpceth-eth-updown-15m-2026-11-02-1615z","side":"DOWN","at":0.35,"id":"DFQGR58012WP"}}
 {"t":1793636144825,"k":"fill","d":{"slug":"cpceth-eth-updown-15m-2026-11-02-1615z","side":"DOWN","px":0.35,"qty":1}}
 {"t":1793636145052,"k":"rest","d":{"slug":"cpceth-eth-updown-15m-2026-11-02-1615z","side":"DOWN","sellAt":0.55,"id":"DFQH1PYG12WQ"}}
+{"t":1793636584557,"k":"fill","d":{"slug":"cpceth-eth-updown-15m-2026-11-02-1615z","side":"DOWN","sold":0.55,"pnl":0.2}}
