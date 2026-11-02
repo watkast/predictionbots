@@ -1,0 +1,27 @@
+{
+ "startedAt": 1793626023274,
+ "mode": "dry",
+ "rounds": [
+  {
+   "T0": 1793625300,
+   "slug": "cpceth-eth-updown-15m-2026-11-02-1315z",
+   "side": null,
+   "buyPx": null,
+   "buyLeft": null,
+   "exit": "no fill",
+   "pnl": null
+  },
+  {
+   "T0": 1793626200,
+   "slug": "cpceth-eth-updown-15m-2026-11-02-1330z",
+   "side": null,
+   "buyPx": null,
+   "buyLeft": null,
+   "exit": null,
+   "pnl": null
+  }
+ ],
+ "balanceStart": null,
+ "balanceNow": null,
+ "errors": 0
+}

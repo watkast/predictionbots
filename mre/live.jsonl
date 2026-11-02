@@ -1,0 +1,10 @@
+{"t":1793626023274,"k":"start","d":{"mode":"dry","market":"cpceth-eth-updown-15m-","buy":0.25,"sell":0.3,"qty":1,"node":"v22.23.4"}}
+{"t":1793626023278,"k":"dry","d":{"marketSlug":"cpceth-eth-updown-15m-2026-11-02-1315z","intent":"ORDER_INTENT_BUY_LONG","type":"ORDER_TYPE_LIMIT","price":{"value":"0.25","currency":"USD"},"quantity":1,"tif":"TIME_IN_FORCE_GOOD_TILL_CANCEL"}}
+{"t":1793626023278,"k":"rest","d":{"slug":"cpceth-eth-updown-15m-2026-11-02-1315z","side":"UP","at":0.25,"id":"dry-1793626023278"}}
+{"t":1793626023278,"k":"dry","d":{"marketSlug":"cpceth-eth-updown-15m-2026-11-02-1315z","intent":"ORDER_INTENT_BUY_SHORT","type":"ORDER_TYPE_LIMIT","price":{"value":"0.75","currency":"USD"},"quantity":1,"tif":"TIME_IN_FORCE_GOOD_TILL_CANCEL"}}
+{"t":1793626023279,"k":"rest","d":{"slug":"cpceth-eth-updown-15m-2026-11-02-1315z","side":"DOWN","at":0.25,"id":"dry-1793626023279"}}
+{"t":1793626199463,"k":"round","d":{"slug":"cpceth-eth-updown-15m-2026-11-02-1315z","exit":"no fill"}}
+{"t":1793626205005,"k":"dry","d":{"marketSlug":"cpceth-eth-updown-15m-2026-11-02-1330z","intent":"ORDER_INTENT_BUY_LONG","type":"ORDER_TYPE_LIMIT","price":{"value":"0.25","currency":"USD"},"quantity":1,"tif":"TIME_IN_FORCE_GOOD_TILL_CANCEL"}}
+{"t":1793626205005,"k":"rest","d":{"slug":"cpceth-eth-updown-15m-2026-11-02-1330z","side":"UP","at":0.25,"id":"dry-1793626205005"}}
+{"t":1793626205005,"k":"dry","d":{"marketSlug":"cpceth-eth-updown-15m-2026-11-02-1330z","intent":"ORDER_INTENT_BUY_SHORT","type":"ORDER_TYPE_LIMIT","price":{"value":"0.75","currency":"USD"},"quantity":1,"tif":"TIME_IN_FORCE_GOOD_TILL_CANCEL"}}
+{"t":1793626205006,"k":"rest","d":{"slug":"cpceth-eth-updown-15m-2026-11-02-1330z","side":"DOWN","at":0.25,"id":"dry-1793626205005"}}
