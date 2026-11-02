@@ -171,11 +171,12 @@
    "side": "UP",
    "buyPx": 0.35,
    "buyLeft": 877,
-   "exit": null,
-   "pnl": null
+   "exit": "sold at 55¢",
+   "pnl": 0.2,
+   "sellPx": 0.55
   }
  ],
  "balanceStart": 17.4956,
- "balanceNow": 17.9356,
+ "balanceNow": 18.4856,
  "errors": 0
 }
