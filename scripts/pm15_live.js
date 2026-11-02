@@ -154,7 +154,7 @@ let busy = false, lastCmdSince = 0;
 function guards(E) {
   if (!(E && E.r > 0)) return 'round over';
   if (!E.fresh) return 'coinbase stale';
-  if (!(run('IDX.ok') === true) || !(E.pmAge <= 8)) return 'index series stale';
+  if (!(run('IDX.ok') === true) || !(E.pmAge <= 12)) return 'index series stale';
   const src = run('R.targetSrc'); if (src !== 'api' && src !== 'series') return 'target not exact';
   const age = (now() - run('R.bookAt')) / 1000; if (!run('R.book') || age > 3) return 'book stale';
   return null;
@@ -264,6 +264,7 @@ async function liveMain() {
   try { const b = await live.balances(); if (state.balanceStart == null) state.balanceStart = b.total; state.balanceNow = b.total; log('balance', b.raw ? { cash: b.cash, total: b.total } : b); } catch (e) { log('error', { balances: e.message.slice(0, 300) }); if (!DRY) { console.error('cannot read the account — stopping'); process.exit(2); } }
   const deadline = MINUTES ? Date.now() + MINUTES * 60000 : Infinity;
   let lastReport = 0, lastRest = 0;
+  setInterval(() => { try { if (run('R.slug')) run('pmFetchSeries()'); } catch (e) {} }, 2000);   // the exact PM line every 2 s (direct gateway; the page's own 10-s cadence was built for the relay budget)
   const stop = async () => { log('stop', {}); try { if (!DRY) await live.cancelAll(); } catch (e) {} report(); saveState(); process.exit(0); };
   process.on('SIGTERM', stop); process.on('SIGINT', stop);
   setInterval(async () => {
