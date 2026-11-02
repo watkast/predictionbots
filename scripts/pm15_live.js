@@ -26,7 +26,7 @@ fs.mkdirSync(DIR, { recursive: true });
 // ---------------------------------------------------------------- log + state
 const logPath = path.join(DIR, 'live.jsonl'), statePath = path.join(DIR, 'state.json');
 let state = { startedAt: Date.now(), capital: CAP, mode: REPLAY ? 'replay' : DRY ? 'dry' : 'live', trades: [], cmds: 0, skips: {}, errors: 0, balanceStart: null, balanceNow: null, pos: null, order: null, shortConv: null };
-try { if (!REPLAY) Object.assign(state, JSON.parse(fs.readFileSync(statePath, 'utf8')), { mode: DRY ? 'dry' : 'live' }); } catch (e) {}
+try { if (!REPLAY) { const prev = JSON.parse(fs.readFileSync(statePath, 'utf8')); if (prev.mode === state.mode) Object.assign(state, prev); } } catch (e) {}   // a dry run's counters never carry into a live run
 const log = (k, d) => { const rec = { t: now(), k, d }; fs.appendFileSync(logPath, JSON.stringify(rec) + '\n'); if (k !== 'tick') console.log(new Date(rec.t).toISOString(), k, JSON.stringify(d).slice(0, 300)); };
 const saveState = () => { try { fs.writeFileSync(statePath, JSON.stringify(state, null, 1)); } catch (e) {} };
 const skip = why => { state.skips[why] = (state.skips[why] || 0) + 1; log('skip', { why }); };
