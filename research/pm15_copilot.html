@@ -279,7 +279,7 @@ details.settings summary { cursor: pointer; font: 700 15px/1.4 var(--font-displa
 
   <!-- ===== Mr. P live: the bot's own log for the market it is processing (read-only tail, 10-s poll) ===== -->
   <section class="card botlog">
-    <div class="bl-top"><h3>Mr. P live</h3><div class="bl-state off" id="bl-state">no bot feed</div></div>
+    <div class="bl-top"><h3 id="bl-name">Mr. P live</h3><div class="bl-state off" id="bl-state">no bot feed</div></div>
     <div class="term" id="term"><div class="sys">waiting for the bot's log…</div></div>
   </section>
 
@@ -291,15 +291,15 @@ details.settings summary { cursor: pointer; font: 700 15px/1.4 var(--font-displa
       <div class="ncell"><div class="nk">Side that matters</div><div class="nv" id="m-side">—</div></div>
       <div class="ncell"><div class="nk">Win chance to the bell</div><div class="nv" id="m-p">—</div></div>
       <div class="ncell"><div class="nk">Cushion to the kill line</div><div class="nv" id="m-cush">—</div></div>
-      <div class="ncell"><div class="nk">Kill line (BTC must average)</div><div class="nv" id="m-kill">—</div></div>
+      <div class="ncell"><div class="nk">Kill line (must average)</div><div class="nv" id="m-kill">—</div></div>
       <div class="ncell"><div class="nk">Cushion holds for</div><div class="nv" id="m-hold">—</div></div>
       <div class="ncell"><div class="nk">LOCKED in</div><div class="nv" id="m-lock">—</div></div>
       <div class="ncell"><div class="nk">Bad minute (p99 adverse move)</div><div class="nv" id="m-bad">—</div></div>
       <div class="ncell"><div class="nk">Record move for the time left</div><div class="nv" id="m-rec">—</div></div>
-      <div class="ncell"><div class="nk">BTC last 10 s</div><div class="nv" id="m-mv10">—</div></div>
-      <div class="ncell"><div class="nk">BTC last 30 s</div><div class="nv" id="m-mv30">—</div></div>
+      <div class="ncell"><div class="nk">Spot last 10 s</div><div class="nv" id="m-mv10">—</div></div>
+      <div class="ncell"><div class="nk">Spot last 30 s</div><div class="nv" id="m-mv30">—</div></div>
       <div class="ncell"><div class="nk">Pace reaches the kill line in</div><div class="nv" id="m-paceeta">—</div></div>
-      <div class="ncell"><div class="nk">PM line in 30 s (if BTC holds)</div><div class="nv" id="m-ahead">—</div></div>
+      <div class="ncell"><div class="nk">PM line in 30 s (if spot holds)</div><div class="nv" id="m-ahead">—</div></div>
       <div class="ncell"><div class="nk">PM line vs target now</div><div class="nv" id="m-pmvs">—</div></div>
       <div class="ncell"><div class="nk">Prints in the books</div><div class="nv" id="m-known">—</div></div>
       <div class="ncell"><div class="nk">Record pace to the target</div><div class="nv" id="m-reach">—</div></div>
@@ -392,7 +392,7 @@ details.settings summary { cursor: pointer; font: 700 15px/1.4 var(--font-displa
      is that 60-print trailing average itself: its value at T-1 IS the settlement.
    Two feeds, two jobs:
      • Coinbase spot (WebSocket, sub-second) leads the index by about a second: it is the early warning and
-       the basis for every "what if BTC holds here" number.
+       the basis for every "what if ' + ASSET.sym + ' holds here" number.
      • The index series (through the relay) is the ground truth: the PM line, the final price, the next target,
        and a live basis offset (index − Coinbase) refreshed every second.
    The brain:
@@ -408,9 +408,17 @@ details.settings summary { cursor: pointer; font: 700 15px/1.4 var(--font-displa
        the average, so the decision point is 2:00–1:00 left, not 0:30.
    ===================================================================================== */
 const $ = id => document.getElementById(id);
+// ---------- which market: BTC (default) or ETH (#eth) — same brain, the asset's own feeds, slugs, scale and bot ----------
+const ASSETS = {
+  btc: { sym: 'BTC', cb: 'BTC-USD', gw: 'crypto:btc', slug: 'cpc-btc-updown-15m-', minPx: 1000, K: 1, d0: 0, bot: 'Mr. P', tail: 'mrp-live-tail', key: 'pm15' },
+  eth: { sym: 'ETH', cb: 'ETH-USD', gw: 'crypto:eth', slug: 'cpceth-eth-updown-15m-', minPx: 100, K: 0.04, d0: 2, bot: 'Mr. E', tail: 'mre-live-tail', key: 'pm15eth' }
+};
+const ASSET = ASSETS[String((typeof location !== 'undefined' && location.hash) || '').replace('#', '').toLowerCase()] || ASSETS.btc;
+const D0 = ASSET.d0;                       // dollar decimals in the small print (BTC whole dollars, ETH cents)
+const LS = k => ASSET.key + '.' + k;       // per-asset storage keys
 const ROUND = 900, WIN = 60;
 const SLUG = ws => { const d = new Date(ws * 1000); const p = n => String(n).padStart(2, '0');
-  return `cpc-btc-updown-15m-${d.getUTCFullYear()}-${p(d.getUTCMonth()+1)}-${p(d.getUTCDate())}-${p(d.getUTCHours())}${p(d.getUTCMinutes())}z`; };
+  return `${ASSET.slug}${d.getUTCFullYear()}-${p(d.getUTCMonth()+1)}-${p(d.getUTCDate())}-${p(d.getUTCHours())}${p(d.getUTCMinutes())}z`; };
 
 // ---------- settings (per device) ----------
 // paperOn: 'edge' (default) = the replay-tested persona: buy a side offered under its calibrated price, sell when the bid beats
@@ -421,18 +429,18 @@ const T_BOOT = Date.now();
 // an origin that blocks outbound connections (the claude.ai artifact viewer): no Coinbase tick AND the relay failing, 15 s after load
 const sandboxed = () => Date.now() - T_BOOT > 12000 && !lastTickMs && (cbState === 'down' || IDX.fails >= 2 || IDX.ok === false) && location.href.indexOf(DEFAULT_RELAY) !== 0;
 const DEF = { stake: 20, lockP: 99.5, maxAsk: 97, drift: 0, fee: 0.0695, relay: DEFAULT_RELAY, offset: null, zoom: 'auto', sound: false, voice: false, recMargin: 1.5, reachGreen: 50, reachYellow: 10, paperOn: 'edge', edgeMin: 6, edgeScare: 15,
-  latency: 8, holdMinP: 75, etaWarnS: 30, badPct: 99, lookS: 30, slack: 3, killSecs: 45, efLo: 80, efHi: 94, holdConf: 99, exitBy: 45, sigK: 1.1, sellEdge: 5, buyMinLeft: 300, buyMaxLeft: 840, dogBuy: false, entryEdge: 8, sellZone: 300, sellPersist: 2, buyPersist: 2, actWindow: 15 };   // entry/exit knobs = the replay grid (fitted Oct 29–30, held up Oct 31–Nov 2)
+  latency: 8, holdMinP: 75, etaWarnS: 30, badPct: 99, lookS: 30, slack: 3 * ASSET.K, killSecs: 45, efLo: 80, efHi: 94, holdConf: 99, exitBy: 45, sigK: 1.1, sellEdge: 5, buyMinLeft: 300, buyMaxLeft: 840, dogBuy: false, entryEdge: 8, sellZone: 300, sellPersist: 2, buyPersist: 2, actWindow: 15 };   // entry/exit knobs = the replay grid (fitted Oct 29–30, held up Oct 31–Nov 2)
 let S = Object.assign({}, DEF);
-try { Object.assign(S, JSON.parse(localStorage.getItem('pm15.settings') || '{}')); } catch (e) {}
+try { Object.assign(S, JSON.parse(localStorage.getItem(LS('settings')) || '{}')); } catch (e) {}
 if (S.recMargin < 1) S.recMargin = DEF.recMargin;      // v1 allowed 0.5; a margin under 1 is not a margin
 if (!S.relay) S.relay = DEFAULT_RELAY;                 // v1 saved an empty relay; the worker is the default now ('direct' = no relay)
-const saveS = () => { try { localStorage.setItem('pm15.settings', JSON.stringify(S)); } catch (e) {} };
+const saveS = () => { try { localStorage.setItem(LS('settings'), JSON.stringify(S)); } catch (e) {} };
 
 // ---------- price store: Coinbase per-second last price ----------
 const secs = new Map();          // second (int) -> last spot price in that second
 let firstSec = Infinity, lastTickMs = 0, spotNow = NaN;
 function addPrice(ms, price) {
-  if (!(price > 1000)) return;
+  if (!(price > ASSET.minPx)) return;
   const s = Math.floor(ms / 1000);
   secs.set(s, price);
   if (s < firstSec) firstSec = s;
@@ -465,7 +473,7 @@ function sigma(nowS) {           // $ per sqrt(second) from 5-s returns over the
   if (r.length > 40) {
     const sorted = r.map(Math.abs).sort((a, b) => a - b); const mad = sorted[Math.floor(sorted.length / 2)] * 1.4826;
     const mean = r.reduce((a, b) => a + b, 0) / r.length; const sd = Math.sqrt(r.reduce((a, b) => a + (b - mean) ** 2, 0) / r.length);
-    const spot = priceAt(nowS); out = Math.max(mad, 0.8 * sd) * spot; out = Math.max(out, 0.5);
+    const spot = priceAt(nowS); out = Math.max(mad, 0.8 * sd) * spot; out = Math.max(out, 0.5 * ASSET.K);
   }
   sigmaCache = { at: nowS, v: out }; return out;
 }
@@ -487,12 +495,12 @@ const REC = { up: new Array(16).fill(0), dn: new Array(16).fill(0), at: 0, ready
   // biggest moves over 5 / 10 / 15 / 30 s as fractions of price: seeded from two days of 1-Hz CF Benchmarks prints in the
   // Mr. P recorder (Oct 30–31 2026: 5 s $194, 10 s $231, 15 s $283, 30 s $339 at ~$77k), bumped live from the Coinbase feed
   sec: { 5: 0.0025, 10: 0.0030, 15: 0.0037, 30: 0.0044 } };
-try { const j = JSON.parse(localStorage.getItem('pm15.recsec') || 'null'); if (j) for (const k of [5, 10, 15, 30]) if (j[k] > REC.sec[k]) REC.sec[k] = j[k]; } catch (e) {}
+try { const j = JSON.parse(localStorage.getItem(LS('recsec')) || 'null'); if (j) for (const k of [5, 10, 15, 30]) if (j[k] > REC.sec[k]) REC.sec[k] = j[k]; } catch (e) {}
 // the biggest adverse move seen over `secs` seconds (fraction of price): the sub-minute ladder up to 30 s, the 1-min record at 60 s
 function recSecFrac(secs, up) { const m1 = up ? REC.up[1] : REC.dn[1]; if (secs >= 60) return Math.max(m1, REC.sec[30]); const ks = [0, 5, 10, 15, 30, 60], vs = [0, REC.sec[5], REC.sec[10], REC.sec[15], REC.sec[30], Math.max(m1, REC.sec[30])];
   for (let i = 1; i < ks.length; i++) if (secs <= ks[i]) return vs[i - 1] + (vs[i] - vs[i - 1]) * (secs - ks[i - 1]) / (ks[i] - ks[i - 1]); return vs[5]; }
-try { const j = JSON.parse(localStorage.getItem('pm15.records') || 'null'); if (j && Array.isArray(j.up) && j.up.length === 16) { Object.assign(REC, { up: j.up, dn: j.dn, at: j.at || 0, spans: j.spans || REC.spans, bad: j.bad || null }); REC.ready = j.up[15] > 0; } } catch (e) {}
-const saveRec = () => { try { localStorage.setItem('pm15.records', JSON.stringify({ up: REC.up, dn: REC.dn, at: REC.at, spans: REC.spans, bad: REC.bad })); } catch (e) {} };
+try { const j = JSON.parse(localStorage.getItem(LS('records')) || 'null'); if (j && Array.isArray(j.up) && j.up.length === 16) { Object.assign(REC, { up: j.up, dn: j.dn, at: j.at || 0, spans: j.spans || REC.spans, bad: j.bad || null }); REC.ready = j.up[15] > 0; } } catch (e) {}
+const saveRec = () => { try { localStorage.setItem(LS('records'), JSON.stringify({ up: REC.up, dn: REC.dn, at: REC.at, spans: REC.spans, bad: REC.bad })); } catch (e) {} };
 function recMonotone() { for (let h = 1; h <= 15; h++) { REC.up[h] = Math.max(REC.up[h], REC.up[h - 1]); REC.dn[h] = Math.max(REC.dn[h], REC.dn[h - 1]); } REC.ready = REC.up[15] > 0 && REC.dn[15] > 0; }
 function recBump(h, upFrac, dnFrac) { let hit = false; if (upFrac > REC.up[h]) { REC.up[h] = upFrac; hit = true; } if (dnFrac > REC.dn[h]) { REC.dn[h] = dnFrac; hit = true; } return hit; }
 // records from an ascending candle list [t, lo, hi, op, cl] of `barMins`-minute bars, windows of 1…maxBars bars;
@@ -534,7 +542,7 @@ function tailProb(x, lad) {
   return Math.max(1e-5, 0.001 * Math.pow(lad[4] / x, 2));          // beyond the biggest tabulated move: a power-law guess, never zero
 }
 async function fetchCandles(gran, startS, endS) {
-  const u = 'https://api.exchange.coinbase.com/products/BTC-USD/candles?granularity=' + gran + '&start=' + new Date(startS * 1000).toISOString() + '&end=' + new Date(endS * 1000).toISOString();
+  const u = 'https://api.exchange.coinbase.com/products/' + ASSET.cb + '/candles?granularity=' + gran + '&start=' + new Date(startS * 1000).toISOString() + '&end=' + new Date(endS * 1000).toISOString();
   const r = await fetch(u); if (!r.ok) throw new Error('HTTP ' + r.status);
   const j = await r.json(); return Array.isArray(j) ? j.filter(k => Array.isArray(k) && k.length >= 5).sort((a, b) => a[0] - b[0]) : [];
 }
@@ -558,7 +566,7 @@ function liveRecordCheck(sec) {
   const m = Math.floor(sec / 60); if (m === liveRecMin) return; liveRecMin = m;
   let hit = false, hitS = false;
   for (const k of [5, 10, 15, 30]) { for (let t = sec - 60; t + k <= sec; t += 5) { const a = secs.get(t), b = secs.get(t + k); if (a > 0 && b > 0) { const f = Math.abs(b - a) / a; if (f > REC.sec[k]) { REC.sec[k] = f; hitS = true; } } } }
-  if (hitS) try { localStorage.setItem('pm15.recsec', JSON.stringify(REC.sec)); } catch (e) {}
+  if (hitS) try { localStorage.setItem(LS('recsec'), JSON.stringify(REC.sec)); } catch (e) {}
   for (let h = 1; h <= 15; h++) {
     const start = priceAt(sec - 60 * h); if (!(start > 0)) break;
     let hi = -Infinity, lo = Infinity, n = 0;
@@ -617,24 +625,24 @@ function toast(msg) { const t = $('toast'); t.textContent = msg; t.hidden = fals
 const chanceWord = p => p >= 0.5 ? 'likely' : p >= 0.25 ? 'a real chance' : p >= 0.10 ? 'possible' : p >= 0.03 ? 'unlikely' : p >= 0.005 ? 'rare' : 'very rare';
 const chanceTxt = p => !Number.isFinite(p) ? 'unknown' : (p < 0.005 ? 'under 1%' : p > 0.995 ? 'over 99%' : Math.round(p * 100) + '%') + ' (' + chanceWord(p) + ')';
 const fastTxt = m => !Number.isFinite(m) ? 'more than 15 min' : m <= 0 ? 'right now' : m < 1 ? Math.ceil(m * 60) + ' s' : m.toFixed(1) + ' min';
-const etaTxt = e => !Number.isFinite(e) ? 'no lock before the bell at this cushion' : e <= 0 ? 'locked now' : 'locks in ~' + secsTxt(e) + ' if BTC holds here';
+const etaTxt = e => !Number.isFinite(e) ? 'no lock before the bell at this cushion' : e <= 0 ? 'locked now' : 'locks in ~' + secsTxt(e) + ' if ' + ASSET.sym + ' holds here';
 const avgMinsTxt = m => !Number.isFinite(m) ? '—' : m > 99 ? '99+ min' : m < 0.1 ? '< 0.1 min' : m.toFixed(1) + ' min';
 
 // ---------- round state ----------
 const R = { T0: 0, T: 0, slug: '', target: NaN, targetSrc: 'none', targetApi: NaN, offset: S.offset, offsetSrc: S.offset == null ? 'none' : 'override', offsetSd: NaN,
   apiOk: null, book: null, bookAt: 0, lockAt: null, lockAsk: NaN, lockCall: null, lockBeeped: false, bestEdge: NaN, bestAsk: NaN, bestLeft: NaN, note: '' };
-let history = []; try { history = JSON.parse(localStorage.getItem('pm15.history') || '[]'); } catch (e) {}
-let lockStats = { calls: 0, held: 0, failed: 0, exact: 0, checked: 0 }; try { Object.assign(lockStats, JSON.parse(localStorage.getItem('pm15.lockstats') || '{}')); } catch (e) {}
-const saveLock = () => { try { localStorage.setItem('pm15.lockstats', JSON.stringify(lockStats)); } catch (e) {} };
-let myPos = null; try { myPos = JSON.parse(localStorage.getItem('pm15.mypos') || 'null'); } catch (e) {}
+let history = []; try { history = JSON.parse(localStorage.getItem(LS('history')) || '[]'); } catch (e) {}
+let lockStats = { calls: 0, held: 0, failed: 0, exact: 0, checked: 0 }; try { Object.assign(lockStats, JSON.parse(localStorage.getItem(LS('lockstats')) || '{}')); } catch (e) {}
+const saveLock = () => { try { localStorage.setItem(LS('lockstats'), JSON.stringify(lockStats)); } catch (e) {} };
+let myPos = null; try { myPos = JSON.parse(localStorage.getItem(LS('mypos')) || 'null'); } catch (e) {}
 const paper = { side: null, shares: 0, cost: 0, px: NaN, modelFill: false, state: 'idle', armAt: 0, armPct: 0, sellPlan: null, roundPnl: 0, totalPnl: 0, note: '', boughtT0: 0 };
-try { paper.totalPnl = Number(localStorage.getItem('pm15.paperTotal')) || 0; } catch (e) {}
+try { paper.totalPnl = Number(localStorage.getItem(LS('paperTotal'))) || 0; } catch (e) {}
 
 function startRound(T0) {
   if (R.T0 && R.T0 !== T0) finishRound();
   Object.assign(R, { T0, T: T0 + ROUND, slug: SLUG(T0), target: NaN, targetSrc: 'none', targetApi: NaN, book: null, bookAt: 0, lockAt: null, lockAsk: NaN, lockCall: null, lockBeeped: false, bestEdge: NaN, bestAsk: NaN, bestLeft: NaN, note: '', traded: false, bookCalls: 0 });
   paper.roundPnl = 0; paper.state = 'idle'; paper.note = '';
-  if (myPos && myPos.T0 !== T0) { myPos = null; try { localStorage.removeItem('pm15.mypos'); } catch (e) {} }
+  if (myPos && myPos.T0 !== T0) { myPos = null; try { localStorage.removeItem(LS('mypos')); } catch (e) {} }
   $('s-target').value = ''; $('s-ask').value = 0; $('s-bid').value = 0;           // typed numbers belong to the round they were typed in
   // the new target = last round's final price: exact from the index series when it is there, else the previous record, else estimated
   const a = pmA.get(T0 - 1);
@@ -642,7 +650,7 @@ function startRound(T0) {
   if (a > 0) { R.target = a; R.targetSrc = 'series'; }
   else if (prev && prev.T0 === T0 - ROUND && Number.isFinite(prev.settle)) { R.target = prev.settle; R.targetSrc = prev.settleSrc === 'api' || prev.settleSrc === 'series' ? prev.settleSrc : 'est'; }
   pmFetchMarket(); pmFetchBook(); pmFetchSeries();
-  document.title = 'PM15 · ' + winTxt(T0, locFmt);
+  document.title = ASSET.sym + ' 15 · ' + winTxt(T0, locFmt);
 }
 function finishRound() {
   const exact = pmA.get(R.T - 1);
@@ -656,13 +664,13 @@ function finishRound() {
   if (paper.side && paper.shares > 0 && rec.result) {
     const won = paper.side === rec.result; const pnl = (won ? paper.shares : 0) - paper.cost;
     paper.totalPnl += pnl; rec.paperPnl = pnl; paper.note = (won ? 'Won ' : 'Lost ') + fmtS(pnl) + ' at the bell';
-    try { localStorage.setItem('pm15.paperTotal', String(paper.totalPnl)); } catch (e) {}
+    try { localStorage.setItem(LS('paperTotal'), String(paper.totalPnl)); } catch (e) {}
     paper.side = null; paper.shares = 0; paper.cost = 0; paper.state = 'idle';
   }
   history.push(rec); if (history.length > 60) history.shift();
   saveHistory(); renderPast();
 }
-const saveHistory = () => { try { localStorage.setItem('pm15.history', JSON.stringify(history)); } catch (e) {} };
+const saveHistory = () => { try { localStorage.setItem(LS('history'), JSON.stringify(history)); } catch (e) {} };
 // the lock record: every LOCKED call (either side, first second it fired) judged against the real result — the one stat that matters
 function judgeLock(rec) {
   if (rec.lockJudged || !rec.lockCall || !rec.result || (rec.settleSrc !== 'series' && rec.settleSrc !== 'api')) return;
@@ -734,11 +742,11 @@ async function pmFetchSeries(span) {
   if (IDX.busy) return; IDX.busy = true;
   const nowS = Math.floor(Date.now() / 1000), from = nowS - (span || 240);
   try {
-    const j = await pmGet('/v1/asset-prices/history?assets=crypto:btc&from=' + from + '&to=0&bucket=ASSET_PRICE_BUCKET_1S');
+    const j = await pmGet('/v1/asset-prices/history?assets=' + ASSET.gw + '&from=' + from + '&to=0&bucket=ASSET_PRICE_BUCKET_1S');
     let n = 0;
     for (const ser of (j && j.series) || []) {
       const sym = String(((ser.asset || {}).symbol) || '').toLowerCase(); if (sym && sym !== 'btc') continue;
-      for (const c of ser.candles || []) { const ts = Number(c.timestamp), v = Number(c.close); if (Number.isFinite(ts) && v > 1000 && !pmA.has(ts)) { pmA.set(ts, v); n++; if (ts > IDX.latest) IDX.latest = ts; } }
+      for (const c of ser.candles || []) { const ts = Number(c.timestamp), v = Number(c.close); if (Number.isFinite(ts) && v > ASSET.minPx && !pmA.has(ts)) { pmA.set(ts, v); n++; if (ts > IDX.latest) IDX.latest = ts; } }
     }
     IDX.ok = true; IDX.at = Date.now(); IDX.fails = 0; R.apiOk = true;
     if (n) { calibrateLive(nowS); settleFromSeries(); if (!Number.isFinite(R.target) && pmA.get(R.T0 - 1) > 0) { R.target = pmA.get(R.T0 - 1); R.targetSrc = 'series'; } }
@@ -783,7 +791,7 @@ let ws = null, wsTimer = null, cbState = 'connecting';
 function connectWS() {
   try { ws = new WebSocket('wss://ws-feed.exchange.coinbase.com'); } catch (e) { cbState = 'down'; return; }
   cbState = 'connecting';
-  ws.onopen = () => { ws.send(JSON.stringify({ type: 'subscribe', product_ids: ['BTC-USD'], channels: ['ticker'] })); cbState = 'live'; };
+  ws.onopen = () => { ws.send(JSON.stringify({ type: 'subscribe', product_ids: [ASSET.cb], channels: ['ticker'] })); cbState = 'live'; };
   ws.onmessage = ev => { let m; try { m = JSON.parse(ev.data); } catch (e) { return; }
     if (m.type === 'ticker' && m.price) { addPrice(Date.now(), parseFloat(m.price)); cbState = 'live'; } };
   ws.onclose = () => { cbState = 'reconnecting'; clearTimeout(wsTimer); wsTimer = setTimeout(connectWS, 2000); };
@@ -794,11 +802,11 @@ async function backfill(tradesOnly) {
   // recent trades (seconds), then 1-minute candles (hours) for the chart's left edge and the previous-minute averages
   if (backfillBusy) return; backfillBusy = true;
   try {
-    const tr = await (await fetch('https://api.exchange.coinbase.com/products/BTC-USD/trades?limit=1000')).json();
+    const tr = await (await fetch('https://api.exchange.coinbase.com/products/' + ASSET.cb + '/trades?limit=1000')).json();
     if (Array.isArray(tr)) for (const t of tr) addPrice(Date.parse(t.time), parseFloat(t.price));
   } catch (e) {}
   if (!tradesOnly) try {
-    const c = await (await fetch('https://api.exchange.coinbase.com/products/BTC-USD/candles?granularity=60')).json();
+    const c = await (await fetch('https://api.exchange.coinbase.com/products/' + ASSET.cb + '/candles?granularity=60')).json();
     if (Array.isArray(c)) for (const k of c) { const [t, lo, hi, op, cl] = k; const base = t;
       for (let s = 0; s < 60; s++) if (!secs.has(base + s)) secs.set(base + s, op + (cl - op) * (s + 0.5) / 60); if (base < firstSec) firstSec = base; }
   } catch (e) {}
@@ -841,7 +849,7 @@ function evaluate() {
   E.pUp = pUp; E.pDn = 1 - pUp; E.fav = pUp >= 0.5 ? 'UP' : 'DOWN'; E.dog = E.fav === 'UP' ? 'DOWN' : 'UP'; E.pFav = E.fav === 'UP' ? pUp : 1 - pUp;
   E.gap = d.mean - target;
   E.need = tgtChart - spot; E.lead = Math.abs(E.need); E.spotSide = E.need >= 0 ? 'DOWN' : 'UP';
-  // the lookahead: where the PM line reads in lookS seconds if BTC holds here (most of that minute is already known)
+  // the lookahead: where the PM line reads in lookS seconds if ' + ASSET.sym + ' holds here (most of that minute is already known)
   const L = Math.max(1, Math.min(S.lookS || 30, Math.max(1, r)));
   const fKnown = Math.max(0, WIN - Math.ceil(L)), fAvg = fKnown > 0 ? avgRange(sec - fKnown, sec) : NaN;
   E.lookS = L; E.pmAhead = off + ((fKnown > 0 ? fKnown * fAvg : 0) + (WIN - fKnown) * spot) / WIN; E.pmAheadSd = sig * Math.sqrt(L * L * L / 3) / WIN;
@@ -854,11 +862,11 @@ function evaluate() {
   E.badUp = REC.bad ? badFrac(S.badPct, REC.bad.up) * spot : 3 * sig * Math.sqrt(60); E.badDn = REC.bad ? badFrac(S.badPct, REC.bad.dn) * spot : 3 * sig * Math.sqrt(60);
   E.badLadUp = REC.bad ? REC.bad.up.map(f => f * spot) : null; E.badLadDn = REC.bad ? REC.bad.dn.map(f => f * spot) : null;
   // LOCKED: the cushion beats the biggest adverse move seen for the time left, plus the target's error and the basis slack
-  const tgtErr = R.targetSrc === 'series' || R.targetSrc === 'api' ? 0.02 : R.targetSrc === 'manual' ? 0.5 : 15;
+  const tgtErr = (R.targetSrc === 'series' || R.targetSrc === 'api' ? 0.02 : R.targetSrc === 'manual' ? 0.5 : 15) * ASSET.K;
   E.slack = tgtErr + (S.slack || 0) + (Number.isFinite(R.offsetSd) ? 2 * R.offsetSd : (offKnown ? 2 : 8));
   E.lockUp = REC.ready && r > 0 && Number.isFinite(E.cushUp) && E.cushUp > E.recDnLeft + E.slack;
   E.lockDn = REC.ready && r > 0 && Number.isFinite(E.cushDn) && E.cushDn > E.recUpLeft + E.slack;
-  // seconds until a side locks if BTC holds here: the cushion grows as cushion·rp/rp'(s) while the record for the time left shrinks
+  // seconds until a side locks if ' + ASSET.sym + ' holds here: the cushion grows as cushion·rp/rp'(s) while the record for the time left shrinks
   const rpNow = Math.max(0, Math.min(WIN, r));
   // the lock condition only turns true as s grows (the cushion grows, the record for the time left shrinks): binary search
   const lockEta = (cush, rec, locked) => { if (locked) return 0; if (!REC.ready || !(cush > 0) || r <= 1) return NaN;
@@ -913,10 +921,10 @@ function evaluate() {
     const sellNow = !f.locked && ((r <= 120 && (f.cush <= 0 || f.p < 0.5)) || f.pAdj < 0.25);
     let getOut = false, reason = '', kind = '';
     if (!f.locked && !sellNow) {
-      if (r <= 120 && f.holdConf < lat + 5 && f.holdConf < r) { getOut = true; kind = 'closing'; reason = 'The cushion ($' + fmt$(f.cush, 0) + ') is only good for ~' + secsTxt(f.holdConf) + ' at ' + (S.holdConf || 99) + '% — less than the ' + lat + ' s you need to sell, and a flip now costs everything.'; }
-      else if (f.deadline) { getOut = true; kind = 'deadline'; reason = 'Deadline: ' + clock(S.exitBy || 0) + ' left, not LOCKED and the cushion ($' + fmt$(f.cush, 0) + ') is thinner than a bad move for the time left ($' + fmt$(f.badLeft, 0) + ').'; }
+      if (r <= 120 && f.holdConf < lat + 5 && f.holdConf < r) { getOut = true; kind = 'closing'; reason = 'The cushion ($' + fmt$(f.cush, D0) + ') is only good for ~' + secsTxt(f.holdConf) + ' at ' + (S.holdConf || 99) + '% — less than the ' + lat + ' s you need to sell, and a flip now costs everything.'; }
+      else if (f.deadline) { getOut = true; kind = 'deadline'; reason = 'Deadline: ' + clock(S.exitBy || 0) + ' left, not LOCKED and the cushion ($' + fmt$(f.cush, D0) + ') is thinner than a bad move for the time left ($' + fmt$(f.badLeft, D0) + ').'; }
       else if (f.pAdj < Math.min((S.holdMinP || 75) / 100, (myPos ? myPos.price : 1) - 0.10)) { getOut = true; kind = 'floor'; reason = 'Win chance ' + pct(f.pAdj) + (f.pAdj < f.p - 0.005 ? ' (fat-tail adjusted)' : '') + ' is under your floor (' + Math.round(Math.min(S.holdMinP || 75, (myPos ? myPos.price * 100 : 100) - 10)) + '%: the lower of your ' + (S.holdMinP || 75) + '% setting and 10 points under what you paid).'; }
-      else if (Number.isFinite(f.etaKill) && f.etaKill <= (S.etaWarnS || 30) + lat) { getOut = true; kind = 'pace'; reason = 'BTC moved ' + fmtS(f.paceK === 10 ? E.mv10 : E.mv30, 0) + ' in the last ' + f.paceK + ' s — at that pace it reaches the kill line in ~' + secsTxt(f.etaKill) + (lat ? ' (you need ' + lat + ' s to sell)' : '') + '.'; }
+      else if (Number.isFinite(f.etaKill) && f.etaKill <= (S.etaWarnS || 30) + lat) { getOut = true; kind = 'pace'; reason = ASSET.sym + ' moved ' + fmtS(f.paceK === 10 ? E.mv10 : E.mv30, D0) + ' in the last ' + f.paceK + ' s — at that pace it reaches the kill line in ~' + secsTxt(f.etaKill) + (lat ? ' (you need ' + lat + ' s to sell)' : '') + '.'; }
       else if (Number.isFinite(bidNet) && r <= (S.sellZone || 900) && bidNet > f.pAdj + (S.sellEdge == null ? 1 : S.sellEdge) / 100) { getOut = true; kind = 'harvest'; reason = 'The bid (' + cents(q.bid) + ') pays more than holding is worth (' + pct(f.pAdj) + (f.thin ? ', thin cushion' : '') + ').'; }
     }
     return Object.assign(f, { sellNow, getOut, reason, kind, bid: q.bid, bidNet, bidSrc: q.src });
@@ -958,7 +966,7 @@ function roundPath(T0, upto) {
   if (upto > T0 + 60 * K) { const last = priceAt(upto); if (prev > 0 && last > 0) path += Math.abs(last - prev); }
   return path;
 }
-const whereTxt = E => 'BTC is $' + fmt$(E.lead, 0) + ' ' + (E.need >= 0 ? 'below' : 'above') + ' the target' + (Number.isFinite(E.mv10) ? ', ' + fmtS(E.mv10, 0) + ' in the last 10 s' : '');
+const whereTxt = E => ASSET.sym + ' is $' + fmt$(E.lead, D0) + ' ' + (E.need >= 0 ? 'below' : 'above') + ' the target' + (Number.isFinite(E.mv10) ? ', ' + fmtS(E.mv10, D0) + ' in the last 10 s' : '');
 
 // ---------- paper engine ----------
 function paperStep(E) {
@@ -992,14 +1000,14 @@ function paperStep(E) {
       const sh = paper.shares * paper.armPct / 100; const proceeds = sh * bid - fee(bid, S.fee) * sh;
       const costPart = paper.cost * paper.armPct / 100; const pnl = proceeds - costPart;
       paper.shares -= sh; paper.cost -= costPart; paper.roundPnl += pnl; paper.totalPnl += pnl;
-      try { localStorage.setItem('pm15.paperTotal', String(paper.totalPnl)); } catch (e) {}
+      try { localStorage.setItem(LS('paperTotal'), String(paper.totalPnl)); } catch (e) {}
       paper.note = 'Sold ' + paper.armPct + '% @' + cents(bid) + ' → ' + fmtS(pnl) + ' (' + why + ')';
       paper.state = 'sold'; paper.armAt = E.nowS + 4;
       if (paper.shares < 0.01) { paper.side = null; paper.shares = 0; paper.cost = 0; }
     }
   } else if (paper.state === 'armed') { paper.state = 'holding'; paper.sellPlan = null; }
   else if (paper.state === 'sold' && E.nowS >= paper.armAt) paper.state = paper.side ? 'holding' : 'idle';
-  if (paper.state === 'holding') paper.sellPlan = x.locked ? 'LOCKED — riding ' + paper.side + ' to the bell' : 'Holding ' + paper.side + (x.thin ? ' (thin)' : '') + ' · cushion $' + fmt$(x.cush, 0) + ' · flip chance ' + chanceTxt(1 - x.pAdj) + ' · ' + etaTxt(x.eta);
+  if (paper.state === 'holding') paper.sellPlan = x.locked ? 'LOCKED — riding ' + paper.side + ' to the bell' : 'Holding ' + paper.side + (x.thin ? ' (thin)' : '') + ' · cushion $' + fmt$(x.cush, D0) + ' · flip chance ' + chanceTxt(1 - x.pAdj) + ' · ' + etaTxt(x.eta);
 }
 
 // ---------- dictation: one instruction with a validity time, a next-trade row, one line of why ----------
@@ -1042,14 +1050,14 @@ function verdictKey(E) {
   if (S.useEF !== false && efCheck && Number.isFinite(ask) && ask * 100 >= S.efLo && ask * 100 <= S.efHi) return 'ef';
   if (efCheck) return 'efcheck';
   if (E.pFav >= 0.97) return 'ready';
-  if (E.lead < 10) return 'chop';
+  if (E.lead < 10 * ASSET.K) return 'chop';
   return 'wait';
 }
-// seconds until the next moment a buy could make sense: the EF checks, a lock opening if BTC holds, the final two minutes
+// seconds until the next moment a buy could make sense: the EF checks, a lock opening if ' + ASSET.sym + ' holds, the final two minutes
 function noBuyFor(E) {
   const el = ROUND - E.r, c = [];
   if (el < 110) c.push([110 - el, 'EF check at 13:00']); else if (el < 170) c.push([170 - el, 'EF check at 12:00']);
-  if (Number.isFinite(E.favInfo.eta) && E.favInfo.eta > 0) c.push([E.favInfo.eta, 'a lock in ~' + secsTxt(E.favInfo.eta) + ' if BTC holds']);
+  if (Number.isFinite(E.favInfo.eta) && E.favInfo.eta > 0) c.push([E.favInfo.eta, 'a lock in ~' + secsTxt(E.favInfo.eta) + ' if ' + ASSET.sym + ' holds']);
   if (E.r > 120) c.push([E.r - 120, 'the final 2 minutes']);
   if (!c.length) return { secs: 0, why: 'the bell' };
   c.sort((a, b) => a[0] - b[0]); return { secs: Math.max(0, Math.ceil(c[0][0])), why: c[0][1] };
@@ -1076,7 +1084,23 @@ function renderAct(key, ntR) {
 // not change while the window is open and nothing else is ever shown. A missed command (no "I'm in" / "Out") may re-arm
 // after a 10-s pause, as the persona re-arms after a missed fill.
 let strict = { cmd: null, since: 0, until: 0, lastClear: 0 };
+// Mr. E's rule, for the ETH page: rest 1 share at 25¢ on both sides until 7:00 left, sell the first fill at 30¢, let the rest settle
+function renderStrictE(E) {
+  const el = $('strict'), C = $('st-cmd'), U = $('st-sub'), W = $('st-win'), Z = $('st-size'); const B = 0.25, SL = 0.30;
+  W.textContent = E.r > 0 ? clock(E.r) + ' left' : ''; Z.textContent = '';
+  if (!(E.r > 0) || !Number.isFinite(E.spot)) { el.className = 'strict quiet'; C.textContent = '—'; U.textContent = E.r <= 0 ? 'round over · next round: rest 25¢ again' : 'waiting for the feeds'; return; }
+  const qu = quotes('UP'), qd = quotes('DOWN');
+  if (myPos) { const side = myPos.side, bid = side === 'UP' ? qu.bid : qd.bid; Z.textContent = Math.round(myPos.shares) + ' sh';
+    if (Number.isFinite(bid) && bid >= SL - 1e-9) { el.className = 'strict sell'; C.textContent = 'SELL ' + side + ' at ' + cents(SL); U.textContent = 'bid ' + cents(bid) + ' · the 30¢ sell fills now · tap Out'; }
+    else { el.className = 'strict quiet'; C.textContent = 'RESTING SELL ' + side + ' ' + cents(SL); U.textContent = 'bid ' + (Number.isFinite(bid) ? cents(bid) : '—') + ' · stays to the close · else settles'; }
+    return; }
+  if (E.r <= 420) { el.className = 'strict quiet'; C.textContent = 'NO MORE BUYS'; U.textContent = 'last 7:00 · next round rests 25¢ again'; return; }
+  const hit = Number.isFinite(qu.ask) && qu.ask <= B + 1e-9 ? 'UP' : Number.isFinite(qd.ask) && qd.ask <= B + 1e-9 ? 'DOWN' : null;
+  if (hit) { el.className = 'strict ' + (hit === 'UP' ? 'up' : 'down'); C.textContent = 'BUY ' + hit + ' at 25¢'; Z.textContent = '1 sh'; U.textContent = 'ask ' + cents(hit === 'UP' ? qu.ask : qd.ask) + ' · then rest a sell at 30¢ · tap I\'m in'; }
+  else { el.className = 'strict quiet'; C.textContent = 'REST 25¢ · UP + DOWN'; Z.textContent = '1 sh each'; U.textContent = 'UP ' + cents(qu.ask) + ' · DOWN ' + cents(qd.ask) + ' · first fill → sell at 30¢'; }
+}
 function renderStrict(E, key) {
+  if (ASSET.bot === 'Mr. E') return renderStrictE(E);
   const now = Date.now(), win = (S.actWindow || 15) * 1000, lat = S.latency || 0;
   if (strict.cmd && (now >= strict.until || (strict.cmd.kind === 'buy' && myPos) || (strict.cmd.kind === 'sell' && !myPos) || E.r <= 0)) { strict.lastClear = now; strict.cmd = null; }
   if (!strict.cmd && E.r > 0 && Number.isFinite(E.pUp) && now - strict.lastClear >= 10000) {
@@ -1087,7 +1111,7 @@ function renderStrict(E, key) {
       else if (key === 'sell' && Number.isFinite(x.bid) && x.bid >= x.sellAbove - 1e-9) c = { kind: 'sell', side, px: x.sellAbove, bid: x.bid, sh: myPos.shares, now: false, text: 'SELL ' + side + ' GTE ' + cents(x.sellAbove), size: all, sub: 'bid ' + cents(x.bid) + ' beats holding · then tap Out', cls: 'sell' }; }
     else if (!R.traded && key === 'buy' && E.entry && E.entry.qty >= 1 && E.r > lat + 2) {
       const en = E.entry, mult = Math.min(2, Math.max(0.5, en.edge / 0.04)), usd = (S.stake || 20) * mult, sh = Math.max(1, Math.min(Math.floor(usd / en.ask), Math.floor(en.qty)));
-      c = { kind: 'buy', side: en.side, px: en.lim, ask: en.ask, sh, usd: sh * en.ask, edge: en.edge, p: en.p, text: 'BUY ' + en.side + ' LTE ' + cents(en.lim), size: sh + ' sh', sub: '$' + fmt$(sh * en.ask, 0) + ' at ' + cents(en.ask) + ' · ' + mult.toFixed(1) + '× stake' + (en.qty < usd / en.ask ? ' · only ' + Math.floor(en.qty) + ' offered' : '') + ' · then I\'m in', cls: en.side === 'UP' ? 'up' : 'down' }; }
+      c = { kind: 'buy', side: en.side, px: en.lim, ask: en.ask, sh, usd: sh * en.ask, edge: en.edge, p: en.p, text: 'BUY ' + en.side + ' LTE ' + cents(en.lim), size: sh + ' sh', sub: '$' + fmt$(sh * en.ask, D0) + ' at ' + cents(en.ask) + ' · ' + mult.toFixed(1) + '× stake' + (en.qty < usd / en.ask ? ' · only ' + Math.floor(en.qty) + ' offered' : '') + ' · then I\'m in', cls: en.side === 'UP' ? 'up' : 'down' }; }
     if (c) { strict.cmd = c; strict.since = now; strict.until = now + win; }
   }
   const el = $('strict'), C = $('st-cmd'), U = $('st-sub'), W = $('st-win'), Z = $('st-size');
@@ -1119,24 +1143,24 @@ function dictate(E) {
   else if (key === 'over') { head = 'Round over — settling'; conf = Number.isFinite(E.settleExact) ? 'final price ' + fmt$(E.settleExact) : 'the final price lands a second after the bell'; ntL = 'Next trade: next round'; why = 'The next price to beat is this round\'s final price. Positions and typed quotes reset.'; }
   else if (myPos) {
     const x = E.exitCheck(myPos.side), side = myPos.side, sideNt = side === 'UP' ? 'up' : 'down', w = x.dropWord;
-    if (key === 'locked') { cls = 'safe'; label = 'LOCKED'; speakKey = 'locked'; head = 'HOLD ' + side + ' to the bell — LOCKED'; conf = '100% · nothing can flip it · settles in ' + clock(E.r); ntCls = 'none'; ntL = 'Next trade: none — ride it'; ntR = 'pays $1.00'; why = 'BTC would have to ' + w + ' $' + fmt$(x.cush, 0) + ' and stay there; the biggest ' + w + ' ever seen for ' + secsTxt(E.r) + ' is $' + fmt$(x.rec, 0) + ' (margin ×' + S.recMargin + '). A low bid now is other people\'s panic, not information.'; }
-    else if (key === 'sellnow') { cls = 'sell'; label = 'SELL NOW'; speakKey = 'sellnow'; head = 'SELL ' + side + ' NOW'; conf = 'projected to lose · settles in ' + clock(E.r); ntCls = 'sell'; ntL = 'SELL ' + side; ntR = Number.isFinite(x.bid) ? 'at ' + cents(x.bid) : 'at any bid'; why = (x.cush <= 0 ? 'If BTC stays here the final average lands on the other side (cushion ' + fmtS(x.cush, 0) + ').' : 'The math has your side at ' + pct(x.pAdj) + '.') + ' Take what is left.'; }
-    else if (key === 'sell') { cls = 'sell'; label = 'SELL'; speakKey = 'sell'; const win = Math.max(0, Math.floor(x.holdConf)); head = 'SELL ' + side + (E.r <= 120 && x.holdConf < lat + 5 && x.holdConf < E.r ? ' — window closing' : x.deadline ? ' — deadline' : ' — flip building'); conf = (win > 0 && win < E.r ? 'act within ' + win + ' s' : 'act now') + ' · you need ' + lat + ' s to fill · ' + clock(E.r) + ' left'; ntCls = 'sell'; ntL = 'SELL ' + side; ntR = Number.isFinite(x.bid) ? 'at ' + cents(x.bid) : 'at GTE ' + cents(x.sellAbove); why = (x.reason || 'The sell trigger cleared a moment ago. If you have not sold: a bid at or above ' + cents(x.sellAbove) + ' still beats holding; below that, hold and watch.') + (Number.isFinite(x.bidNet) ? ' Selling keeps ≈$' + fmt$(myPos.shares * x.bidNet, 0) + '; holding is worth ≈$' + fmt$(myPos.shares * x.pAdj, 0) + '.' : ''); }
+    if (key === 'locked') { cls = 'safe'; label = 'LOCKED'; speakKey = 'locked'; head = 'HOLD ' + side + ' to the bell — LOCKED'; conf = '100% · nothing can flip it · settles in ' + clock(E.r); ntCls = 'none'; ntL = 'Next trade: none — ride it'; ntR = 'pays $1.00'; why = ASSET.sym + ' would have to ' + w + ' $' + fmt$(x.cush, D0) + ' and stay there; the biggest ' + w + ' ever seen for ' + secsTxt(E.r) + ' is $' + fmt$(x.rec, D0) + ' (margin ×' + S.recMargin + '). A low bid now is other people\'s panic, not information.'; }
+    else if (key === 'sellnow') { cls = 'sell'; label = 'SELL NOW'; speakKey = 'sellnow'; head = 'SELL ' + side + ' NOW'; conf = 'projected to lose · settles in ' + clock(E.r); ntCls = 'sell'; ntL = 'SELL ' + side; ntR = Number.isFinite(x.bid) ? 'at ' + cents(x.bid) : 'at any bid'; why = (x.cush <= 0 ? 'If BTC stays here the final average lands on the other side (cushion ' + fmtS(x.cush, D0) + ').' : 'The math has your side at ' + pct(x.pAdj) + '.') + ' Take what is left.'; }
+    else if (key === 'sell') { cls = 'sell'; label = 'SELL'; speakKey = 'sell'; const win = Math.max(0, Math.floor(x.holdConf)); head = 'SELL ' + side + (E.r <= 120 && x.holdConf < lat + 5 && x.holdConf < E.r ? ' — window closing' : x.deadline ? ' — deadline' : ' — flip building'); conf = (win > 0 && win < E.r ? 'act within ' + win + ' s' : 'act now') + ' · you need ' + lat + ' s to fill · ' + clock(E.r) + ' left'; ntCls = 'sell'; ntL = 'SELL ' + side; ntR = Number.isFinite(x.bid) ? 'at ' + cents(x.bid) : 'at GTE ' + cents(x.sellAbove); why = (x.reason || 'The sell trigger cleared a moment ago. If you have not sold: a bid at or above ' + cents(x.sellAbove) + ' still beats holding; below that, hold and watch.') + (Number.isFinite(x.bidNet) ? ' Selling keeps ≈$' + fmt$(myPos.shares * x.bidNet, D0) + '; holding is worth ≈$' + fmt$(myPos.shares * x.pAdj, D0) + '.' : ''); }
     else { cls = 'caution'; label = x.thin ? 'HOLD · THIN' : 'HOLD'; speakKey = 'hold'; const h = x.holdConf >= E.r ? Infinity : x.holdConf, early = E.r > 120;
       head = 'HOLD ' + side + ' ' + (early && h < 30 ? '— watch it' : holdTxt(h) + ' (' + (S.holdConf || 99) + '%)');
-      conf = (Number.isFinite(x.eta) && x.eta > 0 ? 'LOCKED in ~' + secsTxt(x.eta) + ' if BTC holds · ' : '') + (x.thin && (S.exitBy || 0) > 0 && E.r > (S.exitBy || 0) ? 'sell by ' + clock(S.exitBy) + ' unless LOCKED · ' : '') + (h === Infinity ? 'safe to the bell at ' + (S.holdConf || 99) + '%' : 'cushion good ~' + Math.floor(h) + ' s at ' + (S.holdConf || 99) + '% · look again in ' + Math.max(3, Math.floor(h / 2)) + ' s') + (early ? ' · a flip now is a dip, not a wipe-out' : '');
-      ntCls = 'sell'; ntL = 'SELL ' + side + ' only if'; ntR = 'bid GTE ' + cents(x.sellAbove); why = 'A flip needs a $' + fmt$(x.cush, 0) + ' ' + w + ' held to the bell. Bad minute (p' + S.badPct + ') $' + fmt$(x.bad, 0) + ' · record $' + fmt$(x.rec, 0) + ' · last 10 s ' + fmtS(E.mv10, 0) + '.' + (x.thin ? ' Thin: a bid at or above ' + cents(x.sellAbove) + ' beats holding.' : ''); }
+      conf = (Number.isFinite(x.eta) && x.eta > 0 ? 'LOCKED in ~' + secsTxt(x.eta) + ' if ' + ASSET.sym + ' holds · ' : '') + (x.thin && (S.exitBy || 0) > 0 && E.r > (S.exitBy || 0) ? 'sell by ' + clock(S.exitBy) + ' unless LOCKED · ' : '') + (h === Infinity ? 'safe to the bell at ' + (S.holdConf || 99) + '%' : 'cushion good ~' + Math.floor(h) + ' s at ' + (S.holdConf || 99) + '% · look again in ' + Math.max(3, Math.floor(h / 2)) + ' s') + (early ? ' · a flip now is a dip, not a wipe-out' : '');
+      ntCls = 'sell'; ntL = 'SELL ' + side + ' only if'; ntR = 'bid GTE ' + cents(x.sellAbove); why = 'A flip needs a $' + fmt$(x.cush, D0) + ' ' + w + ' held to the bell. Bad minute (p' + S.badPct + ') $' + fmt$(x.bad, D0) + ' · record $' + fmt$(x.rec, D0) + ' · last 10 s ' + fmtS(E.mv10, D0) + '.' + (x.thin ? ' Thin: a bid at or above ' + cents(x.sellAbove) + ' beats holding.' : ''); }
   }
   else if (key === 'learning') { head = 'Learning BTC\'s record pace…'; conf = 'the Coinbase history scan takes a few seconds'; why = 'Until it finishes nothing can be called LOCKED.'; }
   else if (key === 'soldout') { cls = 'ready'; head = E.fav + ' is LOCKED — sold out'; conf = 'nobody is offering it under $1 · ' + clock(E.r) + ' left'; ntCls = favNt; ntL = 'BUY ' + E.fav + ' if offered'; ntR = 'LTE ' + cents(maxAsk); why = 'Nothing can flip ' + E.fav + ' now. Sellers show up when the spot wobbles — watch the button.'; }
-  else if (key === 'sure') { cls = 'lock'; label = 'SURE THING'; speakKey = 'sure'; const payUp = Number.isFinite(ask) ? ask : maxAsk, net = 1 - payUp - fee(payUp, S.fee); head = 'BUY ' + E.fav + ' ' + askTxt + ' — SURE THING'; conf = '100% · get filled within ' + clock(Math.max(0, E.r - lat)) + ' · ride to the bell'; ntCls = favNt; ntL = 'BUY ' + E.fav; ntR = askTxt; why = 'Locked: a record ' + fav.dropWord + ' ($' + fmt$(fav.rec, 0) + ') in the next ' + secsTxt(E.r) + ' cannot bring the average back across the target (it would take $' + fmt$(fav.cush, 0) + '). +' + (net * 100).toFixed(1) + '¢ per share after fee' + (Number.isFinite(q.askQty) ? ' · ' + Math.round(q.askQty) + ' shares offered' : '') + '.'; }
+  else if (key === 'sure') { cls = 'lock'; label = 'SURE THING'; speakKey = 'sure'; const payUp = Number.isFinite(ask) ? ask : maxAsk, net = 1 - payUp - fee(payUp, S.fee); head = 'BUY ' + E.fav + ' ' + askTxt + ' — SURE THING'; conf = '100% · get filled within ' + clock(Math.max(0, E.r - lat)) + ' · ride to the bell'; ntCls = favNt; ntL = 'BUY ' + E.fav; ntR = askTxt; why = 'Locked: a record ' + fav.dropWord + ' ($' + fmt$(fav.rec, D0) + ') in the next ' + secsTxt(E.r) + ' cannot bring the average back across the target (it would take $' + fmt$(fav.cush, D0) + '). +' + (net * 100).toFixed(1) + '¢ per share after fee' + (Number.isFinite(q.askQty) ? ' · ' + Math.round(q.askQty) + ' shares offered' : '') + '.'; }
   else if (key === 'surecost') { cls = 'ready'; head = E.fav + ' is LOCKED but costs ' + cents(ask); conf = 'above your ' + cents(maxAsk) + ' max · ' + clock(E.r) + ' left'; ntCls = favNt; ntL = 'BUY ' + E.fav + ' only'; ntR = 'LTE ' + cents(maxAsk); why = 'Net would be ' + ((1 - ask - fee(ask, S.fee)) * 100).toFixed(1) + '¢/share. Raise the max in Settings if that is still worth it.'; }
   else if (key === 'done') { head = 'DONE — no second trade this round'; conf = E.fav + ' for now · ' + clock(E.r) + ' left'; ntL = 'Next trade: next round'; why = 'One discount trade a round is what the replay tested: re-entering after a sell is the whipsaw — a coin flip bought twice. The next round starts fresh.'; }
   else if (key === 'ending') { head = 'DON\'T BUY — round ending'; conf = E.fav + ' for now, not locked · ' + clock(E.r) + ' left'; ntL = 'Next trade: next round'; why = 'Real flip chance ' + chanceTxt(E.buyIn ? E.buyIn.flip : NaN) + '. ' + Math.round(E.d.known * 100) + '% of the average is in the books.'; }
   else if (key === 'buy') { const en = E.entry, sideNt = en.side === 'UP' ? 'up' : 'down'; cls = 'lock'; label = 'BUY · DISCOUNT'; speakKey = 'buy'; head = 'BUY ' + en.side + ' at ' + cents(en.ask) + ' — discount'; conf = fmt$(en.edge * 100, 1) + '¢ edge after fee vs a ' + pct(en.p) + ' chance · fill within ' + Math.max(1, Math.round(E.r - lat)) + ' s · ' + clock(E.r) + ' left'; ntCls = sideNt; ntL = 'BUY ' + en.side; ntR = 'at LTE ' + cents(en.lim); why = en.side + ' is offered under the price its chance justifies (' + cents(en.lim) + ' leaves ' + (S.entryEdge == null ? 4 : S.entryEdge) + '¢). The replay made its money here: buy the discount early, sell when the market overpays late. Not a sure thing — the SELL rules take over once you are in.'; }
   else if (key === 'ef') { cls = 'hold'; label = 'EF RULE · CAUTION'; head = 'BUY ' + E.fav + ' at ' + cents(ask) + ' (EF)'; const efWin = ROUND - E.r; conf = 'window closes in ' + secsTxt(efWin < 160 ? 150 - efWin : 210 - efWin) + ' · hold to the end'; ntCls = favNt; ntL = 'BUY ' + E.fav; ntR = 'at ' + cents(ask); why = 'Your tested rule (Oct 6–22): favorite at ' + S.efLo + '–' + S.efHi + '¢ at 13:00 / 12:00 left. Not a sure thing: real flip chance ' + chanceTxt(1 - E.pFavAdj) + ', button scare ' + chanceTxt(fav.scare) + '.'; }
   else if (key === 'efcheck') { cls = 'hold'; head = 'EF CHECK — ' + E.fav + ' only at ' + S.efLo + '–' + S.efHi + '¢'; const efWin = ROUND - E.r; conf = (Number.isFinite(ask) ? 'button shows ' + cents(ask) + ' — outside the band' : 'read the ask off the button') + ' · closes in ' + secsTxt(efWin < 160 ? 150 - efWin : 210 - efWin); ntCls = favNt; ntL = 'BUY ' + E.fav + ' only'; ntR = S.efLo + '–' + S.efHi + '¢'; why = 'Real flip chance ' + chanceTxt(1 - E.pFavAdj) + '. Outside the band the price does not pay for the risk.'; }
-  else if (key === 'ready') { cls = 'ready'; head = 'WAIT — ' + E.fav + ' close to LOCKED'; conf = (Number.isFinite(fav.eta) ? 'locks in ~' + secsTxt(fav.eta) + ' if BTC holds' : 'no lock before the bell at this cushion') + ' · ' + clock(E.r) + ' left'; ntCls = favNt; ntL = 'BUY ' + E.fav + ' when LOCKED'; ntR = 'LTE ' + cents(maxAsk); why = 'To flip it BTC must ' + fav.dropWord + ' $' + fmt$(fav.cush, 0) + ' and hold; record for the time left $' + fmt$(fav.rec, 0) + '. Real flip chance ' + chanceTxt(1 - E.pFavAdj) + ' — buying now is a caution play' + (Number.isFinite(ask) ? ' at ' + cents(ask) : '') + '.'; }
+  else if (key === 'ready') { cls = 'ready'; head = 'WAIT — ' + E.fav + ' close to LOCKED'; conf = (Number.isFinite(fav.eta) ? 'locks in ~' + secsTxt(fav.eta) + ' if ' + ASSET.sym + ' holds' : 'no lock before the bell at this cushion') + ' · ' + clock(E.r) + ' left'; ntCls = favNt; ntL = 'BUY ' + E.fav + ' when LOCKED'; ntR = 'LTE ' + cents(maxAsk); why = 'To flip it BTC must ' + fav.dropWord + ' $' + fmt$(fav.cush, D0) + ' and hold; record for the time left $' + fmt$(fav.rec, D0) + '. Real flip chance ' + chanceTxt(1 - E.pFavAdj) + ' — buying now is a caution play' + (Number.isFinite(ask) ? ' at ' + cents(ask) : '') + '.'; }
   else { const nb = noBuyFor(E), b = E.buyIn; head = 'DON\'T BUY for ' + (nb.secs >= 60 ? clock(nb.secs) : Math.max(1, Math.ceil(nb.secs)) + ' s'); conf = (key === 'chop' ? 'coin flip · ' : E.fav + ' for now · ') + (b ? 'unless ' + E.fav + ' is offered LTE ' + cents(b.lim) + ' · ' : '') + 'next check: ' + nb.why; ntCls = favNt; ntL = 'BUY ' + E.fav + ' only'; ntR = b ? 'LTE ' + cents(b.lim) : '—'; why = 'Real flip chance ' + chanceTxt(1 - E.pFavAdj) + ' · button scare ' + chanceTxt(fav.scare) + '. At ' + (b ? cents(b.lim) : '—') + ' or under the price leaves ' + (S.entryEdge == null ? 8 : S.entryEdge) + '¢ after fee for that risk (the replay-tested entry); the sure thing usually opens inside the last 2 minutes.'; }
   // ---- confidence badge: always the same number — the calibrated chance that the side in question wins at the bell
   //      (100% only when LOCKED: record pace cannot flip it, 224/224 on the replay). The label says what to make of it.
@@ -1170,10 +1194,10 @@ function dictate(E) {
     else if (key === 'sell') nx.push([xMine.kind === 'harvest' ? 'Sell ' + side + ' at GTE ' + cents(xMine.sellAbove) + ' — the bid overpays' : 'Sell ' + side + ' — any bid GTE ' + cents(xMine.sellAbove), 'now', 'cold'], ['Tap Out once it fills', '', ''], [E.r > (S.killSecs || 45) ? dnBuy : 'No new buys inside the last ' + kill, '', '']);
     else {
       nx.push(['Sell ' + side + ' only if the bid is GTE ' + cents(xMine.sellAbove) + ' (' + sz + ')', Number.isFinite(xMine.bid) ? 'bid ' + cents(xMine.bid) : '', '']);
-      if (Number.isFinite(xMine.eta) && xMine.eta > 0 && xMine.eta < E.r) nx.push(['LOCKED if BTC holds here', '~' + secsTxt(xMine.eta), 'hot']);
+      if (Number.isFinite(xMine.eta) && xMine.eta > 0 && xMine.eta < E.r) nx.push(['LOCKED if ' + ASSET.sym + ' holds here', '~' + secsTxt(xMine.eta), 'hot']);
       else if (xMine.thin && (S.exitBy || 0) > 0 && E.r > S.exitBy) nx.push(['Sell by ' + clock(S.exitBy) + ' unless LOCKED', 'in ' + clock(E.r - S.exitBy), 'warm']);
       else nx.push(['Look again', (xMine.holdConf >= E.r ? Math.max(5, Math.floor(E.r / 2)) : Math.max(3, Math.floor(xMine.holdConf / 2))) + ' s', '']);
-      nx.push(['Settles · pays $' + fmt$(myPos.shares, 0) + ' if ' + side + ' holds', clock(E.r), '']);
+      nx.push(['Settles · pays $' + fmt$(myPos.shares, D0) + ' if ' + side + ' holds', clock(E.r), '']);
     }
   }
   else if (key === 'buy') { const en = E.entry; nx.push(['Tap BUY ' + en.side + ' LTE ' + cents(en.lim) + ' · stake ×' + stakeX(en), 'now', 'hot'], ['Set the position below (I\'m in)', '', ''], ['Sell only when the bid beats the math by ' + (S.sellEdge == null ? 5 : S.sellEdge) + '¢ ' + sz, '', '']); }
@@ -1200,7 +1224,7 @@ function renderPosLine(E) {
   const el = $('pos-line');
   if (!myPos) { el.textContent = 'No position — set it right after you buy.'; return; }
   const x = E.exitCheck ? E.exitCheck(myPos.side) : null;
-  el.innerHTML = 'IN <b>' + myPos.side + '</b> @<b>' + cents(myPos.price) + '</b> · <b>$' + fmt$(myPos.spent, 0) + '</b>' + (x && Number.isFinite(x.p) ? ' · worth <b>' + (x.locked ? '100%' : pct(Math.min(x.pAdj, 0.995))) + '</b>' : '') + (x && Number.isFinite(x.bid) ? ' · bid <b>' + cents(x.bid) + '</b>' : '') + ' · pays <b>$' + fmt$(myPos.shares, 0) + '</b>';
+  el.innerHTML = 'IN <b>' + myPos.side + '</b> @<b>' + cents(myPos.price) + '</b> · <b>$' + fmt$(myPos.spent, D0) + '</b>' + (x && Number.isFinite(x.p) ? ' · worth <b>' + (x.locked ? '100%' : pct(Math.min(x.pAdj, 0.995))) + '</b>' : '') + (x && Number.isFinite(x.bid) ? ' · bid <b>' + cents(x.bid) + '</b>' : '') + ' · pays <b>$' + fmt$(myPos.shares, D0) + '</b>';
 }
 function renderWarn(E) {
   const w = [];
@@ -1221,7 +1245,7 @@ function renderHeader(E) {
   tm.textContent = r > 0 ? clock(r) : 'ENDED'; tm.className = 'timer num' + (r <= 60 ? ' closing' : '') + (r <= 10 ? ' final' : '');
   $('timer-sub').textContent = r > 0 ? (E.knownN > 0 ? E.knownN + '/60 prints in' : 'left in this round') : 'settling';
   const pt = (id, v, ref) => { const el = $(id), d = $(id + '-d'); const ok = Number.isFinite(v) && Number.isFinite(ref); el.textContent = Number.isFinite(v) ? fmt$(v) : '—'; el.className = 'pv ' + (ok ? (v >= ref ? 'above' : 'below') : 'flat');
-    if (d) { d.textContent = ok ? (v - ref >= 0 ? '+' : '−') + fmt$(Math.abs(v - ref), 0) : '—'; d.className = 'pd ' + (ok ? (v >= ref ? 'above' : 'below') : 'flat'); } };
+    if (d) { d.textContent = ok ? (v - ref >= 0 ? '+' : '−') + fmt$(Math.abs(v - ref), D0) : '—'; d.className = 'pd ' + (ok ? (v >= ref ? 'above' : 'below') : 'flat'); } };
   $('pt-target').textContent = Number.isFinite(E.target) ? fmt$(E.target) : '—';
   $('pt-target-src').textContent = R.targetSrc === 'api' || R.targetSrc === 'series' ? 'exact' : R.targetSrc === 'manual' ? 'typed' : R.targetSrc === 'est' ? '±$15' : '—';
   pt('pt-pm', E.pmShown, E.target); pt('pt-idx', Number.isFinite(E.spot) ? E.spot + E.off : NaN, E.target); pt('pt-spot', E.spot, E.tgtChart);
@@ -1230,25 +1254,25 @@ function renderHeader(E) {
 function renderNumbers(E) {
   const live = E.r > 0 && Number.isFinite(E.target) && Number.isFinite(E.spot) && Number.isFinite(E.pUp);
   const side = myPos ? myPos.side : E.fav, x = live ? (myPos ? E.exitCheck(side) : E.sideInfo(side)) : null;
-  const c$ = v => '$' + fmt$(v, 0);
+  const c$ = v => '$' + fmt$(v, D0);
   ncell('m-why', E.whyTxt || (E.r <= 0 ? 'Round over — the next target is this round\'s final price.' : 'Waiting for prices.'));
   ncell('m-side', live ? side + (myPos ? ' · mine' : ' · for now') : '—', live ? (side === 'UP' ? 'ok' : 'bad') : '');
   ncell('m-p', x ? (x.locked ? '100% · locked' : pct(Math.min(x.pAdj, 0.995)) + (x.pAdj < x.p - 0.005 ? ' · fat tails' : '')) : '—', x && x.locked ? 'ok' : x && x.pAdj < 0.5 ? 'bad' : '');
   ncell('m-cush', x && Number.isFinite(x.cush) ? (x.cush <= 0 ? 'past it by ' + c$(-x.cush) : c$(x.cush) + ' ' + x.dropWord + ' flips ' + side) : '—', x ? (x.locked ? 'ok' : x.cush <= 0 ? 'bad' : x.thin ? 'thin' : '') : '');
   ncell('m-kill', x && Number.isFinite(x.killPM) ? fmt$(x.killPM) + ' · ' + (side === 'UP' ? 'below' : 'above') + ' flips it' : '—');
   ncell('m-hold', x ? (x.locked ? 'the bell · locked' : x.holdConf >= E.r ? 'the bell · ' + (S.holdConf || 99) + '%' : 'GTE ' + Math.floor(x.holdConf) + ' s · ' + (S.holdConf || 99) + '%') : '—', x && (x.locked || x.holdConf >= E.r) ? 'ok' : x && x.holdConf < (S.latency || 0) + 5 ? 'bad' : '');
-  ncell('m-lock', x ? (x.locked ? 'now' : Number.isFinite(x.eta) ? (x.eta <= 0 ? 'now' : '~' + secsTxt(x.eta) + ' if BTC holds') : 'not before the bell') : '—', x && x.locked ? 'ok' : '');
+  ncell('m-lock', x ? (x.locked ? 'now' : Number.isFinite(x.eta) ? (x.eta <= 0 ? 'now' : '~' + secsTxt(x.eta) + ' if ' + ASSET.sym + ' holds') : 'not before the bell') : '—', x && x.locked ? 'ok' : '');
   ncell('m-bad', x ? c$(x.bad) + (x.badLeft < x.bad - 0.5 ? ' · ' + c$(x.badLeft) + ' for ' + secsTxt(E.r) : '') : '—');
   ncell('m-rec', x ? c$(x.rec) + ' · margin ×' + S.recMargin : '—');
-  ncell('m-mv10', Number.isFinite(E.mv10) ? fmtS(E.mv10, 0) : '—', E.mv10 > 0 ? 'ok' : E.mv10 < 0 ? 'bad' : '');
-  ncell('m-mv30', Number.isFinite(E.mv30) ? fmtS(E.mv30, 0) : '—', E.mv30 > 0 ? 'ok' : E.mv30 < 0 ? 'bad' : '');
+  ncell('m-mv10', Number.isFinite(E.mv10) ? fmtS(E.mv10, D0) : '—', E.mv10 > 0 ? 'ok' : E.mv10 < 0 ? 'bad' : '');
+  ncell('m-mv30', Number.isFinite(E.mv30) ? fmtS(E.mv30, D0) : '—', E.mv30 > 0 ? 'ok' : E.mv30 < 0 ? 'bad' : '');
   ncell('m-paceeta', x && x.pace > 0 && Number.isFinite(x.etaKill) ? '~' + secsTxt(x.etaKill) + ' · ' + x.paceK + '-s pace' : x ? 'not heading there' : '—', x && x.pace > 0 && Number.isFinite(x.etaKill) ? (x.etaKill <= (S.etaWarnS || 30) + (S.latency || 0) ? 'bad' : 'warn') : '');
-  ncell('m-ahead', live && Number.isFinite(E.pmAhead) ? fmt$(E.pmAhead) + ' · ' + fmtS(E.pmAhead - E.target, 0) : '—', live && Number.isFinite(E.pmAhead) ? (E.pmAhead >= E.target ? 'ok' : 'bad') : '');
-  ncell('m-pmvs', live && Number.isFinite(E.pmShown) ? fmtS(E.pmShown - E.target, 0) + ' · ' + (E.pmSrc === 'series' ? 'exact' : 'modeled') : '—', 'pm');
+  ncell('m-ahead', live && Number.isFinite(E.pmAhead) ? fmt$(E.pmAhead) + ' · ' + fmtS(E.pmAhead - E.target, D0) : '—', live && Number.isFinite(E.pmAhead) ? (E.pmAhead >= E.target ? 'ok' : 'bad') : '');
+  ncell('m-pmvs', live && Number.isFinite(E.pmShown) ? fmtS(E.pmShown - E.target, D0) + ' · ' + (E.pmSrc === 'series' ? 'exact' : 'modeled') : '—', 'pm');
   ncell('m-known', E.r > 0 ? E.knownN + '/60' + (E.knownN > 0 && E.d ? ' · ' + Math.round(E.d.known * 100) + '% fixed' : E.r > WIN ? ' · opens in ' + clock(E.r - WIN) : '') : '—');
   const RI = E.reach;
   ncell('m-reach', RI && RI.tier >= 0 ? RI.word + ' · ' + RI.minsTxt + ' vs ' + clock(E.r) : RI ? 'scanning' : '—', RI ? (RI.tier === 0 ? 'ok' : RI.tier === 3 ? 'bad' : RI.tier === 2 ? 'warn' : '') : '');
-  ncell('m-touch', RI && RI.tier >= 0 ? pct(RI.odds) + ' · ' + fmtS(RI.dist, 0).replace('+', '') + ' to the target' : '—');
+  ncell('m-touch', RI && RI.tier >= 0 ? pct(RI.odds) + ' · ' + fmtS(RI.dist, D0).replace('+', '') + ' to the target' : '—');
   const b = E.buyIn;
   ncell('m-buyin', b && Number.isFinite(b.ask) ? cents(b.ask) + ' · ' + b.grade + ' · ' + (b.edge >= 0 ? '+' : '−') + fmt$(Math.abs(b.edge) * 100, 1) + '¢ edge' + (b.src === 'book' ? '' : ' · typed') : b ? 'no ask on the book' : '—', b && b.grade === 'POOR' ? 'bad' : b && (b.grade === 'GOOD' || b.grade === 'GREAT') ? 'ok' : '');
   ncell('m-ladder', b ? cents(b.lim) + ' · ' + cents(b.good) + ' · ' + cents(b.be) : '—');
@@ -1257,12 +1281,12 @@ function renderNumbers(E) {
   ncell('m-window', clock(hi) + '→' + clock(lo) + ' · ' + (S.entryEdge == null ? 8 : S.entryEdge) + '¢+ · ' + (S.dogBuy === false ? 'fav only' : 'either side'), E.r > 0 && E.r >= lo && E.r <= hi ? 'ok' : '');
   const efWin = ROUND - E.r;
   ncell('m-ef', S.useEF === false ? 'off' : E.r <= 0 ? '—' : efWin < 110 ? 'check at 13:00 · in ' + secsTxt(110 - efWin) : efWin <= 150 ? 'open · ' + S.efLo + '–' + S.efHi + '¢' : efWin < 170 ? 'check at 12:00 · in ' + secsTxt(170 - efWin) : efWin <= 210 ? 'open · ' + S.efLo + '–' + S.efHi + '¢' : 'done this round', E.r > 0 && ((efWin >= 110 && efWin <= 150) || (efWin >= 170 && efWin <= 210)) ? 'ok' : '');
-  ncell('m-pos', myPos ? myPos.side + ' @' + cents(myPos.price) + ' · $' + fmt$(myPos.spent, 0) + ' · ' + myPos.shares.toFixed(1) + ' sh' : 'none');
+  ncell('m-pos', myPos ? myPos.side + ' @' + cents(myPos.price) + ' · $' + fmt$(myPos.spent, D0) + ' · ' + myPos.shares.toFixed(1) + ' sh' : 'none');
   ncell('m-worth', myPos && x ? '$' + fmt$(myPos.shares * (x.locked ? 1 : Math.min(x.pAdj, 0.995))) + ' · ' + fmtS(myPos.shares * (x.locked ? 1 : Math.min(x.pAdj, 0.995)) - myPos.spent) : '—', myPos && x ? (myPos.shares * (x.locked ? 1 : x.pAdj) >= myPos.spent ? 'ok' : 'bad') : '');
   ncell('m-sellnow', myPos && x && Number.isFinite(x.bidNet) ? '$' + fmt$(myPos.shares * x.bidNet) + ' · ' + fmtS(myPos.shares * x.bidNet - myPos.spent) + ' at ' + cents(x.bid) + (x.bidSrc === 'typed' ? ' typed' : '') : myPos ? 'no bid on the book' : '—');
   ncell('m-towin', myPos ? '$' + fmt$(myPos.shares) + ' · ' + fmtS(myPos.shares - myPos.spent) : '—', myPos ? 'ok' : '');
   const pc = paper.state === 'armed' ? 'selling in ' + Math.max(0, Math.ceil(paper.armAt - E.nowS)) + ' s' : paper.state === 'firing' ? 'SELLING' : paper.state === 'sold' ? 'sold' : paper.side ? 'holding ' + paper.side + ' @' + cents(paper.px) : E.r <= 0 ? 'round over' : S.paperOn === 'edge' ? (E.entry ? 'buying ' + E.entry.side : 'waiting for a discount') : S.paperOn === 'sure' ? 'waiting for a lock' : 'waiting for a math lock';
-  ncell('m-paper', pc + (paper.side ? ' · ' + paper.shares.toFixed(1) + ' sh · $' + fmt$(paper.cost, 0) : ''), paper.state === 'armed' || paper.state === 'firing' ? 'warn' : '');
+  ncell('m-paper', pc + (paper.side ? ' · ' + paper.shares.toFixed(1) + ' sh · $' + fmt$(paper.cost, D0) : ''), paper.state === 'armed' || paper.state === 'firing' ? 'warn' : '');
   ncell('m-paperpnl', fmtS(paper.roundPnl) + ' · ' + fmtS(paper.totalPnl), paper.totalPnl > 0 ? 'ok' : paper.totalPnl < 0 ? 'bad' : '');
   ncell('m-next', E.d && Number.isFinite(E.d.mean) && E.knownN > 0 ? fmt$(E.d.mean) + ' · ' + E.knownN + '/60' : E.r > WIN ? 'forms in ' + clock(E.r - WIN) : E.r > 0 ? 'forming' : Number.isFinite(E.settleExact) ? fmt$(E.settleExact) + ' · final' : '—', 'tgt');
   ncell('m-lockrec', lockStats.held + ' held · ' + lockStats.failed + ' lost' + (lockStats.checked ? ' · API ok ' + lockStats.exact + '/' + lockStats.checked : ''), lockStats.failed ? 'bad' : lockStats.held ? 'ok' : '');
@@ -1277,7 +1301,7 @@ function renderNumbers(E) {
 function renderPast() {
   const box = $('past');
   if (!history.length) { box.innerHTML = '<span class="hint">None yet.</span>'; return; }
-  box.innerHTML = history.slice(-12).reverse().map(h => { const fail = h.lockCall && h.result && h.lockJudged && h.lockCall.side !== h.result; return '<span class="pill ' + (h.result === 'UP' ? 'up' : h.result === 'DOWN' ? 'down' : '') + (h.lockCall ? ' locked' : '') + (fail ? ' failed' : '') + '" title="' + (h.settleSrc || '') + '"><b>' + (h.result === 'UP' ? '↑' : h.result === 'DOWN' ? '↓' : '·') + ' ' + etFmt.format(new Date(h.T0 * 1000)).replace(/ (AM|PM)$/, '') + '</b><span>' + (Number.isFinite(h.margin) ? fmtS(h.margin, 0) : '—') + '</span><span>' + (h.lockCall ? (fail ? 'LOCK LOST' : 'lock ' + clock(h.lockCall.at)) : 'no lock') + '</span></span>'; }).join('');
+  box.innerHTML = history.slice(-12).reverse().map(h => { const fail = h.lockCall && h.result && h.lockJudged && h.lockCall.side !== h.result; return '<span class="pill ' + (h.result === 'UP' ? 'up' : h.result === 'DOWN' ? 'down' : '') + (h.lockCall ? ' locked' : '') + (fail ? ' failed' : '') + '" title="' + (h.settleSrc || '') + '"><b>' + (h.result === 'UP' ? '↑' : h.result === 'DOWN' ? '↓' : '·') + ' ' + etFmt.format(new Date(h.T0 * 1000)).replace(/ (AM|PM)$/, '') + '</b><span>' + (Number.isFinite(h.margin) ? fmtS(h.margin, D0) : '—') + '</span><span>' + (h.lockCall ? (fail ? 'LOCK LOST' : 'lock ' + clock(h.lockCall.at)) : 'no lock') + '</span></span>'; }).join('');
 }
 
 // ---------- chart ----------
@@ -1303,7 +1327,7 @@ function drawChart(E) {
   // grid: price
   ctx.strokeStyle = '#1b2232'; ctx.lineWidth = 1; ctx.fillStyle = '#6f7a93'; ctx.font = '11px IBM Plex Mono, monospace'; ctx.textAlign = 'left'; ctx.textBaseline = 'middle';
   const step = [1, 2, 5, 10, 20, 25, 50, 100, 200].find(s => span / s <= 8) || 500;
-  for (let v = Math.ceil(lo / step) * step; v <= hi; v += step) { const y = yOf(v); ctx.beginPath(); ctx.moveTo(padL, y); ctx.lineTo(W - padR, y); ctx.stroke(); ctx.fillText(fmt$(v, 0), W - padR + 8, y); }
+  for (let v = Math.ceil(lo / step) * step; v <= hi; v += step) { const y = yOf(v); ctx.beginPath(); ctx.moveTo(padL, y); ctx.lineTo(W - padR, y); ctx.stroke(); ctx.fillText(fmt$(v, D0), W - padR + 8, y); }
   // grid: minutes + round boundaries
   ctx.textAlign = 'center'; ctx.textBaseline = 'top';
   for (let t = Math.ceil(t0 / 60) * 60; t <= t1; t += 60) { const x = xOf(t); const isQ = t % ROUND === 0; ctx.strokeStyle = isQ ? '#3a4668' : '#161c2a'; ctx.lineWidth = isQ ? 1.5 : 1; ctx.beginPath(); ctx.moveTo(x, padT); ctx.lineTo(x, H - padB); ctx.stroke();
@@ -1317,7 +1341,7 @@ function drawChart(E) {
   // spot line
   ctx.strokeStyle = '#9b8cff'; ctx.lineWidth = 2; ctx.beginPath(); pts.forEach((p, i) => { const x = xOf(p[0]), y = yOf(p[1]); i ? ctx.lineTo(x, y) : ctx.moveTo(x, y); }); ctx.stroke();
   const last = pts[pts.length - 1], xs = xOf(last[0]), ys = yOf(last[1]);
-  // lookahead stub: from the PM line now to where it reads in lookS seconds if BTC holds
+  // lookahead stub: from the PM line now to where it reads in lookS seconds if ' + ASSET.sym + ' holds
   if (pm.length && E.r > 0 && Number.isFinite(E.pmAhead)) { const pl = pm[pm.length - 1]; const xe = xOf(Math.min(E.sec + E.lookS, R.T)), ye = yOf(E.pmAhead - off);
     ctx.save(); ctx.setLineDash([3, 4]); ctx.strokeStyle = '#62ccff'; ctx.lineWidth = 2; ctx.beginPath(); ctx.moveTo(xOf(pl[0]), yOf(pl[1])); ctx.lineTo(xe, ye); ctx.stroke(); ctx.restore();
     ctx.beginPath(); ctx.fillStyle = '#62ccff'; ctx.arc(xe, ye, 3.5, 0, Math.PI * 2); ctx.fill(); }
@@ -1329,7 +1353,7 @@ function drawChart(E) {
     if (Number.isFinite(E.killPx) && E.knownN > 0 && E.r > 0 && E.killPx > lo && E.killPx < hi) {
       const yk = yOf(E.killPx), side = myPos ? myPos.side : E.fav, cush = side === 'UP' ? E.cushUp : E.cushDn;
       ctx.save(); ctx.strokeStyle = '#ff4b5c'; ctx.lineWidth = 2.5; ctx.shadowColor = '#ff4b5c'; ctx.shadowBlur = 8; ctx.beginPath(); ctx.moveTo(xa - 30, yk); ctx.lineTo(W - padR, yk); ctx.stroke(); ctx.restore();
-      ctx.fillStyle = '#ff4b5c'; ctx.fillRect(W - padR + 2, yk - 11, padR - 4, 22); ctx.fillStyle = '#fff'; ctx.font = 'bold 11px IBM Plex Mono, monospace'; ctx.textAlign = 'left'; ctx.fillText('KILL ' + fmtS(-cush, 0), W - padR + 6, yk);
+      ctx.fillStyle = '#ff4b5c'; ctx.fillRect(W - padR + 2, yk - 11, padR - 4, 22); ctx.fillStyle = '#fff'; ctx.font = 'bold 11px IBM Plex Mono, monospace'; ctx.textAlign = 'left'; ctx.fillText('KILL ' + fmtS(-cush, D0), W - padR + 6, yk);
     }
     // the post: a ruler from the spot to the target (the numbers for it live in the grid below the chart)
     const xp = Math.min(xs + 22, W - padR - 6);
@@ -1372,8 +1396,8 @@ function renderPriceNow() {
 }
 $('my-set').onclick = () => { const price = Number($('my-price').value) / 100, shares = Number($('my-shares').value), spent = shares * price;
   if (!(price > 0 && price < 1) || !(shares > 0)) { toast('Pick the price you paid and enter the number of shares'); return; }
-  myPos = { T0: R.T0, side: mySide, price, spent, shares }; R.traded = true; try { localStorage.setItem('pm15.mypos', JSON.stringify(myPos)); } catch (e) {} lastSpoken = { key: '', at: 0 }; toast('Tracking your ' + mySide + ' position'); };
-$('my-clear').onclick = () => { myPos = null; try { localStorage.removeItem('pm15.mypos'); } catch (e) {} };
+  myPos = { T0: R.T0, side: mySide, price, spent, shares }; R.traded = true; try { localStorage.setItem(LS('mypos'), JSON.stringify(myPos)); } catch (e) {} lastSpoken = { key: '', at: 0 }; toast('Tracking your ' + mySide + ' position'); };
+$('my-clear').onclick = () => { myPos = null; try { localStorage.removeItem(LS('mypos')); } catch (e) {} };
 function loadSettings() {
   $('s-stake').value = S.stake; $('s-lockp').value = S.lockP; $('s-maxask').value = S.maxAsk; $('s-drift').value = S.drift; $('s-fee').value = S.fee; $('s-relay').value = S.relay || ''; $('s-offset').value = S.offset == null ? '' : S.offset.toFixed(2);
   $('s-recmargin').value = S.recMargin; $('s-reach-green').value = S.reachGreen; $('s-reach-yellow').value = S.reachYellow;
@@ -1392,7 +1416,7 @@ $('s-save').onclick = () => {
   const tIn = Number($('s-target').value); if (tIn > 1000) { R.target = tIn; R.targetSrc = 'manual'; calibrateOffsetRound(); }
   saveS(); R.apiOk = null; IDX.ok = null; pmFetchMarket(); pmFetchBook(); pmFetchSeries(); toast('Saved');
 };
-$('s-reset-hist').onclick = () => { history = []; lockStats = { calls: 0, held: 0, failed: 0, exact: 0, checked: 0 }; saveLock(); try { localStorage.removeItem('pm15.history'); localStorage.removeItem('pm15.paperTotal'); } catch (e) {} paper.totalPnl = 0; renderPast(); toast('History cleared'); };
+$('s-reset-hist').onclick = () => { history = []; lockStats = { calls: 0, held: 0, failed: 0, exact: 0, checked: 0 }; saveLock(); try { localStorage.removeItem(LS('history')); localStorage.removeItem(LS('paperTotal')); } catch (e) {} paper.totalPnl = 0; renderPast(); toast('History cleared'); };
 loadSettings();
 if (myPos && myPos.T0 !== Math.floor(Date.now() / 1000 / ROUND) * ROUND) myPos = null;
 
@@ -1426,14 +1450,20 @@ setInterval(() => {
 }, 1000);
 // ---------- Mr. P live log: the bot force-pushes its last 150 events to the mrp-live-tail branch every 15 s; raw GitHub serves it with
 // CORS, so the page reads it straight — the bot never knows the page exists. Lines are shown for the market the bot is in.
-const BOT_TAIL = 'https://raw.githubusercontent.com/watkast/predictionbots/mrp-live-tail/tail.jsonl';
+const BOT_TAIL = 'https://raw.githubusercontent.com/watkast/predictionbots/' + ASSET.tail + '/tail.jsonl';
 let botSeen = '', botAt = 0, botTermScrolled = false;
 const botFmt = x => {
   const d = x.d || {}, k = x.k;
   const c = v => Number.isFinite(v) ? Math.round(v * 100) + '¢' : '—';
+  if (k === 'snap' && d.bot === 'E') return ['snap', clock(d.r) + ' UP ask ' + (Number.isFinite(d.upAsk) ? Math.round(d.upAsk * 100) : '—') + ' DOWN ask ' + (Number.isFinite(d.dnAsk) ? Math.round(d.dnAsk * 100) : '—') + ' · ' + (d.held ? 'HELD ' + d.held + ' · sell at 30 resting' : d.resting && d.resting.length ? 'resting 25¢ ' + d.resting.join('+') : 'no orders')];
+  if (k === 'rest') return ['order', d.sellAt ? 'REST sell ' + d.side + ' at ' + c(d.sellAt) : 'REST buy ' + d.side + ' at ' + c(d.at) + ' · 1 sh'];
+  if (k === 'round') return ['sys', d.exit ? 'round: ' + d.exit : d.buysPulled ? d.buysPulled : d.held ? 'held ' + d.held + ' @ ' + c(d.px) + ' to the bell' : JSON.stringify(d).slice(0, 80)];
+  if (k === 'dry') return ['order', 'DRY ' + d.intent + ' ' + (d.price && d.price.value) + ' × ' + d.quantity];
   if (k === 'snap') return ['snap', clock(d.r) + ' ' + d.fav + ' ' + (Number.isFinite(d.p) ? Math.round(d.p * 100) + '%' : '—') + ' ask ' + (Number.isFinite(d.ask) ? Math.round(d.ask * 100) : '—') + ' lte ' + (Number.isFinite(d.lim) ? Math.round(d.lim * 100) : '—') + ' ' + (d.pos ? 'IN ' + d.pos : 'flat') + (d.bookAge > 3 ? ' book ' + d.bookAge + 's' : '')];
   if (k === 'cmd') return ['cmd', 'CMD ' + d.text + (d.sh ? ' · ' + d.sh + ' sh' : '') + ' · ' + clock(d.left) + ' left'];
   if (k === 'order') { if (d.cancel) return ['order', 'ORDER cancelled after the window · filled ' + d.filled]; if (d.unfilled) return ['order', 'ORDER not filled']; if (d.unfilledSell) return ['order', 'SELL not filled in the window']; if (d.kind === 'buy') return ['order', 'ORDER buy ' + d.side + ' ' + d.qty + ' sh LTE ' + c(d.lim) + ' · ask ' + c(d.ask) + ' · $' + d.usd + (d.dry ? ' · DRY' : '')]; return ['order sell', 'ORDER sell ' + d.side + ' ' + d.qty + ' sh at ' + c(d.px) + ' · bid ' + c(d.bid) + (d.now ? ' · NOW' : '')]; }
+  if (k === 'fill' && d.sold != null) return ['fill sell', 'FILL sell ' + d.side + ' @ ' + c(d.sold) + ' · ' + (d.pnl >= 0 ? '+' : '−') + '$' + Math.abs(d.pnl).toFixed(2)];
+  if (k === 'fill' && d.kind == null) return ['fill', 'FILL buy ' + d.side + ' ' + (d.qty || 1) + ' sh @ ' + c(d.px)];
   if (k === 'fill') return [d.kind === 'buy' ? 'fill' : 'fill sell', 'FILL ' + d.kind + ' ' + d.side + ' ' + d.qty + ' sh @ ' + c(d.px) + (d.usd != null ? ' · $' + d.usd : d.proceeds != null ? ' · +$' + d.proceeds : '')];
   if (k === 'settle') return [d.pnl >= 0 ? 'win' : 'loss', 'SETTLED ' + d.result + ' · ' + d.side + ' ' + (d.pnl >= 0 ? 'won +$' : 'lost −$') + Math.abs(d.pnl).toFixed(2)];
   if (k === 'skip') return ['skip', 'SKIP ' + d.why];
@@ -1465,6 +1495,7 @@ async function pollBot() {
   } catch (e) { st.textContent = 'no bot feed (' + String(e.message || e).slice(0, 40) + ')'; st.className = 'bl-state off'; }
 }
 if ($('term').addEventListener) $('term').addEventListener('scroll', () => { const t = $('term'); botTermScrolled = t.scrollTop + t.clientHeight < t.scrollHeight - 24; });
+$('bl-name').textContent = ASSET.bot + ' live';
 if (!window.__noBotLog) { pollBot(); setInterval(pollBot, 10000); }   // the bot itself runs this page headless and sets the flag
 let frame = 0;
 function tick() {

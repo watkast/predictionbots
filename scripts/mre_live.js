@@ -28,7 +28,11 @@ const amt = v => v && typeof v === 'object' ? Number(v.value) : Number(v);
 const logPath = path.join(DIR, 'live.jsonl'), statePath = path.join(DIR, 'state.json');
 let state = { startedAt: Date.now(), mode: DRY ? 'dry' : 'live', rounds: [], balanceStart: null, balanceNow: null, errors: 0 };
 try { const prev = JSON.parse(fs.readFileSync(statePath, 'utf8')); if (prev.mode === state.mode) state = prev; } catch (e) {}
-const log = (k, d) => { const rec = { t: Date.now(), k, d }; fs.appendFileSync(logPath, JSON.stringify(rec) + '\n'); console.log(new Date(rec.t).toISOString(), k, JSON.stringify(d).slice(0, 300)); };
+const tail = []; let tailDirty = false, tailAt = 0;
+const tailPush = rec => { tail.push(rec); if (tail.length > 150) tail.shift(); tailDirty = true; };
+const flushTail = () => { if (!tailDirty || Date.now() - tailAt < 2000) return; tailDirty = false; tailAt = Date.now(); try { const tmp = path.join(DIR, 'tail.tmp'); fs.writeFileSync(tmp, tail.map(r => JSON.stringify(r)).join('\n') + '\n'); fs.renameSync(tmp, path.join(DIR, 'tail.jsonl')); } catch (e) {} };
+const log = (k, d) => { const rec = { t: Date.now(), k, d }; fs.appendFileSync(logPath, JSON.stringify(rec) + '\n'); console.log(new Date(rec.t).toISOString(), k, JSON.stringify(d).slice(0, 300)); tailPush(rec); flushTail(); };
+const live = { slug: '', T: 0, resting: [], held: null };   // what the snapshot shows
 const save = () => { try { fs.writeFileSync(statePath, JSON.stringify(state, null, 1)); } catch (e) {} };
 const et = ms => new Intl.DateTimeFormat('en-US', { timeZone: 'America/New_York', month: 'short', day: 'numeric', hour: 'numeric', minute: '2-digit' }).format(new Date(ms));
 function report() {
@@ -60,7 +64,8 @@ const ex = {
   async place(o) { if (DRY) { log('dry', o); return { id: 'dry-' + Date.now() }; } return api('POST', '/v1/orders', o); },
   async order(id) { for (let i = 0; i < 4; i++) { try { const j = await api('GET', '/v1/order/' + id); return j.order || j; } catch (e) { if (!(e.status === 404 && i < 3)) throw e; await sleep(400); } } },
   async cancel(id, slug) { if (DRY || !id || id.startsWith('dry-')) return; try { await api('POST', '/v1/order/' + id + '/cancel', { marketSlug: slug }); } catch (e) { if (!/HTTP 4/.test(e.message)) throw e; } },
-  async market(slug) { try { const r = await fetch(GATEWAY + '/v1/market/slug/' + slug); return await r.json(); } catch (e) { return null; } }
+  async market(slug) { try { const r = await fetch(GATEWAY + '/v1/market/slug/' + slug); return await r.json(); } catch (e) { return null; } },
+  async book(slug) { try { const r = await fetch(GATEWAY + '/v1/markets/' + slug + '/book'); const j = await r.json(); const md = j.marketData || j; const lv = a => (a || []).map(e => [Number(e.px && e.px.value != null ? e.px.value : e.px), Number(e.qty)]).filter(x => Number.isFinite(x[0]) && x[1] > 0); const o = lv(md.offers).sort((a, b) => a[0] - b[0]), b = lv(md.bids).sort((a, b) => b[0] - a[0]); return { upAsk: o.length ? o[0][0] : NaN, upBid: b.length ? b[0][0] : NaN }; } catch (e) { return null; } }
 };
 // a Down share at price d is a short of the Up contract quoted at 1 − d (the exchange shows a BUY_SHORT as a SELL of Up at the price sent)
 const buyOrder = (slug, side) => ({ marketSlug: slug, intent: side === 'UP' ? 'ORDER_INTENT_BUY_LONG' : 'ORDER_INTENT_BUY_SHORT', type: 'ORDER_TYPE_LIMIT', price: money(side === 'UP' ? BUY : 1 - BUY), quantity: QTY, tif: 'TIME_IN_FORCE_GOOD_TILL_CANCEL' });
@@ -70,21 +75,21 @@ const filledOf = async id => { const o = await ex.order(id); if (!o) return { qt
 // ---- one round
 async function playRound(T0) {
   const slug = SLUG(T0), T = T0 + ROUND; const rec = { T0, slug, side: null, buyPx: null, buyLeft: null, exit: null, pnl: null }; state.rounds.push(rec); save();
-  const ids = {}; let held = null;
+  const ids = {}; let held = null; live.slug = slug; live.T = T; live.resting = ['UP', 'DOWN']; live.held = null;
   for (const side of ['UP', 'DOWN']) { try { const res = await ex.place(buyOrder(slug, side)); ids[side] = res.id || (res.order && res.order.id); log('rest', { slug, side, at: BUY, id: ids[side] }); } catch (e) { state.errors++; log('error', { place: side, msg: e.message.slice(0, 300) }); } }
   let sellId = null, buysPulled = false;
   while (Date.now() / 1000 < T - 2) {
     await sleep(2000);
     if (!held && !buysPulled && T - Date.now() / 1000 <= NOBUY_LEFT) {   // no more buys inside the last 7:00
       for (const side of ['UP', 'DOWN']) if (ids[side]) { await ex.cancel(ids[side], slug); ids[side] = null; }
-      buysPulled = true; log('round', { slug, buysPulled: 'no entry inside the last ' + Math.round(NOBUY_LEFT / 60) + ' min' });
+      buysPulled = true; live.resting = []; log('round', { slug, buysPulled: 'no entry inside the last ' + Math.round(NOBUY_LEFT / 60) + ' min' });
     }
     if (!held) {
       if (buysPulled) break;
       for (const side of ['UP', 'DOWN']) { if (!ids[side] || DRY) continue;
         let f; try { f = await filledOf(ids[side]); } catch (e) { continue; }
         if (f.qty >= QTY) { const px = side === 'UP' ? f.px : 1 - f.px; held = { side, px }; rec.side = side; rec.buyPx = px; rec.buyLeft = Math.round(T - Date.now() / 1000); log('fill', { slug, side, px, qty: f.qty });
-          const other = side === 'UP' ? 'DOWN' : 'UP'; await ex.cancel(ids[other], slug); ids[other] = null;
+          const other = side === 'UP' ? 'DOWN' : 'UP'; await ex.cancel(ids[other], slug); ids[other] = null; live.resting = []; live.held = side + ' @ ' + Math.round(px * 100) + '¢';
           try { const res = await ex.place(sellOrder(slug, side)); sellId = res.id || (res.order && res.order.id); log('rest', { slug, side, sellAt: SELL, id: sellId }); } catch (e) { state.errors++; log('error', { placeSell: e.message.slice(0, 300) }); }
           save(); break; } }
     } else if (sellId) {
@@ -117,6 +122,7 @@ async function settleLater(rec) {
   const stop = async () => { log('stop', {}); report(); save(); process.exit(0); };
   process.on('SIGTERM', stop); process.on('SIGINT', stop);
   setInterval(async () => { if (!DRY) { try { const b = await ex.balance(); state.balanceNow = b.total; } catch (e) {} } report(); save(); }, 60000);
+  setInterval(async () => { if (!live.slug) return; const b = await ex.book(live.slug); tailPush({ t: Date.now(), k: 'snap', d: { bot: 'E', slug: live.slug, r: Math.max(0, Math.round(live.T - Date.now() / 1000)), upAsk: b ? b.upAsk : NaN, dnAsk: b && Number.isFinite(b.upBid) ? +(1 - b.upBid).toFixed(2) : NaN, resting: live.resting, held: live.held } }); flushTail(); }, 10000);
   while (Date.now() < deadline) {
     const now = Date.now() / 1000, T0 = Math.floor(now / ROUND) * ROUND;
     if (now - T0 < 3) await sleep(3000);

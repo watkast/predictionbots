@@ -26,15 +26,22 @@ publish() {
       sleep $((RANDOM % 20 + 5))
     done )
 }
+TAILWT="$GITHUB_WORKSPACE/../mretailwt"; TAIL_BRANCH="mre-live-tail"
+git worktree add -q --orphan -b "$TAIL_BRANCH" "$TAILWT" 2>/dev/null || true
+tail_loop() { local last=""; while true; do sleep 15; [ -f "$MRE_DIR/tail.jsonl" ] || continue; local sum; sum=$(md5sum "$MRE_DIR/tail.jsonl" | cut -c1-32); [ "$sum" = "$last" ] && continue
+  ( cd "$TAILWT" && cp "$MRE_DIR/tail.jsonl" tail.jsonl && git add tail.jsonl && git commit -q --amend -m "live tail" 2>/dev/null || git commit -q -m "live tail" ) >/dev/null 2>&1 || continue
+  ( cd "$TAILWT" && git push -q --force origin "HEAD:$TAIL_BRANCH" ) >/dev/null 2>&1 && last="$sum"; done; }
+tail_loop & TAILER=$!
 FLAG=""; [ "$MODE" = "dry" ] && FLAG="--dry"
 MRE_MINUTES="$MINUTES" node scripts/mre_live.js $FLAG &
 BOT=$!
-trap 'kill -TERM $BOT 2>/dev/null; wait $BOT; publish; exit 0' TERM INT
+trap 'kill -TERM $BOT 2>/dev/null; wait $BOT; kill $TAILER 2>/dev/null; publish; exit 0' TERM INT
 while kill -0 $BOT 2>/dev/null; do
   for i in $(seq 1 60); do kill -0 $BOT 2>/dev/null || break; sleep 10; done
   publish
 done
 wait $BOT; RC=$?
+kill $TAILER 2>/dev/null
 publish
 if [ "$MODE" = "live" ] && [ $(( $(date +%s) - START )) -gt 300 ] && git fetch -q origin main && git cat-file -e origin/main:mre/LIVE_ON 2>/dev/null; then
   curl -sS -X POST -H "Authorization: Bearer ${GH_TOKEN:-}" -H "Accept: application/vnd.github+json" \

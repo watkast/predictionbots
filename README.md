@@ -104,6 +104,13 @@ job to stop at once (open orders are cancelled on the way out). The progress rep
 the first flip, tested on BTC / ETH / SOL / XRP × 5-min / 15-min / 1-hour (`mrp/mrp_extract_windows.py` extracts every
 family; the 60-print settlement rule reproduces all 2,970 settlements). The flip is real (72% of 15-min rounds) but the
 market prices the trailing side 5–9¢ above its chance early in the round; no band or target is positive net of that.
+**Mr. E (ETH 15-minute) and its cockpit:** `scripts/mre_live.js` is a separate one-rule bot — rest a 1-share limit buy at
+25¢ on both sides, sell the first fill with a resting 30¢ limit, no new buys inside the last 7:00 (resting buys are pulled; the
+sell stays until the close and settles if unfilled). `.github/workflows/mre-live.yml` runs it (`mrp/gha_mre.sh`; switch file
+`mre/LIVE_ON`), publishing `mre/MRE.md` to `mrp-data` and its terminal tail to the `mre-live-tail` branch. The cockpit is the
+same page with the asset in the URL hash: **`https://pm15-relay-worker.machwonder.workers.dev/#eth`** tracks the ETH market
+(ETH line, index and spot), shows Mr. E's rule in STRICT ACTION (rest 25¢ · sell at 30¢ · no more buys at 7:00) and Mr. E's
+log in the terminal; no hash (or `#btc`) is the BTC page with Mr. P.
 `research/pm15_brain.pine` is the TradingView version of the same brain (kill line, lookahead, LOCKED/HOLD/SELL; it
 cannot read the index series, so there the target is typed or estimated and the basis is a setting).
 `scripts/pm15_relay_worker.js` is the Cloudflare Worker behind that URL: it serves the cockpit at `/` (from GitHub `main`,
