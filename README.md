@@ -104,6 +104,13 @@ job to stop at once (open orders are cancelled on the way out). The progress rep
 the first flip, tested on BTC / ETH / SOL / XRP × 5-min / 15-min / 1-hour (`mrp/mrp_extract_windows.py` extracts every
 family; the 60-print settlement rule reproduces all 2,970 settlements). The flip is real (72% of 15-min rounds) but the
 market prices the trailing side 5–9¢ above its chance early in the round; no band or target is positive net of that.
+**Mr. One (tested, not shipped — Nov 2):** `scripts/mr1_live.js` = `scripts/pm15_live.js --maker`: Mr. P's brain with resting
+limit orders (bid at chance − 8¢, ask at chance + 5¢, risk exits at the bid). On the same 224 rounds with honest 1-s books every
+variant trails Mr. P (+$886 at best vs +$932, with settlement losses Mr. P does not have): a resting bid is hit on the way down
+and a resting ask sells the 99¢ winners early. Details and the table: `research/replay/mr1_2026-11-02.md`. The harness stays
+(`--maker --cross --persist --takeharvest --fillstrict N --strict N`; the replay now charges taker fees), `.github/workflows/mr1-live.yml`
+exists but has no switch file, and the cockpit's `#one` view shows its terminal if it ever runs. One fix came out of it for Mr. P:
+it cancels only its own order ids at start and stop, never account-wide (Mr. E's and the owner's resting orders are untouched).
 **Mr. E (ETH 15-minute) and its cockpit:** `scripts/mre_live.js` is a separate one-rule bot — rest a 1-share limit buy at
 35¢ on both sides, sell the first fill with a resting 55¢ limit (started Nov 2 at 25¢ / 30¢; `MRE_BUY` / `MRE_SELL` override), no new buys inside the last 7:00 (resting buys are pulled; the
 sell stays until the close and settles if unfilled). `.github/workflows/mre-live.yml` runs it (`mrp/gha_mre.sh`; switch file

@@ -1,0 +1,50 @@
+# Mr. One (EXPERIMENTAL — replay says it trails Mr. P; see research/replay/mr1_2026-11-02.md): Mr. P's brain with resting limit orders — scripts/mr1_live.js (= pm15_live.js --maker):
+# one resting bid on the favorite at (chance − 8¢) while flat and inside the entry window, one resting ask at (chance + 5¢)
+# while holding, the page's risk exits at the bid; at most $MRP_LIVE_CAPITAL at risk. Switch: the file mr1/LIVE_ON on main
+# (delete it to stop after the current run; cancel the job to stop at once — only its own orders are ever cancelled). Report:
+# mr1/live/LIVE.md on the `mrp-data` branch every 10 minutes; terminal tail on the `mr1-live-tail` branch (cockpit: #one).
+name: mr1-live
+on:
+  workflow_dispatch:
+    inputs:
+      minutes:
+        description: "Minutes to run"
+        default: "335"
+      mode:
+        description: "live (orders) or dry (feeds + decisions only)"
+        default: "live"
+
+permissions:
+  contents: write
+  actions: write
+
+concurrency:
+  group: mr1-live-${{ github.event.inputs.mode || 'live' }}   # a dry run may overlap the live one; two live runs never do
+  cancel-in-progress: false
+
+jobs:
+  live:
+    runs-on: ubuntu-latest
+    timeout-minutes: 355
+    env:
+      POLYMARKET_KEY_ID: ${{ secrets.POLYMARKET_KEY_ID }}
+      POLYMARKET_SECRET_KEY: ${{ secrets.POLYMARKET_SECRET_KEY }}
+      # the settlement index itself, pushed by Kalshi every second (same secrets the recorder uses); empty = Coinbase proxy
+      KALSHI_KEY_ID: ${{ secrets.KALSHI_KEY_ID }}
+      KALSHI_PRIVATE_KEY_PEM: ${{ secrets.KALSHI_PRIVATE_KEY_PEM }}
+      MRP_LIVE_CAPITAL: ${{ vars.MR1_LIVE_CAPITAL || '2' }}   # $2 a trade to start; raise here when the record says so
+      MRP_LIVE_DIR: ${{ github.workspace }}/mr1live
+      MRP_TAIL_BRANCH: mr1-live-tail
+      BOT_SUBDIR: mr1/live
+      BOT_SWITCH: mr1/LIVE_ON
+      BOT_WORKFLOW: mr1-live.yml
+      BOT_SCRIPT: scripts/mr1_live.js
+      GH_TOKEN: ${{ github.token }}
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "22"
+      - run: npm install --no-save --no-audit --no-fund ws@8
+      - name: Trade (publishing every 10 minutes)
+        run: bash mrp/gha_live.sh "${{ github.event.inputs.minutes || '335' }}" "${{ github.event.inputs.mode || 'live' }}"

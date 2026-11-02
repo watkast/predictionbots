@@ -5,6 +5,15 @@
 //   node scripts/pm15_live.js research/pm15_copilot.html                # live (needs POLYMARKET_KEY_ID / POLYMARKET_SECRET_KEY)
 //   node scripts/pm15_live.js research/pm15_copilot.html --dry          # live feeds and decisions, no orders
 //   node scripts/pm15_live.js research/pm15_copilot.html --replay btc15_windows.json [--days 2026-11-01]   # offline, mock exchange
+//   … --maker                                                              # Mr. One: the same brain, resting limit orders only (see below)
+//
+// --maker ("Mr. One", scripts/mr1_live.js): Mr. P's brain with Mr. E's hands. Instead of acting on the STRICT ACTION command
+// inside its 15-s window (a limit at the ask: a taker fill, the fee, the race), it keeps ONE resting limit order on the book,
+// re-priced every second from the index: while flat and inside the entry window, a bid on the favorite at (its calibrated
+// chance − entryEdge), never crossing the ask (pure maker, no fee: fills come only from sellers hitting it); while holding, an
+// ask at (chance + sellEdge) so an overpaying buyer takes it. The page's risk exits (SELL NOW, closing, deadline, floor, pace)
+// still go out as marketable limits at the bid; LOCKED holds to the bell. One entry per round. --cross lets the bid cross up
+// to the limit (a taker fill, like Mr. P) for comparison. Nothing here ever cancels account-wide: only its own order ids.
 //
 // Env: MRP_LIVE_CAPITAL (default 20 — the most that can ever be at risk), MRP_LIVE_DIR (logs + LIVE.md, default ./mrplive),
 //      MRP_LIVE_MINUTES (stop after N minutes; default run until SIGTERM). Every decision, order, fill and settlement is logged
@@ -15,6 +24,12 @@ const args = process.argv.slice(2);
 const PAGE = args.find(a => a.endsWith('.html')) || 'research/pm15_copilot.html';
 const opt = (k, d) => { const i = args.indexOf('--' + k); return i >= 0 ? args[i + 1] : d; };
 const DRY = args.includes('--dry'), REPLAY = opt('replay', null), DAYS = opt('days', null) ? opt('days').split(',') : null;
+const MAKER = args.includes('--maker') || process.env.MRP_POLICY === 'maker', CROSS = args.includes('--cross') || process.env.MR1_CROSS === '1';
+const NAME = process.env.MRP_NAME || (MAKER ? 'Mr. One' : 'Mr. P');
+const PERSIST = args.includes('--persist') || process.env.MR1_PERSIST === '1';         // maker+cross: cross only once the page's entry has lasted buyPersist s (the whipsaw filter); otherwise rest a cent under the ask
+const TAKE_HARVEST = args.includes('--takeharvest') || process.env.MR1_TAKE_HARVEST === '1';   // maker: sell at the bid the moment the page's harvest rule fires (Mr. P's exit) instead of waiting for a buyer at chance + edge
+const FILL_STRICT = Number(opt('fillstrict', process.env.MR1_FILL_STRICT ?? 0.01));
+const BOOK_TOL = Number(opt('strict', 20));   // replay: how old (s) a recorded book may be and still count as the quote (20 = the original harness; 1 = honest)   // replay: a resting order fills only when the market trades THROUGH it by this much (0 = touched counts)
 const CAP = Math.max(1, Number(process.env.MRP_LIVE_CAPITAL || 20));
 const DIR = process.env.MRP_LIVE_DIR || 'mrplive';
 const MINUTES = Number(process.env.MRP_LIVE_MINUTES || opt('minutes', 0)) || 0;
@@ -26,7 +41,7 @@ fs.mkdirSync(DIR, { recursive: true });
 
 // ---------------------------------------------------------------- log + state
 const logPath = path.join(DIR, 'live.jsonl'), statePath = path.join(DIR, 'state.json');
-let state = { startedAt: Date.now(), capital: CAP, mode: REPLAY ? 'replay' : DRY ? 'dry' : 'live', trades: [], cmds: 0, skips: {}, errors: 0, balanceStart: null, balanceNow: null, pos: null, order: null, shortConv: null };
+let state = { startedAt: Date.now(), capital: CAP, mode: REPLAY ? 'replay' : DRY ? 'dry' : 'live', trades: [], cmds: 0, skips: {}, errors: 0, balanceStart: null, balanceNow: null, pos: null, order: null, rest: null, reprices: 0, shortConv: null };
 try { if (!REPLAY) { const prev = JSON.parse(fs.readFileSync(statePath, 'utf8')); if (prev.mode === state.mode) Object.assign(state, prev); } } catch (e) {}   // a dry run's counters never carry into a live run
 const tail = []; let tailDirty = false, tailAt = 0;
 const tailPush = rec => { tail.push(rec); if (tail.length > 150) tail.shift(); tailDirty = true; };
@@ -63,7 +78,7 @@ const live = {
   async place(o) { return api('POST', '/v1/orders', o); },
   async order(id) { for (let i = 0; i < 4; i++) { try { const j = await api('GET', '/v1/order/' + id); return j.order || j; } catch (e) { if (!(e.status === 404 && i < 3)) throw e; await sleep(350); } } },
   async cancel(id, slug) { try { await api('POST', '/v1/order/' + id + '/cancel', { marketSlug: slug }); } catch (e) { if (!/HTTP 4/.test(e.message)) throw e; } },
-  async cancelAll() { try { return await api('POST', '/v1/orders/open/cancel', {}); } catch (e) { log('warn', { cancelAll: e.message }); } },
+  async cancelMine() { for (const o of [state.order, state.rest]) if (o && o.id) { try { await this.cancel(o.id, o.slug); log('order', { cancel: o.id, why: 'start/stop' }); } catch (e) { log('warn', { cancel: e.message }); } } },   // only this bot's own orders — never account-wide (other bots and the owner rest orders in the same account)
   async preview(o) { return api('POST', '/v1/order/preview', { request: o }); }
 };
 
@@ -181,23 +196,39 @@ const mock = { cash: CAP, pos: null, orders: {}, n: 0, book: null,
     const px = side === 'UP' || state.shortConv === 'own' ? amt(o.price) : 1 - amt(o.price);   // like the exchange: a short is quoted in Up terms
     const ask = side === 'UP' ? b.upAsk : 1 - b.upBid, bid = side === 'UP' ? b.upBid : 1 - b.upAsk, qty = buy ? (side === 'UP' ? b.upAskQty : b.upBidQty) : (side === 'UP' ? b.upBidQty : b.upAskQty);
     const fillPx = buy ? (Number.isFinite(ask) && ask <= px + 1e-9 ? ask : NaN) : (Number.isFinite(bid) && bid >= px - 1e-9 ? bid : NaN);
+    if (!buy && !(this.pos && this.pos.side === side && this.pos.qty >= q - 1e-9)) throw new Error('mock: sell of ' + q + ' ' + side + ' not held (' + JSON.stringify(this.pos) + ')');   // the exchange would reject it
     const filled = Number.isFinite(fillPx) ? Math.min(q, Math.floor(qty)) : 0;
     const ord = { id, state: filled >= q ? 'ORDER_STATE_FILLED' : filled > 0 ? 'ORDER_STATE_PARTIALLY_FILLED' : (o.tif === 'TIME_IN_FORCE_IMMEDIATE_OR_CANCEL' ? 'ORDER_STATE_CANCELED' : 'ORDER_STATE_NEW'), cumQuantity: filled, avgPx: money(filled ? (side === 'UP' || state.shortConv === 'own' ? fillPx : 1 - fillPx) : 0), quantity: q };   // avgPx reported in Up terms for shorts
     if (filled) { if (buy) { this.cash -= filled * (fillPx + fee(fillPx)); this.pos = { side, qty: filled, px: fillPx }; } else { this.cash += filled * (fillPx - fee(fillPx)); this.pos = this.pos && this.pos.qty > filled ? { ...this.pos, qty: this.pos.qty - filled } : null; } }
-    this.orders[id] = ord; return { id, executions: [] }; },
-  async order(id) { return this.orders[id]; }, async cancel(id) { const o = this.orders[id]; if (o && o.state === 'ORDER_STATE_NEW') o.state = 'ORDER_STATE_CANCELED'; }, async cancelAll() {}, async preview() { return {}; },
+    Object.assign(ord, { side, buy, px, rem: q - filled });   // what a resting remainder needs (own-side price)
+    this.orders[id] = ord; return { id, executions: filled ? [{ lastShares: filled, lastPx: ord.avgPx }] : [] }; },
+  // resting orders meet each new book: a bid fills when the ask trades through it (ask ≤ px − FILL_STRICT), an ask when the bid
+  // does — at the order's own price, as a maker, no fee; the size is what the top of the book showed on the other side
+  tick() { const b = this.book; if (!b) return;
+    for (const o of Object.values(this.orders)) { if (o.state !== 'ORDER_STATE_NEW' && o.state !== 'ORDER_STATE_PARTIALLY_FILLED') continue; if (!(o.rem > 0)) continue;
+      const ask = o.side === 'UP' ? b.upAsk : 1 - b.upBid, bid = o.side === 'UP' ? b.upBid : 1 - b.upAsk;
+      const hit = o.buy ? (Number.isFinite(ask) && ask <= o.px - FILL_STRICT + 1e-9) : (Number.isFinite(bid) && bid >= o.px + FILL_STRICT - 1e-9);
+      if (!hit) continue;
+      const avail = o.buy ? (o.side === 'UP' ? b.upAskQty : b.upBidQty) : (o.side === 'UP' ? b.upBidQty : b.upAskQty);
+      let f = Math.min(o.rem, Math.max(1, Math.floor(avail || 0))); if (!o.buy) f = Math.min(f, this.pos && this.pos.side === o.side ? this.pos.qty : 0);   // the exchange would reject a sale of shares not held
+      if (!(f > 0)) { if (!o.buy) o.state = 'ORDER_STATE_CANCELED'; continue; }
+      const prevQ = Number(o.cumQuantity || 0), prevAvg = amt(o.avgPx) || 0; const pxUp = o.side === 'UP' || state.shortConv === 'own' ? o.px : 1 - o.px;
+      o.cumQuantity = prevQ + f; o.avgPx = money((prevAvg * prevQ + pxUp * f) / (prevQ + f)); o.rem -= f; o.state = o.rem > 0 ? 'ORDER_STATE_PARTIALLY_FILLED' : 'ORDER_STATE_FILLED';
+      if (o.buy) { this.cash -= f * o.px; this.pos = this.pos ? { ...this.pos, qty: this.pos.qty + f, px: (this.pos.px * this.pos.qty + o.px * f) / (this.pos.qty + f) } : { side: o.side, qty: f, px: o.px }; }
+      else { this.cash += f * o.px; this.pos = this.pos && this.pos.qty > f ? { ...this.pos, qty: this.pos.qty - f } : null; } } },
+  async order(id) { return this.orders[id]; }, async cancel(id) { const o = this.orders[id]; if (o && (o.state === 'ORDER_STATE_NEW' || o.state === 'ORDER_STATE_PARTIALLY_FILLED')) o.state = 'ORDER_STATE_CANCELED'; }, async cancelMine() {}, async preview() { return {}; },
   settle(result) { if (!this.pos) return 0; const won = this.pos.side === result; const pnl = (won ? this.pos.qty : 0) - this.pos.qty * this.pos.px; this.cash += won ? this.pos.qty : 0; this.pos = null; return pnl; }
 };
 const ex = REPLAY ? mock : live;
 
 // ---------------------------------------------------------------- execution of a STRICT ACTION command
 let busy = false, lastCmdSince = 0;
-function guards(E) {
+function guards(E, needBook = true) {
   if (!(E && E.r > 0)) return 'round over';
   if (!E.fresh) return 'coinbase stale';
   if (!(run('IDX.ok') === true) || !(E.pmAge <= 12)) return 'index series stale';
   const src = run('R.targetSrc'); if (src !== 'api' && src !== 'series') return 'target not exact';
-  const age = (now() - run('R.bookAt')) / 1000; if (!run('R.book') || age > 3) return 'book stale';
+  const age = (now() - run('R.bookAt')) / 1000; if (needBook && (!run('R.book') || age > 3)) return 'book stale';
   return null;
 }
 async function onBuy(cmd, E) {
@@ -227,7 +258,7 @@ async function onBuy(cmd, E) {
   state.order = null;
   if (filled > 0) {
     const price = Number.isFinite(avg) && avg > 0 ? (cmd.side === 'UP' ? avg : (state.shortConv === 'own' ? avg : 1 - avg)) : px;
-    state.pos = { slug, T0, side: cmd.side, qty: filled, px: price, spent: +(filled * price).toFixed(2), at: now(), left: Math.round(E.r) };
+    state.pos = { slug, T0, side: cmd.side, qty: filled, px: price, spent: +(filled * (price + fee(price))).toFixed(2), at: now(), left: Math.round(E.r) };   // taker: the fee is part of the cost
     setPos({ T0, side: cmd.side, price, spent: state.pos.spent, shares: filled });
     state.trades.push({ T0, slug, side: cmd.side, buyPx: price, qty: filled, spent: state.pos.spent, buyLeft: Math.round(E.r), p: cmd.p, edge: cmd.edge });
     log('fill', { kind: 'buy', side: cmd.side, px: price, qty: filled, usd: state.pos.spent });
@@ -277,6 +308,96 @@ async function onCommand(cmd, E) {
   } catch (e) { state.errors++; log('error', { cmd: e.message.slice(0, 400) }); }
   finally { busy = false; saveState(); }
 }
+// ---------------------------------------------------------------- the maker policy (--maker, "Mr. One")
+// One resting order at a time, reconciled against what the brain wants right now; fills are read from the order itself.
+const cents = v => Math.round(v * 100) / 100;
+let restBusy = false, lastRestPlace = 0, lastRestPoll = 0, cashCache = { at: 0, cash: NaN };
+async function cashNow() { if (REPLAY) return (await ex.balances()).cash; if (now() - cashCache.at > 10000) { try { const b = await ex.balances(); cashCache = { at: now(), cash: b.cash }; state.balanceNow = b.total; state.cashNow = b.cash; } catch (e) {} } return cashCache.cash; }
+// a fill (or more of one) on the resting order: open / extend the position, or close part of it
+function absorbFill(rest, ord, E, taker) {
+  const cum = Number(ord.cumQuantity || 0), newQ = cum - (rest.filled || 0); if (!(newQ > 0)) return 0;
+  const avgRaw = amt(ord.avgPx); const avg = Number.isFinite(avgRaw) && avgRaw > 0 ? (rest.side === 'UP' ? avgRaw : (state.shortConv === 'own' ? avgRaw : 1 - avgRaw)) : rest.px;
+  const price = rest.filled ? (avg * cum - (rest.avg || rest.px) * rest.filled) / newQ : avg;   // the price of the new shares only
+  rest.filled = cum; rest.avg = avg;
+  if (rest.kind === 'buy') {
+    if (state.pos && state.pos.T0 === rest.T0) { const q = state.pos.qty + newQ; state.pos.px = (state.pos.px * state.pos.qty + price * newQ) / q; state.pos.qty = q; state.pos.spent = +(state.pos.spent + newQ * (price + (taker ? fee(price) : 0))).toFixed(2); const t = state.trades[state.trades.length - 1]; if (t && t.T0 === rest.T0) { t.qty = q; t.buyPx = state.pos.px; t.spent = state.pos.spent; } }
+    else { state.pos = { slug: rest.slug, T0: rest.T0, side: rest.side, qty: newQ, px: price, spent: +(newQ * (price + (taker ? fee(price) : 0))).toFixed(2), at: now(), left: Math.round(E.r) }; state.trades.push({ T0: rest.T0, slug: rest.slug, side: rest.side, buyPx: price, qty: newQ, spent: state.pos.spent, buyLeft: Math.round(E.r), p: rest.p, edge: rest.edge, maker: !taker }); }
+    setPos({ T0: rest.T0, side: rest.side, price: state.pos.px, spent: state.pos.spent, shares: state.pos.qty });
+    log('fill', { kind: 'buy', side: rest.side, px: cents(price), qty: newQ, usd: +(newQ * price).toFixed(2), maker: !taker, left: Math.round(E.r) });
+  } else {
+    const t = state.trades[state.trades.length - 1]; const proceeds = newQ * (price - (taker ? fee(price) : 0));   // a maker pays no fee
+    if (t && t.T0 === state.pos.T0) { const sq = (t.sellQty || 0) + newQ; t.sellPx = ((t.sellPx || 0) * (t.sellQty || 0) + price * newQ) / sq; t.sellQty = sq; t.proceeds = +((t.proceeds || 0) + proceeds).toFixed(2); t.sellLeft = Math.round(E.r); t.pnl = +(t.proceeds - t.spent * (sq / t.qty)).toFixed(2); t.exit = 'harvest' + (sq < t.qty ? ' (part)' : ''); }
+    log('fill', { kind: 'sell', side: rest.side, px: cents(price), qty: newQ, proceeds: +proceeds.toFixed(2), maker: !taker, left: Math.round(E.r) });
+    if (newQ >= state.pos.qty - 1e-9) { state.pos = null; setPos(null); } else { state.pos.qty -= newQ; setPos({ T0: state.pos.T0, side: state.pos.side, price: state.pos.px, spent: state.pos.qty * state.pos.px, shares: state.pos.qty }); }
+  }
+  saveState(); return newQ;
+}
+async function pollRest(E) {
+  if (!state.rest || String(state.rest.id).startsWith('dry-')) return; if (!REPLAY && now() - lastRestPoll < 1000) return; lastRestPoll = now();
+  let ord; try { ord = await ex.order(state.rest.id); } catch (e) { log('warn', { order: e.message.slice(0, 200) }); return; }
+  if (!ord) return;
+  absorbFill(state.rest, ord, E);
+  if (/FILLED$|CANCELED|REJECTED|EXPIRED/.test(ord.state || '') && ord.state !== 'ORDER_STATE_PARTIALLY_FILLED') { log('order', { done: state.rest.id, state: ord.state, filled: state.rest.filled || 0 }); state.rest = null; saveState(); }
+}
+// make the book show exactly `want` ({ kind, side, px, qty, slug, T0, p, edge }) or nothing
+async function syncRest(want, E) {
+  const r = state.rest;
+  if (r) {
+    const d = want ? Math.abs(want.px - r.px) : 1;   // re-price on a 2¢ move, or a 1¢ move that has lasted 2 s — not on every flicker
+    const same = want && want.kind === r.kind && want.side === r.side && want.slug === r.slug && (d < 0.015 || (d < 0.025 && now() - r.at < 2000)) && (want.kind === 'sell' || want.qty <= r.qty);
+    if (same) return;
+    if (!DRY) { try { await ex.cancel(r.id, r.slug); } catch (e) { log('warn', { cancel: e.message.slice(0, 200) }); } const ord = await ex.order(r.id).catch(() => null); if (ord) absorbFill(r, ord, E); }
+    log('order', { cancel: r.id, kind: r.kind, side: r.side, px: r.px, filled: r.filled || 0, why: want ? 'reprice → ' + want.px : 'no longer wanted', left: E ? Math.round(E.r) : null }); if (want) state.reprices++;
+    state.rest = null; saveState();
+    if (want && want.kind === 'sell') want.qty = state.pos ? state.pos.qty : 0;                   // a fill landed during the cancel: sell only what is still held
+    if (want && want.kind === 'buy' && (state.pos || run('R.traded'))) return;                   // …or the bid filled: the next step quotes the exit
+  }
+  if (!want || !(want.qty >= 1)) return;
+  if (!REPLAY && now() - lastRestPlace < 400) return;   // not more than ~2 orders a second
+  const o = { marketSlug: want.slug, intent: intentFor(want.side, want.kind), type: 'ORDER_TYPE_LIMIT', price: money(pxFor(want.side, want.px)), quantity: want.qty, tif: 'TIME_IN_FORCE_GOOD_TILL_CANCEL' };
+  log('order', { kind: want.kind, side: want.side, px: want.px, qty: want.qty, maker: true, p: want.p, edge: want.edge, left: E ? Math.round(E.r) : null, dry: DRY, o });
+  if (DRY) { state.rest = { id: 'dry-' + now(), ...want, at: now(), filled: 0 }; return; }
+  lastRestPlace = now(); const tPlace = Date.now(); let res; try { res = await ex.place(o); } catch (e) { state.errors++; log('error', { place: e.message.slice(0, 400) }); return; }
+  lat.order = Date.now() - tPlace;
+  const id = res.id || (res.order && res.order.id); state.rest = { id, ...want, at: now(), filled: 0 }; saveState();
+  const ex0 = execFills(res); if (ex0.qty > 0) { absorbFill(state.rest, { cumQuantity: ex0.qty, avgPx: money(ex0.avg) }, E, true); if (ex0.qty >= want.qty) state.rest = null; }   // executions report the price as the order does (Up terms for a short); absorbFill converts once   // crossed the book: a taker fill, at once
+}
+async function makerStep(E) {
+  if (restBusy || busy) return; restBusy = true;
+  try {
+    const slug = run('R.slug'), T0 = run('R.T0'), r = E.r, g = guards(E, false), lat_ = run('S.latency') || 0;   // feeds and target must be live; the book may be quiet
+    await pollRest(E);
+    if (state.pos) {
+      if (state.pos.slug !== slug || !(r > 0)) { await syncRest(null, E); return; }               // the bell: settlement takes it from here
+      const x = run(`lastEval.exitCheck('${state.pos.side}')`);
+      if (x.locked) { await syncRest(null, E); return; }                                            // LOCKED: hold to the bell
+      if (g) { await syncRest(null, E); return; }                                                   // feeds stale: never quote on a stale chance
+      if (x.sellNow || (x.getOut && (x.kind !== 'harvest' || TAKE_HARVEST))) {                    // a risk exit (or, with --takeharvest, the harvest): out at the bid, now
+        if (guards(E)) return;                                                                        // …which needs a live book; keep the ask resting until there is one
+        await syncRest(null, E); state.cmds++; log('cmd', { kind: 'sell', now: true, why: x.sellNow ? 'SELL NOW' : x.kind, side: state.pos.side, left: Math.round(r) });
+        await onSell({ now: true, side: state.pos.side, px: null }, E); return; }
+      if (r > (run('S.sellZone') ?? 300)) { await syncRest(null, E); return; }                    // before the sell zone a winner is held (replay: an ask at chance + edge all round sells the 99¢ winners at 55¢)
+      const askPx = Math.min(0.99, Math.ceil((x.pAdj + (run('S.sellEdge') ?? 5) / 100) * 100 - 1e-6) / 100);
+      await syncRest({ kind: 'sell', side: state.pos.side, px: askPx, qty: state.pos.qty, slug, T0: state.pos.T0, p: cents(x.pAdj) }, E); return;
+    }
+    const fi = E.favInfo, fav = E.fav;
+    const inWin = r >= (run('S.buyMinLeft') || 0) && r <= (run('S.buyMaxLeft') ?? 900) && r > lat_ + 2 && r > (run('S.killSecs') || 45);
+    if (g || !inWin || run('R.traded') || !run('REC.ready') || !fi || !(fi.pAdj > 0) || !Number.isFinite(E.spot)) { await syncRest(null, E); return; }
+    const p = fi.locked ? 1 : Math.min(fi.pAdj, 0.995);
+    let bidPx = Math.floor((p - (run('S.entryEdge') ?? 8) / 100) * 100 + 1e-6) / 100;
+    const bookFresh = run('R.book') && (now() - run('R.bookAt')) / 1000 <= 3; const b = run('R.book') || {}; const ask = bookFresh ? (fav === 'UP' ? b.upAsk : (Number.isFinite(b.upBid) ? 1 - b.upBid : NaN)) : NaN;
+    const mayCross = CROSS && bookFresh && (!PERSIST || (E.entry && E.entry.side === fav && E.entryAge >= (run('S.buyPersist') ?? 2)));   // crossing only against a live quote (and, with --persist, a discount that has lasted)
+    const askAny = fav === 'UP' ? b.upAsk : (Number.isFinite(b.upBid) ? 1 - b.upBid : NaN);
+    if (CROSS && PERSIST && !mayCross) { await syncRest(null, E); return; }                        // --persist: no bid at all until the discount has lasted (resting under the ask meanwhile is a near-taker fill)
+    if (!mayCross && Number.isFinite(askAny)) bidPx = Math.min(bidPx, cents(askAny - 0.01));        // pure maker: sit a cent under the last ask at most
+    if (!(bidPx >= 0.02)) { await syncRest(null, E); return; }
+    if (fav === 'DOWN' && !REPLAY && !DRY) { const conv = await detectShortConvention(slug, b); if (!conv) { await syncRest(null, E); return; } }
+    const cash = await cashNow(); const qty = Math.floor(Math.min(CAP, Number.isFinite(cash) ? cash : 0) / bidPx);
+    if (qty < 1) { await syncRest(null, E); return; }
+    await syncRest({ kind: 'buy', side: fav, px: bidPx, qty, slug, T0, p: cents(p), edge: cents(p - bidPx) }, E);
+  } catch (e) { state.errors++; log('error', { maker: e.message.slice(0, 400) }); }
+  finally { restBusy = false; }
+}
 // settle a held position at the bell (the page knows the result from the index series ~1 s after)
 let settledT0 = 0;
 async function settleIfDone() {
@@ -299,26 +420,27 @@ const lat = { evalMs: 0, order: 0 };   // decision-loop cost and the last order 
 function etTime(ms) { return new Intl.DateTimeFormat('en-US', { timeZone: 'America/New_York', month: 'short', day: 'numeric', hour: 'numeric', minute: '2-digit' }).format(new Date(ms)); }
 function report() {
   const tr = state.trades, done = tr.filter(t => t.pnl != null), pnl = done.reduce((s, t) => s + t.pnl, 0), wins = done.filter(t => t.pnl > 0).length;
-  const lines = ['# Mr. P — live progress', '', `Mode **${state.mode}** · capital cap **$${CAP}** · started ${etTime(state.startedAt)} ET · updated ${etTime(now())} ET`,
+  const lines = [`# ${NAME} — live progress`, '', `Mode **${state.mode}**${MAKER ? ' · policy **maker** (resting limit orders only' + (CROSS ? ', bid may cross' : '') + ')' : ''} · capital cap **$${CAP}** · started ${etTime(state.startedAt)} ET · updated ${etTime(now())} ET`,
     state.balanceStart != null ? `Account balance: $${Number(state.balanceStart).toFixed(2)} at start → $${Number(state.balanceNow ?? state.balanceStart).toFixed(2)} now · buying power $${Number(state.cashNow ?? state.cashStart ?? 0).toFixed(2)} (the difference is cash held by open orders or positions, the bot's or yours)` : '',
-    '', `**Trades ${done.length} closed (${tr.length} opened) · wins ${wins} · P&L from fills ${pnl >= 0 ? '+' : '−'}$${Math.abs(pnl).toFixed(2)}** · strict commands seen ${state.cmds} · skips ${JSON.stringify(state.skips)} · errors ${state.errors}`,
+    '', `**Trades ${done.length} closed (${tr.length} opened) · wins ${wins} · P&L from fills ${pnl >= 0 ? '+' : '−'}$${Math.abs(pnl).toFixed(2)}** · ${MAKER ? 'reprices ' + (state.reprices || 0) + ' · risk exits ' + state.cmds : 'strict commands seen ' + state.cmds} · skips ${JSON.stringify(state.skips)} · errors ${state.errors}`,
+    MAKER && state.rest ? `Resting: ${state.rest.kind.toUpperCase()} ${state.rest.side} ${state.rest.qty} sh @ ${Math.round(state.rest.px * 100)}¢` : '',
     state.pos ? `Open: ${state.pos.side} ${state.pos.qty} sh @ ${Math.round(state.pos.px * 100)}¢ ($${state.pos.spent}) bought with ${state.pos.left} s left` : 'Open: none', '',
     '| round (ET) | side | buy | qty | $ | exit | sell / settle | P&L |', '|---|---|---|---|---|---|---|---|'];
   for (const t of tr.slice(-60).reverse()) lines.push(`| ${etTime(t.T0 * 1000)} | ${t.side} | ${Math.round(t.buyPx * 100)}¢ @ ${Math.floor(t.buyLeft / 60)}:${String(t.buyLeft % 60).padStart(2, '0')} | ${t.qty} | $${t.spent} | ${t.exit || 'holding'} | ${t.sellPx ? Math.round(t.sellPx * 100) + '¢' : t.settle || '—'} | ${t.pnl != null ? (t.pnl >= 0 ? '+' : '−') + '$' + Math.abs(t.pnl).toFixed(2) : '—'} |`);
-  lines.push('', 'Every decision, order, fill and settlement: `live.jsonl` beside this file. The brain is `research/pm15_copilot.html` unmodified; only its STRICT ACTION commands are executed.');
+  lines.push('', 'Every decision, order, fill and settlement: `live.jsonl` beside this file. The brain is `research/pm15_copilot.html` unmodified; ' + (MAKER ? 'it sets the prices of one resting limit order at a time (bid at chance − edge, ask at chance + edge); its risk exits go out at the bid.' : 'only its STRICT ACTION commands are executed.'));
   fs.writeFileSync(path.join(DIR, 'LIVE.md'), lines.join('\n') + '\n');
 }
 
 // ---------------------------------------------------------------- main loops
 async function liveMain() {
-  log('start', { mode: state.mode, cap: CAP, page: PAGE, node: process.version, brtiFeed: !!(KALSHI_KEY_ID && KALSHI_PEM) });
+  log('start', { mode: state.mode, name: NAME, policy: MAKER ? 'maker' + (CROSS ? '+cross' : '') + (PERSIST ? '+persist' : '') + (TAKE_HARVEST ? '+takeharvest' : '') : 'strict', cap: CAP, page: PAGE, node: process.version, brtiFeed: !!(KALSHI_KEY_ID && KALSHI_PEM) });
   connectBrti();
-  if (!DRY) { try { await live.cancelAll(); } catch (e) {} }
+  if (!DRY) { try { await live.cancelMine(); } catch (e) {} } state.order = null; state.rest = null;
   try { const b = await live.balances(); if (state.balanceStart == null) { state.balanceStart = b.total; state.cashStart = b.cash; } state.balanceNow = b.total; state.cashNow = b.cash; log('balance', { cash: b.cash, total: b.total }); } catch (e) { log('error', { balances: e.message.slice(0, 300) }); if (!DRY) { console.error('cannot read the account — stopping'); process.exit(2); } }
   const deadline = MINUTES ? Date.now() + MINUTES * 60000 : Infinity;
   let lastReport = 0, lastRest = 0, lastSnap = 0;
   setInterval(() => { try { if (run('R.slug')) run('pmFetchSeries()'); } catch (e) {} }, 2000);   // the exact PM line every 2 s (direct gateway; the page's own 10-s cadence was built for the relay budget)
-  const stop = async () => { log('stop', {}); try { if (!DRY) await live.cancelAll(); } catch (e) {} report(); saveState(); process.exit(0); };
+  const stop = async () => { log('stop', {}); try { if (!DRY) await live.cancelMine(); } catch (e) {} state.rest = null; state.order = null; report(); saveState(); process.exit(0); };
   process.on('SIGTERM', stop); process.on('SIGINT', stop);
   setInterval(async () => {
     try {
@@ -327,10 +449,10 @@ async function liveMain() {
       if (Date.now() - lastRest > 5000 && slug && (!run('R.book') || Date.now() - run('R.bookAt') > 3000)) { lastRest = Date.now(); const b = await restBook(slug); if (b) setBook(b); }
       // adopt a position the exchange already holds for this round (restart safety)
       if (!state.pos && !busy && E.r > 0 && E.r % 30 < 0.3 && !DRY) { const p = await live.position(slug).catch(() => null); if (p && p.net > 0 && p.avail > 0 && Number.isFinite(p.avgPx) && p.raw && p.raw.marketMetadata && p.raw.marketMetadata.slug === slug && !p.expired) { state.pos = { slug, T0: run('R.T0'), side: 'UP', qty: Math.min(p.net, p.avail), px: p.avgPx, spent: +(Math.min(p.net, p.avail) * p.avgPx).toFixed(2), at: Date.now(), left: Math.round(E.r) }; setPos({ T0: run('R.T0'), side: 'UP', price: p.avgPx, spent: state.pos.spent, shares: state.pos.qty }); log('adopt', state.pos); } }
-      const st = run('strict'); if (st.cmd && st.since !== lastCmdSince) { lastCmdSince = st.since; onCommand(st.cmd, E); }
+      if (MAKER) makerStep(E); else { const st = run('strict'); if (st.cmd && st.since !== lastCmdSince) { lastCmdSince = st.since; onCommand(st.cmd, E); } }
       await settleIfDone();
       if (Date.now() - lastSnap > 10000) { lastSnap = Date.now(); const b = run('R.book') || {}; const fav = E.fav, favAsk = fav === 'UP' ? b.upAsk : (Number.isFinite(b.upBid) ? 1 - b.upBid : NaN);
-        tailPush({ t: Date.now(), k: 'snap', d: { slug, r: Math.round(E.r), key: run('verdict.key'), fav, p: E.pFavAdj, ask: favAsk, lim: E.buyIn ? E.buyIn.lim : NaN, bid: Number.isFinite(b.upBid) ? (fav === 'UP' ? b.upBid : 1 - b.upAsk) : NaN, pos: state.pos ? state.pos.side + ' ' + state.pos.qty + '@' + Math.round(state.pos.px * 100) : null, bookAge: +((Date.now() - run('R.bookAt')) / 1000).toFixed(1), pmAge: E.pmAge, cash: state.cashNow, loopMs: lat.evalMs, orderMs: lat.order, src: brti.src, brtiAge: brti.at ? +((Date.now() - brti.at) / 1000).toFixed(1) : null, sig: +Number(E.sig).toFixed(3), sigLive: +Number(E.sigLive).toFixed(3), sigFloor: +Number(E.sigFloor).toFixed(3), off: +Number(E.off).toFixed(2), spot: E.spot, target: E.target } }); }
+        tailPush({ t: Date.now(), k: 'snap', d: { slug, r: Math.round(E.r), key: run('verdict.key'), fav, p: E.pFavAdj, ask: favAsk, lim: E.buyIn ? E.buyIn.lim : NaN, bid: Number.isFinite(b.upBid) ? (fav === 'UP' ? b.upBid : 1 - b.upAsk) : NaN, pos: state.pos ? state.pos.side + ' ' + state.pos.qty + '@' + Math.round(state.pos.px * 100) : null, rest: state.rest ? state.rest.kind + ' ' + state.rest.side + ' ' + state.rest.qty + '@' + Math.round(state.rest.px * 100) : null, bookAge: +((Date.now() - run('R.bookAt')) / 1000).toFixed(1), pmAge: E.pmAge, cash: state.cashNow, loopMs: lat.evalMs, orderMs: lat.order, src: brti.src, brtiAge: brti.at ? +((Date.now() - brti.at) / 1000).toFixed(1) : null, sig: +Number(E.sig).toFixed(3), sigLive: +Number(E.sigLive).toFixed(3), sigFloor: +Number(E.sigFloor).toFixed(3), off: +Number(E.off).toFixed(2), spot: E.spot, target: E.target } }); }
       flushTail(); lat.evalMs = Date.now() - tLoop;
       if (Date.now() - lastReport > 60000) { lastReport = Date.now(); if (!DRY) { try { const b = await live.balances(); state.balanceNow = b.total; state.cashNow = b.cash; } catch (e) {} } report(); saveState(); log('tick', { r: Math.round(E.r), key: run('verdict.key'), fav: E.fav, p: E.pFavAdj, book: run('R.book'), pos: state.pos && state.pos.side }); }
       if (Date.now() > deadline) stop();
@@ -345,12 +467,12 @@ async function replayMain() {
        REC.sec = { 5: 0.00313, 10: 0.00357, 15: 0.00481, 30: 0.00588 }; REC.ready = true; REC.at = Date.now(); REC.spans = { m1: 4, m5: 4, m15: 4 };
        REC.bad = { n: 3562, at: 0, med: 0.00011, up: [0.000717, 0.001021, 0.002027, 0.002354, 0.00361], dn: [0.000675, 0.00105, 0.002021, 0.002771, 0.004853] };
        R.offset = 0; R.offsetSrc = 'live'; R.offsetSd = 0;`);
-  log('start', { mode: 'replay', rounds: W.length, cap: CAP });
+  log('start', { mode: 'replay', rounds: W.length, cap: CAP, policy: MAKER ? 'maker' + (CROSS ? '+cross' : '') + ' fillstrict ' + FILL_STRICT : 'strict' });
   for (let wi = 0; wi < W.length; wi++) {
     const w = W[wi]; const prints = {}; for (const k in w.prints) prints[Number(k)] = w.prints[k];
     const avg60 = s => { let n = 0, sum = 0; for (let t = s - 59; t <= s; t++) { const v = prints[t]; if (v > 0) { n++; sum += v; } } return n >= 55 ? sum / n : NaN; };
     const book = {}; for (const k in w.book) book[Number(k)] = w.book[k];
-    const nearestBook = (sec, tol = 20) => { for (let d = 0; d <= tol; d++) { if (book[sec - d]) return book[sec - d]; if (d && book[sec + d]) return book[sec + d]; } return null; };
+    const nearestBook = (sec, tol = BOOK_TOL) => { for (let d = 0; d <= tol; d++) { if (book[sec - d]) return book[sec - d]; if (d && book[sec + d]) return book[sec + d]; } return null; };
     for (let s = w.T0 - 130; s < w.T0; s++) if (prints[s] > 0) run(`secs.set(${s}, ${prints[s]}); if (${s} < firstSec) firstSec = ${s};`);   // the pre-open minute: first PM line and basis
     for (let s = w.T0 - 70; s < w.T0; s++) { const a = avg60(s); if (a > 0) run(`pmA.set(${s}, ${a});`); }
     for (let sec = w.T0; sec <= w.T + 1; sec++) {
@@ -360,13 +482,14 @@ async function replayMain() {
       const bk = nearestBook(sec); if (bk) { const b = { upAsk: bk[0] == null ? NaN : bk[0], upBid: bk[2] == null ? NaN : bk[2], upAskQty: bk[1] || 0, upBidQty: bk[3] || 0 }; setBook(b); mock.book = b; } else { run('R.book = null;'); mock.book = null; }
       if (sec === w.T0) { run('evaluate();'); run(`R.target = ${w.ptb}; R.targetSrc = 'api'; R.offset = 0; R.offsetSrc = 'live'; R.offsetSd = 0;`); }
       run('liveRecordCheck(' + sec + ');'); const E = run('evaluate()'); run('dictate(lastEval)');
-      const st = run('strict'); if (st.cmd && st.since !== lastCmdSince) { lastCmdSince = st.since; await onCommand(st.cmd, E); }
+      if (MAKER) { mock.tick(); await makerStep(E); } else { const st = run('strict'); if (st.cmd && st.since !== lastCmdSince) { lastCmdSince = st.since; await onCommand(st.cmd, E); } }
       await settleIfDone();
     }
+    if (MAKER) await syncRest(null, run('lastEval'));   // the bell closes whatever rests
     run('finishRound(); settleFromSeries();'); await settleIfDone();
     if (wi % 20 === 0) report();
   }
   report(); const done = state.trades.filter(t => t.pnl != null);
-  console.log(JSON.stringify({ rounds: W.length, trades: state.trades.length, closed: done.length, pnl: +done.reduce((s, t) => s + t.pnl, 0).toFixed(2), cashEnd: +mock.cash.toFixed(2), losses: done.filter(t => t.settle && t.pnl < 0).length, skips: state.skips }));
+  console.log(JSON.stringify({ policy: MAKER ? 'maker' + (CROSS ? '+cross' : '') + (PERSIST ? '+persist' : '') + (TAKE_HARVEST ? '+takeharvest' : '') + ' fillstrict ' + FILL_STRICT : 'strict', rounds: W.length, trades: state.trades.length, closed: done.length, pnl: +done.reduce((s, t) => s + t.pnl, 0).toFixed(2), cashEnd: +mock.cash.toFixed(2), wins: done.filter(t => t.pnl > 0).length, losses: done.filter(t => t.pnl < 0).length, settleLosses: done.filter(t => t.settle && t.pnl < 0).length, harvests: done.filter(t => /harvest/.test(t.exit || '')).length, riskExits: state.cmds, reprices: state.reprices, worst: +Math.min(0, ...done.map(t => t.pnl)).toFixed(2), skips: state.skips }));
 }
 (REPLAY ? replayMain() : liveMain()).catch(e => { console.error(e); process.exit(1); });

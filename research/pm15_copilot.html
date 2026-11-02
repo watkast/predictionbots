@@ -411,7 +411,8 @@ const $ = id => document.getElementById(id);
 // ---------- which market: BTC (default) or ETH (#eth) — same brain, the asset's own feeds, slugs, scale and bot ----------
 const ASSETS = {
   btc: { sym: 'BTC', cb: 'BTC-USD', gw: 'crypto:btc', slug: 'cpc-btc-updown-15m-', minPx: 1000, K: 1, d0: 0, bot: 'Mr. P', tail: 'mrp-live-tail', key: 'pm15' },
-  eth: { sym: 'ETH', cb: 'ETH-USD', gw: 'crypto:eth', slug: 'cpceth-eth-updown-15m-', minPx: 100, K: 0.04, d0: 2, bot: 'Mr. E', tail: 'mre-live-tail', key: 'pm15eth', buy: 0.35, sell: 0.55 }
+  eth: { sym: 'ETH', cb: 'ETH-USD', gw: 'crypto:eth', slug: 'cpceth-eth-updown-15m-', minPx: 100, K: 0.04, d0: 2, bot: 'Mr. E', tail: 'mre-live-tail', key: 'pm15eth', buy: 0.35, sell: 0.55 },
+  one: { sym: 'BTC', cb: 'BTC-USD', gw: 'crypto:btc', slug: 'cpc-btc-updown-15m-', minPx: 1000, K: 1, d0: 0, bot: 'Mr. One', tail: 'mr1-live-tail', key: 'pm15' }   // the BTC page with Mr. One's terminal
 };
 const ASSET = ASSETS[String((typeof location !== 'undefined' && location.hash) || '').replace('#', '').toLowerCase()] || ASSETS.btc;
 const D0 = ASSET.d0;                       // dollar decimals in the small print (BTC whole dollars, ETH cents)
@@ -1459,8 +1460,11 @@ const botFmt = x => {
   if (k === 'rest') return ['order', d.sellAt ? 'REST sell ' + d.side + ' at ' + c(d.sellAt) : 'REST buy ' + d.side + ' at ' + c(d.at) + ' · 1 sh'];
   if (k === 'round') return ['sys', d.exit ? 'round: ' + d.exit : d.buysPulled ? d.buysPulled : d.held ? 'held ' + d.held + ' @ ' + c(d.px) + ' to the bell' : JSON.stringify(d).slice(0, 80)];
   if (k === 'dry') return ['order', 'DRY ' + d.intent + ' ' + (d.price && d.price.value) + ' × ' + d.quantity];
-  if (k === 'snap') return ['snap', clock(d.r) + ' ' + d.fav + ' ' + (Number.isFinite(d.p) ? Math.round(d.p * 100) + '%' : '—') + ' ask ' + (Number.isFinite(d.ask) ? Math.round(d.ask * 100) : '—') + ' lte ' + (Number.isFinite(d.lim) ? Math.round(d.lim * 100) : '—') + ' ' + (d.pos ? 'IN ' + d.pos : 'flat') + (d.bookAge > 3 ? ' book ' + d.bookAge + 's' : '')];
+  if (k === 'snap') return ['snap', clock(d.r) + ' ' + d.fav + ' ' + (Number.isFinite(d.p) ? Math.round(d.p * 100) + '%' : '—') + ' ask ' + (Number.isFinite(d.ask) ? Math.round(d.ask * 100) : '—') + ' lte ' + (Number.isFinite(d.lim) ? Math.round(d.lim * 100) : '—') + ' ' + (d.pos ? 'IN ' + d.pos : 'flat') + (d.rest ? ' · resting ' + d.rest : '') + (d.bookAge > 3 ? ' book ' + d.bookAge + 's' : '')];
   if (k === 'cmd') return ['cmd', 'CMD ' + d.text + (d.sh ? ' · ' + d.sh + ' sh' : '') + ' · ' + clock(d.left) + ' left'];
+  if (k === 'order' && d.maker) return ['order', 'REST ' + d.kind + ' ' + d.side + ' ' + d.qty + ' sh @ ' + c(d.px) + (d.kind === 'buy' && Number.isFinite(d.p) ? ' · chance ' + Math.round(d.p * 100) + '% − ' + Math.round((d.edge || 0) * 100) + '¢' : d.kind === 'sell' && Number.isFinite(d.p) ? ' · worth ' + Math.round(d.p * 100) + '% + edge' : '')];
+  if (k === 'order' && d.cancel && d.why) return ['order', 'PULL ' + (d.kind || '') + ' ' + (d.side || '') + ' @ ' + c(d.px) + ' · ' + d.why + (d.filled ? ' · filled ' + d.filled : '')];
+  if (k === 'order' && d.done) return ['order', 'ORDER ' + String(d.state || '').replace('ORDER_STATE_', '').toLowerCase() + ' · filled ' + d.filled];
   if (k === 'order') { if (d.cancel) return ['order', 'ORDER cancelled after the window · filled ' + d.filled]; if (d.unfilled) return ['order', 'ORDER not filled']; if (d.unfilledSell) return ['order', 'SELL not filled in the window']; if (d.kind === 'buy') return ['order', 'ORDER buy ' + d.side + ' ' + d.qty + ' sh LTE ' + c(d.lim) + ' · ask ' + c(d.ask) + ' · $' + d.usd + (d.dry ? ' · DRY' : '')]; return ['order sell', 'ORDER sell ' + d.side + ' ' + d.qty + ' sh at ' + c(d.px) + ' · bid ' + c(d.bid) + (d.now ? ' · NOW' : '')]; }
   if (k === 'fill' && d.sold != null) return ['fill sell', 'FILL sell ' + d.side + ' @ ' + c(d.sold) + ' · ' + (d.pnl >= 0 ? '+' : '−') + '$' + Math.abs(d.pnl).toFixed(2)];
   if (k === 'fill' && d.kind == null) return ['fill', 'FILL buy ' + d.side + ' ' + (d.qty || 1) + ' sh @ ' + c(d.px)];
@@ -1471,7 +1475,7 @@ const botFmt = x => {
   if (k === 'error') return ['error', 'ERROR ' + JSON.stringify(d).slice(0, 160)];
   if (k === 'adopt') return ['order', 'ADOPTED ' + d.side + ' ' + d.qty + ' sh @ ' + c(d.px)];
   if (k === 'balance') return ['sys', 'balance $' + Number(d.total).toFixed(2) + ' · buying power $' + Number(d.cash).toFixed(2)];
-  if (k === 'start') return ['sys', 'bot started · ' + d.mode + ' · cap $' + d.cap];
+  if (k === 'start') return ['sys', (d.name || 'bot') + ' started · ' + d.mode + (d.policy ? ' · ' + d.policy : '') + ' · cap $' + d.cap];
   if (k === 'stop') return ['sys', 'bot stopped'];
   if (k === 'ws') return ['sys', d.open ? 'book stream open · ' + d.open.replace('cpc-btc-updown-15m-', '') : d.close ? 'book stream closed' : 'book stream: ' + (d.error || '')];
   if (k === 'preview') return ['sys', 'DOWN price check: ' + (d.conv || d.error || 'unknown')];
