@@ -90,3 +90,8 @@
 {"t":1793639759455,"k":"fill","d":{"slug":"cpceth-eth-updown-15m-2026-11-02-1715z","side":"DOWN","px":0.35,"qty":1}}
 {"t":1793639759610,"k":"rest","d":{"slug":"cpceth-eth-updown-15m-2026-11-02-1715z","side":"DOWN","sellAt":0.55,"id":"DFRCM5PG12WE"}}
 {"t":1793640091417,"k":"fill","d":{"slug":"cpceth-eth-updown-15m-2026-11-02-1715z","side":"DOWN","sold":0.55,"pnl":0.2}}
+{"t":1793640605149,"k":"rest","d":{"slug":"cpceth-eth-updown-15m-2026-11-02-1730z","side":"UP","at":0.35,"id":"DFRK2KFG12WP"}}
+{"t":1793640605269,"k":"rest","d":{"slug":"cpceth-eth-updown-15m-2026-11-02-1730z","side":"DOWN","at":0.35,"id":"DFRK2MD012WQ"}}
+{"t":1793640852494,"k":"fill","d":{"slug":"cpceth-eth-updown-15m-2026-11-02-1730z","side":"UP","px":0.35,"qty":1}}
+{"t":1793640852832,"k":"rest","d":{"slug":"cpceth-eth-updown-15m-2026-11-02-1730z","side":"UP","sellAt":0.55,"id":"DFRMZ2FG12W4"}}
+{"t":1793641023264,"k":"fill","d":{"slug":"cpceth-eth-updown-15m-2026-11-02-1730z","side":"UP","sold":0.55,"pnl":0.2}}
