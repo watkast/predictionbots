@@ -223,11 +223,22 @@
    "side": "UP",
    "buyPx": 0.35,
    "buyLeft": 794,
+   "exit": "lost at the bell",
+   "pnl": -0.35,
+   "sellId": "DFSX1HCG12W4",
+   "result": "DOWN"
+  },
+  {
+   "T0": 1793646900,
+   "slug": "cpceth-eth-updown-15m-2026-11-02-1915z",
+   "side": "DOWN",
+   "buyPx": 0.35,
+   "buyLeft": 884,
    "exit": null,
    "pnl": null
   }
  ],
  "balanceStart": 17.4956,
- "balanceNow": 17.8356,
+ "balanceNow": 18.4856,
  "errors": 0
 }
