@@ -176,12 +176,13 @@ async function detectShortConvention(slug, book) {
 const mock = { cash: CAP, pos: null, orders: {}, n: 0, book: null,
   async balances() { return { cash: this.cash, total: this.cash + (this.pos ? this.pos.qty * this.pos.px : 0) }; },
   async position() { return this.pos ? { net: this.pos.qty, avail: this.pos.qty, avgPx: this.pos.px } : null; },
-  async place(o) { const id = 'm' + (++this.n); const px = amt(o.price), q = Number(o.quantity), b = this.book || {};
+  async place(o) { const id = 'm' + (++this.n); const q = Number(o.quantity), b = this.book || {};
     const side = o.intent.includes('LONG') ? 'UP' : 'DOWN', buy = o.intent.includes('BUY');
+    const px = side === 'UP' || state.shortConv === 'own' ? amt(o.price) : 1 - amt(o.price);   // like the exchange: a short is quoted in Up terms
     const ask = side === 'UP' ? b.upAsk : 1 - b.upBid, bid = side === 'UP' ? b.upBid : 1 - b.upAsk, qty = buy ? (side === 'UP' ? b.upAskQty : b.upBidQty) : (side === 'UP' ? b.upBidQty : b.upAskQty);
     const fillPx = buy ? (Number.isFinite(ask) && ask <= px + 1e-9 ? ask : NaN) : (Number.isFinite(bid) && bid >= px - 1e-9 ? bid : NaN);
     const filled = Number.isFinite(fillPx) ? Math.min(q, Math.floor(qty)) : 0;
-    const ord = { id, state: filled >= q ? 'ORDER_STATE_FILLED' : filled > 0 ? 'ORDER_STATE_PARTIALLY_FILLED' : (o.tif === 'TIME_IN_FORCE_IMMEDIATE_OR_CANCEL' ? 'ORDER_STATE_CANCELED' : 'ORDER_STATE_NEW'), cumQuantity: filled, avgPx: money(filled ? fillPx : 0), quantity: q };
+    const ord = { id, state: filled >= q ? 'ORDER_STATE_FILLED' : filled > 0 ? 'ORDER_STATE_PARTIALLY_FILLED' : (o.tif === 'TIME_IN_FORCE_IMMEDIATE_OR_CANCEL' ? 'ORDER_STATE_CANCELED' : 'ORDER_STATE_NEW'), cumQuantity: filled, avgPx: money(filled ? (side === 'UP' || state.shortConv === 'own' ? fillPx : 1 - fillPx) : 0), quantity: q };   // avgPx reported in Up terms for shorts
     if (filled) { if (buy) { this.cash -= filled * (fillPx + fee(fillPx)); this.pos = { side, qty: filled, px: fillPx }; } else { this.cash += filled * (fillPx - fee(fillPx)); this.pos = this.pos && this.pos.qty > filled ? { ...this.pos, qty: this.pos.qty - filled } : null; } }
     this.orders[id] = ord; return { id, executions: [] }; },
   async order(id) { return this.orders[id]; }, async cancel(id) { const o = this.orders[id]; if (o && o.state === 'ORDER_STATE_NEW') o.state = 'ORDER_STATE_CANCELED'; }, async cancelAll() {}, async preview() { return {}; },
@@ -225,7 +226,7 @@ async function onBuy(cmd, E) {
   }
   state.order = null;
   if (filled > 0) {
-    const price = Number.isFinite(avg) && avg > 0 ? (cmd.side === 'UP' ? avg : (state.shortConv === 'up' ? 1 - avg : avg)) : px;
+    const price = Number.isFinite(avg) && avg > 0 ? (cmd.side === 'UP' ? avg : (state.shortConv === 'own' ? avg : 1 - avg)) : px;
     state.pos = { slug, T0, side: cmd.side, qty: filled, px: price, spent: +(filled * price).toFixed(2), at: now(), left: Math.round(E.r) };
     setPos({ T0, side: cmd.side, price, spent: state.pos.spent, shares: filled });
     state.trades.push({ T0, slug, side: cmd.side, buyPx: price, qty: filled, spent: state.pos.spent, buyLeft: Math.round(E.r), p: cmd.p, edge: cmd.edge });
@@ -256,7 +257,7 @@ async function onSell(cmd, E) {
     if (REPLAY) break;
   }
   if (filled > 0) {
-    const price = Number.isFinite(avg) && avg > 0 ? (side === 'UP' ? avg : (state.shortConv === 'up' ? 1 - avg : avg)) : NaN;
+    const price = Number.isFinite(avg) && avg > 0 ? (side === 'UP' ? avg : (state.shortConv === 'own' ? avg : 1 - avg)) : NaN;
     const t = state.trades[state.trades.length - 1]; const proceeds = filled * (price - fee(price));
     if (t && t.T0 === state.pos.T0) {   // sells accumulate (thin books fill in pieces); P&L = proceeds so far minus the cost of what was sold
       const sq = (t.sellQty || 0) + filled; t.sellPx = ((t.sellPx || 0) * (t.sellQty || 0) + price * filled) / sq; t.sellQty = sq; t.proceeds = +((t.proceeds || 0) + proceeds).toFixed(2); t.sellLeft = Math.round(E.r);
