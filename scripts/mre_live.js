@@ -1,20 +1,20 @@
 #!/usr/bin/env node
 // Mr. E — a deliberately simple bot on the Polymarket US 15-minute ETH Up/Down market, completely separate from Mr. P:
-//   each round, rest a limit BUY at 35¢ for 1 share on BOTH sides (Up, and Down = a short of Up at 65¢);
+//   each round, rest a limit BUY at 30¢ for 1 share on BOTH sides (Up, and Down = a short of Up at 70¢);
 //   the first one to fill wins — the other is cancelled — and a limit SELL at 55¢ for that share is rested at once;
 //   the resting buys are pulled with 7:00 left (no entries after that); the 55¢ sell stays until the window closes, and
-//   whatever is still held settles (a 35¢ share pays $1 or $0). Prices: MRE_BUY / MRE_SELL (Nov 2 started at 25¢ / 30¢).
+//   whatever is still held settles (a 30¢ share pays $1 or $0). Prices: MRE_BUY / MRE_SELL (Nov 2: 25¢ / 30¢ at 6:45 AM MT, 35¢ / 55¢ from 7:36 AM, 30¢ / 55¢ from 3:50 PM).
 //   Nothing else: no model, no exits, no sizing. Max at risk per round: the buy price.
 //
 //   node scripts/mre_live.js            # live (POLYMARKET_KEY_ID / POLYMARKET_SECRET_KEY)
 //   node scripts/mre_live.js --dry      # logs what it would do, places nothing
-// Env: MRE_DIR (log + MRE.md, default ./mre), MRE_MINUTES (stop after N minutes), MRE_BUY (default 0.35), MRE_SELL (0.55), MRE_QTY (1), MRE_NOBUY_LEFT (420 s),
+// Env: MRE_DIR (log + MRE.md, default ./mre), MRE_MINUTES (stop after N minutes), MRE_BUY (default 0.30), MRE_SELL (0.55), MRE_QTY (1), MRE_NOBUY_LEFT (420 s),
 //      MRE_SLUG_PREFIX (default cpceth-eth-updown-15m- : the ETH 15-minute market; cpc-btc-updown-15m- would be BTC)
 'use strict';
 const fs = require('fs'), path = require('path'), crypto = require('crypto');
 const DRY = process.argv.includes('--dry');
 const DIR = process.env.MRE_DIR || 'mre'; fs.mkdirSync(DIR, { recursive: true });
-const BUY = Number(process.env.MRE_BUY || 0.35), SELL = Number(process.env.MRE_SELL || 0.55), QTY = Number(process.env.MRE_QTY || 1);
+const BUY = Number(process.env.MRE_BUY || 0.30), SELL = Number(process.env.MRE_SELL || 0.55), QTY = Number(process.env.MRE_QTY || 1);
 const MINUTES = Number(process.env.MRE_MINUTES || 0) || 0, NOBUY_LEFT = Number(process.env.MRE_NOBUY_LEFT || 420);
 const KEY_ID = process.env.POLYMARKET_KEY_ID || '', SECRET = process.env.POLYMARKET_SECRET_KEY || '';
 const API = 'https://api.polymarket.us', GATEWAY = 'https://gateway.polymarket.us', ROUND = 900;
@@ -32,7 +32,7 @@ const tail = []; let tailDirty = false, tailAt = 0;
 const tailPush = rec => { tail.push(rec); if (tail.length > 150) tail.shift(); tailDirty = true; };
 const flushTail = () => { if (!tailDirty || Date.now() - tailAt < 2000) return; tailDirty = false; tailAt = Date.now(); try { const tmp = path.join(DIR, 'tail.tmp'); fs.writeFileSync(tmp, tail.map(r => JSON.stringify(r)).join('\n') + '\n'); fs.renameSync(tmp, path.join(DIR, 'tail.jsonl')); } catch (e) {} };
 const log = (k, d) => { const rec = { t: Date.now(), k, d }; fs.appendFileSync(logPath, JSON.stringify(rec) + '\n'); console.log(new Date(rec.t).toISOString(), k, JSON.stringify(d).slice(0, 300)); tailPush(rec); flushTail(); };
-const live = { slug: '', T: 0, resting: [], held: null };   // what the snapshot shows
+const live = { slug: '', T: 0, resting: [], held: null, ids: null };   // what the snapshot shows; ids = this round's resting buy order ids (cancelled on stop)
 const save = () => { try { fs.writeFileSync(statePath, JSON.stringify(state, null, 1)); } catch (e) {} };
 const et = ms => new Intl.DateTimeFormat('en-US', { timeZone: 'America/New_York', month: 'short', day: 'numeric', hour: 'numeric', minute: '2-digit' }).format(new Date(ms));
 function report() {
@@ -75,7 +75,7 @@ const filledOf = async id => { const o = await ex.order(id); if (!o) return { qt
 // ---- one round
 async function playRound(T0) {
   const slug = SLUG(T0), T = T0 + ROUND; const rec = { T0, slug, side: null, buyPx: null, buyLeft: null, exit: null, pnl: null }; state.rounds.push(rec); save();
-  const ids = {}; let held = null; live.slug = slug; live.T = T; live.resting = ['UP', 'DOWN']; live.held = null;
+  const ids = {}; let held = null; live.slug = slug; live.T = T; live.resting = ['UP', 'DOWN']; live.held = null; live.ids = ids;
   for (const side of ['UP', 'DOWN']) { try { const res = await ex.place(buyOrder(slug, side)); ids[side] = res.id || (res.order && res.order.id); log('rest', { slug, side, at: BUY, id: ids[side] }); } catch (e) { state.errors++; log('error', { place: side, msg: e.message.slice(0, 300) }); } }
   let sellId = null, buysPulled = false;
   while (Date.now() / 1000 < T - 2) {
@@ -118,8 +118,13 @@ async function settleLater(rec) {
 (async () => {
   log('start', { mode: state.mode, market: PREFIX, buy: BUY, sell: SELL, qty: QTY, node: process.version });
   if (!DRY) { try { const b = await ex.balance(); if (state.balanceStart == null) state.balanceStart = b.total; state.balanceNow = b.total; log('balance', b); } catch (e) { console.error('cannot read the account — stopping', e.message); process.exit(2); } }
+  if (!DRY) { try {   // a previous run's resting buys (it logs every one) must not outlive it: cancel any rested in the last 16 minutes
+    const lines = fs.readFileSync(logPath, 'utf8').trim().split('\n').slice(-400); const cut = Date.now() - 16 * 60000;
+    for (const l of lines) { let r; try { r = JSON.parse(l); } catch (e) { continue; } if (r.k === 'rest' && r.d && r.d.at != null && r.t > cut && r.d.id && !String(r.d.id).startsWith('dry-')) { try { await ex.cancel(r.d.id, r.d.slug); log('cancel', { side: r.d.side, id: r.d.id, why: 'left by the previous run' }); } catch (e) {} } }
+  } catch (e) {} }
   const deadline = MINUTES ? Date.now() + MINUTES * 60000 : Infinity;
-  const stop = async () => { log('stop', {}); report(); save(); process.exit(0); };
+  const stop = async () => { log('stop', {}); if (!DRY && live.ids) for (const side of ['UP', 'DOWN']) if (live.ids[side]) { try { await ex.cancel(live.ids[side], live.slug); log('cancel', { side, id: live.ids[side], why: 'stop' }); } catch (e) {} }   // resting buys die with the run; a resting sell stays with the exchange
+    report(); save(); process.exit(0); };
   process.on('SIGTERM', stop); process.on('SIGINT', stop);
   setInterval(async () => { if (!DRY) { try { const b = await ex.balance(); state.balanceNow = b.total; } catch (e) {} } report(); save(); }, 60000);
   setInterval(async () => { if (!live.slug) return; const b = await ex.book(live.slug); tailPush({ t: Date.now(), k: 'snap', d: { bot: 'E', slug: live.slug, r: Math.max(0, Math.round(live.T - Date.now() / 1000)), upAsk: b ? b.upAsk : NaN, dnAsk: b && Number.isFinite(b.upBid) ? +(1 - b.upBid).toFixed(2) : NaN, resting: live.resting, held: live.held } }); flushTail(); }, 10000);
