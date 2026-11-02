@@ -149,3 +149,9 @@
 {"t":1793649642651,"k":"rest","d":{"slug":"cpceth-eth-updown-15m-2026-11-02-2000z","side":"DOWN","sellAt":0.55,"id":"DFTR10YG12VX"}}
 {"t":1793649742364,"k":"fill","d":{"slug":"cpceth-eth-updown-15m-2026-11-02-2000z","side":"DOWN","sold":0.55,"pnl":0.2}}
 {"t":1793650502004,"k":"stop","d":{}}
+{"t":1793650714308,"k":"start","d":{"mode":"live","market":"cpceth-eth-updown-15m-","buy":0.35,"sell":0.55,"qty":1,"node":"v22.23.4"}}
+{"t":1793650714539,"k":"balance","d":{"cash":18.6356,"total":18.6356}}
+{"t":1793650714735,"k":"rest","d":{"slug":"cpceth-eth-updown-15m-2026-11-02-2015z","side":"UP","at":0.35,"id":"DFV06RH012WA"}}
+{"t":1793650714879,"k":"rest","d":{"slug":"cpceth-eth-updown-15m-2026-11-02-2015z","side":"DOWN","at":0.35,"id":"DFV06SJ012VC"}}
+{"t":1793650717201,"k":"fill","d":{"slug":"cpceth-eth-updown-15m-2026-11-02-2015z","side":"DOWN","px":0.33999999999999997,"qty":1}}
+{"t":1793650717442,"k":"rest","d":{"slug":"cpceth-eth-updown-15m-2026-11-02-2015z","side":"DOWN","sellAt":0.55,"id":"DFV07DN012WK"}}
