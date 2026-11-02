@@ -94,13 +94,14 @@ async function playRound(T0) {
   }
   for (const id of [ids.UP, ids.DOWN]) if (id) await ex.cancel(id, slug);   // the 30¢ sell stays until the window closes; the exchange closes it with the market
   if (!held) { rec.exit = 'no fill'; log('round', { slug, exit: 'no fill' }); save(); return; }
-  rec.exit = 'held to the bell'; save(); log('round', { slug, held: held.side, px: held.px });
+  rec.exit = 'held to the bell'; rec.sellId = sellId; save(); log('round', { slug, held: held.side, px: held.px });
   settleLater(rec);
 }
 // the result lands on the gateway 20 s to several minutes after the bell
 async function settleLater(rec) {
   for (let i = 0; i < 40; i++) {
     await sleep(30000);
+    if (rec.sellId && !DRY) { try { const f = await filledOf(rec.sellId); if (f.qty >= QTY) { const px = rec.side === 'UP' ? f.px : 1 - f.px; rec.exit = 'sold at ' + Math.round(SELL * 100) + '¢'; rec.sellPx = px; rec.pnl = +((px - rec.buyPx) * QTY).toFixed(2); log('fill', { slug: rec.slug, side: rec.side, sold: px, pnl: rec.pnl, late: true }); save(); report(); return; } } catch (e) {} }   // the sell may have filled in the last seconds
     const m = await ex.market(rec.slug); const apt = (m && (m.assetPriceTerms || (m.market && m.market.assetPriceTerms))) || {};
     const sp = amt(apt.settlementPrice), ptb = amt(apt.priceToBeat);
     if (Number.isFinite(sp) && Number.isFinite(ptb)) { const result = sp >= ptb ? 'UP' : 'DOWN'; const won = result === rec.side; rec.exit = won ? 'won at the bell' : 'lost at the bell'; rec.pnl = +(((won ? 1 : 0) - rec.buyPx) * QTY).toFixed(2); rec.result = result; log('settle', { slug: rec.slug, result, side: rec.side, pnl: rec.pnl }); save(); report(); return; }
