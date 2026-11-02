@@ -31,9 +31,29 @@
    "buyLeft": null,
    "exit": "no fill",
    "pnl": null
+  },
+  {
+   "T0": 1793629800,
+   "slug": "cpceth-eth-updown-15m-2026-11-02-1430z",
+   "side": "DOWN",
+   "buyPx": 0.14,
+   "buyLeft": 511,
+   "exit": "lost at the bell",
+   "pnl": -0.14,
+   "sellId": "DFP3KJYG12WQ",
+   "result": "UP"
+  },
+  {
+   "T0": 1793630700,
+   "slug": "cpceth-eth-updown-15m-2026-11-02-1445z",
+   "side": "DOWN",
+   "buyPx": 0.35,
+   "buyLeft": 812,
+   "exit": null,
+   "pnl": null
   }
  ],
  "balanceStart": 17.4956,
- "balanceNow": 17.1856,
+ "balanceNow": 17.6356,
  "errors": 0
 }
