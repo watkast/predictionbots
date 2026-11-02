@@ -55,15 +55,16 @@
    "exit": "SELL NOW"
   }
  ],
- "cmds": 11,
+ "cmds": 13,
  "skips": {
-  "index series stale": 1
+  "index series stale": 1,
+  "DOWN convention unknown — UP only": 1
  },
  "errors": 0,
  "balanceStart": 23.7932,
- "balanceNow": 17.0832,
+ "balanceNow": 16.7432,
  "pos": null,
  "order": null,
  "shortConv": null,
- "cashNow": 17.0832
+ "cashNow": 16.7432
 }
