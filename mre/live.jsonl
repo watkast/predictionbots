@@ -219,3 +219,6 @@
 {"t":1793660793058,"k":"round","d":{"slug":"cpceth-eth-updown-15m-2026-11-02-2300z","skipped":"joined mid-round — waiting for the next open"}}
 {"t":1793661305152,"k":"rest","d":{"slug":"cpceth-eth-updown-15m-2026-11-02-2315z","side":"UP","at":0.3,"id":"DFXH0ACG12VX"}}
 {"t":1793661305226,"k":"rest","d":{"slug":"cpceth-eth-updown-15m-2026-11-02-2315z","side":"DOWN","at":0.3,"id":"DFXH0AZG12W4"}}
+{"t":1793661667273,"k":"fill","d":{"slug":"cpceth-eth-updown-15m-2026-11-02-2315z","side":"DOWN","px":0.30000000000000004,"qty":1}}
+{"t":1793661667367,"k":"rest","d":{"slug":"cpceth-eth-updown-15m-2026-11-02-2315z","side":"DOWN","sellAt":0.55,"id":"DFXKRR7012WA"}}
+{"t":1793661687824,"k":"fill","d":{"slug":"cpceth-eth-updown-15m-2026-11-02-2315z","side":"DOWN","sold":0.55,"pnl":0.25}}
