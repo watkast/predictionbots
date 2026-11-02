@@ -306,11 +306,22 @@
    "side": "DOWN",
    "buyPx": 0.35,
    "buyLeft": 853,
+   "exit": "lost at the bell",
+   "pnl": -0.35,
+   "sellId": "DFVKGZ3G12WQ",
+   "result": "UP"
+  },
+  {
+   "T0": 1793654100,
+   "slug": "cpceth-eth-updown-15m-2026-11-02-2115z",
+   "side": "DOWN",
+   "buyPx": 0.35,
+   "buyLeft": 733,
    "exit": null,
    "pnl": null
   }
  ],
  "balanceStart": 17.4956,
- "balanceNow": 18.7756,
+ "balanceNow": 18.4256,
  "errors": 0
 }
