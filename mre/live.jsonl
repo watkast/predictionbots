@@ -189,3 +189,4 @@
 {"t":1793655929144,"k":"settle","d":{"slug":"cpceth-eth-updown-15m-2026-11-02-2130z","result":"UP","side":"DOWN","pnl":-0.35}}
 {"t":1793656073947,"k":"fill","d":{"slug":"cpceth-eth-updown-15m-2026-11-02-2145z","side":"UP","px":0.35,"qty":1}}
 {"t":1793656074307,"k":"rest","d":{"slug":"cpceth-eth-updown-15m-2026-11-02-2145z","side":"UP","sellAt":0.55,"id":"DFW9385012WP"}}
+{"t":1793656586713,"k":"fill","d":{"slug":"cpceth-eth-updown-15m-2026-11-02-2145z","side":"UP","sold":0.55,"pnl":0.2}}
