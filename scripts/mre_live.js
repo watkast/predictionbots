@@ -89,7 +89,7 @@ async function playRound(T0) {
       for (const side of ['UP', 'DOWN']) { if (!ids[side] || DRY) continue;
         let f; try { f = await filledOf(ids[side]); } catch (e) { continue; }
         if (f.qty >= QTY) { const px = side === 'UP' ? f.px : 1 - f.px; held = { side, px }; rec.side = side; rec.buyPx = px; rec.buyLeft = Math.round(T - Date.now() / 1000); log('fill', { slug, side, px, qty: f.qty });
-          const other = side === 'UP' ? 'DOWN' : 'UP'; await ex.cancel(ids[other], slug); ids[other] = null; live.resting = []; live.held = side + ' @ ' + Math.round(px * 100) + '¢';
+          const other = side === 'UP' ? 'DOWN' : 'UP'; await ex.cancel(ids[other], slug); ids[other] = null; ids[side] = null; live.resting = []; live.held = side + ' @ ' + Math.round(px * 100) + '¢';
           try { const res = await ex.place(sellOrder(slug, side)); sellId = res.id || (res.order && res.order.id); log('rest', { slug, side, sellAt: SELL, id: sellId }); } catch (e) { state.errors++; log('error', { placeSell: e.message.slice(0, 300) }); }
           save(); break; } }
     } else if (sellId) {
@@ -128,12 +128,17 @@ async function settleLater(rec) {
   process.on('SIGTERM', stop); process.on('SIGINT', stop);
   setInterval(async () => { if (!DRY) { try { const b = await ex.balance(); state.balanceNow = b.total; } catch (e) {} } report(); save(); }, 60000);
   setInterval(async () => { if (!live.slug) return; const b = await ex.book(live.slug); tailPush({ t: Date.now(), k: 'snap', d: { bot: 'E', slug: live.slug, r: Math.max(0, Math.round(live.T - Date.now() / 1000)), upAsk: b ? b.upAsk : NaN, dnAsk: b && Number.isFinite(b.upBid) ? +(1 - b.upBid).toFixed(2) : NaN, resting: live.resting, held: live.held } }); flushTail(); }, 10000);
+  let first = true;
   while (Date.now() < deadline) {
     const now = Date.now() / 1000, T0 = Math.floor(now / ROUND) * ROUND;
     if (now - T0 < 3) await sleep(3000);
-    if (now > T0 + ROUND - 30) { await sleep(5000); continue; }         // too late in this round: wait for the next
+    if (now > T0 + ROUND - 30 || (first && now - T0 > 60)) {           // too late in this round — or a fresh run joining one mid-way, where a bid at BUY would cross a lopsided book: wait for the next open
+      if (first) { log('round', { slug: SLUG(T0), skipped: 'joined mid-round — waiting for the next open' }); first = false; }
+      const nextOpen = T0 + ROUND; await sleep(Math.max(1000, (nextOpen - Date.now() / 1000 + 2) * 1000)); continue; }
+    first = false;
     await playRound(T0);
-    const next = (Math.floor(Date.now() / 1000 / ROUND) + 1) * ROUND; await sleep(Math.max(1000, (next - Date.now() / 1000 + 2) * 1000));
+    const next = T0 + ROUND;                                              // the round after the one just played (never computed from the clock: the wrap-up can cross the boundary and would skip a round)
+    const wait = (next - Date.now() / 1000 + 2) * 1000; if (wait > 0) await sleep(wait);
   }
   stop();
 })().catch(e => { console.error(e); process.exit(1); });
