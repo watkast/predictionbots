@@ -1,22 +1,22 @@
 {
- "rounds_observed": 884,
+ "rounds_observed": 885,
  "entries": 113,
- "scored": 112,
+ "scored": 113,
  "by_stake": {
   "50": {
    "full_fill_rate": 1.0,
-   "net": -264.03,
-   "ret_per_dollar": -0.0471
+   "net": -254.38,
+   "ret_per_dollar": -0.045
   },
   "100": {
    "full_fill_rate": 0.991,
-   "net": -539.91,
-   "ret_per_dollar": -0.0484
+   "net": -520.61,
+   "ret_per_dollar": -0.0463
   },
   "250": {
    "full_fill_rate": 0.938,
-   "net": -1366.6,
-   "ret_per_dollar": -0.0499
+   "net": -1318.35,
+   "ret_per_dollar": -0.0477
   }
  },
  "live_minus_display_c": 1.15,
