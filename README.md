@@ -47,7 +47,7 @@ the paper / record / backtest / carry / bounty schedules are off, `workflow_disp
 live line of research is **Early Favorite** on Polymarket US 15-min BTC: `research/early_favorite_playbook.md`,
 `scripts/early_favorite_tracker.py` (forward test, `polyus.yml`), `scripts/ef_autobuyer.py` (live-book
 paper fills, `ef-autobuyer.yml`), `research/early_favorite_signal.pine` (the TradingView HUD).
-Live cockpit: `research/pm15_copilot.html` **v2.0** — open it at **https://pm15-relay-worker.machwonder.workers.dev/** (the relay
+Live cockpit: `research/pm15_copilot.html` **v4.0** — open it at **https://pm15-relay-worker.machwonder.workers.dev/** (the relay
 worker serves this file straight from `main`, wrapped with the mobile viewport; Safari → Share → Add to Home Screen). The
 claude.ai artifact copy only shows the layout: that origin blocks outbound connections, so neither Coinbase nor the relay
 is reachable from it. One
@@ -69,13 +69,29 @@ The win chance is the Gaussian settlement model capped by the empirical ladder o
 Coinbase 1-min bars), with volatility floored at 60% of the 5-day typical minute. It keeps a **lock record** on the device
 (every LOCKED call judged against the real settlement; series settlements cross-checked against the API), voice and
 sound alerts, a sell-latency setting, a feed watchdog, and `scripts/pm15_copilot_selftest.js` (a headless DOM-stub run
-of the whole pipeline across four synthetic rounds). The paper bot buys the locked side and sells on SELL.
+of the whole pipeline across four synthetic rounds). The paper bot trades the page's own discount rule.
+**v4 layout:** **DO NOW!** at the top — the instruction, the round clock, a **confidence badge** (always the same number:
+the calibrated chance that the side in question wins at the bell — 100% only when LOCKED) and the trade row (side left,
+price right) — then **DO NEXT** (the next three things in time order: NEXT / THEN / LATER, each with its moment), the
+position bar, the four prices (price to beat, what Polymarket shows, the index, Coinbase; Polymarket colors), the chart,
+and at the bottom **NUMBERS**: every metric in one grid, the field name above its value, one metric per cell, no prose.
+Under the trade row an **action timer** runs from the moment a BUY / SELL appears: MAX ODDS for your sell latency (8 s), TAKE ACTION until 15 s, then LATE (buys restart on a new price; sells run on through SELL → SELL NOW). Every box keeps its height while the numbers update. Shipped entry/exit defaults come from the replay grid (fitted on
+Oct 29–30, held up on Oct 31–Nov 2): buy a side only when the ask leaves ≥ 8¢ after fee vs its calibrated chance, favorite
+only, between 14:00 and 5:00 left; harvest-sell only inside the last 5:00 when the bid beats the math by ≥ 5¢; SELL (not
+SELL NOW) must stay true for 2 s before it shows. Over all 224 recorded rounds at $20 a trade: +$922, 0 settlement
+losses, worst round −$18, positive on every day (+$1,721 with the stake scaled by the edge, worst −$36).
+**Replay (2026-11-01):** `scripts/pm15_human_sim.js` runs the page unmodified against recorded rounds and simulates a human
+trading only on DO NEXT; `research/replay/pm15_human_sim_2026-11-01.md` has the results over 224 rounds — LOCKED held
+224/224 but is never buyable (first lock at a median 8 s left, no asks), the odds are calibrated after a ×1.3 volatility
+multiplier, the EF rule breaks even, and the only paying behaviour is buying the favorite at or under the GOOD price early
+and selling when the market overpays late (+$215–236 over 224 rounds at $20 a trade, worst round −$12, 0 settlement
+losses — promising, not proven).
 `research/pm15_brain.pine` is the TradingView version of the same brain (kill line, lookahead, LOCKED/HOLD/SELL; it
 cannot read the index series, so there the target is typed or estimated and the basis is a setting).
 `scripts/pm15_relay_worker.js` is the Cloudflare Worker behind that URL: it serves the cockpit at `/` (from GitHub `main`,
 60-s edge cache; `?ref=<branch>` for another revision, `?fresh=1` to bypass the cache) and forwards the three read-only
 gateway endpoints with CORS (`/v1/market/slug/{slug}`, `/v1/markets/{slug}/book`, `/v1/asset-prices/history` with query
-passthrough; ~30–40k requests/day around the clock, free tier 100k). The worker URL is baked into the page as the default
+passthrough). Relay budget: each open page makes ≈ 480 requests a round ≈ 32 a minute ≈ 46k a day if it stays on screen around the clock (book every 1 s in the last 2:00, every 3 s from 5:00 to 2:00, every 10 s before; series every 1–2 s in the last 3:00, every 10 s before; market terms every 30 s; nothing while the tab is hidden) against the free tier's 100k/day — one always-on device is fine, two are close to the cap, so check the worker's Metrics tab or move to the $5 Workers Paid plan (10M/month) before running a second screen all day. The worker URL is baked into the page as the default
 relay (Settings: blank = that worker, `direct` = no relay). Changing the page needs no worker redeploy; changing the
 worker does (paste the file in the Cloudflare dashboard).
 Companion chart tool: `research/velocity_reach_vs_target.pine` (TradingView — projects BTC's velocity /

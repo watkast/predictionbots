@@ -3,8 +3,9 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@600;700;800&family=IBM+Plex+Sans:wght@400;500;600&family=IBM+Plex+Mono:wght@500;600&display=swap">
 <style>
-/* Layout: a dark cockpit for one 15-minute market. Header band = the market itself; the DO NOW card
-   sits above everything beside the KILL LINE card; chart left, feed/positions right on wide screens, stacked on a phone. */
+/* A dark cockpit for one 15-minute market, built for a phone held in one hand:
+   DO NOW! (instruction · confidence · the trade) → DO NEXT (the next three things) → my position → the four prices →
+   the chart → NUMBERS (every metric, one per cell). Nothing changes height while the numbers update. */
 :root {
   --bg: #0b1218;          /* Polymarket-style navy */
   --surface: #131c26;
@@ -14,7 +15,6 @@
   --muted: #8ea0b3;
   --spot: #a78bfa;        /* Coinbase spot: violet */
   --pm: #5ec8ff;          /* what Polymarket shows: light blue */
-  --idx: #f5d76e;         /* CF Benchmarks index (estimated): gold */
   --target: #ffb020;      /* the price-to-beat: amber, the brightest thing on the page */
   --kill: #ff4b5c;        /* the kill line: red */
   --post: #b57cff;        /* the ruler post: glowing purple */
@@ -22,8 +22,9 @@
   --down: #ff5a4e;        /* Polymarket Down / No red */
   --good: #2ed47a;
   --warn: #ff8a1f;
-  --orange: #ff6a00;      /* construction safety orange: the selling countdown */
+  --orange: #ff6a00;      /* the sell row */
   --bad: #ff5a4e;
+  --yellow: #ffe14d;      /* caution: HOLD on a thin cushion */
   --font-display: "Barlow Condensed", "Arial Narrow", Impact, sans-serif;
   --font-body: "IBM Plex Sans", "Helvetica Neue", Arial, sans-serif;
   --font-mono: "IBM Plex Mono", "SF Mono", Menlo, Consolas, monospace;
@@ -46,38 +47,31 @@ button:focus-visible, input:focus-visible, select:focus-visible, summary:focus-v
 input, select { background: var(--bg); border: 1px solid var(--line); border-radius: 8px; padding: 6px 8px; min-width: 0; width: 100%; }
 .card { background: var(--surface); border: 1px solid var(--line); border-radius: 12px; padding: 12px 14px; min-width: 0; }
 .card h3 { margin: 0 0 8px; font: 700 15px/1 var(--font-display); letter-spacing: .06em; text-transform: uppercase; color: var(--muted); }
+.hint { font-size: 12px; color: var(--muted); }
+.row { display: flex; flex-wrap: wrap; gap: 8px; align-items: end; }
+.seg { display: inline-flex; border: 1px solid var(--line); border-radius: 8px; overflow: hidden; }
+.seg button { border: 0; border-radius: 0; background: transparent; padding: 6px 12px; }
+.seg button.on.up { background: #163d2a; color: var(--good); } .seg button.on.down { background: #3e1a20; color: var(--bad); }
+.btn-primary { background: var(--pm); color: #06131c; border-color: transparent; font-weight: 600; }
+.btn-danger { background: #3e1a20; color: var(--bad); }
+.toast { position: fixed; left: 50%; bottom: calc(16px + env(safe-area-inset-bottom, 0px)); transform: translateX(-50%); background: var(--surface-2); border: 1px solid var(--line); padding: 8px 14px; border-radius: 10px; font-size: 13px; z-index: 20; }
 
-/* ===== Market header band ===== */
-.mkt { display: grid; grid-template-columns: 1fr auto; gap: 10px 20px; align-items: center; padding: 12px 16px;
-  background: linear-gradient(180deg, #151a28, #0f1320); border: 1px solid var(--line); border-radius: 14px; }
-.mkt-name { font: 800 clamp(26px, 4vw, 40px)/1 var(--font-display); letter-spacing: .02em; text-wrap: balance; }
-.mkt-win { color: var(--muted); font-size: 13px; margin-top: 4px; }
-.mkt-win b { color: var(--fg); font-weight: 600; }
-.timer { font: 800 clamp(44px, 7vw, 72px)/1 var(--font-display); letter-spacing: .02em; text-align: right; }
+/* ===== the hero: everything above the numbers ===== */
+.hero { display: grid; gap: 8px; padding: 12px 14px 14px; background: linear-gradient(180deg, #151a28, #0f1320); border: 1px solid var(--line); border-radius: 14px; }
+.timer { font: 800 44px/44px var(--font-display); letter-spacing: .02em; text-align: right; height: 44px; }
 .timer.closing { color: var(--warn); }
 .timer.final { color: var(--bad); }
-.timer-sub { text-align: right; color: var(--muted); font-size: 12px; }
-.mkt-stats { grid-column: 1 / -1; display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap: 8px 16px; }
-.stat .label { margin-bottom: 2px; }
-.stat .v { font: 600 22px/1.1 var(--font-mono); font-variant-numeric: tabular-nums; }
-.stat .v.target { color: var(--target); }
-.stat .v.pm { color: var(--pm); }
-.stat .v.spot { color: var(--spot); }
-.stat .v.up { color: var(--good); } .stat .v.down { color: var(--bad); }
-.stat small { display: block; color: var(--muted); font-size: 11px; margin-top: 2px; }
-.chips { grid-column: 1 / -1; display: flex; flex-wrap: wrap; gap: 6px; }
-.chip { font-size: 11px; padding: 3px 8px; border-radius: 999px; border: 1px solid var(--line); color: var(--muted); display: inline-flex; gap: 6px; align-items: center; }
-.chip i { width: 7px; height: 7px; border-radius: 50%; background: var(--muted); display: inline-block; }
-.chip.ok i { background: var(--good); } .chip.warn i { background: var(--warn); } .chip.bad i { background: var(--bad); }
+.timer-sub { text-align: right; color: var(--muted); font-size: 11px; line-height: 12px; height: 12px; white-space: nowrap; }
 
-/* ===== DO NOW / KILL LINE ===== */
-.donow { display: grid; grid-template-columns: 1.6fr 1fr; gap: 12px; }
-.do { border-radius: 14px; border: 2px solid var(--line); padding: 14px 16px; background: var(--surface); display: grid; gap: 6px; min-width: 0; align-content: start; }
-.do .label { font: 700 13px/1 var(--font-display); letter-spacing: .14em; }
-.do .head { font: 800 clamp(30px, 5.2vw, 58px)/1 var(--font-display); letter-spacing: .01em; text-wrap: balance; }
-.do .sub { font-size: 15px; color: var(--fg); }
-.do .time { font: 700 clamp(20px, 3vw, 30px)/1.1 var(--font-display); color: var(--muted); letter-spacing: .02em; }
-.do .time b { color: var(--fg); font-family: var(--font-mono); font-size: .95em; }
+/* DO NOW! — the instruction card; its color is the verdict */
+.do { border-radius: 14px; border: 2px solid var(--line); background: var(--surface); min-width: 0; height: 278px; overflow: hidden; display: grid; grid-template-rows: 56px 84px 24px 44px 20px; gap: 8px; padding: 10px 12px 12px; }
+.do .do-top { display: flex; justify-content: space-between; align-items: flex-start; height: 56px; }
+.do .label { font: 700 16px/20px var(--font-display); letter-spacing: .16em; padding-top: 2px; color: var(--muted); }
+.do .tm { text-align: right; }
+.do .head { font: 800 34px/42px var(--font-display); letter-spacing: .01em; height: 84px; overflow: hidden; display: -webkit-box; -webkit-box-orient: vertical; -webkit-line-clamp: 2; text-wrap: balance; }
+.do .confrow { display: flex; align-items: center; gap: 8px; height: 24px; overflow: hidden; white-space: nowrap; }
+.do .confbadge { font: 800 15px/24px var(--font-mono); font-variant-numeric: tabular-nums; padding: 0 9px; border-radius: 999px; background: #ffffff14; color: var(--fg); flex: 0 0 auto; }
+.do .conf { font: 600 13px/24px var(--font-body); color: var(--muted); overflow: hidden; text-overflow: ellipsis; min-width: 0; }
 .do.lock { border-color: var(--good); background: linear-gradient(180deg, #0f2a1d, #10201a); box-shadow: 0 0 0 1px #28d97833, 0 0 40px #28d97822; }
 .do.lock .head, .do.lock .label { color: var(--good); }
 .do.sell { border-color: var(--bad); background: linear-gradient(180deg, #2c1216, #1c1216); }
@@ -86,239 +80,135 @@ input, select { background: var(--bg); border: 1px solid var(--line); border-rad
 .do.hold .head, .do.hold .label { color: var(--pm); }
 .do.ready { border-color: var(--warn); }
 .do.ready .head, .do.ready .label { color: var(--warn); }
-.do.wait .head { color: var(--muted); }
+.do.wait .head { color: var(--fg); }
 .do.safe { border-color: var(--good); background: linear-gradient(180deg, #0f2a1d, #10201a); }
 .do.safe .head, .do.safe .label { color: var(--good); }
-.do.caution { border-color: #ffe14d; background: linear-gradient(180deg, #2a2510, #1d1a10); }
-.do.caution .head, .do.caution .label { color: #ffe14d; }
-.do.next .head { font-size: clamp(24px, 3.6vw, 38px); color: var(--fg); }
-.do.next .label { color: var(--muted); }
-.do.next .sub { font-size: 13.5px; }
-.do.next .time { font-size: clamp(15px, 2vw, 19px); }
-.do.next.k-lock { border-color: var(--good); } .do.next.k-lock .head { color: var(--good); }
-.do.next.k-thin { border-color: var(--warn); } .do.next.k-thin .head { color: var(--warn); }
-.do.next.k-gone { border-color: var(--bad); } .do.next.k-gone .head { color: var(--bad); }
+.do.caution { border-color: var(--yellow); background: linear-gradient(180deg, #2a2510, #1d1a10); }
+.do.caution .head, .do.caution .label { color: var(--yellow); }
+.do.safe .confbadge, .do.lock .confbadge { background: #2ed47a2a; color: var(--good); } .do.sell .confbadge { background: #ff5a4e2a; color: var(--bad); } .do.caution .confbadge { background: #ffe14d22; color: var(--yellow); } .do.ready .confbadge { background: #ff8a1f22; color: var(--warn); } .do.hold .confbadge { background: #3b7cff22; color: var(--pm); }
 @keyframes pulse { 0%,100% { box-shadow: 0 0 0 0 #28d97855; } 50% { box-shadow: 0 0 0 10px #28d97800; } }
 @keyframes pulse-red { 0%,100% { box-shadow: 0 0 0 0 #ff4b5c66; } 50% { box-shadow: 0 0 0 12px #ff4b5c00; } }
 .do.lock { animation: pulse 1.4s ease-out infinite; }
 .do.sell { animation: pulse-red 0.9s ease-out infinite; }
 @media (prefers-reduced-motion: reduce) { .do.lock, .do.sell { animation: none; } }
+/* the trade row inside DO NOW!: side on the left, price on the right */
+.nt { display: grid; grid-template-columns: 1fr auto; gap: 8px; height: 44px; align-items: center; padding: 0 12px; border-radius: 10px; background: #0b1218aa; border: 1px solid var(--line); }
+.nt .ntl { font: 800 20px/1 var(--font-display); letter-spacing: .02em; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.nt .ntr { font: 800 22px/1 var(--font-display); letter-spacing: .02em; text-align: right; white-space: nowrap; font-variant-numeric: tabular-nums; }
+.nt.up .ntl, .nt.up .ntr { color: var(--up); } .nt.down .ntl, .nt.down .ntr { color: var(--down); } .nt.sell .ntl, .nt.sell .ntr { color: var(--orange); } .nt.none .ntl, .nt.none .ntr { color: var(--muted); }
 
-/* ===== Main grid ===== */
-.main { display: grid; grid-template-columns: minmax(0, 1.5fr) minmax(300px, 1fr); gap: 12px; align-items: start; }
-.chartcard { padding: 10px 10px 8px; }
-.chart-top { display: flex; flex-wrap: wrap; gap: 8px 14px; align-items: baseline; justify-content: space-between; padding: 0 4px 6px; }
-.legend { display: flex; flex-wrap: wrap; gap: 10px; font-size: 12px; color: var(--muted); }
-.legend span::before { content: ""; display: inline-block; width: 18px; height: 3px; border-radius: 2px; margin-right: 6px; vertical-align: middle; background: currentColor; }
-.legend .l-spot { color: var(--spot); } .legend .l-pm { color: var(--pm); } .legend .l-target { color: var(--target); } .legend .l-kill { color: var(--kill); } .legend .l-post { color: var(--post); }
-.legend .l-target::before { height: 0; border-top: 3px dashed currentColor; }
+/* the action timer under the trade row: MAX ODDS (your sell latency) → TAKE ACTION (to 15 s) → LATE; a fill drains with it */
+.act { position: relative; height: 20px; border-radius: 6px; background: #0b121899; border: 1px solid var(--line); overflow: hidden; display: grid; grid-template-columns: 1fr auto; align-items: center; padding: 0 8px; }
+.act .fill { position: absolute; inset: 0; width: 0; background: #ffffff10; transition: width .25s linear; }
+.act .al, .act .ar { position: relative; font: 700 11px/18px var(--font-mono); letter-spacing: .06em; color: var(--muted); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.act .ar { text-align: right; font-variant-numeric: tabular-nums; font-size: 12px; }
+.act.max .fill { background: #2ed47a33; } .act.max .al, .act.max .ar { color: var(--up); }
+.act.go .fill { background: #ff8a1f33; } .act.go .al, .act.go .ar { color: var(--warn); }
+.act.late .fill { background: #ff5a4e22; width: 100%; transition: none; } .act.late .al, .act.late .ar { color: var(--bad); }
+.act.none .fill { width: 0; }
+
+/* DO NEXT — three rows: NEXT · THEN · LATER */
+.dn { display: grid; grid-template-rows: repeat(3, 44px); gap: 6px; padding: 8px 12px; border: 1px solid var(--line); border-radius: 12px; background: var(--surface); height: 154px; overflow: hidden; }
+.dn .dnrow { display: grid; grid-template-columns: 44px 1fr auto; gap: 8px; align-items: center; height: 44px; border-bottom: 1px solid #ffffff0d; min-width: 0; }
+.dn .dnrow:last-child { border-bottom: 0; }
+.dn .dnk { font: 700 11px/1 var(--font-display); letter-spacing: .14em; color: var(--muted); }
+.dn .dnt { font: 600 14px/17px var(--font-body); color: var(--fg); overflow: hidden; display: -webkit-box; -webkit-box-orient: vertical; -webkit-line-clamp: 2; min-width: 0; max-height: 34px; }
+.dn .dnc { font: 700 13px/1 var(--font-mono); font-variant-numeric: tabular-nums; color: var(--muted); white-space: nowrap; text-align: right; }
+.dn .dnrow.hot .dnt, .dn .dnrow.hot .dnc { color: var(--up); } .dn .dnrow.cold .dnt, .dn .dnrow.cold .dnc { color: var(--down); } .dn .dnrow.warm .dnt { color: var(--yellow); }
+
+/* the one-line alert slot (always present, invisible when empty) */
+.warnline { height: 20px; line-height: 20px; padding: 0 10px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; font-size: 11.5px; color: var(--warn); border-radius: 8px; background: #2a1d0f; border-left: 3px solid var(--warn); }
+.warnline.empty { visibility: hidden; }
+.warnline a { color: var(--pm); font-weight: 600; }
+
+/* my position */
+.posbar { display: grid; grid-template-columns: auto minmax(70px, 110px) minmax(70px, 110px) auto auto 1fr; grid-template-rows: 40px 18px; gap: 6px 8px; align-items: center; height: 84px; overflow: hidden; padding: 8px 12px; border: 1px solid var(--line); border-radius: 12px; background: var(--surface); }
+.posbar .seg { grid-column: 1; grid-row: 1; } .posbar label:nth-of-type(1) { grid-column: 2; grid-row: 1; } .posbar label:nth-of-type(2) { grid-column: 3; grid-row: 1; } .posbar #my-set { grid-column: 4; grid-row: 1; } .posbar #my-clear { grid-column: 5; grid-row: 1; }
+.posbar label { display: grid; gap: 1px; font-size: 10px; color: var(--muted); min-width: 0; }
+.posbar label input { height: 30px; padding: 0 8px; font-size: 15px; }
+.posbar button { padding: 8px 12px; font-size: 14px; }
+.posbar .seg button { padding: 8px 14px; font-weight: 600; }
+.posbar .pos-line { grid-column: 1 / -1; grid-row: 2; height: 18px; line-height: 18px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; font-size: 13px; color: var(--muted); }
+.posbar .pos-line b { color: var(--fg); font-family: var(--font-mono); }
+
+/* the four prices, Polymarket colors: green above the target, red below */
+.prices { display: grid; grid-template-columns: 1fr auto auto; gap: 0 10px; padding: 8px 12px; border: 1px solid var(--line); border-radius: 12px; background: var(--surface); height: 118px; align-content: center; }
+.prices .pk { font-size: 12px; color: var(--muted); height: 25px; line-height: 25px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.prices .pv { font: 700 17px/25px var(--font-mono); font-variant-numeric: tabular-nums; text-align: right; height: 25px; white-space: nowrap; }
+.prices .pd { font: 600 12px/25px var(--font-mono); font-variant-numeric: tabular-nums; text-align: right; height: 25px; width: 5.5ch; white-space: nowrap; }
+.prices .target { color: var(--target); } .prices .above { color: var(--up); } .prices .below { color: var(--down); } .prices .flat { color: var(--fg); }
+
+/* the chart */
+.chartwrap { display: grid; gap: 4px; }
 .canvas-box { position: relative; width: 100%; height: var(--chart-h); }
 canvas { position: absolute; inset: 0; width: 100%; height: 100%; display: block; border-radius: 8px; }
-.reach { font-size: 12px; color: var(--muted); padding: 8px 4px 0; line-height: 1.4; }
-.reach b { font: 700 13px/1 var(--font-display); letter-spacing: .08em; padding: 2px 7px; border-radius: 5px; color: #140800; margin-right: 4px; }
-.reach b.t0 { background: var(--bad); color: #fff; } .reach b.t1 { background: var(--warn); } .reach b.t2 { background: #ffe14d; } .reach b.t3 { background: var(--good); } .reach b.tx { background: var(--surface-2); color: var(--muted); }
-.reach .n { font-family: var(--font-mono); color: var(--fg); }
-.buyin .b-head { font: 700 22px/1.15 var(--font-display); letter-spacing: .01em; }
-.buyin .b-head.great, .buyin .b-head.good { color: var(--good); } .buyin .b-head.fair { color: #ffe14d; } .buyin .b-head.poor { color: var(--bad); } .buyin .b-head.none { color: var(--muted); }
-.buyin .b-sub { font-size: 13px; margin-top: 4px; }
-.buyin .b-ladder { display: flex; flex-wrap: wrap; gap: 6px; margin-top: 8px; }
-.buyin .b-ladder span { font-size: 12px; padding: 3px 8px; border-radius: 999px; border: 1px solid var(--line); color: var(--muted); }
-.buyin .b-ladder span b { font-family: var(--font-mono); color: var(--fg); }
-.buyin .b-ladder span.great { border-color: var(--good); } .buyin .b-ladder span.good { border-color: #28d97888; } .buyin .b-ladder span.be { border-color: var(--warn); }
-.buyin .b-sub .n { font-family: var(--font-mono); color: var(--fg); }
-.side { display: grid; gap: 12px; min-width: 0; }
+.chart-bar { display: flex; justify-content: space-between; align-items: center; gap: 8px; font-size: 11px; color: var(--muted); height: 24px; }
+.chart-bar button { padding: 3px 9px; font-size: 11px; border-radius: 999px; }
+.legend { display: flex; flex-wrap: wrap; gap: 8px; font-size: 11px; color: var(--muted); overflow: hidden; height: 16px; }
+.legend span::before { content: ""; display: inline-block; width: 18px; height: 3px; border-radius: 2px; margin-right: 6px; vertical-align: middle; background: currentColor; }
+.legend .l-spot { color: var(--spot); } .legend .l-pm { color: var(--pm); } .legend .l-target { color: var(--target); } .legend .l-kill { color: var(--kill); }
+.legend .l-target::before { height: 0; border-top: 3px dashed currentColor; }
+.hero .chips { display: flex; flex-wrap: wrap; gap: 6px; justify-content: flex-end; height: 30px; overflow: hidden; }
 
-/* feed row */
-.feed { display: grid; grid-template-columns: 1fr 1fr; gap: 8px 14px; }
-.feed .v { font: 600 24px/1.1 var(--font-mono); font-variant-numeric: tabular-nums; }
-.feed .spot .v { color: var(--spot); } .feed .pm .v { color: var(--pm); }
-.feed .lag { grid-column: 1 / -1; font-size: 13px; color: var(--muted); }
-.feed .lag b { color: var(--fg); font-family: var(--font-mono); }
-.feed .insight { grid-column: 1 / -1; font-size: 14px; padding: 8px 10px; border-radius: 8px; background: var(--surface-2); border-left: 3px solid var(--pm); }
-.feed .insight.good { border-left-color: var(--good); } .feed .insight.bad { border-left-color: var(--bad); } .feed .insight.warn { border-left-color: var(--warn); }
-
-/* paper engine */
-.paper { display: grid; grid-template-columns: 1.2fr 1fr; gap: 10px; }
-.cell { border: 2px solid var(--line); border-radius: 10px; padding: 10px 12px; min-width: 0; background: var(--surface-2); }
-.cell .big { font: 700 20px/1.15 var(--font-display); letter-spacing: .01em; }
-.cell .small { font-size: 12px; color: var(--muted); margin-top: 4px; }
-.cell.arm { border-color: var(--orange); box-shadow: 0 0 0 3px #ff6a0033; }
-.cell.arm .big { color: var(--orange); }
-.cell.firing { border-color: var(--orange); background: #ff6a00; color: #140800; }
-.cell.firing .big, .cell.firing .small { color: #140800; }
-.cell.done { border-color: var(--good); }
-.cell.done .big { color: var(--good); }
-.kv { display: grid; grid-template-columns: auto 1fr; gap: 2px 10px; font-size: 13px; }
-.kv .k { color: var(--muted); }
-.kv .n { font-family: var(--font-mono); font-variant-numeric: tabular-nums; text-align: right; }
-.pos { color: var(--good); } .neg { color: var(--bad); }
-
-/* plays */
-table { width: 100%; border-collapse: collapse; font-size: 13px; }
-th, td { padding: 6px 6px; text-align: left; border-bottom: 1px solid var(--line); vertical-align: top; }
-th { font-size: 11px; letter-spacing: .06em; text-transform: uppercase; color: var(--muted); font-weight: 600; }
-td.n, th.n { text-align: right; font-family: var(--font-mono); font-variant-numeric: tabular-nums; }
-.grade { display: inline-block; min-width: 30px; text-align: center; font: 700 13px/1 var(--font-display); padding: 4px 6px; border-radius: 6px; letter-spacing: .05em; }
-.gA { background: #163d2a; color: var(--good); } .gB { background: #1a3550; color: var(--pm); } .gC { background: #3d2f12; color: var(--warn); } .gD { background: #3e1a20; color: var(--bad); }
-.tablebox { overflow-x: auto; }
-
-/* my position + inputs */
-.row { display: flex; flex-wrap: wrap; gap: 8px; align-items: end; }
-.row > label { display: grid; gap: 3px; font-size: 11px; color: var(--muted); flex: 1 1 90px; min-width: 0; }
-.row input, .row select { width: 100%; }
-.seg { display: inline-flex; border: 1px solid var(--line); border-radius: 8px; overflow: hidden; }
-.seg button { border: 0; border-radius: 0; background: transparent; padding: 6px 12px; }
-.seg button.on.up { background: #163d2a; color: var(--good); } .seg button.on.down { background: #3e1a20; color: var(--bad); }
-.btn-primary { background: var(--pm); color: #06131c; border-color: transparent; font-weight: 600; }
-.btn-danger { background: #3e1a20; color: var(--bad); }
-.hint { font-size: 12px; color: var(--muted); }
-.warnline { font-size: 12px; color: var(--warn); padding: 6px 10px; border-radius: 8px; background: #2a1d0f; border-left: 3px solid var(--warn); }
-
-/* next / past */
-.next .v { font: 600 20px/1.1 var(--font-mono); font-variant-numeric: tabular-nums; color: var(--target); }
-.past { display: flex; flex-wrap: wrap; gap: 6px; }
-.pill { display: inline-grid; justify-items: center; gap: 2px; padding: 6px 8px; border-radius: 8px; border: 1px solid var(--line); min-width: 62px; font-size: 11px; color: var(--muted); }
-.pill b { font: 700 16px/1 var(--font-display); }
+/* ===== NUMBERS: one metric per cell, the field above its value, same face ===== */
+.numbers { padding: 12px 12px 10px; }
+.numbers h3 { margin: 0 0 10px; }
+.ngrid { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 8px; }
+.ncell { height: 58px; overflow: hidden; padding: 8px 10px; border-radius: 10px; background: var(--surface-2); border: 1px solid var(--line); display: grid; grid-template-rows: 14px 22px; gap: 4px; min-width: 0; }
+.ncell .nk, .ncell .nv { font-family: var(--font-mono); font-variant-numeric: tabular-nums; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; min-width: 0; }
+.ncell .nk { font-size: 11px; line-height: 14px; color: var(--muted); letter-spacing: .02em; }
+.ncell .nv { font-size: 16px; line-height: 22px; font-weight: 600; color: var(--fg); }
+.ncell.full { grid-column: 1 / -1; height: 92px; grid-template-rows: 14px 56px; }
+.ncell.full.tall .nv { white-space: normal; line-height: 18px; font-size: 13px; font-weight: 500; display: -webkit-box; -webkit-box-orient: vertical; -webkit-line-clamp: 3; }
+.ncell .nv.ok { color: var(--up); } .ncell .nv.bad { color: var(--down); } .ncell .nv.warn { color: var(--warn); } .ncell .nv.pm { color: var(--pm); } .ncell .nv.tgt { color: var(--target); } .ncell .nv.thin { color: var(--yellow); }
+.past { display: flex; flex-wrap: wrap; gap: 4px; height: 56px; overflow: hidden; align-content: flex-start; }
+.pill { display: inline-grid; justify-items: center; align-content: center; gap: 2px; padding: 3px 6px; border-radius: 8px; border: 1px solid var(--line); min-width: 54px; height: 50px; font-size: 10px; line-height: 12px; color: var(--muted); white-space: nowrap; }
+.pill b { font: 700 13px/14px var(--font-display); color: var(--fg); }
 .pill.up b { color: var(--good); } .pill.down b { color: var(--bad); }
 .pill.locked { border-color: var(--good); }
 .pill.failed { border-color: var(--bad); background: #2c1216; }
-.lockrec { font-size: 13px; margin-bottom: 8px; }
-.lockrec b { font-family: var(--font-mono); }
-.lockrec.bad { color: var(--bad); }
 
+/* settings */
 details.settings { border: 1px solid var(--line); border-radius: 12px; padding: 8px 14px; background: var(--surface); }
 details.settings summary { cursor: pointer; font: 700 15px/1.4 var(--font-display); letter-spacing: .06em; text-transform: uppercase; color: var(--muted); }
 .settings .grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(170px, 1fr)); gap: 10px; margin-top: 10px; }
 .settings label { display: grid; gap: 3px; font-size: 11px; color: var(--muted); }
 .settings .wide { grid-column: 1 / -1; }
 .settings h4 { grid-column: 1 / -1; margin: 6px 0 -4px; font: 700 12px/1 var(--font-display); letter-spacing: .1em; text-transform: uppercase; color: var(--muted); }
-.toast { position: fixed; left: 50%; bottom: calc(16px + env(safe-area-inset-bottom, 0px)); transform: translateX(-50%); background: var(--surface-2); border: 1px solid var(--line); padding: 8px 14px; border-radius: 10px; font-size: 13px; z-index: 20; }
 
-@media (max-width: 860px) {
-  .main { grid-template-columns: 1fr; }
-  .donow { grid-template-columns: 1fr; }
-  .mkt { grid-template-columns: 1fr; }
-  .timer, .timer-sub { text-align: left; }
-  .paper { grid-template-columns: 1fr; }
-}
-/* ===== HERO: what predicts the flip, furthest ahead first ===== */
-.hero { display: grid; gap: 10px; padding: 12px 14px 14px; background: linear-gradient(180deg, #151a28, #0f1320); border: 1px solid var(--line); border-radius: 14px; }
-.hero-top { display: grid; grid-template-columns: auto 1fr; gap: 6px 16px; align-items: end; }
-.hero-top .timer { text-align: left; font-size: clamp(52px, 12vw, 84px); line-height: .95; }
-.hero-top .timer-sub { text-align: left; }
-.hero-top .mkt-win { text-align: right; align-self: start; }
-.hero .do { padding: 12px 14px; }
-.hero .do .head { font-size: clamp(34px, 8.5vw, 64px); }
-.hero .do .sub { font-size: clamp(14px, 3.6vw, 16px); }
-.chartwrap { display: grid; gap: 4px; }
-.chart-bar { display: flex; justify-content: space-between; align-items: center; gap: 8px; font-size: 11px; color: var(--muted); }
-.chart-bar .legend { gap: 8px; font-size: 11px; }
-.chart-bar button { padding: 3px 9px; font-size: 11px; border-radius: 999px; }
-.radar { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 8px; }
-.tile { border: 2px solid var(--line); border-radius: 12px; padding: 10px 12px; background: var(--surface); display: grid; gap: 3px; align-content: start; min-width: 0; }
-.tile .t-label { font: 700 11px/1 var(--font-display); letter-spacing: .12em; text-transform: uppercase; color: var(--muted); display: flex; justify-content: space-between; gap: 6px; }
-.tile .t-label span { font-weight: 600; letter-spacing: .04em; text-transform: none; color: var(--muted); opacity: .8; }
-.tile .t-big { font: 800 clamp(26px, 7vw, 40px)/1 var(--font-display); letter-spacing: .01em; color: var(--fg); font-variant-numeric: tabular-nums; }
-.tile .t-mid { font: 700 clamp(14px, 3.8vw, 17px)/1.15 var(--font-display); letter-spacing: .02em; color: var(--fg); }
-.tile .t-sub { font-size: 12px; color: var(--muted); line-height: 1.3; }
-.tile.ok { border-color: var(--good); } .tile.ok .t-big { color: var(--good); }
-.tile.thin { border-color: #ffe14d; } .tile.thin .t-big { color: #ffe14d; }
-.tile.warn { border-color: var(--warn); } .tile.warn .t-big { color: var(--warn); }
-.tile.bad { border-color: var(--bad); background: linear-gradient(180deg, #2c1216, #1c1216); } .tile.bad .t-big { color: var(--bad); }
-.posbar { display: flex; flex-wrap: wrap; gap: 8px; align-items: center; padding: 8px 12px; border: 1px solid var(--line); border-radius: 12px; background: var(--surface); }
-.posbar label { display: grid; gap: 2px; font-size: 10px; color: var(--muted); flex: 1 1 70px; max-width: 150px; min-width: 0; }
-.posbar input { padding: 7px 8px; font-size: 15px; }
-.posbar button { padding: 8px 12px; font-size: 14px; }
-.posbar .seg button { padding: 8px 14px; font-weight: 600; }
-.posbar .pos-line { flex: 1 1 100%; font-size: 13px; color: var(--muted); }
-.posbar .pos-line b { color: var(--fg); font-family: var(--font-mono); }
-.fine { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 12px; align-items: start; }
-.fine .card { font-size: 13px; }
-.fine .card h3 { font-size: 13px; }
-.facts .mkt-stats { grid-template-columns: repeat(auto-fit, minmax(140px, 1fr)); }
-.facts .stat .v { font-size: 18px; }
-.facts .chips { margin-top: 10px; }
-@media (min-width: 861px) { :root { --chart-h: 320px; } }
-@media (max-width: 860px) {
-  .radar { grid-template-columns: repeat(2, minmax(0, 1fr)); }
-  .fine { grid-template-columns: 1fr; }
-  .hero-top { grid-template-columns: 1fr; }
-  .hero-top .mkt-win { text-align: left; }
-}
-/* ===== HERO v3: nothing here changes height while the numbers update ===== */
-.hero { gap: 8px; }
-.hero-top { height: 78px; overflow: hidden; align-items: start; }
-.hero-top .timer { font-size: 64px; line-height: 1; height: 64px; }
-.hero-top .timer-sub { height: 14px; line-height: 14px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
-.hero-top .mkt-win { height: 54px; line-height: 18px; font-size: 12px; overflow: hidden; }
-.prices { display: grid; grid-template-columns: 1fr auto auto; gap: 0 10px; padding: 8px 12px; border: 1px solid var(--line); border-radius: 12px; background: var(--surface); height: 118px; align-content: center; }
-.prices .pk { font-size: 12px; color: var(--muted); height: 25px; line-height: 25px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
-.prices .pv { font: 700 17px/25px var(--font-mono); font-variant-numeric: tabular-nums; text-align: right; height: 25px; white-space: nowrap; }
-.prices .pd { font: 600 12px/25px var(--font-mono); font-variant-numeric: tabular-nums; text-align: right; height: 25px; width: 5.5ch; white-space: nowrap; }
-.prices .target { color: var(--target); } .prices .above { color: var(--up); } .prices .below { color: var(--down); } .prices .flat { color: var(--fg); }
-.prices .pk.src { font-size: 10px; letter-spacing: .06em; text-transform: uppercase; }
-.donext { height: 246px; overflow: hidden; display: grid; grid-template-rows: 14px 92px 20px 44px 32px; gap: 6px; padding: 10px 12px 10px; }
-.donext .label { height: 14px; line-height: 14px; }
-.donext .head { font-size: 36px; line-height: 44px; height: 92px; overflow: hidden; display: -webkit-box; -webkit-box-orient: vertical; -webkit-line-clamp: 2; text-wrap: balance; }
-.donext .conf { height: 20px; line-height: 20px; font: 600 14px/20px var(--font-body); color: var(--fg); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
-.donext .conf b { font-family: var(--font-mono); }
-.nt { display: grid; grid-template-columns: 1fr auto; gap: 8px; height: 44px; align-items: center; padding: 0 12px; border-radius: 10px; background: #0b1218aa; border: 1px solid var(--line); }
-.nt .ntl { font: 800 20px/1 var(--font-display); letter-spacing: .02em; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
-.nt .ntr { font: 800 22px/1 var(--font-display); letter-spacing: .02em; text-align: right; white-space: nowrap; font-variant-numeric: tabular-nums; }
-.nt .ntr small { font-size: 13px; font-weight: 600; color: var(--muted); letter-spacing: 0; margin-right: 4px; }
-.nt.up .ntl, .nt.up .ntr { color: var(--up); } .nt.down .ntl, .nt.down .ntr { color: var(--down); } .nt.sell .ntl, .nt.sell .ntr { color: var(--orange); } .nt.none .ntl, .nt.none .ntr { color: var(--muted); }
-.donext .why { font-size: 12.5px; line-height: 16px; color: var(--muted); overflow: hidden; display: -webkit-box; -webkit-box-orient: vertical; -webkit-line-clamp: 2; }
-.donext .why a { color: var(--pm); font-weight: 600; }
-.do.safe .conf, .do.lock .conf { color: var(--good); } .do.sell .conf { color: var(--bad); } .do.caution .conf { color: #ffe14d; }
-.warnline { height: 20px; line-height: 20px; padding: 0 10px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; font-size: 11.5px; }
-.warnline.empty { visibility: hidden; }
-.posbar { display: grid; grid-template-columns: auto minmax(70px, 110px) minmax(70px, 110px) auto auto 1fr; grid-template-rows: 40px 18px; gap: 6px 8px; align-items: center; height: 84px; overflow: hidden; padding: 8px 12px; }
-.posbar .seg { grid-column: 1; grid-row: 1; } .posbar label:nth-of-type(1) { grid-column: 2; grid-row: 1; } .posbar label:nth-of-type(2) { grid-column: 3; grid-row: 1; } .posbar #my-set { grid-column: 4; grid-row: 1; } .posbar #my-clear { grid-column: 5; grid-row: 1; }
-.posbar label { display: grid; gap: 1px; font-size: 10px; max-width: none; }
-.posbar label input { height: 30px; padding: 0 8px; }
-.posbar .pos-line { grid-column: 1 / -1; grid-row: 2; height: 18px; line-height: 18px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
-.radar .tile { height: 128px; overflow: hidden; grid-template-rows: 12px 40px 20px 1fr; gap: 4px; }
-.tile .t-big { font-size: 36px; line-height: 40px; height: 40px; white-space: nowrap; overflow: hidden; }
-.tile .t-mid { font-size: 15px; line-height: 20px; height: 20px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
-.tile .t-sub { font-size: 11.5px; line-height: 15px; overflow: hidden; display: -webkit-box; -webkit-box-orient: vertical; -webkit-line-clamp: 2; }
+/* wide screens: one-line headline, DO NEXT as one row of three, four columns of numbers */
 @media (min-width: 861px) {
-  .donext { height: 212px; grid-template-rows: 14px 56px 20px 44px 32px; }
-  .donext .head { font-size: 48px; line-height: 56px; height: 56px; -webkit-line-clamp: 1; white-space: nowrap; text-overflow: ellipsis; display: block; }
-  .hero-top .timer { font-size: 72px; height: 72px; }
+  :root { --chart-h: 320px; }
+  .do { height: 240px; grid-template-rows: 56px 56px 24px 44px 20px; }
+  .do .head { font-size: 46px; line-height: 56px; height: 56px; -webkit-line-clamp: 1; white-space: nowrap; text-overflow: ellipsis; display: block; }
+  .timer { font-size: 52px; }
+  .dn { grid-template-rows: 44px; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 0 14px; height: 62px; }
+  .dn .dnrow { border-bottom: 0; border-right: 1px solid #ffffff0d; padding-right: 10px; } .dn .dnrow:last-child { border-right: 0; }
 }
+/* phones: stacked DO NEXT, two columns of numbers (one under 480px) */
 @media (max-width: 860px) {
   .posbar { grid-template-columns: auto 1fr 1fr; grid-template-rows: 40px 36px 18px; height: 126px; }
   .posbar #my-set { grid-column: 1; grid-row: 2; } .posbar #my-clear { grid-column: 2; grid-row: 2; justify-self: start; }
   .posbar .pos-line { grid-column: 1 / -1; grid-row: 3; }
-  .hero-top { height: 118px; }
-  .hero-top .mkt-win { height: 36px; line-height: 18px; }
-  .donext .head { font-size: 32px; line-height: 40px; height: 84px; }
-  .donext { grid-template-rows: 14px 84px 20px 44px 32px; height: 238px; }
+  .ngrid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
 }
+@media (max-width: 480px) { .ngrid { grid-template-columns: 1fr; } }
 </style>
 
 <div class="wrap">
-  <!-- ===== HERO: timer, verdict, chart, flip radar (ordered by how far ahead each one sees), position ===== -->
+  <!-- ===== DO NOW! (instruction + confidence + the trade) · DO NEXT (the next three things) · position · prices · chart ===== -->
   <section class="hero">
-    <div class="hero-top">
-      <div>
-        <div class="timer num" id="timer">--:--</div>
-        <div class="timer-sub" id="timer-sub">left in this round</div>
-      </div>
-      <div class="mkt-win"><b id="win-et">—</b> ET · <b id="win-local">—</b> local<br>BTC Up or Down 15m · Polymarket US · <span class="num" id="slug">—</span></div>
-    </div>
-    <div class="prices">
-      <div class="pk">Price to beat</div><div class="pv target" id="pt-target">—</div><div class="pd target" id="pt-target-src">—</div>
-      <div class="pk">Polymarket shows</div><div class="pv" id="pt-pm">—</div><div class="pd" id="pt-pm-d">—</div>
-      <div class="pk">CF Benchmarks index ≈</div><div class="pv" id="pt-idx">—</div><div class="pd" id="pt-idx-d">—</div>
-      <div class="pk">Coinbase spot</div><div class="pv" id="pt-spot">—</div><div class="pd" id="pt-spot-d">—</div>
-    </div>
-    <div class="do donext wait" id="do">
-      <div class="label" id="do-label">DO NEXT</div>
+    <div class="do wait" id="do">
+      <div class="do-top"><div class="label" id="do-label">DO NOW!</div><div class="tm"><div class="timer num" id="timer">--:--</div><div class="timer-sub" id="timer-sub">left in this round</div></div></div>
       <div class="head" id="do-head">Connecting to the feed…</div>
-      <div class="conf" id="do-conf">&nbsp;</div>
+      <div class="confrow"><span class="confbadge" id="do-confn">—</span><span class="conf" id="do-conf">the instruction starts as soon as prices arrive</span></div>
       <div class="nt none" id="nt"><div class="ntl" id="nt-left">Next trade: —</div><div class="ntr" id="nt-right">—</div></div>
-      <div class="why" id="do-sub">The Coinbase feed and the round clock come first; the instruction starts as soon as prices arrive.</div>
+      <div class="act none" id="act"><div class="fill" id="act-fill"></div><div class="al" id="act-l">no action needed</div><div class="ar" id="act-r"></div></div>
+    </div>
+    <div class="dn" id="dn">
+      <div class="dnrow" id="dn1r"><span class="dnk">NEXT</span><span class="dnt" id="dn1">—</span><span class="dnc" id="dn1c"></span></div>
+      <div class="dnrow" id="dn2r"><span class="dnk">THEN</span><span class="dnt" id="dn2">—</span><span class="dnc" id="dn2c"></span></div>
+      <div class="dnrow" id="dn3r"><span class="dnk">LATER</span><span class="dnt" id="dn3">—</span><span class="dnc" id="dn3c"></span></div>
     </div>
     <div class="warnline empty" id="warn">&nbsp;</div>
     <div class="posbar">
@@ -327,117 +217,71 @@ details.settings summary { cursor: pointer; font: 700 15px/1.4 var(--font-displa
       <label>Spent $<input id="my-spent" type="number" inputmode="decimal" min="1" step="1" placeholder="20"></label>
       <button class="btn-primary" id="my-set">I'm in</button>
       <button class="btn-danger" id="my-clear">Out</button>
-      <div class="pos-line" id="pos-line">No position — set it right after you buy; the instruction switches to LOCKED / HOLD / SELL.</div>
+      <div class="pos-line" id="pos-line">No position — set it right after you buy.</div>
+    </div>
+    <div class="prices">
+      <div class="pk">Price to beat</div><div class="pv target" id="pt-target">—</div><div class="pd target" id="pt-target-src">—</div>
+      <div class="pk">Polymarket shows</div><div class="pv" id="pt-pm">—</div><div class="pd" id="pt-pm-d">—</div>
+      <div class="pk">CF Benchmarks index ≈</div><div class="pv" id="pt-idx">—</div><div class="pd" id="pt-idx-d">—</div>
+      <div class="pk">Coinbase spot</div><div class="pv" id="pt-spot">—</div><div class="pd" id="pt-spot-d">—</div>
     </div>
     <div class="chartwrap">
       <div class="canvas-box"><canvas id="cv"></canvas></div>
       <div class="chart-bar">
-        <div class="legend">
-          <span class="l-target">target</span>
-          <span class="l-kill">kill line</span>
-          <span class="l-spot">spot</span>
-          <span class="l-pm">PM line · dotted = in 30 s</span>
-          <span class="l-post">post: record pace</span>
-        </div>
+        <div class="legend"><span class="l-target">target</span><span class="l-kill">kill line</span><span class="l-spot">spot</span><span class="l-pm">PM</span></div>
         <button id="btn-zoom" title="Zoom to the last 5 minutes when the round is inside 3:00">Zoom: auto</button>
       </div>
     </div>
-    <div class="radar">
-      <div class="tile" id="r-cush"><div class="t-label">Cushion <span>to the bell</span></div><div class="t-big" id="r-cush-big">—</div><div class="t-mid" id="r-cush-mid"></div><div class="t-sub" id="r-cush-sub">kill line: what BTC must average to flip it</div></div>
-      <div class="tile" id="r-odds"><div class="t-label">Flip chance <span>to the bell</span></div><div class="t-big" id="r-odds-big">—</div><div class="t-mid" id="r-odds-mid"></div><div class="t-sub" id="r-odds-sub">model + fat tails</div></div>
-      <div class="tile" id="r-pace"><div class="t-label">BTC pace <span>next seconds</span></div><div class="t-big" id="r-pace-big">—</div><div class="t-mid" id="r-pace-mid"></div><div class="t-sub" id="r-pace-sub">last 10 s · 30 s</div></div>
-      <div class="tile" id="r-line"><div class="t-label">PM line <span>in 30 s</span></div><div class="t-big" id="r-line-big">—</div><div class="t-mid" id="r-line-mid"></div><div class="t-sub" id="r-line-sub">where the button's number reads if BTC holds</div></div>
-    </div>
-  </section>
-
-  <!-- ===== Fine print: facts, feeds, money, history ===== -->
-  <section class="card facts">
-    <div class="mkt-stats">
-      <div class="stat"><div class="label">Target · price to beat</div><div class="v target num" id="h-target">—</div><small id="h-target-src">waiting for data</small></div>
-      <div class="stat"><div class="label">Polymarket shows (60-s index average)</div><div class="v pm num" id="h-pm">—</div><small id="h-pm-diff">—</small></div>
-      <div class="stat"><div class="label">Coinbase spot (leads the index by ~1 s)</div><div class="v spot num" id="h-spot">—</div><small id="h-spot-diff">—</small></div>
-      <div class="stat"><div class="label">For now · settles UP if the final average ≥ target</div><div class="v num" id="h-lead">—</div><small id="h-lead-p">—</small></div>
-    </div>
     <div class="chips">
-      <span class="chip" id="chip-cb"><i></i>Coinbase: connecting</span>
-      <span class="chip" id="chip-pm"><i></i>PM API: not tried</span>
-      <span class="chip" id="chip-series"><i></i>PM index series: not tried</span>
-      <span class="chip" id="chip-off"><i></i>Basis: unknown</span>
-      <span class="chip" id="chip-vol"><i></i>Vol: —</span>
-      <button id="btn-sound" title="Beep on LOCKED / SURE THING / SELL">🔇 Sound off</button>
-      <button id="btn-voice" title="Say the verdict out loud when it changes">🗣 Voice off</button>
+      <button id="btn-sound" title="Beep on BUY / LOCKED / SELL">🔇 Sound off</button>
+      <button id="btn-voice" title="Say the instruction out loud when it changes">🗣 Voice off</button>
       <button id="btn-wake" title="Keep the screen on">Keep screen on</button>
     </div>
-    <div class="reach" id="reach">Record pace: scanning Coinbase history…</div>
   </section>
 
-  <main class="fine">
-    <section class="card feed">
-      <div class="spot"><div class="label">Coinbase spot</div><div class="v" id="f-spot">—</div></div>
-      <div class="pm"><div class="label">Polymarket shows</div><div class="v" id="f-pm">—</div></div>
-      <div class="lag" id="f-lag">PM is <b>—</b> s and <b>—</b> behind the spot</div>
-      <div class="insight" id="f-insight">Waiting for prices.</div>
-    </section>
-
-    <section class="card">
-      <h3>My position on Polymarket</h3>
-      <div class="kv">
-        <span class="k">Holding</span><span class="n" id="my-hold">nothing</span>
-        <span class="k">Cost</span><span class="n" id="my-cost">—</span>
-        <span class="k">Worth (model · bid)</span><span class="n" id="my-worth">—</span>
-        <span class="k">Sell now keeps</span><span class="n" id="my-sell">—</span>
-        <span class="k">To win</span><span class="n" id="my-win">—</span>
-      </div>
-    </section>
-
-    <section class="card buyin" id="buyin">
-      <h3>If I bought the favorite now</h3>
-      <div class="b-head" id="b-head">Waiting for prices.</div>
-      <div class="b-sub" id="b-sub"></div>
-      <div class="b-ladder" id="b-ladder"></div>
-      <div class="hint" id="b-best"></div>
-    </section>
-
-    <section class="card">
-      <h3>Plays right now · safety rating</h3>
-      <div class="tablebox"><table>
-        <thead><tr><th>Play</th><th class="n">Win</th><th class="n">Net if right</th><th>Safety</th></tr></thead>
-        <tbody id="plays"><tr><td colspan="4" class="hint">Waiting for prices.</td></tr></tbody>
-      </table></div>
-      <div class="hint" id="plays-note">Win = the math (settlement-average model), capped at 99.5% — it is never 100% unless the play is LOCKED (even a record move can't flip it). Net = per $1 contract after Polymarket's taker fee. Grades A+ ≥ 99.5% · A ≥ 99% · B ≥ 97% · C ≥ 90% · D below, all "by the math".</div>
-    </section>
-
-    <section class="card">
-      <h3>Script's own bets (paper)</h3>
-      <div class="paper">
-        <div class="cell" id="p-cell"><div class="big" id="p-status">Watching the round</div><div class="small" id="p-note">Buys the sure thing (record pace can't flip it) with the stake in Settings; sells on SELL.</div></div>
-        <div class="cell"><div class="kv">
-          <span class="k">Position</span><span class="n" id="p-side">none</span>
-          <span class="k">Shares</span><span class="n" id="p-shares">0</span>
-          <span class="k">Buy-in cost</span><span class="n" id="p-cost">$0.00</span>
-          <span class="k">Value now</span><span class="n" id="p-value">$0.00</span>
-          <span class="k">P&amp;L</span><span class="n" id="p-pnl">—</span>
-          <span class="k">Round / total</span><span class="n" id="p-total">—</span>
-        </div></div>
-      </div>
-    </section>
-
-    <section class="card next">
-      <h3>Next round</h3>
-      <div class="kv">
-        <span class="k">Window</span><span class="n" id="n-win">—</span>
-        <span class="k">Its target forms from</span><span class="n">the last 60 s of this round</span>
-        <span class="k">Target so far</span><span class="n v" id="n-target">—</span>
-      </div>
-      <div class="hint" id="n-hint">The next price-to-beat is this round's settlement average. In the final minute it is already taking shape.</div>
-    </section>
-
-    <section class="card">
-      <h3>Past rounds (this device)</h3>
-      <div class="lockrec" id="lockrec">Lock record: no LOCKED calls settled yet.</div>
-      <div class="past" id="past"><span class="hint">None yet.</span></div>
-    </section>
-  </main>
+  <!-- ===== Numbers: every metric in one grid — the field above its value, one metric per cell ===== -->
+  <section class="card numbers">
+    <h3>Numbers</h3>
+    <div class="ngrid" id="ngrid">
+      <div class="ncell full tall"><div class="nk">Why</div><div class="nv" id="m-why">—</div></div>
+      <div class="ncell"><div class="nk">Side that matters</div><div class="nv" id="m-side">—</div></div>
+      <div class="ncell"><div class="nk">Win chance to the bell</div><div class="nv" id="m-p">—</div></div>
+      <div class="ncell"><div class="nk">Cushion to the kill line</div><div class="nv" id="m-cush">—</div></div>
+      <div class="ncell"><div class="nk">Kill line (BTC must average)</div><div class="nv" id="m-kill">—</div></div>
+      <div class="ncell"><div class="nk">Cushion holds for</div><div class="nv" id="m-hold">—</div></div>
+      <div class="ncell"><div class="nk">LOCKED in</div><div class="nv" id="m-lock">—</div></div>
+      <div class="ncell"><div class="nk">Bad minute (p99 adverse move)</div><div class="nv" id="m-bad">—</div></div>
+      <div class="ncell"><div class="nk">Record move for the time left</div><div class="nv" id="m-rec">—</div></div>
+      <div class="ncell"><div class="nk">BTC last 10 s</div><div class="nv" id="m-mv10">—</div></div>
+      <div class="ncell"><div class="nk">BTC last 30 s</div><div class="nv" id="m-mv30">—</div></div>
+      <div class="ncell"><div class="nk">Pace reaches the kill line in</div><div class="nv" id="m-paceeta">—</div></div>
+      <div class="ncell"><div class="nk">PM line in 30 s (if BTC holds)</div><div class="nv" id="m-ahead">—</div></div>
+      <div class="ncell"><div class="nk">PM line vs target now</div><div class="nv" id="m-pmvs">—</div></div>
+      <div class="ncell"><div class="nk">Prints in the books</div><div class="nv" id="m-known">—</div></div>
+      <div class="ncell"><div class="nk">Record pace to the target</div><div class="nv" id="m-reach">—</div></div>
+      <div class="ncell"><div class="nk">Touch odds (button scare)</div><div class="nv" id="m-touch">—</div></div>
+      <div class="ncell"><div class="nk">Favorite's ask now</div><div class="nv" id="m-buyin">—</div></div>
+      <div class="ncell"><div class="nk">Buy prices · rule · good · even</div><div class="nv" id="m-ladder">—</div></div>
+      <div class="ncell"><div class="nk">Best edge seen this round</div><div class="nv" id="m-bestedge">—</div></div>
+      <div class="ncell"><div class="nk">Discount buy window</div><div class="nv" id="m-window">—</div></div>
+      <div class="ncell"><div class="nk">EF rule (13:00 / 12:00)</div><div class="nv" id="m-ef">—</div></div>
+      <div class="ncell"><div class="nk">My position</div><div class="nv" id="m-pos">—</div></div>
+      <div class="ncell"><div class="nk">Worth by the math</div><div class="nv" id="m-worth">—</div></div>
+      <div class="ncell"><div class="nk">Sell now keeps</div><div class="nv" id="m-sellnow">—</div></div>
+      <div class="ncell"><div class="nk">Pays if it holds</div><div class="nv" id="m-towin">—</div></div>
+      <div class="ncell"><div class="nk">Paper bot</div><div class="nv" id="m-paper">—</div></div>
+      <div class="ncell"><div class="nk">Paper P&amp;L · round · total</div><div class="nv" id="m-paperpnl">—</div></div>
+      <div class="ncell"><div class="nk">Next target so far</div><div class="nv" id="m-next">—</div></div>
+      <div class="ncell"><div class="nk">Lock record (this device)</div><div class="nv" id="m-lockrec">—</div></div>
+      <div class="ncell"><div class="nk">Basis · index − Coinbase</div><div class="nv" id="m-basis">—</div></div>
+      <div class="ncell"><div class="nk">Volatility · 1σ per minute</div><div class="nv" id="m-vol">—</div></div>
+      <div class="ncell"><div class="nk">Target source</div><div class="nv" id="m-tgtsrc">—</div></div>
+      <div class="ncell"><div class="nk">Feeds · Coinbase · book · series</div><div class="nv" id="m-feeds">—</div></div>
+      <div class="ncell"><div class="nk">Round (ET)</div><div class="nv" id="m-round">—</div></div>
+      <div class="ncell"><div class="nk">Coinbase history · 1 / 5 / 15-min</div><div class="nv" id="m-hist">—</div></div>
+      <div class="ncell full past-cell"><div class="nk">Past rounds · result · ET · margin · lock</div><div class="past" id="past"><span class="hint">None yet.</span></div></div>
+    </div>
+  </section>
 
   <details class="settings" id="settings">
     <summary>Settings · target / quotes / relay / rules</summary>
@@ -447,7 +291,8 @@ details.settings summary { cursor: pointer; font: 700 15px/1.4 var(--font-displa
       <label>Favorite's Ask on PM (¢, 0 = unknown)<input id="s-ask" type="number" inputmode="decimal" min="0" max="100" step="1" value="0"></label>
       <label>Favorite's Bid on PM (¢, 0 = unknown)<input id="s-bid" type="number" inputmode="decimal" min="0" max="100" step="1" value="0"></label>
       <h4>Hold / sell</h4>
-      <label>Sell latency: seconds from reading SELL to being filled on the phone<input id="s-latency" type="number" inputmode="decimal" min="0" max="60" step="1" value="8"></label>
+      <label>Sell latency: seconds from reading SELL to being filled on the phone — also the MAX ODDS countdown<input id="s-latency" type="number" inputmode="decimal" min="0" max="60" step="1" value="8"></label>
+      <label>Take-action window: seconds after an instruction appears before it counts as late<input id="s-actwindow" type="number" inputmode="decimal" min="5" max="60" step="1" value="15"></label>
       <label>SELL when the model win chance drops under (%)<input id="s-holdmin" type="number" inputmode="decimal" min="50" max="95" step="1" value="75"></label>
       <label>SELL when BTC's last-10-s pace would reach the kill line within (s, after latency)<input id="s-etawarn" type="number" inputmode="decimal" min="5" max="120" step="5" value="30"></label>
       <label>Last 2 min: SELL if the cushion is under this percentile of 1-min adverse moves (5 days)<input id="s-badpct" type="number" inputmode="decimal" min="90" max="100" step="0.5" value="99"></label>
@@ -463,12 +308,21 @@ details.settings summary { cursor: pointer; font: 700 15px/1.4 var(--font-displa
       <label>EF rule: favorite ask at least (¢) at 13:00 / 12:00 left<input id="s-eflo" type="number" inputmode="decimal" min="50" max="98" step="1" value="80"></label>
       <label>EF rule: and at most (¢)<input id="s-efhi" type="number" inputmode="decimal" min="51" max="99" step="1" value="94"></label>
       <label>Momentum drift weight (0–1; 0 recommended — BTC's next 30 s have no predictable direction)<input id="s-drift" type="number" inputmode="decimal" min="0" max="1" step="0.1" value="0"></label>
+      <label>Volatility multiplier for the odds (1.3 = calibrated on the Oct 29 – Nov 2 replay; 1.0 = raw)<input id="s-sigk" type="number" inputmode="decimal" min="0.5" max="3" step="0.1" value="1.3"></label>
+      <h4>Entry / exit (replay-tested)</h4>
+      <label>Buy only when the ask leaves at least this edge after fee vs the calibrated chance (¢)<input id="s-entryedge" type="number" inputmode="decimal" min="0" max="20" step="1" value="8"></label>
+      <label>Buy only with at least this many seconds left<input id="s-buymin" type="number" inputmode="decimal" min="0" max="900" step="30" value="300"></label>
+      <label>…and at most this many seconds left (900 = from the open)<input id="s-buymax" type="number" inputmode="decimal" min="60" max="900" step="30" value="840"></label>
+      <label>Also buy the underdog when it is the discounted side (1 = yes, 0 = favorite only)<input id="s-dogbuy" type="number" inputmode="decimal" min="0" max="1" step="1" value="0"></label>
+      <label>SELL (harvest) when the bid beats holding by at least (¢ after fee)<input id="s-selledge" type="number" inputmode="decimal" min="0" max="20" step="1" value="5"></label>
+      <label>…only inside the last (s left; 900 = any time)<input id="s-sellzone" type="number" inputmode="decimal" min="60" max="900" step="30" value="300"></label>
+      <label>Show SELL only after it has been true for (s; SELL NOW is always immediate)<input id="s-sellpersist" type="number" inputmode="decimal" min="0" max="10" step="1" value="2"></label>
       <label>Taker fee coefficient<input id="s-fee" type="number" inputmode="decimal" min="0" max="0.2" step="0.0005" value="0.0695"></label>
       <label>MOST LIKELY when touch odds ≥ (%)<input id="s-reach-green" type="number" inputmode="decimal" min="1" max="99" step="1" value="50"></label>
       <label>EASILY when touch odds ≥ (%) · below = UNLIKELY<input id="s-reach-yellow" type="number" inputmode="decimal" min="1" max="99" step="1" value="10"></label>
       <h4>Paper bot</h4>
       <label>Script stake per lock ($)<input id="s-stake" type="number" inputmode="decimal" min="1" step="1" value="20"></label>
-      <label>Paper bot buys on<select id="s-paperon"><option value="sure">Sure thing (record pace can't flip it)</option><option value="math">Math lock (model %, not a sure thing)</option><option value="edge">Best edge (edge after fee ≥ N¢, scare ≤ M%)</option></select></label>
+      <label>Paper bot<select id="s-paperon"><option value="edge">Discount entry + EV sells (the replay-tested persona)</option><option value="sure">Sure thing only (never buyable in the replay)</option><option value="math">Math lock (model %, not a sure thing)</option></select></label>
       <label>Math lock = model win probability ≥ (%)<input id="s-lockp" type="number" inputmode="decimal" min="90" max="99.99" step="0.1" value="99.5"></label>
       <label>Edge mode: edge after fee at least (¢)<input id="s-edgemin" type="number" inputmode="decimal" min="1" max="30" step="1" value="6"></label>
       <label>Edge mode: button scare at most (%)<input id="s-edgescare" type="number" inputmode="decimal" min="1" max="50" step="1" value="15"></label>
@@ -485,7 +339,7 @@ details.settings summary { cursor: pointer; font: 700 15px/1.4 var(--font-displa
 <script>
 'use strict';
 /* =====================================================================================
-   PM15 Copilot v2.0 — one Polymarket US 15-minute BTC round at a time.
+   PM15 Copilot v4.0 — one Polymarket US 15-minute BTC round at a time.
 
    What settles the market (rules + verified on recorded settlements to $0.005):
      Final price = mean of the 60 one-second CF Benchmarks index prints with timestamps in [T-60, T).
@@ -514,13 +368,15 @@ const SLUG = ws => { const d = new Date(ws * 1000); const p = n => String(n).pad
   return `cpc-btc-updown-15m-${d.getUTCFullYear()}-${p(d.getUTCMonth()+1)}-${p(d.getUTCDate())}-${p(d.getUTCHours())}${p(d.getUTCMinutes())}z`; };
 
 // ---------- settings (per device) ----------
+// paperOn: 'edge' (default) = the replay-tested persona: buy a side offered under its calibrated price, sell when the bid beats
+// holding (any bid on SELL NOW); 'sure' = buy only LOCKED (never buyable in the replay); 'math' = buy at a model threshold
 const DEFAULT_RELAY = 'https://pm15-relay-worker.machwonder.workers.dev';   // Noah's Cloudflare worker (scripts/pm15_relay_worker.js)
 const HOSTED_URL = DEFAULT_RELAY + '/';                                       // the same worker serves this page from GitHub main
 const T_BOOT = Date.now();
 // an origin that blocks outbound connections (the claude.ai artifact viewer): no Coinbase tick AND the relay failing, 15 s after load
 const sandboxed = () => Date.now() - T_BOOT > 12000 && !lastTickMs && (cbState === 'down' || IDX.fails >= 2 || IDX.ok === false) && location.href.indexOf(DEFAULT_RELAY) !== 0;
-const DEF = { stake: 20, lockP: 99.5, maxAsk: 97, drift: 0, fee: 0.0695, relay: DEFAULT_RELAY, offset: null, zoom: 'auto', sound: false, voice: false, recMargin: 1.5, reachGreen: 50, reachYellow: 10, paperOn: 'sure', edgeMin: 6, edgeScare: 15,
-  latency: 8, holdMinP: 75, etaWarnS: 30, badPct: 99, lookS: 30, slack: 3, killSecs: 45, efLo: 80, efHi: 94, holdConf: 99, exitBy: 45 };
+const DEF = { stake: 20, lockP: 99.5, maxAsk: 97, drift: 0, fee: 0.0695, relay: DEFAULT_RELAY, offset: null, zoom: 'auto', sound: false, voice: false, recMargin: 1.5, reachGreen: 50, reachYellow: 10, paperOn: 'edge', edgeMin: 6, edgeScare: 15,
+  latency: 8, holdMinP: 75, etaWarnS: 30, badPct: 99, lookS: 30, slack: 3, killSecs: 45, efLo: 80, efHi: 94, holdConf: 99, exitBy: 45, sigK: 1.3, sellEdge: 5, buyMinLeft: 300, buyMaxLeft: 840, dogBuy: false, entryEdge: 8, sellZone: 300, sellPersist: 2, actWindow: 15 };   // entry/exit knobs = the replay grid (fitted Oct 29–30, held up Oct 31–Nov 2)
 let S = Object.assign({}, DEF);
 try { Object.assign(S, JSON.parse(localStorage.getItem('pm15.settings') || '{}')); } catch (e) {}
 if (S.recMargin < 1) S.recMargin = DEF.recMargin;      // v1 allowed 0.5; a margin under 1 is not a margin
@@ -556,15 +412,15 @@ function coverage(from, to) {    // share of integer seconds in [from, to) that 
 const moveOver = (sec, k) => { const a = priceAt(sec - k), b = priceAt(sec); return (a > 0 && b > 0) ? b - a : NaN; };   // $ over the last k seconds
 function velocity(nowS) { const m = moveOver(nowS, 15); return Number.isFinite(m) ? m / 15 : 0; }   // $/s over the last 15 s (post only)
 let sigmaCache = { at: 0, v: 6 };
-function sigma(nowS) {           // $ per sqrt(second): robust (MAD) over the last 10 minutes, blended with the plain std; gaps scaled by sqrt(dt)
-  if (nowS - sigmaCache.at < 5) return sigmaCache.v;
+function sigma(nowS) {           // $ per sqrt(second) from 5-s returns over the last 15 minutes (1-s returns carry microstructure:
+  if (nowS - sigmaCache.at < 5) return sigmaCache.v;   // bounce on Coinbase, smoothing on the index), robust (MAD) blended with the plain std
   const r = []; let prev = NaN, prevS = 0;
-  for (let s = nowS - 600; s <= nowS; s++) { const v = secs.get(s); if (v > 0) { if (prev > 0) r.push(Math.log(v / prev) / Math.sqrt(Math.max(1, s - prevS))); prev = v; prevS = s; } }
+  for (let s = nowS - 900; s <= nowS; s++) { const v = secs.get(s); if (v > 0 && (!(prev > 0) || s - prevS >= 5)) { if (prev > 0) r.push(Math.log(v / prev) / Math.sqrt(s - prevS)); prev = v; prevS = s; } }
   let out = sigmaCache.v;
-  if (r.length > 60) {
+  if (r.length > 40) {
     const sorted = r.map(Math.abs).sort((a, b) => a - b); const mad = sorted[Math.floor(sorted.length / 2)] * 1.4826;
     const mean = r.reduce((a, b) => a + b, 0) / r.length; const sd = Math.sqrt(r.reduce((a, b) => a + (b - mean) ** 2, 0) / r.length);
-    const spot = priceAt(nowS); out = Math.max(mad, 0.7 * sd) * spot; out = Math.max(out, 0.5);
+    const spot = priceAt(nowS); out = Math.max(mad, 0.8 * sd) * spot; out = Math.max(out, 0.5);
   }
   sigmaCache = { at: nowS, v: out }; return out;
 }
@@ -686,13 +542,6 @@ function reachInfo(E) {
   const minsTxt = !REC.ready ? '—' : !Number.isFinite(mins) ? '> 15 min' : mins < 0.1 ? '< 0.1 min' : mins.toFixed(1) + ' min';
   return { need, dist, mins, minsTxt, rMin, recLeft, odds, tier, word, col, text };
 }
-function renderReach(E) {
-  const el = $('reach'); const RI = E.reach;
-  if (!RI) { el.innerHTML = '<b class="tx">REACH</b> waiting for the target.'; return; }
-  const hist = (REC.spans.m1 ? Math.round(REC.spans.m1) + 'd of 1-min' : 'no 1-min') + ' · ' + (REC.spans.m5 ? Math.round(REC.spans.m5) + 'd of 5-min' : 'no 5-min') + ' · ' + (REC.spans.m15 ? Math.round(REC.spans.m15) + 'd of 15-min' : 'no 15-min') + (REC.scanning ? ' · scanning ' + Math.round(REC.progress * 100) + '%' : REC.at ? ' · scanned ' + Math.max(1, Math.round((Date.now() - REC.at) / 60000)) + ' min ago' : '') + (REC.note ? ' · ' + REC.note : '');
-  if (RI.tier < 0) { el.innerHTML = '<b class="tx">REACH</b> record pace not known yet — ' + hist; return; }
-  el.innerHTML = '<b class="t' + RI.tier + '">' + RI.word + '</b> the target is <span class="n">' + fmtS(RI.dist).replace('+', '') + '</span> ' + (RI.need >= 0 ? 'up' : 'down') + ': BTC needs <span class="n">' + RI.minsTxt.replace('<', '&lt;').replace('>', '&gt;') + '</span> at record pace vs <span class="n">' + clock(E.r) + '</span> left · <span class="n">' + avgMinsTxt(E.avgMins).replace('<', '&lt;') + '</span> at this round\'s avg speed of <span class="n">$' + fmt$(E.avgSpeed, 0) + '/min</span> · touch odds <span class="n">' + pct(RI.odds) + '</span> · the most it has moved in that time: <span class="n">' + fmtS(RI.recLeft).replace('+', '') + '</span> (margin ×' + S.recMargin + ') · bad minute (p' + S.badPct + ') <span class="n">' + (Number.isFinite(E.badDn) ? '−$' + fmt$(E.badDn, 0) + ' / +$' + fmt$(E.badUp, 0) : '—') + '</span> · history ' + hist;
-}
 
 // ---------- settlement model: mean and sd of the final average, given the known prints and a Brownian future ----------
 // Window = the 60 prints in [T-60, T). Known part from Coinbase + basis (or exact from the index series' own history
@@ -748,10 +597,7 @@ function startRound(T0) {
   if (a > 0) { R.target = a; R.targetSrc = 'series'; }
   else if (prev && prev.T0 === T0 - ROUND && Number.isFinite(prev.settle)) { R.target = prev.settle; R.targetSrc = prev.settleSrc === 'api' || prev.settleSrc === 'series' ? prev.settleSrc : 'est'; }
   pmFetchMarket(); pmFetchBook(); pmFetchSeries();
-  $('slug').textContent = R.slug;
-  $('win-et').textContent = etDay.format(new Date(T0 * 1000)) + ', ' + winTxt(T0, etFmt);
-  $('win-local').textContent = winTxt(T0, locFmt);
-  $('n-win').textContent = winTxt(T0 + ROUND, etFmt) + ' ET';
+  document.title = 'PM15 · ' + winTxt(T0, locFmt);
 }
 function finishRound() {
   const exact = pmA.get(R.T - 1);
@@ -927,7 +773,7 @@ function evaluate() {
   const off = Number.isFinite(R.offset) ? R.offset : 0, offKnown = Number.isFinite(R.offset);
   // vol: the last 10 minutes, floored at 60% of the 5-day typical minute so a quiet patch cannot make the model overconfident
   const sigFloor = REC.bad && REC.bad.med > 0 && spot > 0 ? 0.6 * REC.bad.med * spot / (0.8 * Math.sqrt(60)) : 0;
-  const sigLive = sigma(sec), sig = Math.max(sigLive, sigFloor), vel = velocity(sec);
+  const sigLive = sigma(sec), sig = Math.max(sigLive, sigFloor) * (S.sigK || 1), vel = velocity(sec);   // sigK: calibration multiplier (replay-fitted)
   // the settlement window: prints with timestamps in [T-60, T); the ones for completed seconds are in the books
   const knownN = Math.max(0, Math.min(WIN, sec - (T - WIN)));
   const knownAvg = knownN > 0 ? avgRange(T - WIN, T - WIN + knownN) : NaN;           // chart $
@@ -956,7 +802,9 @@ function evaluate() {
   E.mv10 = moveOver(sec, 10); E.mv30 = moveOver(sec, 30);
   // record pace ($, with margin) and the "bad minute"
   const margin = Math.max(1, S.recMargin || 1.5); E.recUpT = REC.up.map(f => f * spot * margin); E.recDnT = REC.dn.map(f => f * spot * margin);
-  E.recUpLeft = recAt(r / 60, E.recUpT); E.recDnLeft = recAt(r / 60, E.recDnT);
+  // the biggest adverse move seen for the time left: the 5/10/15/30-s ladder inside the last minute, the minute table beyond — × margin
+  const recLeftOf = (secs, up) => secs < 60 ? recSecFrac(Math.max(1, secs), up) * spot * margin : recAt(secs / 60, up ? E.recUpT : E.recDnT);
+  E.recLeftOf = recLeftOf; E.recUpLeft = recLeftOf(r, true); E.recDnLeft = recLeftOf(r, false);
   E.badUp = REC.bad ? badFrac(S.badPct, REC.bad.up) * spot : 3 * sig * Math.sqrt(60); E.badDn = REC.bad ? badFrac(S.badPct, REC.bad.dn) * spot : 3 * sig * Math.sqrt(60);
   E.badLadUp = REC.bad ? REC.bad.up.map(f => f * spot) : null; E.badLadDn = REC.bad ? REC.bad.dn.map(f => f * spot) : null;
   // LOCKED: the cushion beats the biggest adverse move seen for the time left, plus the target's error and the basis slack
@@ -966,8 +814,10 @@ function evaluate() {
   E.lockDn = REC.ready && r > 0 && Number.isFinite(E.cushDn) && E.cushDn > E.recUpLeft + E.slack;
   // seconds until a side locks if BTC holds here: the cushion grows as cushion·rp/rp'(s) while the record for the time left shrinks
   const rpNow = Math.max(0, Math.min(WIN, r));
+  // the lock condition only turns true as s grows (the cushion grows, the record for the time left shrinks): binary search
   const lockEta = (cush, rec, locked) => { if (locked) return 0; if (!REC.ready || !(cush > 0) || r <= 1) return NaN;
-    for (let s = 1; s <= Math.min(r, 600); s++) { const sl = r - s, rp2 = Math.max(0, Math.min(WIN, sl)); const c2 = rp2 >= WIN ? cush : rp2 > 0 ? cush * rpNow / rp2 : 1e9; if (c2 > recAt(sl / 60, rec) + E.slack) return s; } return NaN; };
+    const ok = s => { const sl = r - s, rp2 = Math.max(0, Math.min(WIN, sl)); const c2 = rp2 >= WIN ? cush : rp2 > 0 ? cush * rpNow / rp2 : 1e9; return c2 > recLeftOf(sl, rec === E.recUpT) + E.slack; };
+    let lo = 1, hi = Math.floor(Math.min(r, 600)); if (hi < 1 || !ok(hi)) return NaN; while (lo < hi) { const m = (lo + hi) >> 1; if (ok(m)) hi = m; else lo = m + 1; } return lo; };
   E.lockEtaUp = lockEta(E.cushUp, E.recDnT, E.lockUp); E.lockEtaDn = lockEta(E.cushDn, E.recUpT, E.lockDn);
   E.fastUp = needMins(E.cushUp, E.recDnT); E.fastDn = needMins(E.cushDn, E.recUpT);   // minutes a record-pace move needs to reach the kill line
   E.reach = reachInfo(E);
@@ -1002,7 +852,8 @@ function evaluate() {
     const q1 = lad ? badFrac(S.holdConf || 99, lad) : 3 * sig * Math.sqrt(60);
     const holdConf = !(cush > 0) ? 0 : Math.min(r, 60 * Math.pow(cush / Math.max(q1, 1), 2));
     let holdRec = 0;
-    if (cush > 0) { holdRec = r; for (let t = 1; t <= Math.min(r, 900); t += 1) { const mv = (t <= 60 ? recSecFrac(t, !up) * spot : recAt(t / 60, up ? E.recDnT : E.recUpT) / Math.max(1, S.recMargin || 1.5)) * Math.max(1, S.recMargin || 1.5); if (mv + E.slack >= cush) { holdRec = t - 1; break; } } }
+    if (cush > 0) { const mv = t => E.recLeftOf(t, !up) + E.slack;
+      const hi0 = Math.floor(Math.min(r, 900)); if (hi0 < 1 || mv(hi0) < cush) holdRec = r; else { let lo = 1, hi = hi0; while (lo < hi) { const m = (lo + hi) >> 1; if (mv(m) >= cush) hi = m; else lo = m + 1; } holdRec = lo - 1; } }
     const deadline = thin && r <= (S.exitBy || 0);                                     // thin into the final stretch: the plan says sell
     return { side, p, pAdj, tail, thin, badLeft, sellAbove, cush, locked, rec, bad, eta, fast, crossed, pace, paceK, etaKill, scare, holdConf, holdRec, deadline, dropWord: up ? 'drop' : 'climb', killPM: Number.isFinite(E.killPx) ? E.killPx + off : NaN };
   };
@@ -1011,15 +862,15 @@ function evaluate() {
     const f = E.sideInfo(side), q = quotes(side), bidNet = Number.isFinite(q.bid) ? q.bid - fee(q.bid, S.fee) : NaN;
     const lat = S.latency || 0;
     const sellNow = !f.locked && (f.cush <= 0 || f.p < 0.5);
-    let getOut = false, reason = '';
+    let getOut = false, reason = '', kind = '';
     if (!f.locked && !sellNow) {
-      if (r <= 120 && f.holdConf < lat + 5 && f.holdConf < r) { getOut = true; reason = 'The cushion ($' + fmt$(f.cush, 0) + ') is only good for ~' + secsTxt(f.holdConf) + ' at ' + (S.holdConf || 99) + '% — less than the ' + lat + ' s you need to sell, and a flip now costs everything.'; }
-      else if (f.deadline) { getOut = true; reason = 'Deadline: ' + clock(S.exitBy || 0) + ' left, not LOCKED and the cushion ($' + fmt$(f.cush, 0) + ') is thinner than a bad move for the time left ($' + fmt$(f.badLeft, 0) + ').'; }
-      else if (f.pAdj < (S.holdMinP || 75) / 100) { getOut = true; reason = 'Win chance ' + pct(f.pAdj) + (f.pAdj < f.p - 0.005 ? ' (fat-tail adjusted)' : '') + ' is under your ' + (S.holdMinP || 75) + '% floor.'; }
-      else if (Number.isFinite(f.etaKill) && f.etaKill <= (S.etaWarnS || 30) + lat) { getOut = true; reason = 'BTC moved ' + fmtS(f.paceK === 10 ? E.mv10 : E.mv30, 0) + ' in the last ' + f.paceK + ' s — at that pace it reaches the kill line in ~' + secsTxt(f.etaKill) + (lat ? ' (you need ' + lat + ' s to sell)' : '') + '.'; }
-      else if (Number.isFinite(bidNet) && bidNet > f.pAdj + 0.01) { getOut = true; reason = 'The bid (' + cents(q.bid) + ') pays more than holding is worth (' + pct(f.pAdj) + (f.thin ? ', thin cushion' : '') + ').'; }
+      if (r <= 120 && f.holdConf < lat + 5 && f.holdConf < r) { getOut = true; kind = 'closing'; reason = 'The cushion ($' + fmt$(f.cush, 0) + ') is only good for ~' + secsTxt(f.holdConf) + ' at ' + (S.holdConf || 99) + '% — less than the ' + lat + ' s you need to sell, and a flip now costs everything.'; }
+      else if (f.deadline) { getOut = true; kind = 'deadline'; reason = 'Deadline: ' + clock(S.exitBy || 0) + ' left, not LOCKED and the cushion ($' + fmt$(f.cush, 0) + ') is thinner than a bad move for the time left ($' + fmt$(f.badLeft, 0) + ').'; }
+      else if (f.pAdj < Math.min((S.holdMinP || 75) / 100, (myPos ? myPos.price : 1) - 0.10)) { getOut = true; kind = 'floor'; reason = 'Win chance ' + pct(f.pAdj) + (f.pAdj < f.p - 0.005 ? ' (fat-tail adjusted)' : '') + ' is under your floor (' + Math.round(Math.min(S.holdMinP || 75, (myPos ? myPos.price * 100 : 100) - 10)) + '%: the lower of your ' + (S.holdMinP || 75) + '% setting and 10 points under what you paid).'; }
+      else if (Number.isFinite(f.etaKill) && f.etaKill <= (S.etaWarnS || 30) + lat) { getOut = true; kind = 'pace'; reason = 'BTC moved ' + fmtS(f.paceK === 10 ? E.mv10 : E.mv30, 0) + ' in the last ' + f.paceK + ' s — at that pace it reaches the kill line in ~' + secsTxt(f.etaKill) + (lat ? ' (you need ' + lat + ' s to sell)' : '') + '.'; }
+      else if (Number.isFinite(bidNet) && r <= (S.sellZone || 900) && bidNet > f.pAdj + (S.sellEdge == null ? 1 : S.sellEdge) / 100) { getOut = true; kind = 'harvest'; reason = 'The bid (' + cents(q.bid) + ') pays more than holding is worth (' + pct(f.pAdj) + (f.thin ? ', thin cushion' : '') + ').'; }
     }
-    return Object.assign(f, { sellNow, getOut, reason, bid: q.bid, bidNet, bidSrc: q.src });
+    return Object.assign(f, { sellNow, getOut, reason, kind, bid: q.bid, bidNet, bidSrc: q.src });
   };
   // "if I bought the favorite now"
   const fav = E.sideInfo(E.fav); E.favInfo = fav; E.pFavAdj = fav.pAdj;
@@ -1027,9 +878,20 @@ function evaluate() {
   const qNow = Number.isFinite(pUp) ? quotes(E.fav) : { ask: NaN, src: 'none' }, askNow = qNow.ask;
   const edgeNow = Number.isFinite(askNow) ? winHold - askNow - fee(askNow, S.fee) : NaN;
   const bePrice = e => { let p = winHold - e; p = winHold - e - fee(p, S.fee); p = winHold - e - fee(p, S.fee); return Math.max(0, p); };
+  // the entry: either side offered at or under the price that leaves `entryEdge` cents after fee against its calibrated chance,
+  // inside the entry window (seconds left); the dog counts when allowed — a 40% side at 33c is the same trade as a 60% side at 53c
+  const limitFor = (q, e) => { let p2 = q - e; p2 = q - e - fee(p2, S.fee); p2 = q - e - fee(p2, S.fee); return Math.max(0, p2); };
+  E.entry = null;
+  if (Number.isFinite(pUp) && r > 0 && r >= (S.buyMinLeft || 0) && r <= (S.buyMaxLeft == null ? 900 : S.buyMaxLeft)) {
+    const cands = [E.fav].concat(S.dogBuy === false ? [] : [E.dog]);
+    for (const sd of cands) { const xi = sd === E.fav ? fav : E.sideInfo(sd); const qq = quotes(sd); if (!Number.isFinite(qq.ask) || !(xi.pAdj > 0)) continue;
+      const lim = limitFor(xi.locked ? 1 : Math.min(xi.pAdj, 0.995), (S.entryEdge == null ? 4 : S.entryEdge) / 100);
+      const edge = (xi.locked ? 1 : xi.pAdj) - qq.ask - fee(qq.ask, S.fee);
+      if (qq.ask <= lim + 1e-9 && (!E.entry || edge > E.entry.edge)) E.entry = { side: sd, ask: qq.ask, qty: qq.askQty, lim, edge, p: xi.pAdj, src: qq.src }; }
+  }
   E.buyIn = Number.isFinite(pUp) && r > 0 ? { ask: askNow, src: qNow.src, askQty: qNow.askQty, winHold, scare: fav.scare, flip: 1 - fav.pAdj, edge: edgeNow, scary: fav.scare >= 0.25,
     grade: !Number.isFinite(edgeNow) ? '' : edgeNow >= 0.08 ? 'GREAT' : edgeNow >= 0.04 ? 'GOOD' : edgeNow >= 0.01 ? 'FAIR' : 'POOR',
-    be: bePrice(0), good: bePrice(0.04), great: bePrice(0.08), kelly: Number.isFinite(edgeNow) && edgeNow > 0 && askNow < 1 ? edgeNow / (1 - askNow) : 0 } : null;
+    be: bePrice(0), good: bePrice(0.04), great: bePrice(0.08), lim: bePrice((S.entryEdge == null ? 8 : S.entryEdge) / 100), kelly: Number.isFinite(edgeNow) && edgeNow > 0 && askNow < 1 ? edgeNow / (1 - askNow) : 0 } : null;
   if (E.buyIn && Number.isFinite(edgeNow) && (!Number.isFinite(R.bestEdge) || edgeNow > R.bestEdge)) { R.bestEdge = edgeNow; R.bestAsk = askNow; R.bestLeft = r; }
   // the lock record: remember the first LOCKED call of the round (either side)
   if (!R.lockCall && r > 0 && (E.lockUp || E.lockDn)) R.lockCall = { side: E.lockUp ? 'UP' : 'DOWN', at: r, cush: E.lockUp ? E.cushUp : E.cushDn, rec: E.lockUp ? E.recDnLeft : E.recUpLeft };
@@ -1050,14 +912,15 @@ function paperStep(E) {
   const q = quotes(E.fav); const lockP = S.lockP / 100, maxAsk = S.maxAsk / 100;
   if (E.r <= 0) return;
   if (!paper.side) {
-    const trigger = S.paperOn === 'math' ? E.pFav >= lockP : S.paperOn === 'edge' ? (E.buyIn && Number.isFinite(E.buyIn.edge) && E.buyIn.edge >= (S.edgeMin || 6) / 100 && E.buyIn.scare <= (S.edgeScare || 15) / 100 && E.r > 60) : E.favInfo.locked;
-    const go = trigger && E.fresh && E.r > (S.latency || 0) + 2 && paper.boughtT0 !== R.T0 && !(q.src === 'book' && !Number.isFinite(q.ask));
+    const edgeGo = S.paperOn === 'edge' && E.entry && E.entry.src === 'book' && E.entry.qty >= 1;
+    const trigger = S.paperOn === 'math' ? E.pFav >= lockP : S.paperOn === 'edge' ? edgeGo : E.favInfo.locked;
+    const go = trigger && E.fresh && E.r > (S.latency || 0) + 2 && paper.boughtT0 !== R.T0 && !(q.src === 'book' && !Number.isFinite(q.ask) && !edgeGo);
     if (go) {
-      const ask = Number.isFinite(q.ask) ? q.ask : NaN;
-      if (!Number.isFinite(ask) || ask <= maxAsk) {
-        const px = Number.isFinite(ask) ? ask : maxAsk; const shares = S.stake / px;
-        Object.assign(paper, { side: E.fav, shares, cost: S.stake + fee(px, S.fee) * shares, px, modelFill: !Number.isFinite(ask), state: 'holding', armAt: 0, sellPlan: null, boughtT0: R.T0 });
-        paper.note = 'Bought ' + E.fav + ' ' + shares.toFixed(1) + ' sh @' + cents(px) + (paper.modelFill ? ' (model fill: no live book)' : '') + ' at ' + clock(E.r) + ' left' + (S.paperOn === 'math' ? ' (math lock)' : S.paperOn === 'edge' ? ' (edge ' + (E.buyIn.edge * 100).toFixed(1) + '¢)' : ' (locked)');
+      const side = edgeGo ? E.entry.side : E.fav, ask = edgeGo ? E.entry.ask : (Number.isFinite(q.ask) ? q.ask : NaN);
+      if (edgeGo || !Number.isFinite(ask) || ask <= maxAsk) {
+        const px = Number.isFinite(ask) ? ask : maxAsk; const shares = Math.min(S.stake / px, edgeGo ? E.entry.qty : Infinity);
+        Object.assign(paper, { side, shares, cost: shares * px + fee(px, S.fee) * shares, px, modelFill: !Number.isFinite(ask), state: 'holding', armAt: 0, sellPlan: null, boughtT0: R.T0 });
+        paper.note = 'Bought ' + side + ' ' + shares.toFixed(1) + ' sh @' + cents(px) + (paper.modelFill ? ' (model fill: no live book)' : '') + ' at ' + clock(E.r) + ' left' + (S.paperOn === 'math' ? ' (math lock)' : S.paperOn === 'edge' ? ' (discount ' + (E.entry.edge * 100).toFixed(1) + '¢)' : ' (locked)');
         if (R.lockAt == null) { R.lockAt = E.r; R.lockAsk = px; }
       }
     }
@@ -1067,7 +930,7 @@ function paperStep(E) {
   const x = E.exitCheck(paper.side);
   let wantPct = 0, why = '';
   if (x.sellNow) { wantPct = 100; why = paper.side + ' is projected to lose'; }
-  else if (x.getOut) { wantPct = 100; why = 'SELL: ' + x.reason; }
+  else if (x.getOut && (S.paperOn !== 'edge' || (Number.isFinite(x.bid) && x.bid >= x.sellAbove))) { wantPct = 100; why = 'SELL: ' + x.reason; }
   if (wantPct > 0) {
     if (paper.state !== 'armed' && paper.state !== 'firing') { paper.state = 'armed'; paper.armAt = E.nowS + Math.max(1, S.latency || 0); paper.armPct = wantPct; paper.sellPlan = why; }
     else if (paper.state === 'armed' && E.nowS >= paper.armAt) { paper.state = 'firing'; paper.armAt = E.nowS + 0.8; }
@@ -1091,19 +954,21 @@ let lastSpoken = { key: '', at: 0 };
 function announce(key, text) {
   if (lastSpoken.key === key && Date.now() - lastSpoken.at < 20000) return;
   lastSpoken = { key, at: Date.now() };
-  if (key === 'sure' || key === 'locked') beep(2); else if (key === 'sell' || key === 'sellnow') beep(3);
+  if (key === 'sure' || key === 'locked' || key === 'buy') beep(2); else if (key === 'sell' || key === 'sellnow') beep(3);
   speak(text);
 }
 const holdTxt = h => !Number.isFinite(h) || h === Infinity ? 'to the bell' : h >= 60 ? '≥ ' + clock(h) : '≥ ' + Math.floor(h) + ' s';
-const SEV = { nofeed: 0, notarget: 0, over: 0, sandbox: 0, learning: 0, locked: 1, hold: 2, sell: 4, sellnow: 5, wait: 1, chop: 1, ending: 1, ready: 2, efcheck: 2, soldout: 3, surecost: 3, ef: 3, sure: 4 };
+const SEV = { nofeed: 0, notarget: 0, over: 0, sandbox: 0, learning: 0, locked: 1, hold: 2, sell: 4, sellnow: 5, wait: 1, chop: 1, ending: 1, ready: 2, efcheck: 2, soldout: 3, surecost: 3, ef: 3, buy: 3, sure: 4 };
 let verdict = { key: '', since: 0, pend: '', pendSince: 0 };
 // escalations show at once; anything calmer must persist 3 s first, so the instruction never flickers
 function settle(key) {
   const now = Date.now();
   if (key === verdict.key) { verdict.pend = ''; return key; }
-  if (!verdict.key || (SEV[key] || 0) >= (SEV[verdict.key] || 0)) { verdict = { key, since: now, pend: '', pendSince: 0 }; return key; }
+  if (!verdict.key) { verdict = { key, since: now, pend: '', pendSince: 0 }; return key; }
+  const wait = key === 'sell' && verdict.key !== 'sellnow' ? (S.sellPersist == null ? 2 : S.sellPersist) * 1000 : 0;   // a one-second bid blip is not a SELL
+  if (!wait && (SEV[key] || 0) >= (SEV[verdict.key] || 0)) { verdict = { key, since: now, pend: '', pendSince: 0 }; return key; }
   if (verdict.pend !== key) { verdict.pend = key; verdict.pendSince = now; return verdict.key; }
-  if (now - verdict.pendSince >= 3000) { verdict = { key, since: now, pend: '', pendSince: 0 }; return key; }
+  if (now - verdict.pendSince >= (wait || 3000)) { verdict = { key, since: now, pend: '', pendSince: 0 }; return key; }
   return verdict.key;
 }
 // what the situation calls for, before hysteresis
@@ -1119,7 +984,8 @@ function verdictKey(E) {
   if (fav.locked && E.r > lat + 2 && (!Number.isFinite(ask) || ask <= maxAsk)) return 'sure';
   if (fav.locked && Number.isFinite(ask)) return 'surecost';
   if (E.r <= (S.killSecs || 45)) return 'ending';
-  if (efCheck && Number.isFinite(ask) && ask * 100 >= S.efLo && ask * 100 <= S.efHi) return 'ef';
+  if (E.entry && E.entry.qty >= 1 && E.r > lat + 2) return 'buy';          // a side offered at a discount to its calibrated chance (replay-tested entry)
+  if (S.useEF !== false && efCheck && Number.isFinite(ask) && ask * 100 >= S.efLo && ask * 100 <= S.efHi) return 'ef';
   if (efCheck) return 'efcheck';
   if (E.pFav >= 0.97) return 'ready';
   if (E.lead < 10) return 'chop';
@@ -1132,12 +998,28 @@ function noBuyFor(E) {
   if (Number.isFinite(E.favInfo.eta) && E.favInfo.eta > 0) c.push([E.favInfo.eta, 'a lock in ~' + secsTxt(E.favInfo.eta) + ' if BTC holds']);
   if (E.r > 120) c.push([E.r - 120, 'the final 2 minutes']);
   if (!c.length) return { secs: 0, why: 'the bell' };
-  c.sort((a, b) => a[0] - b[0]); return { secs: Math.max(0, c[0][0]), why: c[0][1] };
+  c.sort((a, b) => a[0] - b[0]); return { secs: Math.max(0, Math.ceil(c[0][0])), why: c[0][1] };
+}
+// ---------- the action timer: from the moment an actionable instruction appears, MAX ODDS for your latency (8 s),
+// TAKE ACTION until the window closes (15 s), then LATE. Buys restart on a new price; sells run on through SELL → SELL NOW.
+let act = { sig: '', since: 0 };
+function renderAct(key, ntR) {
+  const isBuy = key === 'buy' || key === 'ef' || key === 'sure', isSell = key === 'sell' || key === 'sellnow';
+  const sig = isBuy ? key + '|' + ntR : isSell ? 'sell|' + (myPos ? myPos.side : '') : '';
+  const now = Date.now();
+  if (sig !== act.sig) act = { sig, since: now };
+  const el = $('act'), L = $('act-l'), R = $('act-r'), F = $('act-fill');
+  if (!sig) { el.className = 'act none'; L.textContent = key === 'locked' ? 'no action needed — ride it' : key === 'hold' ? 'no action needed — sell only above the bid shown' : 'no action needed'; R.textContent = ''; F.style.width = '0%'; return; }
+  const t = (now - act.since) / 1000, p1 = S.latency || 8, p2 = Math.max(p1 + 1, S.actWindow || 15);
+  if (t < p1) { el.className = 'act max'; L.textContent = 'MAX ODDS · ' + (isBuy ? 'the price is fresh' : 'sell before the cushion moves'); R.textContent = Math.ceil(p1 - t) + ' s'; F.style.width = Math.max(0, 100 * (1 - t / p1)).toFixed(1) + '%'; }
+  else if (t < p2) { el.className = 'act go'; L.textContent = 'TAKE ACTION · under ' + Math.ceil(p2 - t) + ' s left'; R.textContent = Math.ceil(p2 - t) + ' s'; F.style.width = Math.max(0, 100 * (1 - (t - p1) / (p2 - p1))).toFixed(1) + '%'; }
+  else { el.className = 'act late'; L.textContent = 'LATE · ' + (isBuy ? 'still offered — check the price again' : 'if not sold yet: only at the price shown'); R.textContent = Math.floor(t) + ' s'; F.style.width = '100%'; }
 }
 function dictate(E) {
   const el = $('do'), maxAsk = S.maxAsk / 100, lat = S.latency || 0;
   const live = verdictKey(E); let key = settle(live);
   if ((key === 'sure' || key === 'soldout' || key === 'surecost') && !E.favInfo.locked) key = live;
+  if (key === 'buy' && !E.entry) key = live;
   if (myPos && key !== live) { const xv = E.exitCheck(myPos.side); if (key === 'locked' && !xv.locked) key = live; if (key === 'sellnow' && !xv.sellNow) key = live === 'hold' ? 'sell' : live; }
   let cls = 'wait', label = 'DO NEXT', head = '', conf = '', ntCls = 'none', ntL = 'Next trade: —', ntR = '—', why = '', speakKey = '';
   const fav = E.favInfo, q = Number.isFinite(E.pUp) ? quotes(E.fav) : { ask: NaN, src: 'none' }, ask = q.ask;
@@ -1149,7 +1031,7 @@ function dictate(E) {
   else if (key === 'over') { head = 'Round over — settling'; conf = Number.isFinite(E.settleExact) ? 'final price ' + fmt$(E.settleExact) : 'the final price lands a second after the bell'; ntL = 'Next trade: next round'; why = 'The next price to beat is this round\'s final price. Positions and typed quotes reset.'; }
   else if (myPos) {
     const x = E.exitCheck(myPos.side), side = myPos.side, sideNt = side === 'UP' ? 'up' : 'down', w = x.dropWord;
-    if (key === 'locked') { cls = 'safe'; label = 'LOCKED'; speakKey = 'locked'; head = 'HOLD ' + side + ' to the bell'; conf = '100% · nothing can flip it · settles in ' + clock(E.r); ntCls = 'none'; ntL = 'Next trade: none — ride it'; ntR = 'pays $1.00'; why = 'BTC would have to ' + w + ' $' + fmt$(x.cush, 0) + ' and stay there; the biggest ' + w + ' ever seen for ' + secsTxt(E.r) + ' is $' + fmt$(x.rec, 0) + ' (margin ×' + S.recMargin + '). A low bid now is other people\'s panic, not information.'; }
+    if (key === 'locked') { cls = 'safe'; label = 'LOCKED'; speakKey = 'locked'; head = 'HOLD ' + side + ' to the bell — LOCKED'; conf = '100% · nothing can flip it · settles in ' + clock(E.r); ntCls = 'none'; ntL = 'Next trade: none — ride it'; ntR = 'pays $1.00'; why = 'BTC would have to ' + w + ' $' + fmt$(x.cush, 0) + ' and stay there; the biggest ' + w + ' ever seen for ' + secsTxt(E.r) + ' is $' + fmt$(x.rec, 0) + ' (margin ×' + S.recMargin + '). A low bid now is other people\'s panic, not information.'; }
     else if (key === 'sellnow') { cls = 'sell'; label = 'SELL NOW'; speakKey = 'sellnow'; head = 'SELL ' + side + ' NOW'; conf = 'projected to lose · settles in ' + clock(E.r); ntCls = 'sell'; ntL = 'SELL ' + side; ntR = Number.isFinite(x.bid) ? 'at ' + cents(x.bid) : 'at any bid'; why = (x.cush <= 0 ? 'If BTC stays here the final average lands on the other side (cushion ' + fmtS(x.cush, 0) + ').' : 'The math has your side at ' + pct(x.pAdj) + '.') + ' Take what is left.'; }
     else if (key === 'sell') { cls = 'sell'; label = 'SELL'; speakKey = 'sell'; const win = Math.max(0, Math.floor(x.holdConf)); head = 'SELL ' + side + (E.r <= 120 && x.holdConf < lat + 5 && x.holdConf < E.r ? ' — window closing' : x.deadline ? ' — deadline' : ' — flip building'); conf = (win > 0 && win < E.r ? 'act within ' + win + ' s' : 'act now') + ' · you need ' + lat + ' s to fill · ' + clock(E.r) + ' left'; ntCls = 'sell'; ntL = 'SELL ' + side; ntR = Number.isFinite(x.bid) ? 'at ' + cents(x.bid) : 'at ≥ ' + cents(x.sellAbove); why = (x.reason || 'The sell trigger cleared a moment ago. If you have not sold: a bid at or above ' + cents(x.sellAbove) + ' still beats holding; below that, hold and watch.') + (Number.isFinite(x.bidNet) ? ' Selling keeps ≈$' + fmt$(myPos.shares * x.bidNet, 0) + '; holding is worth ≈$' + fmt$(myPos.shares * x.pAdj, 0) + '.' : ''); }
     else { cls = 'caution'; label = x.thin ? 'HOLD · THIN' : 'HOLD'; speakKey = 'hold'; const h = x.holdConf >= E.r ? Infinity : x.holdConf, early = E.r > 120;
@@ -1159,187 +1041,153 @@ function dictate(E) {
   }
   else if (key === 'learning') { head = 'Learning BTC\'s record pace…'; conf = 'the Coinbase history scan takes a few seconds'; why = 'Until it finishes nothing can be called LOCKED.'; }
   else if (key === 'soldout') { cls = 'ready'; head = E.fav + ' is LOCKED — sold out'; conf = 'nobody is offering it under $1 · ' + clock(E.r) + ' left'; ntCls = favNt; ntL = 'BUY ' + E.fav + ' if offered'; ntR = '≤ ' + cents(maxAsk); why = 'Nothing can flip ' + E.fav + ' now. Sellers show up when the spot wobbles — watch the button.'; }
-  else if (key === 'sure') { cls = 'lock'; label = 'SURE THING'; speakKey = 'sure'; const payUp = Number.isFinite(ask) ? ask : maxAsk, net = 1 - payUp - fee(payUp, S.fee); head = 'BUY ' + E.fav + ' ' + askTxt; conf = '100% · get filled within ' + clock(Math.max(0, E.r - lat)) + ' · ride to the bell'; ntCls = favNt; ntL = 'BUY ' + E.fav; ntR = askTxt; why = 'Locked: a record ' + fav.dropWord + ' ($' + fmt$(fav.rec, 0) + ') in the next ' + secsTxt(E.r) + ' cannot bring the average back across the target (it would take $' + fmt$(fav.cush, 0) + '). +' + (net * 100).toFixed(1) + '¢ per share after fee' + (Number.isFinite(q.askQty) ? ' · ' + Math.round(q.askQty) + ' shares offered' : '') + '.'; }
+  else if (key === 'sure') { cls = 'lock'; label = 'SURE THING'; speakKey = 'sure'; const payUp = Number.isFinite(ask) ? ask : maxAsk, net = 1 - payUp - fee(payUp, S.fee); head = 'BUY ' + E.fav + ' ' + askTxt + ' — SURE THING'; conf = '100% · get filled within ' + clock(Math.max(0, E.r - lat)) + ' · ride to the bell'; ntCls = favNt; ntL = 'BUY ' + E.fav; ntR = askTxt; why = 'Locked: a record ' + fav.dropWord + ' ($' + fmt$(fav.rec, 0) + ') in the next ' + secsTxt(E.r) + ' cannot bring the average back across the target (it would take $' + fmt$(fav.cush, 0) + '). +' + (net * 100).toFixed(1) + '¢ per share after fee' + (Number.isFinite(q.askQty) ? ' · ' + Math.round(q.askQty) + ' shares offered' : '') + '.'; }
   else if (key === 'surecost') { cls = 'ready'; head = E.fav + ' is LOCKED but costs ' + cents(ask); conf = 'above your ' + cents(maxAsk) + ' max · ' + clock(E.r) + ' left'; ntCls = favNt; ntL = 'BUY ' + E.fav + ' only'; ntR = '≤ ' + cents(maxAsk); why = 'Net would be ' + ((1 - ask - fee(ask, S.fee)) * 100).toFixed(1) + '¢/share. Raise the max in Settings if that is still worth it.'; }
   else if (key === 'ending') { head = 'DON\'T BUY — round ending'; conf = E.fav + ' for now, not locked · ' + clock(E.r) + ' left'; ntL = 'Next trade: next round'; why = 'Real flip chance ' + chanceTxt(E.buyIn ? E.buyIn.flip : NaN) + '. ' + Math.round(E.d.known * 100) + '% of the average is in the books.'; }
+  else if (key === 'buy') { const en = E.entry, sideNt = en.side === 'UP' ? 'up' : 'down'; cls = 'lock'; label = 'BUY · DISCOUNT'; speakKey = 'buy'; head = 'BUY ' + en.side + ' at ' + cents(en.ask) + ' — discount'; conf = fmt$(en.edge * 100, 1) + '¢ edge after fee vs a ' + pct(en.p) + ' chance · fill within ' + Math.max(1, Math.round(E.r - lat)) + ' s · ' + clock(E.r) + ' left'; ntCls = sideNt; ntL = 'BUY ' + en.side; ntR = 'at ≤ ' + cents(en.lim); why = en.side + ' is offered under the price its chance justifies (' + cents(en.lim) + ' leaves ' + (S.entryEdge == null ? 4 : S.entryEdge) + '¢). The replay made its money here: buy the discount early, sell when the market overpays late. Not a sure thing — the SELL rules take over once you are in.'; }
   else if (key === 'ef') { cls = 'hold'; label = 'EF RULE · CAUTION'; head = 'BUY ' + E.fav + ' at ' + cents(ask) + ' (EF)'; const efWin = ROUND - E.r; conf = 'window closes in ' + secsTxt(efWin < 160 ? 150 - efWin : 210 - efWin) + ' · hold to the end'; ntCls = favNt; ntL = 'BUY ' + E.fav; ntR = 'at ' + cents(ask); why = 'Your tested rule (Oct 6–22): favorite at ' + S.efLo + '–' + S.efHi + '¢ at 13:00 / 12:00 left. Not a sure thing: real flip chance ' + chanceTxt(1 - E.pFavAdj) + ', button scare ' + chanceTxt(fav.scare) + '.'; }
   else if (key === 'efcheck') { cls = 'hold'; head = 'EF CHECK — ' + E.fav + ' only at ' + S.efLo + '–' + S.efHi + '¢'; const efWin = ROUND - E.r; conf = (Number.isFinite(ask) ? 'button shows ' + cents(ask) + ' — outside the band' : 'read the ask off the button') + ' · closes in ' + secsTxt(efWin < 160 ? 150 - efWin : 210 - efWin); ntCls = favNt; ntL = 'BUY ' + E.fav + ' only'; ntR = S.efLo + '–' + S.efHi + '¢'; why = 'Real flip chance ' + chanceTxt(1 - E.pFavAdj) + '. Outside the band the price does not pay for the risk.'; }
   else if (key === 'ready') { cls = 'ready'; head = 'WAIT — ' + E.fav + ' close to LOCKED'; conf = (Number.isFinite(fav.eta) ? 'locks in ~' + secsTxt(fav.eta) + ' if BTC holds' : 'no lock before the bell at this cushion') + ' · ' + clock(E.r) + ' left'; ntCls = favNt; ntL = 'BUY ' + E.fav + ' when LOCKED'; ntR = '≤ ' + cents(maxAsk); why = 'To flip it BTC must ' + fav.dropWord + ' $' + fmt$(fav.cush, 0) + ' and hold; record for the time left $' + fmt$(fav.rec, 0) + '. Real flip chance ' + chanceTxt(1 - E.pFavAdj) + ' — buying now is a caution play' + (Number.isFinite(ask) ? ' at ' + cents(ask) : '') + '.'; }
-  else { const nb = noBuyFor(E), b = E.buyIn; head = 'DON\'T BUY for ' + (nb.secs >= 60 ? clock(nb.secs) : nb.secs + ' s'); conf = (key === 'chop' ? 'BTC is hugging the target — a coin flip · ' : E.fav + ' for now · ') + 'next check: ' + nb.why; ntCls = favNt; ntL = 'BUY ' + E.fav + ' only'; ntR = b ? '≤ ' + cents(b.good) : '—'; why = 'Real flip chance ' + chanceTxt(1 - E.pFavAdj) + ' · button scare ' + chanceTxt(fav.scare) + '. Below ' + (b ? cents(b.good) : '—') + ' the price pays for that risk; the sure thing usually opens inside the last 2 minutes.'; }
-  el.className = 'do donext ' + cls; $('do-label').textContent = label; $('do-head').textContent = head; $('do-conf').textContent = conf || ' ';
+  else { const nb = noBuyFor(E), b = E.buyIn; head = 'DON\'T BUY for ' + (nb.secs >= 60 ? clock(nb.secs) : Math.max(1, Math.ceil(nb.secs)) + ' s'); conf = (key === 'chop' ? 'coin flip · ' : E.fav + ' for now · ') + (b ? 'unless ' + E.fav + ' is offered ≤ ' + cents(b.lim) + ' · ' : '') + 'next check: ' + nb.why; ntCls = favNt; ntL = 'BUY ' + E.fav + ' only'; ntR = b ? '≤ ' + cents(b.lim) : '—'; why = 'Real flip chance ' + chanceTxt(1 - E.pFavAdj) + ' · button scare ' + chanceTxt(fav.scare) + '. At ' + (b ? cents(b.lim) : '—') + ' or under the price leaves ' + (S.entryEdge == null ? 8 : S.entryEdge) + '¢ after fee for that risk (the replay-tested entry); the sure thing usually opens inside the last 2 minutes.'; }
+  // ---- confidence badge: always the same number — the calibrated chance that the side in question wins at the bell
+  //      (100% only when LOCKED: record pace cannot flip it, 224/224 on the replay). The label says what to make of it.
+  let confN = '—', confL = '';
+  const xMine = myPos && Number.isFinite(E.pUp) ? E.exitCheck(myPos.side) : null;
+  const pTxt = p => !Number.isFinite(p) ? '—' : p >= 0.995 ? '99%+' : p < 0.005 ? '<1%' : Math.round(p * 100) + '%';
+  if (key === 'locked' || key === 'sure' || key === 'surecost' || key === 'soldout') { confN = '100%'; confL = (myPos ? myPos.side : E.fav) + ' wins · nothing can flip it'; }
+  else if (xMine && (key === 'sellnow' || key === 'sell' || key === 'hold')) { const w = myPos.side + ' wins'; confN = pTxt(xMine.pAdj);
+    confL = key === 'sellnow' ? w + ' · settling against you'
+      : key === 'hold' ? w + ' if held to the bell'
+      : xMine.kind === 'harvest' ? w + ' · the bid (' + cents(xMine.bid) + ') pays more'
+      : xMine.kind === 'closing' ? w + ' · no time to sell a turn'
+      : xMine.kind === 'deadline' ? w + ' · not LOCKED by ' + clock(S.exitBy || 0)
+      : xMine.kind === 'pace' ? w + ' · pace hits the kill line ~' + secsTxt(xMine.etaKill)
+      : w + ' · under your floor'; }
+  else if (key === 'buy') { confN = pTxt(E.entry.p); confL = E.entry.side + ' wins · +' + fmt$(E.entry.edge * 100, 1) + '¢ edge after fee'; }
+  else if (key === 'ef') { confN = pTxt(E.pFavAdj); confL = E.fav + ' wins · tested rule, not a sure thing'; }
+  else if (key === 'efcheck' || key === 'ready' || key === 'wait' || key === 'chop' || key === 'ending') { confN = pTxt(E.pFavAdj); confL = E.fav + ' wins · ' + (key === 'ending' ? 'too late to buy' : key === 'ready' ? 'wait for LOCKED or a discount' : 'the ask is too high for that'); }
+  // ---- DO NEXT: the next three things in time order
+  const nx = [];
+  const sz = S.sellZone && S.sellZone < 900 ? 'inside ' + clock(S.sellZone) : 'any time';
+  const kill = clock(S.killSecs || 45);
+  const stakeX = en => Math.min(2, Math.max(0.5, en.edge / 0.04)).toFixed(1);
+  const dnBuy = E.buyIn ? 'Buy ' + E.fav + ' only if offered ≤ ' + cents(E.buyIn.lim) : 'Buy only on BUY / SURE THING';
+  if (key === 'sandbox' || key === 'nofeed' || key === 'notarget' || key === 'learning') nx.push(['Wait for the feeds — nothing to act on', '', ''], ['Buy only on BUY or SURE THING', '', ''], ['Never open a position inside the last ' + kill, '', '']);
+  else if (key === 'over') nx.push(['Next round opens · target = this final price', '', ''], ['First discount check from the open', '', ''], ['Sure things usually open in the last 2:00', '', '']);
+  else if (myPos && xMine) {
+    const side = myPos.side;
+    if (key === 'locked') nx.push(['Ride ' + side + ' to the bell — ignore the button', clock(E.r), 'hot'], ['Tap Out after it settles', '', ''], ['Next round: target = this final price', '', '']);
+    else if (key === 'sellnow') nx.push(['SELL ' + side + ' at any bid — now', clock(E.r), 'cold'], ['Tap Out once it fills', '', ''], ['Wait for the next discount buy', '', '']);
+    else if (key === 'sell') nx.push([xMine.kind === 'harvest' ? 'Sell ' + side + ' at ≥ ' + cents(xMine.sellAbove) + ' — the bid overpays' : 'Sell ' + side + ' — any bid ≥ ' + cents(xMine.sellAbove), 'now', 'cold'], ['Tap Out once it fills', '', ''], [E.r > (S.killSecs || 45) ? dnBuy : 'No new buys inside the last ' + kill, '', '']);
+    else {
+      nx.push(['Sell ' + side + ' only if the bid is ≥ ' + cents(xMine.sellAbove) + ' (' + sz + ')', Number.isFinite(xMine.bid) ? 'bid ' + cents(xMine.bid) : '', '']);
+      if (Number.isFinite(xMine.eta) && xMine.eta > 0 && xMine.eta < E.r) nx.push(['LOCKED if BTC holds here', '~' + secsTxt(xMine.eta), 'hot']);
+      else if (xMine.thin && (S.exitBy || 0) > 0 && E.r > S.exitBy) nx.push(['Sell by ' + clock(S.exitBy) + ' unless LOCKED', 'in ' + clock(E.r - S.exitBy), 'warm']);
+      else nx.push(['Look again', (xMine.holdConf >= E.r ? Math.max(5, Math.floor(E.r / 2)) : Math.max(3, Math.floor(xMine.holdConf / 2))) + ' s', '']);
+      nx.push(['Settles · pays $' + fmt$(myPos.shares, 0) + ' if ' + side + ' holds', clock(E.r), '']);
+    }
+  }
+  else if (key === 'buy') { const en = E.entry; nx.push(['Tap BUY ' + en.side + ' ≤ ' + cents(en.lim) + ' · stake ×' + stakeX(en), 'now', 'hot'], ['Set the position below (I\'m in)', '', ''], ['Sell only when the bid beats the math by ' + (S.sellEdge == null ? 5 : S.sellEdge) + '¢ ' + sz, '', '']); }
+  else if (key === 'sure' || key === 'surecost' || key === 'soldout') nx.push(['Buy ' + E.fav + ' only if offered ≤ ' + cents(maxAsk), Number.isFinite(ask) ? 'ask ' + cents(ask) : '', 'hot'], ['Ride it to the bell', clock(E.r), ''], ['Next round: target = this final price', '', '']);
+  else if (key === 'ending') nx.push(['No new buys — round ending', clock(E.r), 'warm'], ['Next round: target = this final price', '', ''], ['First discount check from the open', '', '']);
+  else if (key === 'ef') nx.push(['Buy ' + E.fav + ' at ' + cents(ask) + ' (EF rule — caution)', 'now', 'hot'], ['Set the position below (I\'m in)', '', ''], ['Sell only when the bid beats the math ' + sz, '', '']);
+  else { const nb = noBuyFor(E), b = E.buyIn, lo = S.buyMinLeft || 0, hi = S.buyMaxLeft == null ? 900 : S.buyMaxLeft;
+    const win = E.r > hi ? 'Discount buys open at ' + clock(hi) : E.r < lo ? 'Discount buys closed since ' + clock(lo) : 'Discount buys open until ' + clock(lo);
+    nx.push([dnBuy, Number.isFinite(ask) ? 'ask ' + cents(ask) : '', ''], [win, E.r > hi ? 'in ' + clock(E.r - hi) : E.r >= lo && E.r <= hi ? clock(E.r - lo) : '', E.r >= lo && E.r <= hi ? 'hot' : ''], [nb.secs > 0 ? 'Next check: ' + nb.why : 'No new buys inside the last ' + kill, nb.secs > 0 ? clock(nb.secs) : '', '']); }
+  while (nx.length < 3) nx.push(['—', '', '']);
+  el.className = 'do ' + cls; $('do-label').textContent = 'DO NOW!'; $('do-head').textContent = head; $('do-confn').textContent = confN; $('do-conf').textContent = confL || conf || ' '; $('do-conf').title = conf || '';
   $('nt').className = 'nt ' + ntCls; $('nt-left').textContent = ntL; $('nt-right').textContent = ntR;
-  if (why === 'HINT') $('do-sub').innerHTML = 'If this never connects, this host is blocking the feeds — open the hosted copy in Safari: <a href="' + HOSTED_URL + '" target="_blank" rel="noopener">' + HOSTED_URL + '</a>';
-  else if (why === 'SANDBOX') $('do-sub').innerHTML = 'Coinbase and the relay are both blocked by this host (the claude.ai artifact viewer). Open the hosted copy: <a href="' + HOSTED_URL + '" target="_blank" rel="noopener">' + HOSTED_URL + '</a> — then Share → Add to Home Screen.';
-  else $('do-sub').textContent = why;
-  if (speakKey === 'sure' || speakKey === 'locked' || speakKey === 'sell' || speakKey === 'sellnow') announce(speakKey, head);
+  for (let i = 0; i < 3; i++) { $('dn' + (i + 1)).textContent = nx[i][0]; $('dn' + (i + 1) + 'c').textContent = nx[i][1]; $('dn' + (i + 1) + 'r').className = 'dnrow' + (nx[i][2] ? ' ' + nx[i][2] : ''); }
+  renderAct(key, ntR);
+  E.whyTxt = why === 'HINT' ? 'If this never connects, this host blocks the feeds — open ' + HOSTED_URL + ' in Safari' : why === 'SANDBOX' ? 'This host (the artifact viewer) blocks the feeds — open ' + HOSTED_URL + ' in Safari, then Share → Add to Home Screen' : (conf ? conf + ' — ' : '') + why;
+  E.linkHint = why === 'HINT' || why === 'SANDBOX';
+  if (speakKey === 'sure' || speakKey === 'locked' || speakKey === 'sell' || speakKey === 'sellnow' || speakKey === 'buy') announce(speakKey, head);
 }
 
-// ---------- the flip radar: four tiles, ordered by how far ahead each one sees ----------
-// 1 CUSHION (to the bell): the kill line is mechanical — the move BTC must make AND hold to flip the result; it only
-//   grows as prints land, so it is the longest-range signal there is, and LOCKED is its end state.
-// 2 FLIP CHANCE (to the bell): the odds the remaining prints average past the kill line, Gaussian capped by the fat tail.
-// 3 BTC PACE (the next seconds): Coinbase leads the index by ~1 s and the PM line by ~30 s; a move bigger than noise
-//   toward the kill line is the earliest warning that the picture is changing.
-// 4 PM LINE IN 30 S: where the button's number will read if BTC holds — the scare, not the settlement.
-function tile(id, cls, big, mid, sub) { const el = $(id); el.className = 'tile' + (cls ? ' ' + cls : ''); $(id + '-big').textContent = big; $(id + '-mid').textContent = mid; $(id + '-sub').textContent = sub; }
-function renderRadar(E) {
-  const live = E.r > 0 && Number.isFinite(E.target) && Number.isFinite(E.spot);
-  if (!live) {
-    const why = E.r <= 0 ? 'round over — the next target is this round\'s final price' : !Number.isFinite(E.spot) ? 'waiting for Coinbase' : 'waiting for the target';
-    tile('r-cush', '', '—', '', why); tile('r-odds', '', '—', '', why); tile('r-pace', '', '—', '', why); tile('r-line', '', '—', '', why);
-    return;
-  }
-  const side = myPos ? myPos.side : E.fav, x = E.sideInfo(side), who = side + (myPos ? ' (mine)' : ' (for now)');
-  // 1 cushion
-  if (!Number.isFinite(x.cush)) tile('r-cush', '', '—', who, 'no kill line yet');
-  else if (x.cush <= 0) tile('r-cush', 'bad', '−$' + fmt$(-x.cush, 0), side + ' is past the kill line', 'if BTC holds here the final average lands on the other side · ' + who);
-  else tile('r-cush', x.locked ? 'ok' : x.thin ? 'thin' : '', '$' + fmt$(x.cush, 0), x.dropWord + ' flips ' + side + (x.locked ? ' — LOCKED' : ''),
-    'must average ' + (side === 'UP' ? 'below' : 'above') + ' ' + fmt$(x.killPM) + (E.knownN > 0 ? ' · ' + E.knownN + '/60 prints in' : '') + ' · ' + (x.locked ? 'nothing can flip it' : etaTxt(x.eta)) + (x.thin ? ' · THIN: sell above ' + cents(x.sellAbove) : ''));
-  // 2 flip chance
-  const flip = 1 - x.pAdj, fw = x.locked ? '' : flip >= 0.25 ? 'bad' : flip >= 0.10 ? 'warn' : flip >= 0.03 ? 'thin' : '';
-  tile('r-odds', x.locked ? 'ok' : fw, x.locked ? '0%' : flip < 0.005 ? '<1%' : flip > 0.995 ? '>99%' : Math.round(flip * 100) + '%',
-    x.locked ? 'locked' : chanceWord(flip) + (x.pAdj < x.p - 0.005 ? ' · fat tails' : ''),
-    'bad minute (p' + S.badPct + ') $' + fmt$(x.bad, 0) + ' · record for ' + secsTxt(E.r) + ' $' + fmt$(x.rec, 0) + ' · ' + who);
-  // 3 pace
-  const toward = x.pace > 0, etaK = x.etaKill, lat = S.latency || 0;
-  const pcls = toward && Number.isFinite(etaK) && etaK <= (S.etaWarnS || 30) + lat ? 'bad' : toward ? 'warn' : '';
-  tile('r-pace', pcls, Number.isFinite(E.mv10) ? fmtS(E.mv10, 0) : '—',
-    toward ? 'toward the kill line · there in ~' + secsTxt(etaK) : Math.abs(E.mv10 || 0) < 2 ? 'flat' : (side === 'UP' ? E.mv10 > 0 : E.mv10 < 0) ? 'away from the kill line' : 'toward it, inside noise',
-    'last 10 s · 30 s ' + (Number.isFinite(E.mv30) ? fmtS(E.mv30, 0) : '—') + ' · noise 2.5σ/10 s ±$' + fmt$(2.5 * E.sig * Math.sqrt(10), 0) + (lat ? ' · you need ' + lat + ' s to sell' : ''));
-  // 4 the line in 30 s
-  const aheadVs = E.pmAhead - E.target, pmSideAhead = aheadVs >= 0 ? 'UP' : 'DOWN', nowVs = E.pmShown - E.target;
-  const lcls = (nowVs >= 0) !== (aheadVs >= 0) ? 'warn' : '';
-  tile('r-line', lcls, fmtS(aheadVs, 0), 'vs target in ' + Math.round(E.lookS) + ' s' + (E.lookS < (S.lookS || 30) ? ' (the bell)' : '') + (lcls ? ' — the button flips to ' + pmSideAhead : ''),
-    'reads ' + fmt$(E.pmAhead) + ' ±$' + fmt$(E.pmAheadSd, 0) + ' if BTC holds · now ' + fmtS(nowVs, 0) + ' (' + (E.pmSrc === 'series' ? 'exact' : 'modeled') + ')');
-}
+// ---------- the numbers grid: every metric, one per cell, the field above its value ----------
+const ncell = (id, v, cls) => { const el = $(id); if (!el) return; el.textContent = v == null || v === '' ? '—' : v; el.className = 'nv' + (cls ? ' ' + cls : ''); };
 function renderPosLine(E) {
   const el = $('pos-line');
-  if (!myPos) { el.innerHTML = 'No position — set it right after you buy; the verdict switches to LOCKED / HOLD / SELL.'; return; }
+  if (!myPos) { el.textContent = 'No position — set it right after you buy.'; return; }
   const x = E.exitCheck ? E.exitCheck(myPos.side) : null;
-  el.innerHTML = 'IN <b>' + myPos.side + '</b> @<b>' + cents(myPos.price) + '</b> for <b>$' + fmt$(myPos.spent, 0) + '</b> · pays <b>$' + fmt$(myPos.shares, 0) + '</b> if it holds' + (x && Number.isFinite(x.p) ? ' · worth <b>' + (x.locked ? '100%' : pct(Math.min(x.pAdj, 0.995))) + '</b> by the math' : '') + (x && Number.isFinite(x.bid) ? ' · bid <b>' + cents(x.bid) + '</b>' : '');
+  el.innerHTML = 'IN <b>' + myPos.side + '</b> @<b>' + cents(myPos.price) + '</b> · <b>$' + fmt$(myPos.spent, 0) + '</b>' + (x && Number.isFinite(x.p) ? ' · worth <b>' + (x.locked ? '100%' : pct(Math.min(x.pAdj, 0.995))) + '</b>' : '') + (x && Number.isFinite(x.bid) ? ' · bid <b>' + cents(x.bid) + '</b>' : '') + ' · pays <b>$' + fmt$(myPos.shares, 0) + '</b>';
 }
-
-// ---------- panels ----------
 function renderWarn(E) {
   const w = [];
-  if (sandboxed()) w.push('This host blocks outbound connections: nothing here is live. Open ' + HOSTED_URL + ' instead.');
-  else if (IDX.ok === false || (IDX.ok === null && S.relay === 'direct')) w.push('Index series off (' + (S.relay === 'direct' ? 'no relay' : 'relay not answering' + (IDX.note ? ': ' + IDX.note : '')) + '): the PM line, the final price and the basis are modeled from Coinbase. The relay must be the v2.0 worker (it forwards /v1/asset-prices/history).');
-  else if (IDX.ok === null && IDX.fails >= 3) w.push('Index series: ' + IDX.fails + ' failed requests to the relay (' + (IDX.note || 'no detail') + ') — if the worker is still the v1 build it returns 404 for the series; redeploy scripts/pm15_relay_worker.js.');
+  if (E.linkHint) w.push(E.whyTxt);
+  else if (sandboxed()) w.push('This host blocks outbound connections: nothing here is live. Open ' + HOSTED_URL + ' instead.');
+  else if (IDX.ok === false || (IDX.ok === null && S.relay === 'direct')) w.push('Index series off (' + (S.relay === 'direct' ? 'no relay' : 'relay not answering' + (IDX.note ? ': ' + IDX.note : '')) + '): the PM line, the final price and the basis are modeled from Coinbase.');
+  else if (IDX.ok === null && IDX.fails >= 3) w.push('Index series: ' + IDX.fails + ' failed relay requests (' + (IDX.note || 'no detail') + ').');
   else if (IDX.ok && Number.isFinite(E.pmAge) && E.pmAge > 8) w.push('Index series is ' + E.pmAge + ' s stale — using the Coinbase model meanwhile.');
-  else if (IDX.ok && !Number.isFinite(E.pmAge)) w.push('Index series: no fresh point yet.');
-  if (IDX.ok && IDX.latest && IDX.latest - E.sec > 2) w.push('Your clock looks ' + (IDX.latest - E.sec) + ' s behind the exchange. Fix the device time; the countdown and the window are off by that much.');
-  if (R.targetSrc === 'est') w.push('Target is estimated from Coinbase (±$15): LOCKED needs the exact one. Type it from the PM screen or turn the relay on.');
+  if (IDX.ok && IDX.latest && IDX.latest - E.sec > 2) w.push('Your clock looks ' + (IDX.latest - E.sec) + ' s behind the exchange — fix the device time.');
+  if (R.targetSrc === 'est') w.push('Target is estimated (±$15): LOCKED needs the exact one.');
   if (R.note) w.push(R.note);
-  if (REC.ready && !REC.bad) w.push('Bad-minute percentiles not scanned yet (rescan runs on load); using 3σ meanwhile.');
-  if (lockStats.failed) w.push('LOCK FAILURE on record: ' + lockStats.failed + ' LOCKED call(s) lost. Raise the record margin / slack before trusting LOCKED.');
-  const el = $('warn'); el.className = 'warnline' + (w.length ? '' : ' empty'); el.textContent = w.length ? '⚠ ' + w.join('  ·  ') : '\u00a0'; el.title = w.join('\n');
+  if (lockStats.failed) w.push('LOCK FAILURE on record: ' + lockStats.failed + ' LOCKED call(s) lost — raise the margin before trusting LOCKED.');
+  const el = $('warn'); el.className = 'warnline' + (w.length ? '' : ' empty'); el.title = w.join('\n');
+  if (E.linkHint) el.innerHTML = '⚠ ' + E.whyTxt.replace(HOSTED_URL, '<a href="' + HOSTED_URL + '" target="_blank" rel="noopener" style="color:var(--pm)">' + HOSTED_URL + '</a>'); else el.textContent = w.length ? '⚠ ' + w.join('  ·  ') : ' ';
 }
 function renderHeader(E) {
   const r = E.r, tm = $('timer');
   tm.textContent = r > 0 ? clock(r) : 'ENDED'; tm.className = 'timer num' + (r <= 60 ? ' closing' : '') + (r <= 10 ? ' final' : '');
-  $('timer-sub').textContent = r > 0 ? (E.knownN > 0 ? E.knownN + ' of 60 prints in the books' : 'left in this round') : 'settling';
-  // the price table: price to beat, what Polymarket shows, the index (Coinbase + live basis), Coinbase — in PM dollars, colored by side
-  const pt = (id, v, ref, src) => { const el = $(id), d = $(id + '-d'); const ok = Number.isFinite(v) && Number.isFinite(ref); el.textContent = Number.isFinite(v) ? fmt$(v) : '—'; el.className = 'pv ' + (ok ? (v >= ref ? 'above' : 'below') : 'flat');
+  $('timer-sub').textContent = r > 0 ? (E.knownN > 0 ? E.knownN + '/60 prints in' : 'left in this round') : 'settling';
+  const pt = (id, v, ref) => { const el = $(id), d = $(id + '-d'); const ok = Number.isFinite(v) && Number.isFinite(ref); el.textContent = Number.isFinite(v) ? fmt$(v) : '—'; el.className = 'pv ' + (ok ? (v >= ref ? 'above' : 'below') : 'flat');
     if (d) { d.textContent = ok ? (v - ref >= 0 ? '+' : '−') + fmt$(Math.abs(v - ref), 0) : '—'; d.className = 'pd ' + (ok ? (v >= ref ? 'above' : 'below') : 'flat'); } };
   $('pt-target').textContent = Number.isFinite(E.target) ? fmt$(E.target) : '—';
   $('pt-target-src').textContent = R.targetSrc === 'api' || R.targetSrc === 'series' ? 'exact' : R.targetSrc === 'manual' ? 'typed' : R.targetSrc === 'est' ? '±$15' : '—';
   pt('pt-pm', E.pmShown, E.target); pt('pt-idx', Number.isFinite(E.spot) ? E.spot + E.off : NaN, E.target); pt('pt-spot', E.spot, E.tgtChart);
   $('pt-pm-d').title = E.pmSrc === 'series' ? 'exact from the exchange' : 'modeled from Coinbase'; $('pt-idx-d').title = 'Coinbase + live basis ' + fmtS(E.off);
-  $('h-target').textContent = fmt$(E.target);
-  $('h-target-src').textContent = R.targetSrc === 'api' ? 'exact (Polymarket API)' : R.targetSrc === 'series' ? 'exact (index series at the last bell)' : R.targetSrc === 'manual' ? 'typed from your screen' : R.targetSrc === 'est' ? 'estimated: Coinbase 60-s average before the open' + (E.offKnown ? ' + basis' : ' (no basis yet)') : 'unknown';
-  $('h-pm').textContent = fmt$(E.pmShown); $('h-pm-diff').textContent = (Number.isFinite(E.pmShown) && Number.isFinite(E.target) ? fmtS(E.pmShown - E.target) + ' vs target' : '—') + (E.pmSrc === 'series' ? ' · exact' : ' · modeled');
-  $('h-spot').textContent = fmt$(E.spot); $('h-spot-diff').textContent = Number.isFinite(E.spot) && Number.isFinite(E.target) ? fmtS(E.spot - E.tgtChart) + ' vs target (basis-adjusted)' : '—';
-  const lead = $('h-lead'); lead.textContent = Number.isFinite(E.pUp) ? E.fav : '—'; lead.className = 'v num ' + (E.fav === 'UP' ? 'up' : 'down');
-  $('h-lead-p').textContent = Number.isFinite(E.pUp) ? (E.favInfo.locked ? 'LOCKED — nothing can flip it now' : 'not locked · real flip chance ' + chanceTxt(1 - E.pFavAdj) + ' · button scare ' + chanceTxt(E.favInfo.scare) + ' · cushion $' + fmt$(E.favInfo.cush, 0)) : '—';
-  const chip = (id, cls, txt) => { const c = $(id); c.className = 'chip ' + cls; c.lastChild.textContent = txt; };
-  chip('chip-cb', E.fresh ? 'ok' : cbState === 'live' ? 'warn' : 'bad', 'Coinbase: ' + (E.fresh ? 'live' : cbState));
-  chip('chip-pm', R.apiOk === true ? 'ok' : R.apiOk === false ? 'bad' : 'warn', 'PM API: ' + (R.apiOk === true ? (R.book && Date.now() - R.bookAt < 15000 ? 'live book' : 'market data') : R.apiOk === false ? 'blocked (CORS) · use a relay' : 'trying…'));
-  chip('chip-series', IDX.ok && Number.isFinite(E.pmAge) && E.pmAge <= 8 ? 'ok' : IDX.ok ? 'warn' : 'bad', 'PM index series: ' + (IDX.ok ? (Number.isFinite(E.pmAge) ? 'live (' + E.pmAge + ' s old)' : 'no point yet') : IDX.ok === false ? 'blocked · modeled' : S.relay === 'direct' ? 'needs the relay' : IDX.fails ? 'relay failing (' + IDX.fails + ')' : 'trying…'));
-  chip('chip-off', E.offKnown ? (R.offsetSrc === 'live' ? 'ok' : 'warn') : 'warn', 'Basis index−Coinbase: ' + (E.offKnown ? fmtS(E.off) + (Number.isFinite(R.offsetSd) ? ' ±' + fmt$(R.offsetSd, 2) : '') + ' (' + R.offsetSrc + ')' : 'unknown'));
-  chip('chip-vol', 'ok', 'Vol: ' + fmt$(E.sig, 1) + '/√s · ±' + fmt$(E.sig * Math.sqrt(60), 0) + ' per min (1σ)' + (E.sig > E.sigLive ? ' · floored (quiet patch)' : ''));
 }
-function renderFeed(E) {
-  $('f-spot').textContent = fmt$(E.spot); $('f-pm').textContent = fmt$(E.pmShown);
-  const lag = $('f-lag'); lag.innerHTML = 'The PM line is a 60-print average: ~30 s behind a steady move · now <b>' + fmtS(E.spot + E.off - E.pmShown) + '</b> from the spot (basis-adjusted) · ' + (E.pmSrc === 'series' ? 'exact from the exchange' : 'modeled from Coinbase');
-  const ins = $('f-insight'); let txt = '', cls = '';
-  if (Number.isFinite(E.target) && Number.isFinite(E.spot)) {
-    const spotAdj = E.spot + E.off, spotSide = spotAdj >= E.target ? 'UP' : 'DOWN', pmSide = E.pmShown >= E.target ? 'UP' : 'DOWN';
-    const away = Math.abs(spotAdj - E.target) - Math.abs(E.pmShown - E.target);
-    if (spotSide !== pmSide) { txt = 'Spot has crossed to the ' + spotSide + ' side but the PM line still shows ' + pmSide + '. The button prices follow the spot, not the line; the settlement average moves slower than either — check the KILL LINE card before reacting.'; cls = 'warn'; }
-    else if (away > 1) { txt = 'Spot is pulling away from the target faster than the line shows (' + fmtS(away, 0) + ' more). The line keeps moving ' + spotSide + ' even if BTC stops now.'; cls = 'good'; }
-    else if (away < -1) { txt = 'Spot has turned back toward the target; the line has not shown it yet. Expect ' + pmSide + ' to weaken over the next ~30 s' + (Number.isFinite(E.mv30) ? ' (' + fmtS(E.mv30, 0) + ' in the last 30 s)' : '') + '.'; cls = 'bad'; }
-    else { txt = 'Spot and the line agree: ' + spotSide + ' for now, by ' + fmtS(Math.abs(spotAdj - E.target), 0).replace('+', '') + '. Last 30 s ' + fmtS(E.mv30, 0) + (Math.abs(E.mv30) < 10 ? ' — calm.' : (Math.sign(E.mv30) === (spotSide === 'UP' ? 1 : -1) ? ' — away from the target.' : ' — back toward the target.')); cls = ''; }
-  } else txt = 'Waiting for the target.';
-  ins.textContent = txt; ins.className = 'insight ' + cls;
-}
-function renderPaper(E) {
-  const cell = $('p-cell'), st = $('p-status'), note = $('p-note');
-  let cls = 'cell', s = '', n = paper.note || '';
-  if (paper.state === 'armed') { cls += ' arm'; s = 'Selling ' + paper.armPct + '% in ' + Math.max(0, Math.ceil(paper.armAt - E.nowS)) + ' seconds!'; n = paper.sellPlan || ''; }
-  else if (paper.state === 'firing') { cls += ' firing'; s = 'SELLING!'; n = paper.sellPlan || ''; }
-  else if (paper.state === 'sold') { cls += ' done'; s = 'Sold'; }
-  else if (paper.side) { s = paper.sellPlan || ('Holding ' + paper.side + ' to the bell'); n = paper.note; }
-  else { s = E.r > 0 ? (S.paperOn === 'math' ? (E.pFav >= S.lockP / 100 ? 'Math lock seen — buying' : 'Watching for a math lock') : S.paperOn === 'edge' ? 'Watching for an edge of ' + (S.edgeMin || 6) + '¢+' : (E.favInfo.locked ? 'LOCKED seen — buying' : 'Watching for a lock')) : 'Round over'; n = paper.note || (S.paperOn === 'math' ? 'Buys when the math says ' + S.lockP + '%+ (not a sure thing); sells on SELL.' : S.paperOn === 'edge' ? 'Buys the favorite when the edge after fee is ' + (S.edgeMin || 6) + '¢+ and the scare is under ' + (S.edgeScare || 15) + '%; sells on SELL.' : 'Buys the locked side with the stake in Settings; sells on SELL (after your latency).'); }
-  cell.className = cls; st.textContent = s; note.textContent = n;
-  const pMine = paper.side ? (paper.side === 'UP' ? E.pUp : 1 - E.pUp) : NaN; const q = paper.side ? quotes(paper.side) : { bid: NaN };
-  const mark = Number.isFinite(q.bid) ? q.bid : pMine; const value = paper.shares * (Number.isFinite(mark) ? mark : 0);
-  $('p-side').textContent = paper.side ? paper.side + ' @' + cents(paper.px) + (paper.modelFill ? '*' : '') : 'none';
-  $('p-shares').textContent = paper.shares.toFixed(1); $('p-cost').textContent = '$' + fmt$(paper.cost); $('p-value').textContent = '$' + fmt$(value);
-  const pnl = $('p-pnl'); const upnl = paper.side ? value - paper.cost : NaN; pnl.textContent = Number.isFinite(upnl) ? fmtS(upnl) + ' open' : '—'; pnl.className = 'n ' + (upnl >= 0 ? 'pos' : 'neg');
-  const tot = $('p-total'); tot.textContent = fmtS(paper.roundPnl) + ' / ' + fmtS(paper.totalPnl); tot.className = 'n ' + (paper.totalPnl >= 0 ? 'pos' : 'neg');
-}
-function renderPlays(E) {
-  const tb = $('plays'); if (!Number.isFinite(E.pUp) || E.r <= 0) { tb.innerHTML = '<tr><td colspan="4" class="hint">' + (E.r <= 0 ? 'Round over.' : 'Waiting for the target.') + '</td></tr>'; return; }
-  const rows = [];
-  const add = (name, side, p0, px, kind) => { const f = E.sideInfo(side); const p = Number.isFinite(f.pAdj) ? f.pAdj : p0; const [g, gc] = gradeOf(p); const net = Number.isFinite(px) ? (kind === 'sell' ? px - fee(px, S.fee) : (f.locked ? 1 : p) - px - fee(px, S.fee)) : NaN;
-    const safety = f.locked ? '<span class="grade gA">LOCKED</span> nothing can flip it' : '<span class="grade ' + gc + '">' + g + '</span> flip chance ' + chanceTxt(1 - p) + ' · cushion $' + fmt$(f.cush, 0) + (f.thin ? ' (thin)' : '');
-    rows.push('<tr><td>' + name + '</td><td class="n">' + (f.locked ? '100%' : pct(Math.min(p, 0.995))) + '</td><td class="n">' + (Number.isFinite(net) ? (net >= 0 ? '+' : '') + (net * 100).toFixed(1) + '¢' : 'need a price') + '</td><td>' + safety + '</td></tr>'); };
-  const qf = quotes(E.fav), qd = quotes(E.dog);
-  add('Buy ' + E.fav + ' (for now)' + (Number.isFinite(qf.ask) ? ' @' + cents(qf.ask) : ''), E.fav, E.pFav, qf.ask, 'buy');
-  add('Buy ' + E.dog + ' (other side)' + (Number.isFinite(qd.ask) ? ' @' + cents(qd.ask) : ''), E.dog, 1 - E.pFav, qd.ask, 'buy');
-  if (myPos) { const pm = myPos.side === 'UP' ? E.pUp : 1 - E.pUp; const qm = quotes(myPos.side);
-    add('Hold my ' + myPos.side + ' to the bell', myPos.side, pm, myPos.price, 'buy');
-    rows.push('<tr><td>Sell my ' + myPos.side + ' now' + (Number.isFinite(qm.bid) ? ' @' + cents(qm.bid) : '') + '</td><td class="n">—</td><td class="n">' + (Number.isFinite(qm.bid) ? fmtS(qm.bid * myPos.shares - fee(qm.bid, S.fee) * myPos.shares - myPos.spent) : 'need a bid') + '</td><td><span class="grade gA">CASH</span> now, gives up ' + (Number.isFinite(qm.bid) ? ((pm - qm.bid) * 100).toFixed(1) + '¢/share vs the math' : 'the rest') + '</td></tr>'); }
-  const elapsed = ROUND - E.r; if (elapsed >= 110 && elapsed <= 210) { const [g, gc] = gradeOf(E.pFav); rows.push('<tr><td>Early Favorite rule (13:00/12:00 left, fav at ' + S.efLo + '–' + S.efHi + '¢)</td><td class="n">' + pct(Math.min(E.pFav, 0.995)) + '</td><td class="n">tested Oct 6–22</td><td><span class="grade ' + gc + '">' + g + '</span> with caution · flip chance ' + chanceTxt(1 - E.pFavAdj) + '</td></tr>'); }
-  tb.innerHTML = rows.join('');
-}
-function renderBuyIn(E) {
-  const b = E.buyIn, head = $('b-head'), sub = $('b-sub'), lad = $('b-ladder'), best = $('b-best');
-  if (!b) { head.className = 'b-head none'; head.textContent = E.r <= 0 ? 'Round over.' : 'Waiting for the target.'; sub.textContent = ''; lad.innerHTML = ''; best.textContent = ''; return; }
-  const c = v => Math.round(v * 100) + '¢';
-  if (Number.isFinite(b.ask)) {
-    const win = 1 - b.ask - fee(b.ask, S.fee);
-    head.className = 'b-head ' + b.grade.toLowerCase();
-    head.textContent = b.grade + (b.scary && b.grade !== 'POOR' ? ' BUT SCARY' : '') + ' — ' + E.fav + ' at ' + c(b.ask) + (b.src === 'book' ? '' : ' (typed)');
-    sub.innerHTML = 'Right: <span class="n">+' + c(win) + '</span>/share (+' + Math.round(win / b.ask * 100) + '%). Wrong: <span class="n">−' + c(b.ask) + '</span>/share. Win if held to the bell <span class="n">' + (b.winHold >= 1 ? '100% (locked)' : pct(Math.min(b.winHold, 0.995))) + '</span>; the button scares you first (spot crosses) <span class="n">' + chanceTxt(b.scare) + '</span>. Edge after fee <span class="n">' + (b.edge >= 0 ? '+' : '−') + (Math.abs(b.edge) * 100).toFixed(1) + '¢</span>/share' + (b.edge > 0 ? ' · size ¼-Kelly <span class="n">' + Math.round(b.kelly * 25) + '%</span> of bankroll' : ' · no size: overpriced for the risk') + '.';
-  } else {
-    head.className = 'b-head none'; head.textContent = 'No ask yet — read the ' + E.fav + ' button';
-    sub.innerHTML = 'Win if held to the bell <span class="n">' + (b.winHold >= 1 ? '100% (locked)' : pct(Math.min(b.winHold, 0.995))) + '</span>; the button scares you first <span class="n">' + chanceTxt(b.scare) + '</span>. Type the ask in Settings (or use the relay) to grade it.';
-  }
-  lad.innerHTML = '<span class="great">GREAT under <b>' + c(b.great) + '</b></span><span class="good">GOOD under <b>' + c(b.good) + '</b></span><span class="be">break-even <b>' + c(b.be) + '</b></span>';
-  best.textContent = Number.isFinite(R.bestEdge) ? 'Best buy-in seen this round: ' + (R.bestEdge >= 0 ? '+' : '−') + (Math.abs(R.bestEdge) * 100).toFixed(1) + '¢ edge at ' + c(R.bestAsk) + ' with ' + clock(R.bestLeft) + ' left.' : 'Lower ask = more reward; the edge says whether the extra risk is paid for.';
-}
-function renderMine(E) {
-  if (!myPos) { $('my-hold').textContent = 'nothing'; $('my-cost').textContent = '—'; $('my-worth').textContent = '—'; $('my-sell').textContent = '—'; $('my-win').textContent = '—'; return; }
-  const x = E.exitCheck(myPos.side); const pmShow = x.locked ? 1 : Math.min(x.pAdj, 0.995);
-  $('my-hold').textContent = myPos.side + ' · ' + myPos.shares.toFixed(1) + ' shares';
-  $('my-cost').textContent = cents(myPos.price) + ' · $' + fmt$(myPos.spent);
-  $('my-worth').textContent = (Number.isFinite(x.p) ? (x.locked ? '100% (locked)' : pct(pmShow) + ' by the math') + ' · $' + fmt$(myPos.shares * pmShow) + ' (' + fmtS(myPos.shares * pmShow - myPos.spent) + ')' : '—') + (Number.isFinite(x.bid) ? ' · bid ' + cents(x.bid) : '');
-  $('my-sell').textContent = Number.isFinite(x.bidNet) ? '$' + fmt$(myPos.shares * x.bidNet) + ' (' + fmtS(myPos.shares * x.bidNet - myPos.spent) + ') at ' + cents(x.bid) + (x.bidSrc === 'typed' ? ' typed' : '') : 'type the bid, or use the relay';
-  $('my-win').textContent = '$' + fmt$(myPos.shares) + ' (' + fmtS(myPos.shares - myPos.spent) + ')';
-}
-function renderNext(E) {
-  if (!E.d || !Number.isFinite(E.d.mean)) return;
-  const soFar = E.knownN > 0 ? E.d.mean : NaN;
-  $('n-target').textContent = Number.isFinite(soFar) ? fmt$(soFar) + ' (' + E.knownN + ' of 60 prints)' : 'forms in ' + clock(E.r - WIN);
-  $('n-hint').textContent = Number.isFinite(soFar) ? 'Whatever the average lands on at the bell becomes the next target. If spot sits far from it, the next round opens with a lead already.' : 'The next price-to-beat is this round\'s final price. In the final minute it is already taking shape.';
+function renderNumbers(E) {
+  const live = E.r > 0 && Number.isFinite(E.target) && Number.isFinite(E.spot) && Number.isFinite(E.pUp);
+  const side = myPos ? myPos.side : E.fav, x = live ? (myPos ? E.exitCheck(side) : E.sideInfo(side)) : null;
+  const c$ = v => '$' + fmt$(v, 0);
+  ncell('m-why', E.whyTxt || (E.r <= 0 ? 'Round over — the next target is this round\'s final price.' : 'Waiting for prices.'));
+  ncell('m-side', live ? side + (myPos ? ' · mine' : ' · for now') : '—', live ? (side === 'UP' ? 'ok' : 'bad') : '');
+  ncell('m-p', x ? (x.locked ? '100% · locked' : pct(Math.min(x.pAdj, 0.995)) + (x.pAdj < x.p - 0.005 ? ' · fat tails' : '')) : '—', x && x.locked ? 'ok' : x && x.pAdj < 0.5 ? 'bad' : '');
+  ncell('m-cush', x && Number.isFinite(x.cush) ? (x.cush <= 0 ? 'past it by ' + c$(-x.cush) : c$(x.cush) + ' ' + x.dropWord + ' flips ' + side) : '—', x ? (x.locked ? 'ok' : x.cush <= 0 ? 'bad' : x.thin ? 'thin' : '') : '');
+  ncell('m-kill', x && Number.isFinite(x.killPM) ? fmt$(x.killPM) + ' · ' + (side === 'UP' ? 'below' : 'above') + ' flips it' : '—');
+  ncell('m-hold', x ? (x.locked ? 'the bell · locked' : x.holdConf >= E.r ? 'the bell · ' + (S.holdConf || 99) + '%' : '≥ ' + Math.floor(x.holdConf) + ' s · ' + (S.holdConf || 99) + '%') : '—', x && (x.locked || x.holdConf >= E.r) ? 'ok' : x && x.holdConf < (S.latency || 0) + 5 ? 'bad' : '');
+  ncell('m-lock', x ? (x.locked ? 'now' : Number.isFinite(x.eta) ? (x.eta <= 0 ? 'now' : '~' + secsTxt(x.eta) + ' if BTC holds') : 'not before the bell') : '—', x && x.locked ? 'ok' : '');
+  ncell('m-bad', x ? c$(x.bad) + (x.badLeft < x.bad - 0.5 ? ' · ' + c$(x.badLeft) + ' for ' + secsTxt(E.r) : '') : '—');
+  ncell('m-rec', x ? c$(x.rec) + ' · margin ×' + S.recMargin : '—');
+  ncell('m-mv10', Number.isFinite(E.mv10) ? fmtS(E.mv10, 0) : '—', E.mv10 > 0 ? 'ok' : E.mv10 < 0 ? 'bad' : '');
+  ncell('m-mv30', Number.isFinite(E.mv30) ? fmtS(E.mv30, 0) : '—', E.mv30 > 0 ? 'ok' : E.mv30 < 0 ? 'bad' : '');
+  ncell('m-paceeta', x && x.pace > 0 && Number.isFinite(x.etaKill) ? '~' + secsTxt(x.etaKill) + ' · ' + x.paceK + '-s pace' : x ? 'not heading there' : '—', x && x.pace > 0 && Number.isFinite(x.etaKill) ? (x.etaKill <= (S.etaWarnS || 30) + (S.latency || 0) ? 'bad' : 'warn') : '');
+  ncell('m-ahead', live && Number.isFinite(E.pmAhead) ? fmt$(E.pmAhead) + ' · ' + fmtS(E.pmAhead - E.target, 0) : '—', live && Number.isFinite(E.pmAhead) ? (E.pmAhead >= E.target ? 'ok' : 'bad') : '');
+  ncell('m-pmvs', live && Number.isFinite(E.pmShown) ? fmtS(E.pmShown - E.target, 0) + ' · ' + (E.pmSrc === 'series' ? 'exact' : 'modeled') : '—', 'pm');
+  ncell('m-known', E.r > 0 ? E.knownN + '/60' + (E.knownN > 0 && E.d ? ' · ' + Math.round(E.d.known * 100) + '% fixed' : E.r > WIN ? ' · opens in ' + clock(E.r - WIN) : '') : '—');
+  const RI = E.reach;
+  ncell('m-reach', RI && RI.tier >= 0 ? RI.word + ' · ' + RI.minsTxt + ' vs ' + clock(E.r) : RI ? 'scanning' : '—', RI ? (RI.tier === 0 ? 'ok' : RI.tier === 3 ? 'bad' : RI.tier === 2 ? 'warn' : '') : '');
+  ncell('m-touch', RI && RI.tier >= 0 ? pct(RI.odds) + ' · ' + fmtS(RI.dist, 0).replace('+', '') + ' to the target' : '—');
+  const b = E.buyIn;
+  ncell('m-buyin', b && Number.isFinite(b.ask) ? cents(b.ask) + ' · ' + b.grade + ' · ' + (b.edge >= 0 ? '+' : '−') + fmt$(Math.abs(b.edge) * 100, 1) + '¢ edge' + (b.src === 'book' ? '' : ' · typed') : b ? 'no ask on the book' : '—', b && b.grade === 'POOR' ? 'bad' : b && (b.grade === 'GOOD' || b.grade === 'GREAT') ? 'ok' : '');
+  ncell('m-ladder', b ? cents(b.lim) + ' · ' + cents(b.good) + ' · ' + cents(b.be) : '—');
+  ncell('m-bestedge', Number.isFinite(R.bestEdge) ? (R.bestEdge >= 0 ? '+' : '−') + fmt$(Math.abs(R.bestEdge) * 100, 1) + '¢ at ' + cents(R.bestAsk) + ' · ' + clock(R.bestLeft) + ' left' : 'none yet', Number.isFinite(R.bestEdge) && R.bestEdge > 0 ? 'ok' : '');
+  const lo = S.buyMinLeft || 0, hi = S.buyMaxLeft == null ? 900 : S.buyMaxLeft;
+  ncell('m-window', clock(hi) + '→' + clock(lo) + ' · ' + (S.entryEdge == null ? 8 : S.entryEdge) + '¢+ · ' + (S.dogBuy === false ? 'fav only' : 'either side'), E.r > 0 && E.r >= lo && E.r <= hi ? 'ok' : '');
+  const efWin = ROUND - E.r;
+  ncell('m-ef', S.useEF === false ? 'off' : E.r <= 0 ? '—' : efWin < 110 ? 'check at 13:00 · in ' + secsTxt(110 - efWin) : efWin <= 150 ? 'open · ' + S.efLo + '–' + S.efHi + '¢' : efWin < 170 ? 'check at 12:00 · in ' + secsTxt(170 - efWin) : efWin <= 210 ? 'open · ' + S.efLo + '–' + S.efHi + '¢' : 'done this round', E.r > 0 && ((efWin >= 110 && efWin <= 150) || (efWin >= 170 && efWin <= 210)) ? 'ok' : '');
+  ncell('m-pos', myPos ? myPos.side + ' @' + cents(myPos.price) + ' · $' + fmt$(myPos.spent, 0) + ' · ' + myPos.shares.toFixed(1) + ' sh' : 'none');
+  ncell('m-worth', myPos && x ? '$' + fmt$(myPos.shares * (x.locked ? 1 : Math.min(x.pAdj, 0.995))) + ' · ' + fmtS(myPos.shares * (x.locked ? 1 : Math.min(x.pAdj, 0.995)) - myPos.spent) : '—', myPos && x ? (myPos.shares * (x.locked ? 1 : x.pAdj) >= myPos.spent ? 'ok' : 'bad') : '');
+  ncell('m-sellnow', myPos && x && Number.isFinite(x.bidNet) ? '$' + fmt$(myPos.shares * x.bidNet) + ' · ' + fmtS(myPos.shares * x.bidNet - myPos.spent) + ' at ' + cents(x.bid) + (x.bidSrc === 'typed' ? ' typed' : '') : myPos ? 'no bid on the book' : '—');
+  ncell('m-towin', myPos ? '$' + fmt$(myPos.shares) + ' · ' + fmtS(myPos.shares - myPos.spent) : '—', myPos ? 'ok' : '');
+  const pc = paper.state === 'armed' ? 'selling in ' + Math.max(0, Math.ceil(paper.armAt - E.nowS)) + ' s' : paper.state === 'firing' ? 'SELLING' : paper.state === 'sold' ? 'sold' : paper.side ? 'holding ' + paper.side + ' @' + cents(paper.px) : E.r <= 0 ? 'round over' : S.paperOn === 'edge' ? (E.entry ? 'buying ' + E.entry.side : 'waiting for a discount') : S.paperOn === 'sure' ? 'waiting for a lock' : 'waiting for a math lock';
+  ncell('m-paper', pc + (paper.side ? ' · ' + paper.shares.toFixed(1) + ' sh · $' + fmt$(paper.cost, 0) : ''), paper.state === 'armed' || paper.state === 'firing' ? 'warn' : '');
+  ncell('m-paperpnl', fmtS(paper.roundPnl) + ' · ' + fmtS(paper.totalPnl), paper.totalPnl > 0 ? 'ok' : paper.totalPnl < 0 ? 'bad' : '');
+  ncell('m-next', E.d && Number.isFinite(E.d.mean) && E.knownN > 0 ? fmt$(E.d.mean) + ' · ' + E.knownN + '/60' : E.r > WIN ? 'forms in ' + clock(E.r - WIN) : E.r > 0 ? 'forming' : Number.isFinite(E.settleExact) ? fmt$(E.settleExact) + ' · final' : '—', 'tgt');
+  ncell('m-lockrec', lockStats.held + ' held · ' + lockStats.failed + ' lost' + (lockStats.checked ? ' · API ok ' + lockStats.exact + '/' + lockStats.checked : ''), lockStats.failed ? 'bad' : lockStats.held ? 'ok' : '');
+  ncell('m-basis', E.offKnown ? fmtS(E.off) + (Number.isFinite(R.offsetSd) ? ' ±' + fmt$(R.offsetSd, 2) : '') + ' · ' + R.offsetSrc : 'unknown', R.offsetSrc === 'live' ? 'ok' : 'warn');
+  ncell('m-vol', Number.isFinite(E.sig) ? '±' + c$(E.sig * Math.sqrt(60)) + ' · ×' + (S.sigK || 1) + (E.sig > E.sigLive * (S.sigK || 1) + 1e-9 ? ' · floored' : '') : '—');
+  ncell('m-tgtsrc', R.targetSrc === 'api' ? 'exact · Polymarket API' : R.targetSrc === 'series' ? 'exact · index series' : R.targetSrc === 'manual' ? 'typed' : R.targetSrc === 'est' ? 'estimated ±$15' : 'none yet', R.targetSrc === 'api' || R.targetSrc === 'series' ? 'ok' : 'warn');
+  const bookLive = R.book && Date.now() - R.bookAt < 15000;
+  ncell('m-feeds', (E.fresh ? 'live' : cbState) + ' · ' + (bookLive ? 'live' : R.apiOk === false ? 'blocked' : R.apiOk ? 'stale' : 'off') + ' · ' + (IDX.ok && Number.isFinite(E.pmAge) ? E.pmAge + ' s old' : IDX.ok === false ? 'blocked' : IDX.fails ? 'failing' : 'off'), E.fresh && bookLive && IDX.ok && Number.isFinite(E.pmAge) && E.pmAge <= 8 ? 'ok' : 'warn');
+  ncell('m-round', R.T0 ? etDay.format(new Date(R.T0 * 1000)) + ' ' + winTxt(R.T0, etFmt) : '—');
+  ncell('m-hist', (REC.spans.m1 ? Math.round(REC.spans.m1) + 'd' : '0d') + ' / ' + (REC.spans.m5 ? Math.round(REC.spans.m5) + 'd' : '0d') + ' / ' + (REC.spans.m15 ? Math.round(REC.spans.m15) + 'd' : '0d') + (REC.scanning ? ' · scanning ' + Math.round(REC.progress * 100) + '%' : REC.ready && !REC.bad ? ' · no ladder' : ' · 1/5/15-min'), REC.ready && REC.bad ? '' : 'warn');
 }
 function renderPast() {
-  const box = $('past'); const lr = $('lockrec');
-  lr.className = 'lockrec' + (lockStats.failed ? ' bad' : '');
-  lr.innerHTML = 'Lock record: <b>' + lockStats.held + '</b> LOCKED calls held, <b>' + lockStats.failed + '</b> lost' + (lockStats.checked ? ' · series settlement matched the API <b>' + lockStats.exact + '/' + lockStats.checked + '</b>' : '') + (lockStats.lastFail ? ' · last loss ' + etFmt.format(new Date(lockStats.lastFail.T0 * 1000)) + ' ' + lockStats.lastFail.side + ' called at ' + clock(lockStats.lastFail.at) + ' left with $' + fmt$(lockStats.lastFail.cush, 0) + ' cushion' : '');
+  const box = $('past');
   if (!history.length) { box.innerHTML = '<span class="hint">None yet.</span>'; return; }
-  box.innerHTML = history.slice(-12).reverse().map(h => { const fail = h.lockCall && h.result && h.lockJudged && h.lockCall.side !== h.result; return '<span class="pill ' + (h.result === 'UP' ? 'up' : h.result === 'DOWN' ? 'down' : '') + (h.lockCall ? ' locked' : '') + (fail ? ' failed' : '') + '" title="' + (h.settleSrc || '') + '"><b>' + (h.result === 'UP' ? '↑' : h.result === 'DOWN' ? '↓' : '·') + '</b><span>' + etFmt.format(new Date(h.T0 * 1000)).replace(/ (AM|PM)$/, '') + '</span><span>' + (Number.isFinite(h.margin) ? fmtS(h.margin) : '—') + '</span><span>' + (h.lockCall ? (fail ? 'LOCK LOST ' : 'locked ') + h.lockCall.side + ' ' + clock(h.lockCall.at) + ' left' : 'no lock') + '</span></span>'; }).join('');
+  box.innerHTML = history.slice(-12).reverse().map(h => { const fail = h.lockCall && h.result && h.lockJudged && h.lockCall.side !== h.result; return '<span class="pill ' + (h.result === 'UP' ? 'up' : h.result === 'DOWN' ? 'down' : '') + (h.lockCall ? ' locked' : '') + (fail ? ' failed' : '') + '" title="' + (h.settleSrc || '') + '"><b>' + (h.result === 'UP' ? '↑' : h.result === 'DOWN' ? '↓' : '·') + ' ' + etFmt.format(new Date(h.T0 * 1000)).replace(/ (AM|PM)$/, '') + '</b><span>' + (Number.isFinite(h.margin) ? fmtS(h.margin, 0) : '—') + '</span><span>' + (h.lockCall ? (fail ? 'LOCK LOST' : 'lock ' + clock(h.lockCall.at)) : 'no lock') + '</span></span>'; }).join('');
 }
 
 // ---------- chart ----------
@@ -1387,29 +1235,15 @@ function drawChart(E) {
     // target line: the brightest thing on the chart
     const yt = yOf(E.tgtChart); ctx.save(); ctx.setLineDash([8, 6]); ctx.strokeStyle = '#ffb020'; ctx.lineWidth = 2.5; ctx.shadowColor = '#ffb020'; ctx.shadowBlur = 10; ctx.beginPath(); ctx.moveTo(padL, yt); ctx.lineTo(W - padR, yt); ctx.stroke(); ctx.restore();
     ctx.fillStyle = '#ffb020'; ctx.fillRect(W - padR + 2, yt - 11, padR - 4, 22); ctx.fillStyle = '#1a1000'; ctx.font = 'bold 12px IBM Plex Mono, monospace'; ctx.textAlign = 'left'; ctx.textBaseline = 'middle'; ctx.fillText(fmt$(target), W - padR + 6, yt);
-    ctx.fillStyle = '#ffb020'; ctx.font = 'bold 11px IBM Plex Sans, sans-serif'; ctx.fillText('TARGET ' + (last[1] >= E.tgtChart ? '▼ spot above' : '▲ spot below'), padL + 8, yt + (last[1] >= E.tgtChart ? 12 : -12));
     // kill line: what BTC must average for the rest of the window to flip it — drawn from the window's start, running away as prints land
     if (Number.isFinite(E.killPx) && E.knownN > 0 && E.r > 0 && E.killPx > lo && E.killPx < hi) {
       const yk = yOf(E.killPx), side = myPos ? myPos.side : E.fav, cush = side === 'UP' ? E.cushUp : E.cushDn;
       ctx.save(); ctx.strokeStyle = '#ff4b5c'; ctx.lineWidth = 2.5; ctx.shadowColor = '#ff4b5c'; ctx.shadowBlur = 8; ctx.beginPath(); ctx.moveTo(xa - 30, yk); ctx.lineTo(W - padR, yk); ctx.stroke(); ctx.restore();
       ctx.fillStyle = '#ff4b5c'; ctx.fillRect(W - padR + 2, yk - 11, padR - 4, 22); ctx.fillStyle = '#fff'; ctx.font = 'bold 11px IBM Plex Mono, monospace'; ctx.textAlign = 'left'; ctx.fillText('KILL ' + fmtS(-cush, 0), W - padR + 6, yk);
-      ctx.fillStyle = '#ff4b5c'; ctx.font = 'bold 11px IBM Plex Sans, sans-serif'; ctx.textAlign = 'right'; ctx.fillText('KILL ' + side + ' · must average ' + (side === 'UP' ? 'below' : 'above'), xa - 34, yk + (yk < yt ? -10 : 12)); ctx.textAlign = 'left';
     }
-    // the post: from the spot to the target, with minute ticks at the current pace; the label at the spot end
+    // the post: a ruler from the spot to the target (the numbers for it live in the grid below the chart)
     const xp = Math.min(xs + 22, W - padR - 6);
     ctx.save(); ctx.strokeStyle = '#b57cff'; ctx.shadowColor = '#b57cff'; ctx.shadowBlur = 12; ctx.lineWidth = 3; ctx.beginPath(); ctx.moveTo(xp, ys); ctx.lineTo(xp, yt); ctx.stroke(); ctx.restore();
-    ctx.strokeStyle = '#d9c4ff'; ctx.lineWidth = 1.5; ctx.fillStyle = '#d9c4ff'; ctx.font = '10px IBM Plex Mono, monospace'; ctx.textAlign = 'left'; ctx.textBaseline = 'middle';
-    const dir = Math.sign(E.tgtChart - last[1]) || 1; let run = last[1];
-    for (let m = 1; m <= Math.ceil(E.r / 60); m++) { const proj = last[1] + E.vel * 60 * m; if ((proj - run) * dir <= 0) break; run = proj; if ((proj - E.tgtChart) * dir > 0) break; const y = yOf(proj); ctx.beginPath(); ctx.moveTo(xp - 5, y); ctx.lineTo(xp + 5, y); ctx.stroke(); ctx.fillText(m + 'm', xp + 8, y); }
-    const RI = E.reach;
-    const l1 = RI && RI.tier >= 0 ? RI.minsTxt + ' at record pace' : 'record pace: scanning…';
-    const l2 = RI && RI.tier >= 0 ? RI.word + ' · ' + clock(E.r) + ' left' : 'Coinbase 1 / 5 / 15-min history';
-    ctx.font = 'bold 12px IBM Plex Mono, monospace'; const tw1 = ctx.measureText(l1).width; ctx.font = 'bold 11px IBM Plex Sans, sans-serif'; const tw = Math.max(tw1, ctx.measureText(l2).width);
-    const above = ys <= yt;                                            // label on the spot end, pointing away from the target
-    // the label sits left of the post when there is room (clear of the price tags on the right), else clamped inside the plot
-    const cx = xp - 10 - tw - 14 > padL + 4 ? xp - 10 - tw / 2 - 7 : Math.max(padL + tw / 2 + 8, Math.min(xp + 10 + tw / 2 + 7, W - padR - tw / 2 - 8)), by = above ? ys - 40 : ys + 8, cy = by + 16;
-    ctx.fillStyle = RI && RI.tier >= 0 ? RI.col : '#1a0f2e'; ctx.fillRect(cx - tw / 2 - 7, by, tw + 14, 32); ctx.strokeStyle = RI && RI.tier >= 0 ? RI.col : '#b57cff'; ctx.lineWidth = 1; ctx.strokeRect(cx - tw / 2 - 7, by, tw + 14, 32);
-    ctx.fillStyle = RI && RI.tier >= 0 ? RI.text : '#e6d6ff'; ctx.textAlign = 'center'; ctx.font = 'bold 12px IBM Plex Mono, monospace'; ctx.fillText(l1, cx, cy - 7); ctx.font = 'bold 11px IBM Plex Sans, sans-serif'; ctx.fillText(l2, cx, cy + 8);
   }
   // end dots + price tags
   ctx.beginPath(); ctx.fillStyle = '#9b8cff'; ctx.arc(xs, ys, 4, 0, Math.PI * 2); ctx.fill();
@@ -1444,16 +1278,16 @@ function loadSettings() {
   $('s-stake').value = S.stake; $('s-lockp').value = S.lockP; $('s-maxask').value = S.maxAsk; $('s-drift').value = S.drift; $('s-fee').value = S.fee; $('s-relay').value = S.relay || ''; $('s-offset').value = S.offset == null ? '' : S.offset.toFixed(2);
   $('s-recmargin').value = S.recMargin; $('s-reach-green').value = S.reachGreen; $('s-reach-yellow').value = S.reachYellow;
   $('s-paperon').value = S.paperOn || 'sure'; $('s-edgemin').value = S.edgeMin; $('s-edgescare').value = S.edgeScare;
-  $('s-holdconf').value = S.holdConf; $('s-exitby').value = S.exitBy; $('s-latency').value = S.latency; $('s-holdmin').value = S.holdMinP; $('s-etawarn').value = S.etaWarnS; $('s-badpct').value = S.badPct; $('s-look').value = S.lookS; $('s-slack').value = S.slack; $('s-killsecs').value = S.killSecs; $('s-eflo').value = S.efLo; $('s-efhi').value = S.efHi;
+  $('s-sigk').value = S.sigK; $('s-entryedge').value = S.entryEdge; $('s-buymin').value = S.buyMinLeft; $('s-buymax').value = S.buyMaxLeft; $('s-dogbuy').value = S.dogBuy === false ? 0 : 1; $('s-selledge').value = S.sellEdge; $('s-sellzone').value = S.sellZone; $('s-sellpersist').value = S.sellPersist == null ? DEF.sellPersist : S.sellPersist; $('s-holdconf').value = S.holdConf; $('s-exitby').value = S.exitBy; $('s-latency').value = S.latency; $('s-actwindow').value = S.actWindow == null ? DEF.actWindow : S.actWindow; $('s-holdmin').value = S.holdMinP; $('s-etawarn').value = S.etaWarnS; $('s-badpct').value = S.badPct; $('s-look').value = S.lookS; $('s-slack').value = S.slack; $('s-killsecs').value = S.killSecs; $('s-eflo').value = S.efLo; $('s-efhi').value = S.efHi;
 }
 const num = (id, lo, hi, def) => { const v = Number($(id).value); return Number.isFinite(v) && $(id).value !== '' ? Math.min(hi, Math.max(lo, v)) : def; };
 $('s-save').onclick = () => {
   S.stake = num('s-stake', 1, 1e6, DEF.stake); S.lockP = num('s-lockp', 90, 99.99, DEF.lockP); S.maxAsk = num('s-maxask', 50, 99, DEF.maxAsk);
   S.drift = num('s-drift', 0, 1, DEF.drift); S.fee = num('s-fee', 0, 0.2, DEF.fee); S.relay = ($('s-relay').value || '').trim() || DEFAULT_RELAY;
   S.recMargin = num('s-recmargin', 1, 3, DEF.recMargin); S.reachGreen = num('s-reach-green', 1, 99, DEF.reachGreen); S.reachYellow = Math.min(S.reachGreen, num('s-reach-yellow', 1, 99, DEF.reachYellow));
-  S.paperOn = ['math', 'edge'].includes($('s-paperon').value) ? $('s-paperon').value : 'sure'; S.edgeMin = num('s-edgemin', 1, 30, DEF.edgeMin); S.edgeScare = num('s-edgescare', 1, 50, DEF.edgeScare);
-  S.latency = num('s-latency', 0, 60, DEF.latency); S.holdMinP = num('s-holdmin', 50, 95, DEF.holdMinP); S.etaWarnS = num('s-etawarn', 5, 120, DEF.etaWarnS); S.badPct = num('s-badpct', 90, 100, DEF.badPct); S.lookS = num('s-look', 10, 60, DEF.lookS);
-  S.holdConf = num('s-holdconf', 90, 99.9, DEF.holdConf); S.exitBy = num('s-exitby', 0, 180, DEF.exitBy); S.slack = num('s-slack', 0, 50, DEF.slack); S.killSecs = num('s-killsecs', 0, 300, DEF.killSecs); S.efLo = num('s-eflo', 50, 98, DEF.efLo); S.efHi = Math.max(S.efLo + 1, num('s-efhi', 51, 99, DEF.efHi));
+  S.paperOn = ['math', 'sure'].includes($('s-paperon').value) ? $('s-paperon').value : 'edge'; S.edgeMin = num('s-edgemin', 1, 30, DEF.edgeMin); S.edgeScare = num('s-edgescare', 1, 50, DEF.edgeScare);
+  S.latency = num('s-latency', 0, 60, DEF.latency); S.actWindow = Math.max(S.latency + 1, num('s-actwindow', 5, 60, DEF.actWindow)); S.holdMinP = num('s-holdmin', 50, 95, DEF.holdMinP); S.etaWarnS = num('s-etawarn', 5, 120, DEF.etaWarnS); S.badPct = num('s-badpct', 90, 100, DEF.badPct); S.lookS = num('s-look', 10, 60, DEF.lookS);
+  S.sigK = num('s-sigk', 0.5, 3, DEF.sigK); S.entryEdge = num('s-entryedge', 0, 20, DEF.entryEdge); S.buyMinLeft = num('s-buymin', 0, 900, DEF.buyMinLeft); S.buyMaxLeft = num('s-buymax', 60, 900, DEF.buyMaxLeft); S.dogBuy = num('s-dogbuy', 0, 1, 1) >= 1; S.sellEdge = num('s-selledge', 0, 20, DEF.sellEdge); S.sellZone = num('s-sellzone', 60, 900, DEF.sellZone); S.sellPersist = num('s-sellpersist', 0, 10, DEF.sellPersist); S.holdConf = num('s-holdconf', 90, 99.9, DEF.holdConf); S.exitBy = num('s-exitby', 0, 180, DEF.exitBy); S.slack = num('s-slack', 0, 50, DEF.slack); S.killSecs = num('s-killsecs', 0, 300, DEF.killSecs); S.efLo = num('s-eflo', 50, 98, DEF.efLo); S.efHi = Math.max(S.efLo + 1, num('s-efhi', 51, 99, DEF.efHi));
   const offIn = $('s-offset').value.trim(); if (offIn !== '') { S.offset = Number(offIn); R.offset = S.offset; R.offsetSrc = 'override'; R.offsetSd = NaN; } else if (S.offset != null) { S.offset = null; R.offsetSrc = 'none'; R.offset = NaN; }
   const tIn = Number($('s-target').value); if (tIn > 1000) { R.target = tIn; R.targetSrc = 'manual'; calibrateOffsetRound(); }
   saveS(); R.apiOk = null; IDX.ok = null; pmFetchMarket(); pmFetchBook(); pmFetchSeries(); toast('Saved');
@@ -1470,17 +1304,22 @@ setInterval(() => { if (Date.now() - REC.at > 6 * 3600 * 1000) scanRecords(); },
 // the exchange: book 1/s in the last 2 minutes, else every 10 s; the index series every 2 s in the last 3 minutes (and the first 10 s,
 // for the exact final price of the round just ended), else every 10 s; market terms when the target is still unknown or estimated
 let pollN = 0;
+// Relay budget (Cloudflare free tier: 100k requests/day, every call to the worker counts): per open page this is
+// ≈ 460 requests a round ≈ 31 a minute ≈ 44k a day around the clock — book every 1 s in the last 2:00, every 3 s from
+// 5:00 to 2:00 (the harvest-sell zone), every 10 s before; series every 1–2 s in the last 3:00, every 10 s before;
+// market terms every 30 s (6 s only while the target is still unknown or estimated). Nothing is polled while hidden.
 setInterval(() => {
-  pollN++; const r = R.T - Date.now() / 1000;
-  if (r <= 120 || pollN % 10 === 0) pmFetchBook();
-  if (r <= 180 || r >= ROUND - 12 || pollN % 10 === 5) { if (pollN % 2 === 0 || r <= 20 || r >= ROUND - 12) pmFetchSeries(); }
-  if (pollN % 6 === 3) { if (!Number.isFinite(R.target) || R.targetSrc === 'est' || R.targetSrc === 'series') pmFetchMarket(); const prevSlug = SLUG(R.T0 - ROUND); const prev = history.find(h => SLUG(h.T0) === prevSlug); if (prev && prev.settleSrc !== 'api') pmFetchMarket(prevSlug); }
+  pollN++; if (document.hidden) return; const r = R.T - Date.now() / 1000;
+  if (r <= 120 || (r <= 300 && pollN % 3 === 0) || pollN % 10 === 0) pmFetchBook();
+  if (r <= 20 || r >= ROUND - 12 || (r <= 180 && pollN % 2 === 0) || pollN % 10 === 5) pmFetchSeries();
+  const needTarget = !Number.isFinite(R.target) || R.targetSrc === 'est';
+  if ((needTarget && pollN % 6 === 3) || pollN % 30 === 3) { if (needTarget || R.targetSrc === 'series') pmFetchMarket(); const prevSlug = SLUG(R.T0 - ROUND); const prev = history.find(h => SLUG(h.T0) === prevSlug); if (prev && prev.settleSrc !== 'api') pmFetchMarket(prevSlug); }
 }, 1000);
 let frame = 0;
 function tick() {
   const E = evaluate();
-  if (Number.isFinite(E.spot)) { liveRecordCheck(E.sec); paperStep(E); dictate(E); renderRadar(E); renderHeader(E); renderPaper(E); if (frame % 3 === 0) { renderFeed(E); renderPlays(E); renderBuyIn(E); renderMine(E); renderPosLine(E); renderNext(E); renderReach(E); renderWarn(E); } if (frame % 2 === 0) drawChart(E); }
-  else { renderHeader(E); dictate(E); renderRadar(E); if (frame % 4 === 0) { renderWarn(E); renderPosLine(E); } }
+  if (Number.isFinite(E.spot)) { liveRecordCheck(E.sec); paperStep(E); dictate(E); renderHeader(E); if (frame % 3 === 0) { renderPosLine(E); renderNumbers(E); renderWarn(E); } if (frame % 2 === 0) drawChart(E); }
+  else { renderHeader(E); dictate(E); if (frame % 4 === 0) { renderWarn(E); renderPosLine(E); renderNumbers(E); } }
   frame++;
 }
 setInterval(tick, 250);

@@ -30,7 +30,8 @@ const push = (sec, v) => run(`secs.set(${sec}, ${v}); if (${sec} < firstSec) fir
 for (; t < T0; t++) { px += 8 * gauss(); push(t, px); }
 run(`REC.up = [0, .0025, .0035, .0042, .0048, .0053, .0058, .0062, .0066, .007, .0074, .0077, .008, .0083, .0086, .009]; REC.dn = REC.up.map(x => x * 1.05);`);
 let frames = 0, errors = 0, verdicts = {};
-const stages = ['evaluate()', 'liveRecordCheck(lastEval.sec)', 'paperStep(lastEval)', 'dictate(lastEval)', 'renderHeader(lastEval)', 'renderPaper(lastEval)', 'renderFeed(lastEval)', 'renderPlays(lastEval)', 'renderBuyIn(lastEval)', 'renderMine(lastEval)', 'renderNext(lastEval)', 'renderReach(lastEval)', 'renderWarn(lastEval)', 'drawChart(lastEval)', 'settleFromSeries()', 'renderPast()'];
+const longDec = {};
+const stages = ['evaluate()', 'liveRecordCheck(lastEval.sec)', 'paperStep(lastEval)', 'dictate(lastEval)', 'renderHeader(lastEval)', 'renderPosLine(lastEval)', 'renderNumbers(lastEval)', 'renderWarn(lastEval)', 'drawChart(lastEval)', 'settleFromSeries()', 'renderPast()'];
 for (let round = 0; round < 4; round++) {
   const Ts = T0 + round * 900;
   if (round === 1) run('REC.ready = true; REC.at = Date.now(); REC.bad = { n: 7000, at: 0, med: .0004, up: [.0008, .0011, .0018, .0022, .003], dn: [.00085, .0012, .0019, .0023, .0032] };');
@@ -49,6 +50,7 @@ for (let round = 0; round < 4; round++) {
       for (const st of stages) { try { run(st); } catch (e) { errors++; if (errors <= 8) console.log('ERR at round', round, 's', s, st, '->', e.message); } }
       frames++;
       const v = els['do-head'].textContent.split(' ')[0] + '|' + els['do-label'].textContent; verdicts[v] = (verdicts[v] || 0) + 1;
+      for (const id in els) { const m = (els[id].textContent || '').match(/\d+\.\d{3,}/); if (m && !longDec[id]) { longDec[id] = m[0]; errors++; console.log('LONG DECIMAL in #' + id + ':', els[id].textContent.slice(0, 80)); } }   // a raw float in the UI is a bug
     }
   }
   console.log('round', round, 'done; history', run('history.length'), 'lockStats', JSON.stringify(run('lockStats')), 'paper', JSON.stringify(run('({side: paper.side, total: +paper.totalPnl.toFixed(2), note: paper.note})')));
