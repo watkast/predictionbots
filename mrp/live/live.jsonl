@@ -76,3 +76,13 @@
 {"t":1793613600595,"k":"ws","d":{"open":"cpc-btc-updown-15m-2026-11-02-1000z"}}
 {"t":1793613614553,"k":"tick","d":{"r":886,"key":"chop","fav":"DOWN","p":0.5452062551617298,"book":{"upAsk":0.48,"upBid":0.47,"upAskQty":963.51,"upBidQty":864.03},"pos":null}}
 {"t":1793613674678,"k":"tick","d":{"r":826,"key":"wait","fav":"DOWN","p":0.7342537847941694,"book":{"upAsk":0.3,"upBid":0.29,"upAskQty":939.5,"upBidQty":47},"pos":null}}
+{"t":1793613734706,"k":"tick","d":{"r":766,"key":"ef","fav":"DOWN","p":0.8344808165682926,"book":{"upAsk":0.18,"upBid":0.17,"upAskQty":22.76,"upBidQty":1017.51},"pos":null}}
+{"t":1793613794784,"k":"tick","d":{"r":706,"key":"ef","fav":"DOWN","p":0.848925406626347,"book":{"upAsk":0.17,"upBid":0.16,"upAskQty":1468.53,"upBidQty":105},"pos":null}}
+{"t":1793613854914,"k":"tick","d":{"r":645,"key":"wait","fav":"DOWN","p":0.8425844072155213,"book":{"upAsk":0.18,"upBid":0.17,"upAskQty":1460.5,"upBidQty":25},"pos":null}}
+{"t":1793613915014,"k":"tick","d":{"r":585,"key":"wait","fav":"DOWN","p":0.8734953821991718,"book":{"upAsk":0.14,"upBid":0.13,"upAskQty":1588.52,"upBidQty":2.96},"pos":null}}
+{"t":1793613975072,"k":"tick","d":{"r":525,"key":"wait","fav":"DOWN","p":0.8854108745870989,"book":{"upAsk":0.13,"upBid":0.12,"upAskQty":1327.25,"upBidQty":235},"pos":null}}
+{"t":1793614035139,"k":"tick","d":{"r":465,"key":"wait","fav":"DOWN","p":0.9539460740041648,"book":{"upAsk":0.06,"upBid":0.05,"upAskQty":1795.61,"upBidQty":155.01},"pos":null}}
+{"t":1793614095254,"k":"tick","d":{"r":405,"key":"ready","fav":"DOWN","p":0.9717691086880768,"book":{"upAsk":0.04,"upBid":0.03,"upAskQty":219,"upBidQty":1840.51},"pos":null}}
+{"t":1793614155346,"k":"tick","d":{"r":345,"key":"ready","fav":"DOWN","p":0.9811442422267305,"book":{"upAsk":0.03,"upBid":0.02,"upAskQty":593.88,"upBidQty":1707.98},"pos":null}}
+{"t":1793614215408,"k":"tick","d":{"r":285,"key":"wait","fav":"DOWN","p":0.8931680242467409,"book":{"upAsk":0.12,"upBid":0.11,"upAskQty":1388.75,"upBidQty":4.04},"pos":null}}
+{"t":1793614275532,"k":"tick","d":{"r":225,"key":"ready","fav":"DOWN","p":0.952613688186705,"book":{"upAsk":0.05,"upBid":0.04,"upAskQty":1502.5,"upBidQty":205.76},"pos":null}}
