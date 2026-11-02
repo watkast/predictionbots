@@ -1,78 +1,78 @@
 # Mr. P — sports radar
 
-Updated 2026-11-02T06:37:41Z by `run-20261102T0150-41370273713` (last 7 days). Read-only scanner of every sports market on Polymarket US and Kalshi — it never places orders.
+Updated 2026-11-02T06:48:35Z by `run-20261102T0150-41370273713` (last 7 days). Read-only scanner of every sports market on Polymarket US and Kalshi — it never places orders.
 Kit: `mrp/mrp_sports_radar.py` on the `mrp` branch. Raw tape: `mrp/radar/<run>/`.
 
 # Sports radar report
 
-records 4,651,651 | 2026-10-30 06:37Z → 06:36Z | runs 18 | pairs matched 1463 | errors {'radar': 19, 'sp.k.series_poll:KXATPEXACTMATCH': 10, 'sp.k.series_poll:KXATPMATCH': 10, 'sp.k.series_poll:KXATPSETWINNER': 10, 'sp.k.series_poll:KXAUTBUNDESTOTAL': 4, 'sp.k.series_poll:KXEFLL11H': 6, 'sp.k.series_poll:KXEFLL11HSPREAD': 10, 'sp.k.series_poll:KXHNLTOTAL': 6, 'sp.k.series_poll:KXLALIGABTTS': 9, 'sp.k.series_poll:KXLALIGASCORE': 6, 'sp.k.series_poll:KXLALIGASPREAD': 8, 'sp.k.always:KXNFLGAME': 7, 'sp.k.series_poll:KXATPCHALLENGERMATCH': 7, 'sp.k.series_poll:KXEFLL11HBTTS': 10, 'sp.k.series_poll:KXLALIGA2H': 6, 'sp.k.series_poll:KXCS2MAP': 6, 'sp.k.series_poll:KXEFLL11HTOTAL': 8, 'sp.k.series_poll:KXLALIGA2HBTTS': 8, 'sp.k.series_poll:KXLALIGA2HSPREAD': 6, 'sp.k.series_poll:KXLALIGA2HTOTAL': 4, 'sp.k.series_poll:KXLALIGACORNERS': 8, 'sp.k.series_poll:KXLALIGAGAME': 6, 'sp.k.series_poll:KXLALIGAGOAL': 6, 'sp.k.series_poll:KXAUTBUNDESGAME': 2, 'sp.k.series_poll:KXCZEFLTOTAL': 7, 'sp.k.series_poll:KXELITESERIENTOTAL': 2, 'sp.k.series_poll:KXEREDIVISIETOTAL': 2, 'sp.k.always:KXNCAAFGAME': 7, 'sp.k.series_poll:KXLIGUE11HBTTS': 3, 'sp.k.series_poll:KXLIGUE11HSCORE': 4, 'sp.k.series_poll:KXLIGUE11H': 4, 'sp.k.series_poll:KXLIGUE11HSPREAD': 1}
+records 4,652,136 | 2026-10-30 06:47Z → 06:47Z | runs 18 | pairs matched 1463 | errors {'radar': 19, 'sp.k.series_poll:KXATPEXACTMATCH': 10, 'sp.k.series_poll:KXATPMATCH': 10, 'sp.k.series_poll:KXATPSETWINNER': 10, 'sp.k.series_poll:KXAUTBUNDESTOTAL': 4, 'sp.k.series_poll:KXEFLL11H': 6, 'sp.k.series_poll:KXEFLL11HSPREAD': 10, 'sp.k.series_poll:KXHNLTOTAL': 6, 'sp.k.series_poll:KXLALIGABTTS': 9, 'sp.k.series_poll:KXLALIGASCORE': 6, 'sp.k.series_poll:KXLALIGASPREAD': 8, 'sp.k.always:KXNFLGAME': 7, 'sp.k.series_poll:KXATPCHALLENGERMATCH': 7, 'sp.k.series_poll:KXEFLL11HBTTS': 10, 'sp.k.series_poll:KXLALIGA2H': 6, 'sp.k.series_poll:KXCS2MAP': 6, 'sp.k.series_poll:KXEFLL11HTOTAL': 8, 'sp.k.series_poll:KXLALIGA2HBTTS': 8, 'sp.k.series_poll:KXLALIGA2HSPREAD': 6, 'sp.k.series_poll:KXLALIGA2HTOTAL': 4, 'sp.k.series_poll:KXLALIGACORNERS': 8, 'sp.k.series_poll:KXLALIGAGAME': 6, 'sp.k.series_poll:KXLALIGAGOAL': 6, 'sp.k.series_poll:KXAUTBUNDESGAME': 2, 'sp.k.series_poll:KXCZEFLTOTAL': 7, 'sp.k.series_poll:KXELITESERIENTOTAL': 2, 'sp.k.series_poll:KXEREDIVISIETOTAL': 2, 'sp.k.always:KXNCAAFGAME': 7, 'sp.k.series_poll:KXLIGUE11HBTTS': 3, 'sp.k.series_poll:KXLIGUE11HSCORE': 4, 'sp.k.series_poll:KXLIGUE11H': 4, 'sp.k.series_poll:KXLIGUE11HSPREAD': 1}
 
-## Catalogue (latest inventory, 03:44Z)
+## Catalogue (latest inventory, 06:42Z)
 
-Polymarket US sports events 4527 of 6021 active events; Kalshi near-term sports markets 1405 in 412 events; calls so far {'pm': 44, 'k': 563}; MB {'pm': 159509641, 'k': 92539030}
+Polymarket US sports events 4516 of 6010 active events; Kalshi near-term sports markets 649 in 316 events; calls so far {'pm': 3405, 'k': 12404}; MB {'pm': 3027216927, 'k': 4856611790}
 
 | venue | sport / league / type | markets | two-sided | med spread | vol 24h |
 |---|---|---|---|---|---|
-| pm | football / nfl / futures | 4102 | 63% | 0.010 | 0 |
+| pm | football / nfl / futures | 3782 | 68% | 0.010 | 0 |
 | pm | football / cfb / futures | 1598 | 80% | 0.010 | 0 |
-| pm | basketball / nba / futures | 1422 | 59% | 0.020 | 0 |
-| pm | ice-hockey / nhl / futures | 779 | 98% | 0.010 | 0 |
-| pm | basketball / wcbb / basketball_team_full_game_winner | 652 | 33% | 0.430 | 0 |
-| pm | basketball / cbb / basketball_team_full_game_winner | 635 | 27% | 0.030 | 0 |
-| k | KXNCAAFGAME / College Football Game | 506 | 100% | 0.100 | 737710 |
+| pm | basketball / nba / futures | 1380 | 61% | 0.010 | 0 |
+| pm | ice-hockey / nhl / futures | 779 | 97% | 0.010 | 0 |
+| pm | basketball / wcbb / basketball_team_full_game_winner | 675 | 32% | 0.415 | 0 |
+| pm | basketball / cbb / basketball_team_full_game_winner | 657 | 27% | 0.030 | 0 |
+| k | KXNCAAFGAME / College Football Game | 506 | 100% | 0.110 | 767339 |
 | pm | golf / worlwide / futures | 469 | 0% | 0.480 | 0 |
 | pm | soccer / epl / futures | 435 | 86% | 0.010 | 0 |
 | pm | basketball / cbb / futures | 317 | 85% | 0.010 | 0 |
-| pm | tennis / utr / tennis_match_winner | 286 | 20% | 0.430 | 0 |
-| pm | soccer / ucl / futures | 276 | 77% | 0.010 | 0 |
-| pm | table-tennis / setkameua / table_tennis_match_winner | 272 | 80% | 0.170 | 0 |
+| pm | tennis / utr / tennis_match_winner | 285 | 21% | 0.420 | 0 |
+| pm | soccer / ucl / futures | 276 | 78% | 0.010 | 0 |
 | pm | baseball / mlb / futures | 264 | 26% | 0.001 | 0 |
-| pm | football / cfb / football_team_full_game_winner | 211 | 86% | 0.083 | 0 |
-| pm | tennis / itfme / tennis_match_winner | 204 | 50% | 0.010 | 0 |
+| pm | table-tennis / setkameua / table_tennis_match_winner | 259 | 76% | 0.170 | 0 |
+| pm | football / cfb / football_team_full_game_winner | 211 | 84% | 0.100 | 0 |
+| pm | tennis / itfme / tennis_match_winner | 197 | 78% | 0.010 | 0 |
 | pm | macro /  / futures | 150 | 75% | 0.010 | 0 |
 | pm | soccer / lal / futures | 146 | 66% | 0.010 | 0 |
 | pm | boxing / boxing / futures | 145 | 0% | - | 0 |
-| pm | tennis / itfwo / tennis_match_winner | 143 | 81% | 0.010 | 0 |
 | pm | mma / ufc / futures | 142 | 82% | 0.010 | 0 |
-| pm | tennis / atp / tennis_match_winner | 120 | 82% | 0.010 | 0 |
+| pm | tennis / itfwo / tennis_match_winner | 132 | 88% | 0.010 | 0 |
+| pm | tennis / atp / tennis_match_winner | 116 | 85% | 0.010 | 0 |
+| pm | basketball / nba / basketball_team_full_game_winner | 113 | 71% | 0.270 | 0 |
 | pm | tennis / atp / futures | 107 | 40% | 0.010 | 0 |
-| pm | basketball / nba / basketball_team_full_game_winner | 107 | 71% | 0.270 | 0 |
-| pm | soccer / sea / futures | 86 | 81% | 0.010 | 0 |
+| pm | soccer / sea / futures | 86 | 83% | 0.010 | 0 |
 | pm | tennis / wta / futures | 79 | 42% | 0.010 | 0 |
 | pm | soccer / bun / futures | 79 | 82% | 0.010 | 0 |
-| pm | soccer / lg1 / futures | 77 | 83% | 0.010 | 0 |
-| pm | tennis / wta / tennis_match_winner | 63 | 78% | 0.010 | 0 |
+| pm | soccer / lg1 / futures | 77 | 84% | 0.010 | 0 |
+| pm | tennis / wta / tennis_match_winner | 63 | 86% | 0.010 | 0 |
 | pm | soccer / j2 / soccer_team_full_time_winner | 60 | 67% | 0.030 | 0 |
-| pm | tennis / atpdb / tennis_match_winner | 60 | 43% | 0.415 | 0 |
-| pm | table-tennis / czechligapro / table_tennis_match_winner | 58 | 14% | 0.385 | 0 |
+| pm | tennis / atpdb / tennis_match_winner | 59 | 47% | 0.380 | 0 |
 | pm | soccer / uecl / soccer_team_full_time_winner | 55 | 98% | 0.030 | 0 |
 | pm | soccer / ucl / soccer_team_full_time_winner | 54 | 100% | 0.010 | 0 |
 | pm | soccer / uel / soccer_team_full_time_winner | 54 | 100% | 0.020 | 0 |
+| pm | table-tennis / czechligapro / table_tennis_match_winner | 54 | 9% | 0.240 | 0 |
 | pm | soccer / mls / futures | 53 | 91% | 0.010 | 0 |
 | pm | golf / masttour / futures | 52 | 100% | 0.499 | 0 |
-| pm | soccer / acle / soccer_team_full_time_winner | 48 | 65% | 0.020 | 0 |
-| pm | table-tennis / setkamecz / table_tennis_match_winner | 48 | 96% | 0.170 | 0 |
+| pm | soccer / acle / soccer_team_full_time_winner | 48 | 69% | 0.030 | 0 |
+| pm | table-tennis / setkamecz / table_tennis_match_winner | 47 | 100% | 0.160 | 0 |
 | pm | technology /  / futures | 42 | 74% | 0.010 | 0 |
-| pm | motorsports / f1 / futures | 38 | 34% | 0.011 | 0 |
-| pm | soccer / lmx / futures | 36 | 19% | 0.060 | 0 |
+| pm | motorsports / f1 / futures | 38 | 34% | 0.010 | 0 |
+| pm | soccer / lmx / futures | 36 | 28% | 0.045 | 0 |
 | pm | soccer / uel / futures | 36 | 3% | 0.160 | 0 |
 | pm | soccer / uecl / futures | 36 | 0% | - | 0 |
 | pm | soccer / sea / soccer_team_full_time_winner | 36 | 100% | 0.010 | 0 |
-| pm | soccer / ekst / soccer_team_full_time_winner | 36 | 61% | 0.055 | 0 |
-| pm | soccer / serca / soccer_team_full_time_winner | 36 | 44% | 0.480 | 0 |
+| pm | soccer / ekst / soccer_team_full_time_winner | 36 | 61% | 0.060 | 0 |
+| pm | soccer / serca / soccer_team_full_time_winner | 36 | 44% | 0.475 | 0 |
 | pm | soccer / eflch / soccer_team_full_time_winner | 36 | 100% | 0.020 | 0 |
-| pm | esports / ebattlesefcwc / efootball_team_full_time_winner | 36 | 89% | 0.010 | 0 |
-| pm | table-tennis / setkamemd / table_tennis_match_winner | 36 | 6% | 0.350 | 0 |
-| k | KXNFLGAME / NFL Game | 34 | 100% | 0.010 | 29185779 |
+| pm | esports / ebattlesefwca / efootball_team_full_time_winner | 36 | 75% | 0.010 | 0 |
+| pm | table-tennis / setkamemd / table_tennis_match_winner | 36 | 8% | 0.300 | 0 |
 | pm | soccer / lal / soccer_team_full_time_winner | 33 | 100% | 0.010 | 0 |
 | pm | soccer / epl / soccer_team_full_time_winner | 33 | 100% | 0.010 | 0 |
-| pm | soccer / ligpor / soccer_team_full_time_winner | 33 | 82% | 0.050 | 0 |
+| pm | soccer / ligpor / soccer_team_full_time_winner | 33 | 85% | 0.050 | 0 |
 | pm | soccer / tff1 / soccer_team_full_time_winner | 33 | 39% | 0.480 | 0 |
-| pm | soccer / alsv / soccer_team_full_time_winner | 33 | 64% | 0.050 | 0 |
-| pm | ice-hockey / nhl / hockey_team_full_game_winner | 31 | 97% | 0.010 | 0 |
-| pm | football / nfl / football_team_full_game_winner | 30 | 67% | 0.005 | 0 |
+| pm | soccer / alsv / soccer_team_full_time_winner | 33 | 70% | 0.050 | 0 |
+| pm | ice-hockey / nhl / hockey_team_full_game_winner | 33 | 100% | 0.010 | 0 |
+| k | KXNFLGAME / NFL Game | 32 | 100% | 0.010 | 1714890 |
 | pm | soccer / lg1 / soccer_team_full_time_winner | 30 | 100% | 0.020 | 0 |
 | pm | soccer / ecu1 / soccer_team_full_time_winner | 30 | 47% | 0.460 | 0 |
+| pm | soccer / swe2 / soccer_team_full_time_winner | 30 | 53% | 0.065 | 0 |
 
 ## Opportunities
 
@@ -85,7 +85,7 @@ Polymarket US sports events 4527 of 6021 active events; Kalshi near-term sports 
 | dutch_k_sell | 3 | 6 | 0.0107 | 0 min | 0/0 |
 | dutch_pm | 64 | 3143 | 0.5316 | 50 min | 0/0 |
 | implication_k | 6796 | 400267 | 0.9786 | 110 min | 0/0 |
-| lag_k_settled | 196 | 34865 | 0.9973 | 273 min | 29265/33844 |
+| lag_k_settled | 196 | 35083 | 0.9973 | 273 min | 29483/34062 |
 | lag_k_settled_closed | 164 | 2568 | 0.9973 | 272 min | 0/2568 |
 
 Top by persistence × hits:
@@ -305,7 +305,7 @@ Kalshi: settlement_ts − close_time per series (negative = settled before the s
 | series | n | median | p90 |
 |---|---|---|---|
 | KXNFLPASSYDSPRECISE Pass Yards Precise | 12485 | 4.0 min | 4.1 min |
-| KXESOCCERGAME eSoccer Game | 3991 | 4.0 min | 4.1 min |
+| KXESOCCERGAME eSoccer Game | 3997 | 4.0 min | 4.1 min |
 | KXNCAAFSPREAD College Football Spread | 2311 | 4.0 min | 4.1 min |
 | KXNCAAFTOTAL College Football Total Points | 1680 | 4.0 min | 4.1 min |
 | KXNFLTOTALPRECISE Total Precise | 1248 | 4.0 min | 4.1 min |
@@ -351,33 +351,33 @@ change% = share of scan cycles (60 s) where the best quote moved; react = median
 
 | venue | sport | markets | snapshots | two-sided | med spread | change% | react (min) | round sizes | med size |
 |---|---|---|---|---|---|---|---|---|---|
-| pm | soccer | 1836 | 277440 | 87% | 0.020 | 19% | 0.5 (n=4376) | - | - |
-| pm | tennis | 1525 | 113924 | 92% | 0.010 | 24% | 0.5 (n=58364) | - | - |
-| pm | esports | 3340 | 88248 | 76% | 0.030 | 19% | 0.5 (n=18598) | - | - |
-| pm | table-tennis | 1579 | 60426 | 95% | 0.030 | 31% | 0.5 (n=30292) | - | - |
-| pm | basketball | 728 | 57979 | 83% | 0.046 | 25% | 0.5 (n=10476) | - | - |
+| pm | soccer | 1836 | 277431 | 87% | 0.020 | 19% | 0.5 (n=4376) | - | - |
+| pm | tennis | 1523 | 113779 | 92% | 0.010 | 24% | 0.5 (n=58264) | - | - |
+| pm | esports | 3332 | 88207 | 76% | 0.030 | 19% | 0.5 (n=18576) | - | - |
+| pm | table-tennis | 1580 | 60348 | 95% | 0.030 | 31% | 0.5 (n=30248) | - | - |
+| pm | basketball | 729 | 57965 | 83% | 0.047 | 25% | 0.5 (n=10454) | - | - |
 | pm | football | 120 | 22439 | 91% | 0.005 | 17% | 1.1 (n=1098) | - | - |
 | pm | climate | 215 | 10957 | 75% | 0.050 | 22% | - (n=0) | - | - |
-| pm | ice-hockey | 91 | 9719 | 84% | 0.070 | 15% | 0.7 (n=523) | - | - |
+| pm | ice-hockey | 91 | 9712 | 84% | 0.070 | 15% | 0.7 (n=523) | - | - |
 | pm | motorsports | 159 | 8546 | 40% | 0.040 | 14% | - (n=0) | - | - |
 | pm | misc | 47 | 3778 | 93% | 0.010 | 12% | - (n=0) | - | - |
-| pm | cricket | 9 | 3618 | 94% | 0.030 | 11% | 1.0 (n=543) | - | - |
-| pm | beach-volleyball | 72 | 3062 | 86% | 0.010 | 24% | 0.5 (n=1674) | - | - |
-| pm | golf | 159 | 1613 | 2% | 0.175 | 2% | - (n=0) | - | - |
-| pm | darts | 32 | 981 | 92% | 0.080 | 28% | 0.5 (n=125) | - | - |
+| pm | cricket | 9 | 3595 | 94% | 0.030 | 11% | 1.0 (n=540) | - | - |
+| pm | beach-volleyball | 72 | 3062 | 86% | 0.010 | 24% | 0.5 (n=1663) | - | - |
+| pm | golf | 159 | 1560 | 2% | 0.176 | 2% | - (n=0) | - | - |
+| pm | darts | 32 | 969 | 91% | 0.080 | 28% | 0.5 (n=125) | - | - |
 | pm | mma | 14 | 759 | 95% | 0.020 | 4% | - (n=0) | - | - |
 | pm | baseball | 2 | 389 | 95% | 0.060 | 22% | 0.5 (n=11) | - | - |
 | pm | rugby | 20 | 359 | 73% | 0.450 | 23% | - (n=0) | - | - |
 | pm | macro | 78 | 254 | 0% | - | 0% | - (n=0) | - | - |
 | pm | boxing | 4 | 165 | 95% | 0.030 | 56% | - (n=0) | - | - |
 | pm | pickleball | 13 | 115 | 66% | 0.270 | 11% | - (n=0) | - | - |
-| k | KXNCAAFGAME College Football Game | 720 | 650235 | 98% | 0.030 | 1% | - | 8% | 85 |
+| k | KXNCAAFGAME College Football Game | 720 | 650581 | 98% | 0.030 | 1% | - | 8% | 84 |
 | k | KXNFLPASSYDSPRECISE Pass Yards Precise | 15652 | 185544 | 0% | 0.390 | 0% | - | 0% | 1 |
 | k | KXNBA3PT NBA Player Threes | 1533 | 145496 | 82% | 0.080 | 13% | - | 24% | 31 |
-| k | KXNFLGAME NFL Game | 56 | 138463 | 99% | 0.010 | 2% | - | 3% | 113365 |
-| k | KXCS2MAP Counter-Strike 2 Map Win | 480 | 107883 | 93% | 0.480 | 5% | - | 19% | 101 |
+| k | KXNFLGAME NFL Game | 56 | 138349 | 99% | 0.010 | 2% | - | 3% | 113618 |
+| k | KXCS2MAP Counter-Strike 2 Map Win | 480 | 107879 | 93% | 0.480 | 5% | - | 19% | 101 |
 | k | KXNBAAST NBA Player Assists | 1138 | 79111 | 84% | 0.070 | 12% | - | 25% | 27 |
-| k | KXESOCCERGAME eSoccer Game | 4356 | 69541 | 24% | 0.480 | 6% | - | 26% | 35 |
+| k | KXESOCCERGAME eSoccer Game | 4350 | 69541 | 24% | 0.480 | 6% | - | 26% | 35 |
 | k | KXNBAPTS NBA Player Points | 1296 | 69307 | 81% | 0.050 | 14% | - | 23% | 42 |
 | k | KXNBAREB NBA Player Rebounds | 1432 | 64431 | 78% | 0.080 | 16% | - | 22% | 36 |
 | k | KXNBA3PTPROT NBA Player Threes Protec | 1484 | 58105 | 35% | 0.150 | 2% | - | 19% | 105 |
@@ -395,9 +395,9 @@ change% = share of scan cycles (60 s) where the best quote moved; react = median
 | k | KXLIGAMXSCORE Correct Score | 270 | 25148 | 54% | 0.020 | 3% | - | 13% | 800 |
 | k | KXNBA2HSPREAD NBA 2nd Half Spread | 646 | 25109 | 71% | 0.130 | 20% | - | 28% | 123 |
 | k | KXNBAREBPROT NBA Player Rebounds Prot | 1380 | 24326 | 25% | 0.530 | 4% | - | 17% | 33 |
-| k | KXATPCHALLENGERMATCH Challenger ATP  | 280 | 24129 | 89% | 0.010 | 8% | - | 5% | 564 |
+| k | KXATPCHALLENGERMATCH Challenger ATP  | 280 | 24121 | 89% | 0.010 | 8% | - | 5% | 564 |
 | k | KXNBA2HTOTAL NBA 2nd Half Total | 646 | 23655 | 73% | 0.160 | 20% | - | 25% | 101 |
-| k | KXWTASETWINNER WTA Set Winner | 266 | 23430 | 73% | 0.040 | 4% | - | 26% | 110 |
+| k | KXWTASETWINNER WTA Set Winner | 266 | 23335 | 73% | 0.040 | 4% | - | 26% | 110 |
 | k | KXNCAAF1HSPREAD College Football 1st Hal | 1062 | 23323 | 42% | 0.020 | 8% | - | 30% | 344 |
 | k | KXNFLTOTALPRECISE Total Precise | 1976 | 22799 | 4% | 0.060 | 2% | - | 21% | 2 |
 | k | KXNFLRECYDSPROT Receiving Yards Protecte | 1626 | 19862 | 11% | 0.740 | 5% | - | 15% | 19 |
