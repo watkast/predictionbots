@@ -18,3 +18,8 @@
 {"t":1793628005231,"k":"rest","d":{"slug":"cpceth-eth-updown-15m-2026-11-02-1400z","side":"UP","at":0.25,"id":"DFNJYEKG12WQ"}}
 {"t":1793628005359,"k":"rest","d":{"slug":"cpceth-eth-updown-15m-2026-11-02-1400z","side":"DOWN","at":0.25,"id":"DFNJYFKG12VX"}}
 {"t":1793628029674,"k":"settle","d":{"slug":"cpceth-eth-updown-15m-2026-11-02-1345z","result":"DOWN","side":"UP","pnl":-0.25}}
+{"t":1793628368223,"k":"fill","d":{"slug":"cpceth-eth-updown-15m-2026-11-02-1400z","side":"DOWN","px":0.25,"qty":1}}
+{"t":1793628368517,"k":"rest","d":{"slug":"cpceth-eth-updown-15m-2026-11-02-1400z","side":"DOWN","sellAt":0.3,"id":"DFNNQ4S012WA"}}
+{"t":1793628679630,"k":"fill","d":{"slug":"cpceth-eth-updown-15m-2026-11-02-1400z","side":"DOWN","sold":0.30000000000000004,"pnl":0.05}}
+{"t":1793628905148,"k":"rest","d":{"slug":"cpceth-eth-updown-15m-2026-11-02-1415z","side":"UP","at":0.25,"id":"DFNST50G12TT"}}
+{"t":1793628905250,"k":"rest","d":{"slug":"cpceth-eth-updown-15m-2026-11-02-1415z","side":"DOWN","at":0.25,"id":"DFNST60G12W4"}}
