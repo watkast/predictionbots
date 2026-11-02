@@ -78,8 +78,11 @@ and at the bottom **NUMBERS**: every metric in one grid, the field name above it
 Under the trade row an **action timer** runs from the moment a BUY / SELL appears: MAX ODDS for your sell latency (8 s), TAKE ACTION until 15 s, then LATE (buys restart on a new price; sells run on through SELL → SELL NOW). Every box keeps its height while the numbers update. Shipped entry/exit defaults come from the replay grid (fitted on
 Oct 29–30, held up on Oct 31–Nov 2): buy a side only when the ask leaves ≥ 8¢ after fee vs its calibrated chance, favorite
 only, between 14:00 and 5:00 left; harvest-sell only inside the last 5:00 when the bid beats the math by ≥ 5¢; SELL (not
-SELL NOW) must stay true for 2 s before it shows. Over all 224 recorded rounds at $20 a trade: +$922, 0 settlement
-losses, worst round −$18, positive on every day (+$1,721 with the stake scaled by the edge, worst −$36).
+SELL NOW) must stay true for 2 s before it shows; SELL NOW means something only inside the last 2:00 (where the kill line
+is real) or on a collapse under 25% — earlier, a discount buy near the target wobbling across 50% is HOLD, not a loss
+(that change took the replay from +$922 to +$1,064 and cut sells-within-30-s-of-the-buy from 38 to 3); and one discount
+trade a round, which is what the persona did — re-entering the other side after a sell is a coin flip bought twice. Over
+all 224 recorded rounds at $20 a trade: **+$1,064, 0 settlement losses, worst round −$19**, positive on every day.
 **Replay (2026-11-01):** `scripts/pm15_human_sim.js` runs the page unmodified against recorded rounds and simulates a human
 trading only on DO NEXT; `research/replay/pm15_human_sim_2026-11-01.md` has the results over 224 rounds — LOCKED held
 224/224 but is never buyable (first lock at a median 8 s left, no asks), the odds are calibrated after a ×1.3 volatility
