@@ -1,7 +1,7 @@
 # Mr. P — live progress
 
-Mode **live** · capital cap **$20** · started Nov 2, 4:00 AM ET · updated Nov 2, 5:41 AM ET
-Account: $23.79 at start → $18.12 now
+Mode **live** · capital cap **$2** · started Nov 2, 4:00 AM ET · updated Nov 2, 6:03 AM ET
+Account balance: $23.79 at start → $18.12 now · buying power $18.12 (the difference is cash held by open orders or positions, the bot's or yours)
 
 **Trades 1 closed (1 opened) · wins 0 · P&L from fills −$3.82** · strict commands seen 6 · skips {"index series stale":1} · errors 0
 Open: none

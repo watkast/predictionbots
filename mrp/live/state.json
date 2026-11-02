@@ -30,5 +30,6 @@
  "balanceNow": 18.1232,
  "pos": null,
  "order": null,
- "shortConv": null
+ "shortConv": null,
+ "cashNow": 18.1232
 }
