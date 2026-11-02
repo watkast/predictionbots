@@ -36,15 +36,34 @@ publish() {
   )
 }
 
+# the live tail for the cockpit's terminal view: tail.jsonl force-pushed as a single-commit branch whenever it changes (≤ every 15 s),
+# in its own worktree and process — nothing here touches the bot
+TAILWT="$GITHUB_WORKSPACE/../tailwt"; TAIL_BRANCH="${MRP_TAIL_BRANCH:-mrp-live-tail}"
+git worktree add -q --orphan -b "$TAIL_BRANCH" "$TAILWT" 2>/dev/null || true
+tail_loop() {
+  local last=""
+  while true; do
+    sleep 15
+    [ -f "$MRP_LIVE_DIR/tail.jsonl" ] || continue
+    local sum; sum=$(md5sum "$MRP_LIVE_DIR/tail.jsonl" | cut -c1-32)
+    [ "$sum" = "$last" ] && continue
+    ( cd "$TAILWT" && cp "$MRP_LIVE_DIR/tail.jsonl" tail.jsonl && git add tail.jsonl && git commit -q --amend -m "live tail" 2>/dev/null || git commit -q -m "live tail" ) >/dev/null 2>&1 || continue
+    ( cd "$TAILWT" && git push -q --force origin "HEAD:$TAIL_BRANCH" ) >/dev/null 2>&1 && last="$sum"
+  done
+}
+tail_loop &
+TAILER=$!
+
 FLAG=""; [ "$MODE" = "dry" ] && FLAG="--dry"
 MRP_LIVE_MINUTES="$MINUTES" node scripts/pm15_live.js research/pm15_copilot.html $FLAG &
 BOT=$!
-trap 'kill -TERM $BOT 2>/dev/null; wait $BOT; publish; exit 0' TERM INT
+trap 'kill -TERM $BOT 2>/dev/null; wait $BOT; kill $TAILER 2>/dev/null; publish; exit 0' TERM INT
 while kill -0 $BOT 2>/dev/null; do
   for i in $(seq 1 60); do kill -0 $BOT 2>/dev/null || break; sleep 10; done
   publish
 done
 wait $BOT; RC=$?
+kill $TAILER 2>/dev/null
 publish
 # chain the next run while mrp/LIVE_ON exists on main (and this run was not a crash loop: it lasted over 5 minutes)
 if [ "$MODE" = "live" ] && [ $(( $(date +%s) - START )) -gt 300 ] && git fetch -q origin main && git cat-file -e origin/main:mrp/LIVE_ON 2>/dev/null; then

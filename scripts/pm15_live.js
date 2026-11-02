@@ -27,7 +27,10 @@ fs.mkdirSync(DIR, { recursive: true });
 const logPath = path.join(DIR, 'live.jsonl'), statePath = path.join(DIR, 'state.json');
 let state = { startedAt: Date.now(), capital: CAP, mode: REPLAY ? 'replay' : DRY ? 'dry' : 'live', trades: [], cmds: 0, skips: {}, errors: 0, balanceStart: null, balanceNow: null, pos: null, order: null, shortConv: null };
 try { if (!REPLAY) { const prev = JSON.parse(fs.readFileSync(statePath, 'utf8')); if (prev.mode === state.mode) Object.assign(state, prev); } } catch (e) {}   // a dry run's counters never carry into a live run
-const log = (k, d) => { const rec = { t: now(), k, d }; fs.appendFileSync(logPath, JSON.stringify(rec) + '\n'); if (k !== 'tick') console.log(new Date(rec.t).toISOString(), k, JSON.stringify(d).slice(0, 300)); };
+const tail = []; let tailDirty = false, tailAt = 0;
+const tailPush = rec => { tail.push(rec); if (tail.length > 150) tail.shift(); tailDirty = true; };
+const flushTail = () => { if (!tailDirty || Date.now() - tailAt < 2000) return; tailDirty = false; tailAt = Date.now(); try { const tmp = path.join(DIR, 'tail.tmp'); fs.writeFileSync(tmp, tail.map(r => JSON.stringify(r)).join('\n') + '\n'); fs.renameSync(tmp, path.join(DIR, 'tail.jsonl')); } catch (e) {} };
+const log = (k, d) => { const rec = { t: now(), k, d }; fs.appendFileSync(logPath, JSON.stringify(rec) + '\n'); if (k !== 'tick') console.log(new Date(rec.t).toISOString(), k, JSON.stringify(d).slice(0, 300)); tailPush(rec); };
 const saveState = () => { try { fs.writeFileSync(statePath, JSON.stringify(state, null, 1)); } catch (e) {} };
 const skip = why => { state.skips[why] = (state.skips[why] || 0) + 1; log('skip', { why }); };
 
@@ -164,10 +167,11 @@ async function onBuy(cmd, E) {
   if (state.pos) return skip('already in a position');
   const bal = await ex.balances(); state.balanceNow = bal.total;
   const avail = Math.min(CAP, Number.isFinite(bal.cash) ? bal.cash : 0);
-  const px = cmd.px, qty = Math.floor(avail / (px + fee(px)));
+  const px = cmd.px, qty = Math.floor(avail / (px + fee(px)));   // sized at the LTE price so the cap holds even if the fill walks up to it
   if (qty < 1) return skip('no cash (' + avail.toFixed(2) + ')');
   if (cmd.side === 'DOWN' && !REPLAY && !DRY) { const conv = await detectShortConvention(slug, run('R.book')); if (!conv) return skip('DOWN convention unknown — UP only'); }
-  const o = { marketSlug: slug, intent: intentFor(cmd.side, 'buy'), type: 'ORDER_TYPE_LIMIT', price: money(pxFor(cmd.side, px)), quantity: qty, tif: 'TIME_IN_FORCE_GOOD_TILL_CANCEL' };
+  const payUpTo = Number.isFinite(cmd.ask) ? Math.min(px, cmd.ask + 0.01) : px;   // the ask plus a cent, never above the LTE price: no chasing a market that is running away
+  const o = { marketSlug: slug, intent: intentFor(cmd.side, 'buy'), type: 'ORDER_TYPE_LIMIT', price: money(pxFor(cmd.side, payUpTo)), quantity: qty, tif: 'TIME_IN_FORCE_GOOD_TILL_CANCEL' };
   log('order', { kind: 'buy', side: cmd.side, lim: px, ask: cmd.ask, qty, usd: +(qty * px).toFixed(2), edge: cmd.edge, p: cmd.p, left: Math.round(E.r), dry: DRY, o });
   if (DRY) return;
   let res; try { res = await ex.place(o); } catch (e) { state.errors++; return log('error', { place: e.message.slice(0, 400) }); }
@@ -263,7 +267,7 @@ async function liveMain() {
   if (!DRY) { try { await live.cancelAll(); } catch (e) {} }
   try { const b = await live.balances(); if (state.balanceStart == null) { state.balanceStart = b.total; state.cashStart = b.cash; } state.balanceNow = b.total; state.cashNow = b.cash; log('balance', { cash: b.cash, total: b.total }); } catch (e) { log('error', { balances: e.message.slice(0, 300) }); if (!DRY) { console.error('cannot read the account — stopping'); process.exit(2); } }
   const deadline = MINUTES ? Date.now() + MINUTES * 60000 : Infinity;
-  let lastReport = 0, lastRest = 0;
+  let lastReport = 0, lastRest = 0, lastSnap = 0;
   setInterval(() => { try { if (run('R.slug')) run('pmFetchSeries()'); } catch (e) {} }, 2000);   // the exact PM line every 2 s (direct gateway; the page's own 10-s cadence was built for the relay budget)
   const stop = async () => { log('stop', {}); try { if (!DRY) await live.cancelAll(); } catch (e) {} report(); saveState(); process.exit(0); };
   process.on('SIGTERM', stop); process.on('SIGINT', stop);
@@ -276,6 +280,9 @@ async function liveMain() {
       if (!state.pos && !busy && E.r > 0 && E.r % 30 < 0.3 && !DRY) { const p = await live.position(slug).catch(() => null); if (p && p.net > 0 && Number.isFinite(p.avgPx)) { state.pos = { slug, T0: run('R.T0'), side: 'UP', qty: p.net, px: p.avgPx, spent: +(p.net * p.avgPx).toFixed(2), at: Date.now(), left: Math.round(E.r) }; setPos({ T0: run('R.T0'), side: 'UP', price: p.avgPx, spent: state.pos.spent, shares: p.net }); log('adopt', state.pos); } }
       const st = run('strict'); if (st.cmd && st.since !== lastCmdSince) { lastCmdSince = st.since; onCommand(st.cmd, E); }
       await settleIfDone();
+      if (Date.now() - lastSnap > 10000) { lastSnap = Date.now(); const b = run('R.book') || {}; const fav = E.fav, favAsk = fav === 'UP' ? b.upAsk : (Number.isFinite(b.upBid) ? 1 - b.upBid : NaN);
+        tailPush({ t: Date.now(), k: 'snap', d: { slug, r: Math.round(E.r), key: run('verdict.key'), fav, p: E.pFavAdj, ask: favAsk, lim: E.buyIn ? E.buyIn.lim : NaN, bid: Number.isFinite(b.upBid) ? (fav === 'UP' ? b.upBid : 1 - b.upAsk) : NaN, pos: state.pos ? state.pos.side + ' ' + state.pos.qty + '@' + Math.round(state.pos.px * 100) : null, bookAge: +((Date.now() - run('R.bookAt')) / 1000).toFixed(1), pmAge: E.pmAge, cash: state.cashNow } }); }
+      flushTail();
       if (Date.now() - lastReport > 60000) { lastReport = Date.now(); if (!DRY) { try { const b = await live.balances(); state.balanceNow = b.total; state.cashNow = b.cash; } catch (e) {} } report(); saveState(); log('tick', { r: Math.round(E.r), key: run('verdict.key'), fav: E.fav, p: E.pFavAdj, book: run('R.book'), pos: state.pos && state.pos.side }); }
       if (Date.now() > deadline) stop();
     } catch (e) { state.errors++; log('error', { loop: e.message.slice(0, 300) }); }

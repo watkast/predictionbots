@@ -342,6 +342,7 @@ details.settings summary { cursor: pointer; font: 700 15px/1.4 var(--font-displa
       <label>SELL (harvest) when the bid beats holding by at least (¢ after fee)<input id="s-selledge" type="number" inputmode="decimal" min="0" max="20" step="1" value="5"></label>
       <label>…only inside the last (s left; 900 = any time)<input id="s-sellzone" type="number" inputmode="decimal" min="60" max="900" step="30" value="300"></label>
       <label>Show SELL only after it has been true for (s; SELL NOW is always immediate)<input id="s-sellpersist" type="number" inputmode="decimal" min="0" max="10" step="1" value="2"></label>
+      <label>BUY only after the discount has been there for (s) — a quote that just crashed is the market moving, not a mispricing<input id="s-buypersist" type="number" inputmode="decimal" min="0" max="10" step="1" value="2"></label>
       <label>Taker fee coefficient<input id="s-fee" type="number" inputmode="decimal" min="0" max="0.2" step="0.0005" value="0.0695"></label>
       <label>MOST LIKELY when touch odds GTE (%)<input id="s-reach-green" type="number" inputmode="decimal" min="1" max="99" step="1" value="50"></label>
       <label>EASILY when touch odds GTE (%) · below = UNLIKELY<input id="s-reach-yellow" type="number" inputmode="decimal" min="1" max="99" step="1" value="10"></label>
@@ -401,7 +402,7 @@ const T_BOOT = Date.now();
 // an origin that blocks outbound connections (the claude.ai artifact viewer): no Coinbase tick AND the relay failing, 15 s after load
 const sandboxed = () => Date.now() - T_BOOT > 12000 && !lastTickMs && (cbState === 'down' || IDX.fails >= 2 || IDX.ok === false) && location.href.indexOf(DEFAULT_RELAY) !== 0;
 const DEF = { stake: 20, lockP: 99.5, maxAsk: 97, drift: 0, fee: 0.0695, relay: DEFAULT_RELAY, offset: null, zoom: 'auto', sound: false, voice: false, recMargin: 1.5, reachGreen: 50, reachYellow: 10, paperOn: 'edge', edgeMin: 6, edgeScare: 15,
-  latency: 8, holdMinP: 75, etaWarnS: 30, badPct: 99, lookS: 30, slack: 3, killSecs: 45, efLo: 80, efHi: 94, holdConf: 99, exitBy: 45, sigK: 1.3, sellEdge: 5, buyMinLeft: 300, buyMaxLeft: 840, dogBuy: false, entryEdge: 8, sellZone: 300, sellPersist: 2, actWindow: 15 };   // entry/exit knobs = the replay grid (fitted Oct 29–30, held up Oct 31–Nov 2)
+  latency: 8, holdMinP: 75, etaWarnS: 30, badPct: 99, lookS: 30, slack: 3, killSecs: 45, efLo: 80, efHi: 94, holdConf: 99, exitBy: 45, sigK: 1.3, sellEdge: 5, buyMinLeft: 300, buyMaxLeft: 840, dogBuy: false, entryEdge: 8, sellZone: 300, sellPersist: 2, buyPersist: 2, actWindow: 15 };   // entry/exit knobs = the replay grid (fitted Oct 29–30, held up Oct 31–Nov 2)
 let S = Object.assign({}, DEF);
 try { Object.assign(S, JSON.parse(localStorage.getItem('pm15.settings') || '{}')); } catch (e) {}
 if (S.recMargin < 1) S.recMargin = DEF.recMargin;      // v1 allowed 0.5; a margin under 1 is not a margin
@@ -791,6 +792,7 @@ document.addEventListener('visibilitychange', () => { if (!document.hidden) { ba
 
 // ---------- the brain: one evaluation per frame ----------
 let lastEval = null;
+let entryRun = { side: null, since: 0 };
 function evaluate() {
   const nowMs = Date.now(), nowS = nowMs / 1000, sec = Math.floor(nowS);
   const T0 = Math.floor(nowS / ROUND) * ROUND; if (T0 !== R.T0) startRound(T0);
@@ -917,6 +919,10 @@ function evaluate() {
       const edge = (xi.locked ? 1 : xi.pAdj) - qq.ask - fee(qq.ask, S.fee);
       if (qq.ask <= lim + 1e-9 && (!E.entry || edge > E.entry.edge)) E.entry = { side: sd, ask: qq.ask, qty: qq.askQty, lim, edge, p: xi.pAdj, src: qq.src }; }
   }
+  // how long the discount has been there: a falling knife shows a discount for a second or two while the market runs ahead of
+  // the model; the entry needs buyPersist seconds of it (replay, quotes under 1 s old: +$285 → +$383 over 224 rounds)
+  if (E.entry) { if (entryRun.side !== E.entry.side) entryRun = { side: E.entry.side, since: nowMs }; E.entryAge = (nowMs - entryRun.since) / 1000; }
+  else { entryRun = { side: null, since: 0 }; E.entryAge = 0; }
   E.buyIn = Number.isFinite(pUp) && r > 0 ? { ask: askNow, src: qNow.src, askQty: qNow.askQty, winHold, scare: fav.scare, flip: 1 - fav.pAdj, edge: edgeNow, scary: fav.scare >= 0.25,
     grade: !Number.isFinite(edgeNow) ? '' : edgeNow >= 0.08 ? 'GREAT' : edgeNow >= 0.04 ? 'GOOD' : edgeNow >= 0.01 ? 'FAIR' : 'POOR',
     be: bePrice(0), good: bePrice(0.04), great: bePrice(0.08), lim: bePrice((S.entryEdge == null ? 8 : S.entryEdge) / 100), kelly: Number.isFinite(edgeNow) && edgeNow > 0 && askNow < 1 ? edgeNow / (1 - askNow) : 0 } : null;
@@ -1013,7 +1019,7 @@ function verdictKey(E) {
   if (fav.locked && Number.isFinite(ask)) return 'surecost';
   if (E.r <= (S.killSecs || 45)) return 'ending';
   if (R.traded) return 'done';                                            // one discount trade a round — the tested behaviour; a second entry after a sell is the whipsaw
-  if (E.entry && E.entry.qty >= 1 && E.r > lat + 2) return 'buy';          // a side offered at a discount to its calibrated chance (replay-tested entry)
+  if (E.entry && E.entry.qty >= 1 && E.r > lat + 2 && E.entryAge >= (S.buyPersist == null ? 2 : S.buyPersist)) return 'buy';   // a side offered at a discount to its calibrated chance, and still there after buyPersist s
   if (S.useEF !== false && efCheck && Number.isFinite(ask) && ask * 100 >= S.efLo && ask * 100 <= S.efHi) return 'ef';
   if (efCheck) return 'efcheck';
   if (E.pFav >= 0.97) return 'ready';
@@ -1353,7 +1359,7 @@ function loadSettings() {
   $('s-stake').value = S.stake; $('s-lockp').value = S.lockP; $('s-maxask').value = S.maxAsk; $('s-drift').value = S.drift; $('s-fee').value = S.fee; $('s-relay').value = S.relay || ''; $('s-offset').value = S.offset == null ? '' : S.offset.toFixed(2);
   $('s-recmargin').value = S.recMargin; $('s-reach-green').value = S.reachGreen; $('s-reach-yellow').value = S.reachYellow;
   $('s-paperon').value = S.paperOn || 'sure'; $('s-edgemin').value = S.edgeMin; $('s-edgescare').value = S.edgeScare;
-  $('s-sigk').value = S.sigK; $('s-entryedge').value = S.entryEdge; $('s-buymin').value = S.buyMinLeft; $('s-buymax').value = S.buyMaxLeft; $('s-dogbuy').value = S.dogBuy === false ? 0 : 1; $('s-selledge').value = S.sellEdge; $('s-sellzone').value = S.sellZone; $('s-sellpersist').value = S.sellPersist == null ? DEF.sellPersist : S.sellPersist; $('s-holdconf').value = S.holdConf; $('s-exitby').value = S.exitBy; $('s-latency').value = S.latency; $('s-actwindow').value = S.actWindow == null ? DEF.actWindow : S.actWindow; $('s-holdmin').value = S.holdMinP; $('s-etawarn').value = S.etaWarnS; $('s-badpct').value = S.badPct; $('s-look').value = S.lookS; $('s-slack').value = S.slack; $('s-killsecs').value = S.killSecs; $('s-eflo').value = S.efLo; $('s-efhi').value = S.efHi;
+  $('s-sigk').value = S.sigK; $('s-entryedge').value = S.entryEdge; $('s-buymin').value = S.buyMinLeft; $('s-buymax').value = S.buyMaxLeft; $('s-dogbuy').value = S.dogBuy === false ? 0 : 1; $('s-selledge').value = S.sellEdge; $('s-sellzone').value = S.sellZone; $('s-sellpersist').value = S.sellPersist == null ? DEF.sellPersist : S.sellPersist; $('s-buypersist').value = S.buyPersist == null ? DEF.buyPersist : S.buyPersist; $('s-holdconf').value = S.holdConf; $('s-exitby').value = S.exitBy; $('s-latency').value = S.latency; $('s-actwindow').value = S.actWindow == null ? DEF.actWindow : S.actWindow; $('s-holdmin').value = S.holdMinP; $('s-etawarn').value = S.etaWarnS; $('s-badpct').value = S.badPct; $('s-look').value = S.lookS; $('s-slack').value = S.slack; $('s-killsecs').value = S.killSecs; $('s-eflo').value = S.efLo; $('s-efhi').value = S.efHi;
 }
 const num = (id, lo, hi, def) => { const v = Number($(id).value); return Number.isFinite(v) && $(id).value !== '' ? Math.min(hi, Math.max(lo, v)) : def; };
 $('s-save').onclick = () => {
@@ -1362,7 +1368,7 @@ $('s-save').onclick = () => {
   S.recMargin = num('s-recmargin', 1, 3, DEF.recMargin); S.reachGreen = num('s-reach-green', 1, 99, DEF.reachGreen); S.reachYellow = Math.min(S.reachGreen, num('s-reach-yellow', 1, 99, DEF.reachYellow));
   S.paperOn = ['math', 'sure'].includes($('s-paperon').value) ? $('s-paperon').value : 'edge'; S.edgeMin = num('s-edgemin', 1, 30, DEF.edgeMin); S.edgeScare = num('s-edgescare', 1, 50, DEF.edgeScare);
   S.latency = num('s-latency', 0, 60, DEF.latency); S.actWindow = Math.max(S.latency + 1, num('s-actwindow', 5, 60, DEF.actWindow)); S.holdMinP = num('s-holdmin', 50, 95, DEF.holdMinP); S.etaWarnS = num('s-etawarn', 5, 120, DEF.etaWarnS); S.badPct = num('s-badpct', 90, 100, DEF.badPct); S.lookS = num('s-look', 10, 60, DEF.lookS);
-  S.sigK = num('s-sigk', 0.5, 3, DEF.sigK); S.entryEdge = num('s-entryedge', 0, 20, DEF.entryEdge); S.buyMinLeft = num('s-buymin', 0, 900, DEF.buyMinLeft); S.buyMaxLeft = num('s-buymax', 60, 900, DEF.buyMaxLeft); S.dogBuy = num('s-dogbuy', 0, 1, 1) >= 1; S.sellEdge = num('s-selledge', 0, 20, DEF.sellEdge); S.sellZone = num('s-sellzone', 60, 900, DEF.sellZone); S.sellPersist = num('s-sellpersist', 0, 10, DEF.sellPersist); S.holdConf = num('s-holdconf', 90, 99.9, DEF.holdConf); S.exitBy = num('s-exitby', 0, 180, DEF.exitBy); S.slack = num('s-slack', 0, 50, DEF.slack); S.killSecs = num('s-killsecs', 0, 300, DEF.killSecs); S.efLo = num('s-eflo', 50, 98, DEF.efLo); S.efHi = Math.max(S.efLo + 1, num('s-efhi', 51, 99, DEF.efHi));
+  S.sigK = num('s-sigk', 0.5, 3, DEF.sigK); S.entryEdge = num('s-entryedge', 0, 20, DEF.entryEdge); S.buyMinLeft = num('s-buymin', 0, 900, DEF.buyMinLeft); S.buyMaxLeft = num('s-buymax', 60, 900, DEF.buyMaxLeft); S.dogBuy = num('s-dogbuy', 0, 1, 1) >= 1; S.sellEdge = num('s-selledge', 0, 20, DEF.sellEdge); S.sellZone = num('s-sellzone', 60, 900, DEF.sellZone); S.sellPersist = num('s-sellpersist', 0, 10, DEF.sellPersist); S.buyPersist = num('s-buypersist', 0, 10, DEF.buyPersist); S.holdConf = num('s-holdconf', 90, 99.9, DEF.holdConf); S.exitBy = num('s-exitby', 0, 180, DEF.exitBy); S.slack = num('s-slack', 0, 50, DEF.slack); S.killSecs = num('s-killsecs', 0, 300, DEF.killSecs); S.efLo = num('s-eflo', 50, 98, DEF.efLo); S.efHi = Math.max(S.efLo + 1, num('s-efhi', 51, 99, DEF.efHi));
   const offIn = $('s-offset').value.trim(); if (offIn !== '') { S.offset = Number(offIn); R.offset = S.offset; R.offsetSrc = 'override'; R.offsetSd = NaN; } else if (S.offset != null) { S.offset = null; R.offsetSrc = 'none'; R.offset = NaN; }
   const tIn = Number($('s-target').value); if (tIn > 1000) { R.target = tIn; R.targetSrc = 'manual'; calibrateOffsetRound(); }
   saveS(); R.apiOk = null; IDX.ok = null; pmFetchMarket(); pmFetchBook(); pmFetchSeries(); toast('Saved');

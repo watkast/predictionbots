@@ -33,7 +33,7 @@ jobs:
     env:
       POLYMARKET_KEY_ID: ${{ secrets.POLYMARKET_KEY_ID }}
       POLYMARKET_SECRET_KEY: ${{ secrets.POLYMARKET_SECRET_KEY }}
-      MRP_LIVE_CAPITAL: ${{ vars.MRP_LIVE_CAPITAL || '20' }}
+      MRP_LIVE_CAPITAL: ${{ vars.MRP_LIVE_CAPITAL || '2' }}   # $2 a trade for the first 48 hours (from Nov 2, 2026 04:00 MT); raise here when the record says so
       MRP_LIVE_DIR: ${{ github.workspace }}/mrplive
       GH_TOKEN: ${{ github.token }}
     steps:
