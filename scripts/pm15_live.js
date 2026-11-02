@@ -58,7 +58,7 @@ const live = {
   async balances() { const j = await api('GET', '/v1/account/balances'); const b = (j.balances && j.balances[0]) || j; return { cash: Number(b.buyingPower ?? b.currentBalance ?? NaN), total: Number(b.currentBalance ?? NaN), raw: b }; },
   async position(slug) { const j = await api('GET', '/v1/portfolio/positions', null, { market: slug }); const p = j.positions && (j.positions[slug] || Object.values(j.positions)[0]); return p ? { net: Number(p.netPositionDecimal ?? p.netPosition ?? 0), avail: Number(p.qtyAvailableDecimal ?? p.qtyAvailable ?? 0), avgPx: amt(p.avgPx), expired: !!p.expired, realized: amt(p.realized), raw: p } : null; },
   async place(o) { return api('POST', '/v1/orders', o); },
-  async order(id) { const j = await api('GET', '/v1/order/' + id); return j.order || j; },
+  async order(id) { for (let i = 0; i < 4; i++) { try { const j = await api('GET', '/v1/order/' + id); return j.order || j; } catch (e) { if (!(e.status === 404 && i < 3)) throw e; await sleep(350); } } },
   async cancel(id, slug) { try { await api('POST', '/v1/order/' + id + '/cancel', { marketSlug: slug }); } catch (e) { if (!/HTTP 4/.test(e.message)) throw e; } },
   async cancelAll() { try { return await api('POST', '/v1/orders/open/cancel', {}); } catch (e) { log('warn', { cancelAll: e.message }); } },
   async preview(o) { return api('POST', '/v1/order/preview', { request: o }); }
@@ -203,7 +203,9 @@ async function onSell(cmd, E) {
     if (!Number.isFinite(bid)) { if (REPLAY) break; await sleep(1000); continue; }
     const px = cmd.now ? Math.max(0.01, bid - 0.02 * Math.min(3, tries - 1)) : cmd.px;      // SELL NOW chases the bid down a little; a harvest sells only at or above its line
     if (!cmd.now && bid < px - 1e-9) { if (REPLAY) break; await sleep(1000); continue; }
-    const o = { marketSlug: slug, intent: intentFor(side, 'sell'), type: 'ORDER_TYPE_LIMIT', price: money(pxFor(side, px)), quantity: state.pos.qty - filled, tif: 'TIME_IN_FORCE_IMMEDIATE_OR_CANCEL' };
+    let qty = state.pos.qty - filled;
+    if (!REPLAY) { const ep = await ex.position(slug).catch(() => null); if (ep) { const held = side === 'UP' ? ep.avail : -ep.avail; if (!(held > 0)) { log('order', { nothingHeld: ep.raw ? { net: ep.net, avail: ep.avail } : null }); filled = state.pos.qty; break; } qty = Math.min(qty, held); } }
+    const o = { marketSlug: slug, intent: intentFor(side, 'sell'), type: 'ORDER_TYPE_LIMIT', price: money(pxFor(side, px)), quantity: qty, tif: 'TIME_IN_FORCE_IMMEDIATE_OR_CANCEL' };
     log('order', { kind: 'sell', side, px, bid, qty: o.quantity, now: cmd.now, left: Math.round(E.r), dry: DRY, o });
     if (DRY) return;
     let res; try { res = await ex.place(o); } catch (e) { state.errors++; log('error', { place: e.message.slice(0, 400) }); if (REPLAY) break; await sleep(1000); continue; }
@@ -219,6 +221,7 @@ async function onSell(cmd, E) {
       const sq = (t.sellQty || 0) + filled; t.sellPx = ((t.sellPx || 0) * (t.sellQty || 0) + price * filled) / sq; t.sellQty = sq; t.proceeds = +((t.proceeds || 0) + proceeds).toFixed(2); t.sellLeft = Math.round(E.r);
       t.pnl = +(t.proceeds - t.spent * (sq / t.qty)).toFixed(2); t.exit = (t.exit && t.exit !== 'harvest' && t.exit !== 'SELL NOW' ? t.exit + ' + ' : '') + (cmd.now ? 'SELL NOW' : 'harvest') + (sq < t.qty ? ' (part)' : ''); }
     log('fill', { kind: 'sell', side, px: price, qty: filled, proceeds: +proceeds.toFixed(2) });
+    if (!REPLAY) { const ep = await ex.position(slug).catch(() => null); log('position', ep ? { net: ep.net, avail: ep.avail, avgPx: ep.avgPx } : { none: true }); }
     if (filled >= state.pos.qty - 1e-9) { state.pos = null; setPos(null); } else { state.pos.qty -= filled; setPos({ T0: state.pos.T0, side, price: state.pos.px, spent: state.pos.qty * state.pos.px, shares: state.pos.qty }); }
   } else log('order', { unfilledSell: true });
   saveState();
