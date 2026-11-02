@@ -125,7 +125,8 @@ input, select { background: var(--bg); border: 1px solid var(--line); border-rad
 .posbar { display: grid; grid-template-columns: auto minmax(70px, 110px) minmax(70px, 110px) auto auto 1fr; grid-template-rows: 40px 18px; gap: 6px 8px; align-items: center; height: 84px; overflow: hidden; padding: 8px 12px; border: 1px solid var(--line); border-radius: 12px; background: var(--surface); }
 .posbar .seg { grid-column: 1; grid-row: 1; } .posbar label:nth-of-type(1) { grid-column: 2; grid-row: 1; } .posbar label:nth-of-type(2) { grid-column: 3; grid-row: 1; } .posbar #my-set { grid-column: 4; grid-row: 1; } .posbar #my-clear { grid-column: 5; grid-row: 1; }
 .posbar label { display: grid; gap: 1px; font-size: 10px; color: var(--muted); min-width: 0; }
-.posbar label input { height: 30px; padding: 0 8px; font-size: 15px; }
+.posbar label input, .posbar label select { height: 30px; padding: 0 8px; font-size: 15px; }
+.posbar label select { font-family: var(--font-mono); font-variant-numeric: tabular-nums; font-size: 15px; padding: 0 6px; }
 .posbar button { padding: 8px 12px; font-size: 14px; }
 .posbar .seg button { padding: 8px 14px; font-weight: 600; }
 .posbar .pos-line { grid-column: 1 / -1; grid-row: 2; height: 18px; line-height: 18px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; font-size: 13px; color: var(--muted); }
@@ -213,7 +214,7 @@ details.settings summary { cursor: pointer; font: 700 15px/1.4 var(--font-displa
     <div class="warnline empty" id="warn">&nbsp;</div>
     <div class="posbar">
       <div class="seg" id="my-seg"><button class="up" data-side="UP">UP</button><button class="down" data-side="DOWN">DOWN</button></div>
-      <label>Paid ¢<input id="my-price" type="number" inputmode="decimal" min="1" max="99" step="1" placeholder="92"></label>
+      <label>Paid ¢ · top = live<select id="my-price"><option value="" id="my-price-now">—</option></select></label>
       <label>Spent $<input id="my-spent" type="number" inputmode="decimal" min="1" step="1" placeholder="20"></label>
       <button class="btn-primary" id="my-set">I'm in</button>
       <button class="btn-danger" id="my-clear">Out</button>
@@ -318,12 +319,12 @@ details.settings summary { cursor: pointer; font: 700 15px/1.4 var(--font-displa
       <label>…only inside the last (s left; 900 = any time)<input id="s-sellzone" type="number" inputmode="decimal" min="60" max="900" step="30" value="300"></label>
       <label>Show SELL only after it has been true for (s; SELL NOW is always immediate)<input id="s-sellpersist" type="number" inputmode="decimal" min="0" max="10" step="1" value="2"></label>
       <label>Taker fee coefficient<input id="s-fee" type="number" inputmode="decimal" min="0" max="0.2" step="0.0005" value="0.0695"></label>
-      <label>MOST LIKELY when touch odds ≥ (%)<input id="s-reach-green" type="number" inputmode="decimal" min="1" max="99" step="1" value="50"></label>
-      <label>EASILY when touch odds ≥ (%) · below = UNLIKELY<input id="s-reach-yellow" type="number" inputmode="decimal" min="1" max="99" step="1" value="10"></label>
+      <label>MOST LIKELY when touch odds GTE (%)<input id="s-reach-green" type="number" inputmode="decimal" min="1" max="99" step="1" value="50"></label>
+      <label>EASILY when touch odds GTE (%) · below = UNLIKELY<input id="s-reach-yellow" type="number" inputmode="decimal" min="1" max="99" step="1" value="10"></label>
       <h4>Paper bot</h4>
       <label>Script stake per lock ($)<input id="s-stake" type="number" inputmode="decimal" min="1" step="1" value="20"></label>
       <label>Paper bot<select id="s-paperon"><option value="edge">Discount entry + EV sells (the replay-tested persona)</option><option value="sure">Sure thing only (never buyable in the replay)</option><option value="math">Math lock (model %, not a sure thing)</option></select></label>
-      <label>Math lock = model win probability ≥ (%)<input id="s-lockp" type="number" inputmode="decimal" min="90" max="99.99" step="0.1" value="99.5"></label>
+      <label>Math lock = model win probability GTE (%)<input id="s-lockp" type="number" inputmode="decimal" min="90" max="99.99" step="0.1" value="99.5"></label>
       <label>Edge mode: edge after fee at least (¢)<input id="s-edgemin" type="number" inputmode="decimal" min="1" max="30" step="1" value="6"></label>
       <label>Edge mode: button scare at most (%)<input id="s-edgescare" type="number" inputmode="decimal" min="1" max="50" step="1" value="15"></label>
       <h4>Data</h4>
@@ -960,7 +961,7 @@ function announce(key, text) {
   if (key === 'sure' || key === 'locked' || key === 'buy') beep(2); else if (key === 'sell' || key === 'sellnow') beep(3);
   speak(text);
 }
-const holdTxt = h => !Number.isFinite(h) || h === Infinity ? 'to the bell' : h >= 60 ? '≥ ' + clock(h) : '≥ ' + Math.floor(h) + ' s';
+const holdTxt = h => !Number.isFinite(h) || h === Infinity ? 'to the bell' : h >= 60 ? 'GTE ' + clock(h) : 'GTE ' + Math.floor(h) + ' s';
 const SEV = { nofeed: 0, notarget: 0, over: 0, sandbox: 0, learning: 0, locked: 1, hold: 2, sell: 4, sellnow: 5, wait: 1, chop: 1, ending: 1, done: 1, ready: 2, efcheck: 2, soldout: 3, surecost: 3, ef: 3, buy: 3, sure: 4 };
 let verdict = { key: '', since: 0, pend: '', pendSince: 0 };
 // escalations show at once; anything calmer must persist 3 s first, so the instruction never flickers
@@ -1016,9 +1017,9 @@ function renderAct(key, ntR) {
   if (!sig) { el.className = 'act none'; L.textContent = key === 'locked' ? 'no action needed — ride it' : key === 'hold' ? 'no action needed — sell only above the bid shown' : 'no action needed'; Rc.textContent = ''; F.style.width = '0%'; return; }
   const t = (now - act.since) / 1000, p1 = S.latency || 8, p2 = Math.max(p1 + 1, S.actWindow || 15);
   const qAge = R.book && R.bookAt ? Math.max(0, Math.round((now - R.bookAt) / 1000)) : NaN, qTxt = Number.isFinite(qAge) ? (qAge <= 2 ? 'quote live' : 'quote ' + qAge + ' s old') : 'no live quote';
-  if (t < p1) { el.className = 'act max'; L.textContent = 'MAX ODDS · ' + qTxt + (isBuy ? ' · pay up to the ≤ price' : ' · sell before the cushion moves'); Rc.textContent = Math.ceil(p1 - t) + ' s'; F.style.width = Math.max(0, 100 * (1 - t / p1)).toFixed(1) + '%'; }
+  if (t < p1) { el.className = 'act max'; L.textContent = 'MAX ODDS · ' + qTxt + (isBuy ? ' · pay up to the LTE price' : ' · sell before the cushion moves'); Rc.textContent = Math.ceil(p1 - t) + ' s'; F.style.width = Math.max(0, 100 * (1 - t / p1)).toFixed(1) + '%'; }
   else if (t < p2) { el.className = 'act go'; L.textContent = 'TAKE ACTION · under ' + Math.ceil(p2 - t) + ' s left'; Rc.textContent = Math.ceil(p2 - t) + ' s'; F.style.width = Math.max(0, 100 * (1 - (t - p1) / (p2 - p1))).toFixed(1) + '%'; }
-  else { el.className = 'act late'; L.textContent = 'LATE · ' + qTxt + (isBuy ? ' · go by the button: only if ≤ the price shown' : ' · if not sold yet: only at the price shown'); Rc.textContent = Math.floor(t) + ' s'; F.style.width = '100%'; }
+  else { el.className = 'act late'; L.textContent = 'LATE · ' + qTxt + (isBuy ? ' · go by the button: only if LTE the price shown' : ' · if not sold yet: only at the price shown'); Rc.textContent = Math.floor(t) + ' s'; F.style.width = '100%'; }
 }
 function dictate(E) {
   const el = $('do'), maxAsk = S.maxAsk / 100, lat = S.latency || 0;
@@ -1029,7 +1030,7 @@ function dictate(E) {
   let cls = 'wait', label = 'DO NEXT', head = '', conf = '', ntCls = 'none', ntL = 'Next trade: —', ntR = '—', why = '', speakKey = '';
   const fav = E.favInfo, q = Number.isFinite(E.pUp) ? quotes(E.fav) : { ask: NaN, src: 'none' }, ask = q.ask;
   const favNt = E.fav === 'UP' ? 'up' : 'down';
-  const askTxt = Number.isFinite(ask) ? 'at ' + cents(ask) : '≤ ' + cents(maxAsk);
+  const askTxt = Number.isFinite(ask) ? 'at ' + cents(ask) : 'LTE ' + cents(maxAsk);
   if (key === 'sandbox') { cls = 'ready'; head = 'This page cannot reach the feeds from here'; why = 'SANDBOX'; }
   else if (key === 'nofeed') { head = cbState === 'live' ? 'Feed stalled' : 'Connecting to Coinbase…'; conf = 'nothing to act on until a price arrives'; why = !lastTickMs && Date.now() - T_BOOT > 6000 && location.href.indexOf(DEFAULT_RELAY) !== 0 ? 'HINT' : 'No price in the last few seconds.'; }
   else if (key === 'notarget') { head = 'Need the price to beat'; conf = 'the API and the index series have not given it yet'; why = 'If the relay is off, type it from your Polymarket screen in Settings.'; }
@@ -1038,23 +1039,23 @@ function dictate(E) {
     const x = E.exitCheck(myPos.side), side = myPos.side, sideNt = side === 'UP' ? 'up' : 'down', w = x.dropWord;
     if (key === 'locked') { cls = 'safe'; label = 'LOCKED'; speakKey = 'locked'; head = 'HOLD ' + side + ' to the bell — LOCKED'; conf = '100% · nothing can flip it · settles in ' + clock(E.r); ntCls = 'none'; ntL = 'Next trade: none — ride it'; ntR = 'pays $1.00'; why = 'BTC would have to ' + w + ' $' + fmt$(x.cush, 0) + ' and stay there; the biggest ' + w + ' ever seen for ' + secsTxt(E.r) + ' is $' + fmt$(x.rec, 0) + ' (margin ×' + S.recMargin + '). A low bid now is other people\'s panic, not information.'; }
     else if (key === 'sellnow') { cls = 'sell'; label = 'SELL NOW'; speakKey = 'sellnow'; head = 'SELL ' + side + ' NOW'; conf = 'projected to lose · settles in ' + clock(E.r); ntCls = 'sell'; ntL = 'SELL ' + side; ntR = Number.isFinite(x.bid) ? 'at ' + cents(x.bid) : 'at any bid'; why = (x.cush <= 0 ? 'If BTC stays here the final average lands on the other side (cushion ' + fmtS(x.cush, 0) + ').' : 'The math has your side at ' + pct(x.pAdj) + '.') + ' Take what is left.'; }
-    else if (key === 'sell') { cls = 'sell'; label = 'SELL'; speakKey = 'sell'; const win = Math.max(0, Math.floor(x.holdConf)); head = 'SELL ' + side + (E.r <= 120 && x.holdConf < lat + 5 && x.holdConf < E.r ? ' — window closing' : x.deadline ? ' — deadline' : ' — flip building'); conf = (win > 0 && win < E.r ? 'act within ' + win + ' s' : 'act now') + ' · you need ' + lat + ' s to fill · ' + clock(E.r) + ' left'; ntCls = 'sell'; ntL = 'SELL ' + side; ntR = Number.isFinite(x.bid) ? 'at ' + cents(x.bid) : 'at ≥ ' + cents(x.sellAbove); why = (x.reason || 'The sell trigger cleared a moment ago. If you have not sold: a bid at or above ' + cents(x.sellAbove) + ' still beats holding; below that, hold and watch.') + (Number.isFinite(x.bidNet) ? ' Selling keeps ≈$' + fmt$(myPos.shares * x.bidNet, 0) + '; holding is worth ≈$' + fmt$(myPos.shares * x.pAdj, 0) + '.' : ''); }
+    else if (key === 'sell') { cls = 'sell'; label = 'SELL'; speakKey = 'sell'; const win = Math.max(0, Math.floor(x.holdConf)); head = 'SELL ' + side + (E.r <= 120 && x.holdConf < lat + 5 && x.holdConf < E.r ? ' — window closing' : x.deadline ? ' — deadline' : ' — flip building'); conf = (win > 0 && win < E.r ? 'act within ' + win + ' s' : 'act now') + ' · you need ' + lat + ' s to fill · ' + clock(E.r) + ' left'; ntCls = 'sell'; ntL = 'SELL ' + side; ntR = Number.isFinite(x.bid) ? 'at ' + cents(x.bid) : 'at GTE ' + cents(x.sellAbove); why = (x.reason || 'The sell trigger cleared a moment ago. If you have not sold: a bid at or above ' + cents(x.sellAbove) + ' still beats holding; below that, hold and watch.') + (Number.isFinite(x.bidNet) ? ' Selling keeps ≈$' + fmt$(myPos.shares * x.bidNet, 0) + '; holding is worth ≈$' + fmt$(myPos.shares * x.pAdj, 0) + '.' : ''); }
     else { cls = 'caution'; label = x.thin ? 'HOLD · THIN' : 'HOLD'; speakKey = 'hold'; const h = x.holdConf >= E.r ? Infinity : x.holdConf, early = E.r > 120;
       head = 'HOLD ' + side + ' ' + (early && h < 30 ? '— watch it' : holdTxt(h) + ' (' + (S.holdConf || 99) + '%)');
       conf = (Number.isFinite(x.eta) && x.eta > 0 ? 'LOCKED in ~' + secsTxt(x.eta) + ' if BTC holds · ' : '') + (x.thin && (S.exitBy || 0) > 0 && E.r > (S.exitBy || 0) ? 'sell by ' + clock(S.exitBy) + ' unless LOCKED · ' : '') + (h === Infinity ? 'safe to the bell at ' + (S.holdConf || 99) + '%' : 'cushion good ~' + Math.floor(h) + ' s at ' + (S.holdConf || 99) + '% · look again in ' + Math.max(3, Math.floor(h / 2)) + ' s') + (early ? ' · a flip now is a dip, not a wipe-out' : '');
-      ntCls = 'sell'; ntL = 'SELL ' + side + ' only if'; ntR = 'bid ≥ ' + cents(x.sellAbove); why = 'A flip needs a $' + fmt$(x.cush, 0) + ' ' + w + ' held to the bell. Bad minute (p' + S.badPct + ') $' + fmt$(x.bad, 0) + ' · record $' + fmt$(x.rec, 0) + ' · last 10 s ' + fmtS(E.mv10, 0) + '.' + (x.thin ? ' Thin: a bid at or above ' + cents(x.sellAbove) + ' beats holding.' : ''); }
+      ntCls = 'sell'; ntL = 'SELL ' + side + ' only if'; ntR = 'bid GTE ' + cents(x.sellAbove); why = 'A flip needs a $' + fmt$(x.cush, 0) + ' ' + w + ' held to the bell. Bad minute (p' + S.badPct + ') $' + fmt$(x.bad, 0) + ' · record $' + fmt$(x.rec, 0) + ' · last 10 s ' + fmtS(E.mv10, 0) + '.' + (x.thin ? ' Thin: a bid at or above ' + cents(x.sellAbove) + ' beats holding.' : ''); }
   }
   else if (key === 'learning') { head = 'Learning BTC\'s record pace…'; conf = 'the Coinbase history scan takes a few seconds'; why = 'Until it finishes nothing can be called LOCKED.'; }
-  else if (key === 'soldout') { cls = 'ready'; head = E.fav + ' is LOCKED — sold out'; conf = 'nobody is offering it under $1 · ' + clock(E.r) + ' left'; ntCls = favNt; ntL = 'BUY ' + E.fav + ' if offered'; ntR = '≤ ' + cents(maxAsk); why = 'Nothing can flip ' + E.fav + ' now. Sellers show up when the spot wobbles — watch the button.'; }
+  else if (key === 'soldout') { cls = 'ready'; head = E.fav + ' is LOCKED — sold out'; conf = 'nobody is offering it under $1 · ' + clock(E.r) + ' left'; ntCls = favNt; ntL = 'BUY ' + E.fav + ' if offered'; ntR = 'LTE ' + cents(maxAsk); why = 'Nothing can flip ' + E.fav + ' now. Sellers show up when the spot wobbles — watch the button.'; }
   else if (key === 'sure') { cls = 'lock'; label = 'SURE THING'; speakKey = 'sure'; const payUp = Number.isFinite(ask) ? ask : maxAsk, net = 1 - payUp - fee(payUp, S.fee); head = 'BUY ' + E.fav + ' ' + askTxt + ' — SURE THING'; conf = '100% · get filled within ' + clock(Math.max(0, E.r - lat)) + ' · ride to the bell'; ntCls = favNt; ntL = 'BUY ' + E.fav; ntR = askTxt; why = 'Locked: a record ' + fav.dropWord + ' ($' + fmt$(fav.rec, 0) + ') in the next ' + secsTxt(E.r) + ' cannot bring the average back across the target (it would take $' + fmt$(fav.cush, 0) + '). +' + (net * 100).toFixed(1) + '¢ per share after fee' + (Number.isFinite(q.askQty) ? ' · ' + Math.round(q.askQty) + ' shares offered' : '') + '.'; }
-  else if (key === 'surecost') { cls = 'ready'; head = E.fav + ' is LOCKED but costs ' + cents(ask); conf = 'above your ' + cents(maxAsk) + ' max · ' + clock(E.r) + ' left'; ntCls = favNt; ntL = 'BUY ' + E.fav + ' only'; ntR = '≤ ' + cents(maxAsk); why = 'Net would be ' + ((1 - ask - fee(ask, S.fee)) * 100).toFixed(1) + '¢/share. Raise the max in Settings if that is still worth it.'; }
+  else if (key === 'surecost') { cls = 'ready'; head = E.fav + ' is LOCKED but costs ' + cents(ask); conf = 'above your ' + cents(maxAsk) + ' max · ' + clock(E.r) + ' left'; ntCls = favNt; ntL = 'BUY ' + E.fav + ' only'; ntR = 'LTE ' + cents(maxAsk); why = 'Net would be ' + ((1 - ask - fee(ask, S.fee)) * 100).toFixed(1) + '¢/share. Raise the max in Settings if that is still worth it.'; }
   else if (key === 'done') { head = 'DONE — no second trade this round'; conf = E.fav + ' for now · ' + clock(E.r) + ' left'; ntL = 'Next trade: next round'; why = 'One discount trade a round is what the replay tested: re-entering after a sell is the whipsaw — a coin flip bought twice. The next round starts fresh.'; }
   else if (key === 'ending') { head = 'DON\'T BUY — round ending'; conf = E.fav + ' for now, not locked · ' + clock(E.r) + ' left'; ntL = 'Next trade: next round'; why = 'Real flip chance ' + chanceTxt(E.buyIn ? E.buyIn.flip : NaN) + '. ' + Math.round(E.d.known * 100) + '% of the average is in the books.'; }
-  else if (key === 'buy') { const en = E.entry, sideNt = en.side === 'UP' ? 'up' : 'down'; cls = 'lock'; label = 'BUY · DISCOUNT'; speakKey = 'buy'; head = 'BUY ' + en.side + ' at ' + cents(en.ask) + ' — discount'; conf = fmt$(en.edge * 100, 1) + '¢ edge after fee vs a ' + pct(en.p) + ' chance · fill within ' + Math.max(1, Math.round(E.r - lat)) + ' s · ' + clock(E.r) + ' left'; ntCls = sideNt; ntL = 'BUY ' + en.side; ntR = 'at ≤ ' + cents(en.lim); why = en.side + ' is offered under the price its chance justifies (' + cents(en.lim) + ' leaves ' + (S.entryEdge == null ? 4 : S.entryEdge) + '¢). The replay made its money here: buy the discount early, sell when the market overpays late. Not a sure thing — the SELL rules take over once you are in.'; }
+  else if (key === 'buy') { const en = E.entry, sideNt = en.side === 'UP' ? 'up' : 'down'; cls = 'lock'; label = 'BUY · DISCOUNT'; speakKey = 'buy'; head = 'BUY ' + en.side + ' at ' + cents(en.ask) + ' — discount'; conf = fmt$(en.edge * 100, 1) + '¢ edge after fee vs a ' + pct(en.p) + ' chance · fill within ' + Math.max(1, Math.round(E.r - lat)) + ' s · ' + clock(E.r) + ' left'; ntCls = sideNt; ntL = 'BUY ' + en.side; ntR = 'at LTE ' + cents(en.lim); why = en.side + ' is offered under the price its chance justifies (' + cents(en.lim) + ' leaves ' + (S.entryEdge == null ? 4 : S.entryEdge) + '¢). The replay made its money here: buy the discount early, sell when the market overpays late. Not a sure thing — the SELL rules take over once you are in.'; }
   else if (key === 'ef') { cls = 'hold'; label = 'EF RULE · CAUTION'; head = 'BUY ' + E.fav + ' at ' + cents(ask) + ' (EF)'; const efWin = ROUND - E.r; conf = 'window closes in ' + secsTxt(efWin < 160 ? 150 - efWin : 210 - efWin) + ' · hold to the end'; ntCls = favNt; ntL = 'BUY ' + E.fav; ntR = 'at ' + cents(ask); why = 'Your tested rule (Oct 6–22): favorite at ' + S.efLo + '–' + S.efHi + '¢ at 13:00 / 12:00 left. Not a sure thing: real flip chance ' + chanceTxt(1 - E.pFavAdj) + ', button scare ' + chanceTxt(fav.scare) + '.'; }
   else if (key === 'efcheck') { cls = 'hold'; head = 'EF CHECK — ' + E.fav + ' only at ' + S.efLo + '–' + S.efHi + '¢'; const efWin = ROUND - E.r; conf = (Number.isFinite(ask) ? 'button shows ' + cents(ask) + ' — outside the band' : 'read the ask off the button') + ' · closes in ' + secsTxt(efWin < 160 ? 150 - efWin : 210 - efWin); ntCls = favNt; ntL = 'BUY ' + E.fav + ' only'; ntR = S.efLo + '–' + S.efHi + '¢'; why = 'Real flip chance ' + chanceTxt(1 - E.pFavAdj) + '. Outside the band the price does not pay for the risk.'; }
-  else if (key === 'ready') { cls = 'ready'; head = 'WAIT — ' + E.fav + ' close to LOCKED'; conf = (Number.isFinite(fav.eta) ? 'locks in ~' + secsTxt(fav.eta) + ' if BTC holds' : 'no lock before the bell at this cushion') + ' · ' + clock(E.r) + ' left'; ntCls = favNt; ntL = 'BUY ' + E.fav + ' when LOCKED'; ntR = '≤ ' + cents(maxAsk); why = 'To flip it BTC must ' + fav.dropWord + ' $' + fmt$(fav.cush, 0) + ' and hold; record for the time left $' + fmt$(fav.rec, 0) + '. Real flip chance ' + chanceTxt(1 - E.pFavAdj) + ' — buying now is a caution play' + (Number.isFinite(ask) ? ' at ' + cents(ask) : '') + '.'; }
-  else { const nb = noBuyFor(E), b = E.buyIn; head = 'DON\'T BUY for ' + (nb.secs >= 60 ? clock(nb.secs) : Math.max(1, Math.ceil(nb.secs)) + ' s'); conf = (key === 'chop' ? 'coin flip · ' : E.fav + ' for now · ') + (b ? 'unless ' + E.fav + ' is offered ≤ ' + cents(b.lim) + ' · ' : '') + 'next check: ' + nb.why; ntCls = favNt; ntL = 'BUY ' + E.fav + ' only'; ntR = b ? '≤ ' + cents(b.lim) : '—'; why = 'Real flip chance ' + chanceTxt(1 - E.pFavAdj) + ' · button scare ' + chanceTxt(fav.scare) + '. At ' + (b ? cents(b.lim) : '—') + ' or under the price leaves ' + (S.entryEdge == null ? 8 : S.entryEdge) + '¢ after fee for that risk (the replay-tested entry); the sure thing usually opens inside the last 2 minutes.'; }
+  else if (key === 'ready') { cls = 'ready'; head = 'WAIT — ' + E.fav + ' close to LOCKED'; conf = (Number.isFinite(fav.eta) ? 'locks in ~' + secsTxt(fav.eta) + ' if BTC holds' : 'no lock before the bell at this cushion') + ' · ' + clock(E.r) + ' left'; ntCls = favNt; ntL = 'BUY ' + E.fav + ' when LOCKED'; ntR = 'LTE ' + cents(maxAsk); why = 'To flip it BTC must ' + fav.dropWord + ' $' + fmt$(fav.cush, 0) + ' and hold; record for the time left $' + fmt$(fav.rec, 0) + '. Real flip chance ' + chanceTxt(1 - E.pFavAdj) + ' — buying now is a caution play' + (Number.isFinite(ask) ? ' at ' + cents(ask) : '') + '.'; }
+  else { const nb = noBuyFor(E), b = E.buyIn; head = 'DON\'T BUY for ' + (nb.secs >= 60 ? clock(nb.secs) : Math.max(1, Math.ceil(nb.secs)) + ' s'); conf = (key === 'chop' ? 'coin flip · ' : E.fav + ' for now · ') + (b ? 'unless ' + E.fav + ' is offered LTE ' + cents(b.lim) + ' · ' : '') + 'next check: ' + nb.why; ntCls = favNt; ntL = 'BUY ' + E.fav + ' only'; ntR = b ? 'LTE ' + cents(b.lim) : '—'; why = 'Real flip chance ' + chanceTxt(1 - E.pFavAdj) + ' · button scare ' + chanceTxt(fav.scare) + '. At ' + (b ? cents(b.lim) : '—') + ' or under the price leaves ' + (S.entryEdge == null ? 8 : S.entryEdge) + '¢ after fee for that risk (the replay-tested entry); the sure thing usually opens inside the last 2 minutes.'; }
   // ---- confidence badge: always the same number — the calibrated chance that the side in question wins at the bell
   //      (100% only when LOCKED: record pace cannot flip it, 224/224 on the replay). The label says what to make of it.
   let confN = '—', confL = '';
@@ -1077,24 +1078,24 @@ function dictate(E) {
   const sz = S.sellZone && S.sellZone < 900 ? 'inside ' + clock(S.sellZone) : 'any time';
   const kill = clock(S.killSecs || 45);
   const stakeX = en => Math.min(2, Math.max(0.5, en.edge / 0.04)).toFixed(1);
-  const dnBuy = E.buyIn ? 'Buy ' + E.fav + ' only if offered ≤ ' + cents(E.buyIn.lim) : 'Buy only on BUY / SURE THING';
+  const dnBuy = E.buyIn ? 'Buy ' + E.fav + ' only if offered LTE ' + cents(E.buyIn.lim) : 'Buy only on BUY / SURE THING';
   if (key === 'sandbox' || key === 'nofeed' || key === 'notarget' || key === 'learning') nx.push(['Wait for the feeds — nothing to act on', '', ''], ['Buy only on BUY or SURE THING', '', ''], ['Never open a position inside the last ' + kill, '', '']);
   else if (key === 'over') nx.push(['Next round opens · target = this final price', '', ''], ['First discount check from the open', '', ''], ['Sure things usually open in the last 2:00', '', '']);
   else if (myPos && xMine) {
     const side = myPos.side;
     if (key === 'locked') nx.push(['Ride ' + side + ' to the bell — ignore the button', clock(E.r), 'hot'], ['Tap Out after it settles', '', ''], ['Next round: target = this final price', '', '']);
     else if (key === 'sellnow') nx.push(['SELL ' + side + ' at any bid — now', clock(E.r), 'cold'], ['Tap Out once it fills', '', ''], ['Wait for the next discount buy', '', '']);
-    else if (key === 'sell') nx.push([xMine.kind === 'harvest' ? 'Sell ' + side + ' at ≥ ' + cents(xMine.sellAbove) + ' — the bid overpays' : 'Sell ' + side + ' — any bid ≥ ' + cents(xMine.sellAbove), 'now', 'cold'], ['Tap Out once it fills', '', ''], [E.r > (S.killSecs || 45) ? dnBuy : 'No new buys inside the last ' + kill, '', '']);
+    else if (key === 'sell') nx.push([xMine.kind === 'harvest' ? 'Sell ' + side + ' at GTE ' + cents(xMine.sellAbove) + ' — the bid overpays' : 'Sell ' + side + ' — any bid GTE ' + cents(xMine.sellAbove), 'now', 'cold'], ['Tap Out once it fills', '', ''], [E.r > (S.killSecs || 45) ? dnBuy : 'No new buys inside the last ' + kill, '', '']);
     else {
-      nx.push(['Sell ' + side + ' only if the bid is ≥ ' + cents(xMine.sellAbove) + ' (' + sz + ')', Number.isFinite(xMine.bid) ? 'bid ' + cents(xMine.bid) : '', '']);
+      nx.push(['Sell ' + side + ' only if the bid is GTE ' + cents(xMine.sellAbove) + ' (' + sz + ')', Number.isFinite(xMine.bid) ? 'bid ' + cents(xMine.bid) : '', '']);
       if (Number.isFinite(xMine.eta) && xMine.eta > 0 && xMine.eta < E.r) nx.push(['LOCKED if BTC holds here', '~' + secsTxt(xMine.eta), 'hot']);
       else if (xMine.thin && (S.exitBy || 0) > 0 && E.r > S.exitBy) nx.push(['Sell by ' + clock(S.exitBy) + ' unless LOCKED', 'in ' + clock(E.r - S.exitBy), 'warm']);
       else nx.push(['Look again', (xMine.holdConf >= E.r ? Math.max(5, Math.floor(E.r / 2)) : Math.max(3, Math.floor(xMine.holdConf / 2))) + ' s', '']);
       nx.push(['Settles · pays $' + fmt$(myPos.shares, 0) + ' if ' + side + ' holds', clock(E.r), '']);
     }
   }
-  else if (key === 'buy') { const en = E.entry; nx.push(['Tap BUY ' + en.side + ' ≤ ' + cents(en.lim) + ' · stake ×' + stakeX(en), 'now', 'hot'], ['Set the position below (I\'m in)', '', ''], ['Sell only when the bid beats the math by ' + (S.sellEdge == null ? 5 : S.sellEdge) + '¢ ' + sz, '', '']); }
-  else if (key === 'sure' || key === 'surecost' || key === 'soldout') nx.push(['Buy ' + E.fav + ' only if offered ≤ ' + cents(maxAsk), Number.isFinite(ask) ? 'ask ' + cents(ask) : '', 'hot'], ['Ride it to the bell', clock(E.r), ''], ['Next round: target = this final price', '', '']);
+  else if (key === 'buy') { const en = E.entry; nx.push(['Tap BUY ' + en.side + ' LTE ' + cents(en.lim) + ' · stake ×' + stakeX(en), 'now', 'hot'], ['Set the position below (I\'m in)', '', ''], ['Sell only when the bid beats the math by ' + (S.sellEdge == null ? 5 : S.sellEdge) + '¢ ' + sz, '', '']); }
+  else if (key === 'sure' || key === 'surecost' || key === 'soldout') nx.push(['Buy ' + E.fav + ' only if offered LTE ' + cents(maxAsk), Number.isFinite(ask) ? 'ask ' + cents(ask) : '', 'hot'], ['Ride it to the bell', clock(E.r), ''], ['Next round: target = this final price', '', '']);
   else if (key === 'ending') nx.push(['No new buys — round ending', clock(E.r), 'warm'], ['Next round: target = this final price', '', ''], ['First discount check from the open', '', '']);
   else if (key === 'done') nx.push(['No second trade — sit out the rest', clock(E.r), 'warm'], ['Next round: target = this final price', '', ''], ['First discount check from the open', '', '']);
   else if (key === 'ef') nx.push(['Buy ' + E.fav + ' at ' + cents(ask) + ' (EF rule — caution)', 'now', 'hot'], ['Set the position below (I\'m in)', '', ''], ['Sell only when the bid beats the math ' + sz, '', '']);
@@ -1153,7 +1154,7 @@ function renderNumbers(E) {
   ncell('m-p', x ? (x.locked ? '100% · locked' : pct(Math.min(x.pAdj, 0.995)) + (x.pAdj < x.p - 0.005 ? ' · fat tails' : '')) : '—', x && x.locked ? 'ok' : x && x.pAdj < 0.5 ? 'bad' : '');
   ncell('m-cush', x && Number.isFinite(x.cush) ? (x.cush <= 0 ? 'past it by ' + c$(-x.cush) : c$(x.cush) + ' ' + x.dropWord + ' flips ' + side) : '—', x ? (x.locked ? 'ok' : x.cush <= 0 ? 'bad' : x.thin ? 'thin' : '') : '');
   ncell('m-kill', x && Number.isFinite(x.killPM) ? fmt$(x.killPM) + ' · ' + (side === 'UP' ? 'below' : 'above') + ' flips it' : '—');
-  ncell('m-hold', x ? (x.locked ? 'the bell · locked' : x.holdConf >= E.r ? 'the bell · ' + (S.holdConf || 99) + '%' : '≥ ' + Math.floor(x.holdConf) + ' s · ' + (S.holdConf || 99) + '%') : '—', x && (x.locked || x.holdConf >= E.r) ? 'ok' : x && x.holdConf < (S.latency || 0) + 5 ? 'bad' : '');
+  ncell('m-hold', x ? (x.locked ? 'the bell · locked' : x.holdConf >= E.r ? 'the bell · ' + (S.holdConf || 99) + '%' : 'GTE ' + Math.floor(x.holdConf) + ' s · ' + (S.holdConf || 99) + '%') : '—', x && (x.locked || x.holdConf >= E.r) ? 'ok' : x && x.holdConf < (S.latency || 0) + 5 ? 'bad' : '');
   ncell('m-lock', x ? (x.locked ? 'now' : Number.isFinite(x.eta) ? (x.eta <= 0 ? 'now' : '~' + secsTxt(x.eta) + ' if BTC holds') : 'not before the bell') : '—', x && x.locked ? 'ok' : '');
   ncell('m-bad', x ? c$(x.bad) + (x.badLeft < x.bad - 0.5 ? ' · ' + c$(x.badLeft) + ' for ' + secsTxt(E.r) : '') : '—');
   ncell('m-rec', x ? c$(x.rec) + ' · margin ×' + S.recMargin : '—');
@@ -1277,8 +1278,18 @@ $('btn-wake').onclick = async () => { try { wake = await navigator.wakeLock.requ
 let mySide = 'UP';
 document.querySelectorAll('#my-seg button').forEach(b => b.onclick = () => { mySide = b.dataset.side; document.querySelectorAll('#my-seg button').forEach(x => x.classList.toggle('on', x === b)); });
 document.querySelector('#my-seg button.up').classList.add('on');
+(() => { const sel = $('my-price'); let h = ''; for (let c = 1; c <= 99; c++) h += '<option value="' + c + '">' + c + '¢</option>'; sel.insertAdjacentHTML ? sel.insertAdjacentHTML('beforeend', h) : (sel.innerHTML += h); })();
+// the top option is the live ask of the side chosen in the segment; it tracks the book until you pick something else
+function renderPriceNow() {
+  const sel = $('my-price'), o = $('my-price-now'); if (!sel || !o) return;
+  const q = typeof quotes === 'function' && Number.isFinite(lastEval && lastEval.pUp) ? quotes(mySide) : { ask: NaN };
+  const c = Number.isFinite(q.ask) ? Math.round(q.ask * 100) : NaN;
+  const txt = Number.isFinite(c) ? c + '¢' : '—', val = Number.isFinite(c) ? String(c) : '';
+  if (o.textContent !== txt) o.textContent = txt;
+  if (o.value !== val) { const onNow = sel.selectedIndex <= 0; o.value = val; if (onNow && document.activeElement !== sel) sel.selectedIndex = 0; }
+}
 $('my-set').onclick = () => { const price = Number($('my-price').value) / 100, spent = Number($('my-spent').value);
-  if (!(price > 0 && price < 1) || !(spent > 0)) { toast('Enter the price you paid and the dollars spent'); return; }
+  if (!(price > 0 && price < 1) || !(spent > 0)) { toast('Pick the price you paid and enter the dollars spent'); return; }
   myPos = { T0: R.T0, side: mySide, price, spent, shares: spent / price }; R.traded = true; try { localStorage.setItem('pm15.mypos', JSON.stringify(myPos)); } catch (e) {} lastSpoken = { key: '', at: 0 }; toast('Tracking your ' + mySide + ' position'); };
 $('my-clear').onclick = () => { myPos = null; try { localStorage.removeItem('pm15.mypos'); } catch (e) {} };
 function loadSettings() {
@@ -1334,7 +1345,7 @@ setInterval(() => {
 let frame = 0;
 function tick() {
   const E = evaluate();
-  if (Number.isFinite(E.spot)) { liveRecordCheck(E.sec); paperStep(E); dictate(E); renderHeader(E); if (frame % 3 === 0) { renderPosLine(E); renderNumbers(E); renderWarn(E); } if (frame % 2 === 0) drawChart(E); }
+  if (Number.isFinite(E.spot)) { liveRecordCheck(E.sec); paperStep(E); dictate(E); renderHeader(E); if (frame % 3 === 0) { renderPosLine(E); renderPriceNow(); renderNumbers(E); renderWarn(E); } if (frame % 2 === 0) drawChart(E); }
   else { renderHeader(E); dictate(E); if (frame % 4 === 0) { renderWarn(E); renderPosLine(E); renderNumbers(E); } }
   frame++;
 }
