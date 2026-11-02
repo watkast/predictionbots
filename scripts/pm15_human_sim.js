@@ -21,11 +21,15 @@ const fs = require('fs'), vm = require('vm');
 const args = process.argv.slice(2);
 const opt = (k, d) => { const i = args.indexOf('--' + k); return i >= 0 ? Number(args[i + 1]) : d; };
 const LAT = opt('latency', 8), STAKE = opt('stake', 20), WARM = opt('warmup', 480), TICK = opt('tick', 1), SIGK = opt('sigk', 1.3), QUIET = args.includes('--quiet'), EVNOW = args.includes('--evsellnow'), ETAWARN = opt('etawarn', 30), EXITBY = opt('exitby', 45);
+// strategy knobs passed straight into the page's settings (S.*), plus sim-side ones
+// (only the knobs given on the command line are overridden; the rest are the page's own defaults, so a plain run tests the page as shipped)
+const KN = {}; for (const [flag, key, map] of [['entryedge', 'entryEdge'], ['buymin', 'buyMinLeft'], ['buymax', 'buyMaxLeft'], ['dog', 'dogBuy', v => v >= 1], ['selledge', 'sellEdge'], ['sellzone', 'sellZone'], ['sellpersist', 'sellPersist']]) { const v = opt(flag, NaN); if (Number.isFinite(v)) KN[key] = map ? map(v) : v; }
+const PERSIST = opt('persist', 0), SIZE = opt('size', 0), STRICT = opt('strict', 20), ONLY = (i => i >= 0 ? args[i + 1] : '')(args.indexOf('--only')), DAYS = (i => i >= 0 ? args[i + 1].split(',') : null)(args.indexOf('--days')), JSONOUT = args.includes('--json');
 const pagePath = args[0], dataPath = args[1];
 const html = fs.readFileSync(pagePath, 'utf8');
 const script = html.slice(html.indexOf('<script>') + 8, html.lastIndexOf('</script>'));
 const DATA = JSON.parse(fs.readFileSync(dataPath, 'utf8'));
-const W = DATA.windows.filter(w => w.print_cov >= 0.98 && w.settle != null).sort((a, b) => a.T0 - b.T0);
+const W = DATA.windows.filter(w => w.print_cov >= 0.98 && w.settle != null && (!DAYS || DAYS.some(d => w.slug.includes(d)))).sort((a, b) => a.T0 - b.T0);
 
 // ---------------- DOM / platform stubs ----------------
 const els = {};
@@ -52,7 +56,7 @@ run(`REC.up = [0, 0.00607, 0.00883, 0.01049, 0.01197, 0.01197, 0.01197, 0.01225,
      REC.dn = [0, 0.00746, 0.00985, 0.01242, 0.013, 0.01445, 0.0169, 0.01932, 0.01984, 0.02081, 0.02081, 0.02118, 0.02118, 0.02119, 0.02323, 0.02553];
      REC.sec = { 5: 0.00313, 10: 0.00357, 15: 0.00481, 30: 0.00588 }; REC.ready = true; REC.at = Date.now(); REC.spans = { m1: 4, m5: 4, m15: 4 };
      REC.bad = { n: 3562, at: 0, med: 0.00011, up: [0.000717, 0.001021, 0.002027, 0.002354, 0.00361], dn: [0.000675, 0.00105, 0.002021, 0.002771, 0.004853] };
-     R.offset = 0; R.offsetSrc = 'live'; R.offsetSd = 0.0; S.latency = ${LAT}; S.sigK = ${SIGK}; S.etaWarnS = ${ETAWARN}; S.exitBy = ${EXITBY};`);
+     R.offset = 0; R.offsetSrc = 'live'; R.offsetSd = 0.0; S.latency = ${LAT}; S.sigK = ${SIGK}; S.etaWarnS = ${ETAWARN}; S.exitBy = ${EXITBY}; Object.assign(S, ${JSON.stringify(KN)});`);
 
 // ---------------- walk-forward bad-minute ladder from the prints ----------------
 const excUp = [], excDn = [];
@@ -76,8 +80,9 @@ function pushLadder() {
 // ---------------- personas ----------------
 const fee = (p) => 0.0695 * p * (1 - p);
 const mkPersona = (name, buys, sellMode) => ({ name, buys, sellMode, cash: 0, pos: null, pending: null, trades: [], rounds: 0, equity: [], sells: { saved: 0, savedUsd: 0, soldWinner: 0, soldWinnerUsd: 0, noBid: 0 }, locks: { held: 0, lost: 0 } });
-const personas = [];
-for (const sm of ['obey', 'ev']) { personas.push(mkPersona('lock/' + sm, ['sure'], sm), mkPersona('ef+lock/' + sm, ['sure', 'ef'], sm), mkPersona('row/' + sm, ['sure', 'ef', 'row'], sm)); }
+let personas = [];
+for (const sm of ['obey', 'ev']) { personas.push(mkPersona('lock/' + sm, ['sure'], sm), mkPersona('ef+lock/' + sm, ['sure', 'ef'], sm), mkPersona('row/' + sm, ['sure', 'ef', 'row'], sm), mkPersona('edge/' + sm, ['sure', 'edge'], sm)); }
+if (ONLY) personas = personas.filter(p => p.name === ONLY);
 const centsOf = s => { const m = /(\d+(?:\.\d+)?)¢/.exec(s || ''); return m ? Number(m[1]) / 100 : NaN; };
 
 // ---------------- accuracy ledgers (persona-independent) ----------------
@@ -93,7 +98,7 @@ for (let wi = 0; wi < W.length; wi++) {
   const w = W[wi];
   const prints = {}; for (const k in w.prints) prints[Number(k)] = w.prints[k];
   const book = {}; for (const k in w.book) book[Number(k)] = w.book[k];
-  const nearestBook = sec => { for (let d = 0; d <= 20; d++) { if (book[sec - d]) return book[sec - d]; if (book[sec + d]) return book[sec + d]; } return null; };
+  const nearestBook = (sec, tol) => { const T = tol == null ? 20 : tol; for (let d = 0; d <= T; d++) { if (book[sec - d]) return book[sec - d]; if (d && book[sec + d]) return book[sec + d]; } return null; };
   // feed the pre-open minute so the first pmA / basis exist
   for (let s = w.T0 - 130; s < w.T0; s++) if (prints[s] > 0) run(`secs.set(${s}, ${prints[s]}); if (${s} < firstSec) firstSec = ${s};`);
   const avg60 = s => { let n = 0, sum = 0; for (let t = s - 59; t <= s; t++) { const v = prints[t]; if (v > 0) { n++; sum += v; } } return n >= 55 ? sum / n : NaN; };
@@ -134,10 +139,10 @@ for (let wi = 0; wi < W.length; wi++) {
         if (!scoring || r <= 0) continue;
         // ---- act on pending orders at their fill time
         if (P.pending && sec >= P.pending.at) {
-          const o = P.pending; P.pending = null; const b = nearestBook(sec);
+          const o = P.pending; P.pending = null; const b = nearestBook(sec, STRICT);   // the fill needs a quote this fresh
           if (o.kind === 'buy' && b) {
             const ask = o.side === 'UP' ? b[0] : (b[2] != null ? 1 - b[2] : null), qty = o.side === 'UP' ? b[1] : b[3];
-            if (ask != null && ask <= o.limit + 1e-9 && qty >= 1) { const sh = Math.min(STAKE / ask, qty); const spent = sh * ask; P.cash -= spent + fee(ask) * sh; P.pos = { side: o.side, price: ask, spent, shares: sh, at: r, key: o.key }; P.boughtThisRound = true; P.trades.push({ w: wi, kind: 'buy', side: o.side, px: ask, sh, left: r, key: o.key }); }
+            if (ask != null && ask <= o.limit + 1e-9 && qty >= 1) { const sh = Math.min((o.stake || STAKE) / ask, qty); const spent = sh * ask; P.cash -= spent + fee(ask) * sh; P.pos = { side: o.side, price: ask, spent, shares: sh, at: r, key: o.key }; P.boughtThisRound = true; P.trades.push({ w: wi, kind: 'buy', side: o.side, px: ask, sh, left: r, key: o.key }); }
             else P.trades.push({ w: wi, kind: 'nofill', side: o.side, left: r, key: o.key, ask });
           } else if (o.kind === 'sell' && P.pos && b) {
             const bid = P.pos.side === 'UP' ? b[2] : (b[0] != null ? 1 - b[0] : null), qty = P.pos.side === 'UP' ? b[3] : b[1];
@@ -151,8 +156,10 @@ for (let wi = 0; wi < W.length; wi++) {
         }
         // ---- read the instruction, decide, queue after latency
         if (P.pending) continue;
+        if (P.pos && key !== 'sellnow' && key !== 'sell') P.sellRun = 0;
         if (P.pos) {
           if (key === 'sellnow' || key === 'sell') {
+            P.sellRun = (P.sellRun || 0) + 1; if (P.sellRun < PERSIST + 1 && key !== 'sellnow') continue;
             const x = run("lastEval.exitCheck('" + P.pos.side + "')");
             const bidNow = Number.isFinite(x.bid) ? x.bid : NaN;
             const go = P.sellMode === 'obey' || (key === 'sellnow' && !EVNOW) || (Number.isFinite(bidNow) && bidNow >= x.sellAbove);
@@ -161,7 +168,8 @@ for (let wi = 0; wi < W.length; wi++) {
           }
         } else if (r > LAT + 2 && !P.boughtThisRound) {
           const fav = E.fav;
-          if (key === 'sure' && P.buys.includes('sure')) P.pending = { kind: 'buy', side: fav, limit: Math.max(centsOf(ntR) || 0, 0.97), at: sec + LAT, key };
+          if (P.buys.includes('edge') && E.entry && E.entry.qty >= 1) P.pending = { kind: 'buy', side: E.entry.side, limit: E.entry.lim, at: sec + LAT, key: 'edge', stake: SIZE ? Math.min(STAKE * 2, STAKE * Math.max(0.5, E.entry.edge / 0.04)) : STAKE };
+          else if (key === 'sure' && P.buys.includes('sure')) P.pending = { kind: 'buy', side: fav, limit: Math.max(centsOf(ntR) || 0, 0.97), at: sec + LAT, key };
           else if (key === 'ef' && P.buys.includes('ef')) P.pending = { kind: 'buy', side: fav, limit: 0.94, at: sec + LAT, key };
           else if (P.buys.includes('row') && (key === 'wait' || key === 'chop' || key === 'ready' || key === 'efcheck')) {
             const lim = centsOf(ntR); const b = nearestBook(sec); const ask = b ? (fav === 'UP' ? b[0] : (b[2] != null ? 1 - b[2] : null)) : null;
@@ -190,6 +198,7 @@ for (let wi = 0; wi < W.length; wi++) {
 // ---------------- report ----------------
 const pct = x => (100 * x).toFixed(1) + '%';
 const usd = x => (x >= 0 ? '+$' : '−$') + Math.abs(x).toFixed(2);
+if (JSONOUT) { const out = {}; for (const P of personas) { let worst = 0, prev = 0; for (const e of P.equity) { worst = Math.min(worst, e - prev); prev = e; } const buys = P.trades.filter(t => t.kind === 'buy').length, losses = P.trades.filter(t => t.kind === 'settle' && !t.won).length; out[P.name] = { rounds: P.rounds, buys, losses, pnl: +P.cash.toFixed(2), worst: +worst.toFixed(2), saved: +P.sells.savedUsd.toFixed(0), gaveUp: +(-P.sells.soldWinnerUsd).toFixed(0) }; } console.log(JSON.stringify(out)); process.exit(0); }
 console.log(`\nPM15 cockpit — human replay   rounds scored ${scored} of ${W.length} (warm-up ${WARM} min)   latency ${LAT} s   stake $${STAKE}   ${W[0].slug.slice(20, 30)} → ${W[W.length - 1].slug.slice(20, 30)}`);
 console.log('page lock record (its own ledger):', JSON.stringify(G('lockStats')));
 console.log('\n== Personas (trade only on DO NEXT; obey = sell at any bid on SELL, ev = sell only when the bid beats holding) ==');

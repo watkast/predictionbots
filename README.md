@@ -47,7 +47,7 @@ the paper / record / backtest / carry / bounty schedules are off, `workflow_disp
 live line of research is **Early Favorite** on Polymarket US 15-min BTC: `research/early_favorite_playbook.md`,
 `scripts/early_favorite_tracker.py` (forward test, `polyus.yml`), `scripts/ef_autobuyer.py` (live-book
 paper fills, `ef-autobuyer.yml`), `research/early_favorite_signal.pine` (the TradingView HUD).
-Live cockpit: `research/pm15_copilot.html` **v2.0** — open it at **https://pm15-relay-worker.machwonder.workers.dev/** (the relay
+Live cockpit: `research/pm15_copilot.html` **v4.0** — open it at **https://pm15-relay-worker.machwonder.workers.dev/** (the relay
 worker serves this file straight from `main`, wrapped with the mobile viewport; Safari → Share → Add to Home Screen). The
 claude.ai artifact copy only shows the layout: that origin blocks outbound connections, so neither Coinbase nor the relay
 is reachable from it. One
@@ -69,7 +69,17 @@ The win chance is the Gaussian settlement model capped by the empirical ladder o
 Coinbase 1-min bars), with volatility floored at 60% of the 5-day typical minute. It keeps a **lock record** on the device
 (every LOCKED call judged against the real settlement; series settlements cross-checked against the API), voice and
 sound alerts, a sell-latency setting, a feed watchdog, and `scripts/pm15_copilot_selftest.js` (a headless DOM-stub run
-of the whole pipeline across four synthetic rounds). The paper bot buys the locked side and sells on SELL.
+of the whole pipeline across four synthetic rounds). The paper bot trades the page's own discount rule.
+**v4 layout:** **DO NOW!** at the top — the instruction, the round clock, a **confidence badge** (always the same number:
+the calibrated chance that the side in question wins at the bell — 100% only when LOCKED) and the trade row (side left,
+price right) — then **DO NEXT** (the next three things in time order: NEXT / THEN / LATER, each with its moment), the
+position bar, the four prices (price to beat, what Polymarket shows, the index, Coinbase; Polymarket colors), the chart,
+and at the bottom **NUMBERS**: every metric in one grid, the field name above its value, one metric per cell, no prose.
+Every box keeps its height while the numbers update. Shipped entry/exit defaults come from the replay grid (fitted on
+Oct 29–30, held up on Oct 31–Nov 2): buy a side only when the ask leaves ≥ 8¢ after fee vs its calibrated chance, favorite
+only, between 14:00 and 5:00 left; harvest-sell only inside the last 5:00 when the bid beats the math by ≥ 5¢; SELL (not
+SELL NOW) must stay true for 2 s before it shows. Over all 224 recorded rounds at $20 a trade: +$922, 0 settlement
+losses, worst round −$18, positive on every day (+$1,721 with the stake scaled by the edge, worst −$36).
 **Replay (2026-11-01):** `scripts/pm15_human_sim.js` runs the page unmodified against recorded rounds and simulates a human
 trading only on DO NEXT; `research/replay/pm15_human_sim_2026-11-01.md` has the results over 224 rounds — LOCKED held
 224/224 but is never buyable (first lock at a median 8 s left, no asks), the odds are calibrated after a ×1.3 volatility
