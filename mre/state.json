@@ -29,7 +29,7 @@
    "side": null,
    "buyPx": null,
    "buyLeft": null,
-   "exit": null,
+   "exit": "no fill",
    "pnl": null
   }
  ],

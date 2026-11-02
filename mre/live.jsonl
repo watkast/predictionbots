@@ -23,3 +23,5 @@
 {"t":1793628679630,"k":"fill","d":{"slug":"cpceth-eth-updown-15m-2026-11-02-1400z","side":"DOWN","sold":0.30000000000000004,"pnl":0.05}}
 {"t":1793628905148,"k":"rest","d":{"slug":"cpceth-eth-updown-15m-2026-11-02-1415z","side":"UP","at":0.25,"id":"DFNST50G12TT"}}
 {"t":1793628905250,"k":"rest","d":{"slug":"cpceth-eth-updown-15m-2026-11-02-1415z","side":"DOWN","at":0.25,"id":"DFNST60G12W4"}}
+{"t":1793629380197,"k":"round","d":{"slug":"cpceth-eth-updown-15m-2026-11-02-1415z","buysPulled":"no entry inside the last 7 min"}}
+{"t":1793629380198,"k":"round","d":{"slug":"cpceth-eth-updown-15m-2026-11-02-1415z","exit":"no fill"}}
