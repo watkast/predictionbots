@@ -679,12 +679,33 @@
    "buyLeft": 845,
    "qty": 6,
    "sold": 0,
+   "exit": "6 lost at the bell",
+   "pnl": -1.65,
+   "sellId": "DG342M9012WQ",
+   "_sold": 0,
+   "_proceeds": 0,
+   "_cost": 1.6500000000000001,
+   "_sell": {
+    "id": "DG342M9012WQ",
+    "qty": 6,
+    "base": 0
+   },
+   "result": "DOWN"
+  },
+  {
+   "T0": 1793685600,
+   "slug": "cpceth-eth-updown-15m-2026-11-03-0600z",
+   "side": "UP",
+   "buyPx": 0.275,
+   "buyLeft": 846,
+   "qty": 6,
+   "sold": 5,
    "exit": null,
    "pnl": null,
-   "sellId": "DG342M9012WQ"
+   "sellId": "DG3CYGZG12WQ"
   }
  ],
  "balanceStart": 17.4956,
- "balanceNow": 80.3656,
+ "balanceNow": 80.9656,
  "errors": 0
 }
