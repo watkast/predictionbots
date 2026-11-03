@@ -1175,9 +1175,21 @@
    "pnl": 0.26,
    "sellId": "DGAEYFVG13CT",
    "sellPx": 0.42287519999999995
+  },
+  {
+   "T0": 1793716200,
+   "slug": "cpceth-eth-updown-15m-2026-11-03-1430z",
+   "side": "DOWN",
+   "buyPx": 0.28500000000000003,
+   "buyLeft": 873,
+   "qty": 4,
+   "sold": 4,
+   "exit": null,
+   "pnl": null,
+   "sellId": "DGAM598013D8"
   }
  ],
  "balanceStart": 17.4956,
- "balanceNow": 74.604,
+ "balanceNow": 74.824,
  "errors": 0
 }
