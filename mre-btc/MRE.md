@@ -1,7 +1,7 @@
 # Mr. E (BTC) — live progress
 
-Market **cpc-btc-updown-15m** · mode **live** · rests 1 share at every cent from 25¢ to 30¢ on both sides until 9:00 left, sells the first fill at 60¢ · started Nov 3, 1:22 AM ET · updated Nov 3, 6:02 PM ET
-Account balance $95.09 at start → $60.04 now (shared with Mr. P)
+Market **cpc-btc-updown-15m** · mode **live** · rests 1 share at every cent from 25¢ to 30¢ on both sides until 9:00 left, sells the first fill at 60¢ · started Nov 3, 1:22 AM ET · updated Nov 3, 6:12 PM ET
+Account balance $95.09 at start → $53.39 now (shared with Mr. P)
 
 **Rounds 62 · fills 54 · sold at 60¢ 40 · held and won 0 · held and lost 11 · no fill 7 · P&L −$1.57** · errors 0
 
