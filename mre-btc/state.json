@@ -472,9 +472,20 @@
    "pnl": 0.47,
    "sellId": "DGBA2N7013D5",
    "sellPx": 0.35379955
+  },
+  {
+   "T0": 1793719800,
+   "slug": "cpc-btc-updown-15m-2026-11-03-1530z",
+   "side": null,
+   "buyPx": null,
+   "buyLeft": null,
+   "qty": 0,
+   "sold": 0,
+   "exit": null,
+   "pnl": null
   }
  ],
  "balanceStart": 95.086,
- "balanceNow": 75.984,
+ "balanceNow": 76.044,
  "errors": 0
 }
