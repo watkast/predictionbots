@@ -1369,13 +1369,25 @@
    "buyPx": 0.275,
    "buyLeft": 710,
    "qty": 6,
+   "sold": 6,
+   "exit": "sold at 39¢ avg",
+   "pnl": 0.71,
+   "sellId": "DGD7TV1013D9",
+   "sellPx": 0.39318794999999995
+  },
+  {
+   "T0": 1793727900,
+   "slug": "cpceth-eth-updown-15m-2026-11-03-1745z",
+   "side": null,
+   "buyPx": null,
+   "buyLeft": null,
+   "qty": 0,
    "sold": 0,
    "exit": null,
-   "pnl": null,
-   "sellId": "DGD7TV1013D9"
+   "pnl": null
   }
  ],
  "balanceStart": 17.4956,
- "balanceNow": 67.504,
+ "balanceNow": 71.564,
  "errors": 0
 }
