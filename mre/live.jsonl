@@ -351,3 +351,13 @@
 {"t":1793678517581,"k":"fill","d":{"slug":"cpceth-eth-updown-15m-2026-11-03-0400z","side":"UP","px":0.25,"qty":1,"heldTotal":11,"of":11}}
 {"t":1793678517955,"k":"rest","d":{"slug":"cpceth-eth-updown-15m-2026-11-03-0400z","side":"UP","sellAt":0.45,"qty":11,"id":"DG1MAN5012WK"}}
 {"t":1793678760773,"k":"round","d":{"slug":"cpceth-eth-updown-15m-2026-11-03-0400z","buysPulled":"no entry inside the last 9 min","held":11}}
+{"t":1793679225919,"k":"fill","d":{"slug":"cpceth-eth-updown-15m-2026-11-03-0400z","side":"UP","sold":0.45,"qty":11,"soldTotal":11,"of":11}}
+{"t":1793679225919,"k":"round","d":{"slug":"cpceth-eth-updown-15m-2026-11-03-0400z","exit":"sold at 45¢","qty":11,"pnl":2.2}}
+{"t":1793679308403,"k":"ladder","d":{"slug":"cpceth-eth-updown-15m-2026-11-03-0415z","ids":["DG1TAVT012VP","DG1TAX5012VC","DG1TAY8012W4","DG1TAZB032WQ","DG1TB0EG12VC","DG1TB1T012WA","DG1TB30G12VX","DG1TB40G12TT","DG1TB5AG12WA","DG1TB6SG12VP","DG1TB7WG12WK","DG1TB98G12VP","DG1TBAAG12TT","DG1TBBEG52VX","DG1TBCH012WA","DG1TBDNG12WE","DG1TBEVG12VX","DG1TBFW012WK","DG1TBGVG12WA","DG1TBHY012W4","DG1TBK6012WK","DG1TBM7012VP"]}}
+{"t":1793679308404,"k":"rest","d":{"slug":"cpceth-eth-updown-15m-2026-11-03-0415z","side":"BOTH","at":0.3,"ladder":"20–30¢","rungs":11,"qty":1}}
+{"t":1793679391483,"k":"fill","d":{"slug":"cpceth-eth-updown-15m-2026-11-03-0415z","side":"DOWN","px":0.295,"qty":2,"heldTotal":2,"of":11}}
+{"t":1793679391592,"k":"rest","d":{"slug":"cpceth-eth-updown-15m-2026-11-03-0415z","side":"DOWN","sellAt":0.45,"qty":2,"id":"DG1TZYFG12VX"}}
+{"t":1793679394781,"k":"fill","d":{"slug":"cpceth-eth-updown-15m-2026-11-03-0415z","side":"DOWN","px":0.29,"qty":1,"heldTotal":3,"of":11}}
+{"t":1793679395131,"k":"rest","d":{"slug":"cpceth-eth-updown-15m-2026-11-03-0415z","side":"DOWN","sellAt":0.45,"qty":3,"id":"DG1V0T4012VX"}}
+{"t":1793679455299,"k":"fill","d":{"slug":"cpceth-eth-updown-15m-2026-11-03-0415z","side":"DOWN","px":0.28,"qty":2,"heldTotal":5,"of":11}}
+{"t":1793679455667,"k":"rest","d":{"slug":"cpceth-eth-updown-15m-2026-11-03-0415z","side":"DOWN","sellAt":0.45,"qty":5,"id":"DG1VFK0012WA"}}
