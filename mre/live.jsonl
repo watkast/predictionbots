@@ -389,3 +389,6 @@
 {"t":1793681213801,"k":"rest","d":{"slug":"cpceth-eth-updown-15m-2026-11-03-0445z","side":"DOWN","sellAt":0.45,"qty":5,"id":"DG28WTDG12WP"}}
 {"t":1793681241326,"k":"fill","d":{"slug":"cpceth-eth-updown-15m-2026-11-03-0445z","side":"DOWN","px":0.265,"qty":3,"heldTotal":8,"of":11}}
 {"t":1793681241664,"k":"rest","d":{"slug":"cpceth-eth-updown-15m-2026-11-03-0445z","side":"DOWN","sellAt":0.45,"qty":8,"id":"DG293M4G32WK"}}
+{"t":1793681456808,"k":"fill","d":{"slug":"cpceth-eth-updown-15m-2026-11-03-0445z","side":"DOWN","px":0.255,"qty":2,"heldTotal":10,"of":11}}
+{"t":1793681457260,"k":"rest","d":{"slug":"cpceth-eth-updown-15m-2026-11-03-0445z","side":"DOWN","sellAt":0.45,"qty":10,"id":"DG2AR8EG12WK"}}
+{"t":1793681460707,"k":"round","d":{"slug":"cpceth-eth-updown-15m-2026-11-03-0445z","buysPulled":"no entry inside the last 9 min","held":10}}

@@ -637,16 +637,16 @@
    "T0": 1793681100,
    "slug": "cpceth-eth-updown-15m-2026-11-03-0445z",
    "side": "DOWN",
-   "buyPx": 0.265,
+   "buyPx": 0.255,
    "buyLeft": 794,
-   "qty": 8,
+   "qty": 10,
    "sold": 0,
    "exit": null,
    "pnl": null,
-   "sellId": "DG293M4G32WK"
+   "sellId": "DG2AR8EG12WK"
   }
  ],
  "balanceStart": 17.4956,
- "balanceNow": 88.8156,
+ "balanceNow": 92.6656,
  "errors": 0
 }
