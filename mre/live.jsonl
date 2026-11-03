@@ -484,3 +484,4 @@
 {"t":1793690248989,"k":"rest","d":{"slug":"cpceth-eth-updown-15m-2026-11-03-0715z","side":"DOWN","sellAt":0.6,"qty":4,"id":"DG4DTNY013D9"}}
 {"t":1793690251909,"k":"fill","d":{"slug":"cpceth-eth-updown-15m-2026-11-03-0715z","side":"DOWN","px":0.275,"qty":2,"heldTotal":6,"of":6}}
 {"t":1793690251983,"k":"rest","d":{"slug":"cpceth-eth-updown-15m-2026-11-03-0715z","side":"DOWN","sellAt":0.6,"qty":6,"id":"DG4DVDHG13D1"}}
+{"t":1793690460518,"k":"round","d":{"slug":"cpceth-eth-updown-15m-2026-11-03-0715z","buysPulled":"no entry inside the last 9 min","held":6}}
