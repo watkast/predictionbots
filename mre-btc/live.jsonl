@@ -70,3 +70,8 @@
 {"t":1793692978463,"k":"fill","d":{"slug":"cpc-btc-updown-15m-2026-11-03-0800z","side":"UP","px":0.275,"qty":1,"heldTotal":6,"of":6}}
 {"t":1793692978774,"k":"rest","d":{"slug":"cpc-btc-updown-15m-2026-11-03-0800z","side":"UP","sellAt":0.6,"qty":6,"id":"DG52N4BG13D8"}}
 {"t":1793693162023,"k":"round","d":{"slug":"cpc-btc-updown-15m-2026-11-03-0800z","buysPulled":"no entry inside the last 9 min","held":6}}
+{"t":1793694139617,"k":"start","d":{"mode":"live","market":"cpc-btc-updown-15m-","buy":0.3,"ladder":[0.25,0.3],"sell":0.6,"qty":1,"noBuyLeft":540,"node":"v22.23.4"}}
+{"t":1793694140232,"k":"balance","d":{"cash":79.7406,"total":224.0406}}
+{"t":1793694140233,"k":"round","d":{"slug":"cpc-btc-updown-15m-2026-11-03-0815z","skipped":"joined mid-round — waiting for the next open"}}
+{"t":1793694606673,"k":"ladder","d":{"slug":"cpc-btc-updown-15m-2026-11-03-0830z","ids":["DG5F26XG13D1","DG5F27YG13CT","DG5F28YG13D6","DG5F29X013D6","DG5F2AWG13D5","DG5F2BWG13D9","DG5F2CVG13D3","DG5F2E8G13D8","DG5F2FA013D6","DG5F2G5013D6","DG5F2H3G13CT","DG5F2JA013D7"]}}
+{"t":1793694606674,"k":"rest","d":{"slug":"cpc-btc-updown-15m-2026-11-03-0830z","side":"BOTH","at":0.3,"ladder":"25–30¢","rungs":6,"qty":1}}

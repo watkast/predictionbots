@@ -111,9 +111,20 @@
    "exit": null,
    "pnl": null,
    "sellId": "DG52N4BG13D8"
+  },
+  {
+   "T0": 1793694600,
+   "slug": "cpc-btc-updown-15m-2026-11-03-0830z",
+   "side": null,
+   "buyPx": null,
+   "buyLeft": null,
+   "qty": 0,
+   "sold": 0,
+   "exit": null,
+   "pnl": null
   }
  ],
  "balanceStart": 95.086,
- "balanceNow": 218.8801,
+ "balanceNow": 119.4856,
  "errors": 0
 }
