@@ -221,9 +221,21 @@
    "pnl": 0.47,
    "sellId": "DG70DA8013CT",
    "sellPx": 0.35379955
+  },
+  {
+   "T0": 1793701800,
+   "slug": "cpc-btc-updown-15m-2026-11-03-1030z",
+   "side": "UP",
+   "buyPx": 0.295,
+   "buyLeft": 728,
+   "qty": 2,
+   "sold": 0,
+   "exit": null,
+   "pnl": null,
+   "sellId": "DG778VQ013D6"
   }
  ],
  "balanceStart": 95.086,
- "balanceNow": 95.124,
+ "balanceNow": 91.074,
  "errors": 0
 }
