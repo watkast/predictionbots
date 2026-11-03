@@ -891,12 +891,32 @@
    "buyLeft": 646,
    "qty": 6,
    "sold": 2,
-   "exit": null,
-   "pnl": null,
-   "sellId": "DG5Z2E9013D8"
+   "exit": "2 sold at 60¢ + 4 lost at the bell",
+   "pnl": -0.9,
+   "sellId": "DG5Z2E9013D8",
+   "_sold": 2,
+   "_proceeds": 0.7469319,
+   "_cost": 1.6500000000000001,
+   "_sell": {
+    "id": "DG5Z2E9013D8",
+    "qty": 4,
+    "base": 2
+   },
+   "result": "UP"
+  },
+  {
+   "T0": 1793697300,
+   "slug": "cpceth-eth-updown-15m-2026-11-03-0915z",
+   "side": null,
+   "buyPx": null,
+   "buyLeft": null,
+   "qty": 0,
+   "sold": 0,
+   "exit": "no fill",
+   "pnl": null
   }
  ],
  "balanceStart": 17.4956,
- "balanceNow": 117.714,
+ "balanceNow": 107.714,
  "errors": 0
 }
