@@ -632,3 +632,5 @@
 {"t":1793701409454,"k":"round","d":{"slug":"cpceth-eth-updown-15m-2026-11-03-1015z","exit":"sold at 32¢ avg","qty":6,"pnl":0.3}}
 {"t":1793701811597,"k":"ladder","d":{"slug":"cpceth-eth-updown-15m-2026-11-03-1030z","ids":["DG7600E013CZ","DG760DC013D7","DG760TR013D6","DG7617WG13D9","DG76192G13D8","DG761AC013D8","DG761BN013CT","DG761CX053D1","DG761E4G13D8","DG761F9013D7","DG761GJG13D7","DG761JHG13D5"]}}
 {"t":1793701811598,"k":"rest","d":{"slug":"cpceth-eth-updown-15m-2026-11-03-1030z","side":"BOTH","at":0.3,"ladder":"25–30¢","rungs":6,"qty":1}}
+{"t":1793702164614,"k":"round","d":{"slug":"cpceth-eth-updown-15m-2026-11-03-1030z","buysPulled":"no entry inside the last 9 min","held":0}}
+{"t":1793702164614,"k":"round","d":{"slug":"cpceth-eth-updown-15m-2026-11-03-1030z","exit":"no fill"}}

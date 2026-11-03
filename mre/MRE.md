@@ -1,13 +1,13 @@
 # Mr. E — live progress
 
-Market **cpceth-eth-updown-15m** · mode **live** · rests 1 share at every cent from 25¢ to 30¢ on both sides until 9:00 left, sells the first fill at 60¢ · started Nov 2, 8:45 AM ET · updated Nov 3, 5:32 AM ET
-Account balance $17.50 at start → $90.48 now (shared with Mr. P)
+Market **cpceth-eth-updown-15m** · mode **live** · rests 1 share at every cent from 25¢ to 30¢ on both sides until 9:00 left, sells the first fill at 60¢ · started Nov 2, 8:45 AM ET · updated Nov 3, 5:42 AM ET
+Account balance $17.50 at start → $92.04 now (shared with Mr. P)
 
-**Rounds 80 · fills 74 · sold at 60¢ 44 · held and won 0 · held and lost 26 · no fill 3 · P&L +$1.94** · errors 0
+**Rounds 80 · fills 74 · sold at 60¢ 44 · held and won 0 · held and lost 26 · no fill 4 · P&L +$1.94** · errors 0
 
 | round (ET) | side | bought | exit | P&L |
 |---|---|---|---|---|
-| Nov 3, 5:30 AM | — | — | open | — |
+| Nov 3, 5:30 AM | — | — | no fill | — |
 | Nov 3, 5:15 AM | DOWN ×6 | 28¢ at 14:30 | sold at 32¢ avg | +$0.30 |
 | Nov 3, 5:00 AM | UP ×2 | 30¢ at 12:26 | sold at 38¢ avg | +$0.18 |
 | Nov 3, 4:45 AM | UP ×6 | 28¢ at 9:34 | sold at 36¢ avg | +$0.53 |
