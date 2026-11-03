@@ -8,17 +8,22 @@
 //
 //   node scripts/mre_live.js            # live (POLYMARKET_KEY_ID / POLYMARKET_SECRET_KEY)
 //   node scripts/mre_live.js --dry      # logs what it would do, places nothing
-// Env: MRE_DIR (log + MRE.md, default ./mre), MRE_MINUTES (stop after N minutes), MRE_LADDER (default 0.25:0.30, 1¢ rungs), MRE_SELL (0.45), MRE_QTY (shares per rung, 1), MRE_NOBUY_LEFT (540 s),
+// Env: MRE_DIR (log + MRE.md, default ./mre), MRE_MINUTES (stop after N minutes), MRE_LADDER (default 0.25:0.30, 1¢ rungs), MRE_SELL (0.60, the resting cap), MRE_EXIT_MIN (0.02), MRE_EXIT_STALL (10 s), MRE_EXIT_DROP (0.02), MRE_QTY (shares per rung, 1), MRE_NOBUY_LEFT (540 s),
 //      MRE_SLUG_PREFIX (default cpceth-eth-updown-15m- : the ETH 15-minute market; cpc-btc-updown-15m- would be BTC)
 'use strict';
 const fs = require('fs'), path = require('path'), crypto = require('crypto');
 const DRY = process.argv.includes('--dry');
 const DIR = process.env.MRE_DIR || 'mre'; fs.mkdirSync(DIR, { recursive: true });
-const SELL = Number(process.env.MRE_SELL || 0.45), QTY = Number(process.env.MRE_QTY || 1);          // QTY = shares per rung
+const SELL = Number(process.env.MRE_SELL || 0.60), QTY = Number(process.env.MRE_QTY || 1);          // QTY = shares per rung
 // the buy ladder: one QTY-share limit at every cent from LO to HI on both sides (MRE_LADDER "lo:hi", default 20¢–30¢; "0.25:0.25" = one price)
 const [LO, HI] = String(process.env.MRE_LADDER || '0.25:0.30').split(':').map(Number);
 const RUNGS = []; for (let c = Math.round(HI * 100); c >= Math.round(LO * 100); c--) RUNGS.push(c / 100);   // highest first: the price falls into them in this order
 const BUY = HI;
+// the dynamic exit: once the bid pays more than the average cost + EXIT_MIN after the taker fee, track its high; the first time it
+// stops climbing (no new high for EXIT_STALL s) or slips EXIT_DROP under the high, sell everything at the bid. SELL stays resting
+// as a cap for a straight run-up (a maker fill, no fee).
+const EXIT_MIN = Number(process.env.MRE_EXIT_MIN || 0.02), EXIT_STALL = Number(process.env.MRE_EXIT_STALL || 10), EXIT_DROP = Number(process.env.MRE_EXIT_DROP || 0.02);
+const FEE = p => 0.0695 * p * (1 - p);
 const MINUTES = Number(process.env.MRE_MINUTES || 0) || 0, NOBUY_LEFT = Number(process.env.MRE_NOBUY_LEFT || 540);
 const KEY_ID = process.env.POLYMARKET_KEY_ID || '', SECRET = process.env.POLYMARKET_SECRET_KEY || '';
 const API = 'https://api.polymarket.us', GATEWAY = 'https://gateway.polymarket.us', ROUND = 900;
@@ -41,7 +46,7 @@ const save = () => { try { fs.writeFileSync(statePath, JSON.stringify(state, nul
 const et = ms => new Intl.DateTimeFormat('en-US', { timeZone: 'America/New_York', month: 'short', day: 'numeric', hour: 'numeric', minute: '2-digit' }).format(new Date(ms));
 function report() {
   const R = state.rounds, closed = R.filter(r => r.pnl != null), pnl = closed.reduce((s, r) => s + r.pnl, 0);
-  const sold = closed.filter(r => r.exit === 'sold at ' + Math.round(SELL * 100) + '¢').length, won = closed.filter(r => / won at the bell$/.test(r.exit) || r.exit === 'won at the bell').length, lost = closed.filter(r => / lost at the bell$/.test(r.exit) || r.exit === 'lost at the bell').length, none = R.filter(r => r.exit === 'no fill').length;
+  const sold = closed.filter(r => /^sold at/.test(r.exit || '')).length, won = closed.filter(r => / won at the bell$/.test(r.exit) || r.exit === 'won at the bell').length, lost = closed.filter(r => / lost at the bell$/.test(r.exit) || r.exit === 'lost at the bell').length, none = R.filter(r => r.exit === 'no fill').length;
   const lines = ['# Mr. E' + (PREFIX.includes('btc') ? ' (BTC)' : '') + ' — live progress', '', `Market **${PREFIX.replace(/-$/, '')}** · mode **${state.mode}** · rests ${QTY} share at every cent from ${Math.round(LO * 100)}¢ to ${Math.round(HI * 100)}¢ on both sides until ${Math.round(NOBUY_LEFT / 60)}:00 left, sells the first fill at ${Math.round(SELL * 100)}¢ · started ${et(state.startedAt)} ET · updated ${et(Date.now())} ET`,
     state.balanceStart != null ? `Account balance $${Number(state.balanceStart).toFixed(2)} at start → $${Number(state.balanceNow ?? state.balanceStart).toFixed(2)} now (shared with Mr. P)` : '', '',
     `**Rounds ${R.length} · fills ${R.filter(r => r.buyPx != null).length} · sold at ${Math.round(SELL * 100)}¢ ${sold} · held and won ${won} · held and lost ${lost} · no fill ${none} · P&L ${pnl >= 0 ? '+' : '−'}$${Math.abs(pnl).toFixed(2)}** · errors ${state.errors}`, '',
@@ -91,6 +96,7 @@ async function playRound(T0) {
   let side = null, sold = 0, proceeds = 0, sell = null, buysPulled = false, lastSweep = 0;
   const bought = () => side ? lad[side].reduce((a, r) => a + r.cum, 0) : 0, cost = () => side ? lad[side].reduce((a, r) => a + r.cum * r.px, 0) : 0;
   const check = async (sd, r) => { let f; try { f = await filledOf(r.id); } catch (e) { return 0; } const add = f.qty - r.cum; if (add > 0) { r.cum = f.qty; if (Number.isFinite(f.px) && f.px > 0) r.px = own(sd, f.px); } if (r.cum >= QTY - 1e-9 || /CANCEL|REJECT|EXPIRE/.test(f.state || '')) r.done = true; return add > 0 ? add : 0; };
+  let peak = null, peakAt = 0;
   const readSell = async () => { if (!sell) return; let f; try { f = await filledOf(sell.id); } catch (e) { return; } const newQ = f.qty - (sold - sell.base); if (newQ > 0) { proceeds += newQ * own(side, f.px); sold += newQ; rec.sold = sold; log('fill', { slug, side, sold: own(side, f.px), qty: newQ, soldTotal: +sold.toFixed(2), of: +bought().toFixed(2) }); } };
   const placeSell = async () => { const q = +(bought() - sold).toFixed(4); if (q <= 0) return; try { const res = await ex.place({ ...sellOrder(slug, side), quantity: q }); sell = { id: res.id || (res.order && res.order.id), qty: q, base: sold }; rec.sellId = sell.id; log('rest', { slug, side, sellAt: SELL, qty: q, id: sell.id }); } catch (e) { state.errors++; log('error', { placeSell: e.message.slice(0, 300) }); } };
   const cancelLadder = async sd => { for (const r of lad[sd]) if (!r.done) { await ex.cancel(r.id, slug); await check(sd, r); r.done = true; } };
@@ -116,8 +122,26 @@ async function playRound(T0) {
       if (sell) { await ex.cancel(sell.id, slug); await readSell(); sell = null; }   // re-size the sell to everything held
       await placeSell(); save(); }
     await readSell();
+    const held = +(bought() - sold).toFixed(4);
+    if (held > 0) {   // the dynamic exit
+      const bk = await ex.book(slug); const bid = bk ? (side === 'UP' ? bk.upBid : (Number.isFinite(bk.upAsk) ? +(1 - bk.upAsk).toFixed(2) : NaN)) : NaN;
+      const avg = cost() / bought();
+      if (Number.isFinite(bid) && bid - FEE(bid) >= avg + EXIT_MIN) {
+        if (peak == null || bid > peak + 1e-9) { if (peak == null) log('exit', { slug, side, armed: bid, avg: +avg.toFixed(3) }); peak = bid; peakAt = Date.now(); }
+        else if (Date.now() - peakAt >= EXIT_STALL * 1000 || bid <= peak - EXIT_DROP + 1e-9) {
+          if (sell) { await ex.cancel(sell.id, slug); await readSell(); sell = null; }
+          const q = +(bought() - sold).toFixed(4);
+          if (q > 0) { try { const res = await ex.place({ ...sellOrder(slug, side), price: money(side === 'UP' ? bid : 1 - bid), quantity: q, tif: 'TIME_IN_FORCE_IMMEDIATE_OR_CANCEL' });
+              const id = res.id || (res.order && res.order.id); await sleep(400); let f = null; try { f = await filledOf(id); } catch (e) {}
+              const fq = f ? f.qty : 0; const fpx = f && Number.isFinite(f.px) ? own(side, f.px) : bid;
+              if (fq > 0) { proceeds += fq * (fpx - FEE(fpx)); sold += fq; rec.sold = sold; }
+              log('fill', { slug, side, sold: fpx, qty: fq, soldTotal: +sold.toFixed(2), of: +bought().toFixed(2), exit: 'stall', peak, bid }); } catch (e) { state.errors++; log('error', { exitSell: e.message.slice(0, 300) }); } }
+          if (+(bought() - sold).toFixed(4) > 0) await placeSell();   // whatever did not fill goes back on the cap
+          peak = null; save(); }
+      } else if (peak != null) peak = null;   // back under water: wait for the next rise
+    }
     const ladderOpen = lad[side].some(r => !r.done);
-    if (b > 0 && sold >= b - 1e-9 && !ladderOpen) { rec.exit = 'sold at ' + Math.round(SELL * 100) + '¢'; rec.sellPx = proceeds / sold; rec.pnl = +(proceeds - cost()).toFixed(2); live.held = null; live.resting = []; log('round', { slug, exit: rec.exit, qty: +sold.toFixed(2), pnl: rec.pnl }); save(); return; }
+    if (b > 0 && sold >= b - 1e-9 && !ladderOpen) { rec.exit = 'sold at ' + Math.round(100 * proceeds / sold) + '¢ avg'; rec.sellPx = proceeds / sold; rec.pnl = +(proceeds - cost()).toFixed(2); live.held = null; live.resting = []; log('round', { slug, exit: rec.exit, qty: +sold.toFixed(2), pnl: rec.pnl }); save(); return; }
   }
   for (const sd of ['UP', 'DOWN']) await cancelLadder(sd);
   const b = bought();
