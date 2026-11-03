@@ -488,14 +488,14 @@
   {
    "T0": 1793670300,
    "slug": "cpceth-eth-updown-15m-2026-11-03-0145z",
-   "side": null,
-   "buyPx": null,
-   "buyLeft": null,
+   "side": "DOWN",
+   "buyPx": 0.30000000000000004,
+   "buyLeft": 717,
    "exit": null,
    "pnl": null
   }
  ],
  "balanceStart": 17.4956,
- "balanceNow": 121.3056,
+ "balanceNow": 117.5056,
  "errors": 0
 }
