@@ -741,13 +741,26 @@
    "buyPx": 0.23166666666666666,
    "buyLeft": 891,
    "qty": 6,
+   "sold": 6,
+   "exit": "sold at 45¢",
+   "pnl": 1.31,
+   "sellId": "DG3R576G12WQ",
+   "sellPx": 0.44999999999999996
+  },
+  {
+   "T0": 1793688300,
+   "slug": "cpceth-eth-updown-15m-2026-11-03-0645z",
+   "side": "UP",
+   "buyPx": 0.275,
+   "buyLeft": 849,
+   "qty": 6,
    "sold": 0,
    "exit": null,
    "pnl": null,
-   "sellId": "DG3R576G12WQ"
+   "sellId": "DG3ZEQ7012WA"
   }
  ],
  "balanceStart": 17.4956,
- "balanceNow": 117.8056,
+ "balanceNow": 95.2056,
  "errors": 0
 }
