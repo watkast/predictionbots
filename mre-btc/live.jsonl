@@ -535,3 +535,13 @@
 {"t":1793729706992,"k":"ladder","d":{"slug":"cpc-btc-updown-15m-2026-11-03-1815z","ids":["DGDTVJA013CZ","DGDTVKD013D5","DGDTVMN013D8","DGDTVNZ013D9","DGDTVQTG13CT","DGDTVRVG13CX","DGDTVSVG53D5","DGDTVTZ013CX","DGDTVW8053D8","DGDTVXBG13D5","DGDTVYF013CT","DGDTVZGG13D5"]}}
 {"t":1793729706992,"k":"rest","d":{"slug":"cpc-btc-updown-15m-2026-11-03-1815z","side":"BOTH","at":0.3,"ladder":"25–30¢","rungs":6,"qty":1}}
 {"t":1793729730457,"k":"settle","d":{"slug":"cpc-btc-updown-15m-2026-11-03-1800z","result":"UP","side":"DOWN","qty":1,"pnl":-0.03}}
+{"t":1793729993185,"k":"fill","d":{"slug":"cpc-btc-updown-15m-2026-11-03-1815z","side":"UP","px":0.3,"qty":1,"heldTotal":1,"of":6}}
+{"t":1793729993285,"k":"rest","d":{"slug":"cpc-btc-updown-15m-2026-11-03-1815z","side":"UP","sellAt":0.6,"qty":1,"id":"DGDX1W7013D6"}}
+{"t":1793730008606,"k":"fill","d":{"slug":"cpc-btc-updown-15m-2026-11-03-1815z","side":"UP","px":0.285,"qty":1,"heldTotal":2,"of":6}}
+{"t":1793730008975,"k":"rest","d":{"slug":"cpc-btc-updown-15m-2026-11-03-1815z","side":"UP","sellAt":0.6,"qty":2,"id":"DGDX5PS013D9"}}
+{"t":1793730011880,"k":"fill","d":{"slug":"cpc-btc-updown-15m-2026-11-03-1815z","side":"UP","px":0.285,"qty":2,"heldTotal":4,"of":6}}
+{"t":1793730012221,"k":"rest","d":{"slug":"cpc-btc-updown-15m-2026-11-03-1815z","side":"UP","sellAt":0.6,"qty":4,"id":"DGDX6G4G13D3"}}
+{"t":1793730023367,"k":"exit","d":{"slug":"cpc-btc-updown-15m-2026-11-03-1815z","side":"UP","armed":0.37,"avg":0.285,"src":"ws"}}
+{"t":1793730044600,"k":"fill","d":{"slug":"cpc-btc-updown-15m-2026-11-03-1815z","side":"UP","sold":0.44,"qty":4,"soldTotal":4,"of":4,"exit":"stall","peak":0.48,"bid":0.43}}
+{"t":1793730062116,"k":"round","d":{"slug":"cpc-btc-updown-15m-2026-11-03-1815z","buysPulled":"no entry inside the last 9 min","held":4}}
+{"t":1793730062116,"k":"round","d":{"slug":"cpc-btc-updown-15m-2026-11-03-1815z","exit":"sold at 42¢ avg","qty":4,"pnl":0.55}}
