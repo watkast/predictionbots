@@ -903,17 +903,19 @@
   {
    "T0": 1793748600,
    "slug": "cpc-btc-updown-15m-2026-11-03-2330z",
-   "side": null,
-   "buyPx": null,
-   "buyLeft": null,
-   "qty": 0,
-   "sold": 0,
-   "exit": null,
-   "pnl": null,
-   "momentum": "UP"
+   "side": "UP",
+   "buyPx": 0.275,
+   "buyLeft": 647,
+   "qty": 6,
+   "sold": 6,
+   "exit": "sold at 27¢ avg",
+   "pnl": -0.05,
+   "momentum": "UP",
+   "sellId": "DGJD24E013CX",
+   "sellPx": 0.2659888
   }
  ],
  "balanceStart": 95.086,
- "balanceNow": 62.866,
+ "balanceNow": 87.006,
  "errors": 0
 }
