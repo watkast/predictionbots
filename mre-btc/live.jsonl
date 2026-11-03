@@ -660,3 +660,14 @@
 {"t":1793740781160,"k":"start","d":{"mode":"live","market":"cpc-btc-updown-15m-","buy":0.3,"ladder":[0.25,0.3],"sell":0.6,"qty":1,"noBuyLeft":540,"node":"v22.23.4"}}
 {"t":1793740781457,"k":"balance","d":{"cash":69.374,"total":75.374}}
 {"t":1793740781458,"k":"round","d":{"slug":"cpc-btc-updown-15m-2026-11-03-2115z","skipped":"joined mid-round — waiting for the next open"}}
+{"t":1793741407021,"k":"ladder","d":{"slug":"cpc-btc-updown-15m-2026-11-03-2130z","ids":["DGGM402G73D7","DGGM41Y013CT","DGGM432013CX","DGGM467G13D1","DGGM475G13D5","DGGM481G13CT","DGGM492073D6","DGGM49Z013D5","DGGM4AZ053D9","DGGM4BVG13D1","DGGM4D4013CZ","DGGM4E1G13D5"]}}
+{"t":1793741407021,"k":"rest","d":{"slug":"cpc-btc-updown-15m-2026-11-03-2130z","side":"BOTH","at":0.3,"ladder":"25–30¢","rungs":6,"qty":1}}
+{"t":1793741554820,"k":"fill","d":{"slug":"cpc-btc-updown-15m-2026-11-03-2130z","side":"DOWN","px":0.3,"qty":1,"heldTotal":1,"of":6}}
+{"t":1793741554909,"k":"rest","d":{"slug":"cpc-btc-updown-15m-2026-11-03-2130z","side":"DOWN","sellAt":0.6,"qty":1,"id":"DGGN8HDG13CX"}}
+{"t":1793741568725,"k":"fill","d":{"slug":"cpc-btc-updown-15m-2026-11-03-2130z","side":"DOWN","px":0.29,"qty":2,"heldTotal":3,"of":6}}
+{"t":1793741569008,"k":"rest","d":{"slug":"cpc-btc-updown-15m-2026-11-03-2130z","side":"DOWN","sellAt":0.6,"qty":3,"id":"DGGNBZJG13CT"}}
+{"t":1793741588354,"k":"fill","d":{"slug":"cpc-btc-updown-15m-2026-11-03-2130z","side":"DOWN","px":0.275,"qty":3,"heldTotal":6,"of":6}}
+{"t":1793741588633,"k":"rest","d":{"slug":"cpc-btc-updown-15m-2026-11-03-2130z","side":"DOWN","sellAt":0.6,"qty":6,"id":"DGGNGRX013CX"}}
+{"t":1793741730138,"k":"exit","d":{"slug":"cpc-btc-updown-15m-2026-11-03-2130z","side":"DOWN","armed":0.35,"avg":0.275,"src":"ws"}}
+{"t":1793741734067,"k":"fill","d":{"slug":"cpc-btc-updown-15m-2026-11-03-2130z","side":"DOWN","sold":0.29000000000000004,"qty":6,"soldTotal":6,"of":6,"exit":"stall","peak":0.36,"bid":0.29,"slip":0.01}}
+{"t":1793741735820,"k":"round","d":{"slug":"cpc-btc-updown-15m-2026-11-03-2130z","exit":"sold at 28¢ avg","qty":6,"pnl":0}}
