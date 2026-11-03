@@ -8,14 +8,18 @@
 //
 //   node scripts/mre_live.js            # live (POLYMARKET_KEY_ID / POLYMARKET_SECRET_KEY)
 //   node scripts/mre_live.js --dry      # logs what it would do, places nothing
-// Env: MRE_DIR (log + MRE.md, default ./mre), MRE_MINUTES (stop after N minutes), MRE_BUY (default 0.25), MRE_SELL (0.45), MRE_QTY (10; 1 until Nov 2, 7:15 PM MT), MRE_NOBUY_LEFT (420 s),
+// Env: MRE_DIR (log + MRE.md, default ./mre), MRE_MINUTES (stop after N minutes), MRE_LADDER (default 0.20:0.30, 1¢ rungs), MRE_SELL (0.45), MRE_QTY (shares per rung, 1), MRE_NOBUY_LEFT (540 s),
 //      MRE_SLUG_PREFIX (default cpceth-eth-updown-15m- : the ETH 15-minute market; cpc-btc-updown-15m- would be BTC)
 'use strict';
 const fs = require('fs'), path = require('path'), crypto = require('crypto');
 const DRY = process.argv.includes('--dry');
 const DIR = process.env.MRE_DIR || 'mre'; fs.mkdirSync(DIR, { recursive: true });
-const BUY = Number(process.env.MRE_BUY || 0.25), SELL = Number(process.env.MRE_SELL || 0.45), QTY = Number(process.env.MRE_QTY || 10);
-const MINUTES = Number(process.env.MRE_MINUTES || 0) || 0, NOBUY_LEFT = Number(process.env.MRE_NOBUY_LEFT || 420);
+const SELL = Number(process.env.MRE_SELL || 0.45), QTY = Number(process.env.MRE_QTY || 1);          // QTY = shares per rung
+// the buy ladder: one QTY-share limit at every cent from LO to HI on both sides (MRE_LADDER "lo:hi", default 20¢–30¢; "0.25:0.25" = one price)
+const [LO, HI] = String(process.env.MRE_LADDER || '0.20:0.30').split(':').map(Number);
+const RUNGS = []; for (let c = Math.round(HI * 100); c >= Math.round(LO * 100); c--) RUNGS.push(c / 100);   // highest first: the price falls into them in this order
+const BUY = HI;
+const MINUTES = Number(process.env.MRE_MINUTES || 0) || 0, NOBUY_LEFT = Number(process.env.MRE_NOBUY_LEFT || 540);
 const KEY_ID = process.env.POLYMARKET_KEY_ID || '', SECRET = process.env.POLYMARKET_SECRET_KEY || '';
 const API = 'https://api.polymarket.us', GATEWAY = 'https://gateway.polymarket.us', ROUND = 900;
 const PREFIX = process.env.MRE_SLUG_PREFIX || 'cpceth-eth-updown-15m-';
@@ -38,7 +42,7 @@ const et = ms => new Intl.DateTimeFormat('en-US', { timeZone: 'America/New_York'
 function report() {
   const R = state.rounds, closed = R.filter(r => r.pnl != null), pnl = closed.reduce((s, r) => s + r.pnl, 0);
   const sold = closed.filter(r => r.exit === 'sold at ' + Math.round(SELL * 100) + '¢').length, won = closed.filter(r => / won at the bell$/.test(r.exit) || r.exit === 'won at the bell').length, lost = closed.filter(r => / lost at the bell$/.test(r.exit) || r.exit === 'lost at the bell').length, none = R.filter(r => r.exit === 'no fill').length;
-  const lines = ['# Mr. E — live progress', '', `Market **${PREFIX.replace(/-$/, '')}** · mode **${state.mode}** · rests ${QTY} share at ${Math.round(BUY * 100)}¢ on both sides each round, sells the first fill at ${Math.round(SELL * 100)}¢ · started ${et(state.startedAt)} ET · updated ${et(Date.now())} ET`,
+  const lines = ['# Mr. E — live progress', '', `Market **${PREFIX.replace(/-$/, '')}** · mode **${state.mode}** · rests ${QTY} share at every cent from ${Math.round(LO * 100)}¢ to ${Math.round(HI * 100)}¢ on both sides until ${Math.round(NOBUY_LEFT / 60)}:00 left, sells the first fill at ${Math.round(SELL * 100)}¢ · started ${et(state.startedAt)} ET · updated ${et(Date.now())} ET`,
     state.balanceStart != null ? `Account balance $${Number(state.balanceStart).toFixed(2)} at start → $${Number(state.balanceNow ?? state.balanceStart).toFixed(2)} now (shared with Mr. P)` : '', '',
     `**Rounds ${R.length} · fills ${R.filter(r => r.buyPx != null).length} · sold at ${Math.round(SELL * 100)}¢ ${sold} · held and won ${won} · held and lost ${lost} · no fill ${none} · P&L ${pnl >= 0 ? '+' : '−'}$${Math.abs(pnl).toFixed(2)}** · errors ${state.errors}`, '',
     '| round (ET) | side | bought | exit | P&L |', '|---|---|---|---|---|'];
@@ -68,48 +72,59 @@ const ex = {
   async book(slug) { try { const r = await fetch(GATEWAY + '/v1/markets/' + slug + '/book'); const j = await r.json(); const md = j.marketData || j; const lv = a => (a || []).map(e => [Number(e.px && e.px.value != null ? e.px.value : e.px), Number(e.qty)]).filter(x => Number.isFinite(x[0]) && x[1] > 0); const o = lv(md.offers).sort((a, b) => a[0] - b[0]), b = lv(md.bids).sort((a, b) => b[0] - a[0]); return { upAsk: o.length ? o[0][0] : NaN, upBid: b.length ? b[0][0] : NaN }; } catch (e) { return null; } }
 };
 // a Down share at price d is a short of the Up contract quoted at 1 − d (the exchange shows a BUY_SHORT as a SELL of Up at the price sent)
-const buyOrder = (slug, side) => ({ marketSlug: slug, intent: side === 'UP' ? 'ORDER_INTENT_BUY_LONG' : 'ORDER_INTENT_BUY_SHORT', type: 'ORDER_TYPE_LIMIT', price: money(side === 'UP' ? BUY : 1 - BUY), quantity: QTY, tif: 'TIME_IN_FORCE_GOOD_TILL_CANCEL' });
+const buyOrder = (slug, side, px = BUY) => ({ marketSlug: slug, intent: side === 'UP' ? 'ORDER_INTENT_BUY_LONG' : 'ORDER_INTENT_BUY_SHORT', type: 'ORDER_TYPE_LIMIT', price: money(side === 'UP' ? px : 1 - px), quantity: QTY, tif: 'TIME_IN_FORCE_GOOD_TILL_CANCEL' });
 const sellOrder = (slug, side) => ({ marketSlug: slug, intent: side === 'UP' ? 'ORDER_INTENT_SELL_LONG' : 'ORDER_INTENT_SELL_SHORT', type: 'ORDER_TYPE_LIMIT', price: money(side === 'UP' ? SELL : 1 - SELL), quantity: QTY, tif: 'TIME_IN_FORCE_GOOD_TILL_CANCEL' });
 const filledOf = async id => { const o = await ex.order(id); if (!o) return { qty: 0 }; const q = Number(o.cumQuantity || 0); const px = amt(o.avgPx); return { qty: q, px: Number.isFinite(px) ? px : NaN, state: o.state || '' }; };
 
 // ---- one round
-// Sized orders fill in pieces, so everything is tracked by quantity: the first side to fill at all is the side; its buy keeps
-// resting (to complete QTY) until the 7:00 cutoff; the sell always covers exactly what is held and unsold (re-placed when more
-// is bought); whatever is still held at the bell settles.
+// A ladder of resting buys on both sides (QTY shares at every cent from HI down to LO). The first side to fill at all is the
+// side; the other ladder is cancelled; this side's rungs keep resting until the no-buy cutoff, so a deeper dip buys cheaper. The
+// sell always covers exactly what is held and unsold (re-placed when more is bought); whatever is still held at the bell settles.
+// Fills come top-down (the price falls into 30¢ before 29¢), so each tick polls the highest unfilled rung per side, walking down
+// while they fill, plus a sweep of every rung every 10 s for anything the walk missed.
 async function playRound(T0) {
   const slug = SLUG(T0), T = T0 + ROUND; const rec = { T0, slug, side: null, buyPx: null, buyLeft: null, qty: 0, sold: 0, exit: null, pnl: null }; state.rounds.push(rec); save();
-  const ids = {}; live.slug = slug; live.T = T; live.resting = ['UP', 'DOWN']; live.held = null; live.ids = ids;
-  for (const side of ['UP', 'DOWN']) { try { const res = await ex.place(buyOrder(slug, side)); ids[side] = res.id || (res.order && res.order.id); log('rest', { slug, side, at: BUY, qty: QTY, id: ids[side] }); } catch (e) { state.errors++; log('error', { place: side, msg: e.message.slice(0, 300) }); } }
+  const lad = { UP: [], DOWN: [] }; live.slug = slug; live.T = T; live.resting = ['UP', 'DOWN']; live.held = null; live.ids = lad;
+  for (const sd of ['UP', 'DOWN']) for (const px of RUNGS) { try { const res = await ex.place({ ...buyOrder(slug, sd, px), quantity: QTY }); lad[sd].push({ id: res.id || (res.order && res.order.id), px, cum: 0, done: false }); } catch (e) { state.errors++; log('error', { place: sd + ' ' + px, msg: e.message.slice(0, 300) }); } }
+  log('ladder', { slug, ids: lad.UP.map(r => r.id).concat(lad.DOWN.map(r => r.id)) }); log('rest', { slug, side: 'BOTH', at: HI, ladder: Math.round(LO * 100) + '–' + Math.round(HI * 100) + '¢', rungs: RUNGS.length, qty: QTY });
   const own = (side, px) => side === 'UP' ? px : 1 - px;   // order prices come back in Up terms
-  let side = null, bought = 0, cost = 0, sold = 0, proceeds = 0, sell = null, buysPulled = false;   // sell = { id, qty, base } (base: sold before this order)
-  const readSell = async () => { if (!sell) return; let f; try { f = await filledOf(sell.id); } catch (e) { return; } const q = f.qty, newQ = q - (sold - sell.base); if (newQ > 0) { proceeds += newQ * own(side, f.px); sold += newQ; rec.sold = sold; log('fill', { slug, side, sold: own(side, f.px), qty: newQ, soldTotal: sold, of: bought }); } };
-  const placeSell = async () => { const q = bought - sold; if (q <= 0) return; try { const res = await ex.place({ ...sellOrder(slug, side), quantity: q }); sell = { id: res.id || (res.order && res.order.id), qty: q, base: sold }; rec.sellId = sell.id; log('rest', { slug, side, sellAt: SELL, qty: q, id: sell.id }); } catch (e) { state.errors++; log('error', { placeSell: e.message.slice(0, 300) }); } };
+  let side = null, sold = 0, proceeds = 0, sell = null, buysPulled = false, lastSweep = 0;
+  const bought = () => side ? lad[side].reduce((a, r) => a + r.cum, 0) : 0, cost = () => side ? lad[side].reduce((a, r) => a + r.cum * r.px, 0) : 0;
+  const check = async (sd, r) => { let f; try { f = await filledOf(r.id); } catch (e) { return 0; } const add = f.qty - r.cum; if (add > 0) { r.cum = f.qty; if (Number.isFinite(f.px) && f.px > 0) r.px = own(sd, f.px); } if (r.cum >= QTY - 1e-9 || /CANCEL|REJECT|EXPIRE/.test(f.state || '')) r.done = true; return add > 0 ? add : 0; };
+  const readSell = async () => { if (!sell) return; let f; try { f = await filledOf(sell.id); } catch (e) { return; } const newQ = f.qty - (sold - sell.base); if (newQ > 0) { proceeds += newQ * own(side, f.px); sold += newQ; rec.sold = sold; log('fill', { slug, side, sold: own(side, f.px), qty: newQ, soldTotal: +sold.toFixed(2), of: +bought().toFixed(2) }); } };
+  const placeSell = async () => { const q = +(bought() - sold).toFixed(4); if (q <= 0) return; try { const res = await ex.place({ ...sellOrder(slug, side), quantity: q }); sell = { id: res.id || (res.order && res.order.id), qty: q, base: sold }; rec.sellId = sell.id; log('rest', { slug, side, sellAt: SELL, qty: q, id: sell.id }); } catch (e) { state.errors++; log('error', { placeSell: e.message.slice(0, 300) }); } };
+  const cancelLadder = async sd => { for (const r of lad[sd]) if (!r.done) { await ex.cancel(r.id, slug); await check(sd, r); r.done = true; } };
+  const scan = async () => {   // new fills on the ladder(s): walk each side top-down while rungs are full; every 10 s check every rung
+    const sweep = Date.now() - lastSweep > 10000; if (sweep) lastSweep = Date.now();
+    for (const sd of (side ? [side] : ['UP', 'DOWN'])) {
+      for (const r of lad[sd]) { if (r.done) continue; const add = await check(sd, r); if (add > 0 && !side) side = sd; if (sweep || r.done) continue; break; }
+      if (side) break; } };
   while (Date.now() / 1000 < T - 2) {
     await sleep(2000);
-    if (!buysPulled && T - Date.now() / 1000 <= NOBUY_LEFT) {   // no more buys inside the last 7:00
-      for (const sd of ['UP', 'DOWN']) if (ids[sd]) { await ex.cancel(ids[sd], slug); if (sd === side) { try { const f = await filledOf(ids[sd]); if (f.qty > bought) { cost = f.qty * own(sd, f.px); bought = f.qty; } } catch (e) {} } ids[sd] = null; }
-      buysPulled = true; live.resting = []; log('round', { slug, buysPulled: 'no entry inside the last ' + Math.round(NOBUY_LEFT / 60) + ' min', held: bought });
+    if (DRY) continue;
+    const before = bought(); const hadSide = side;
+    await scan();
+    if (side && !hadSide) { const other = side === 'UP' ? 'DOWN' : 'UP'; await cancelLadder(other); rec.side = side; rec.buyLeft = Math.round(T - Date.now() / 1000); live.resting = [side]; }
+    if (!buysPulled && T - Date.now() / 1000 <= NOBUY_LEFT) {   // no more buys inside the cutoff
+      for (const sd of ['UP', 'DOWN']) await cancelLadder(sd);
+      buysPulled = true; live.resting = []; log('round', { slug, buysPulled: 'no entry inside the last ' + Math.round(NOBUY_LEFT / 60) + ' min', held: +bought().toFixed(2) });
       if (!side) break;
     }
-    if (DRY) continue;
-    if (!side) {
-      for (const sd of ['UP', 'DOWN']) { if (!ids[sd]) continue; let f; try { f = await filledOf(ids[sd]); } catch (e) { continue; }
-        if (f.qty > 0) { side = sd; const other = sd === 'UP' ? 'DOWN' : 'UP'; await ex.cancel(ids[other], slug); ids[other] = null; rec.side = side; rec.buyLeft = Math.round(T - Date.now() / 1000); live.resting = [side]; break; } }
-      if (!side) continue;
-    }
-    if (ids[side]) { let f; try { f = await filledOf(ids[side]); } catch (e) { f = null; }
-      if (f && f.qty > bought) { const add = f.qty - bought; cost = f.qty * own(side, f.px); bought = f.qty; rec.qty = bought; rec.buyPx = cost / bought; log('fill', { slug, side, px: own(side, f.px), qty: add, heldTotal: bought, of: QTY }); live.held = side + ' ' + bought + ' @ ' + Math.round(rec.buyPx * 100) + '¢';
-        if (bought >= QTY) { ids[side] = null; live.resting = []; }
-        if (sell) { await ex.cancel(sell.id, slug); await readSell(); sell = null; }      // re-size the sell to everything held
-        await placeSell(); save(); } }
+    if (!side) continue;
+    const b = bought();
+    if (b > before + 1e-9) { rec.qty = +b.toFixed(4); rec.buyPx = cost() / b; log('fill', { slug, side, px: +rec.buyPx.toFixed(3), qty: +(b - before).toFixed(2), heldTotal: +b.toFixed(2), of: RUNGS.length * QTY }); live.held = side + ' ' + +b.toFixed(2) + ' @ ' + Math.round(rec.buyPx * 100) + '¢';
+      if (sell) { await ex.cancel(sell.id, slug); await readSell(); sell = null; }   // re-size the sell to everything held
+      await placeSell(); save(); }
     await readSell();
-    if (sold >= bought && bought > 0 && !ids[side]) { rec.exit = 'sold at ' + Math.round(SELL * 100) + '¢'; rec.sellPx = proceeds / sold; rec.pnl = +(proceeds - cost).toFixed(2); live.held = null; live.resting = []; log('round', { slug, exit: rec.exit, qty: sold, pnl: rec.pnl }); save(); return; }
+    const ladderOpen = lad[side].some(r => !r.done);
+    if (b > 0 && sold >= b - 1e-9 && !ladderOpen) { rec.exit = 'sold at ' + Math.round(SELL * 100) + '¢'; rec.sellPx = proceeds / sold; rec.pnl = +(proceeds - cost()).toFixed(2); live.held = null; live.resting = []; log('round', { slug, exit: rec.exit, qty: +sold.toFixed(2), pnl: rec.pnl }); save(); return; }
   }
-  for (const sd of ['UP', 'DOWN']) if (ids[sd]) { await ex.cancel(ids[sd], slug); if (sd === side) { try { const f = await filledOf(ids[sd]); if (f.qty > bought) { cost = f.qty * own(sd, f.px); bought = f.qty; } } catch (e) {} } }
-  if (!side || bought === 0) { rec.exit = 'no fill'; log('round', { slug, exit: 'no fill' }); save(); return; }
-  await readSell(); rec.qty = bought; rec.buyPx = cost / bought;
-  if (sold >= bought) { rec.exit = 'sold at ' + Math.round(SELL * 100) + '¢'; rec.sellPx = proceeds / sold; rec.pnl = +(proceeds - cost).toFixed(2); save(); return; }
-  rec.exit = 'held to the bell'; rec._sold = sold; rec._proceeds = proceeds; rec._cost = cost; rec._sell = sell; save(); log('round', { slug, held: side, qty: bought - sold, of: bought, px: +rec.buyPx.toFixed(3) });
+  for (const sd of ['UP', 'DOWN']) await cancelLadder(sd);
+  const b = bought();
+  if (!side || b === 0) { rec.exit = 'no fill'; live.held = null; log('round', { slug, exit: 'no fill' }); save(); return; }
+  await readSell(); rec.qty = +b.toFixed(4); rec.buyPx = cost() / b;
+  if (sold >= b - 1e-9) { rec.exit = 'sold at ' + Math.round(SELL * 100) + '¢'; rec.sellPx = proceeds / sold; rec.pnl = +(proceeds - cost()).toFixed(2); live.held = null; save(); return; }
+  rec.exit = 'held to the bell'; rec._sold = sold; rec._proceeds = proceeds; rec._cost = cost(); rec._sell = sell; save(); log('round', { slug, held: side, qty: +(b - sold).toFixed(2), of: +b.toFixed(2), px: +rec.buyPx.toFixed(3) });
   settleLater(rec);
 }
 // the result lands on the gateway 20 s to several minutes after the bell
@@ -130,14 +145,15 @@ async function settleLater(rec) {
 
 // ---- main
 (async () => {
-  log('start', { mode: state.mode, market: PREFIX, buy: BUY, sell: SELL, qty: QTY, node: process.version });
+  log('start', { mode: state.mode, market: PREFIX, buy: BUY, ladder: [LO, HI], sell: SELL, qty: QTY, noBuyLeft: NOBUY_LEFT, node: process.version });
   if (!DRY) { try { const b = await ex.balance(); if (state.balanceStart == null) state.balanceStart = b.total; state.balanceNow = b.total; log('balance', b); } catch (e) { console.error('cannot read the account — stopping', e.message); process.exit(2); } }
   if (!DRY) { try {   // a previous run's resting buys (it logs every one) must not outlive it: cancel any rested in the last 16 minutes
     const lines = fs.readFileSync(logPath, 'utf8').trim().split('\n').slice(-400); const cut = Date.now() - 16 * 60000;
-    for (const l of lines) { let r; try { r = JSON.parse(l); } catch (e) { continue; } if (r.k === 'rest' && r.d && r.d.at != null && r.t > cut && r.d.id && !String(r.d.id).startsWith('dry-')) { try { await ex.cancel(r.d.id, r.d.slug); log('cancel', { side: r.d.side, id: r.d.id, why: 'left by the previous run' }); } catch (e) {} } }
+    for (const l of lines) { let r; try { r = JSON.parse(l); } catch (e) { continue; } if (r.k === 'rest' && r.d && r.d.at != null && r.t > cut && r.d.id && !String(r.d.id).startsWith('dry-')) { try { await ex.cancel(r.d.id, r.d.slug); log('cancel', { side: r.d.side, id: r.d.id, why: 'left by the previous run' }); } catch (e) {} }
+      if (r.k === 'ladder' && r.t > cut) { for (const id of r.d.ids || []) { try { await ex.cancel(id, r.d.slug); } catch (e) {} } log('cancel', { ladder: (r.d.ids || []).length, why: 'left by the previous run' }); } }
   } catch (e) {} }
   const deadline = MINUTES ? Date.now() + MINUTES * 60000 : Infinity;
-  const stop = async () => { log('stop', {}); if (!DRY && live.ids) for (const side of ['UP', 'DOWN']) if (live.ids[side]) { try { await ex.cancel(live.ids[side], live.slug); log('cancel', { side, id: live.ids[side], why: 'stop' }); } catch (e) {} }   // resting buys die with the run; a resting sell stays with the exchange
+  const stop = async () => { log('stop', {}); if (!DRY && live.ids) for (const side of ['UP', 'DOWN']) for (const r of (live.ids[side] || [])) if (!r.done) { try { await ex.cancel(r.id, live.slug); } catch (e) {} }   // resting buys die with the run; a resting sell stays with the exchange
     report(); save(); process.exit(0); };
   process.on('SIGTERM', stop); process.on('SIGINT', stop);
   setInterval(async () => { if (!DRY) { try { const b = await ex.balance(); state.balanceNow = b.total; } catch (e) {} } report(); save(); }, 60000);

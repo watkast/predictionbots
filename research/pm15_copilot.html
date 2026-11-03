@@ -411,7 +411,7 @@ const $ = id => document.getElementById(id);
 // ---------- which market: BTC (default) or ETH (#eth) — same brain, the asset's own feeds, slugs, scale and bot ----------
 const ASSETS = {
   btc: { sym: 'BTC', cb: 'BTC-USD', gw: 'crypto:btc', slug: 'cpc-btc-updown-15m-', minPx: 1000, K: 1, d0: 0, bot: 'Mr. P', tail: 'mrp-live-tail', key: 'pm15' },
-  eth: { sym: 'ETH', cb: 'ETH-USD', gw: 'crypto:eth', slug: 'cpceth-eth-updown-15m-', minPx: 100, K: 0.04, d0: 2, bot: 'Mr. E', tail: 'mre-live-tail', key: 'pm15eth', buy: 0.25, sell: 0.45, qty: 10 },
+  eth: { sym: 'ETH', cb: 'ETH-USD', gw: 'crypto:eth', slug: 'cpceth-eth-updown-15m-', minPx: 100, K: 0.04, d0: 2, bot: 'Mr. E', tail: 'mre-live-tail', key: 'pm15eth', buy: 0.30, lo: 0.20, sell: 0.45, qty: 1, noBuy: 540 },
   one: { sym: 'BTC', cb: 'BTC-USD', gw: 'crypto:btc', slug: 'cpc-btc-updown-15m-', minPx: 1000, K: 1, d0: 0, bot: 'Mr. One', tail: 'mr1-live-tail', key: 'pm15' }   // the BTC page with Mr. One's terminal
 };
 const ASSET = ASSETS[String((typeof location !== 'undefined' && location.hash) || '').replace('#', '').toLowerCase()] || ASSETS.btc;
@@ -1087,7 +1087,7 @@ function renderAct(key, ntR) {
 let strict = { cmd: null, since: 0, until: 0, lastClear: 0 };
 // Mr. E's rule, for the ETH page: rest 1 share at ASSET.buy on both sides until 7:00 left, sell the first fill at ASSET.sell, let the rest settle
 function renderStrictE(E) {
-  const el = $('strict'), C = $('st-cmd'), U = $('st-sub'), W = $('st-win'), Z = $('st-size'); const B = ASSET.buy, SL = ASSET.sell, bc = cents(B), sc = cents(SL);
+  const el = $('strict'), C = $('st-cmd'), U = $('st-sub'), W = $('st-win'), Z = $('st-size'); const B = ASSET.buy, SL = ASSET.sell, sc = cents(SL), bc = ASSET.lo ? Math.round(ASSET.lo * 100) + '–' + Math.round(B * 100) + '¢' : cents(B), NB = ASSET.noBuy || 420;
   W.textContent = E.r > 0 ? clock(E.r) + ' left' : ''; Z.textContent = '';
   if (!(E.r > 0) || !Number.isFinite(E.spot)) { el.className = 'strict quiet'; C.textContent = '—'; U.textContent = E.r <= 0 ? 'round over · next round: rest ' + bc + ' again' : 'waiting for the feeds'; return; }
   const qu = quotes('UP'), qd = quotes('DOWN');
@@ -1095,10 +1095,10 @@ function renderStrictE(E) {
     if (Number.isFinite(bid) && bid >= SL - 1e-9) { el.className = 'strict sell'; C.textContent = 'SELL ' + side + ' at ' + cents(SL); U.textContent = 'bid ' + cents(bid) + ' · the ' + sc + ' sell fills now · tap Out'; }
     else { el.className = 'strict quiet'; C.textContent = 'RESTING SELL ' + side + ' ' + sc; U.textContent = 'bid ' + (Number.isFinite(bid) ? cents(bid) : '—') + ' · stays to the close · else settles'; }
     return; }
-  if (E.r <= 420) { el.className = 'strict quiet'; C.textContent = 'NO MORE BUYS'; U.textContent = 'last 7:00 · next round rests ' + bc + ' again'; return; }
+  if (E.r <= NB) { el.className = 'strict quiet'; C.textContent = 'NO MORE BUYS'; U.textContent = 'last ' + clock(NB) + ' · next round rests ' + bc + ' again'; return; }
   const hit = Number.isFinite(qu.ask) && qu.ask <= B + 1e-9 ? 'UP' : Number.isFinite(qd.ask) && qd.ask <= B + 1e-9 ? 'DOWN' : null;
   if (hit) { el.className = 'strict ' + (hit === 'UP' ? 'up' : 'down'); C.textContent = 'BUY ' + hit + ' at ' + bc; Z.textContent = (ASSET.qty || 1) + ' sh'; U.textContent = 'ask ' + cents(hit === 'UP' ? qu.ask : qd.ask) + ' · then rest a sell at ' + sc + ' · tap I\'m in'; }
-  else { el.className = 'strict quiet'; C.textContent = 'REST ' + bc + ' · UP + DOWN'; Z.textContent = (ASSET.qty || 1) + ' sh each'; U.textContent = 'UP ' + cents(qu.ask) + ' · DOWN ' + cents(qd.ask) + ' · first fill → sell at ' + sc; }
+  else { el.className = 'strict quiet'; C.textContent = 'REST ' + bc + ' · UP + DOWN'; Z.textContent = ASSET.lo ? (ASSET.qty || 1) + ' sh / cent' : (ASSET.qty || 1) + ' sh each'; U.textContent = 'UP ' + cents(qu.ask) + ' · DOWN ' + cents(qd.ask) + ' · first fill → sell at ' + sc; }
 }
 function renderStrict(E, key) {
   if (ASSET.bot === 'Mr. E') return renderStrictE(E);
