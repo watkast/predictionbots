@@ -289,3 +289,6 @@
 {"t":1793673087757,"k":"rest","d":{"slug":"cpceth-eth-updown-15m-2026-11-03-0230z","side":"UP","sellAt":0.45,"qty":10,"id":"DG0AWXZ012WK"}}
 {"t":1793673131460,"k":"fill","d":{"slug":"cpceth-eth-updown-15m-2026-11-03-0230z","side":"UP","sold":0.45,"qty":10,"soldTotal":10,"of":10}}
 {"t":1793673131461,"k":"round","d":{"slug":"cpceth-eth-updown-15m-2026-11-03-0230z","exit":"sold at 45¢","qty":10,"pnl":2}}
+{"t":1793674028087,"k":"start","d":{"mode":"live","market":"cpceth-eth-updown-15m-","buy":0.3,"ladder":[0.2,0.3],"sell":0.45,"qty":1,"noBuyLeft":540,"node":"v22.23.4"}}
+{"t":1793674028373,"k":"balance","d":{"cash":86.1056,"total":86.1056}}
+{"t":1793674028374,"k":"round","d":{"slug":"cpceth-eth-updown-15m-2026-11-03-0245z","skipped":"joined mid-round — waiting for the next open"}}
