@@ -1659,13 +1659,14 @@
    "buyLeft": 856,
    "qty": 5,
    "sold": 5,
-   "exit": null,
-   "pnl": null,
+   "exit": "sold at 29¢ avg",
+   "pnl": 0.03,
    "momentum": "DOWN",
-   "sellId": "DGJ4FF3G13D6"
+   "sellId": "DGJ4FF3G13D6",
+   "sellPx": 0.285405
   }
  ],
  "balanceStart": 17.4956,
- "balanceNow": 50.986,
+ "balanceNow": 50.336,
  "errors": 0
 }
