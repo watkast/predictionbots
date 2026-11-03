@@ -820,12 +820,33 @@
    "buyLeft": 813,
    "qty": 6,
    "sold": 0,
+   "exit": "6 lost at the bell",
+   "pnl": -1.65,
+   "sellId": "DG4V30P013CT",
+   "_sold": 0,
+   "_proceeds": 0,
+   "_cost": 1.6500000000000001,
+   "_sell": {
+    "id": "DG4V30P013CT",
+    "qty": 6,
+    "base": 0
+   },
+   "result": "UP"
+  },
+  {
+   "T0": 1793692800,
+   "slug": "cpceth-eth-updown-15m-2026-11-03-0800z",
+   "side": "UP",
+   "buyPx": 0.275,
+   "buyLeft": 779,
+   "qty": 6,
+   "sold": 0,
    "exit": null,
    "pnl": null,
-   "sellId": "DG4V30P013CT"
+   "sellId": "DG52BSS013CZ"
   }
  ],
  "balanceStart": 17.4956,
- "balanceNow": 90.4456,
+ "balanceNow": 208.5321,
  "errors": 0
 }
