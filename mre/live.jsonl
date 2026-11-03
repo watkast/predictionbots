@@ -1118,3 +1118,5 @@
 {"t":1793737806636,"k":"rest","d":{"slug":"cpceth-eth-updown-15m-2026-11-03-2030z","side":"BOTH","at":0.3,"ladder":"25–30¢","rungs":6,"qty":1}}
 {"t":1793738161518,"k":"round","d":{"slug":"cpceth-eth-updown-15m-2026-11-03-2030z","buysPulled":"no entry inside the last 9 min","held":0}}
 {"t":1793738161518,"k":"round","d":{"slug":"cpceth-eth-updown-15m-2026-11-03-2030z","exit":"no fill"}}
+{"t":1793738706135,"k":"ladder","d":{"slug":"cpceth-eth-updown-15m-2026-11-03-2045z","ids":["DGFZGSN013D1","DGFZGTN013D9","DGFZGVJG13D8","DGFZGWD013D9","DGFZGX5013D3","DGFZGXMG33D8","DGFZGYDG13CT","DGFZGZ8G13D5","DGFZGZSG13CX","DGFZH0B013D7","DGFZH10013CX","DGFZH1G013CZ"]}}
+{"t":1793738706136,"k":"rest","d":{"slug":"cpceth-eth-updown-15m-2026-11-03-2045z","side":"BOTH","at":0.3,"ladder":"25–30¢","rungs":6,"qty":1}}
