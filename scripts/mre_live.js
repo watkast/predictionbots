@@ -220,10 +220,14 @@ async function settleLater(rec) {
   log('start', { mode: state.mode, market: PREFIX, buy: BUY, ladder: [LO, HI], sell: SELL, qty: QTY, noBuyLeft: NOBUY_LEFT, node: process.version });
   if (!DRY) { try { const b = await ex.balance(); if (state.balanceStart == null) state.balanceStart = b.total; state.balanceNow = b.total; log('balance', b); } catch (e) { console.error('cannot read the account — stopping', e.message); process.exit(2); } }
   if (!DRY) { try {   // a previous run's resting buys (it logs every one) must not outlive it: cancel any rested in the last 16 minutes
-    const lines = fs.readFileSync(logPath, 'utf8').trim().split('\n').slice(-400); const cut = Date.now() - 16 * 60000;
+    // the published log lags up to 10 min; the live tail (published every 15 s, MRE_PREV_TAIL) covers a run cancelled mid-round
+    let lines = []; try { lines = fs.readFileSync(logPath, 'utf8').trim().split('\n').slice(-400); } catch (e) {}
+    try { if (process.env.MRE_PREV_TAIL) lines = lines.concat(fs.readFileSync(process.env.MRE_PREV_TAIL, 'utf8').trim().split('\n')); } catch (e) {}
+    const seen = new Set(); lines = lines.filter(l => !seen.has(l) && seen.add(l)); const cut = Date.now() - 16 * 60000;
     for (const l of lines) { let r; try { r = JSON.parse(l); } catch (e) { continue; } if (r.k === 'rest' && r.d && r.d.at != null && r.t > cut && r.d.id && !String(r.d.id).startsWith('dry-')) { try { await ex.cancel(r.d.id, r.d.slug); log('cancel', { side: r.d.side, id: r.d.id, why: 'left by the previous run' }); } catch (e) {} }
       if (r.k === 'ladder' && r.t > cut) { for (const id of r.d.ids || []) { try { await ex.cancel(id, r.d.slug); } catch (e) {} } log('cancel', { ladder: (r.d.ids || []).length, why: 'left by the previous run' }); } }
   } catch (e) {} }
+  if (process.argv.includes('--cleanup')) { flushTail && 0; console.log('cleanup done'); process.exit(0); }
   const deadline = MINUTES ? Date.now() + MINUTES * 60000 : Infinity;
   const stop = async () => { log('stop', {}); if (!DRY && live.ids) for (const side of ['UP', 'DOWN']) for (const r of (live.ids[side] || [])) if (!r.done) { try { await ex.cancel(r.id, live.slug); } catch (e) {} }   // resting buys die with the run; a resting sell stays with the exchange
     report(); save(); process.exit(0); };
