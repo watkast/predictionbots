@@ -266,13 +266,26 @@
    "buyPx": 0.275,
    "buyLeft": 637,
    "qty": 6,
+   "sold": 6,
+   "exit": "sold at 30¢ avg",
+   "pnl": 0.18,
+   "sellId": "DG7WW90G13D6",
+   "sellPx": 0.3048768
+  },
+  {
+   "T0": 1793705400,
+   "slug": "cpc-btc-updown-15m-2026-11-03-1130z",
+   "side": "UP",
+   "buyPx": 0.295,
+   "buyLeft": 803,
+   "qty": 2,
    "sold": 1,
    "exit": null,
    "pnl": null,
-   "sellId": "DG7WW90G13D6"
+   "sellId": "DG82XM5G13D3"
   }
  ],
  "balanceStart": 95.086,
- "balanceNow": 78.314,
+ "balanceNow": 79.554,
  "errors": 0
 }
