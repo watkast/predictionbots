@@ -520,3 +520,14 @@
 {"t":1793728224169,"k":"exit","d":{"slug":"cpc-btc-updown-15m-2026-11-03-1745z","side":"DOWN","armed":0.34,"avg":0.275,"src":"ws"}}
 {"t":1793728230294,"k":"fill","d":{"slug":"cpc-btc-updown-15m-2026-11-03-1745z","side":"DOWN","sold":0.31999999999999995,"qty":1,"soldTotal":6,"of":6,"exit":"stall","peak":0.34,"bid":0.32}}
 {"t":1793728230295,"k":"round","d":{"slug":"cpc-btc-updown-15m-2026-11-03-1745z","exit":"sold at 31¢ avg","qty":6,"pnl":0.23}}
+{"t":1793728806920,"k":"ladder","d":{"slug":"cpc-btc-updown-15m-2026-11-03-1800z","ids":["DGDKZTH013D8","DGDKZVNG13D6","DGDKZWJ013D7","DGDKZXJ053D1","DGDKZYP013CX","DGDKZZSG13D6","DGDM016G13CX","DGDM027G13D6","DGDM041G13CT","DGDM053G53D5","DGDM06GG13D7","DGDM07RG53D7"]}}
+{"t":1793728806920,"k":"rest","d":{"slug":"cpc-btc-updown-15m-2026-11-03-1800z","side":"BOTH","at":0.3,"ladder":"25–30¢","rungs":6,"qty":1}}
+{"t":1793728930352,"k":"fill","d":{"slug":"cpc-btc-updown-15m-2026-11-03-1800z","side":"DOWN","px":0.3,"qty":1,"heldTotal":1,"of":6}}
+{"t":1793728930478,"k":"rest","d":{"slug":"cpc-btc-updown-15m-2026-11-03-1800z","side":"DOWN","sellAt":0.6,"qty":1,"id":"DGDMYD0G13CT"}}
+{"t":1793728941838,"k":"fill","d":{"slug":"cpc-btc-updown-15m-2026-11-03-1800z","side":"DOWN","px":0.28,"qty":4,"heldTotal":5,"of":6}}
+{"t":1793728942237,"k":"rest","d":{"slug":"cpc-btc-updown-15m-2026-11-03-1800z","side":"DOWN","sellAt":0.6,"qty":5,"id":"DGDN18WG13D1"}}
+{"t":1793728977555,"k":"exit","d":{"slug":"cpc-btc-updown-15m-2026-11-03-1800z","side":"DOWN","armed":0.36,"avg":0.28,"src":"ws"}}
+{"t":1793728980950,"k":"fill","d":{"slug":"cpc-btc-updown-15m-2026-11-03-1800z","side":"DOWN","sold":0.33999999999999997,"qty":5,"soldTotal":5,"of":5,"exit":"stall","peak":0.36,"bid":0.34}}
+{"t":1793729087556,"k":"fill","d":{"slug":"cpc-btc-updown-15m-2026-11-03-1800z","side":"DOWN","px":0.275,"qty":1,"heldTotal":6,"of":6}}
+{"t":1793729087653,"k":"rest","d":{"slug":"cpc-btc-updown-15m-2026-11-03-1800z","side":"DOWN","sellAt":0.6,"qty":1,"id":"DGDP4RZG13CZ"}}
+{"t":1793729160994,"k":"round","d":{"slug":"cpc-btc-updown-15m-2026-11-03-1800z","buysPulled":"no entry inside the last 9 min","held":6}}
