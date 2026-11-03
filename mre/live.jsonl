@@ -1167,3 +1167,13 @@
 {"t":1793743485871,"k":"exit","d":{"slug":"cpceth-eth-updown-15m-2026-11-03-2200z","side":"UP","armed":0.32,"avg":0.275,"src":"ws"}}
 {"t":1793743488915,"k":"fill","d":{"slug":"cpceth-eth-updown-15m-2026-11-03-2200z","side":"UP","sold":0.33,"qty":6,"soldTotal":6,"of":6,"exit":"stall","peak":0.35,"bid":0.33,"slip":0.01}}
 {"t":1793743489416,"k":"round","d":{"slug":"cpceth-eth-updown-15m-2026-11-03-2200z","exit":"sold at 31¢ avg","qty":6,"pnl":0.24}}
+{"t":1793744107518,"k":"ladder","d":{"slug":"cpceth-eth-updown-15m-2026-11-03-2215z","ids":["DGH8Q4ZG13D5","DGH8Q64013D9","DGH8Q73013D6","DGH8Q85013CZ","DGH8Q95013D6","DGH8QA6013D6","DGH8QJEG13CZ","DGH8QKHG13D3","DGH8QMF013CZ","DGH8QNF013D6","DGH8QPG013D9","DGH8QQMG33D8"]}}
+{"t":1793744107522,"k":"rest","d":{"slug":"cpceth-eth-updown-15m-2026-11-03-2215z","side":"BOTH","at":0.3,"ladder":"25–30¢","rungs":6,"qty":1}}
+{"t":1793744227972,"k":"fill","d":{"slug":"cpceth-eth-updown-15m-2026-11-03-2215z","side":"DOWN","px":0.29,"qty":3,"heldTotal":3,"of":6}}
+{"t":1793744228361,"k":"rest","d":{"slug":"cpceth-eth-updown-15m-2026-11-03-2215z","side":"DOWN","sellAt":0.6,"qty":3,"id":"DGH9N7R013D5"}}
+{"t":1793744274918,"k":"exit","d":{"slug":"cpceth-eth-updown-15m-2026-11-03-2215z","side":"DOWN","armed":0.35,"avg":0.29,"src":"ws"}}
+{"t":1793744276870,"k":"fill","d":{"slug":"cpceth-eth-updown-15m-2026-11-03-2215z","side":"DOWN","sold":0.32999999999999996,"qty":3,"soldTotal":3,"of":3,"exit":"stall","peak":0.35,"bid":0.33,"slip":0.01}}
+{"t":1793744285238,"k":"fill","d":{"slug":"cpceth-eth-updown-15m-2026-11-03-2215z","side":"DOWN","px":0.28,"qty":2,"heldTotal":5,"of":6}}
+{"t":1793744285335,"k":"rest","d":{"slug":"cpceth-eth-updown-15m-2026-11-03-2215z","side":"DOWN","sellAt":0.6,"qty":2,"id":"DGHA34VG13D3"}}
+{"t":1793744292469,"k":"fill","d":{"slug":"cpceth-eth-updown-15m-2026-11-03-2215z","side":"DOWN","px":0.275,"qty":1,"heldTotal":6,"of":6}}
+{"t":1793744292806,"k":"rest","d":{"slug":"cpceth-eth-updown-15m-2026-11-03-2215z","side":"DOWN","sellAt":0.6,"qty":3,"id":"DGHA4Z7G13D3"}}
