@@ -305,9 +305,21 @@
    "pnl": 0.53,
    "sellId": "DG8AVX7013CZ",
    "sellPx": 0.36362580000000005
+  },
+  {
+   "T0": 1793707200,
+   "slug": "cpc-btc-updown-15m-2026-11-03-1200z",
+   "side": "UP",
+   "buyPx": 0.275,
+   "buyLeft": 886,
+   "qty": 6,
+   "sold": 0,
+   "exit": null,
+   "pnl": null,
+   "sellId": "DG8F955013D9"
   }
  ],
  "balanceStart": 95.086,
- "balanceNow": 274.454,
+ "balanceNow": 468.154,
  "errors": 0
 }
