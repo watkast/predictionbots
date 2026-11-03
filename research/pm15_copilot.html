@@ -1,0 +1,266 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="claude:viewport-fit-sides" content="cover">
+<meta name="robots" content="noindex">
+<title>Mr. E Status</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600&family=IBM+Plex+Sans:wght@400;500;600&family=Bricolage+Grotesque:opsz,wght@12..96,600;12..96,700&display=swap">
+<style>
+/* Layout: a trading-desk status sheet — summary strip, two charts stacked, then the round ledger. One column on phones. */
+:root {
+  --bg: #f3f5f2; --panel: #ffffff; --ink: #14201a; --muted: #5c6b63; --line: #dfe5e0;
+  --up: #1f8a5b; --down: #c4433a; --accent: #2b5fd9; --warn: #b7791f; --band: rgba(43, 95, 217, .08);
+  --display: 'Bricolage Grotesque', 'IBM Plex Sans', system-ui, sans-serif;
+  --body: 'IBM Plex Sans', system-ui, -apple-system, sans-serif;
+  --mono: 'IBM Plex Mono', ui-monospace, SFMono-Regular, Menlo, monospace;
+  color-scheme: light;
+}
+@media (prefers-color-scheme: dark) { :root:not([data-theme="light"]) {
+  --bg: #0b100e; --panel: #121916; --ink: #e5ece8; --muted: #8b9a92; --line: #223029;
+  --up: #3ccf8e; --down: #f0675c; --accent: #6f9bff; --warn: #e3a64a; --band: rgba(111, 155, 255, .10); color-scheme: dark; } }
+:root[data-theme="dark"] {
+  --bg: #0b100e; --panel: #121916; --ink: #e5ece8; --muted: #8b9a92; --line: #223029;
+  --up: #3ccf8e; --down: #f0675c; --accent: #6f9bff; --warn: #e3a64a; --band: rgba(111, 155, 255, .10); color-scheme: dark; }
+html { background: var(--bg); }
+body { margin: 0; background: var(--bg); color: var(--ink); font: 15px/1.5 var(--body);
+  padding-left: max(16px, env(safe-area-inset-left, 0px)); padding-right: max(16px, env(safe-area-inset-right, 0px));
+  padding-block: calc(16px + env(safe-area-inset-top, 0px)) calc(32px + env(safe-area-inset-bottom, 0px)); }
+.wrap { max-width: 1080px; margin: 0 auto; display: grid; gap: 18px; }
+header { display: flex; flex-wrap: wrap; align-items: flex-end; justify-content: space-between; gap: 10px 20px; }
+h1 { font: 700 clamp(26px, 5vw, 36px)/1.05 var(--display); margin: 0; letter-spacing: -.01em; }
+.sub { color: var(--muted); font-size: 13px; margin-top: 4px; }
+.status { display: flex; align-items: center; gap: 10px; flex-wrap: wrap; font-size: 13px; color: var(--muted); }
+.pill { font: 600 11px/1 var(--mono); letter-spacing: .08em; text-transform: uppercase; padding: 6px 9px; border-radius: 999px; border: 1px solid currentColor; }
+.pill.live { color: var(--up); } .pill.stale { color: var(--warn); } .pill.down { color: var(--down); }
+.rule { font: 500 13px/1.4 var(--mono); background: var(--panel); border: 1px solid var(--line); border-radius: 8px; padding: 8px 12px; overflow-wrap: anywhere; }
+.kpis { display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap: 10px; }
+.kpi { background: var(--panel); border: 1px solid var(--line); border-radius: 10px; padding: 12px 14px; min-width: 0; }
+.kpi .l { font: 500 11px/1.2 var(--body); text-transform: uppercase; letter-spacing: .07em; color: var(--muted); }
+.kpi .v { font: 600 24px/1.2 var(--mono); margin-top: 6px; font-variant-numeric: tabular-nums; }
+.kpi .n { font-size: 12px; color: var(--muted); margin-top: 2px; }
+.pos { color: var(--up); } .neg { color: var(--down); }
+section.card { background: var(--panel); border: 1px solid var(--line); border-radius: 12px; padding: 14px 16px 16px; min-width: 0; }
+.cardhead { display: flex; flex-wrap: wrap; align-items: baseline; justify-content: space-between; gap: 8px 16px; margin-bottom: 8px; }
+h2 { font: 600 17px/1.2 var(--display); margin: 0; }
+.legend { display: flex; flex-wrap: wrap; gap: 6px 14px; font-size: 12px; color: var(--muted); }
+.legend i { display: inline-block; width: 12px; height: 3px; border-radius: 2px; vertical-align: middle; margin-right: 5px; }
+.chart { width: 100%; height: auto; display: block; }
+.chart text { fill: var(--muted); font: 11px var(--mono); }
+.nav { display: flex; align-items: center; gap: 6px; }
+button { font: 500 13px var(--body); color: var(--ink); background: var(--bg); border: 1px solid var(--line); border-radius: 7px; padding: 6px 10px; cursor: pointer; }
+button:hover { border-color: var(--accent); } button:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
+button:disabled { opacity: .45; cursor: default; }
+.roundinfo { font: 500 13px var(--mono); color: var(--muted); margin: 2px 0 6px; overflow-wrap: anywhere; }
+.note { font-size: 12.5px; color: var(--muted); margin: 8px 0 0; }
+.tablewrap { overflow-x: auto; }
+table { width: 100%; border-collapse: collapse; font-size: 13px; font-variant-numeric: tabular-nums; }
+th { text-align: left; font: 500 11px var(--body); letter-spacing: .06em; text-transform: uppercase; color: var(--muted); padding: 6px 8px; border-bottom: 1px solid var(--line); white-space: nowrap; }
+td { padding: 7px 8px; border-bottom: 1px solid var(--line); white-space: nowrap; font-family: var(--mono); }
+td.num, th.num { text-align: right; }
+tr.sel td { background: var(--band); }
+tbody tr { cursor: pointer; }
+.chip { display: inline-block; font: 600 11px var(--mono); padding: 2px 7px; border-radius: 999px; }
+.chip.UP { color: var(--up); border: 1px solid var(--up); } .chip.DOWN { color: var(--down); border: 1px solid var(--down); }
+.err { color: var(--down); font-size: 13px; }
+@media (prefers-reduced-motion: no-preference) { .pill.live { animation: pulse 2.4s ease-in-out infinite; } @keyframes pulse { 50% { opacity: .55; } } }
+</style>
+</head>
+<body>
+<div class="wrap">
+  <header>
+    <div>
+      <h1>Mr. E Status</h1>
+      <div class="sub">Polymarket US · ETH Up/Down 15-minute · every order, fill and settlement Mr. E has logged</div>
+    </div>
+    <div class="status"><span id="pill" class="pill stale">loading</span><span id="ago"></span><button id="refresh" type="button">Refresh</button></div>
+  </header>
+  <div class="rule" id="rule">Reading Mr. E's log…</div>
+  <div class="kpis" id="kpis"></div>
+
+  <section class="card">
+    <div class="cardhead"><h2>Profit and loss</h2>
+      <div class="legend"><span><i style="background:var(--accent)"></i>cumulative P&amp;L</span><span><i style="background:var(--up);height:8px;width:8px;border-radius:50%"></i>winning round</span><span><i style="background:var(--down);height:8px;width:8px;border-radius:50%"></i>losing round</span><span><i style="background:var(--muted);height:10px;width:1px"></i>settings changed</span></div>
+    </div>
+    <svg id="pnl" class="chart" viewBox="0 0 1000 300" role="img" aria-label="Cumulative profit and loss"></svg>
+  </section>
+
+  <section class="card">
+    <div class="cardhead"><h2>Price and trades</h2>
+      <div class="nav"><button id="prev" type="button" aria-label="Earlier round">‹ Earlier</button><button id="next" type="button" aria-label="Later round">Later ›</button><button id="latest" type="button">Latest</button></div>
+    </div>
+    <div class="roundinfo" id="roundinfo"></div>
+    <div class="legend"><span><i style="background:var(--up)"></i>UP ask</span><span><i style="background:var(--down)"></i>DOWN ask</span><span>▲ buy fill</span><span>▼ sell fill</span><span><i style="background:var(--band);height:10px;border:1px solid var(--accent)"></i>buy ladder</span><span><i style="background:var(--accent)"></i>sell price</span></div>
+    <svg id="price" class="chart" viewBox="0 0 1000 340" role="img" aria-label="Share prices over the round with buy and sell fills"></svg>
+    <p class="note" id="pricenote"></p>
+  </section>
+
+  <section class="card">
+    <div class="cardhead"><h2>By settings</h2></div>
+    <div class="tablewrap"><table id="eras"></table></div>
+  </section>
+
+  <section class="card">
+    <div class="cardhead"><h2>Rounds</h2><span class="legend">Times in your time zone. Tap a round to chart it.</span></div>
+    <div class="tablewrap"><table id="rounds"></table></div>
+    <p class="note">Rounds a restarted run left open (it stops tracking them) show as untracked; they still sold or settled on the exchange, so the account balance includes them.</p>
+  </section>
+</div>
+<script>
+const RAW = 'https://raw.githubusercontent.com/watkast/predictionbots/';
+const SRC = { log: RAW + 'mrp-data/mre/live.jsonl', snaps: RAW + 'mrp-data/mre/snaps.jsonl', tail: RAW + 'mre-live-tail/tail.jsonl' };
+const $ = id => document.getElementById(id);
+const NS = 'http://www.w3.org/2000/svg';
+let DATA = null, sel = null, follow = true;
+
+const c = v => Number.isFinite(v) ? Math.round(v * 100) + '¢' : '—';
+const money = v => (v < 0 ? '−$' : v > 0 ? '+$' : '$') + Math.abs(v).toFixed(2);
+const tm = ms => new Date(ms).toLocaleTimeString([], { hour: 'numeric', minute: '2-digit' });
+const dt = ms => new Date(ms).toLocaleString([], { month: 'short', day: 'numeric', hour: 'numeric', minute: '2-digit' });
+const slugT0 = s => { const m = /(\d{4})-(\d{2})-(\d{2})-(\d{2})(\d{2})z$/.exec(s || ''); return m ? Date.UTC(+m[1], +m[2] - 1, +m[3], +m[4], +m[5]) : NaN; };
+const key = s => (s || '').slice(-16);
+
+async function getLines(url) {
+  try { const r = await fetch(url + '?t=' + Date.now()); if (!r.ok) return []; const t = await r.text();
+    return t.split('\n').filter(Boolean).map(l => { try { return JSON.parse(l); } catch (e) { return null; } }).filter(Boolean); } catch (e) { return []; }
+}
+function eraLabel(d) {
+  if (!d) return '?';
+  const buy = d.ladder ? Math.round(d.ladder[0] * 100) + '–' + Math.round(d.ladder[1] * 100) + '¢ ladder' : Math.round(d.buy * 100) + '¢ × ' + d.qty;
+  return 'buy ' + buy + ' · sell ' + Math.round(d.sell * 100) + '¢';
+}
+function build(log, tail, snaps) {
+  const seen = new Set(), recs = [];
+  for (const r of log.concat(tail)) { if (r.k === 'snap') continue; const id = r.t + r.k + JSON.stringify(r.d).slice(0, 60); if (!seen.has(id)) { seen.add(id); recs.push(r); } }
+  recs.sort((a, b) => a.t - b.t);
+  const rounds = {}, starts = []; let mode = 'live', cfg = null, balance = null;
+  for (const r of recs) {
+    const d = r.d || {};
+    if (r.k === 'start') { mode = d.mode; if (mode === 'live') { cfg = { ...d, t: r.t, label: eraLabel(d) }; starts.push(cfg); } continue; }
+    if (mode !== 'live') continue;
+    if (r.k === 'balance' && Number.isFinite(d.total)) balance = { v: d.total, t: r.t };
+    if (!d.slug) continue;
+    const k = key(d.slug);
+    const R = rounds[k] = rounds[k] || { key: k, T0: slugT0(d.slug), buys: [], sells: [], qty: 0, side: null, pnl: null, cfg: cfg, rested: false };
+    if (r.k === 'rest' && d.at != null) { R.rested = true; if (!R.cfg) R.cfg = cfg; }
+    if (r.k === 'round' && d.skipped) R.skipped = true;
+    if (r.k === 'fill' && d.sold == null && Number.isFinite(d.px)) {
+      R.side = d.side; const q = d.qty || 1;
+      if (d.heldTotal != null) { R.qty = d.heldTotal; R.avg = d.px; } else { R.avg = ((R.avg || 0) * R.qty + d.px * q) / (R.qty + q); R.qty += q; }
+      R.buys.push({ t: r.t, px: d.px, qty: q, side: d.side });
+    }
+    if (r.k === 'fill' && d.sold != null) R.sells.push({ t: r.t, px: d.sold, qty: d.qty || R.qty || 1, side: d.side || R.side });
+    if (Number.isFinite(d.pnl)) { R.pnl = d.pnl; R.pnlT = r.t; }
+    if (r.k === 'settle') { R.result = d.result; R.settled = true; }
+    if (r.k === 'round' && d.exit === 'no fill') R.noFill = true;
+  }
+  const now = Date.now();
+  const list = Object.values(rounds).filter(R => R.rested || R.buys.length).sort((a, b) => a.T0 - b.T0);
+  for (const R of list) {
+    R.state = R.pnl != null ? (R.pnl > 0 ? 'win' : R.pnl < 0 ? 'loss' : 'flat') : R.noFill ? 'nofill' : R.buys.length ? (now > R.T0 + 25 * 60000 ? 'untracked' : 'open') : (now > R.T0 + 15 * 60000 ? 'nofill' : 'resting');
+    R.exitTxt = R.state === 'nofill' ? 'no fill' : R.state === 'resting' ? 'bids resting' : R.state === 'open' ? 'open' : R.state === 'untracked' ? 'untracked' : R.settled ? (R.sells.length ? 'part sold, rest ' : '') + (R.side === R.result ? 'won at the bell' : 'lost at the bell') : 'sold at ' + c(R.sells.length ? R.sells[R.sells.length - 1].px : NaN);
+  }
+  const sn = {}; for (const s of snaps) { (sn[s.s] = sn[s.s] || []).push({ t: s.t, u: s.u, d: s.d }); }
+  for (const r of tail) if (r.k === 'snap' && r.d && r.d.slug) { const k = key(r.d.slug); (sn[k] = sn[k] || []).push({ t: r.t, u: r.d.upAsk, d: r.d.dnAsk }); }
+  for (const k in sn) { const m = new Map(); for (const p of sn[k]) m.set(Math.round(p.t / 1000), p); sn[k] = [...m.values()].sort((a, b) => a.t - b.t); }
+  const lastT = Math.max(0, ...recs.map(r => r.t), ...tail.map(r => r.t));
+  const curCfg = starts.length ? starts[starts.length - 1] : null;
+  return { list, starts, snaps: sn, lastT, balance, curCfg };
+}
+
+function el(tag, attrs, parent, text) { const e = document.createElementNS(NS, tag); for (const k in attrs) e.setAttribute(k, attrs[k]); if (text != null) e.textContent = text; if (parent) parent.appendChild(e); return e; }
+function niceStep(range, n) { const raw = range / n, p = Math.pow(10, Math.floor(Math.log10(raw))); const f = raw / p; return (f < 1.5 ? 1 : f < 3 ? 2 : f < 7 ? 5 : 10) * p; }
+
+function drawPnl() {
+  const svg = $('pnl'); svg.textContent = '';
+  const done = DATA.list.filter(R => R.pnl != null).sort((a, b) => (a.pnlT || 0) - (b.pnlT || 0));
+  const W = 1000, H = 300, L = 58, Rm = 16, T = 14, B = 34;
+  if (!done.length) { el('text', { x: W / 2, y: H / 2, 'text-anchor': 'middle' }, svg, 'No closed rounds yet'); return; }
+  let cum = 0; const pts = [{ t: done[0].T0, v: 0 }]; for (const R of done) { cum += R.pnl; pts.push({ t: R.pnlT, v: cum, R }); }
+  const t0 = pts[0].t, t1 = Math.max(pts[pts.length - 1].t, t0 + 3600e3);
+  const vs = pts.map(p => p.v), lo = Math.min(0, ...vs), hi = Math.max(0, ...vs), pad = Math.max(0.5, (hi - lo) * 0.08);
+  const y0 = lo - pad, y1 = hi + pad;
+  const X = t => L + (t - t0) / (t1 - t0) * (W - L - Rm), Y = v => T + (y1 - v) / (y1 - y0) * (H - T - B);
+  const st = niceStep(y1 - y0, 5);
+  for (let v = Math.ceil(y0 / st) * st; v <= y1 + 1e-9; v += st) { el('line', { x1: L, x2: W - Rm, y1: Y(v), y2: Y(v), stroke: 'var(--line)', 'stroke-width': Math.abs(v) < 1e-9 ? 1.5 : 1 }, svg); el('text', { x: L - 8, y: Y(v) + 4, 'text-anchor': 'end' }, svg, money(+v.toFixed(2)).replace('.00', '')); }
+  const hStep = niceStep((t1 - t0) / 3600e3, 6) * 3600e3; const first = Math.ceil(t0 / hStep) * hStep;
+  for (let t = first; t <= t1; t += hStep) el('text', { x: X(t), y: H - 12, 'text-anchor': 'middle' }, svg, tm(t));
+  for (const s of DATA.starts) if (s.t > t0 && s.t < t1) el('line', { x1: X(s.t), x2: X(s.t), y1: T, y2: H - B, stroke: 'var(--muted)', 'stroke-dasharray': '3 4', 'stroke-width': 1, opacity: .7 }, svg);
+  let dpath = 'M' + X(pts[0].t) + ' ' + Y(0); for (let i = 1; i < pts.length; i++) dpath += ' H' + X(pts[i].t).toFixed(1) + ' V' + Y(pts[i].v).toFixed(1);
+  el('path', { d: dpath + ' V' + Y(0) + ' Z', fill: 'var(--band)', stroke: 'none' }, svg);
+  el('path', { d: dpath, fill: 'none', stroke: 'var(--accent)', 'stroke-width': 2.2, 'stroke-linejoin': 'round' }, svg);
+  for (const p of pts.slice(1)) { const dot = el('circle', { cx: X(p.t), cy: Y(p.v), r: 4.5, fill: p.R.pnl >= 0 ? 'var(--up)' : 'var(--down)', stroke: 'var(--panel)', 'stroke-width': 1.5, style: 'cursor:pointer' }, svg); el('title', {}, dot, tm(p.R.T0) + ' round · ' + money(p.R.pnl) + ' · total ' + money(p.v)); dot.addEventListener('click', () => { follow = false; sel = p.R.key; render(); }); }
+  const last = pts[pts.length - 1]; el('text', { x: Math.min(X(last.t) + 8, W - Rm - 2), y: Y(last.v) - 9, 'text-anchor': X(last.t) > W - 120 ? 'end' : 'start', style: 'font-weight:600;fill:var(--ink)' }, svg, money(last.v));
+}
+
+function drawPrice() {
+  const svg = $('price'); svg.textContent = '';
+  const list = DATA.list; if (!list.length) return;
+  if (follow || !list.find(R => R.key === sel)) sel = list[list.length - 1].key;
+  const i = list.findIndex(R => R.key === sel), R = list[i];
+  $('prev').disabled = i <= 0; $('next').disabled = i >= list.length - 1;
+  const cfg = R.cfg || {};
+  $('roundinfo').textContent = dt(R.T0) + '–' + tm(R.T0 + 900e3) + ' · ' + (cfg.label || '') + ' · ' + (R.side ? R.side + ' ' + (+R.qty.toFixed(2)) + ' sh @ ' + c(R.avg) + ' avg · ' : '') + R.exitTxt + (R.pnl != null ? ' · ' + money(R.pnl) : '');
+  const W = 1000, H = 340, L = 46, Rm = 14, T = 12, B = 32;
+  const t0 = R.T0, t1 = R.T0 + 900e3;
+  const X = t => L + Math.max(0, Math.min(1, (t - t0) / (t1 - t0))) * (W - L - Rm), Y = p => T + (1 - p) * (H - T - B);
+  for (let p = 0; p <= 1.0001; p += 0.1) { el('line', { x1: L, x2: W - Rm, y1: Y(p), y2: Y(p), stroke: 'var(--line)', 'stroke-width': 1 }, svg); el('text', { x: L - 8, y: Y(p) + 4, 'text-anchor': 'end' }, svg, Math.round(p * 100) + '¢'); }
+  for (let m = 0; m <= 15; m += 3) el('text', { x: X(t0 + m * 60e3), y: H - 10, 'text-anchor': 'middle' }, svg, m === 0 ? tm(t0) : '+' + m + 'm');
+  const nb = cfg.noBuyLeft || 420; el('line', { x1: X(t1 - nb * 1000), x2: X(t1 - nb * 1000), y1: T, y2: H - B, stroke: 'var(--muted)', 'stroke-dasharray': '2 4' }, svg);
+  el('text', { x: X(t1 - nb * 1000) + 5, y: T + 12 }, svg, 'buys stop');
+  const lo = cfg.ladder ? cfg.ladder[0] : cfg.buy, hi = cfg.ladder ? cfg.ladder[1] : cfg.buy;
+  if (Number.isFinite(lo)) el('rect', { x: L, width: X(t1 - nb * 1000) - L, y: Y(hi) - (hi === lo ? 2 : 0), height: Math.max(4, Y(lo) - Y(hi)), fill: 'var(--band)', stroke: 'var(--accent)', 'stroke-opacity': .35 }, svg);
+  if (Number.isFinite(cfg.sell)) { el('line', { x1: L, x2: W - Rm, y1: Y(cfg.sell), y2: Y(cfg.sell), stroke: 'var(--accent)', 'stroke-width': 1.5, 'stroke-dasharray': '6 4' }, svg); el('text', { x: W - Rm - 4, y: Y(cfg.sell) - 6, 'text-anchor': 'end', style: 'fill:var(--accent)' }, svg, 'sell ' + c(cfg.sell)); }
+  const sn = DATA.snaps[R.key] || [];
+  const line = (f, color) => { let d = '', pen = false; for (const p of sn) { const v = f(p); if (!Number.isFinite(v)) { pen = false; continue; } d += (pen ? ' L' : ' M') + X(p.t).toFixed(1) + ' ' + Y(v).toFixed(1); pen = true; } if (d) el('path', { d, fill: 'none', stroke: color, 'stroke-width': 1.8, 'stroke-linejoin': 'round' }, svg); };
+  line(p => p.u, 'var(--up)'); line(p => p.d, 'var(--down)');
+  const mark = (t, px, up, side, txt) => { const x = X(t), y = Y(px), s = 7; const g = el('g', {}, svg);
+    el('path', { d: up ? `M${x} ${y - s} L${x - s} ${y + s * .8} L${x + s} ${y + s * .8} Z` : `M${x} ${y + s} L${x - s} ${y - s * .8} L${x + s} ${y - s * .8} Z`, fill: side === 'DOWN' ? 'var(--down)' : 'var(--up)', stroke: 'var(--panel)', 'stroke-width': 1.5 }, g); el('title', {}, g, txt); };
+  for (const b of R.buys) mark(b.t, b.px, true, b.side, 'buy ' + b.side + ' ' + b.qty + ' sh · avg ' + c(b.px) + ' · ' + tm(b.t));
+  for (const s of R.sells) mark(s.t, s.px, false, s.side, 'sell ' + s.side + ' ' + (+s.qty.toFixed(2)) + ' sh @ ' + c(s.px) + ' · ' + tm(s.t));
+  if (R.settled) { const won = R.side === R.result; el('text', { x: W - Rm - 4, y: Y(won ? 1 : 0) + (won ? 14 : -6), 'text-anchor': 'end', style: 'font-weight:600;fill:' + (won ? 'var(--up)' : 'var(--down)') }, svg, 'settled ' + R.result); }
+  const first = Object.keys(DATA.snaps).length ? Math.min(...Object.values(DATA.snaps).map(a => a.length ? a[0].t : Infinity)) : NaN;
+  $('pricenote').textContent = sn.length ? 'Prices are Mr. E’s 10-second snapshots of the best ask on each side; a fill marker sits at the price paid (the running average on a ladder).' :
+    'No price history for this round. Mr. E records 10-second snapshots from its next restart' + (Number.isFinite(first) ? '; the earliest recorded round starts ' + dt(first) : '') + '. Fill markers are still shown.';
+}
+
+function render() {
+  const D = DATA, list = D.list, done = list.filter(R => R.pnl != null);
+  const net = done.reduce((a, R) => a + R.pnl, 0), wins = done.filter(R => R.pnl > 0).length, losses = done.filter(R => R.pnl < 0).length;
+  const nofill = list.filter(R => R.state === 'nofill').length, today0 = new Date(); today0.setHours(0, 0, 0, 0);
+  const todayNet = done.filter(R => (R.pnlT || R.T0) >= today0.getTime()).reduce((a, R) => a + R.pnl, 0);
+  const cur = D.curCfg; const lastHour = done.filter(R => R.pnlT > Date.now() - 3600e3).reduce((a, R) => a + R.pnl, 0);
+  $('rule').textContent = cur ? 'Now: ' + cur.label + ' · 1 round at a time · no buys inside the last ' + Math.round((cur.noBuyLeft || 420) / 60) + ':00 · running since ' + dt(cur.t) : 'No live run found in the log.';
+  const tile = (l, v, n, cls) => `<div class="kpi"><div class="l">${l}</div><div class="v ${cls || ''}">${v}</div><div class="n">${n || ''}</div></div>`;
+  $('kpis').innerHTML = tile('Net P&L', money(net), done.length + ' closed rounds', net >= 0 ? 'pos' : 'neg') + tile('Wins / losses', wins + ' / ' + losses, done.length ? Math.round(100 * wins / done.length) + '% of closed rounds' : '') +
+    tile('Today', money(todayNet), 'since midnight your time', todayNet >= 0 ? 'pos' : 'neg') + tile('Last hour', money(lastHour), done.filter(R => R.pnlT > Date.now() - 3600e3).length + ' rounds', lastHour >= 0 ? 'pos' : 'neg') +
+    tile('No fill', nofill, 'rounds the price never reached the bids') + tile('Account', D.balance ? '$' + D.balance.v.toFixed(2) : '—', D.balance ? 'at the last run start, ' + tm(D.balance.t) : '');
+  const age = (Date.now() - D.lastT) / 1000, pill = $('pill');
+  pill.className = 'pill ' + (age < 120 ? 'live' : age < 1200 ? 'stale' : 'down'); pill.textContent = age < 120 ? 'running' : age < 1200 ? 'quiet' : 'no signal';
+  $('ago').textContent = 'last event ' + (age < 90 ? Math.round(age) + ' s' : Math.round(age / 60) + ' min') + ' ago';
+  // by settings
+  const by = new Map(); for (const R of list) { const k = R.cfg ? R.cfg.label : '?'; const e = by.get(k) || { k, n: 0, w: 0, l: 0, nf: 0, net: 0, from: R.T0 }; if (R.pnl != null) { e.n++; e.net += R.pnl; if (R.pnl > 0) e.w++; else if (R.pnl < 0) e.l++; } else if (R.state === 'nofill') e.nf++; by.set(k, e); }
+  $('eras').innerHTML = '<thead><tr><th>Settings</th><th>From</th><th class="num">Closed</th><th class="num">W</th><th class="num">L</th><th class="num">No fill</th><th class="num">Net</th><th class="num">Per round</th></tr></thead><tbody>' +
+    [...by.values()].map(e => `<tr><td>${e.k}</td><td>${dt(e.from)}</td><td class="num">${e.n}</td><td class="num">${e.w}</td><td class="num">${e.l}</td><td class="num">${e.nf}</td><td class="num ${e.net >= 0 ? 'pos' : 'neg'}">${money(e.net)}</td><td class="num">${e.n ? money(e.net / e.n) : '—'}</td></tr>`).join('') + '</tbody>';
+  $('rounds').innerHTML = '<thead><tr><th>Round</th><th>Side</th><th class="num">Shares</th><th class="num">Avg buy</th><th>Exit</th><th class="num">P&amp;L</th></tr></thead><tbody>' +
+    list.slice().reverse().map(R => `<tr data-k="${R.key}" class="${R.key === sel ? 'sel' : ''}"><td>${dt(R.T0)}</td><td>${R.side ? `<span class="chip ${R.side}">${R.side}</span>` : '—'}</td><td class="num">${R.qty ? +R.qty.toFixed(2) : '—'}</td><td class="num">${R.avg ? c(R.avg) : '—'}</td><td>${R.exitTxt}</td><td class="num ${R.pnl > 0 ? 'pos' : R.pnl < 0 ? 'neg' : ''}">${R.pnl != null ? money(R.pnl) : '—'}</td></tr>`).join('') + '</tbody>';
+  drawPnl(); drawPrice();
+  for (const tr of document.querySelectorAll('#rounds tbody tr')) tr.addEventListener('click', () => { follow = false; sel = tr.dataset.k; render(); });
+}
+async function load() {
+  try {
+    const [log, tail, snaps] = await Promise.all([getLines(SRC.log), getLines(SRC.tail), getLines(SRC.snaps)]);
+    if (!log.length && !tail.length) { $('rule').innerHTML = '<span class="err">Could not read Mr. E’s log from GitHub. Check the connection and tap Refresh.</span>'; return; }
+    DATA = build(log, tail, snaps); render();
+  } catch (e) { $('rule').innerHTML = '<span class="err">Something went wrong reading the log: ' + String(e.message || e).slice(0, 120) + '</span>'; }
+}
+$('refresh').addEventListener('click', load);
+$('prev').addEventListener('click', () => { const i = DATA.list.findIndex(R => R.key === sel); if (i > 0) { follow = false; sel = DATA.list[i - 1].key; render(); } });
+$('next').addEventListener('click', () => { const i = DATA.list.findIndex(R => R.key === sel); if (i < DATA.list.length - 1) { sel = DATA.list[i + 1].key; follow = i + 1 === DATA.list.length - 1; render(); } });
+$('latest').addEventListener('click', () => { follow = true; render(); });
+load(); setInterval(() => { if (!document.hidden) load(); }, 30000);
+</script>
+</body>
+</html>
