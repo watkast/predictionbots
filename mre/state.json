@@ -966,9 +966,20 @@
    "pnl": 0.3,
    "sellId": "DG6ZK2ZG13CZ",
    "sellPx": 0.3244042
+  },
+  {
+   "T0": 1793701800,
+   "slug": "cpceth-eth-updown-15m-2026-11-03-1030z",
+   "side": null,
+   "buyPx": null,
+   "buyLeft": null,
+   "qty": 0,
+   "sold": 0,
+   "exit": null,
+   "pnl": null
   }
  ],
  "balanceStart": 17.4956,
- "balanceNow": 95.124,
+ "balanceNow": 90.484,
  "errors": 0
 }
