@@ -800,3 +800,4 @@
 {"t":1793713777920,"k":"exit","d":{"slug":"cpceth-eth-updown-15m-2026-11-03-1345z","side":"UP","armed":0.33,"avg":0.275,"src":"ws"}}
 {"t":1793713794061,"k":"fill","d":{"slug":"cpceth-eth-updown-15m-2026-11-03-1345z","side":"UP","sold":0.32,"qty":6,"soldTotal":6,"of":6,"exit":"stall","peak":0.4,"bid":0.34}}
 {"t":1793713794062,"k":"round","d":{"slug":"cpceth-eth-updown-15m-2026-11-03-1345z","exit":"sold at 30¢ avg","qty":6,"pnl":0.18}}
+{"t":1793714402000,"k":"stop","d":{}}
