@@ -1437,13 +1437,25 @@
    "buyPx": 0.275,
    "buyLeft": 807,
    "qty": 6,
+   "sold": 6,
+   "exit": "sold at 32¢ avg",
+   "pnl": 0.3,
+   "sellId": "DGE73V2033D8",
+   "sellPx": 0.32445979999999996
+  },
+  {
+   "T0": 1793731500,
+   "slug": "cpceth-eth-updown-15m-2026-11-03-1845z",
+   "side": null,
+   "buyPx": null,
+   "buyLeft": null,
+   "qty": 0,
    "sold": 0,
    "exit": null,
-   "pnl": null,
-   "sellId": "DGE2FR9G13D8"
+   "pnl": null
   }
  ],
  "balanceStart": 17.4956,
- "balanceNow": 79.024,
+ "balanceNow": 68.974,
  "errors": 0
 }
