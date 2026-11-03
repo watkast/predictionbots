@@ -777,9 +777,21 @@
    "sold": 0,
    "exit": null,
    "pnl": null
+  },
+  {
+   "T0": 1793690100,
+   "slug": "cpceth-eth-updown-15m-2026-11-03-0715z",
+   "side": "DOWN",
+   "buyPx": 0.275,
+   "buyLeft": 754,
+   "qty": 6,
+   "sold": 0,
+   "exit": null,
+   "pnl": null,
+   "sellId": "DG4DVDHG13D1"
   }
  ],
  "balanceStart": 17.4956,
- "balanceNow": 85.2056,
+ "balanceNow": 132.0526,
  "errors": 0
 }
