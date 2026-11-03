@@ -406,3 +406,7 @@
 {"t":1793719229668,"k":"round","d":{"slug":"cpc-btc-updown-15m-2026-11-03-1515z","exit":"sold at 35¢ avg","qty":6,"pnl":0.47}}
 {"t":1793719806740,"k":"ladder","d":{"slug":"cpc-btc-updown-15m-2026-11-03-1530z","ids":["DGBFAHJG13D1","DGBFAJHG13D1","DGBFAKM033D3","DGBFAMTG13D5","DGBFANW013D7","DGBFAQ6G13CZ","DGBFARK013D5","DGBFASNG13D6","DGBFATM013D1","DGBFAVMG13CZ","DGBFAWGG13D8","DGBFAXV013D3"]}}
 {"t":1793719806740,"k":"rest","d":{"slug":"cpc-btc-updown-15m-2026-11-03-1530z","side":"BOTH","at":0.3,"ladder":"25–30¢","rungs":6,"qty":1}}
+{"t":1793720163872,"k":"round","d":{"slug":"cpc-btc-updown-15m-2026-11-03-1530z","buysPulled":"no entry inside the last 9 min","held":0}}
+{"t":1793720163873,"k":"round","d":{"slug":"cpc-btc-updown-15m-2026-11-03-1530z","exit":"no fill"}}
+{"t":1793720706815,"k":"ladder","d":{"slug":"cpc-btc-updown-15m-2026-11-03-1545z","ids":["DGBP69H013D5","DGBP6AW013D6","DGBP6CG013D5","DGBP6DC013D3","DGBP6EHG53D8","DGBP6FH013D8","DGBP6GJG13D7","DGBP6HNG13D7","DGBP6JM013D1","DGBP6KN053D3","DGBP6MK013CX","DGBP6NN013CX"]}}
+{"t":1793720706815,"k":"rest","d":{"slug":"cpc-btc-updown-15m-2026-11-03-1545z","side":"BOTH","at":0.3,"ladder":"25–30¢","rungs":6,"qty":1}}
