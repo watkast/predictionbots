@@ -20,9 +20,24 @@ const sleep = ms => new Promise(r => setTimeout(r, ms));
       if (d.id) ids.set(d.id, { slug: d.slug, kind: d.sellAt ? 'sell' : 'buy', side: d.side, t: r.t, bot: f });
       if (r.k === 'ladder') for (const id of d.ids || []) ids.set(id, { slug: d.slug, kind: 'buy', t: r.t, bot: f }); } }
   console.log('== order ids from the logs:', ids.size);
+  // the account's own trade history: any trade with no order id from the bots' logs was placed by someone else (the app, by hand)
+  const acts = []; let cursor = null;
+  for (let page = 0; page < 20; page++) { const q = { limit: 200 }; if (cursor) q.cursor = cursor; const r = await get('/v1/portfolio/activities', q); if (r.status !== 200) { console.log('== activities page', page, r.status); break; }
+    let j; try { j = JSON.parse(r.body); } catch (e) { break; } const a = j.activities || []; acts.push(...a); cursor = j.nextCursor || j.cursor || (j.pagination && j.pagination.nextCursor); if (page === 0) console.log('== activities keys', Object.keys(j).join(','), 'first', JSON.stringify(a[0] || {}).slice(0, 1200));
+    if (!cursor || !a.length) break; await sleep(800); }
+  console.log('== activities', acts.length);
+  const idsIn = x => { const out = []; const walk = v => { if (v && typeof v === 'object') { for (const [k, w] of Object.entries(v)) { if (k === 'id' && typeof w === 'string') out.push(w); walk(w); } } }; walk(x); return out; };
+  const ts = x => { const m = JSON.stringify(x).match(/"(?:createTime|transactTime|updateTime|time|createdAt)":"([^"]+)"/); return m ? Date.parse(m[1]) : NaN; };
+  let foreign = 0, foreignCash = 0; const kinds = {};
+  for (const a of acts) { kinds[a.type] = (kinds[a.type] || 0) + 1; const t = ts(a); if (Number.isFinite(t) && (t < from || t > to)) continue;
+    if (a.type !== 'ACTIVITY_TYPE_TRADE') { console.log('== other activity', a.type, JSON.stringify(a).slice(0, 400)); continue; }
+    const mine = idsIn(a).some(id => ids.has(id)); if (mine) continue; foreign++;
+    if (foreign <= 40) console.log('== NOT A BOT ORDER', new Date(t).toISOString(), JSON.stringify(a).replace(/"marketMetadata":\{[^}]*\{[^}]*\}[^}]*\},?/g, '').slice(0, 700)); }
+  console.log('== activity types', JSON.stringify(kinds), '· trades in the window not placed by either bot:', foreign);
+  if (process.env.AUDIT_SKIP_ORDERS) return;
   let printed = 0, cashOut = 0, cashIn = 0, fees = 0, n = 0; const byState = {};
   for (const [id, meta] of ids) {
-    const r = await get('/v1/order/' + id); n++; if (n % 20 === 0) await sleep(500);
+    const r = await get('/v1/order/' + id); n++; await sleep(250);
     if (r.status !== 200) { byState['HTTP ' + r.status] = (byState['HTTP ' + r.status] || 0) + 1; continue; }
     let j; try { j = JSON.parse(r.body); } catch (e) { continue; } const o = j.order || j;
     if (printed < 3 && Number(o.cumQuantity || 0) > 0) { console.log('== sample filled order', r.body.slice(0, 2500)); printed++; }

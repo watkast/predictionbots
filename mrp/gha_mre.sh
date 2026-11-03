@@ -20,7 +20,7 @@ else
 fi
 if [ "$MODE" = "audit" ]; then   # read-only reconciliation of the account against both Mr. E logs; places nothing
   git fetch -q --depth 1 origin "$DATA_BRANCH" && git show "origin/$DATA_BRANCH:mre/live.jsonl" > /tmp/mre_eth.jsonl 2>/dev/null; git show "origin/$DATA_BRANCH:mre-btc/live.jsonl" > /tmp/mre_btc.jsonl 2>/dev/null
-  AUDIT_LOGS=/tmp/mre_eth.jsonl,/tmp/mre_btc.jsonl node scripts/mre_audit.js; exit 0
+  AUDIT_SKIP_ORDERS=1 AUDIT_LOGS=/tmp/mre_eth.jsonl,/tmp/mre_btc.jsonl node scripts/mre_audit.js; exit 0
 fi
 publish() {
   ( cd "$WT" || exit 0
