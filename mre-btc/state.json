@@ -55,9 +55,21 @@
    "exit": null,
    "pnl": null,
    "sellId": "DG4672C013D1"
+  },
+  {
+   "T0": 1793690100,
+   "slug": "cpc-btc-updown-15m-2026-11-03-0715z",
+   "side": "DOWN",
+   "buyPx": 0.275,
+   "buyLeft": 750,
+   "qty": 6,
+   "sold": 0,
+   "exit": null,
+   "pnl": null,
+   "sellId": "DG4DVNEG13CZ"
   }
  ],
  "balanceStart": 95.086,
- "balanceNow": 87.8411,
+ "balanceNow": 132.0526,
  "errors": 0
 }
