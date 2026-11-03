@@ -25,7 +25,7 @@
  "blocked": {
   "KXUCL1HTOTAL-26NOV03GALVFB-2": "settling (99s)",
   "KXUCL1HTOTAL-26NOV03GALVFB-1": "settling (99s)",
-  "KXUCLTOTAL-26NOV03GALVFB-2": "settling (179s)",
+  "KXUCLTOTAL-26NOV03GALVFB-2": "no asks (already repriced)",
   "KXUCLTOTAL-26NOV03GALVFB-1": "no asks (already repriced)",
   "KXUCL1HTOTAL-26NOV03SHASPO-3": "settling (65s)",
   "KXUCL1HTOTAL-26NOV03SHASPO-2": "settling (65s)",
