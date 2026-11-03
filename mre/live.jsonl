@@ -663,3 +663,16 @@
 {"t":1793704804162,"k":"fill","d":{"slug":"cpceth-eth-updown-15m-2026-11-03-1115z","side":"UP","px":0.275,"qty":1,"heldTotal":6,"of":6}}
 {"t":1793704804509,"k":"rest","d":{"slug":"cpceth-eth-updown-15m-2026-11-03-1115z","side":"UP","sellAt":0.6,"qty":6,"id":"DG7WW8SG13CZ"}}
 {"t":1793704860692,"k":"round","d":{"slug":"cpceth-eth-updown-15m-2026-11-03-1115z","buysPulled":"no entry inside the last 9 min","held":6}}
+{"t":1793705399523,"k":"round","d":{"slug":"cpceth-eth-updown-15m-2026-11-03-1115z","held":"UP","qty":6,"of":6,"px":0.275}}
+{"t":1793705407213,"k":"ladder","d":{"slug":"cpceth-eth-updown-15m-2026-11-03-1130z","ids":["DG81F0K013D9","DG81F1KG73CT","DG81F32G53CX","DG81F4JG13D8","DG81F5N013D6","DG81F6R013D1","DG81F7V013D7","DG81F8X013D5","DG81F9Y013D3","DG81FB8013D1","DG81FCG033D3","DG81FDE013D9"]}}
+{"t":1793705407214,"k":"rest","d":{"slug":"cpceth-eth-updown-15m-2026-11-03-1130z","side":"BOTH","at":0.3,"ladder":"25–30¢","rungs":6,"qty":1}}
+{"t":1793705429777,"k":"settle","d":{"slug":"cpceth-eth-updown-15m-2026-11-03-1115z","result":"DOWN","side":"UP","qty":6,"pnl":-1.65}}
+{"t":1793705497720,"k":"fill","d":{"slug":"cpceth-eth-updown-15m-2026-11-03-1130z","side":"UP","px":0.3,"qty":1,"heldTotal":1,"of":6}}
+{"t":1793705497822,"k":"rest","d":{"slug":"cpceth-eth-updown-15m-2026-11-03-1130z","side":"UP","sellAt":0.6,"qty":1,"id":"DG825H9G13D5"}}
+{"t":1793705512909,"k":"exit","d":{"slug":"cpceth-eth-updown-15m-2026-11-03-1130z","side":"UP","armed":0.34,"avg":0.3,"src":"ws"}}
+{"t":1793705529316,"k":"exit","d":{"slug":"cpceth-eth-updown-15m-2026-11-03-1130z","side":"UP","armed":0.34,"avg":0.3,"src":"ws"}}
+{"t":1793705543991,"k":"fill","d":{"slug":"cpceth-eth-updown-15m-2026-11-03-1130z","side":"UP","sold":0.48,"qty":1,"soldTotal":1,"of":1,"exit":"stall","peak":0.51,"bid":0.48}}
+{"t":1793705587336,"k":"fill","d":{"slug":"cpceth-eth-updown-15m-2026-11-03-1130z","side":"UP","px":0.28,"qty":4,"heldTotal":5,"of":6}}
+{"t":1793705587439,"k":"rest","d":{"slug":"cpceth-eth-updown-15m-2026-11-03-1130z","side":"UP","sellAt":0.6,"qty":4,"id":"DG82VDF013CX"}}
+{"t":1793705595612,"k":"fill","d":{"slug":"cpceth-eth-updown-15m-2026-11-03-1130z","side":"UP","px":0.275,"qty":1,"heldTotal":6,"of":6}}
+{"t":1793705595956,"k":"rest","d":{"slug":"cpceth-eth-updown-15m-2026-11-03-1130z","side":"UP","sellAt":0.6,"qty":5,"id":"DG82XG1G13CT"}}
