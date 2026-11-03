@@ -68,13 +68,30 @@ async function api(method, p, body, query) {
   if (!r.ok) { const err = new Error(method + ' ' + p + ' -> HTTP ' + r.status + ' ' + txt.slice(0, 300)); err.status = r.status; throw err; }
   return j;
 }
+// ---- the live book: the exchange's authenticated market-data WebSocket for the round's market (REST gateway as a fallback)
+const WSB = { slug: '', ws: null, top: null, at: 0 };
+function wsBook(slug) {
+  if (DRY || !KEY_ID) return; if (WSB.ws && WSB.slug === slug) return;
+  try { if (WSB.ws) WSB.ws.close(); } catch (e) {}
+  WSB.slug = slug; WSB.top = null; WSB.at = 0;
+  let WSImpl; try { WSImpl = require('ws'); } catch (e) { return; }
+  const p = '/v1/ws/markets'; const w = new WSImpl('wss://api.polymarket.us' + p, { headers: authHeaders('GET', p) }); WSB.ws = w;
+  w.on('open', () => w.send(JSON.stringify({ subscribe: { requestId: 'md-' + Date.now(), subscriptionType: 'SUBSCRIPTION_TYPE_MARKET_DATA', marketSlugs: [slug] } })));
+  w.on('message', m => { try { const j = JSON.parse(m.toString()); const md = j.marketData || j.marketDataLite; if (!md || md.marketSlug !== slug) return;
+    const lv = a => (a || []).map(e => [Number(e.px && e.px.value != null ? e.px.value : e.px), Number(e.qty)]).filter(x => Number.isFinite(x[0]) && x[1] > 0);
+    const o = lv(md.offers).sort((a, b) => a[0] - b[0]), b = lv(md.bids).sort((a, b) => b[0] - a[0]);
+    if (o.length || b.length) { WSB.top = { upAsk: o.length ? o[0][0] : NaN, upBid: b.length ? b[0][0] : NaN }; WSB.at = Date.now(); } } catch (e) {} });
+  w.on('close', () => { if (WSB.ws === w) { WSB.ws = null; setTimeout(() => { if (WSB.slug === slug && !WSB.ws) wsBook(slug); }, 2000); } });
+  w.on('error', () => {});
+}
 const ex = {
   async balance() { const j = await api('GET', '/v1/account/balances'); const b = (j.balances && j.balances[0]) || {}; return { cash: Number(b.buyingPower ?? NaN), total: Number(b.currentBalance ?? NaN) }; },
   async place(o) { if (DRY) { log('dry', o); return { id: 'dry-' + Date.now() }; } return api('POST', '/v1/orders', o); },
   async order(id) { for (let i = 0; i < 4; i++) { try { const j = await api('GET', '/v1/order/' + id); return j.order || j; } catch (e) { if (!(e.status === 404 && i < 3)) throw e; await sleep(400); } } },
   async cancel(id, slug) { if (DRY || !id || id.startsWith('dry-')) return; try { await api('POST', '/v1/order/' + id + '/cancel', { marketSlug: slug }); } catch (e) { if (!/HTTP 4/.test(e.message)) throw e; } },
   async market(slug) { try { const r = await fetch(GATEWAY + '/v1/market/slug/' + slug); return await r.json(); } catch (e) { return null; } },
-  async book(slug) { try { const r = await fetch(GATEWAY + '/v1/markets/' + slug + '/book'); const j = await r.json(); const md = j.marketData || j; const lv = a => (a || []).map(e => [Number(e.px && e.px.value != null ? e.px.value : e.px), Number(e.qty)]).filter(x => Number.isFinite(x[0]) && x[1] > 0); const o = lv(md.offers).sort((a, b) => a[0] - b[0]), b = lv(md.bids).sort((a, b) => b[0] - a[0]); return { upAsk: o.length ? o[0][0] : NaN, upBid: b.length ? b[0][0] : NaN }; } catch (e) { return null; } }
+  async book(slug) { if (WSB.slug === slug && WSB.top && Date.now() - WSB.at < 3000) return { ...WSB.top, src: 'ws' }; if (WSB.slug === slug && WSB.top && Date.now() - WSB.at < 15000) return { ...WSB.top, src: 'ws-quiet' };   // the WS sends on change: a quiet book is still the book
+    try { const r = await fetch(GATEWAY + '/v1/markets/' + slug + '/book'); const j = await r.json(); const md = j.marketData || j; const lv = a => (a || []).map(e => [Number(e.px && e.px.value != null ? e.px.value : e.px), Number(e.qty)]).filter(x => Number.isFinite(x[0]) && x[1] > 0); const o = lv(md.offers).sort((a, b) => a[0] - b[0]), b = lv(md.bids).sort((a, b) => b[0] - a[0]); return { upAsk: o.length ? o[0][0] : NaN, upBid: b.length ? b[0][0] : NaN }; } catch (e) { return null; } }
 };
 // a Down share at price d is a short of the Up contract quoted at 1 − d (the exchange shows a BUY_SHORT as a SELL of Up at the price sent)
 const buyOrder = (slug, side, px = BUY) => ({ marketSlug: slug, intent: side === 'UP' ? 'ORDER_INTENT_BUY_LONG' : 'ORDER_INTENT_BUY_SHORT', type: 'ORDER_TYPE_LIMIT', price: money(side === 'UP' ? px : 1 - px), quantity: QTY, tif: 'TIME_IN_FORCE_GOOD_TILL_CANCEL' });
@@ -89,7 +106,7 @@ const filledOf = async id => { const o = await ex.order(id); if (!o) return { qt
 // while they fill, plus a sweep of every rung every 10 s for anything the walk missed.
 async function playRound(T0) {
   const slug = SLUG(T0), T = T0 + ROUND; const rec = { T0, slug, side: null, buyPx: null, buyLeft: null, qty: 0, sold: 0, exit: null, pnl: null }; state.rounds.push(rec); save();
-  const lad = { UP: [], DOWN: [] }; live.slug = slug; live.T = T; live.resting = ['UP', 'DOWN']; live.held = null; live.ids = lad;
+  wsBook(slug); const lad = { UP: [], DOWN: [] }; live.slug = slug; live.T = T; live.resting = ['UP', 'DOWN']; live.held = null; live.ids = lad;
   for (const sd of ['UP', 'DOWN']) for (const px of RUNGS) { try { const res = await ex.place({ ...buyOrder(slug, sd, px), quantity: QTY }); lad[sd].push({ id: res.id || (res.order && res.order.id), px, cum: 0, done: false }); } catch (e) { state.errors++; log('error', { place: sd + ' ' + px, msg: e.message.slice(0, 300) }); } }
   log('ladder', { slug, ids: lad.UP.map(r => r.id).concat(lad.DOWN.map(r => r.id)) }); log('rest', { slug, side: 'BOTH', at: HI, ladder: Math.round(LO * 100) + '–' + Math.round(HI * 100) + '¢', rungs: RUNGS.length, qty: QTY });
   const own = (side, px) => side === 'UP' ? px : 1 - px;   // order prices come back in Up terms
@@ -124,10 +141,10 @@ async function playRound(T0) {
     await readSell();
     const held = +(bought() - sold).toFixed(4);
     if (held > 0) {   // the dynamic exit
-      const bk = await ex.book(slug); const bid = bk ? (side === 'UP' ? bk.upBid : (Number.isFinite(bk.upAsk) ? +(1 - bk.upAsk).toFixed(2) : NaN)) : NaN;
+      const bk0 = await ex.book(slug); const bk = bk0 && (bk0.src === 'ws' || bk0.src === 'ws-quiet') ? bk0 : null; const bid = bk ? (side === 'UP' ? bk.upBid : (Number.isFinite(bk.upAsk) ? +(1 - bk.upAsk).toFixed(2) : NaN)) : NaN;
       const avg = cost() / bought();
       if (Number.isFinite(bid) && bid - FEE(bid) >= avg + EXIT_MIN) {
-        if (peak == null || bid > peak + 1e-9) { if (peak == null) log('exit', { slug, side, armed: bid, avg: +avg.toFixed(3) }); peak = bid; peakAt = Date.now(); }
+        if (peak == null || bid > peak + 1e-9) { if (peak == null) log('exit', { slug, side, armed: bid, avg: +avg.toFixed(3), src: bk.src }); peak = bid; peakAt = Date.now(); }
         else if (Date.now() - peakAt >= EXIT_STALL * 1000 || bid <= peak - EXIT_DROP + 1e-9) {
           if (sell) { await ex.cancel(sell.id, slug); await readSell(); sell = null; }
           const q = +(bought() - sold).toFixed(4);

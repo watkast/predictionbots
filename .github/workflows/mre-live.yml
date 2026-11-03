@@ -35,5 +35,6 @@ jobs:
       - uses: actions/setup-node@v4
         with:
           node-version: "22"
+      - run: npm install --no-save --no-audit --no-fund ws@8
       - name: Trade (publishing every 10 minutes)
         run: bash mrp/gha_mre.sh "${{ github.event.inputs.minutes || '335' }}" "${{ github.event.inputs.mode || 'live' }}"
