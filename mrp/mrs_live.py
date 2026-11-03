@@ -144,11 +144,17 @@ VOID_WORDS = ("POSTPONED", "CANCEL", "ABANDON", "SUSPEND", "DELAY", "FORFEIT")
 
 
 def espn_games(league: str, ht_memory: dict) -> list[dict]:
-    d0 = (datetime.now(timezone.utc) - timedelta(days=1)).strftime("%Y%m%d")
-    d1 = (datetime.now(timezone.utc) + timedelta(days=1)).strftime("%Y%m%d")
-    data = jget(ESPN.format(lg=league), params={"dates": f"{d0}-{d1}", "limit": 200}) or {}
+    # ESPN soccer rejects date ranges (HTTP 400): ask for the US-Eastern 'today' and 'yesterday' one date at a time
+    et_now = datetime.now(timezone.utc) - timedelta(hours=5)
+    evs, seen_ids = [], set()
+    for d in (et_now, et_now - timedelta(days=1)):
+        data = jget(ESPN.format(lg=league), params={"dates": d.strftime("%Y%m%d")}) or {}
+        for ev in data.get("events") or []:
+            if ev.get("id") not in seen_ids:
+                seen_ids.add(ev.get("id"))
+                evs.append(ev)
     out = []
-    for ev in data.get("events") or []:
+    for ev in evs:
         comp = (ev.get("competitions") or [{}])[0]
         st = comp.get("status") or ev.get("status") or {}
         typ = st.get("type") or {}
@@ -314,12 +320,27 @@ class Ages:
         return now() - self.t[key]
 
 
+_switch_last = {"v": None}
+
+
 def switch_on() -> bool:
+    """mrs/LIVE_ON exists on main? GitHub contents API with the run's token (no CDN cache), raw URL as fallback."""
+    code, via = None, ""
+    repo, tok = E("GITHUB_REPOSITORY", "watkast/predictionbots"), E("GH_TOKEN") or E("GITHUB_TOKEN")
     try:
-        r = SESS.get(SWITCH_URL, timeout=10, params={"t": int(now())})
-        return r.status_code == 200
-    except requests.RequestException:
-        return False
+        h = {"Accept": "application/vnd.github+json", **({"Authorization": f"Bearer {tok}"} if tok else {})}
+        r = SESS.get(f"https://api.github.com/repos/{repo}/contents/mrs/LIVE_ON", params={"ref": "main"}, headers=h, timeout=10)
+        code, via = r.status_code, "api"
+        if code not in (200, 404):
+            r = SESS.get(SWITCH_URL, timeout=10, params={"t": int(now())})
+            code, via = r.status_code, "raw"
+    except requests.RequestException as e:
+        via = f"error {e.__class__.__name__}"
+    on = code == 200
+    if on != _switch_last["v"]:
+        log("switch", on=on, code=code, via=via)
+        _switch_last["v"] = on
+    return on
 
 
 def open_risk(st: dict) -> float:
@@ -458,7 +479,10 @@ def main():
             dry = True
         else:
             code, js = k_private("GET", "/portfolio/balance")
-            bal = (num((js or {}).get("balance")) or 0) / 100 if code == 200 else None
+            js = js or {}
+            bal = (num(js.get("balance_dollars")) if js.get("balance_dollars") is not None
+                   else (num(js.get("balance")) or 0) / 100) if code == 200 else None
+            log("balance_check", code=code, fields=sorted(js)[:10], ok=bool(bal and bal >= RISK_USD))
             if code != 200:
                 info["blocked_start"] = f"Kalshi balance check failed (HTTP {code}): key may lack trading access"
                 dry = True
@@ -466,7 +490,11 @@ def main():
                 info["blocked_start"] = f"Kalshi balance below the ${RISK_USD:g} risk cap — fund the account (orders still try, capped by cash)"
             log("start", mode="dry" if dry else "live", balance_ok=bool(bal and bal >= RISK_USD))
     end = now() + a.minutes * 60
-    ages_e, ages_p, ht_mem = Ages(), Ages(), {}
+    ages_e, ages_p = Ages(), Ages()
+    ht_mem = {k: tuple(v) for k, v in st.setdefault("ht", {}).items()}   # half-time scores survive run restarts
+    poll_t: dict[str, float] = {}
+    live_lg: set[str] = set()
+    errs: dict[str, str] = {}
     last = {"switch": 0.0, "settle": 0.0, "report": 0.0, "pm": 0.0, "k": {}}
     pm_events: list[dict] = []
     kcache: dict[str, list[dict]] = {}
@@ -478,10 +506,22 @@ def main():
                 info["switch"], last["switch"] = switch_on(), now()
             games = []
             for lg in LIVE_LEAGUES + SHADOW_LEAGUES:
+                if lg not in live_lg and now() - poll_t.get(lg, 0) < 120:
+                    games += [g for g in info.get("idle_games", {}).get(lg, [])]
+                    continue                                   # leagues with nothing in play: every 2 minutes
+                poll_t[lg] = now()
                 try:
-                    games += espn_games(lg, ht_mem)
+                    got = espn_games(lg, ht_mem)
+                    errs.pop(lg, None)
                 except Exception as e:  # noqa
-                    log("err", where=f"espn {lg}", e=str(e)[:200])
+                    got = []
+                    if errs.get(lg) != str(e)[:80]:
+                        errs[lg] = str(e)[:80]
+                        log("err", where=f"espn {lg}", e=str(e)[:200])
+                info.setdefault("idle_games", {})[lg] = got
+                games += got
+            live_lg = {g["league"] for g in games if not g["ended"]}
+            st["ht"] = {k: list(v) for k, v in list(ht_mem.items())[-200:]}
             games = [g for g in games if not g["ended"] or (ts(g["start"]) or 0) > now() - 5 * 3600]
             info.update(games=len(games), kmatched=0, pmatched=0, agreed=0, disagree=0)
             info.setdefault("series_found", set())
