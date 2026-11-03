@@ -467,3 +467,7 @@
 {"t":1793688362405,"k":"rest","d":{"slug":"cpceth-eth-updown-15m-2026-11-03-0645z","side":"UP","sellAt":0.45,"qty":5,"id":"DG3ZE37012TT"}}
 {"t":1793688364892,"k":"fill","d":{"slug":"cpceth-eth-updown-15m-2026-11-03-0645z","side":"UP","px":0.275,"qty":1,"heldTotal":6,"of":6}}
 {"t":1793688364966,"k":"rest","d":{"slug":"cpceth-eth-updown-15m-2026-11-03-0645z","side":"UP","sellAt":0.45,"qty":6,"id":"DG3ZEQ7012WA"}}
+{"t":1793688660560,"k":"round","d":{"slug":"cpceth-eth-updown-15m-2026-11-03-0645z","buysPulled":"no entry inside the last 9 min","held":6}}
+{"t":1793689199528,"k":"round","d":{"slug":"cpceth-eth-updown-15m-2026-11-03-0645z","held":"UP","qty":6,"of":6,"px":0.275}}
+{"t":1793689205905,"k":"ladder","d":{"slug":"cpceth-eth-updown-15m-2026-11-03-0700z","ids":["DG45VTQG13CX","DG45VV7013CZ","DG45VW8013CZ","DG45VWR013CZ","DG45VX8G13D1","DG45VXPG12WA","DG45VY4G13D1","DG45VYK013CZ","DG45VYZG13CZ","DG45W02013CT","DG45W0F012WE","DG45W11G12WA"]}}
+{"t":1793689205906,"k":"rest","d":{"slug":"cpceth-eth-updown-15m-2026-11-03-0700z","side":"BOTH","at":0.3,"ladder":"25–30¢","rungs":6,"qty":1}}
