@@ -59,3 +59,5 @@
 {"t":1793692068862,"k":"exit","d":{"slug":"cpc-btc-updown-15m-2026-11-03-0745z","side":"DOWN","armed":0.37,"avg":0.275,"src":"ws"}}
 {"t":1793692087013,"k":"fill","d":{"slug":"cpc-btc-updown-15m-2026-11-03-0745z","side":"DOWN","sold":0.43000000000000005,"qty":6,"soldTotal":6,"of":6,"exit":"stall","peak":0.46,"bid":0.43}}
 {"t":1793692087014,"k":"round","d":{"slug":"cpc-btc-updown-15m-2026-11-03-0745z","exit":"sold at 41¢ avg","qty":6,"pnl":0.83}}
+{"t":1793692806566,"k":"ladder","d":{"slug":"cpc-btc-updown-15m-2026-11-03-0800z","ids":["DG51AQTG13CZ","DG51ARS013CX","DG51ASP013D8","DG51ATKG13D9","DG51AVVG13CX","DG51AWS013D3","DG51AXSG13D1","DG51AYN013D7","DG51AZX053CZ","DG51B0T013CT","DG51B21013D7","DG51B2ZG13D5"]}}
+{"t":1793692806567,"k":"rest","d":{"slug":"cpc-btc-updown-15m-2026-11-03-0800z","side":"BOTH","at":0.3,"ladder":"25–30¢","rungs":6,"qty":1}}
