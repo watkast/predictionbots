@@ -8,13 +8,13 @@
 //
 //   node scripts/mre_live.js            # live (POLYMARKET_KEY_ID / POLYMARKET_SECRET_KEY)
 //   node scripts/mre_live.js --dry      # logs what it would do, places nothing
-// Env: MRE_DIR (log + MRE.md, default ./mre), MRE_MINUTES (stop after N minutes), MRE_BUY (default 0.30), MRE_SELL (0.55), MRE_QTY (1), MRE_NOBUY_LEFT (420 s),
+// Env: MRE_DIR (log + MRE.md, default ./mre), MRE_MINUTES (stop after N minutes), MRE_BUY (default 0.30), MRE_SELL (0.55), MRE_QTY (10; 1 until Nov 2, 7:15 PM MT), MRE_NOBUY_LEFT (420 s),
 //      MRE_SLUG_PREFIX (default cpceth-eth-updown-15m- : the ETH 15-minute market; cpc-btc-updown-15m- would be BTC)
 'use strict';
 const fs = require('fs'), path = require('path'), crypto = require('crypto');
 const DRY = process.argv.includes('--dry');
 const DIR = process.env.MRE_DIR || 'mre'; fs.mkdirSync(DIR, { recursive: true });
-const BUY = Number(process.env.MRE_BUY || 0.30), SELL = Number(process.env.MRE_SELL || 0.55), QTY = Number(process.env.MRE_QTY || 1);
+const BUY = Number(process.env.MRE_BUY || 0.30), SELL = Number(process.env.MRE_SELL || 0.55), QTY = Number(process.env.MRE_QTY || 10);
 const MINUTES = Number(process.env.MRE_MINUTES || 0) || 0, NOBUY_LEFT = Number(process.env.MRE_NOBUY_LEFT || 420);
 const KEY_ID = process.env.POLYMARKET_KEY_ID || '', SECRET = process.env.POLYMARKET_SECRET_KEY || '';
 const API = 'https://api.polymarket.us', GATEWAY = 'https://gateway.polymarket.us', ROUND = 900;
@@ -37,12 +37,12 @@ const save = () => { try { fs.writeFileSync(statePath, JSON.stringify(state, nul
 const et = ms => new Intl.DateTimeFormat('en-US', { timeZone: 'America/New_York', month: 'short', day: 'numeric', hour: 'numeric', minute: '2-digit' }).format(new Date(ms));
 function report() {
   const R = state.rounds, closed = R.filter(r => r.pnl != null), pnl = closed.reduce((s, r) => s + r.pnl, 0);
-  const sold = closed.filter(r => r.exit === 'sold at ' + Math.round(SELL * 100) + '¢').length, won = closed.filter(r => r.exit === 'won at the bell').length, lost = closed.filter(r => r.exit === 'lost at the bell').length, none = R.filter(r => r.exit === 'no fill').length;
+  const sold = closed.filter(r => r.exit === 'sold at ' + Math.round(SELL * 100) + '¢').length, won = closed.filter(r => / won at the bell$/.test(r.exit) || r.exit === 'won at the bell').length, lost = closed.filter(r => / lost at the bell$/.test(r.exit) || r.exit === 'lost at the bell').length, none = R.filter(r => r.exit === 'no fill').length;
   const lines = ['# Mr. E — live progress', '', `Market **${PREFIX.replace(/-$/, '')}** · mode **${state.mode}** · rests ${QTY} share at ${Math.round(BUY * 100)}¢ on both sides each round, sells the first fill at ${Math.round(SELL * 100)}¢ · started ${et(state.startedAt)} ET · updated ${et(Date.now())} ET`,
     state.balanceStart != null ? `Account balance $${Number(state.balanceStart).toFixed(2)} at start → $${Number(state.balanceNow ?? state.balanceStart).toFixed(2)} now (shared with Mr. P)` : '', '',
     `**Rounds ${R.length} · fills ${R.filter(r => r.buyPx != null).length} · sold at ${Math.round(SELL * 100)}¢ ${sold} · held and won ${won} · held and lost ${lost} · no fill ${none} · P&L ${pnl >= 0 ? '+' : '−'}$${Math.abs(pnl).toFixed(2)}** · errors ${state.errors}`, '',
     '| round (ET) | side | bought | exit | P&L |', '|---|---|---|---|---|'];
-  for (const r of R.slice(-60).reverse()) lines.push(`| ${et(r.T0 * 1000)} | ${r.side || '—'} | ${r.buyPx != null ? Math.round(r.buyPx * 100) + '¢ at ' + Math.floor(r.buyLeft / 60) + ':' + String(r.buyLeft % 60).padStart(2, '0') : '—'} | ${r.exit || 'open'} | ${r.pnl != null ? (r.pnl >= 0 ? '+' : '−') + '$' + Math.abs(r.pnl).toFixed(2) : '—'} |`);
+  for (const r of R.slice(-60).reverse()) lines.push(`| ${et(r.T0 * 1000)} | ${r.side || '—'}${r.qty > 1 ? ' ×' + r.qty : ''} | ${r.buyPx != null ? Math.round(r.buyPx * 100) + '¢ at ' + Math.floor(r.buyLeft / 60) + ':' + String(r.buyLeft % 60).padStart(2, '0') : '—'} | ${r.exit || 'open'} | ${r.pnl != null ? (r.pnl >= 0 ? '+' : '−') + '$' + Math.abs(r.pnl).toFixed(2) : '—'} |`);
   lines.push('', 'Every order, fill and settlement: `live.jsonl` beside this file. Source: `scripts/mre_live.js`.');
   fs.writeFileSync(path.join(DIR, 'MRE.md'), lines.join('\n') + '\n');
 }
@@ -73,43 +73,57 @@ const sellOrder = (slug, side) => ({ marketSlug: slug, intent: side === 'UP' ? '
 const filledOf = async id => { const o = await ex.order(id); if (!o) return { qty: 0 }; const q = Number(o.cumQuantity || 0); const px = amt(o.avgPx); return { qty: q, px: Number.isFinite(px) ? px : NaN, state: o.state || '' }; };
 
 // ---- one round
+// Sized orders fill in pieces, so everything is tracked by quantity: the first side to fill at all is the side; its buy keeps
+// resting (to complete QTY) until the 7:00 cutoff; the sell always covers exactly what is held and unsold (re-placed when more
+// is bought); whatever is still held at the bell settles.
 async function playRound(T0) {
-  const slug = SLUG(T0), T = T0 + ROUND; const rec = { T0, slug, side: null, buyPx: null, buyLeft: null, exit: null, pnl: null }; state.rounds.push(rec); save();
-  const ids = {}; let held = null; live.slug = slug; live.T = T; live.resting = ['UP', 'DOWN']; live.held = null; live.ids = ids;
-  for (const side of ['UP', 'DOWN']) { try { const res = await ex.place(buyOrder(slug, side)); ids[side] = res.id || (res.order && res.order.id); log('rest', { slug, side, at: BUY, id: ids[side] }); } catch (e) { state.errors++; log('error', { place: side, msg: e.message.slice(0, 300) }); } }
-  let sellId = null, buysPulled = false;
+  const slug = SLUG(T0), T = T0 + ROUND; const rec = { T0, slug, side: null, buyPx: null, buyLeft: null, qty: 0, sold: 0, exit: null, pnl: null }; state.rounds.push(rec); save();
+  const ids = {}; live.slug = slug; live.T = T; live.resting = ['UP', 'DOWN']; live.held = null; live.ids = ids;
+  for (const side of ['UP', 'DOWN']) { try { const res = await ex.place(buyOrder(slug, side)); ids[side] = res.id || (res.order && res.order.id); log('rest', { slug, side, at: BUY, qty: QTY, id: ids[side] }); } catch (e) { state.errors++; log('error', { place: side, msg: e.message.slice(0, 300) }); } }
+  const own = (side, px) => side === 'UP' ? px : 1 - px;   // order prices come back in Up terms
+  let side = null, bought = 0, cost = 0, sold = 0, proceeds = 0, sell = null, buysPulled = false;   // sell = { id, qty, base } (base: sold before this order)
+  const readSell = async () => { if (!sell) return; let f; try { f = await filledOf(sell.id); } catch (e) { return; } const q = f.qty, newQ = q - (sold - sell.base); if (newQ > 0) { proceeds += newQ * own(side, f.px); sold += newQ; rec.sold = sold; log('fill', { slug, side, sold: own(side, f.px), qty: newQ, soldTotal: sold, of: bought }); } };
+  const placeSell = async () => { const q = bought - sold; if (q <= 0) return; try { const res = await ex.place({ ...sellOrder(slug, side), quantity: q }); sell = { id: res.id || (res.order && res.order.id), qty: q, base: sold }; rec.sellId = sell.id; log('rest', { slug, side, sellAt: SELL, qty: q, id: sell.id }); } catch (e) { state.errors++; log('error', { placeSell: e.message.slice(0, 300) }); } };
   while (Date.now() / 1000 < T - 2) {
     await sleep(2000);
-    if (!held && !buysPulled && T - Date.now() / 1000 <= NOBUY_LEFT) {   // no more buys inside the last 7:00
-      for (const side of ['UP', 'DOWN']) if (ids[side]) { await ex.cancel(ids[side], slug); ids[side] = null; }
-      buysPulled = true; live.resting = []; log('round', { slug, buysPulled: 'no entry inside the last ' + Math.round(NOBUY_LEFT / 60) + ' min' });
+    if (!buysPulled && T - Date.now() / 1000 <= NOBUY_LEFT) {   // no more buys inside the last 7:00
+      for (const sd of ['UP', 'DOWN']) if (ids[sd]) { await ex.cancel(ids[sd], slug); if (sd === side) { try { const f = await filledOf(ids[sd]); if (f.qty > bought) { cost = f.qty * own(sd, f.px); bought = f.qty; } } catch (e) {} } ids[sd] = null; }
+      buysPulled = true; live.resting = []; log('round', { slug, buysPulled: 'no entry inside the last ' + Math.round(NOBUY_LEFT / 60) + ' min', held: bought });
+      if (!side) break;
     }
-    if (!held) {
-      if (buysPulled) break;
-      for (const side of ['UP', 'DOWN']) { if (!ids[side] || DRY) continue;
-        let f; try { f = await filledOf(ids[side]); } catch (e) { continue; }
-        if (f.qty >= QTY) { const px = side === 'UP' ? f.px : 1 - f.px; held = { side, px }; rec.side = side; rec.buyPx = px; rec.buyLeft = Math.round(T - Date.now() / 1000); log('fill', { slug, side, px, qty: f.qty });
-          const other = side === 'UP' ? 'DOWN' : 'UP'; await ex.cancel(ids[other], slug); ids[other] = null; ids[side] = null; live.resting = []; live.held = side + ' @ ' + Math.round(px * 100) + '¢';
-          try { const res = await ex.place(sellOrder(slug, side)); sellId = res.id || (res.order && res.order.id); log('rest', { slug, side, sellAt: SELL, id: sellId }); } catch (e) { state.errors++; log('error', { placeSell: e.message.slice(0, 300) }); }
-          save(); break; } }
-    } else if (sellId) {
-      let f; try { f = await filledOf(sellId); } catch (e) { continue; }
-      if (f.qty >= QTY) { const px = held.side === 'UP' ? f.px : 1 - f.px; rec.exit = 'sold at ' + Math.round(SELL * 100) + '¢'; rec.sellPx = px; rec.pnl = +((px - rec.buyPx) * QTY).toFixed(2); log('fill', { slug, side: held.side, sold: px, pnl: rec.pnl }); save(); return; }
+    if (DRY) continue;
+    if (!side) {
+      for (const sd of ['UP', 'DOWN']) { if (!ids[sd]) continue; let f; try { f = await filledOf(ids[sd]); } catch (e) { continue; }
+        if (f.qty > 0) { side = sd; const other = sd === 'UP' ? 'DOWN' : 'UP'; await ex.cancel(ids[other], slug); ids[other] = null; rec.side = side; rec.buyLeft = Math.round(T - Date.now() / 1000); live.resting = [side]; break; } }
+      if (!side) continue;
     }
+    if (ids[side]) { let f; try { f = await filledOf(ids[side]); } catch (e) { f = null; }
+      if (f && f.qty > bought) { const add = f.qty - bought; cost = f.qty * own(side, f.px); bought = f.qty; rec.qty = bought; rec.buyPx = cost / bought; log('fill', { slug, side, px: own(side, f.px), qty: add, heldTotal: bought, of: QTY }); live.held = side + ' ' + bought + ' @ ' + Math.round(rec.buyPx * 100) + '¢';
+        if (bought >= QTY) { ids[side] = null; live.resting = []; }
+        if (sell) { await ex.cancel(sell.id, slug); await readSell(); sell = null; }      // re-size the sell to everything held
+        await placeSell(); save(); } }
+    await readSell();
+    if (sold >= bought && bought > 0 && !ids[side]) { rec.exit = 'sold at ' + Math.round(SELL * 100) + '¢'; rec.sellPx = proceeds / sold; rec.pnl = +(proceeds - cost).toFixed(2); log('round', { slug, exit: rec.exit, qty: sold, pnl: rec.pnl }); save(); return; }
   }
-  for (const id of [ids.UP, ids.DOWN]) if (id) await ex.cancel(id, slug);   // the sell stays until the window closes; the exchange closes it with the market
-  if (!held) { rec.exit = 'no fill'; log('round', { slug, exit: 'no fill' }); save(); return; }
-  rec.exit = 'held to the bell'; rec.sellId = sellId; save(); log('round', { slug, held: held.side, px: held.px });
+  for (const sd of ['UP', 'DOWN']) if (ids[sd]) { await ex.cancel(ids[sd], slug); if (sd === side) { try { const f = await filledOf(ids[sd]); if (f.qty > bought) { cost = f.qty * own(sd, f.px); bought = f.qty; } } catch (e) {} } }
+  if (!side || bought === 0) { rec.exit = 'no fill'; log('round', { slug, exit: 'no fill' }); save(); return; }
+  await readSell(); rec.qty = bought; rec.buyPx = cost / bought;
+  if (sold >= bought) { rec.exit = 'sold at ' + Math.round(SELL * 100) + '¢'; rec.sellPx = proceeds / sold; rec.pnl = +(proceeds - cost).toFixed(2); save(); return; }
+  rec.exit = 'held to the bell'; rec._sold = sold; rec._proceeds = proceeds; rec._cost = cost; rec._sell = sell; save(); log('round', { slug, held: side, qty: bought - sold, of: bought, px: +rec.buyPx.toFixed(3) });
   settleLater(rec);
 }
 // the result lands on the gateway 20 s to several minutes after the bell
 async function settleLater(rec) {
+  const own = px => rec.side === 'UP' ? px : 1 - px;
   for (let i = 0; i < 40; i++) {
     await sleep(30000);
-    if (rec.sellId && !DRY) { try { const f = await filledOf(rec.sellId); if (f.qty >= QTY) { const px = rec.side === 'UP' ? f.px : 1 - f.px; rec.exit = 'sold at ' + Math.round(SELL * 100) + '¢'; rec.sellPx = px; rec.pnl = +((px - rec.buyPx) * QTY).toFixed(2); log('fill', { slug: rec.slug, side: rec.side, sold: px, pnl: rec.pnl, late: true }); save(); report(); return; } } catch (e) {} }   // the sell may have filled in the last seconds
+    if (rec._sell && !DRY) { try { const f = await filledOf(rec._sell.id); const newQ = f.qty - (rec._sold - rec._sell.base); if (newQ > 0) { rec._proceeds += newQ * own(f.px); rec._sold += newQ; rec.sold = rec._sold; log('fill', { slug: rec.slug, side: rec.side, sold: own(f.px), qty: newQ, late: true }); } } catch (e) {} }   // the sell may have filled in the last seconds
+    if (rec._sold >= rec.qty) { rec.exit = 'sold at ' + Math.round(SELL * 100) + '¢'; rec.sellPx = rec._proceeds / rec._sold; rec.pnl = +(rec._proceeds - rec._cost).toFixed(2); log('round', { slug: rec.slug, exit: rec.exit, pnl: rec.pnl, late: true }); save(); report(); return; }
     const m = await ex.market(rec.slug); const apt = (m && (m.assetPriceTerms || (m.market && m.market.assetPriceTerms))) || {};
     const sp = amt(apt.settlementPrice), ptb = amt(apt.priceToBeat);
-    if (Number.isFinite(sp) && Number.isFinite(ptb)) { const result = sp >= ptb ? 'UP' : 'DOWN'; const won = result === rec.side; rec.exit = won ? 'won at the bell' : 'lost at the bell'; rec.pnl = +(((won ? 1 : 0) - rec.buyPx) * QTY).toFixed(2); rec.result = result; log('settle', { slug: rec.slug, result, side: rec.side, pnl: rec.pnl }); save(); report(); return; }
+    if (Number.isFinite(sp) && Number.isFinite(ptb)) { const result = sp >= ptb ? 'UP' : 'DOWN'; const won = result === rec.side; const left = rec.qty - rec._sold;
+      rec.exit = (rec._sold ? rec._sold + ' sold at ' + Math.round(SELL * 100) + '¢ + ' : '') + left + (won ? ' won at the bell' : ' lost at the bell'); rec.pnl = +(rec._proceeds + (won ? left : 0) - rec._cost).toFixed(2); rec.result = result;
+      log('settle', { slug: rec.slug, result, side: rec.side, qty: left, pnl: rec.pnl }); save(); report(); return; }
   }
   log('warn', { slug: rec.slug, settlement: 'not seen in 20 min' });
 }

@@ -113,7 +113,8 @@ exists but has no switch file, and the cockpit's `#one` view shows its terminal 
 it cancels only its own order ids at start and stop, never account-wide (Mr. E's and the owner's resting orders are untouched).
 **Mr. E (ETH 15-minute) and its cockpit:** `scripts/mre_live.js` is a separate one-rule bot — rest a 1-share limit buy at
 30¢ on both sides, sell the first fill with a resting 55¢ limit (Nov 2: 25¢ / 30¢ first, 35¢ / 55¢ from 7:36 AM MT — +$0.59 over 36
-rounds, 22 scalps / 11 held losses — then 30¢ / 55¢ from 3:50 PM; `MRE_BUY` / `MRE_SELL` override), no new buys inside the last 7:00 (resting buys are pulled; the
+rounds, 22 scalps / 11 held losses — then 30¢ / 55¢ from 3:50 PM, 10 shares a round from 7:15 PM; partial fills are tracked
+by quantity and the sell always covers exactly what is held; `MRE_BUY` / `MRE_SELL` / `MRE_QTY` override), no new buys inside the last 7:00 (resting buys are pulled; the
 sell stays until the close and settles if unfilled). `.github/workflows/mre-live.yml` runs it (`mrp/gha_mre.sh`; switch file
 `mre/LIVE_ON`), publishing `mre/MRE.md` to `mrp-data` and its terminal tail to the `mre-live-tail` branch. The cockpit is the
 same page with the asset in the URL hash: **`https://pm15-relay-worker.machwonder.workers.dev/#eth`** tracks the ETH market

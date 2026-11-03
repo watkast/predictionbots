@@ -411,7 +411,7 @@ const $ = id => document.getElementById(id);
 // ---------- which market: BTC (default) or ETH (#eth) — same brain, the asset's own feeds, slugs, scale and bot ----------
 const ASSETS = {
   btc: { sym: 'BTC', cb: 'BTC-USD', gw: 'crypto:btc', slug: 'cpc-btc-updown-15m-', minPx: 1000, K: 1, d0: 0, bot: 'Mr. P', tail: 'mrp-live-tail', key: 'pm15' },
-  eth: { sym: 'ETH', cb: 'ETH-USD', gw: 'crypto:eth', slug: 'cpceth-eth-updown-15m-', minPx: 100, K: 0.04, d0: 2, bot: 'Mr. E', tail: 'mre-live-tail', key: 'pm15eth', buy: 0.30, sell: 0.55 },
+  eth: { sym: 'ETH', cb: 'ETH-USD', gw: 'crypto:eth', slug: 'cpceth-eth-updown-15m-', minPx: 100, K: 0.04, d0: 2, bot: 'Mr. E', tail: 'mre-live-tail', key: 'pm15eth', buy: 0.30, sell: 0.55, qty: 10 },
   one: { sym: 'BTC', cb: 'BTC-USD', gw: 'crypto:btc', slug: 'cpc-btc-updown-15m-', minPx: 1000, K: 1, d0: 0, bot: 'Mr. One', tail: 'mr1-live-tail', key: 'pm15' }   // the BTC page with Mr. One's terminal
 };
 const ASSET = ASSETS[String((typeof location !== 'undefined' && location.hash) || '').replace('#', '').toLowerCase()] || ASSETS.btc;
@@ -1097,8 +1097,8 @@ function renderStrictE(E) {
     return; }
   if (E.r <= 420) { el.className = 'strict quiet'; C.textContent = 'NO MORE BUYS'; U.textContent = 'last 7:00 · next round rests ' + bc + ' again'; return; }
   const hit = Number.isFinite(qu.ask) && qu.ask <= B + 1e-9 ? 'UP' : Number.isFinite(qd.ask) && qd.ask <= B + 1e-9 ? 'DOWN' : null;
-  if (hit) { el.className = 'strict ' + (hit === 'UP' ? 'up' : 'down'); C.textContent = 'BUY ' + hit + ' at ' + bc; Z.textContent = '1 sh'; U.textContent = 'ask ' + cents(hit === 'UP' ? qu.ask : qd.ask) + ' · then rest a sell at ' + sc + ' · tap I\'m in'; }
-  else { el.className = 'strict quiet'; C.textContent = 'REST ' + bc + ' · UP + DOWN'; Z.textContent = '1 sh each'; U.textContent = 'UP ' + cents(qu.ask) + ' · DOWN ' + cents(qd.ask) + ' · first fill → sell at ' + sc; }
+  if (hit) { el.className = 'strict ' + (hit === 'UP' ? 'up' : 'down'); C.textContent = 'BUY ' + hit + ' at ' + bc; Z.textContent = (ASSET.qty || 1) + ' sh'; U.textContent = 'ask ' + cents(hit === 'UP' ? qu.ask : qd.ask) + ' · then rest a sell at ' + sc + ' · tap I\'m in'; }
+  else { el.className = 'strict quiet'; C.textContent = 'REST ' + bc + ' · UP + DOWN'; Z.textContent = (ASSET.qty || 1) + ' sh each'; U.textContent = 'UP ' + cents(qu.ask) + ' · DOWN ' + cents(qd.ask) + ' · first fill → sell at ' + sc; }
 }
 function renderStrict(E, key) {
   if (ASSET.bot === 'Mr. E') return renderStrictE(E);
@@ -1457,7 +1457,7 @@ const botFmt = x => {
   const d = x.d || {}, k = x.k;
   const c = v => Number.isFinite(v) ? Math.round(v * 100) + '¢' : '—';
   if (k === 'snap' && d.bot === 'E') return ['snap', clock(d.r) + ' UP ask ' + (Number.isFinite(d.upAsk) ? Math.round(d.upAsk * 100) : '—') + ' DOWN ask ' + (Number.isFinite(d.dnAsk) ? Math.round(d.dnAsk * 100) : '—') + ' · ' + (d.held ? 'HELD ' + d.held + ' · sell at ' + Math.round((ASSET.sell || 0) * 100) + ' resting' : d.resting && d.resting.length ? 'resting ' + Math.round((ASSET.buy || 0) * 100) + '¢ ' + d.resting.join('+') : 'no orders')];
-  if (k === 'rest') return ['order', d.sellAt ? 'REST sell ' + d.side + ' at ' + c(d.sellAt) : 'REST buy ' + d.side + ' at ' + c(d.at) + ' · 1 sh'];
+  if (k === 'rest') return ['order', d.sellAt ? 'REST sell ' + d.side + ' at ' + c(d.sellAt) : 'REST buy ' + d.side + ' at ' + c(d.at) + ' · ' + (d.qty || 1) + ' sh'];
   if (k === 'round') return ['sys', d.exit ? 'round: ' + d.exit : d.buysPulled ? d.buysPulled : d.held ? 'held ' + d.held + ' @ ' + c(d.px) + ' to the bell' : JSON.stringify(d).slice(0, 80)];
   if (k === 'dry') return ['order', 'DRY ' + d.intent + ' ' + (d.price && d.price.value) + ' × ' + d.quantity];
   if (k === 'snap') return ['snap', clock(d.r) + ' ' + d.fav + ' ' + (Number.isFinite(d.p) ? Math.round(d.p * 100) + '%' : '—') + ' ask ' + (Number.isFinite(d.ask) ? Math.round(d.ask * 100) : '—') + ' lte ' + (Number.isFinite(d.lim) ? Math.round(d.lim * 100) : '—') + ' ' + (d.pos ? 'IN ' + d.pos : 'flat') + (d.rest ? ' · resting ' + d.rest : '') + (d.bookAge > 3 ? ' book ' + d.bookAge + 's' : '')];
