@@ -312,3 +312,14 @@
 {"t":1793676062017,"k":"round","d":{"slug":"cpceth-eth-updown-15m-2026-11-03-0315z","buysPulled":"no entry inside the last 9 min","held":4}}
 {"t":1793676136881,"k":"fill","d":{"slug":"cpceth-eth-updown-15m-2026-11-03-0315z","side":"DOWN","sold":0.44999999999999996,"qty":4,"soldTotal":4,"of":4}}
 {"t":1793676136882,"k":"round","d":{"slug":"cpceth-eth-updown-15m-2026-11-03-0315z","exit":"sold at 45¢","qty":4,"pnl":0.66}}
+{"t":1793676609776,"k":"ladder","d":{"slug":"cpceth-eth-updown-15m-2026-11-03-0330z","ids":["DG15QP2G12WQ","DG15QRAG12WE","DG15QSXG32VC","DG15QVQG12VX","DG15QX5G12WP","DG15QYN012WA","DG15QZVG12TT","DG15R12012WA","DG15R2ZG12WP","DG15R4CG12WK","DG15R5P012VC","DG15R75G12WP","DG15RDE052WE","DG15REX012VP","DG15RGCG12W4","DG15RHPG12TT","DG15RJQG12WA","DG15RMGG52VP","DG15RNYG12WK","DG15RQ3032W4","DG15RRC012W4","DG15RSFG52W4"]}}
+{"t":1793676609776,"k":"rest","d":{"slug":"cpceth-eth-updown-15m-2026-11-03-0330z","side":"BOTH","at":0.3,"ladder":"20–30¢","rungs":11,"qty":1}}
+{"t":1793676868211,"k":"fill","d":{"slug":"cpceth-eth-updown-15m-2026-11-03-0330z","side":"UP","px":0.275,"qty":6,"heldTotal":6,"of":11}}
+{"t":1793676868319,"k":"rest","d":{"slug":"cpceth-eth-updown-15m-2026-11-03-0330z","side":"UP","sellAt":0.45,"qty":6,"id":"DG17QXC012WQ"}}
+{"t":1793676907802,"k":"fill","d":{"slug":"cpceth-eth-updown-15m-2026-11-03-0330z","side":"UP","px":0.265,"qty":2,"heldTotal":8,"of":11}}
+{"t":1793676908146,"k":"rest","d":{"slug":"cpceth-eth-updown-15m-2026-11-03-0330z","side":"UP","sellAt":0.45,"qty":8,"id":"DG181MHG12WA"}}
+{"t":1793676915680,"k":"fill","d":{"slug":"cpceth-eth-updown-15m-2026-11-03-0330z","side":"UP","px":0.255,"qty":2,"heldTotal":10,"of":11}}
+{"t":1793676916121,"k":"rest","d":{"slug":"cpceth-eth-updown-15m-2026-11-03-0330z","side":"UP","sellAt":0.45,"qty":10,"id":"DG183JBG32VX"}}
+{"t":1793676925608,"k":"fill","d":{"slug":"cpceth-eth-updown-15m-2026-11-03-0330z","side":"UP","px":0.25,"qty":1,"heldTotal":11,"of":11}}
+{"t":1793676925971,"k":"rest","d":{"slug":"cpceth-eth-updown-15m-2026-11-03-0330z","side":"UP","sellAt":0.45,"qty":11,"id":"DG185ZS032WK"}}
+{"t":1793676961010,"k":"round","d":{"slug":"cpceth-eth-updown-15m-2026-11-03-0330z","buysPulled":"no entry inside the last 9 min","held":11}}

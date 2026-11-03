@@ -543,9 +543,21 @@
    "pnl": 0.66,
    "sellId": "DG114BNG12WA",
    "sellPx": 0.44999999999999996
+  },
+  {
+   "T0": 1793676600,
+   "slug": "cpceth-eth-updown-15m-2026-11-03-0330z",
+   "side": "UP",
+   "buyPx": 0.25000000000000006,
+   "buyLeft": 632,
+   "qty": 11,
+   "sold": 0,
+   "exit": null,
+   "pnl": null,
+   "sellId": "DG185ZS032WK"
   }
  ],
  "balanceStart": 17.4956,
- "balanceNow": 92.7156,
+ "balanceNow": 89.9656,
  "errors": 0
 }
