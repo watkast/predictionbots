@@ -103,7 +103,7 @@ async function playRound(T0) {
         if (sell) { await ex.cancel(sell.id, slug); await readSell(); sell = null; }      // re-size the sell to everything held
         await placeSell(); save(); } }
     await readSell();
-    if (sold >= bought && bought > 0 && !ids[side]) { rec.exit = 'sold at ' + Math.round(SELL * 100) + '¢'; rec.sellPx = proceeds / sold; rec.pnl = +(proceeds - cost).toFixed(2); log('round', { slug, exit: rec.exit, qty: sold, pnl: rec.pnl }); save(); return; }
+    if (sold >= bought && bought > 0 && !ids[side]) { rec.exit = 'sold at ' + Math.round(SELL * 100) + '¢'; rec.sellPx = proceeds / sold; rec.pnl = +(proceeds - cost).toFixed(2); live.held = null; live.resting = []; log('round', { slug, exit: rec.exit, qty: sold, pnl: rec.pnl }); save(); return; }
   }
   for (const sd of ['UP', 'DOWN']) if (ids[sd]) { await ex.cancel(ids[sd], slug); if (sd === side) { try { const f = await filledOf(ids[sd]); if (f.qty > bought) { cost = f.qty * own(sd, f.px); bought = f.qty; } } catch (e) {} } }
   if (!side || bought === 0) { rec.exit = 'no fill'; log('round', { slug, exit: 'no fill' }); save(); return; }
