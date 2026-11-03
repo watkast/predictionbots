@@ -1033,12 +1033,34 @@
    "buyLeft": 802,
    "qty": 6,
    "sold": 1,
-   "exit": null,
-   "pnl": null,
-   "sellId": "DG82XG1G13CT"
+   "exit": "1 sold at 60¢ + 5 lost at the bell",
+   "pnl": -1.19,
+   "sellId": "DG82XG1G13CT",
+   "_sold": 1,
+   "_proceeds": 0.4626528,
+   "_cost": 1.6500000000000001,
+   "_sell": {
+    "id": "DG82XG1G13CT",
+    "qty": 5,
+    "base": 1
+   },
+   "result": "DOWN"
+  },
+  {
+   "T0": 1793706300,
+   "slug": "cpceth-eth-updown-15m-2026-11-03-1145z",
+   "side": "UP",
+   "buyPx": 0.295,
+   "buyLeft": 766,
+   "qty": 2,
+   "sold": 2,
+   "exit": "sold at 60¢ avg",
+   "pnl": 0.61,
+   "sellId": "DG89A21G13D8",
+   "sellPx": 0.6
   }
  ],
  "balanceStart": 17.4956,
- "balanceNow": 77.314,
+ "balanceNow": 274.454,
  "errors": 0
 }
