@@ -61,3 +61,12 @@
 {"t":1793692087014,"k":"round","d":{"slug":"cpc-btc-updown-15m-2026-11-03-0745z","exit":"sold at 41¢ avg","qty":6,"pnl":0.83}}
 {"t":1793692806566,"k":"ladder","d":{"slug":"cpc-btc-updown-15m-2026-11-03-0800z","ids":["DG51AQTG13CZ","DG51ARS013CX","DG51ASP013D8","DG51ATKG13D9","DG51AVVG13CX","DG51AWS013D3","DG51AXSG13D1","DG51AYN013D7","DG51AZX053CZ","DG51B0T013CT","DG51B21013D7","DG51B2ZG13D5"]}}
 {"t":1793692806567,"k":"rest","d":{"slug":"cpc-btc-updown-15m-2026-11-03-0800z","side":"BOTH","at":0.3,"ladder":"25–30¢","rungs":6,"qty":1}}
+{"t":1793692936714,"k":"fill","d":{"slug":"cpc-btc-updown-15m-2026-11-03-0800z","side":"UP","px":0.3,"qty":1,"heldTotal":1,"of":6}}
+{"t":1793692936805,"k":"rest","d":{"slug":"cpc-btc-updown-15m-2026-11-03-0800z","side":"UP","sellAt":0.6,"qty":1,"id":"DG52AWF013D5"}}
+{"t":1793692939781,"k":"fill","d":{"slug":"cpc-btc-updown-15m-2026-11-03-0800z","side":"UP","px":0.285,"qty":3,"heldTotal":4,"of":6}}
+{"t":1793692940058,"k":"rest","d":{"slug":"cpc-btc-updown-15m-2026-11-03-0800z","side":"UP","sellAt":0.6,"qty":4,"id":"DG52BNW013CZ"}}
+{"t":1793692975292,"k":"fill","d":{"slug":"cpc-btc-updown-15m-2026-11-03-0800z","side":"UP","px":0.28,"qty":1,"heldTotal":5,"of":6}}
+{"t":1793692975793,"k":"rest","d":{"slug":"cpc-btc-updown-15m-2026-11-03-0800z","side":"UP","sellAt":0.6,"qty":5,"id":"DG52MD2G13CX"}}
+{"t":1793692978463,"k":"fill","d":{"slug":"cpc-btc-updown-15m-2026-11-03-0800z","side":"UP","px":0.275,"qty":1,"heldTotal":6,"of":6}}
+{"t":1793692978774,"k":"rest","d":{"slug":"cpc-btc-updown-15m-2026-11-03-0800z","side":"UP","sellAt":0.6,"qty":6,"id":"DG52N4BG13D8"}}
+{"t":1793693162023,"k":"round","d":{"slug":"cpc-btc-updown-15m-2026-11-03-0800z","buysPulled":"no entry inside the last 9 min","held":6}}
