@@ -177,13 +177,14 @@
    "buyPx": 0.275,
    "buyLeft": 804,
    "qty": 6,
-   "sold": 0,
-   "exit": null,
-   "pnl": null,
-   "sellId": "DG6B78W013CT"
+   "sold": 6,
+   "exit": "sold at 42¢ avg",
+   "pnl": 0.89,
+   "sellId": "DG6B78W013CT",
+   "sellPx": 0.42287519999999995
   }
  ],
  "balanceStart": 95.086,
- "balanceNow": 96.414,
+ "balanceNow": 88.984,
  "errors": 0
 }
