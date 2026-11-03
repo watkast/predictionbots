@@ -600,3 +600,12 @@
 {"t":1793734779036,"k":"fill","d":{"slug":"cpc-btc-updown-15m-2026-11-03-1930z","side":"UP","sold":0.49,"qty":6,"soldTotal":6,"of":6,"exit":"stall","peak":0.38,"bid":0.35}}
 {"t":1793734779037,"k":"round","d":{"slug":"cpc-btc-updown-15m-2026-11-03-1930z","exit":"sold at 47¢ avg","qty":6,"pnl":1.19}}
 {"t":1793735102001,"k":"stop","d":{}}
+{"t":1793735898806,"k":"start","d":{"mode":"live","market":"cpc-btc-updown-15m-","buy":0.3,"ladder":[0.25,0.3],"sell":0.6,"qty":1,"noBuyLeft":540,"node":"v22.23.4"}}
+{"t":1793735899297,"k":"balance","d":{"cash":70.004,"total":70.004}}
+{"t":1793735899298,"k":"round","d":{"slug":"cpc-btc-updown-15m-2026-11-03-1945z","skipped":"joined mid-round — waiting for the next open"}}
+{"t":1793736007114,"k":"ladder","d":{"slug":"cpc-btc-updown-15m-2026-11-03-2000z","ids":["DGFAXPY013D3","DGFAXR1G13D6","DGFAXS8013CZ","DGFAXTHG13CZ","DGFAXVFG53D3","DGFAXWF013CX","DGFAXXH013CZ","DGFAXYH013D1","DGFAXZEG53D6","DGFAY0SG53D6","DGFAY22013D9","DGFAY38013D3"]}}
+{"t":1793736007115,"k":"rest","d":{"slug":"cpc-btc-updown-15m-2026-11-03-2000z","side":"BOTH","at":0.3,"ladder":"25–30¢","rungs":6,"qty":1}}
+{"t":1793736169253,"k":"fill","d":{"slug":"cpc-btc-updown-15m-2026-11-03-2000z","side":"DOWN","px":0.275,"qty":6,"heldTotal":6,"of":6}}
+{"t":1793736169340,"k":"rest","d":{"slug":"cpc-btc-updown-15m-2026-11-03-2000z","side":"DOWN","sellAt":0.6,"qty":6,"id":"DGFC5PN013D3"}}
+{"t":1793736190922,"k":"exit","d":{"slug":"cpc-btc-updown-15m-2026-11-03-2000z","side":"DOWN","armed":0.31,"avg":0.275,"src":"ws"}}
+{"t":1793736360923,"k":"round","d":{"slug":"cpc-btc-updown-15m-2026-11-03-2000z","buysPulled":"no entry inside the last 9 min","held":6}}
