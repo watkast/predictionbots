@@ -8,13 +8,13 @@
 //
 //   node scripts/mre_live.js            # live (POLYMARKET_KEY_ID / POLYMARKET_SECRET_KEY)
 //   node scripts/mre_live.js --dry      # logs what it would do, places nothing
-// Env: MRE_DIR (log + MRE.md, default ./mre), MRE_MINUTES (stop after N minutes), MRE_BUY (default 0.30), MRE_SELL (0.45), MRE_QTY (10; 1 until Nov 2, 7:15 PM MT), MRE_NOBUY_LEFT (420 s),
+// Env: MRE_DIR (log + MRE.md, default ./mre), MRE_MINUTES (stop after N minutes), MRE_BUY (default 0.25), MRE_SELL (0.45), MRE_QTY (10; 1 until Nov 2, 7:15 PM MT), MRE_NOBUY_LEFT (420 s),
 //      MRE_SLUG_PREFIX (default cpceth-eth-updown-15m- : the ETH 15-minute market; cpc-btc-updown-15m- would be BTC)
 'use strict';
 const fs = require('fs'), path = require('path'), crypto = require('crypto');
 const DRY = process.argv.includes('--dry');
 const DIR = process.env.MRE_DIR || 'mre'; fs.mkdirSync(DIR, { recursive: true });
-const BUY = Number(process.env.MRE_BUY || 0.30), SELL = Number(process.env.MRE_SELL || 0.45), QTY = Number(process.env.MRE_QTY || 10);
+const BUY = Number(process.env.MRE_BUY || 0.25), SELL = Number(process.env.MRE_SELL || 0.45), QTY = Number(process.env.MRE_QTY || 10);
 const MINUTES = Number(process.env.MRE_MINUTES || 0) || 0, NOBUY_LEFT = Number(process.env.MRE_NOBUY_LEFT || 420);
 const KEY_ID = process.env.POLYMARKET_KEY_ID || '', SECRET = process.env.POLYMARKET_SECRET_KEY || '';
 const API = 'https://api.polymarket.us', GATEWAY = 'https://gateway.polymarket.us', ROUND = 900;
