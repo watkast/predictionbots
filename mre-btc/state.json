@@ -554,9 +554,21 @@
    "pnl": 0.3,
    "sellId": "DGCK8RV013D6",
    "sellPx": 0.6
+  },
+  {
+   "T0": 1793725200,
+   "slug": "cpc-btc-updown-15m-2026-11-03-1700z",
+   "side": "UP",
+   "buyPx": 0.29,
+   "buyLeft": 588,
+   "qty": 3,
+   "sold": 0,
+   "exit": null,
+   "pnl": null,
+   "sellId": "DGCTVQDG13CT"
   }
  ],
  "balanceStart": 95.086,
- "balanceNow": 75.764,
+ "balanceNow": 67.244,
  "errors": 0
 }
