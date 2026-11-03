@@ -96,3 +96,10 @@
 {"t":1793695861122,"k":"round","d":{"slug":"cpc-btc-updown-15m-2026-11-03-0845z","exit":"sold at 49¢ avg","qty":3,"pnl":0.61}}
 {"t":1793696407000,"k":"ladder","d":{"slug":"cpc-btc-updown-15m-2026-11-03-0900z","ids":["DG5WSP9013D1","DG5WSQP013D1","DG5WSRT013D3","DG5WSTB013D5","DG5WSV8013CZ","DG5WSWN033CT","DG5WSY1013D8","DG5WSZ0G13CX","DG5WT0GG53D3","DG5WT1G013D3","DG5WT2E013D6","DG5WT3BG33D1"]}}
 {"t":1793696407000,"k":"rest","d":{"slug":"cpc-btc-updown-15m-2026-11-03-0900z","side":"BOTH","at":0.3,"ladder":"25–30¢","rungs":6,"qty":1}}
+{"t":1793696632063,"k":"fill","d":{"slug":"cpc-btc-updown-15m-2026-11-03-0900z","side":"DOWN","px":0.3,"qty":1,"heldTotal":1,"of":6}}
+{"t":1793696632153,"k":"rest","d":{"slug":"cpc-btc-updown-15m-2026-11-03-0900z","side":"DOWN","sellAt":0.6,"qty":1,"id":"DG5YH2CG13CZ"}}
+{"t":1793696649445,"k":"fill","d":{"slug":"cpc-btc-updown-15m-2026-11-03-0900z","side":"DOWN","px":0.285,"qty":3,"heldTotal":4,"of":6}}
+{"t":1793696649773,"k":"rest","d":{"slug":"cpc-btc-updown-15m-2026-11-03-0900z","side":"DOWN","sellAt":0.6,"qty":4,"id":"DG5YNC1G13D7"}}
+{"t":1793696653041,"k":"fill","d":{"slug":"cpc-btc-updown-15m-2026-11-03-0900z","side":"DOWN","px":0.275,"qty":2,"heldTotal":6,"of":6}}
+{"t":1793696653327,"k":"rest","d":{"slug":"cpc-btc-updown-15m-2026-11-03-0900z","side":"DOWN","sellAt":0.6,"qty":6,"id":"DG5YP7SG13CX"}}
+{"t":1793696760497,"k":"round","d":{"slug":"cpc-btc-updown-15m-2026-11-03-0900z","buysPulled":"no entry inside the last 9 min","held":6}}
