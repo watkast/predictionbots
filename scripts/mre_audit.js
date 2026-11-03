@@ -8,7 +8,7 @@ const KEY_ID = process.env.POLYMARKET_KEY_ID || '', SECRET = process.env.POLYMAR
 function authHeaders(method, p) { const ts = String(Date.now()); let seed = Buffer.from(SECRET, 'base64'); if (seed.length === 64) seed = seed.subarray(0, 32);
   const key = crypto.createPrivateKey({ key: Buffer.concat([Buffer.from('302e020100300506032b657004220420', 'hex'), seed]), format: 'der', type: 'pkcs8' });
   return { 'X-PM-Access-Key': KEY_ID, 'X-PM-Timestamp': ts, 'X-PM-Signature': crypto.sign(null, Buffer.from(ts + method + p), key).toString('base64') }; }
-async function get(p, q) { const url = API + p + (q ? '?' + new URLSearchParams(q) : ''); const r = await fetch(url, { headers: { 'User-Agent': 'mre-audit/1.0', ...authHeaders('GET', p) } }); const t = await r.text(); return { status: r.status, body: t }; }
+async function get(p, q) { const url = API + p + (q ? '?' + new URLSearchParams(q) : ''); const r = await fetch(url, { headers: { 'Content-Type': 'application/json', 'User-Agent': 'pm15-live/1.0', ...authHeaders('GET', p) } }); const t = await r.text(); return { status: r.status, body: t }; }
 const sleep = ms => new Promise(r => setTimeout(r, ms));
 (async () => {
   const from = Date.parse(process.env.AUDIT_FROM || '2026-11-03T08:22:00Z'), to = Date.parse(process.env.AUDIT_TO || new Date().toISOString());
