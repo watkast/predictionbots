@@ -247,6 +247,17 @@
    "pnl": 0.18,
    "sellId": "DG7E2VPG13D1",
    "sellPx": 0.32934165000000004
+  },
+  {
+   "T0": 1793703600,
+   "slug": "cpc-btc-updown-15m-2026-11-03-1100z",
+   "side": null,
+   "buyPx": null,
+   "buyLeft": null,
+   "qty": 0,
+   "sold": 0,
+   "exit": null,
+   "pnl": null
   }
  ],
  "balanceStart": 95.086,
