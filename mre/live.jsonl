@@ -1156,3 +1156,14 @@
 {"t":1793742447044,"k":"fill","d":{"slug":"cpceth-eth-updown-15m-2026-11-03-2145z","side":"UP","px":0.275,"qty":3,"heldTotal":6,"of":6}}
 {"t":1793742447378,"k":"rest","d":{"slug":"cpceth-eth-updown-15m-2026-11-03-2145z","side":"UP","sellAt":0.6,"qty":6,"id":"DGGW2DS013D9"}}
 {"t":1793742661396,"k":"round","d":{"slug":"cpceth-eth-updown-15m-2026-11-03-2145z","buysPulled":"no entry inside the last 9 min","held":6}}
+{"t":1793743200315,"k":"round","d":{"slug":"cpceth-eth-updown-15m-2026-11-03-2145z","held":"UP","qty":6,"of":6,"px":0.275}}
+{"t":1793743207508,"k":"ladder","d":{"slug":"cpceth-eth-updown-15m-2026-11-03-2200z","ids":["DGH1VEH013D1","DGH1VFV013CX","DGH1VHDG53D7","DGH1VM9013D1","DGH1VNFG13CZ","DGH1VPH013CZ","DGH1VQMG13D5","DGH1VRMG53D9","DGH1VSMG13D6","DGH1VTJ013CT","DGH1VVHG13CX","DGH1W0B013D8"]}}
+{"t":1793743207509,"k":"rest","d":{"slug":"cpceth-eth-updown-15m-2026-11-03-2200z","side":"BOTH","at":0.3,"ladder":"25–30¢","rungs":6,"qty":1}}
+{"t":1793743230558,"k":"settle","d":{"slug":"cpceth-eth-updown-15m-2026-11-03-2145z","result":"DOWN","side":"UP","qty":6,"pnl":-1.65}}
+{"t":1793743476319,"k":"fill","d":{"slug":"cpceth-eth-updown-15m-2026-11-03-2200z","side":"UP","px":0.28,"qty":5,"heldTotal":5,"of":6}}
+{"t":1793743476408,"k":"rest","d":{"slug":"cpceth-eth-updown-15m-2026-11-03-2200z","side":"UP","sellAt":0.6,"qty":5,"id":"DGH3XN4013D5"}}
+{"t":1793743479080,"k":"fill","d":{"slug":"cpceth-eth-updown-15m-2026-11-03-2200z","side":"UP","px":0.275,"qty":1,"heldTotal":6,"of":6}}
+{"t":1793743479355,"k":"rest","d":{"slug":"cpceth-eth-updown-15m-2026-11-03-2200z","side":"UP","sellAt":0.6,"qty":6,"id":"DGH3YC4G13D9"}}
+{"t":1793743485871,"k":"exit","d":{"slug":"cpceth-eth-updown-15m-2026-11-03-2200z","side":"UP","armed":0.32,"avg":0.275,"src":"ws"}}
+{"t":1793743488915,"k":"fill","d":{"slug":"cpceth-eth-updown-15m-2026-11-03-2200z","side":"UP","sold":0.33,"qty":6,"soldTotal":6,"of":6,"exit":"stall","peak":0.35,"bid":0.33,"slip":0.01}}
+{"t":1793743489416,"k":"round","d":{"slug":"cpceth-eth-updown-15m-2026-11-03-2200z","exit":"sold at 31¢ avg","qty":6,"pnl":0.24}}
