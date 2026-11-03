@@ -24,7 +24,22 @@ const BUY = HI;
 // as a cap for a straight run-up (a maker fill, no fee).
 const EXIT_MIN = Number(process.env.MRE_EXIT_MIN || 0.02), EXIT_STALL = Number(process.env.MRE_EXIT_STALL || 10), EXIT_DROP = Number(process.env.MRE_EXIT_DROP || 0.02);
 const FEE = p => 0.0695 * p * (1 - p);
-const EXIT_SLIP = Number(process.env.MRE_EXIT_SLIP || 0.03);   // the exit sells up to this far under the bid it saw (the book moves in the second it takes)
+const EXIT_SLIP = Number(process.env.MRE_EXIT_SLIP || 0.03);   // the exit's second try sells up to this far under the bid (the first try is EXIT_SLIP1 under)
+const EXIT_SLIP1 = Number(process.env.MRE_EXIT_SLIP1 || 0.01);
+// Nov 3 PM: once armed, a fade sells even if the bid has slid back toward cost (down to EXIT_FLOOR under it, after the fee) —
+// a spike that collapses in seconds used to disarm and ride to zero. Below the floor it holds and waits for the next rise.
+const EXIT_FLOOR = Number(process.env.MRE_EXIT_FLOOR || 0.02), EXIT_TICK = Number(process.env.MRE_EXIT_TICK || 250);   // ms between exit checks on the WS book
+// the exit decision, pure (st = { peak, peakAt }): 'arm' | 'sell' | 'disarm' | null
+function exitDecide(st, bid, avg, now) {
+  if (!Number.isFinite(bid) || !Number.isFinite(avg)) return null;
+  if (st.peak == null) { if (bid - FEE(bid) >= avg + EXIT_MIN) { st.peak = bid; st.peakAt = now; return 'arm'; } return null; }
+  if (bid > st.peak + 1e-9) { st.peak = bid; st.peakAt = now; return null; }
+  if (now - st.peakAt >= EXIT_STALL * 1000 || bid <= st.peak - EXIT_DROP + 1e-9) {
+    if (bid - FEE(bid) >= avg - EXIT_FLOOR) return 'sell';
+    st.peak = null; return 'disarm';
+  }
+  return null;
+}
 const MINUTES = Number(process.env.MRE_MINUTES || 0) || 0, NOBUY_LEFT = Number(process.env.MRE_NOBUY_LEFT || 540);
 const KEY_ID = process.env.POLYMARKET_KEY_ID || '', SECRET = process.env.POLYMARKET_SECRET_KEY || '';
 const API = 'https://api.polymarket.us', GATEWAY = 'https://gateway.polymarket.us', ROUND = 900;
@@ -114,7 +129,27 @@ async function playRound(T0) {
   let side = null, sold = 0, proceeds = 0, sell = null, buysPulled = false, lastSweep = 0;
   const bought = () => side ? lad[side].reduce((a, r) => a + r.cum, 0) : 0, cost = () => side ? lad[side].reduce((a, r) => a + r.cum * r.px, 0) : 0;
   const check = async (sd, r) => { let f; try { f = await filledOf(r.id); } catch (e) { return 0; } const add = f.qty - r.cum; if (add > 0) { r.cum = f.qty; if (Number.isFinite(f.px) && f.px > 0) r.px = own(sd, f.px); } if (r.cum >= QTY - 1e-9 || /CANCEL|REJECT|EXPIRE/.test(f.state || '')) r.done = true; return add > 0 ? add : 0; };
-  let peak = null, peakAt = 0;
+  const ext = { peak: null, peakAt: 0 }; let lastTry = 0;
+  const wsBid = () => { if (WSB.slug !== slug || !WSB.top || Date.now() - WSB.at > 15000) return NaN; return side === 'UP' ? WSB.top.upBid : (Number.isFinite(WSB.top.upAsk) ? +(1 - WSB.top.upAsk).toFixed(2) : NaN); };
+  const exitTick = async () => {   // runs every EXIT_TICK ms on the live WS book — no API call unless it sells
+    if (+(bought() - sold).toFixed(4) <= 0) return;
+    const avg = cost() / bought(); const bid0 = wsBid(); const d = exitDecide(ext, bid0, avg, Date.now());
+    if (d === 'arm') log('exit', { slug, side, armed: bid0, avg: +avg.toFixed(3), src: 'ws' });
+    if (d === 'disarm') log('exit', { slug, side, disarmed: bid0, avg: +avg.toFixed(3) });
+    if (d !== 'sell' || Date.now() - lastTry < 1000) return; lastTry = Date.now();
+    if (sell) { await ex.cancel(sell.id, slug); await readSell(); sell = null; }
+    for (const slip of [EXIT_SLIP1, EXIT_SLIP]) {
+      const q = +(bought() - sold).toFixed(4); if (q <= 0) break;
+      const b = wsBid(); if (!Number.isFinite(b)) break; const px = Math.max(0.01, b - slip);
+      try { const res = await ex.place({ ...sellOrder(slug, side), price: money(side === 'UP' ? px : 1 - px), quantity: q, tif: 'TIME_IN_FORCE_IMMEDIATE_OR_CANCEL' });
+        const id = res.id || (res.order && res.order.id); await sleep(300); let f = null; try { f = await filledOf(id); } catch (e) {}
+        const fq = f ? f.qty : 0; const fpx = f && Number.isFinite(f.px) ? own(side, f.px) : b;
+        if (fq > 0) { proceeds += fq * (fpx - FEE(fpx)); sold += fq; rec.sold = sold; }
+        log('fill', { slug, side, sold: fpx, qty: fq, soldTotal: +sold.toFixed(2), of: +bought().toFixed(2), exit: 'stall', peak: ext.peak, bid: b, slip });
+        if (fq > 0 && +(bought() - sold).toFixed(4) <= 0) break; } catch (e) { state.errors++; log('error', { exitSell: e.message.slice(0, 300) }); }
+    }
+    if (+(bought() - sold).toFixed(4) > 0) await placeSell(); else ext.peak = null;   // whatever did not fill goes back on the cap; still armed, it retries
+    save(); };
   const readSell = async () => { if (!sell) return; let f; try { f = await filledOf(sell.id); } catch (e) { return; } const newQ = f.qty - (sold - sell.base); if (newQ > 0) { proceeds += newQ * own(side, f.px); sold += newQ; rec.sold = sold; log('fill', { slug, side, sold: own(side, f.px), qty: newQ, soldTotal: +sold.toFixed(2), of: +bought().toFixed(2) }); } };
   const placeSell = async () => { const q = +(bought() - sold).toFixed(4); if (q <= 0) return; try { const res = await ex.place({ ...sellOrder(slug, side), quantity: q }); sell = { id: res.id || (res.order && res.order.id), qty: q, base: sold }; rec.sellId = sell.id; log('rest', { slug, side, sellAt: SELL, qty: q, id: sell.id }); } catch (e) { state.errors++; log('error', { placeSell: e.message.slice(0, 300) }); } };
   const cancelLadder = async sd => { for (const r of lad[sd]) if (!r.done) { await ex.cancel(r.id, slug); await check(sd, r); r.done = true; } };
@@ -124,7 +159,7 @@ async function playRound(T0) {
       for (const r of lad[sd]) { if (r.done) continue; const add = await check(sd, r); if (add > 0 && !side) side = sd; if (sweep || r.done) continue; break; }
       if (side) break; } };
   while (Date.now() / 1000 < T - 2) {
-    await sleep(2000);
+    for (let i = 0; i < Math.max(1, Math.round(2000 / EXIT_TICK)); i++) { await sleep(EXIT_TICK); if (side && !DRY) await exitTick(); }
     if (DRY) continue;
     const before = bought(); const hadSide = side;
     await scan();
@@ -139,25 +174,7 @@ async function playRound(T0) {
     if (b > before + 1e-9) { rec.qty = +b.toFixed(4); rec.buyPx = cost() / b; log('fill', { slug, side, px: +rec.buyPx.toFixed(3), qty: +(b - before).toFixed(2), heldTotal: +b.toFixed(2), of: RUNGS.length * QTY }); live.held = side + ' ' + +b.toFixed(2) + ' @ ' + Math.round(rec.buyPx * 100) + '¢';
       if (sell) { await ex.cancel(sell.id, slug); await readSell(); sell = null; }   // re-size the sell to everything held
       await placeSell(); save(); }
-    await readSell();
-    const held = +(bought() - sold).toFixed(4);
-    if (held > 0) {   // the dynamic exit
-      const bk0 = await ex.book(slug); const bk = bk0 && (bk0.src === 'ws' || bk0.src === 'ws-quiet') ? bk0 : null; const bid = bk ? (side === 'UP' ? bk.upBid : (Number.isFinite(bk.upAsk) ? +(1 - bk.upAsk).toFixed(2) : NaN)) : NaN;
-      const avg = cost() / bought();
-      if (Number.isFinite(bid) && bid - FEE(bid) >= avg + EXIT_MIN) {
-        if (peak == null || bid > peak + 1e-9) { if (peak == null) log('exit', { slug, side, armed: bid, avg: +avg.toFixed(3), src: bk.src }); peak = bid; peakAt = Date.now(); }
-        else if (Date.now() - peakAt >= EXIT_STALL * 1000 || bid <= peak - EXIT_DROP + 1e-9) {
-          if (sell) { await ex.cancel(sell.id, slug); await readSell(); sell = null; }
-          const q = +(bought() - sold).toFixed(4);
-          if (q > 0) { try { const res = await ex.place({ ...sellOrder(slug, side), price: money(side === 'UP' ? Math.max(0.01, bid - EXIT_SLIP) : 1 - Math.max(0.01, bid - EXIT_SLIP)), quantity: q, tif: 'TIME_IN_FORCE_IMMEDIATE_OR_CANCEL' });   // a little under the bid so it fills; it still fills at the best bid there is
-              const id = res.id || (res.order && res.order.id); await sleep(400); let f = null; try { f = await filledOf(id); } catch (e) {}
-              const fq = f ? f.qty : 0; const fpx = f && Number.isFinite(f.px) ? own(side, f.px) : bid;
-              if (fq > 0) { proceeds += fq * (fpx - FEE(fpx)); sold += fq; rec.sold = sold; }
-              log('fill', { slug, side, sold: fpx, qty: fq, soldTotal: +sold.toFixed(2), of: +bought().toFixed(2), exit: 'stall', peak, bid }); } catch (e) { state.errors++; log('error', { exitSell: e.message.slice(0, 300) }); } }
-          if (+(bought() - sold).toFixed(4) > 0) await placeSell();   // whatever did not fill goes back on the cap
-          peak = null; save(); }
-      } else if (peak != null) peak = null;   // back under water: wait for the next rise
-    }
+    await readSell();   // the dynamic exit runs in exitTick, between scans
     const ladderOpen = lad[side].some(r => !r.done);
     if (b > 0 && sold >= b - 1e-9 && !ladderOpen) { rec.exit = 'sold at ' + Math.round(100 * proceeds / sold) + '¢ avg'; rec.sellPx = proceeds / sold; rec.pnl = +(proceeds - cost()).toFixed(2); live.held = null; live.resting = []; log('round', { slug, exit: rec.exit, qty: +sold.toFixed(2), pnl: rec.pnl }); save(); return; }
   }
