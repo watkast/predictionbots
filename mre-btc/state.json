@@ -146,12 +146,32 @@
    "buyLeft": 668,
    "qty": 6,
    "sold": 0,
-   "exit": null,
-   "pnl": null,
-   "sellId": "DG5YP7SG13CX"
+   "exit": "6 lost at the bell",
+   "pnl": -1.65,
+   "sellId": "DG5YP7SG13CX",
+   "_sold": 0,
+   "_proceeds": 0,
+   "_cost": 1.6500000000000001,
+   "_sell": {
+    "id": "DG5YP7SG13CX",
+    "qty": 6,
+    "base": 0
+   },
+   "result": "UP"
+  },
+  {
+   "T0": 1793697300,
+   "slug": "cpc-btc-updown-15m-2026-11-03-0915z",
+   "side": null,
+   "buyPx": null,
+   "buyLeft": null,
+   "qty": 0,
+   "sold": 0,
+   "exit": "no fill",
+   "pnl": null
   }
  ],
  "balanceStart": 95.086,
- "balanceNow": 117.714,
+ "balanceNow": 107.714,
  "errors": 0
 }

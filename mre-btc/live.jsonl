@@ -103,3 +103,9 @@
 {"t":1793696653041,"k":"fill","d":{"slug":"cpc-btc-updown-15m-2026-11-03-0900z","side":"DOWN","px":0.275,"qty":2,"heldTotal":6,"of":6}}
 {"t":1793696653327,"k":"rest","d":{"slug":"cpc-btc-updown-15m-2026-11-03-0900z","side":"DOWN","sellAt":0.6,"qty":6,"id":"DG5YP7SG13CX"}}
 {"t":1793696760497,"k":"round","d":{"slug":"cpc-btc-updown-15m-2026-11-03-0900z","buysPulled":"no entry inside the last 9 min","held":6}}
+{"t":1793697299620,"k":"round","d":{"slug":"cpc-btc-updown-15m-2026-11-03-0900z","held":"DOWN","qty":6,"of":6,"px":0.275}}
+{"t":1793697306492,"k":"ladder","d":{"slug":"cpc-btc-updown-15m-2026-11-03-0915z","ids":["DG63NC0013D9","DG63NCY013CT","DG63NDTG13D9","DG63NERG13D9","DG63NFTG13D3","DG63NGPG13D9","DG63NHJG13D6","DG63NJQ013D7","DG63NKKG13D6","DG63NMQ013D8","DG63NNKG13CZ","DG63NPHG13D8"]}}
+{"t":1793697306493,"k":"rest","d":{"slug":"cpc-btc-updown-15m-2026-11-03-0915z","side":"BOTH","at":0.3,"ladder":"25–30¢","rungs":6,"qty":1}}
+{"t":1793697329971,"k":"settle","d":{"slug":"cpc-btc-updown-15m-2026-11-03-0900z","result":"UP","side":"DOWN","qty":6,"pnl":-1.65}}
+{"t":1793697665263,"k":"round","d":{"slug":"cpc-btc-updown-15m-2026-11-03-0915z","buysPulled":"no entry inside the last 9 min","held":0}}
+{"t":1793697665264,"k":"round","d":{"slug":"cpc-btc-updown-15m-2026-11-03-0915z","exit":"no fill"}}
