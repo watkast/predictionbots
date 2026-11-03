@@ -573,12 +573,33 @@
    "buyLeft": 871,
    "qty": 11,
    "sold": 0,
+   "exit": "11 lost at the bell",
+   "pnl": -2.75,
+   "sellId": "DG1D1ZA012VC",
+   "_sold": 0,
+   "_proceeds": 0,
+   "_cost": 2.75,
+   "_sell": {
+    "id": "DG1D1ZA012VC",
+    "qty": 11,
+    "base": 0
+   },
+   "result": "UP"
+  },
+  {
+   "T0": 1793678400,
+   "slug": "cpceth-eth-updown-15m-2026-11-03-0400z",
+   "side": "UP",
+   "buyPx": 0.25000000000000006,
+   "buyLeft": 828,
+   "qty": 11,
+   "sold": 0,
    "exit": null,
    "pnl": null,
-   "sellId": "DG1D1ZA012VC"
+   "sellId": "DG1MAN5012WK"
   }
  ],
  "balanceStart": 17.4956,
- "balanceNow": 98.2156,
+ "balanceNow": 84.4656,
  "errors": 0
 }

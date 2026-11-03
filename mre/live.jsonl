@@ -338,3 +338,16 @@
 {"t":1793677564565,"k":"fill","d":{"slug":"cpceth-eth-updown-15m-2026-11-03-0345z","side":"DOWN","px":0.25,"qty":2,"heldTotal":11,"of":11}}
 {"t":1793677564887,"k":"rest","d":{"slug":"cpceth-eth-updown-15m-2026-11-03-0345z","side":"DOWN","sellAt":0.45,"qty":11,"id":"DG1D1ZA012VC"}}
 {"t":1793677860281,"k":"round","d":{"slug":"cpceth-eth-updown-15m-2026-11-03-0345z","buysPulled":"no entry inside the last 9 min","held":11}}
+{"t":1793678399499,"k":"round","d":{"slug":"cpceth-eth-updown-15m-2026-11-03-0345z","held":"DOWN","qty":11,"of":11,"px":0.25}}
+{"t":1793678409521,"k":"ladder","d":{"slug":"cpceth-eth-updown-15m-2026-11-03-0400z","ids":["DG1KF4YG52WE","DG1KF6D012VX","DG1KF7MG12VP","DG1KF9E032VC","DG1KFAX012WQ","DG1KFC7G12WP","DG1KFDCG12WA","DG1KFEFG12WQ","DG1KFFJG12WA","DG1KFJ2012WP","DG1KFKA012WQ","DG1KFMS012WE","DG1KFP7G12WE","DG1KFSBG12TT","DG1KFVJG12WP","DG1KFXD012WE","DG1KFZ0G12TT","DG1KG05052WP","DG1KG1CG52WE","DG1KG2MG12WQ","DG1KG4K012WE","DG1KG5VG12TT"]}}
+{"t":1793678409522,"k":"rest","d":{"slug":"cpceth-eth-updown-15m-2026-11-03-0400z","side":"BOTH","at":0.3,"ladder":"20–30¢","rungs":11,"qty":1}}
+{"t":1793678429736,"k":"settle","d":{"slug":"cpceth-eth-updown-15m-2026-11-03-0345z","result":"UP","side":"DOWN","qty":11,"pnl":-2.75}}
+{"t":1793678471905,"k":"fill","d":{"slug":"cpceth-eth-updown-15m-2026-11-03-0400z","side":"UP","px":0.27,"qty":7,"heldTotal":7,"of":11}}
+{"t":1793678472044,"k":"rest","d":{"slug":"cpceth-eth-updown-15m-2026-11-03-0400z","side":"UP","sellAt":0.45,"qty":7,"id":"DG1KZEF012TT"}}
+{"t":1793678475715,"k":"fill","d":{"slug":"cpceth-eth-updown-15m-2026-11-03-0400z","side":"UP","px":0.265,"qty":1,"heldTotal":8,"of":11}}
+{"t":1793678476137,"k":"rest","d":{"slug":"cpceth-eth-updown-15m-2026-11-03-0400z","side":"UP","sellAt":0.45,"qty":8,"id":"DG1M0EE032VP"}}
+{"t":1793678486592,"k":"fill","d":{"slug":"cpceth-eth-updown-15m-2026-11-03-0400z","side":"UP","px":0.255,"qty":2,"heldTotal":10,"of":11}}
+{"t":1793678487008,"k":"rest","d":{"slug":"cpceth-eth-updown-15m-2026-11-03-0400z","side":"UP","sellAt":0.45,"qty":10,"id":"DG1M338012VC"}}
+{"t":1793678517581,"k":"fill","d":{"slug":"cpceth-eth-updown-15m-2026-11-03-0400z","side":"UP","px":0.25,"qty":1,"heldTotal":11,"of":11}}
+{"t":1793678517955,"k":"rest","d":{"slug":"cpceth-eth-updown-15m-2026-11-03-0400z","side":"UP","sellAt":0.45,"qty":11,"id":"DG1MAN5012WK"}}
+{"t":1793678760773,"k":"round","d":{"slug":"cpceth-eth-updown-15m-2026-11-03-0400z","buysPulled":"no entry inside the last 9 min","held":11}}
