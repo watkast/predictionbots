@@ -552,12 +552,33 @@
    "buyLeft": 632,
    "qty": 11,
    "sold": 0,
+   "exit": "11 lost at the bell",
+   "pnl": -2.75,
+   "sellId": "DG185ZS032WK",
+   "_sold": 0,
+   "_proceeds": 0,
+   "_cost": 2.7500000000000004,
+   "_sell": {
+    "id": "DG185ZS032WK",
+    "qty": 11,
+    "base": 0
+   },
+   "result": "DOWN"
+  },
+  {
+   "T0": 1793677500,
+   "slug": "cpceth-eth-updown-15m-2026-11-03-0345z",
+   "side": "DOWN",
+   "buyPx": 0.25,
+   "buyLeft": 871,
+   "qty": 11,
+   "sold": 0,
    "exit": null,
    "pnl": null,
-   "sellId": "DG185ZS032WK"
+   "sellId": "DG1D1ZA012VC"
   }
  ],
  "balanceStart": 17.4956,
- "balanceNow": 89.9656,
+ "balanceNow": 98.2156,
  "errors": 0
 }
