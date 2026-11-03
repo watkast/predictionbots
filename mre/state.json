@@ -1084,9 +1084,22 @@
    "pnl": 0.95,
    "sellId": "DG8PFZGG13CZ",
    "sellPx": 0.43279874999999995
+  },
+  {
+   "T0": 1793709000,
+   "slug": "cpceth-eth-updown-15m-2026-11-03-1230z",
+   "side": "UP",
+   "buyPx": 0.275,
+   "buyLeft": 870,
+   "qty": 6,
+   "sold": 6,
+   "exit": "sold at 30¢ avg",
+   "pnl": 0.18,
+   "sellId": "DG8X6ACG13CZ",
+   "sellPx": 0.3048768
   }
  ],
  "balanceStart": 17.4956,
- "balanceNow": 171.094,
+ "balanceNow": 171.584,
  "errors": 0
 }
