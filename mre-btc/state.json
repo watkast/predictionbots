@@ -814,9 +814,28 @@
    "buyLeft": 739,
    "qty": 6,
    "sold": 0,
-   "exit": null,
+   "exit": "held to the bell",
    "pnl": null,
-   "sellId": "DGGWAVGG13CZ"
+   "sellId": "DGGWAVGG13CZ",
+   "_sold": 0,
+   "_proceeds": 0,
+   "_cost": 1.6500000000000001,
+   "_sell": {
+    "id": "DGGWAVGG13CZ",
+    "qty": 6,
+    "base": 0
+   }
+  },
+  {
+   "T0": 1793743200,
+   "slug": "cpc-btc-updown-15m-2026-11-03-2200z",
+   "side": null,
+   "buyPx": null,
+   "buyLeft": null,
+   "qty": 0,
+   "sold": 0,
+   "exit": null,
+   "pnl": null
   }
  ],
  "balanceStart": 95.086,

@@ -679,3 +679,7 @@
 {"t":1793742471319,"k":"rest","d":{"slug":"cpc-btc-updown-15m-2026-11-03-2145z","side":"UP","sellAt":0.6,"qty":4,"id":"DGGW88VG13CX"}}
 {"t":1793742481542,"k":"fill","d":{"slug":"cpc-btc-updown-15m-2026-11-03-2145z","side":"UP","px":0.275,"qty":2,"heldTotal":6,"of":6}}
 {"t":1793742481914,"k":"rest","d":{"slug":"cpc-btc-updown-15m-2026-11-03-2145z","side":"UP","sellAt":0.6,"qty":6,"id":"DGGWAVGG13CZ"}}
+{"t":1793742661665,"k":"round","d":{"slug":"cpc-btc-updown-15m-2026-11-03-2145z","buysPulled":"no entry inside the last 9 min","held":6}}
+{"t":1793743198278,"k":"round","d":{"slug":"cpc-btc-updown-15m-2026-11-03-2145z","held":"UP","qty":6,"of":6,"px":0.275}}
+{"t":1793743206887,"k":"ladder","d":{"slug":"cpc-btc-updown-15m-2026-11-03-2200z","ids":["DGH1VEGG53CX","DGH1VGBG13D3","DGH1VHHG13CZ","DGH1VK9013D9","DGH1VM7013CZ","DGH1VNCG13CZ","DGH1VPB013D9","DGH1VQC013D6","DGH1VRFG13D1","DGH1VSKG53D7","DGH1VTJG13D1","DGH1VVG013CT"]}}
+{"t":1793743206888,"k":"rest","d":{"slug":"cpc-btc-updown-15m-2026-11-03-2200z","side":"BOTH","at":0.3,"ladder":"25–30¢","rungs":6,"qty":1}}
