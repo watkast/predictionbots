@@ -422,9 +422,22 @@
    "pnl": 0.18,
    "sellId": "DGADXAK013CZ",
    "sellPx": 0.3048768
+  },
+  {
+   "T0": 1793716200,
+   "slug": "cpc-btc-updown-15m-2026-11-03-1430z",
+   "side": "DOWN",
+   "buyPx": 0.275,
+   "buyLeft": 878,
+   "qty": 6,
+   "sold": 6,
+   "exit": "sold at 30¢ avg",
+   "pnl": 0.12,
+   "sellId": "DGAM1S8013D6",
+   "sellPx": 0.29513395000000003
   }
  ],
  "balanceStart": 95.086,
- "balanceNow": 74.604,
+ "balanceNow": 76.314,
  "errors": 0
 }
