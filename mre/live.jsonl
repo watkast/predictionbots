@@ -449,3 +449,4 @@
 {"t":1793686529626,"k":"settle","d":{"slug":"cpceth-eth-updown-15m-2026-11-03-0600z","result":"DOWN","side":"UP","qty":1,"pnl":0.6}}
 {"t":1793686536212,"k":"fill","d":{"slug":"cpceth-eth-updown-15m-2026-11-03-0615z","side":"DOWN","px":0.275,"qty":1,"heldTotal":6,"of":6}}
 {"t":1793686536315,"k":"rest","d":{"slug":"cpceth-eth-updown-15m-2026-11-03-0615z","side":"DOWN","sellAt":0.45,"qty":6,"id":"DG3HG8W012WA"}}
+{"t":1793686860466,"k":"round","d":{"slug":"cpceth-eth-updown-15m-2026-11-03-0615z","buysPulled":"no entry inside the last 9 min","held":6}}
