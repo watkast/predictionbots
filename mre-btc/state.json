@@ -775,9 +775,21 @@
    "buyLeft": 740,
    "qty": 5,
    "sold": 5,
+   "exit": "sold at 37¢ avg",
+   "pnl": 0.45,
+   "sellId": "DGG1K5VG13D7",
+   "sellPx": 0.36953267
+  },
+  {
+   "T0": 1793739600,
+   "slug": "cpc-btc-updown-15m-2026-11-03-2100z",
+   "side": null,
+   "buyPx": null,
+   "buyLeft": null,
+   "qty": 0,
+   "sold": 0,
    "exit": null,
-   "pnl": null,
-   "sellId": "DGG1K5VG13D7"
+   "pnl": null
   }
  ],
  "balanceStart": 95.086,
