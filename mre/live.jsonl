@@ -804,3 +804,13 @@
 {"t":1793714623970,"k":"start","d":{"mode":"live","market":"cpceth-eth-updown-15m-","buy":0.3,"ladder":[0.25,0.3],"sell":0.6,"qty":1,"noBuyLeft":540,"node":"v22.23.4"}}
 {"t":1793714624094,"k":"balance","d":{"cash":74.174,"total":74.174}}
 {"t":1793714624096,"k":"round","d":{"slug":"cpceth-eth-updown-15m-2026-11-03-1400z","skipped":"joined mid-round — waiting for the next open"}}
+{"t":1793715306066,"k":"ladder","d":{"slug":"cpceth-eth-updown-15m-2026-11-03-1415z","ids":["DGACZY0013CZ","DGACZYJ013CT","DGACZZ8013D1","DGACZZX013CT","DGAD00J013CX","DGAD00Y013CX","DGAD01HG13D3","DGAD022013D3","DGAD02QG13CX","DGAD03DG13D7","DGAD03ZG13D3","DGAD04H013D5"]}}
+{"t":1793715306067,"k":"rest","d":{"slug":"cpceth-eth-updown-15m-2026-11-03-1415z","side":"BOTH","at":0.3,"ladder":"25–30¢","rungs":6,"qty":1}}
+{"t":1793715558244,"k":"fill","d":{"slug":"cpceth-eth-updown-15m-2026-11-03-1415z","side":"DOWN","px":0.3,"qty":1,"heldTotal":1,"of":6}}
+{"t":1793715558278,"k":"rest","d":{"slug":"cpceth-eth-updown-15m-2026-11-03-1415z","side":"DOWN","sellAt":0.6,"qty":1,"id":"DGAEXPXG13D1"}}
+{"t":1793715561353,"k":"fill","d":{"slug":"cpceth-eth-updown-15m-2026-11-03-1415z","side":"DOWN","px":0.295,"qty":1,"heldTotal":2,"of":6}}
+{"t":1793715561464,"k":"rest","d":{"slug":"cpceth-eth-updown-15m-2026-11-03-1415z","side":"DOWN","sellAt":0.6,"qty":2,"id":"DGAEYFVG13CT"}}
+{"t":1793715576523,"k":"exit","d":{"slug":"cpceth-eth-updown-15m-2026-11-03-1415z","side":"DOWN","armed":0.35,"avg":0.295,"src":"ws"}}
+{"t":1793715595208,"k":"fill","d":{"slug":"cpceth-eth-updown-15m-2026-11-03-1415z","side":"DOWN","sold":0.43999999999999995,"qty":2,"soldTotal":2,"of":2,"exit":"stall","peak":0.46,"bid":0.44}}
+{"t":1793715661889,"k":"round","d":{"slug":"cpceth-eth-updown-15m-2026-11-03-1415z","buysPulled":"no entry inside the last 9 min","held":2}}
+{"t":1793715661890,"k":"round","d":{"slug":"cpceth-eth-updown-15m-2026-11-03-1415z","exit":"sold at 42¢ avg","qty":2,"pnl":0.26}}
