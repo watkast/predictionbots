@@ -114,6 +114,17 @@ const buyOrder = (slug, side, px = BUY) => ({ marketSlug: slug, intent: side ===
 const sellOrder = (slug, side) => ({ marketSlug: slug, intent: side === 'UP' ? 'ORDER_INTENT_SELL_LONG' : 'ORDER_INTENT_SELL_SHORT', type: 'ORDER_TYPE_LIMIT', price: money(side === 'UP' ? SELL : 1 - SELL), quantity: QTY, tif: 'TIME_IN_FORCE_GOOD_TILL_CANCEL' });
 const filledOf = async id => { const o = await ex.order(id); if (!o) return { qty: 0 }; const q = Number(o.cumQuantity || 0); const px = amt(o.avgPx); return { qty: q, px: Number.isFinite(px) ? px : NaN, state: o.state || '' }; };
 
+// Nov 3 PM — the momentum filter: rest the ladder only on the side that won the previous round (a dip on the side that has been
+// winning tends to bounce; a dip on the side that just lost tends to keep falling). The previous round's winner is read off the
+// last WS book of that market (still subscribed at this round's open): Up mid ≥ 80¢ → UP, ≤ 20¢ → DOWN, otherwise unknown
+// (then both sides rest, as before). MRE_MOMENTUM=0 turns it off.
+const MOMENTUM = process.env.MRE_MOMENTUM !== '0';
+function lastWinner(prevSlug, T0) {
+  if (WSB.slug !== prevSlug || !WSB.top || WSB.at < (T0 - 120) * 1000) return null;
+  const { upBid, upAsk } = WSB.top; const a = Number.isFinite(upAsk), b = Number.isFinite(upBid);
+  const mid = a && b ? (upBid + upAsk) / 2 : a ? (upAsk <= 0.05 ? 0 : NaN) : b ? (upBid >= 0.95 ? 1 : NaN) : NaN;
+  return mid >= 0.8 ? 'UP' : mid <= 0.2 ? 'DOWN' : null;
+}
 // ---- one round
 // A ladder of resting buys on both sides (QTY shares at every cent from HI down to LO). The first side to fill at all is the
 // side; the other ladder is cancelled; this side's rungs keep resting until the no-buy cutoff, so a deeper dip buys cheaper. The
@@ -122,9 +133,11 @@ const filledOf = async id => { const o = await ex.order(id); if (!o) return { qt
 // while they fill, plus a sweep of every rung every 10 s for anything the walk missed.
 async function playRound(T0) {
   const slug = SLUG(T0), T = T0 + ROUND; const rec = { T0, slug, side: null, buyPx: null, buyLeft: null, qty: 0, sold: 0, exit: null, pnl: null }; state.rounds.push(rec); save();
-  wsBook(slug); const lad = { UP: [], DOWN: [] }; live.slug = slug; live.T = T; live.resting = ['UP', 'DOWN']; live.held = null; live.ids = lad;
-  for (const sd of ['UP', 'DOWN']) for (const px of RUNGS) { try { const res = await ex.place({ ...buyOrder(slug, sd, px), quantity: QTY }); lad[sd].push({ id: res.id || (res.order && res.order.id), px, cum: 0, done: false }); } catch (e) { state.errors++; log('error', { place: sd + ' ' + px, msg: e.message.slice(0, 300) }); } }
-  log('ladder', { slug, ids: lad.UP.map(r => r.id).concat(lad.DOWN.map(r => r.id)) }); log('rest', { slug, side: 'BOTH', at: HI, ladder: Math.round(LO * 100) + '–' + Math.round(HI * 100) + '¢', rungs: RUNGS.length, qty: QTY });
+  const prevWin = MOMENTUM ? lastWinner(SLUG(T0 - ROUND), T0) : null;   // read off the WS book before it switches to this round
+  const SIDES = prevWin ? [prevWin] : ['UP', 'DOWN']; rec.momentum = prevWin || 'unknown';
+  wsBook(slug); const lad = { UP: [], DOWN: [] }; live.slug = slug; live.T = T; live.resting = SIDES.slice(); live.held = null; live.ids = lad;
+  for (const sd of SIDES) for (const px of RUNGS) { try { const res = await ex.place({ ...buyOrder(slug, sd, px), quantity: QTY }); lad[sd].push({ id: res.id || (res.order && res.order.id), px, cum: 0, done: false }); } catch (e) { state.errors++; log('error', { place: sd + ' ' + px, msg: e.message.slice(0, 300) }); } }
+  log('ladder', { slug, ids: lad.UP.map(r => r.id).concat(lad.DOWN.map(r => r.id)) }); log('rest', { slug, side: prevWin || 'BOTH', momentum: prevWin ? 'last round closed ' + prevWin : 'last close unclear: both sides', at: HI, ladder: Math.round(LO * 100) + '–' + Math.round(HI * 100) + '¢', rungs: RUNGS.length, qty: QTY });
   const own = (side, px) => side === 'UP' ? px : 1 - px;   // order prices come back in Up terms
   let side = null, sold = 0, proceeds = 0, sell = null, buysPulled = false, lastSweep = 0;
   const bought = () => side ? lad[side].reduce((a, r) => a + r.cum, 0) : 0, cost = () => side ? lad[side].reduce((a, r) => a + r.cum * r.px, 0) : 0;
