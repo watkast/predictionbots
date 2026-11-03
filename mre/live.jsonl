@@ -896,3 +896,11 @@
 {"t":1793721005419,"k":"exit","d":{"slug":"cpceth-eth-updown-15m-2026-11-03-1545z","side":"DOWN","armed":0.32,"avg":0.275,"src":"ws"}}
 {"t":1793721012604,"k":"fill","d":{"slug":"cpceth-eth-updown-15m-2026-11-03-1545z","side":"DOWN","sold":0.31999999999999995,"qty":3,"soldTotal":6,"of":6,"exit":"stall","peak":0.35,"bid":0.33}}
 {"t":1793721012605,"k":"round","d":{"slug":"cpceth-eth-updown-15m-2026-11-03-1545z","exit":"sold at 33¢ avg","qty":6,"pnl":0.33}}
+{"t":1793721606051,"k":"ladder","d":{"slug":"cpceth-eth-updown-15m-2026-11-03-1600z","ids":["DGBX1ZVG13D7","DGBX20N013CT","DGBX21G013D1","DGBX226G13D3","DGBX22QG13D7","DGBX239013D6","DGBX23V013D8","DGBX24C013D5","DGBX257G13D8","DGBX25Y013D1","DGBX26NG13D8","DGBX276013CZ"]}}
+{"t":1793721606051,"k":"rest","d":{"slug":"cpceth-eth-updown-15m-2026-11-03-1600z","side":"BOTH","at":0.3,"ladder":"25–30¢","rungs":6,"qty":1}}
+{"t":1793721795852,"k":"fill","d":{"slug":"cpceth-eth-updown-15m-2026-11-03-1600z","side":"UP","px":0.295,"qty":2,"heldTotal":2,"of":6}}
+{"t":1793721795878,"k":"rest","d":{"slug":"cpceth-eth-updown-15m-2026-11-03-1600z","side":"UP","sellAt":0.6,"qty":2,"id":"DGBYGJ7G13D6"}}
+{"t":1793721821115,"k":"fill","d":{"slug":"cpceth-eth-updown-15m-2026-11-03-1600z","side":"UP","px":0.29,"qty":1,"heldTotal":3,"of":6}}
+{"t":1793721821217,"k":"rest","d":{"slug":"cpceth-eth-updown-15m-2026-11-03-1600z","side":"UP","sellAt":0.6,"qty":3,"id":"DGBYPR5G13D5"}}
+{"t":1793721854436,"k":"fill","d":{"slug":"cpceth-eth-updown-15m-2026-11-03-1600z","side":"UP","px":0.275,"qty":3,"heldTotal":6,"of":6}}
+{"t":1793721854553,"k":"rest","d":{"slug":"cpceth-eth-updown-15m-2026-11-03-1600z","side":"UP","sellAt":0.6,"qty":6,"id":"DGBYYWKG13CZ"}}
