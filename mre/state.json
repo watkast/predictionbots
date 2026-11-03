@@ -1383,12 +1383,33 @@
    "buyLeft": 803,
    "qty": 6,
    "sold": 3,
+   "exit": "3 sold at 60¢ + 3 lost at the bell",
+   "pnl": -0.56,
+   "sellId": "DGDEBR6G13CX",
+   "_sold": 3,
+   "_proceeds": 1.0908774,
+   "_cost": 1.6500000000000001,
+   "_sell": {
+    "id": "DGDEBR6G13CX",
+    "qty": 3,
+    "base": 3
+   },
+   "result": "UP"
+  },
+  {
+   "T0": 1793728800,
+   "slug": "cpceth-eth-updown-15m-2026-11-03-1800z",
+   "side": "DOWN",
+   "buyPx": 0.275,
+   "buyLeft": 774,
+   "qty": 6,
+   "sold": 0,
    "exit": null,
    "pnl": null,
-   "sellId": "DGDEBR6G13CX"
+   "sellId": "DGDN07D013D1"
   }
  ],
  "balanceStart": 17.4956,
- "balanceNow": 74.214,
+ "balanceNow": 76.534,
  "errors": 0
 }
