@@ -283,3 +283,15 @@
 {"t":1793710267382,"k":"exit","d":{"slug":"cpc-btc-updown-15m-2026-11-03-1245z","side":"DOWN","armed":0.33,"avg":0.28,"src":"ws"}}
 {"t":1793710275788,"k":"exit","d":{"slug":"cpc-btc-updown-15m-2026-11-03-1245z","side":"DOWN","armed":0.32,"avg":0.28,"src":"ws"}}
 {"t":1793710414664,"k":"exit","d":{"slug":"cpc-btc-updown-15m-2026-11-03-1245z","side":"DOWN","armed":0.34,"avg":0.28,"src":"ws"}}
+{"t":1793710489241,"k":"exit","d":{"slug":"cpc-btc-updown-15m-2026-11-03-1245z","side":"DOWN","armed":0.34,"avg":0.28,"src":"ws"}}
+{"t":1793710517500,"k":"fill","d":{"slug":"cpc-btc-updown-15m-2026-11-03-1245z","side":"DOWN","sold":1,"qty":0,"soldTotal":3,"of":5,"exit":"stall","peak":0.53,"bid":0.51}}
+{"t":1793710517600,"k":"rest","d":{"slug":"cpc-btc-updown-15m-2026-11-03-1245z","side":"DOWN","sellAt":0.6,"qty":2,"id":"DG98F2E013D8"}}
+{"t":1793710519768,"k":"exit","d":{"slug":"cpc-btc-updown-15m-2026-11-03-1245z","side":"DOWN","armed":0.37,"avg":0.28,"src":"ws"}}
+{"t":1793710531270,"k":"fill","d":{"slug":"cpc-btc-updown-15m-2026-11-03-1245z","side":"DOWN","sold":0.33999999999999997,"qty":2,"soldTotal":5,"of":5,"exit":"stall","peak":0.39,"bid":0.34}}
+{"t":1793710531270,"k":"round","d":{"slug":"cpc-btc-updown-15m-2026-11-03-1245z","exit":"sold at 34¢ avg","qty":5,"pnl":0.28}}
+{"t":1793710807525,"k":"ladder","d":{"slug":"cpc-btc-updown-15m-2026-11-03-1300z","ids":["DG9AN9CG13D9","DG9ANAJG13CT","DG9ANBEG13D1","DG9ANCH013D6","DG9ANDEG13CZ","DG9ANEDG13CZ","DG9ANFBG13D8","DG9ANGAG13CX","DG9ANHAG13D5","DG9ANJJG13CZ","DG9ANTF013CT","DG9ANVF013D5"]}}
+{"t":1793710807526,"k":"rest","d":{"slug":"cpc-btc-updown-15m-2026-11-03-1300z","side":"BOTH","at":0.3,"ladder":"25–30¢","rungs":6,"qty":1}}
+{"t":1793711016033,"k":"fill","d":{"slug":"cpc-btc-updown-15m-2026-11-03-1300z","side":"UP","px":0.295,"qty":2,"heldTotal":2,"of":6}}
+{"t":1793711016123,"k":"rest","d":{"slug":"cpc-btc-updown-15m-2026-11-03-1300z","side":"UP","sellAt":0.6,"qty":2,"id":"DG9C8S4G13CT"}}
+{"t":1793711019101,"k":"fill","d":{"slug":"cpc-btc-updown-15m-2026-11-03-1300z","side":"UP","px":0.28,"qty":3,"heldTotal":5,"of":6}}
+{"t":1793711019391,"k":"rest","d":{"slug":"cpc-btc-updown-15m-2026-11-03-1300z","side":"UP","sellAt":0.6,"qty":5,"id":"DG9C9JP013D3"}}
