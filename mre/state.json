@@ -606,13 +606,14 @@
    "buyPx": 0.28,
    "buyLeft": 809,
    "qty": 5,
-   "sold": 0,
-   "exit": null,
-   "pnl": null,
-   "sellId": "DG1VFK0012WA"
+   "sold": 5,
+   "exit": "sold at 45¢",
+   "pnl": 0.85,
+   "sellId": "DG1VFK0012WA",
+   "sellPx": 0.45
   }
  ],
  "balanceStart": 17.4956,
- "balanceNow": 1089.0456,
+ "balanceNow": 1087.7656,
  "errors": 0
 }
