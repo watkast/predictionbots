@@ -565,3 +565,14 @@
 {"t":1793695756498,"k":"round","d":{"slug":"cpceth-eth-updown-15m-2026-11-03-0845z","exit":"sold at 45¢ avg","qty":6,"pnl":1.07}}
 {"t":1793696407004,"k":"ladder","d":{"slug":"cpceth-eth-updown-15m-2026-11-03-0900z","ids":["DG5WSP9013CZ","DG5WSQB013D6","DG5WSRFG13CX","DG5WSSM013D7","DG5WSTPG13D6","DG5WSVRG13D3","DG5WSX4G13D5","DG5WSYAG13D9","DG5WSZFG53D8","DG5WT0M013D3","DG5WT1Y013CT","DG5WT3AG13D9"]}}
 {"t":1793696407004,"k":"rest","d":{"slug":"cpceth-eth-updown-15m-2026-11-03-0900z","side":"BOTH","at":0.3,"ladder":"25–30¢","rungs":6,"qty":1}}
+{"t":1793696653504,"k":"fill","d":{"slug":"cpceth-eth-updown-15m-2026-11-03-0900z","side":"DOWN","px":0.3,"qty":1,"heldTotal":1,"of":6}}
+{"t":1793696653612,"k":"rest","d":{"slug":"cpceth-eth-updown-15m-2026-11-03-0900z","side":"DOWN","sellAt":0.6,"qty":1,"id":"DG5YP9X013D6"}}
+{"t":1793696656935,"k":"fill","d":{"slug":"cpceth-eth-updown-15m-2026-11-03-0900z","side":"DOWN","px":0.295,"qty":1,"heldTotal":2,"of":6}}
+{"t":1793696657271,"k":"rest","d":{"slug":"cpceth-eth-updown-15m-2026-11-03-0900z","side":"DOWN","sellAt":0.6,"qty":2,"id":"DG5YQ6F053CT"}}
+{"t":1793696664897,"k":"exit","d":{"slug":"cpceth-eth-updown-15m-2026-11-03-0900z","side":"DOWN","armed":0.37,"avg":0.295,"src":"ws"}}
+{"t":1793696676003,"k":"fill","d":{"slug":"cpceth-eth-updown-15m-2026-11-03-0900z","side":"DOWN","sold":0.39,"qty":2,"soldTotal":2,"of":2,"exit":"stall","peak":0.41,"bid":0.39}}
+{"t":1793696700402,"k":"fill","d":{"slug":"cpceth-eth-updown-15m-2026-11-03-0900z","side":"DOWN","px":0.29,"qty":1,"heldTotal":3,"of":6}}
+{"t":1793696700529,"k":"rest","d":{"slug":"cpceth-eth-updown-15m-2026-11-03-0900z","side":"DOWN","sellAt":0.6,"qty":1,"id":"DG5Z1RC013D6"}}
+{"t":1793696702988,"k":"fill","d":{"slug":"cpceth-eth-updown-15m-2026-11-03-0900z","side":"DOWN","px":0.275,"qty":3,"heldTotal":6,"of":6}}
+{"t":1793696703323,"k":"rest","d":{"slug":"cpceth-eth-updown-15m-2026-11-03-0900z","side":"DOWN","sellAt":0.6,"qty":4,"id":"DG5Z2E9013D8"}}
+{"t":1793696761432,"k":"round","d":{"slug":"cpceth-eth-updown-15m-2026-11-03-0900z","buysPulled":"no entry inside the last 9 min","held":6}}
