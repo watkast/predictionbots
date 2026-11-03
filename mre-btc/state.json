@@ -391,13 +391,14 @@
    "buyPx": 0.275,
    "buyLeft": 866,
    "qty": 6,
-   "sold": 0,
-   "exit": null,
-   "pnl": null,
-   "sellId": "DG9RT25013D9"
+   "sold": 6,
+   "exit": "sold at 40¢ avg",
+   "pnl": 0.77,
+   "sellId": "DG9RT25013D9",
+   "sellPx": 0.4030698000000001
   }
  ],
  "balanceStart": 95.086,
- "balanceNow": 77.244,
+ "balanceNow": 73.654,
  "errors": 0
 }
