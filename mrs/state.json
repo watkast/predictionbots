@@ -1,8 +1,18 @@
 {
  "trades": [],
  "halted": null,
- "seen": {},
- "blocked": {},
+ "seen": {
+  "KXUCL1HTOTAL-26NOV03GALVFB-2": 1793729060.6593633,
+  "KXUCL1HTOTAL-26NOV03GALVFB-1": 1793729060.6593843,
+  "KXUCLTOTAL-26NOV03GALVFB-2": 1793729060.6594431,
+  "KXUCLTOTAL-26NOV03GALVFB-1": 1793729060.6594527
+ },
+ "blocked": {
+  "KXUCL1HTOTAL-26NOV03GALVFB-2": "no asks (already repriced)",
+  "KXUCL1HTOTAL-26NOV03GALVFB-1": "no asks (already repriced)",
+  "KXUCLTOTAL-26NOV03GALVFB-2": "no asks (already repriced)",
+  "KXUCLTOTAL-26NOV03GALVFB-1": "no asks (already repriced)"
+ },
  "started": 1793687692.6057825,
  "ht": {}
 }
