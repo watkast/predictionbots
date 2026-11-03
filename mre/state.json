@@ -620,12 +620,33 @@
    "buyLeft": 786,
    "qty": 10,
    "sold": 0,
+   "exit": "10 lost at the bell",
+   "pnl": -2.55,
+   "sellId": "DG22Q9B012WK",
+   "_sold": 0,
+   "_proceeds": 0,
+   "_cost": 2.5500000000000003,
+   "_sell": {
+    "id": "DG22Q9B012WK",
+    "qty": 10,
+    "base": 0
+   },
+   "result": "DOWN"
+  },
+  {
+   "T0": 1793681100,
+   "slug": "cpceth-eth-updown-15m-2026-11-03-0445z",
+   "side": "DOWN",
+   "buyPx": 0.265,
+   "buyLeft": 794,
+   "qty": 8,
+   "sold": 0,
    "exit": null,
    "pnl": null,
-   "sellId": "DG22Q9B012WK"
+   "sellId": "DG293M4G32WK"
   }
  ],
  "balanceStart": 17.4956,
- "balanceNow": 85.2156,
+ "balanceNow": 88.8156,
  "errors": 0
 }

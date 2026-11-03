@@ -377,3 +377,15 @@
 {"t":1793680404340,"k":"fill","d":{"slug":"cpceth-eth-updown-15m-2026-11-03-0430z","side":"UP","px":0.255,"qty":4,"heldTotal":10,"of":11}}
 {"t":1793680404698,"k":"rest","d":{"slug":"cpceth-eth-updown-15m-2026-11-03-0430z","side":"UP","sellAt":0.45,"qty":10,"id":"DG22Q9B012WK"}}
 {"t":1793680562303,"k":"round","d":{"slug":"cpceth-eth-updown-15m-2026-11-03-0430z","buysPulled":"no entry inside the last 9 min","held":10}}
+{"t":1793681098623,"k":"round","d":{"slug":"cpceth-eth-updown-15m-2026-11-03-0430z","held":"UP","qty":10,"of":10,"px":0.255}}
+{"t":1793681108962,"k":"ladder","d":{"slug":"cpceth-eth-updown-15m-2026-11-03-0445z","ids":["DG2829W012WP","DG282AZG12VC","DG282C5012WA","DG282D8012TT","DG282EE012WQ","DG282FHG12WK","DG282GR012WQ","DG282HYG32VX","DG282M4G12WA","DG282NKG12WA","DG282QG012WA","DG282S8012VC","DG282XY092WK","DG282Z6012WP","DG28306G12VP","DG28319012W4","DG2832AG12VP","DG2833A012WQ","DG2834BG12VP","DG2835C012VX","DG2836E012VX","DG2837D052TT"]}}
+{"t":1793681108963,"k":"rest","d":{"slug":"cpceth-eth-updown-15m-2026-11-03-0445z","side":"BOTH","at":0.3,"ladder":"20–30¢","rungs":11,"qty":1}}
+{"t":1793681128878,"k":"settle","d":{"slug":"cpceth-eth-updown-15m-2026-11-03-0430z","result":"DOWN","side":"UP","qty":10,"pnl":-2.55}}
+{"t":1793681206477,"k":"fill","d":{"slug":"cpceth-eth-updown-15m-2026-11-03-0445z","side":"DOWN","px":0.3,"qty":1,"heldTotal":1,"of":11}}
+{"t":1793681206574,"k":"rest","d":{"slug":"cpceth-eth-updown-15m-2026-11-03-0445z","side":"DOWN","sellAt":0.45,"qty":1,"id":"DG28V20012WA"}}
+{"t":1793681209394,"k":"fill","d":{"slug":"cpceth-eth-updown-15m-2026-11-03-0445z","side":"DOWN","px":0.295,"qty":1,"heldTotal":2,"of":11}}
+{"t":1793681209716,"k":"rest","d":{"slug":"cpceth-eth-updown-15m-2026-11-03-0445z","side":"DOWN","sellAt":0.45,"qty":2,"id":"DG28VTH012WA"}}
+{"t":1793681213450,"k":"fill","d":{"slug":"cpceth-eth-updown-15m-2026-11-03-0445z","side":"DOWN","px":0.28,"qty":3,"heldTotal":5,"of":11}}
+{"t":1793681213801,"k":"rest","d":{"slug":"cpceth-eth-updown-15m-2026-11-03-0445z","side":"DOWN","sellAt":0.45,"qty":5,"id":"DG28WTDG12WP"}}
+{"t":1793681241326,"k":"fill","d":{"slug":"cpceth-eth-updown-15m-2026-11-03-0445z","side":"DOWN","px":0.265,"qty":3,"heldTotal":8,"of":11}}
+{"t":1793681241664,"k":"rest","d":{"slug":"cpceth-eth-updown-15m-2026-11-03-0445z","side":"DOWN","sellAt":0.45,"qty":8,"id":"DG293M4G32WK"}}
