@@ -914,9 +914,22 @@
    "sold": 0,
    "exit": "no fill",
    "pnl": null
+  },
+  {
+   "T0": 1793698200,
+   "slug": "cpceth-eth-updown-15m-2026-11-03-0930z",
+   "side": "DOWN",
+   "buyPx": 0.275,
+   "buyLeft": 826,
+   "qty": 6,
+   "sold": 6,
+   "exit": "sold at 33¢ avg",
+   "pnl": 0.36,
+   "sellId": "DG6B6QV013D5",
+   "sellPx": 0.33418875
   }
  ],
  "balanceStart": 17.4956,
- "balanceNow": 107.714,
+ "balanceNow": 96.414,
  "errors": 0
 }
