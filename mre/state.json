@@ -411,9 +411,18 @@
    "buyLeft": null,
    "exit": "no fill",
    "pnl": null
+  },
+  {
+   "T0": 1793664000,
+   "slug": "cpceth-eth-updown-15m-2026-11-03-0000z",
+   "side": "UP",
+   "buyPx": 0.3,
+   "buyLeft": 729,
+   "exit": null,
+   "pnl": null
   }
  ],
  "balanceStart": 17.4956,
- "balanceNow": 16.9356,
+ "balanceNow": 17.4356,
  "errors": 0
 }
