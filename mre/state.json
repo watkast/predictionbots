@@ -864,13 +864,14 @@
    "buyPx": 0.29000000000000004,
    "buyLeft": 876,
    "qty": 3,
-   "sold": 1,
-   "exit": null,
-   "pnl": null,
-   "sellId": "DG5G9MD013D9"
+   "sold": 3,
+   "exit": "sold at 37¢ avg",
+   "pnl": 0.23,
+   "sellId": "DG5G9MD013D9",
+   "sellPx": 0.3669429166666667
   }
  ],
  "balanceStart": 17.4956,
- "balanceNow": 120.9156,
+ "balanceNow": 119.9756,
  "errors": 0
 }
