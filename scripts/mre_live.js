@@ -24,6 +24,7 @@ const BUY = HI;
 // as a cap for a straight run-up (a maker fill, no fee).
 const EXIT_MIN = Number(process.env.MRE_EXIT_MIN || 0.02), EXIT_STALL = Number(process.env.MRE_EXIT_STALL || 10), EXIT_DROP = Number(process.env.MRE_EXIT_DROP || 0.02);
 const FEE = p => 0.0695 * p * (1 - p);
+const EXIT_SLIP = Number(process.env.MRE_EXIT_SLIP || 0.03);   // the exit sells up to this far under the bid it saw (the book moves in the second it takes)
 const MINUTES = Number(process.env.MRE_MINUTES || 0) || 0, NOBUY_LEFT = Number(process.env.MRE_NOBUY_LEFT || 540);
 const KEY_ID = process.env.POLYMARKET_KEY_ID || '', SECRET = process.env.POLYMARKET_SECRET_KEY || '';
 const API = 'https://api.polymarket.us', GATEWAY = 'https://gateway.polymarket.us', ROUND = 900;
@@ -148,7 +149,7 @@ async function playRound(T0) {
         else if (Date.now() - peakAt >= EXIT_STALL * 1000 || bid <= peak - EXIT_DROP + 1e-9) {
           if (sell) { await ex.cancel(sell.id, slug); await readSell(); sell = null; }
           const q = +(bought() - sold).toFixed(4);
-          if (q > 0) { try { const res = await ex.place({ ...sellOrder(slug, side), price: money(side === 'UP' ? bid : 1 - bid), quantity: q, tif: 'TIME_IN_FORCE_IMMEDIATE_OR_CANCEL' });
+          if (q > 0) { try { const res = await ex.place({ ...sellOrder(slug, side), price: money(side === 'UP' ? Math.max(0.01, bid - EXIT_SLIP) : 1 - Math.max(0.01, bid - EXIT_SLIP)), quantity: q, tif: 'TIME_IN_FORCE_IMMEDIATE_OR_CANCEL' });   // a little under the bid so it fills; it still fills at the best bid there is
               const id = res.id || (res.order && res.order.id); await sleep(400); let f = null; try { f = await filledOf(id); } catch (e) {}
               const fq = f ? f.qty : 0; const fpx = f && Number.isFinite(f.px) ? own(side, f.px) : bid;
               if (fq > 0) { proceeds += fq * (fpx - FEE(fpx)); sold += fq; rec.sold = sold; }
