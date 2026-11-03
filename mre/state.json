@@ -1180,16 +1180,17 @@
    "T0": 1793716200,
    "slug": "cpceth-eth-updown-15m-2026-11-03-1430z",
    "side": "DOWN",
-   "buyPx": 0.28500000000000003,
+   "buyPx": 0.275,
    "buyLeft": 873,
-   "qty": 4,
-   "sold": 4,
-   "exit": null,
-   "pnl": null,
-   "sellId": "DGAM598013D8"
+   "qty": 6,
+   "sold": 6,
+   "exit": "sold at 30¢ avg",
+   "pnl": 0.18,
+   "sellId": "DGANS0S013D1",
+   "sellPx": 0.30487679999999995
   }
  ],
  "balanceStart": 17.4956,
- "balanceNow": 74.824,
+ "balanceNow": 74.924,
  "errors": 0
 }
