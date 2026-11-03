@@ -1323,12 +1323,33 @@
    "buyLeft": 561,
    "qty": 6,
    "sold": 0,
+   "exit": "6 lost at the bell",
+   "pnl": -1.65,
+   "sellId": "DGCM78WG33D8",
+   "_sold": 0,
+   "_proceeds": 0,
+   "_cost": 1.6500000000000001,
+   "_sell": {
+    "id": "DGCM78WG33D8",
+    "qty": 6,
+    "base": 0
+   },
+   "result": "UP"
+  },
+  {
+   "T0": 1793725200,
+   "slug": "cpceth-eth-updown-15m-2026-11-03-1700z",
+   "side": "UP",
+   "buyPx": 0.28,
+   "buyLeft": 645,
+   "qty": 5,
+   "sold": 0,
    "exit": null,
    "pnl": null,
-   "sellId": "DGCM78WG33D8"
+   "sellId": "DGCTKQPG13D3"
   }
  ],
  "balanceStart": 17.4956,
- "balanceNow": 75.764,
+ "balanceNow": 68.364,
  "errors": 0
 }
