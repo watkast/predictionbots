@@ -280,12 +280,34 @@
    "buyLeft": 803,
    "qty": 6,
    "sold": 1,
-   "exit": null,
-   "pnl": null,
-   "sellId": "DG83AR6013CX"
+   "exit": "1 sold at 60¢ + 5 lost at the bell",
+   "pnl": -1.33,
+   "sellId": "DG83AR6013CX",
+   "_sold": 1,
+   "_proceeds": 0.32440420000000003,
+   "_cost": 1.6500000000000001,
+   "_sell": {
+    "id": "DG83AR6013CX",
+    "qty": 5,
+    "base": 1
+   },
+   "result": "DOWN"
+  },
+  {
+   "T0": 1793706300,
+   "slug": "cpc-btc-updown-15m-2026-11-03-1145z",
+   "side": "DOWN",
+   "buyPx": 0.275,
+   "buyLeft": 660,
+   "qty": 6,
+   "sold": 6,
+   "exit": "sold at 36¢ avg",
+   "pnl": 0.53,
+   "sellId": "DG8AVX7013CZ",
+   "sellPx": 0.36362580000000005
   }
  ],
  "balanceStart": 95.086,
- "balanceNow": 77.314,
+ "balanceNow": 274.454,
  "errors": 0
 }

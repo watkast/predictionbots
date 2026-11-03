@@ -225,3 +225,17 @@
 {"t":1793705649951,"k":"fill","d":{"slug":"cpc-btc-updown-15m-2026-11-03-1130z","side":"UP","px":0.275,"qty":0.38,"heldTotal":6,"of":6}}
 {"t":1793705650240,"k":"rest","d":{"slug":"cpc-btc-updown-15m-2026-11-03-1130z","side":"UP","sellAt":0.6,"qty":5,"id":"DG83AR6013CX"}}
 {"t":1793705761476,"k":"round","d":{"slug":"cpc-btc-updown-15m-2026-11-03-1130z","buysPulled":"no entry inside the last 9 min","held":6}}
+{"t":1793706299321,"k":"round","d":{"slug":"cpc-btc-updown-15m-2026-11-03-1130z","held":"UP","qty":5,"of":6,"px":0.275}}
+{"t":1793706306641,"k":"ladder","d":{"slug":"cpc-btc-updown-15m-2026-11-03-1145z","ids":["DG88ANNG13D5","DG88APJG13D6","DG88AQGG13D3","DG88AREG13D9","DG88ASBG13D7","DG88AT7013CX","DG88AV4G13D7","DG88AW1013CT","DG88AX6033D8","DG88AYHG13D8","DG88AZDG13CX","DG88B0A013D8"]}}
+{"t":1793706306642,"k":"rest","d":{"slug":"cpc-btc-updown-15m-2026-11-03-1145z","side":"BOTH","at":0.3,"ladder":"25–30¢","rungs":6,"qty":1}}
+{"t":1793706329555,"k":"settle","d":{"slug":"cpc-btc-updown-15m-2026-11-03-1130z","result":"DOWN","side":"UP","qty":5,"pnl":-1.33}}
+{"t":1793706540390,"k":"fill","d":{"slug":"cpc-btc-updown-15m-2026-11-03-1145z","side":"DOWN","px":0.29,"qty":3,"heldTotal":3,"of":6}}
+{"t":1793706540493,"k":"rest","d":{"slug":"cpc-btc-updown-15m-2026-11-03-1145z","side":"DOWN","sellAt":0.6,"qty":3,"id":"DG8A439G13D7"}}
+{"t":1793706543762,"k":"fill","d":{"slug":"cpc-btc-updown-15m-2026-11-03-1145z","side":"DOWN","px":0.285,"qty":1,"heldTotal":4,"of":6}}
+{"t":1793706544059,"k":"rest","d":{"slug":"cpc-btc-updown-15m-2026-11-03-1145z","side":"DOWN","sellAt":0.6,"qty":4,"id":"DG8A4Z5013D6"}}
+{"t":1793706637597,"k":"fill","d":{"slug":"cpc-btc-updown-15m-2026-11-03-1145z","side":"DOWN","px":0.275,"qty":2,"heldTotal":6,"of":6}}
+{"t":1793706638019,"k":"rest","d":{"slug":"cpc-btc-updown-15m-2026-11-03-1145z","side":"DOWN","sellAt":0.6,"qty":6,"id":"DG8AVX7013CZ"}}
+{"t":1793706661673,"k":"round","d":{"slug":"cpc-btc-updown-15m-2026-11-03-1145z","buysPulled":"no entry inside the last 9 min","held":6}}
+{"t":1793706708719,"k":"exit","d":{"slug":"cpc-btc-updown-15m-2026-11-03-1145z","side":"DOWN","armed":0.4,"avg":0.275,"src":"ws"}}
+{"t":1793706712188,"k":"fill","d":{"slug":"cpc-btc-updown-15m-2026-11-03-1145z","side":"DOWN","sold":0.38,"qty":6,"soldTotal":6,"of":6,"exit":"stall","peak":0.4,"bid":0.38}}
+{"t":1793706712189,"k":"round","d":{"slug":"cpc-btc-updown-15m-2026-11-03-1145z","exit":"sold at 36¢ avg","qty":6,"pnl":0.53}}
