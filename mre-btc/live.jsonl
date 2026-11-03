@@ -116,3 +116,14 @@
 {"t":1793698366937,"k":"exit","d":{"slug":"cpc-btc-updown-15m-2026-11-03-0930z","side":"DOWN","armed":0.32,"avg":0.275,"src":"ws"}}
 {"t":1793698396141,"k":"fill","d":{"slug":"cpc-btc-updown-15m-2026-11-03-0930z","side":"DOWN","sold":0.43999999999999995,"qty":6,"soldTotal":6,"of":6,"exit":"stall","peak":0.51,"bid":0.44}}
 {"t":1793698396142,"k":"round","d":{"slug":"cpc-btc-updown-15m-2026-11-03-0930z","exit":"sold at 42¢ avg","qty":6,"pnl":0.89}}
+{"t":1793699106584,"k":"ladder","d":{"slug":"cpc-btc-updown-15m-2026-11-03-0945z","ids":["DG6HCTR013CZ","DG6HCVR013CZ","DG6HCWKG13D9","DG6HCXJ013D8","DG6HCYDG13D9","DG6HCZQ013D6","DG6HD0RG13D5","DG6HD1QG13D9","DG6HD2NG13CX","DG6HD3P013D8","DG6HD4K013D1","DG6HD5W013D9"]}}
+{"t":1793699106584,"k":"rest","d":{"slug":"cpc-btc-updown-15m-2026-11-03-0945z","side":"BOTH","at":0.3,"ladder":"25–30¢","rungs":6,"qty":1}}
+{"t":1793699311107,"k":"fill","d":{"slug":"cpc-btc-updown-15m-2026-11-03-0945z","side":"UP","px":0.3,"qty":1,"heldTotal":1,"of":6}}
+{"t":1793699311193,"k":"rest","d":{"slug":"cpc-btc-updown-15m-2026-11-03-0945z","side":"UP","sellAt":0.6,"qty":1,"id":"DG6JZ4D013D1"}}
+{"t":1793699314296,"k":"fill","d":{"slug":"cpc-btc-updown-15m-2026-11-03-0945z","side":"UP","px":0.28,"qty":4,"heldTotal":5,"of":6}}
+{"t":1793699314569,"k":"rest","d":{"slug":"cpc-btc-updown-15m-2026-11-03-0945z","side":"UP","sellAt":0.6,"qty":5,"id":"DG6JZYR013D3"}}
+{"t":1793699339488,"k":"exit","d":{"slug":"cpc-btc-updown-15m-2026-11-03-0945z","side":"UP","armed":0.33,"avg":0.28,"src":"ws"}}
+{"t":1793699348281,"k":"exit","d":{"slug":"cpc-btc-updown-15m-2026-11-03-0945z","side":"UP","armed":0.33,"avg":0.28,"src":"ws"}}
+{"t":1793699372509,"k":"fill","d":{"slug":"cpc-btc-updown-15m-2026-11-03-0945z","side":"UP","px":0.275,"qty":1,"heldTotal":6,"of":6}}
+{"t":1793699372796,"k":"rest","d":{"slug":"cpc-btc-updown-15m-2026-11-03-0945z","side":"UP","sellAt":0.6,"qty":6,"id":"DG6KE5N013CZ"}}
+{"t":1793699460426,"k":"round","d":{"slug":"cpc-btc-updown-15m-2026-11-03-0945z","buysPulled":"no entry inside the last 9 min","held":6}}
