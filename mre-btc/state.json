@@ -755,6 +755,17 @@
    "pnl": 0.26,
    "sellId": "DGFJVAA013D5",
    "sellPx": 0.3178904333333333
+  },
+  {
+   "T0": 1793737800,
+   "slug": "cpc-btc-updown-15m-2026-11-03-2030z",
+   "side": null,
+   "buyPx": null,
+   "buyLeft": null,
+   "qty": 0,
+   "sold": 0,
+   "exit": "no fill",
+   "pnl": null
   }
  ],
  "balanceStart": 95.086,
