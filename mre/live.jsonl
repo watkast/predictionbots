@@ -297,3 +297,7 @@
 {"t":1793675074017,"k":"fill","d":{"slug":"cpceth-eth-updown-15m-2026-11-03-0300z","side":"UP","px":0.25,"qty":11,"heldTotal":11,"of":11}}
 {"t":1793675074112,"k":"rest","d":{"slug":"cpceth-eth-updown-15m-2026-11-03-0300z","side":"UP","sellAt":0.45,"qty":11,"id":"DG0T1W4G12WQ"}}
 {"t":1793675160615,"k":"round","d":{"slug":"cpceth-eth-updown-15m-2026-11-03-0300z","buysPulled":"no entry inside the last 9 min","held":11}}
+{"t":1793675295046,"k":"fill","d":{"slug":"cpceth-eth-updown-15m-2026-11-03-0300z","side":"UP","sold":0.45,"qty":11,"soldTotal":11,"of":11}}
+{"t":1793675295047,"k":"round","d":{"slug":"cpceth-eth-updown-15m-2026-11-03-0300z","exit":"sold at 45¢","qty":11,"pnl":2.2}}
+{"t":1793675708371,"k":"ladder","d":{"slug":"cpceth-eth-updown-15m-2026-11-03-0315z","ids":["DG0YVYD012WE","DG0YVZM012WQ","DG0YW0Q012TT","DG0YW1S012WQ","DG0YW3A032WA","DG0YW4PG12VC","DG0YW67G12WP","DG0YW7EG12W4","DG0YW8FG12WK","DG0YW9KG12TT","DG0YWAN012VC","DG0YWBQG12WK","DG0YWCY012WA","DG0YWE0G12WA","DG0YWF2G12WK","DG0YWGD012WP","DG0YWHKG32WP","DG0YWJS012VP","DG0YWKWG72WK","DG0YWN1012TT","DG0YWP3012WK","DG0YWQ9012WK"]}}
+{"t":1793675708371,"k":"rest","d":{"slug":"cpceth-eth-updown-15m-2026-11-03-0315z","side":"BOTH","at":0.3,"ladder":"20–30¢","rungs":11,"qty":1}}
