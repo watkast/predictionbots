@@ -1564,12 +1564,33 @@
    "buyLeft": 757,
    "qty": 6,
    "sold": 0,
+   "exit": "6 lost at the bell",
+   "pnl": -1.65,
+   "sellId": "DGGNGQ5G13D1",
+   "_sold": 0,
+   "_proceeds": 0,
+   "_cost": 1.6500000000000001,
+   "_sell": {
+    "id": "DGGNGQ5G13D1",
+    "qty": 6,
+    "base": 0
+   },
+   "result": "UP"
+  },
+  {
+   "T0": 1793742300,
+   "slug": "cpceth-eth-updown-15m-2026-11-03-2145z",
+   "side": "UP",
+   "buyPx": 0.275,
+   "buyLeft": 764,
+   "qty": 6,
+   "sold": 0,
    "exit": null,
    "pnl": null,
-   "sellId": "DGGNGQ5G13D1"
+   "sellId": "DGGW2DS013D9"
   }
  ],
  "balanceStart": 17.4956,
- "balanceNow": 72.944,
+ "balanceNow": 63.644,
  "errors": 0
 }
