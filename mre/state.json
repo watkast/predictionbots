@@ -644,9 +644,22 @@
    "exit": null,
    "pnl": null,
    "sellId": "DG2AR8EG12WK"
+  },
+  {
+   "T0": 1793682900,
+   "slug": "cpceth-eth-updown-15m-2026-11-03-0515z",
+   "side": "DOWN",
+   "buyPx": 0.275,
+   "buyLeft": 853,
+   "qty": 6,
+   "sold": 6,
+   "exit": "sold at 45¢",
+   "pnl": 1.05,
+   "sellId": "DG2P5DCG12WA",
+   "sellPx": 0.44999999999999996
   }
  ],
  "balanceStart": 17.4956,
- "balanceNow": 92.6656,
+ "balanceNow": 80.9656,
  "errors": 0
 }

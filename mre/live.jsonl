@@ -392,3 +392,16 @@
 {"t":1793681456808,"k":"fill","d":{"slug":"cpceth-eth-updown-15m-2026-11-03-0445z","side":"DOWN","px":0.255,"qty":2,"heldTotal":10,"of":11}}
 {"t":1793681457260,"k":"rest","d":{"slug":"cpceth-eth-updown-15m-2026-11-03-0445z","side":"DOWN","sellAt":0.45,"qty":10,"id":"DG2AR8EG12WK"}}
 {"t":1793681460707,"k":"round","d":{"slug":"cpceth-eth-updown-15m-2026-11-03-0445z","buysPulled":"no entry inside the last 9 min","held":10}}
+{"t":1793682548097,"k":"start","d":{"mode":"live","market":"cpceth-eth-updown-15m-","buy":0.3,"ladder":[0.25,0.3],"sell":0.45,"qty":1,"noBuyLeft":540,"node":"v22.23.4"}}
+{"t":1793682548255,"k":"balance","d":{"cash":79.9156,"total":79.9156}}
+{"t":1793682548257,"k":"round","d":{"slug":"cpceth-eth-updown-15m-2026-11-03-0500z","skipped":"joined mid-round — waiting for the next open"}}
+{"t":1793682914803,"k":"ladder","d":{"slug":"cpceth-eth-updown-15m-2026-11-03-0515z","ids":["DG2NT3PG32VP","DG2NTFX012WP","DG2NTW6052WA","DG2NV8F012VX","DG2NVJZG12TT","DG2NVKPG32TT","DG2NVM8012VP","DG2NVMR052WK","DG2NVN8G12WQ","DG2NW2TG12WK","DG2NW3B012VP","DG2NW3T012WA"]}}
+{"t":1793682914804,"k":"rest","d":{"slug":"cpceth-eth-updown-15m-2026-11-03-0515z","side":"BOTH","at":0.3,"ladder":"25–30¢","rungs":6,"qty":1}}
+{"t":1793682946672,"k":"fill","d":{"slug":"cpceth-eth-updown-15m-2026-11-03-0515z","side":"DOWN","px":0.3,"qty":1,"heldTotal":1,"of":6}}
+{"t":1793682946710,"k":"rest","d":{"slug":"cpceth-eth-updown-15m-2026-11-03-0515z","side":"DOWN","sellAt":0.45,"qty":1,"id":"DG2P3X2G12VX"}}
+{"t":1793682949746,"k":"fill","d":{"slug":"cpceth-eth-updown-15m-2026-11-03-0515z","side":"DOWN","px":0.28,"qty":4,"heldTotal":5,"of":6}}
+{"t":1793682949838,"k":"rest","d":{"slug":"cpceth-eth-updown-15m-2026-11-03-0515z","side":"DOWN","sellAt":0.45,"qty":5,"id":"DG2P4NF012WP"}}
+{"t":1793682952775,"k":"fill","d":{"slug":"cpceth-eth-updown-15m-2026-11-03-0515z","side":"DOWN","px":0.275,"qty":1,"heldTotal":6,"of":6}}
+{"t":1793682952892,"k":"rest","d":{"slug":"cpceth-eth-updown-15m-2026-11-03-0515z","side":"DOWN","sellAt":0.45,"qty":6,"id":"DG2P5DCG12WA"}}
+{"t":1793683113400,"k":"fill","d":{"slug":"cpceth-eth-updown-15m-2026-11-03-0515z","side":"DOWN","sold":0.44999999999999996,"qty":6,"soldTotal":6,"of":6}}
+{"t":1793683113401,"k":"round","d":{"slug":"cpceth-eth-updown-15m-2026-11-03-0515z","exit":"sold at 45¢","qty":6,"pnl":1.05}}
