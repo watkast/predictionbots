@@ -487,16 +487,18 @@
   {
    "T0": 1793720700,
    "slug": "cpc-btc-updown-15m-2026-11-03-1545z",
-   "side": null,
-   "buyPx": null,
-   "buyLeft": null,
-   "qty": 0,
-   "sold": 0,
-   "exit": null,
-   "pnl": null
+   "side": "DOWN",
+   "buyPx": 0.275,
+   "buyLeft": 802,
+   "qty": 6,
+   "sold": 6,
+   "exit": "sold at 32¢ avg",
+   "pnl": 0.28,
+   "sellId": "DGBQBHBG13D5",
+   "sellPx": 0.32116121666666664
   }
  ],
  "balanceStart": 95.086,
- "balanceNow": 78.984,
+ "balanceNow": 75.574,
  "errors": 0
 }
