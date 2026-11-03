@@ -730,12 +730,34 @@
    "buyLeft": 731,
    "qty": 6,
    "sold": 0,
-   "exit": null,
-   "pnl": null,
-   "sellId": "DGFC5PN013D3"
+   "exit": "6 lost at the bell",
+   "pnl": -1.65,
+   "sellId": "DGFC5PN013D3",
+   "_sold": 0,
+   "_proceeds": 0,
+   "_cost": 1.6500000000000001,
+   "_sell": {
+    "id": "DGFC5PN013D3",
+    "qty": 6,
+    "base": 0
+   },
+   "result": "UP"
+  },
+  {
+   "T0": 1793736900,
+   "slug": "cpc-btc-updown-15m-2026-11-03-2015z",
+   "side": "DOWN",
+   "buyPx": 0.275,
+   "buyLeft": 838,
+   "qty": 6,
+   "sold": 6,
+   "exit": "sold at 32¢ avg",
+   "pnl": 0.26,
+   "sellId": "DGFJVAA013D5",
+   "sellPx": 0.3178904333333333
   }
  ],
  "balanceStart": 95.086,
- "balanceNow": 74.674,
+ "balanceNow": 68.934,
  "errors": 0
 }
