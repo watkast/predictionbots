@@ -9779,3 +9779,6 @@
 {"t": 1793707766.321, "k": "err", "where": "espn tur.1", "e": "400 Client Error: Bad Request for url: https://site.api.espn.com/apis/site/v2/sports/soccer/tur.1/scoreboard?dates=20261102-20261104&limit=200"}
 {"t": 1793707766.376, "k": "err", "where": "espn ksa.1", "e": "400 Client Error: Bad Request for url: https://site.api.espn.com/apis/site/v2/sports/soccer/ksa.1/scoreboard?dates=20261102-20261104&limit=200"}
 {"t": 1793707766.441, "k": "err", "where": "espn mex.1", "e": "400 Client Error: Bad Request for url: https://site.api.espn.com/apis/site/v2/sports/soccer/mex.1/scoreboard?dates=20261102-20261104&limit=200"}
+{"t": 1793708044.008, "k": "balance_check", "code": 200, "fields": ["balance", "balance_breakdown", "balance_dollars", "portfolio_value", "updated_ts"], "ok": false}
+{"t": 1793708044.008, "k": "start", "mode": "live", "balance_ok": false}
+{"t": 1793708044.397, "k": "switch", "on": true, "code": 200, "via": "api"}
