@@ -696,12 +696,32 @@
    "buyLeft": 617,
    "qty": 6,
    "sold": 0,
+   "exit": "6 lost at the bell",
+   "pnl": -1.65,
+   "sellId": "DGEREC9G13D3",
+   "_sold": 0,
+   "_proceeds": 0,
+   "_cost": 1.6500000000000001,
+   "_sell": {
+    "id": "DGEREC9G13D3",
+    "qty": 6,
+    "base": 0
+   },
+   "result": "UP"
+  },
+  {
+   "T0": 1793734200,
+   "slug": "cpc-btc-updown-15m-2026-11-03-1930z",
+   "side": null,
+   "buyPx": null,
+   "buyLeft": null,
+   "qty": 0,
+   "sold": 0,
    "exit": null,
-   "pnl": null,
-   "sellId": "DGEREC9G13D3"
+   "pnl": null
   }
  ],
  "balanceStart": 95.086,
- "balanceNow": 69.634,
+ "balanceNow": 68.634,
  "errors": 0
 }

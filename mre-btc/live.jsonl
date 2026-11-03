@@ -582,3 +582,8 @@
 {"t":1793733307310,"k":"rest","d":{"slug":"cpc-btc-updown-15m-2026-11-03-1915z","side":"BOTH","at":0.3,"ladder":"25–30¢","rungs":6,"qty":1}}
 {"t":1793733583347,"k":"fill","d":{"slug":"cpc-btc-updown-15m-2026-11-03-1915z","side":"DOWN","px":0.275,"qty":6,"heldTotal":6,"of":6}}
 {"t":1793733583439,"k":"rest","d":{"slug":"cpc-btc-updown-15m-2026-11-03-1915z","side":"DOWN","sellAt":0.6,"qty":6,"id":"DGEREC9G13D3"}}
+{"t":1793733660931,"k":"round","d":{"slug":"cpc-btc-updown-15m-2026-11-03-1915z","buysPulled":"no entry inside the last 9 min","held":6}}
+{"t":1793734198932,"k":"round","d":{"slug":"cpc-btc-updown-15m-2026-11-03-1915z","held":"DOWN","qty":6,"of":6,"px":0.275}}
+{"t":1793734206840,"k":"ladder","d":{"slug":"cpc-btc-updown-15m-2026-11-03-1930z","ids":["DGEX65KG13D8","DGEX66R013D9","DGEX67Q013CT","DGEX68X013D3","DGEX69X013CZ","DGEX6B0013D7","DGEX6CDG13D1","DGEX6E6013D8","DGEX6F7013CT","DGEX6G7G13CZ","DGEX6HGG13D9","DGEX6JKG13CZ"]}}
+{"t":1793734206840,"k":"rest","d":{"slug":"cpc-btc-updown-15m-2026-11-03-1930z","side":"BOTH","at":0.3,"ladder":"25–30¢","rungs":6,"qty":1}}
+{"t":1793734229225,"k":"settle","d":{"slug":"cpc-btc-updown-15m-2026-11-03-1915z","result":"UP","side":"DOWN","qty":6,"pnl":-1.65}}
