@@ -8,7 +8,7 @@
 //
 //   node scripts/mre_live.js            # live (POLYMARKET_KEY_ID / POLYMARKET_SECRET_KEY)
 //   node scripts/mre_live.js --dry      # logs what it would do, places nothing
-// Env: MRE_DIR (log + MRE.md, default ./mre), MRE_MINUTES (stop after N minutes), MRE_LADDER (default 0.20:0.30, 1¢ rungs), MRE_SELL (0.45), MRE_QTY (shares per rung, 1), MRE_NOBUY_LEFT (540 s),
+// Env: MRE_DIR (log + MRE.md, default ./mre), MRE_MINUTES (stop after N minutes), MRE_LADDER (default 0.25:0.30, 1¢ rungs), MRE_SELL (0.45), MRE_QTY (shares per rung, 1), MRE_NOBUY_LEFT (540 s),
 //      MRE_SLUG_PREFIX (default cpceth-eth-updown-15m- : the ETH 15-minute market; cpc-btc-updown-15m- would be BTC)
 'use strict';
 const fs = require('fs'), path = require('path'), crypto = require('crypto');
@@ -16,7 +16,7 @@ const DRY = process.argv.includes('--dry');
 const DIR = process.env.MRE_DIR || 'mre'; fs.mkdirSync(DIR, { recursive: true });
 const SELL = Number(process.env.MRE_SELL || 0.45), QTY = Number(process.env.MRE_QTY || 1);          // QTY = shares per rung
 // the buy ladder: one QTY-share limit at every cent from LO to HI on both sides (MRE_LADDER "lo:hi", default 20¢–30¢; "0.25:0.25" = one price)
-const [LO, HI] = String(process.env.MRE_LADDER || '0.20:0.30').split(':').map(Number);
+const [LO, HI] = String(process.env.MRE_LADDER || '0.25:0.30').split(':').map(Number);
 const RUNGS = []; for (let c = Math.round(HI * 100); c >= Math.round(LO * 100); c--) RUNGS.push(c / 100);   // highest first: the price falls into them in this order
 const BUY = HI;
 const MINUTES = Number(process.env.MRE_MINUTES || 0) || 0, NOBUY_LEFT = Number(process.env.MRE_NOBUY_LEFT || 540);
