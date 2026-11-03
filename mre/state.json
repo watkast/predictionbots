@@ -998,13 +998,14 @@
    "buyPx": 0.30000000000000004,
    "buyLeft": 660,
    "qty": 1,
-   "sold": 0,
-   "exit": null,
-   "pnl": null,
-   "sellId": "DG7NGQ2G13D7"
+   "sold": 1,
+   "exit": "sold at 37¢ avg",
+   "pnl": 0.07,
+   "sellId": "DG7NGQ2G13D7",
+   "sellPx": 0.37346595
   }
  ],
  "balanceStart": 17.4956,
- "balanceNow": 92.244,
+ "balanceNow": 82.314,
  "errors": 0
 }
