@@ -157,7 +157,8 @@ async function settleLater(rec) {
     report(); save(); process.exit(0); };
   process.on('SIGTERM', stop); process.on('SIGINT', stop);
   setInterval(async () => { if (!DRY) { try { const b = await ex.balance(); state.balanceNow = b.total; } catch (e) {} } report(); save(); }, 60000);
-  setInterval(async () => { if (!live.slug) return; const b = await ex.book(live.slug); tailPush({ t: Date.now(), k: 'snap', d: { bot: 'E', slug: live.slug, r: Math.max(0, Math.round(live.T - Date.now() / 1000)), upAsk: b ? b.upAsk : NaN, dnAsk: b && Number.isFinite(b.upBid) ? +(1 - b.upBid).toFixed(2) : NaN, resting: live.resting, held: live.held } }); flushTail(); }, 10000);
+  setInterval(async () => { if (!live.slug) return; const b = await ex.book(live.slug); const snap = { t: Date.now(), k: 'snap', d: { bot: 'E', slug: live.slug, r: Math.max(0, Math.round(live.T - Date.now() / 1000)), upAsk: b ? b.upAsk : NaN, dnAsk: b && Number.isFinite(b.upBid) ? +(1 - b.upBid).toFixed(2) : NaN, resting: live.resting, held: live.held } }; tailPush(snap); flushTail();
+    try { if (b) fs.appendFileSync(path.join(DIR, 'snaps.jsonl'), JSON.stringify({ t: snap.t, s: live.slug.slice(-16), r: snap.d.r, u: b.upAsk, d: snap.d.dnAsk }) + '\n'); } catch (e) {}   /* the price history the status page charts */ }, 10000);
   let first = true;
   while (Date.now() < deadline) {
     const now = Date.now() / 1000, T0 = Math.floor(now / ROUND) * ROUND;

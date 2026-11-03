@@ -13,6 +13,7 @@ if git fetch -q --depth 1 origin "$DATA_BRANCH" 2>/dev/null; then
   git worktree add -q "$WT" "origin/$DATA_BRANCH"
   [ -f "$WT/mre/state.json" ] && cp "$WT/mre/state.json" "$MRE_DIR/state.json"
   [ -f "$WT/mre/live.jsonl" ] && cp "$WT/mre/live.jsonl" "$MRE_DIR/live.jsonl"
+  [ -f "$WT/mre/snaps.jsonl" ] && tail -n 30000 "$WT/mre/snaps.jsonl" > "$MRE_DIR/snaps.jsonl"
 else
   git worktree add -q --orphan -b "$DATA_BRANCH" "$WT"
 fi
@@ -20,7 +21,7 @@ publish() {
   ( cd "$WT" || exit 0
     for i in 1 2 3 4 5; do
       if git fetch -q --depth 1 origin "$DATA_BRANCH" 2>/dev/null; then git reset -q --hard "origin/$DATA_BRANCH"; fi
-      mkdir -p mre; cp "$MRE_DIR"/MRE.md "$MRE_DIR"/state.json "$MRE_DIR"/live.jsonl mre/ 2>/dev/null
+      mkdir -p mre; cp "$MRE_DIR"/MRE.md "$MRE_DIR"/state.json "$MRE_DIR"/live.jsonl "$MRE_DIR"/snaps.jsonl mre/ 2>/dev/null
       git add -A mre; git commit -qm "mre-live $(date -u +%FT%TZ) $MODE" || exit 0
       git push -q origin "HEAD:$DATA_BRANCH" && exit 0
       sleep $((RANDOM % 20 + 5))
