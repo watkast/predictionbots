@@ -611,9 +611,21 @@
    "pnl": 0.85,
    "sellId": "DG1VFK0012WA",
    "sellPx": 0.45
+  },
+  {
+   "T0": 1793680200,
+   "slug": "cpceth-eth-updown-15m-2026-11-03-0430z",
+   "side": "UP",
+   "buyPx": 0.255,
+   "buyLeft": 786,
+   "qty": 10,
+   "sold": 0,
+   "exit": null,
+   "pnl": null,
+   "sellId": "DG22Q9B012WK"
   }
  ],
  "balanceStart": 17.4956,
- "balanceNow": 1087.7656,
+ "balanceNow": 85.2156,
  "errors": 0
 }

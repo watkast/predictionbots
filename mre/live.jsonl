@@ -364,3 +364,16 @@
 {"t":1793679506890,"k":"fill","d":{"slug":"cpceth-eth-updown-15m-2026-11-03-0415z","side":"DOWN","sold":0.44999999999999996,"qty":5,"soldTotal":5,"of":5}}
 {"t":1793679662616,"k":"round","d":{"slug":"cpceth-eth-updown-15m-2026-11-03-0415z","buysPulled":"no entry inside the last 9 min","held":5}}
 {"t":1793679662724,"k":"round","d":{"slug":"cpceth-eth-updown-15m-2026-11-03-0415z","exit":"sold at 45¢","qty":5,"pnl":0.85}}
+{"t":1793680210429,"k":"ladder","d":{"slug":"cpceth-eth-updown-15m-2026-11-03-0430z","ids":["DG216S9G12WK","DG216TKG12VP","DG216VYG12TT","DG216XE012W4","DG216YPG12VP","DG21701G12TT","DG2172V012WP","DG21741012W4","DG21757G12W4","DG2176JG12TT","DG217E8012WA","DG217FC052VX","DG217H5012VP","DG217JAG32WQ","DG217KP012WP","DG217N1G12WK","DG217P2012WP","DG217Q4052WA","DG217R4032WK","DG217SEG12WK","DG217TE032TT","DG217VJG12WQ"]}}
+{"t":1793680210429,"k":"rest","d":{"slug":"cpceth-eth-updown-15m-2026-11-03-0430z","side":"BOTH","at":0.3,"ladder":"20–30¢","rungs":11,"qty":1}}
+{"t":1793680314483,"k":"fill","d":{"slug":"cpceth-eth-updown-15m-2026-11-03-0430z","side":"UP","px":0.295,"qty":2,"heldTotal":2,"of":11}}
+{"t":1793680314592,"k":"rest","d":{"slug":"cpceth-eth-updown-15m-2026-11-03-0430z","side":"UP","sellAt":0.45,"qty":2,"id":"DG2219D012WK"}}
+{"t":1793680351204,"k":"fill","d":{"slug":"cpceth-eth-updown-15m-2026-11-03-0430z","side":"UP","px":0.29,"qty":1,"heldTotal":3,"of":11}}
+{"t":1793680351585,"k":"rest","d":{"slug":"cpceth-eth-updown-15m-2026-11-03-0430z","side":"UP","sellAt":0.45,"qty":3,"id":"DG22AAD012W4"}}
+{"t":1793680361233,"k":"fill","d":{"slug":"cpceth-eth-updown-15m-2026-11-03-0430z","side":"UP","px":0.28,"qty":2,"heldTotal":5,"of":11}}
+{"t":1793680361602,"k":"rest","d":{"slug":"cpceth-eth-updown-15m-2026-11-03-0430z","side":"UP","sellAt":0.45,"qty":5,"id":"DG22CRNG52TT"}}
+{"t":1793680374328,"k":"fill","d":{"slug":"cpceth-eth-updown-15m-2026-11-03-0430z","side":"UP","px":0.275,"qty":1,"heldTotal":6,"of":11}}
+{"t":1793680374646,"k":"rest","d":{"slug":"cpceth-eth-updown-15m-2026-11-03-0430z","side":"UP","sellAt":0.45,"qty":6,"id":"DG22FYJ012WP"}}
+{"t":1793680404340,"k":"fill","d":{"slug":"cpceth-eth-updown-15m-2026-11-03-0430z","side":"UP","px":0.255,"qty":4,"heldTotal":10,"of":11}}
+{"t":1793680404698,"k":"rest","d":{"slug":"cpceth-eth-updown-15m-2026-11-03-0430z","side":"UP","sellAt":0.45,"qty":10,"id":"DG22Q9B012WK"}}
+{"t":1793680562303,"k":"round","d":{"slug":"cpceth-eth-updown-15m-2026-11-03-0430z","buysPulled":"no entry inside the last 9 min","held":10}}
