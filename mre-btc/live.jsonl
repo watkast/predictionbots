@@ -21,3 +21,10 @@
 {"t":1793688373346,"k":"fill","d":{"slug":"cpc-btc-updown-15m-2026-11-03-0645z","side":"UP","px":0.275,"qty":1,"heldTotal":6,"of":6}}
 {"t":1793688373436,"k":"rest","d":{"slug":"cpc-btc-updown-15m-2026-11-03-0645z","side":"UP","sellAt":0.45,"qty":6,"id":"DG3ZGSCG12WK"}}
 {"t":1793688661166,"k":"round","d":{"slug":"cpc-btc-updown-15m-2026-11-03-0645z","buysPulled":"no entry inside the last 9 min","held":6}}
+{"t":1793689199094,"k":"round","d":{"slug":"cpc-btc-updown-15m-2026-11-03-0645z","held":"UP","qty":6,"of":6,"px":0.275}}
+{"t":1793689205906,"k":"ladder","d":{"slug":"cpc-btc-updown-15m-2026-11-03-0700z","ids":["DG45VWDG12WA","DG45VWRG13D1","DG45VX5G12WK","DG45VXH052WQ","DG45VXXG13CZ","DG45VYE013D1","DG45VYXG33CT","DG45VZF013D1","DG45VZTG13CT","DG45W08013CX","DG45W0MG13CT","DG45W12G12WK"]}}
+{"t":1793689205907,"k":"rest","d":{"slug":"cpc-btc-updown-15m-2026-11-03-0700z","side":"BOTH","at":0.3,"ladder":"25–30¢","rungs":6,"qty":1}}
+{"t":1793689229156,"k":"settle","d":{"slug":"cpc-btc-updown-15m-2026-11-03-0645z","result":"DOWN","side":"UP","qty":6,"pnl":-1.65}}
+{"t":1793689251105,"k":"fill","d":{"slug":"cpc-btc-updown-15m-2026-11-03-0700z","side":"DOWN","px":0.29,"qty":3,"heldTotal":3,"of":6}}
+{"t":1793689251131,"k":"rest","d":{"slug":"cpc-btc-updown-15m-2026-11-03-0700z","side":"DOWN","sellAt":0.45,"qty":3,"id":"DG4672C013D1"}}
+{"t":1793689318396,"k":"fill","d":{"slug":"cpc-btc-updown-15m-2026-11-03-0700z","side":"DOWN","sold":0.44999999999999996,"qty":3,"soldTotal":3,"of":3}}

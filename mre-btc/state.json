@@ -31,12 +31,33 @@
    "buyLeft": 845,
    "qty": 6,
    "sold": 0,
+   "exit": "6 lost at the bell",
+   "pnl": -1.65,
+   "sellId": "DG3ZGSCG12WK",
+   "_sold": 0,
+   "_proceeds": 0,
+   "_cost": 1.6500000000000001,
+   "_sell": {
+    "id": "DG3ZGSCG12WK",
+    "qty": 6,
+    "base": 0
+   },
+   "result": "DOWN"
+  },
+  {
+   "T0": 1793689200,
+   "slug": "cpc-btc-updown-15m-2026-11-03-0700z",
+   "side": "DOWN",
+   "buyPx": 0.29000000000000004,
+   "buyLeft": 849,
+   "qty": 3,
+   "sold": 3,
    "exit": null,
    "pnl": null,
-   "sellId": "DG3ZGSCG12WK"
+   "sellId": "DG4672C013D1"
   }
  ],
  "balanceStart": 95.086,
- "balanceNow": 95.2056,
+ "balanceNow": 87.8411,
  "errors": 0
 }
