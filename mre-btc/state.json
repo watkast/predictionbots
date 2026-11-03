@@ -615,12 +615,32 @@
    "buyLeft": 770,
    "qty": 6,
    "sold": 5,
+   "exit": "5 sold at 60¢ + 1 lost at the bell",
+   "pnl": -0.03,
+   "sellId": "DGDP4RZG13CZ",
+   "_sold": 5,
+   "_proceeds": 1.622021,
+   "_cost": 1.6500000000000001,
+   "_sell": {
+    "id": "DGDP4RZG13CZ",
+    "qty": 1,
+    "base": 5
+   },
+   "result": "UP"
+  },
+  {
+   "T0": 1793729700,
+   "slug": "cpc-btc-updown-15m-2026-11-03-1815z",
+   "side": null,
+   "buyPx": null,
+   "buyLeft": null,
+   "qty": 0,
+   "sold": 0,
    "exit": null,
-   "pnl": null,
-   "sellId": "DGDP4RZG13CZ"
+   "pnl": null
   }
  ],
  "balanceStart": 95.086,
- "balanceNow": 76.534,
+ "balanceNow": 69.534,
  "errors": 0
 }
