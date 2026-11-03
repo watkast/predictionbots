@@ -593,9 +593,20 @@
    "pnl": 0.3,
    "sellId": "DGD8DNP013CT",
    "sellPx": 0.32440420000000003
+  },
+  {
+   "T0": 1793727900,
+   "slug": "cpc-btc-updown-15m-2026-11-03-1745z",
+   "side": null,
+   "buyPx": null,
+   "buyLeft": null,
+   "qty": 0,
+   "sold": 0,
+   "exit": null,
+   "pnl": null
   }
  ],
  "balanceStart": 95.086,
- "balanceNow": 69.204,
+ "balanceNow": 71.564,
  "errors": 0
 }
