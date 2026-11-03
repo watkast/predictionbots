@@ -534,16 +534,18 @@
   {
    "T0": 1793675700,
    "slug": "cpceth-eth-updown-15m-2026-11-03-0315z",
-   "side": null,
-   "buyPx": null,
-   "buyLeft": null,
-   "qty": 0,
-   "sold": 0,
-   "exit": null,
-   "pnl": null
+   "side": "DOWN",
+   "buyPx": 0.28500000000000003,
+   "buyLeft": 620,
+   "qty": 4,
+   "sold": 4,
+   "exit": "sold at 45¢",
+   "pnl": 0.66,
+   "sellId": "DG114BNG12WA",
+   "sellPx": 0.44999999999999996
   }
  ],
  "balanceStart": 17.4956,
- "balanceNow": 92.0556,
+ "balanceNow": 92.7156,
  "errors": 0
 }
