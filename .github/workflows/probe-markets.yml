@@ -4,16 +4,17 @@ on:
   workflow_dispatch:
     inputs:
       minutes: { description: "Minutes to sample", default: "12" }
+      prefixes: { description: "Market prefixes", default: "cpc-btc,cpceth-eth,cpcsol-sol,cpcxrp-xrp" }
 permissions:
   contents: read
 jobs:
   probe:
     runs-on: ubuntu-latest
-    timeout-minutes: 40
+    timeout-minutes: 360
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-node@v4
         with: { node-version: 22 }
-      - run: PROBE_MINUTES=${{ github.event.inputs.minutes }} node scripts/probe_markets.js | tee probe.jsonl
+      - run: PROBE_MINUTES=${{ github.event.inputs.minutes }} PROBE_PREFIXES=${{ github.event.inputs.prefixes || 'cpc-btc,cpceth-eth,cpcsol-sol,cpcxrp-xrp' }} node scripts/probe_markets.js | tee probe.jsonl
       - uses: actions/upload-artifact@v4
         with: { name: probe, path: probe.jsonl }
