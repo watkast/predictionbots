@@ -276,16 +276,16 @@
    "T0": 1793705400,
    "slug": "cpc-btc-updown-15m-2026-11-03-1130z",
    "side": "UP",
-   "buyPx": 0.295,
+   "buyPx": 0.275,
    "buyLeft": 803,
-   "qty": 2,
+   "qty": 6,
    "sold": 1,
    "exit": null,
    "pnl": null,
-   "sellId": "DG82XM5G13D3"
+   "sellId": "DG83AR6013CX"
   }
  ],
  "balanceStart": 95.086,
- "balanceNow": 79.554,
+ "balanceNow": 77.314,
  "errors": 0
 }
