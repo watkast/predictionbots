@@ -1618,13 +1618,14 @@
    "buyPx": 0.275,
    "buyLeft": 772,
    "qty": 6,
-   "sold": 3,
-   "exit": null,
-   "pnl": null,
-   "sellId": "DGHA4Z7G13D3"
+   "sold": 6,
+   "exit": "sold at 28¢ avg",
+   "pnl": 0.03,
+   "sellId": "DGHA4Z7G13D3",
+   "sellPx": 0.280630875
   }
  ],
  "balanceStart": 17.4956,
- "balanceNow": 62.304,
+ "balanceNow": 62.504,
  "errors": 0
 }
