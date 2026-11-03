@@ -258,9 +258,21 @@
    "sold": 0,
    "exit": "no fill",
    "pnl": null
+  },
+  {
+   "T0": 1793704500,
+   "slug": "cpc-btc-updown-15m-2026-11-03-1115z",
+   "side": "UP",
+   "buyPx": 0.275,
+   "buyLeft": 637,
+   "qty": 6,
+   "sold": 1,
+   "exit": null,
+   "pnl": null,
+   "sellId": "DG7WW90G13D6"
   }
  ],
  "balanceStart": 95.086,
- "balanceNow": 82.314,
+ "balanceNow": 78.314,
  "errors": 0
 }
