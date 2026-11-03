@@ -343,3 +343,4 @@
 {"t":1793713776201,"k":"exit","d":{"slug":"cpc-btc-updown-15m-2026-11-03-1345z","side":"UP","armed":0.31,"avg":0.275,"src":"ws"}}
 {"t":1793713793825,"k":"fill","d":{"slug":"cpc-btc-updown-15m-2026-11-03-1345z","side":"UP","sold":0.35,"qty":6,"soldTotal":6,"of":6,"exit":"stall","peak":0.42,"bid":0.34}}
 {"t":1793713793826,"k":"round","d":{"slug":"cpc-btc-updown-15m-2026-11-03-1345z","exit":"sold at 33¢ avg","qty":6,"pnl":0.36}}
+{"t":1793714402001,"k":"stop","d":{}}
