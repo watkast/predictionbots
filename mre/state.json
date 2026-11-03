@@ -786,12 +786,34 @@
    "buyLeft": 754,
    "qty": 6,
    "sold": 0,
-   "exit": null,
-   "pnl": null,
-   "sellId": "DG4DVDHG13D1"
+   "exit": "6 lost at the bell",
+   "pnl": -1.65,
+   "sellId": "DG4DVDHG13D1",
+   "_sold": 0,
+   "_proceeds": 0,
+   "_cost": 1.6500000000000001,
+   "_sell": {
+    "id": "DG4DVDHG13D1",
+    "qty": 6,
+    "base": 0
+   },
+   "result": "UP"
+  },
+  {
+   "T0": 1793691000,
+   "slug": "cpceth-eth-updown-15m-2026-11-03-0730z",
+   "side": "DOWN",
+   "buyPx": 0.275,
+   "buyLeft": 796,
+   "qty": 6,
+   "sold": 6,
+   "exit": "sold at 60¢ avg",
+   "pnl": 1.95,
+   "sellId": "DG4P3GC013CZ",
+   "sellPx": 0.6
   }
  ],
  "balanceStart": 17.4956,
- "balanceNow": 130.8756,
+ "balanceNow": 121.2956,
  "errors": 0
 }
