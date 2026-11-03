@@ -1,0 +1,21 @@
+{
+ "startedAt": 1793686944884,
+ "mode": "live",
+ "rounds": [
+  {
+   "T0": 1793687400,
+   "slug": "cpc-btc-updown-15m-2026-11-03-0630z",
+   "side": "DOWN",
+   "buyPx": 0.25,
+   "buyLeft": 891,
+   "qty": 6,
+   "sold": 0,
+   "exit": null,
+   "pnl": null,
+   "sellId": "DG3R5DJ012W4"
+  }
+ ],
+ "balanceStart": 95.086,
+ "balanceNow": 117.8056,
+ "errors": 0
+}
