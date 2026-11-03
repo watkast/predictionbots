@@ -410,3 +410,17 @@
 {"t":1793683909131,"k":"fill","d":{"slug":"cpceth-eth-updown-15m-2026-11-03-0530z","side":"UP","px":0.275,"qty":6,"heldTotal":6,"of":6}}
 {"t":1793683909159,"k":"rest","d":{"slug":"cpceth-eth-updown-15m-2026-11-03-0530z","side":"UP","sellAt":0.45,"qty":6,"id":"DG2XEW7052WQ"}}
 {"t":1793684161648,"k":"round","d":{"slug":"cpceth-eth-updown-15m-2026-11-03-0530z","buysPulled":"no entry inside the last 9 min","held":6}}
+{"t":1793684544958,"k":"fill","d":{"slug":"cpceth-eth-updown-15m-2026-11-03-0530z","side":"UP","sold":0.45,"qty":6,"soldTotal":6,"of":6}}
+{"t":1793684544959,"k":"round","d":{"slug":"cpceth-eth-updown-15m-2026-11-03-0530z","exit":"sold at 45¢","qty":6,"pnl":1.05}}
+{"t":1793684707033,"k":"ladder","d":{"slug":"cpceth-eth-updown-15m-2026-11-03-0545z","ids":["DG33H6C012WK","DG33HFBG12VX","DG33HFTG12WA","DG33HGCG12WQ","DG33HGRG12WQ","DG33HHF012W4","DG33HJA012VX","DG33HKHG52TT","DG33HM8012VC","DG33HMN052WQ","DG33HN3G12VP","DG33HNKG12WK"]}}
+{"t":1793684707034,"k":"rest","d":{"slug":"cpceth-eth-updown-15m-2026-11-03-0545z","side":"BOTH","at":0.3,"ladder":"25–30¢","rungs":6,"qty":1}}
+{"t":1793684754611,"k":"fill","d":{"slug":"cpceth-eth-updown-15m-2026-11-03-0545z","side":"UP","px":0.3,"qty":1,"heldTotal":1,"of":6}}
+{"t":1793684754645,"k":"rest","d":{"slug":"cpceth-eth-updown-15m-2026-11-03-0545z","side":"UP","sellAt":0.45,"qty":1,"id":"DG33X9JG12VP"}}
+{"t":1793684763366,"k":"fill","d":{"slug":"cpceth-eth-updown-15m-2026-11-03-0545z","side":"UP","px":0.295,"qty":1,"heldTotal":2,"of":6}}
+{"t":1793684763850,"k":"rest","d":{"slug":"cpceth-eth-updown-15m-2026-11-03-0545z","side":"UP","sellAt":0.45,"qty":2,"id":"DG33ZHF032TT"}}
+{"t":1793684766480,"k":"fill","d":{"slug":"cpceth-eth-updown-15m-2026-11-03-0545z","side":"UP","px":0.285,"qty":2,"heldTotal":4,"of":6}}
+{"t":1793684766630,"k":"rest","d":{"slug":"cpceth-eth-updown-15m-2026-11-03-0545z","side":"UP","sellAt":0.45,"qty":4,"id":"DG34071G12WA"}}
+{"t":1793684771256,"k":"fill","d":{"slug":"cpceth-eth-updown-15m-2026-11-03-0545z","side":"UP","px":0.28,"qty":1,"heldTotal":5,"of":6}}
+{"t":1793684771396,"k":"rest","d":{"slug":"cpceth-eth-updown-15m-2026-11-03-0545z","side":"UP","sellAt":0.45,"qty":5,"id":"DG341CE012VP"}}
+{"t":1793684776384,"k":"fill","d":{"slug":"cpceth-eth-updown-15m-2026-11-03-0545z","side":"UP","px":0.275,"qty":1,"heldTotal":6,"of":6}}
+{"t":1793684776494,"k":"rest","d":{"slug":"cpceth-eth-updown-15m-2026-11-03-0545z","side":"UP","sellAt":0.45,"qty":6,"id":"DG342M9012WQ"}}
