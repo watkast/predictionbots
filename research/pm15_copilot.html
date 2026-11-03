@@ -65,6 +65,7 @@ tbody tr { cursor: pointer; }
 .chip { display: inline-block; font: 600 11px var(--mono); padding: 2px 7px; border-radius: 999px; }
 .chip.UP { color: var(--up); border: 1px solid var(--up); } .chip.DOWN { color: var(--down); border: 1px solid var(--down); }
 .err { color: var(--down); font-size: 13px; }
+.sub a { color: var(--accent); }
 @media (prefers-reduced-motion: no-preference) { .pill.live { animation: pulse 2.4s ease-in-out infinite; } @keyframes pulse { 50% { opacity: .55; } } }
 </style>
 </head>
@@ -73,7 +74,7 @@ tbody tr { cursor: pointer; }
   <header>
     <div>
       <h1>Mr. E Status</h1>
-      <div class="sub">Polymarket US · ETH Up/Down 15-minute · every order, fill and settlement Mr. E has logged</div>
+      <div class="sub"><span id="mkt">ETH</span> Up/Down 15-minute · Polymarket US · <a id="other" href="#btc">switch to BTC</a></div>
     </div>
     <div class="status"><span id="pill" class="pill stale">loading</span><span id="ago"></span><button id="refresh" type="button">Refresh</button></div>
   </header>
@@ -110,7 +111,10 @@ tbody tr { cursor: pointer; }
 </div>
 <script>
 const RAW = 'https://raw.githubusercontent.com/watkast/predictionbots/';
-const SRC = { log: RAW + 'mrp-data/mre/live.jsonl', snaps: RAW + 'mrp-data/mre/snaps.jsonl', tail: RAW + 'mre-live-tail/tail.jsonl' };
+const MKT = location.hash.replace('#', '').toLowerCase() === 'btc' ? 'btc' : 'eth';
+const SUBDIR = MKT === 'btc' ? 'mre-btc' : 'mre', TAILB = MKT === 'btc' ? 'mre-btc-live-tail' : 'mre-live-tail';
+const SRC = { log: RAW + 'mrp-data/' + SUBDIR + '/live.jsonl', snaps: RAW + 'mrp-data/' + SUBDIR + '/snaps.jsonl', tail: RAW + TAILB + '/tail.jsonl' };
+addEventListener('hashchange', () => location.reload());
 const $ = id => document.getElementById(id);
 const NS = 'http://www.w3.org/2000/svg';
 let DATA = null, sel = null, follow = true;
@@ -257,6 +261,7 @@ async function load() {
   } catch (e) { $('rule').innerHTML = '<span class="err">Something went wrong reading the log: ' + String(e.message || e).slice(0, 120) + '</span>'; }
 }
 $('refresh').addEventListener('click', load);
+$('mkt').textContent = MKT.toUpperCase(); $('other').textContent = 'switch to ' + (MKT === 'btc' ? 'ETH' : 'BTC'); $('other').href = MKT === 'btc' ? '#eth' : '#btc'; document.title = 'Mr. E Status · ' + MKT.toUpperCase();
 $('prev').addEventListener('click', () => { const i = DATA.list.findIndex(R => R.key === sel); if (i > 0) { follow = false; sel = DATA.list[i - 1].key; render(); } });
 $('next').addEventListener('click', () => { const i = DATA.list.findIndex(R => R.key === sel); if (i < DATA.list.length - 1) { sel = DATA.list[i + 1].key; follow = i + 1 === DATA.list.length - 1; render(); } });
 $('latest').addEventListener('click', () => { follow = true; render(); });
