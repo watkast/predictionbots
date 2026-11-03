@@ -1404,12 +1404,32 @@
    "buyLeft": 774,
    "qty": 6,
    "sold": 0,
+   "exit": "6 lost at the bell",
+   "pnl": -1.65,
+   "sellId": "DGDN07D013D1",
+   "_sold": 0,
+   "_proceeds": 0,
+   "_cost": 1.6500000000000001,
+   "_sell": {
+    "id": "DGDN07D013D1",
+    "qty": 6,
+    "base": 0
+   },
+   "result": "UP"
+  },
+  {
+   "T0": 1793729700,
+   "slug": "cpceth-eth-updown-15m-2026-11-03-1815z",
+   "side": null,
+   "buyPx": null,
+   "buyLeft": null,
+   "qty": 0,
+   "sold": 0,
    "exit": null,
-   "pnl": null,
-   "sellId": "DGDN07D013D1"
+   "pnl": null
   }
  ],
  "balanceStart": 17.4956,
- "balanceNow": 76.534,
+ "balanceNow": 69.534,
  "errors": 0
 }
