@@ -840,13 +840,25 @@
    "buyPx": 0.275,
    "buyLeft": 779,
    "qty": 6,
+   "sold": 6,
+   "exit": "sold at 32¢ avg",
+   "pnl": 0.3,
+   "sellId": "DG5474M013CT",
+   "sellPx": 0.32440420000000003
+  },
+  {
+   "T0": 1793693700,
+   "slug": "cpceth-eth-updown-15m-2026-11-03-0815z",
+   "side": null,
+   "buyPx": null,
+   "buyLeft": null,
+   "qty": 0,
    "sold": 0,
    "exit": null,
-   "pnl": null,
-   "sellId": "DG52BSS013CZ"
+   "pnl": null
   }
  ],
  "balanceStart": 17.4956,
- "balanceNow": 208.5321,
+ "balanceNow": 222.8606,
  "errors": 0
 }
