@@ -5,3 +5,4 @@
 {"t":1793687406605,"k":"rest","d":{"slug":"cpc-btc-updown-15m-2026-11-03-0630z","side":"BOTH","at":0.3,"ladder":"25–30¢","rungs":6,"qty":1}}
 {"t":1793687409336,"k":"fill","d":{"slug":"cpc-btc-updown-15m-2026-11-03-0630z","side":"DOWN","px":0.25,"qty":6,"heldTotal":6,"of":6}}
 {"t":1793687409364,"k":"rest","d":{"slug":"cpc-btc-updown-15m-2026-11-03-0630z","side":"DOWN","sellAt":0.45,"qty":6,"id":"DG3R5DJ012W4"}}
+{"t":1793687760327,"k":"round","d":{"slug":"cpc-btc-updown-15m-2026-11-03-0630z","buysPulled":"no entry inside the last 9 min","held":6}}
