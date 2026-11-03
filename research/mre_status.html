@@ -65,6 +65,8 @@ tbody tr { cursor: pointer; }
 .chip { display: inline-block; font: 600 11px var(--mono); padding: 2px 7px; border-radius: 999px; }
 .chip.UP { color: var(--up); border: 1px solid var(--up); } .chip.DOWN { color: var(--down); border: 1px solid var(--down); }
 .err { color: var(--down); font-size: 13px; }
+.scope { display: flex; flex-wrap: wrap; align-items: center; gap: 8px; font-size: 12.5px; color: var(--muted); }
+.scope button[aria-pressed="true"] { background: var(--accent); color: var(--panel); border-color: var(--accent); }
 .sub a { color: var(--accent); }
 @media (prefers-reduced-motion: no-preference) { .pill.live { animation: pulse 2.4s ease-in-out infinite; } @keyframes pulse { 50% { opacity: .55; } } }
 </style>
@@ -79,6 +81,7 @@ tbody tr { cursor: pointer; }
     <div class="status"><span id="pill" class="pill stale">loading</span><span id="ago"></span><button id="refresh" type="button">Refresh</button></div>
   </header>
   <div class="rule" id="rule">Reading Mr. E's log…</div>
+  <div class="scope"><button id="scopeCur" type="button" aria-pressed="true">Current version</button><button id="scopeAll" type="button" aria-pressed="false">All rounds</button><span id="scopeNote"></span></div>
   <div class="kpis" id="kpis"></div>
 
   <section class="card">
@@ -118,6 +121,9 @@ addEventListener('hashchange', () => location.reload());
 const $ = id => document.getElementById(id);
 const NS = 'http://www.w3.org/2000/svg';
 let DATA = null, sel = null, follow = true;
+// the current version of Mr. E (25–30¢ ladder, dynamic exit on the live book, sells up to 3¢ under the bid) starts with the 1:30 AM MT round of Nov 3
+const VERSION_SINCE = Date.UTC(2026, 10, 3, 8, 30), VERSION_NAME = 'current version (ladder 25–30¢ · dynamic exit)';
+let onlyCurrent = true; try { onlyCurrent = localStorage.getItem('mre.only') !== '0'; } catch (e) {}
 
 const c = v => Number.isFinite(v) ? Math.round(v * 100) + '¢' : '—';
 const money = v => (v < 0 ? '−$' : v > 0 ? '+$' : '$') + Math.abs(v).toFixed(2);
@@ -144,7 +150,7 @@ function build(log, tail, snaps) {
     const d = r.d || {};
     if (r.k === 'start') { mode = d.mode; if (mode === 'live') { cfg = { ...d, t: r.t, label: eraLabel(d) }; starts.push(cfg); } continue; }
     if (mode !== 'live') continue;
-    if (r.k === 'balance' && Number.isFinite(d.total)) balance = { v: d.total, t: r.t };
+    if (r.k === 'balance' && Number.isFinite(d.cash)) balance = { v: d.cash, t: r.t };   // buying power: the reported total swings with how the exchange values open positions
     if (!d.slug) continue;
     const k = key(d.slug);
     const R = rounds[k] = rounds[k] || { key: k, T0: slugT0(d.slug), buys: [], sells: [], qty: 0, side: null, pnl: null, cfg: cfg, rested: false };
@@ -231,7 +237,10 @@ function drawPrice() {
 }
 
 function render() {
-  const D = DATA, list = D.list, done = list.filter(R => R.pnl != null);
+  const all = DATA.list; const D = { ...DATA, list: onlyCurrent ? all.filter(R => R.T0 >= VERSION_SINCE) : all }; const list = D.list, done = list.filter(R => R.pnl != null);
+  const saved = DATA; DATA = D;
+  $('scopeCur').setAttribute('aria-pressed', String(onlyCurrent)); $('scopeAll').setAttribute('aria-pressed', String(!onlyCurrent));
+  $('scopeNote').textContent = onlyCurrent ? 'Counting rounds from ' + dt(VERSION_SINCE) + ' — the ' + VERSION_NAME + '.' : 'Every round since Mr. E went live, all settings.';
   const net = done.reduce((a, R) => a + R.pnl, 0), wins = done.filter(R => R.pnl > 0).length, losses = done.filter(R => R.pnl < 0).length;
   const nofill = list.filter(R => R.state === 'nofill').length, today0 = new Date(); today0.setHours(0, 0, 0, 0);
   const todayNet = done.filter(R => (R.pnlT || R.T0) >= today0.getTime()).reduce((a, R) => a + R.pnl, 0);
@@ -240,7 +249,7 @@ function render() {
   const tile = (l, v, n, cls) => `<div class="kpi"><div class="l">${l}</div><div class="v ${cls || ''}">${v}</div><div class="n">${n || ''}</div></div>`;
   $('kpis').innerHTML = tile('Net P&L', money(net), done.length + ' closed rounds', net >= 0 ? 'pos' : 'neg') + tile('Wins / losses', wins + ' / ' + losses, done.length ? Math.round(100 * wins / done.length) + '% of closed rounds' : '') +
     tile('Today', money(todayNet), 'since midnight your time', todayNet >= 0 ? 'pos' : 'neg') + tile('Last hour', money(lastHour), done.filter(R => R.pnlT > Date.now() - 3600e3).length + ' rounds', lastHour >= 0 ? 'pos' : 'neg') +
-    tile('No fill', nofill, 'rounds the price never reached the bids') + tile('Account', D.balance ? '$' + D.balance.v.toFixed(2) : '—', D.balance ? 'at the last run start, ' + tm(D.balance.t) : '');
+    tile('No fill', nofill, 'rounds the price never reached the bids') + tile('Available cash', D.balance ? '$' + D.balance.v.toFixed(2) : '—', D.balance ? 'at the last run start, ' + tm(D.balance.t) : '');
   const age = (Date.now() - D.lastT) / 1000, pill = $('pill');
   pill.className = 'pill ' + (age < 120 ? 'live' : age < 1200 ? 'stale' : 'down'); pill.textContent = age < 120 ? 'running' : age < 1200 ? 'quiet' : 'no signal';
   $('ago').textContent = 'last event ' + (age < 90 ? Math.round(age) + ' s' : Math.round(age / 60) + ' min') + ' ago';
@@ -252,6 +261,7 @@ function render() {
     list.slice().reverse().map(R => `<tr data-k="${R.key}" class="${R.key === sel ? 'sel' : ''}"><td>${dt(R.T0)}</td><td>${R.side ? `<span class="chip ${R.side}">${R.side}</span>` : '—'}</td><td class="num">${R.qty ? +R.qty.toFixed(2) : '—'}</td><td class="num">${R.avg ? c(R.avg) : '—'}</td><td>${R.exitTxt}</td><td class="num ${R.pnl > 0 ? 'pos' : R.pnl < 0 ? 'neg' : ''}">${R.pnl != null ? money(R.pnl) : '—'}</td></tr>`).join('') + '</tbody>';
   drawPnl(); drawPrice();
   for (const tr of document.querySelectorAll('#rounds tbody tr')) tr.addEventListener('click', () => { follow = false; sel = tr.dataset.k; render(); });
+  DATA = saved;
 }
 async function load() {
   try {
@@ -262,9 +272,11 @@ async function load() {
 }
 $('refresh').addEventListener('click', load);
 $('mkt').textContent = MKT.toUpperCase(); $('other').textContent = 'switch to ' + (MKT === 'btc' ? 'ETH' : 'BTC'); $('other').href = MKT === 'btc' ? '#eth' : '#btc'; document.title = 'Mr. E Status · ' + MKT.toUpperCase();
-$('prev').addEventListener('click', () => { const i = DATA.list.findIndex(R => R.key === sel); if (i > 0) { follow = false; sel = DATA.list[i - 1].key; render(); } });
-$('next').addEventListener('click', () => { const i = DATA.list.findIndex(R => R.key === sel); if (i < DATA.list.length - 1) { sel = DATA.list[i + 1].key; follow = i + 1 === DATA.list.length - 1; render(); } });
+$('prev').addEventListener('click', () => { const L = onlyCurrent ? DATA.list.filter(R => R.T0 >= VERSION_SINCE) : DATA.list; const i = L.findIndex(R => R.key === sel); if (i > 0) { follow = false; sel = L[i - 1].key; render(); } });
+$('next').addEventListener('click', () => { const L = onlyCurrent ? DATA.list.filter(R => R.T0 >= VERSION_SINCE) : DATA.list; const i = L.findIndex(R => R.key === sel); if (i < L.length - 1) { sel = L[i + 1].key; follow = i + 1 === L.length - 1; render(); } });
 $('latest').addEventListener('click', () => { follow = true; render(); });
+const setScope = v => { onlyCurrent = v; try { localStorage.setItem('mre.only', v ? '1' : '0'); } catch (e) {} if (DATA) render(); };
+$('scopeCur').addEventListener('click', () => setScope(true)); $('scopeAll').addEventListener('click', () => setScope(false));
 load(); setInterval(() => { if (!document.hidden) load(); }, 30000);
 </script>
 </body>
