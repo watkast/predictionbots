@@ -2218,8 +2218,8 @@
    "buyLeft": 837,
    "qty": 6,
    "sold": 0,
-   "exit": "held to the bell",
-   "pnl": null,
+   "exit": "6 lost at the bell",
+   "pnl": -1.65,
    "momentum": "DOWN",
    "sellId": "DGTY9KD053D6",
    "_sold": 0,
@@ -2229,7 +2229,8 @@
     "id": "DGTY9KD053D6",
     "qty": 6,
     "base": 0
-   }
+   },
+   "result": "UP"
   },
   {
    "T0": 1793785500,
@@ -2239,11 +2240,12 @@
    "buyLeft": null,
    "qty": 0,
    "sold": 0,
-   "exit": null,
-   "pnl": null
+   "exit": "no fill",
+   "pnl": null,
+   "momentum": "UP"
   }
  ],
  "balanceStart": 17.4956,
- "balanceNow": 85.0464,
+ "balanceNow": 73.0464,
  "errors": 0
 }
