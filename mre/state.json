@@ -2055,9 +2055,23 @@
    "exit": "no fill",
    "pnl": null,
    "momentum": "UP"
+  },
+  {
+   "T0": 1793774700,
+   "slug": "cpceth-eth-updown-15m-2026-11-04-0645z",
+   "side": "DOWN",
+   "buyPx": 0.275,
+   "buyLeft": 797,
+   "qty": 6,
+   "sold": 6,
+   "exit": "sold at 29¢ avg",
+   "pnl": 0.06,
+   "momentum": "DOWN",
+   "sellId": "DGRJXT2013D7",
+   "sellPx": 0.285405
   }
  ],
  "balanceStart": 17.4956,
- "balanceNow": 72.9564,
+ "balanceNow": 76.0764,
  "errors": 0
 }
