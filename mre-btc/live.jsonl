@@ -1070,3 +1070,5 @@
 {"t":1793781242530,"k":"round","d":{"slug":"cpc-btc-updown-15m-2026-11-04-0830z","exit":"sold at 33¢ avg","qty":6,"pnl":0.36}}
 {"t":1793781905879,"k":"ladder","d":{"slug":"cpc-btc-updown-15m-2026-11-04-0845z","ids":["DGT93P5G13D3","DGT93Q6G13CX","DGT93R7G13CZ","DGT93SA013D7","DGT93T9013D7","DGT93V8G13D5"]}}
 {"t":1793781905879,"k":"rest","d":{"slug":"cpc-btc-updown-15m-2026-11-04-0845z","side":"UP","momentum":"last round closed UP","at":0.3,"ladder":"25–30¢","rungs":6,"qty":1}}
+{"t":1793782262261,"k":"round","d":{"slug":"cpc-btc-updown-15m-2026-11-04-0845z","buysPulled":"no entry inside the last 9 min","held":0}}
+{"t":1793782262261,"k":"round","d":{"slug":"cpc-btc-updown-15m-2026-11-04-0845z","exit":"no fill"}}
