@@ -1648,3 +1648,14 @@
 {"t":1793797461186,"k":"exit","d":{"slug":"cpceth-eth-updown-15m-2026-11-04-1300z","side":"DOWN","armed":0.31,"avg":0.275,"src":"ws"}}
 {"t":1793797466176,"k":"fill","d":{"slug":"cpceth-eth-updown-15m-2026-11-04-1300z","side":"DOWN","sold":0.30000000000000004,"qty":4,"soldTotal":6,"of":6,"exit":"stall","peak":0.34,"bid":0.31,"slip":0.01}}
 {"t":1793797467679,"k":"round","d":{"slug":"cpceth-eth-updown-15m-2026-11-04-1300z","exit":"sold at 31¢ avg","qty":6,"pnl":0.2}}
+{"t":1793798105899,"k":"ladder","d":{"slug":"cpceth-eth-updown-15m-2026-11-04-1315z","ids":["DGY4PR6G13D9","DGY4PSX013D1","DGY4PTWG13D9","DGY4PVX013D7","DGY4PWW013CT","DGY4PY0013D8"]}}
+{"t":1793798105900,"k":"rest","d":{"slug":"cpceth-eth-updown-15m-2026-11-04-1315z","side":"UP","momentum":"last round closed UP","at":0.3,"ladder":"25–30¢","rungs":6,"qty":1}}
+{"t":1793798117249,"k":"fill","d":{"slug":"cpceth-eth-updown-15m-2026-11-04-1315z","side":"UP","px":0.29,"qty":3,"heldTotal":3,"of":6}}
+{"t":1793798117341,"k":"rest","d":{"slug":"cpceth-eth-updown-15m-2026-11-04-1315z","side":"UP","sellAt":0.6,"qty":3,"id":"DGY4SQC013D9"}}
+{"t":1793798120717,"k":"fill","d":{"slug":"cpceth-eth-updown-15m-2026-11-04-1315z","side":"UP","px":0.28,"qty":2,"heldTotal":5,"of":6}}
+{"t":1793798121191,"k":"rest","d":{"slug":"cpceth-eth-updown-15m-2026-11-04-1315z","side":"UP","sellAt":0.6,"qty":5,"id":"DGY4TNEG13D7"}}
+{"t":1793798123907,"k":"fill","d":{"slug":"cpceth-eth-updown-15m-2026-11-04-1315z","side":"UP","px":0.275,"qty":1,"heldTotal":6,"of":6}}
+{"t":1793798124201,"k":"rest","d":{"slug":"cpceth-eth-updown-15m-2026-11-04-1315z","side":"UP","sellAt":0.6,"qty":6,"id":"DGY4VCZ013D1"}}
+{"t":1793798135816,"k":"exit","d":{"slug":"cpceth-eth-updown-15m-2026-11-04-1315z","side":"UP","armed":0.33,"avg":0.275,"src":"ws"}}
+{"t":1793798138394,"k":"fill","d":{"slug":"cpceth-eth-updown-15m-2026-11-04-1315z","side":"UP","sold":0.31,"qty":6,"soldTotal":6,"of":6,"exit":"stall","peak":0.33,"bid":0.31,"slip":0.01}}
+{"t":1793798140148,"k":"round","d":{"slug":"cpceth-eth-updown-15m-2026-11-04-1315z","exit":"sold at 30¢ avg","qty":6,"pnl":0.12}}
