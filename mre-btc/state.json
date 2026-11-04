@@ -1345,8 +1345,8 @@
    "buyLeft": 855,
    "qty": 6,
    "sold": 0,
-   "exit": "held to the bell",
-   "pnl": null,
+   "exit": "6 lost at the bell",
+   "pnl": -1.65,
    "momentum": "UP",
    "sellId": "DGS7BRM013D1",
    "_sold": 0,
@@ -1356,10 +1356,25 @@
     "id": "DGS7BRM013D1",
     "qty": 6,
     "base": 0
-   }
+   },
+   "result": "DOWN"
+  },
+  {
+   "T0": 1793778300,
+   "slug": "cpc-btc-updown-15m-2026-11-04-0745z",
+   "side": "DOWN",
+   "buyPx": 0.275,
+   "buyLeft": 771,
+   "qty": 6,
+   "sold": 6,
+   "exit": "sold at 30¢ avg",
+   "pnl": 0.18,
+   "momentum": "DOWN",
+   "sellId": "DGSEKXD013CT",
+   "sellPx": 0.30487679999999995
   }
  ],
  "balanceStart": 95.086,
- "balanceNow": 71.2564,
+ "balanceNow": 66.9364,
  "errors": 0
 }
