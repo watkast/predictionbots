@@ -1,11 +1,5 @@
 [
  {
-  "t": "2026-11-04T01:02:25Z",
-  "path": "/v1/markets/cpc-btc-updown-15m-2026-11-04-0100z/book",
-  "status": 404,
-  "body": "{\"code\":5, \"message\":\"market with slug \\\"cpc-btc-updown-15m-2026-11-04-0100z\\\" not found\", \"details\":[]}"
- },
- {
   "t": "2026-11-04T01:02:30Z",
   "path": "/v1/markets/cpc-btc-updown-15m-2026-11-04-0100z/book",
   "status": 404,
@@ -298,5 +292,11 @@
   "path": "/v1/markets/cpc-btc-updown-15m-2026-11-04-0230z/book",
   "status": 404,
   "body": "{\"code\":5, \"message\":\"market with slug \\\"cpc-btc-updown-15m-2026-11-04-0230z\\\" not found\", \"details\":[]}"
+ },
+ {
+  "t": "2026-11-04T02:47:00Z",
+  "path": "/v1/markets/cpc-btc-updown-15m-2026-11-04-0245z/book",
+  "status": 404,
+  "body": "{\"code\":5, \"message\":\"market with slug \\\"cpc-btc-updown-15m-2026-11-04-0245z\\\" not found\", \"details\":[]}"
  }
 ]
