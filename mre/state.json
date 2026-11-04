@@ -2182,11 +2182,12 @@
    "buyLeft": null,
    "qty": 0,
    "sold": 0,
-   "exit": null,
-   "pnl": null
+   "exit": "no fill",
+   "pnl": null,
+   "momentum": "UP"
   }
  ],
  "balanceStart": 17.4956,
- "balanceNow": 71.0864,
+ "balanceNow": 67.4264,
  "errors": 0
 }
