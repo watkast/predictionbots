@@ -1400,9 +1400,23 @@
    "momentum": "UP",
    "sellId": "DGSW4E2G13CZ",
    "sellPx": 0.31463355000000004
+  },
+  {
+   "T0": 1793781000,
+   "slug": "cpc-btc-updown-15m-2026-11-04-0830z",
+   "side": "DOWN",
+   "buyPx": 0.275,
+   "buyLeft": 682,
+   "qty": 6,
+   "sold": 6,
+   "exit": "sold at 33¢ avg",
+   "pnl": 0.36,
+   "momentum": "DOWN",
+   "sellId": "DGT3WYC053CX",
+   "sellPx": 0.33418875
   }
  ],
  "balanceStart": 95.086,
- "balanceNow": 67.0564,
+ "balanceNow": 80.2164,
  "errors": 0
 }
