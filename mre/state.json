@@ -1732,9 +1732,22 @@
    "momentum": "DOWN",
    "sellId": "DGK70SJG33CT",
    "sellPx": 0.31463355
+  },
+  {
+   "T0": 1793753100,
+   "slug": "cpceth-eth-updown-15m-2026-11-04-0045z",
+   "side": "DOWN",
+   "buyPx": 0.275,
+   "buyLeft": 861,
+   "qty": 6,
+   "sold": 3,
+   "exit": null,
+   "pnl": null,
+   "momentum": "DOWN",
+   "sellId": "DGKETQYG13CZ"
   }
  ],
  "balanceStart": 17.4956,
- "balanceNow": 30.0804,
+ "balanceNow": 51.4789,
  "errors": 0
 }
