@@ -1740,14 +1740,15 @@
    "buyPx": 0.275,
    "buyLeft": 861,
    "qty": 6,
-   "sold": 3,
-   "exit": null,
-   "pnl": null,
+   "sold": 6,
+   "exit": "sold at 32¢ avg",
+   "pnl": 0.3,
    "momentum": "DOWN",
-   "sellId": "DGKETQYG13CZ"
+   "sellId": "DGKETQYG13CZ",
+   "sellPx": 0.32451540000000006
   }
  ],
  "balanceStart": 17.4956,
- "balanceNow": 51.4789,
+ "balanceNow": 77.6539,
  "errors": 0
 }
