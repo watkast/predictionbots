@@ -53,9 +53,14 @@ wait $BOT; RC=$?
 kill $TAILER 2>/dev/null
 publish
 if [ "$MODE" = "live" ] && [ $(( $(date +%s) - START )) -gt 300 ] && git fetch -q origin main && git cat-file -e "origin/main:$SUB/LIVE_ON" 2>/dev/null; then
-  curl -sS -X POST -H "Authorization: Bearer ${GH_TOKEN:-}" -H "Accept: application/vnd.github+json" \
-    "https://api.github.com/repos/${GITHUB_REPOSITORY}/actions/workflows/$WORKFLOW/dispatches" \
-    -d "{\"ref\":\"main\",\"inputs\":{\"minutes\":\"335\",\"mode\":\"live\"}}" && echo "next run dispatched"
+  # GitHub answers 204 on success; a 5xx (seen Nov 4 3:15 AM) used to end the chain silently: retry for ~10 minutes
+  ok=""; for i in $(seq 1 20); do
+    code=$(curl -sS -o /tmp/dispatch.out -w '%{http_code}' -X POST -H "Authorization: Bearer ${GH_TOKEN:-}" -H "Accept: application/vnd.github+json" \
+      "https://api.github.com/repos/${GITHUB_REPOSITORY}/actions/workflows/$WORKFLOW/dispatches" \
+      -d "{\"ref\":\"main\",\"inputs\":{\"minutes\":\"335\",\"mode\":\"live\"}}")
+    if [ "$code" = "204" ]; then ok=1; echo "next run dispatched (try $i)"; break; fi
+    echo "dispatch try $i: HTTP $code $(head -c 200 /tmp/dispatch.out)"; sleep 30; done
+  [ -n "$ok" ] || { echo "CHAIN FAILED: next run not dispatched"; RC=1; }
 else
   echo "not chaining (mode=$MODE)"
 fi
