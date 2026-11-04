@@ -2025,12 +2025,24 @@
    "buyLeft": null,
    "qty": 0,
    "sold": 0,
-   "exit": null,
+   "exit": "no fill",
    "pnl": null,
    "momentum": "UP"
+  },
+  {
+   "T0": 1793827800,
+   "slug": "cpc-btc-updown-15m-2026-11-04-2130z",
+   "side": null,
+   "buyPx": null,
+   "buyLeft": null,
+   "qty": 0,
+   "sold": 0,
+   "exit": null,
+   "pnl": null,
+   "momentum": "DOWN"
   }
  ],
  "balanceStart": 95.086,
- "balanceNow": 7.9084,
+ "balanceNow": 27.0875,
  "errors": 0
 }
