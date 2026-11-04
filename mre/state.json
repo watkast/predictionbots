@@ -2627,16 +2627,19 @@
   {
    "T0": 1793814300,
    "slug": "cpceth-eth-updown-15m-2026-11-04-1745z",
-   "side": null,
-   "buyPx": null,
-   "buyLeft": null,
-   "qty": 0,
-   "sold": 0,
-   "exit": null,
-   "pnl": null
+   "side": "DOWN",
+   "buyPx": 0.275,
+   "buyLeft": 657,
+   "qty": 6,
+   "sold": 6,
+   "exit": "sold at 38¢ avg",
+   "pnl": 0.65,
+   "momentum": "DOWN",
+   "sellId": "DH22B46G13D5",
+   "sellPx": 0.38332000000000005
   }
  ],
  "balanceStart": 17.4956,
- "balanceNow": 72.0764,
+ "balanceNow": 73.1864,
  "errors": 0
 }
