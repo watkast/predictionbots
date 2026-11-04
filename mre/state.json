@@ -2646,10 +2646,29 @@
    "buyLeft": 885,
    "qty": 6,
    "sold": 0,
-   "exit": null,
+   "exit": "held to the bell",
    "pnl": null,
    "momentum": "DOWN",
-   "sellId": "DH27F62G53D5"
+   "sellId": "DH27F62G53D5",
+   "_sold": 0,
+   "_proceeds": 0,
+   "_cost": 1.6500000000000001,
+   "_sell": {
+    "id": "DH27F62G53D5",
+    "qty": 6,
+    "base": 0
+   }
+  },
+  {
+   "T0": 1793816100,
+   "slug": "cpceth-eth-updown-15m-2026-11-04-1815z",
+   "side": null,
+   "buyPx": null,
+   "buyLeft": null,
+   "qty": 0,
+   "sold": 0,
+   "exit": null,
+   "pnl": null
   }
  ],
  "balanceStart": 17.4956,
