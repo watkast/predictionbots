@@ -1673,13 +1673,36 @@
    "buyLeft": 875,
    "qty": 6,
    "sold": 0,
-   "exit": null,
-   "pnl": null,
+   "exit": "6 lost at the bell",
+   "pnl": -1.65,
    "momentum": "DOWN",
-   "sellId": "DGZ773M013D5"
+   "sellId": "DGZ773M013D5",
+   "_sold": 0,
+   "_proceeds": 0,
+   "_cost": 1.6500000000000001,
+   "_sell": {
+    "id": "DGZ773M013D5",
+    "qty": 6,
+    "base": 0
+   },
+   "result": "UP"
+  },
+  {
+   "T0": 1793803500,
+   "slug": "cpc-btc-updown-15m-2026-11-04-1445z",
+   "side": "UP",
+   "buyPx": 0.275,
+   "buyLeft": 839,
+   "qty": 6,
+   "sold": 6,
+   "exit": "sold at 30¢ avg",
+   "pnl": 0.12,
+   "momentum": "UP",
+   "sellId": "DGZEBP3G13D6",
+   "sellPx": 0.29513395
   }
  ],
  "balanceStart": 95.086,
- "balanceNow": 84.1264,
+ "balanceNow": 72.2464,
  "errors": 0
 }
