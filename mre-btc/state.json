@@ -1545,13 +1545,34 @@
    "buyLeft": 810,
    "qty": 6,
    "sold": 4,
-   "exit": null,
-   "pnl": null,
+   "exit": "4 sold at 60¢ + 2 lost at the bell",
+   "pnl": -0.47,
    "momentum": "DOWN",
-   "sellId": "DGXAMDJG13D1"
+   "sellId": "DGXAMDJG13D1",
+   "_sold": 4,
+   "_proceeds": 1.1805358000000001,
+   "_cost": 1.6500000000000001,
+   "_sell": {
+    "id": "DGXAMDJG13D1",
+    "qty": 2,
+    "base": 4
+   },
+   "result": "UP"
+  },
+  {
+   "T0": 1793795400,
+   "slug": "cpc-btc-updown-15m-2026-11-04-1230z",
+   "side": null,
+   "buyPx": null,
+   "buyLeft": null,
+   "qty": 0,
+   "sold": 0,
+   "exit": "no fill",
+   "pnl": null,
+   "momentum": "UP"
   }
  ],
  "balanceStart": 95.086,
- "balanceNow": 76.3164,
+ "balanceNow": 74.3164,
  "errors": 0
 }
