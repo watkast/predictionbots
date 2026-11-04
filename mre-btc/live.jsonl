@@ -1337,3 +1337,5 @@
 {"t":1793816439728,"k":"round","d":{"slug":"cpc-btc-updown-15m-2026-11-04-1815z","exit":"sold at 35¢ avg","qty":6,"pnl":0.47}}
 {"t":1793817005633,"k":"ladder","d":{"slug":"cpc-btc-updown-15m-2026-11-04-1830z","ids":["DH2MX0G053D7","DH2MX17G93D5","DH2MX25013D3","DH2MX32013CT","DH2MX3M013D3","DH2MX49013D9"]}}
 {"t":1793817005633,"k":"rest","d":{"slug":"cpc-btc-updown-15m-2026-11-04-1830z","side":"DOWN","momentum":"last round closed DOWN","at":0.3,"ladder":"25–30¢","rungs":6,"qty":1}}
+{"t":1793817361149,"k":"round","d":{"slug":"cpc-btc-updown-15m-2026-11-04-1830z","buysPulled":"no entry inside the last 9 min","held":0}}
+{"t":1793817361149,"k":"round","d":{"slug":"cpc-btc-updown-15m-2026-11-04-1830z","exit":"no fill"}}
