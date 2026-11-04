@@ -1876,3 +1876,9 @@
 {"t":1793827006070,"k":"fill","d":{"slug":"cpceth-eth-updown-15m-2026-11-04-2115z","side":"UP","px":0.275,"qty":1,"heldTotal":2,"of":6}}
 {"t":1793827006200,"k":"rest","d":{"slug":"cpceth-eth-updown-15m-2026-11-04-2115z","side":"UP","sellAt":0.6,"qty":2,"id":"DH516NV013D3"}}
 {"t":1793827260675,"k":"round","d":{"slug":"cpceth-eth-updown-15m-2026-11-04-2115z","buysPulled":"no entry inside the last 9 min","held":2}}
+{"t":1793827800115,"k":"round","d":{"slug":"cpceth-eth-updown-15m-2026-11-04-2115z","held":"UP","qty":2,"of":2,"px":0.275}}
+{"t":1793827805735,"k":"ladder","d":{"slug":"cpceth-eth-updown-15m-2026-11-04-2130z","ids":["DH579QG013D9","DH579R1G13D9","DH579S3013CT","DH579T0013D3","DH579VFG13D9","DH579W7013CT"]}}
+{"t":1793827805735,"k":"rest","d":{"slug":"cpceth-eth-updown-15m-2026-11-04-2130z","side":"DOWN","momentum":"last round closed DOWN","at":0.3,"ladder":"25–30¢","rungs":6,"qty":1}}
+{"t":1793827830238,"k":"settle","d":{"slug":"cpceth-eth-updown-15m-2026-11-04-2115z","result":"DOWN","side":"UP","qty":2,"pnl":-0.55}}
+{"t":1793828160978,"k":"round","d":{"slug":"cpceth-eth-updown-15m-2026-11-04-2130z","buysPulled":"no entry inside the last 9 min","held":0}}
+{"t":1793828160979,"k":"round","d":{"slug":"cpceth-eth-updown-15m-2026-11-04-2130z","exit":"no fill"}}

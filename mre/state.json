@@ -2828,13 +2828,34 @@
    "buyLeft": 796,
    "qty": 2,
    "sold": 0,
-   "exit": null,
-   "pnl": null,
+   "exit": "2 lost at the bell",
+   "pnl": -0.55,
    "momentum": "UP",
-   "sellId": "DH516NV013D3"
+   "sellId": "DH516NV013D3",
+   "_sold": 0,
+   "_proceeds": 0,
+   "_cost": 0.55,
+   "_sell": {
+    "id": "DH516NV013D3",
+    "qty": 2,
+    "base": 0
+   },
+   "result": "DOWN"
+  },
+  {
+   "T0": 1793827800,
+   "slug": "cpceth-eth-updown-15m-2026-11-04-2130z",
+   "side": null,
+   "buyPx": null,
+   "buyLeft": null,
+   "qty": 0,
+   "sold": 0,
+   "exit": "no fill",
+   "pnl": null,
+   "momentum": "DOWN"
   }
  ],
  "balanceStart": 17.4956,
- "balanceNow": 19.7766,
+ "balanceNow": 6.5655,
  "errors": 0
 }
