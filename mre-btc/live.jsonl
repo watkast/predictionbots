@@ -893,3 +893,5 @@
 {"t":1793766059395,"k":"fill","d":{"slug":"cpc-btc-updown-15m-2026-11-04-0415z","side":"UP","px":0.295,"qty":1,"heldTotal":2,"of":6}}
 {"t":1793766059528,"k":"rest","d":{"slug":"cpc-btc-updown-15m-2026-11-04-0415z","side":"UP","sellAt":0.6,"qty":2,"id":"DGPG73Z013CX"}}
 {"t":1793766062276,"k":"round","d":{"slug":"cpc-btc-updown-15m-2026-11-04-0415z","buysPulled":"no entry inside the last 9 min","held":2}}
+{"t":1793766598781,"k":"round","d":{"slug":"cpc-btc-updown-15m-2026-11-04-0415z","held":"UP","qty":2,"of":2,"px":0.295}}
+{"t":1793766602001,"k":"stop","d":{}}
