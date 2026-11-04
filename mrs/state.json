@@ -268,8 +268,8 @@
   "KXUEL1H-26NOV04RENOLY-REN": "no Polymarket twin",
   "KXUEL1H-26NOV04RENOLY-OLY": "no Polymarket twin",
   "KXUEL1HBTTS-26NOV04RENOLY-BTTS": "no Polymarket twin",
-  "KXUCL1HTOTAL-26NOV04AEKRMA-1": "settling (71s)",
-  "KXUCLTOTAL-26NOV04AEKRMA-1": "settling (71s)"
+  "KXUCL1HTOTAL-26NOV04AEKRMA-1": "no asks (already repriced)",
+  "KXUCLTOTAL-26NOV04AEKRMA-1": "no asks (already repriced)"
  },
  "started": 1793687692.6057825,
  "ht": {
