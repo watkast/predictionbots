@@ -1316,14 +1316,15 @@
    "buyPx": 0.275,
    "buyLeft": 684,
    "qty": 6,
-   "sold": 0,
-   "exit": null,
-   "pnl": null,
+   "sold": 6,
+   "exit": "sold at 36¢ avg",
+   "pnl": 0.53,
    "momentum": "UP",
-   "sellId": "DGRTSQE013CZ"
+   "sellId": "DGRTSQE013CZ",
+   "sellPx": 0.36362580000000005
   }
  ],
  "balanceStart": 95.086,
- "balanceNow": 68.7764,
+ "balanceNow": 72.6664,
  "errors": 0
 }
