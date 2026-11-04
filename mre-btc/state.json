@@ -986,13 +986,36 @@
    "buyLeft": 738,
    "qty": 6,
    "sold": 0,
-   "exit": null,
-   "pnl": null,
+   "exit": "6 lost at the bell",
+   "pnl": -1.65,
    "momentum": "UP",
-   "sellId": "DGKNG3CG13D9"
+   "sellId": "DGKNG3CG13D9",
+   "_sold": 0,
+   "_proceeds": 0,
+   "_cost": 1.6500000000000001,
+   "_sell": {
+    "id": "DGKNG3CG13D9",
+    "qty": 6,
+    "base": 0
+   },
+   "result": "DOWN"
+  },
+  {
+   "T0": 1793754900,
+   "slug": "cpc-btc-updown-15m-2026-11-04-0115z",
+   "side": "DOWN",
+   "buyPx": 0.275,
+   "buyLeft": 695,
+   "qty": 6,
+   "sold": 6,
+   "exit": "sold at 39¢ avg",
+   "pnl": 0.71,
+   "momentum": "DOWN",
+   "sellId": "DGKWP4S013D3",
+   "sellPx": 0.39318795
   }
  ],
  "balanceStart": 95.086,
- "balanceNow": 78.8839,
+ "balanceNow": 80.0139,
  "errors": 0
 }

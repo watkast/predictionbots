@@ -791,3 +791,16 @@
 {"t":1793754168665,"k":"fill","d":{"slug":"cpc-btc-updown-15m-2026-11-04-0100z","side":"UP","px":0.275,"qty":2,"heldTotal":6,"of":6}}
 {"t":1793754168769,"k":"rest","d":{"slug":"cpc-btc-updown-15m-2026-11-04-0100z","side":"UP","sellAt":0.6,"qty":6,"id":"DGKNG3CG13D9"}}
 {"t":1793754360317,"k":"round","d":{"slug":"cpc-btc-updown-15m-2026-11-04-0100z","buysPulled":"no entry inside the last 9 min","held":6}}
+{"t":1793754900016,"k":"round","d":{"slug":"cpc-btc-updown-15m-2026-11-04-0100z","held":"UP","qty":6,"of":6,"px":0.275}}
+{"t":1793754905572,"k":"ladder","d":{"slug":"cpc-btc-updown-15m-2026-11-04-0115z","ids":["DGKV3VWG13D1","DGKV3WHG13D9","DGKV3XEG13D1","DGKV3Y4053D8","DGKV3YXG13D8","DGKV3ZFG73D3"]}}
+{"t":1793754905573,"k":"rest","d":{"slug":"cpc-btc-updown-15m-2026-11-04-0115z","side":"DOWN","momentum":"last round closed DOWN","at":0.3,"ladder":"25–30¢","rungs":6,"qty":1}}
+{"t":1793754930120,"k":"settle","d":{"slug":"cpc-btc-updown-15m-2026-11-04-0100z","result":"DOWN","side":"UP","qty":6,"pnl":-1.65}}
+{"t":1793755105129,"k":"fill","d":{"slug":"cpc-btc-updown-15m-2026-11-04-0115z","side":"DOWN","px":0.3,"qty":1,"heldTotal":1,"of":6}}
+{"t":1793755105172,"k":"rest","d":{"slug":"cpc-btc-updown-15m-2026-11-04-0115z","side":"DOWN","sellAt":0.6,"qty":1,"id":"DGKWMQ0G33CZ"}}
+{"t":1793755108264,"k":"fill","d":{"slug":"cpc-btc-updown-15m-2026-11-04-0115z","side":"DOWN","px":0.285,"qty":3,"heldTotal":4,"of":6}}
+{"t":1793755108389,"k":"rest","d":{"slug":"cpc-btc-updown-15m-2026-11-04-0115z","side":"DOWN","sellAt":0.6,"qty":4,"id":"DGKWNG5G53CT"}}
+{"t":1793755110932,"k":"fill","d":{"slug":"cpc-btc-updown-15m-2026-11-04-0115z","side":"DOWN","px":0.275,"qty":2,"heldTotal":6,"of":6}}
+{"t":1793755111026,"k":"rest","d":{"slug":"cpc-btc-updown-15m-2026-11-04-0115z","side":"DOWN","sellAt":0.6,"qty":6,"id":"DGKWP4S013D3"}}
+{"t":1793755124421,"k":"exit","d":{"slug":"cpc-btc-updown-15m-2026-11-04-0115z","side":"DOWN","armed":0.31,"avg":0.275,"src":"ws"}}
+{"t":1793755135151,"k":"fill","d":{"slug":"cpc-btc-updown-15m-2026-11-04-0115z","side":"DOWN","sold":0.41000000000000003,"qty":6,"soldTotal":6,"of":6,"exit":"stall","peak":0.44,"bid":0.42,"slip":0.01}}
+{"t":1793755135655,"k":"round","d":{"slug":"cpc-btc-updown-15m-2026-11-04-0115z","exit":"sold at 39¢ avg","qty":6,"pnl":0.71}}
