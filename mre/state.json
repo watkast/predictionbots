@@ -2102,17 +2102,18 @@
    "T0": 1793777400,
    "slug": "cpceth-eth-updown-15m-2026-11-04-0730z",
    "side": "UP",
-   "buyPx": 0.29,
+   "buyPx": 0.275,
    "buyLeft": 660,
-   "qty": 3,
-   "sold": 0,
-   "exit": null,
-   "pnl": null,
+   "qty": 6,
+   "sold": 6,
+   "exit": "sold at 31¢ avg",
+   "pnl": 0.24,
    "momentum": "UP",
-   "sellId": "DGS8RS2G13D5"
+   "sellId": "DGS994N013CZ",
+   "sellPx": 0.31463355000000004
   }
  ],
  "balanceStart": 17.4956,
- "balanceNow": 70.1464,
+ "balanceNow": 89.2564,
  "errors": 0
 }
