@@ -968,3 +968,5 @@
 {"t":1793772905861,"k":"rest","d":{"slug":"cpc-btc-updown-15m-2026-11-04-0615z","side":"UP","momentum":"last round closed UP","at":0.3,"ladder":"25–30¢","rungs":6,"qty":1}}
 {"t":1793773263600,"k":"round","d":{"slug":"cpc-btc-updown-15m-2026-11-04-0615z","buysPulled":"no entry inside the last 9 min","held":0}}
 {"t":1793773263601,"k":"round","d":{"slug":"cpc-btc-updown-15m-2026-11-04-0615z","exit":"no fill"}}
+{"t":1793773805841,"k":"ladder","d":{"slug":"cpc-btc-updown-15m-2026-11-04-0630z","ids":["DGRBA4G013D6","DGRBA5E013D5","DGRBA6HG13D9","DGRBA7NG13D6","DGRBA8TG13D3","DGRBA9Q013D6"]}}
+{"t":1793773805842,"k":"rest","d":{"slug":"cpc-btc-updown-15m-2026-11-04-0630z","side":"UP","momentum":"last round closed UP","at":0.3,"ladder":"25–30¢","rungs":6,"qty":1}}
