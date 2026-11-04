@@ -1028,3 +1028,5 @@
 {"t":1793777452402,"k":"rest","d":{"slug":"cpc-btc-updown-15m-2026-11-04-0730z","side":"UP","sellAt":0.6,"qty":5,"id":"DGS74JGG53D9"}}
 {"t":1793777481484,"k":"fill","d":{"slug":"cpc-btc-updown-15m-2026-11-04-0730z","side":"UP","px":0.275,"qty":1,"heldTotal":6,"of":6}}
 {"t":1793777481865,"k":"rest","d":{"slug":"cpc-btc-updown-15m-2026-11-04-0730z","side":"UP","sellAt":0.6,"qty":6,"id":"DGS7BRM013D1"}}
+{"t":1793777761450,"k":"round","d":{"slug":"cpc-btc-updown-15m-2026-11-04-0730z","buysPulled":"no entry inside the last 9 min","held":6}}
+{"t":1793778299788,"k":"round","d":{"slug":"cpc-btc-updown-15m-2026-11-04-0730z","held":"UP","qty":6,"of":6,"px":0.275}}

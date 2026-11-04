@@ -1345,13 +1345,21 @@
    "buyLeft": 855,
    "qty": 6,
    "sold": 0,
-   "exit": null,
+   "exit": "held to the bell",
    "pnl": null,
    "momentum": "UP",
-   "sellId": "DGS7BRM013D1"
+   "sellId": "DGS7BRM013D1",
+   "_sold": 0,
+   "_proceeds": 0,
+   "_cost": 1.6500000000000001,
+   "_sell": {
+    "id": "DGS7BRM013D1",
+    "qty": 6,
+    "base": 0
+   }
   }
  ],
  "balanceStart": 95.086,
- "balanceNow": 70.7164,
+ "balanceNow": 71.2564,
  "errors": 0
 }
