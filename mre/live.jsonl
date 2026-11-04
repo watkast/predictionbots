@@ -1568,3 +1568,6 @@
 {"t":1793786761666,"k":"round","d":{"slug":"cpceth-eth-updown-15m-2026-11-04-1000z","buysPulled":"no entry inside the last 9 min","held":1}}
 {"t":1793786761666,"k":"round","d":{"slug":"cpceth-eth-updown-15m-2026-11-04-1000z","exit":"sold at 36¢ avg","qty":1,"pnl":0.06}}
 {"t":1793787302001,"k":"stop","d":{}}
+{"t":1793787597457,"k":"start","d":{"mode":"live","market":"cpceth-eth-updown-15m-","buy":0.3,"ladder":[0.25,0.3],"sell":0.6,"qty":1,"noBuyLeft":540,"node":"v22.23.4"}}
+{"t":1793787597779,"k":"balance","d":{"cash":73.1064,"total":73.1064}}
+{"t":1793787597782,"k":"round","d":{"slug":"cpceth-eth-updown-15m-2026-11-04-1015z","skipped":"joined mid-round — waiting for the next open"}}
