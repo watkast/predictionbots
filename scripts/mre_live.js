@@ -241,6 +241,7 @@ async function settleLater(rec) {
     if (now - T0 < 3) await sleep(3000);
     if (now > T0 + ROUND - 30 || (first && now - T0 > 60)) {           // too late in this round — or a fresh run joining one mid-way, where a bid at BUY would cross a lopsided book: wait for the next open
       if (first) { log('round', { slug: SLUG(T0), skipped: 'joined mid-round — waiting for the next open' }); first = false; }
+      wsBook(SLUG(T0));   // watch the round it sits out, so the momentum filter knows how it closed
       const nextOpen = T0 + ROUND; await sleep(Math.max(1000, (nextOpen - Date.now() / 1000 + 2) * 1000)); continue; }
     first = false;
     await playRound(T0);
