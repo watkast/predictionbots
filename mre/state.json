@@ -2732,13 +2732,34 @@
    "buyLeft": 708,
    "qty": 6,
    "sold": 0,
+   "exit": "6 lost at the bell",
+   "pnl": -1.65,
+   "momentum": "UP",
+   "sellId": "DH3J10V013D8",
+   "_sold": 0,
+   "_proceeds": 0,
+   "_cost": 1.6500000000000001,
+   "_sell": {
+    "id": "DH3J10V013D8",
+    "qty": 6,
+    "base": 0
+   },
+   "result": "DOWN"
+  },
+  {
+   "T0": 1793821500,
+   "slug": "cpceth-eth-updown-15m-2026-11-04-1945z",
+   "side": null,
+   "buyPx": null,
+   "buyLeft": null,
+   "qty": 0,
+   "sold": 0,
    "exit": null,
    "pnl": null,
-   "momentum": "UP",
-   "sellId": "DH3J10V013D8"
+   "momentum": "DOWN"
   }
  ],
  "balanceStart": 17.4956,
- "balanceNow": 69.0264,
+ "balanceNow": 70.6764,
  "errors": 0
 }
