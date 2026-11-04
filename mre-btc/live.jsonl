@@ -746,3 +746,14 @@
 {"t":1793749506132,"k":"rest","d":{"slug":"cpc-btc-updown-15m-2026-11-03-2345z","side":"DOWN","momentum":"last round closed DOWN","at":0.3,"ladder":"25–30¢","rungs":6,"qty":1}}
 {"t":1793749860957,"k":"round","d":{"slug":"cpc-btc-updown-15m-2026-11-03-2345z","buysPulled":"no entry inside the last 9 min","held":0}}
 {"t":1793749860957,"k":"round","d":{"slug":"cpc-btc-updown-15m-2026-11-03-2345z","exit":"no fill"}}
+{"t":1793750405858,"k":"ladder","d":{"slug":"cpc-btc-updown-15m-2026-11-04-0000z","ids":["DGJRS8HG13D1","DGJRS9CG13CT","DGJRSBM013D6","DGJRSC8013D8","DGJRSCSG13CT","DGJRSDK073D1"]}}
+{"t":1793750405859,"k":"rest","d":{"slug":"cpc-btc-updown-15m-2026-11-04-0000z","side":"DOWN","momentum":"last round closed DOWN","at":0.3,"ladder":"25–30¢","rungs":6,"qty":1}}
+{"t":1793750412590,"k":"fill","d":{"slug":"cpc-btc-updown-15m-2026-11-04-0000z","side":"DOWN","px":0.295,"qty":2,"heldTotal":2,"of":6}}
+{"t":1793750412627,"k":"rest","d":{"slug":"cpc-btc-updown-15m-2026-11-04-0000z","side":"DOWN","sellAt":0.6,"qty":2,"id":"DGJRV2H013D8"}}
+{"t":1793750415868,"k":"fill","d":{"slug":"cpc-btc-updown-15m-2026-11-04-0000z","side":"DOWN","px":0.28,"qty":3,"heldTotal":5,"of":6}}
+{"t":1793750416045,"k":"rest","d":{"slug":"cpc-btc-updown-15m-2026-11-04-0000z","side":"DOWN","sellAt":0.6,"qty":5,"id":"DGJRVX4G13CZ"}}
+{"t":1793750436560,"k":"fill","d":{"slug":"cpc-btc-updown-15m-2026-11-04-0000z","side":"DOWN","px":0.275,"qty":1,"heldTotal":6,"of":6}}
+{"t":1793750436703,"k":"rest","d":{"slug":"cpc-btc-updown-15m-2026-11-04-0000z","side":"DOWN","sellAt":0.6,"qty":6,"id":"DGJS0YMG13D8"}}
+{"t":1793750450812,"k":"exit","d":{"slug":"cpc-btc-updown-15m-2026-11-04-0000z","side":"DOWN","armed":0.31,"avg":0.275,"src":"ws"}}
+{"t":1793750453139,"k":"fill","d":{"slug":"cpc-btc-updown-15m-2026-11-04-0000z","side":"DOWN","sold":0.31000000000000005,"qty":6,"soldTotal":6,"of":6,"exit":"stall","peak":0.34,"bid":0.32,"slip":0.01}}
+{"t":1793750454142,"k":"round","d":{"slug":"cpc-btc-updown-15m-2026-11-04-0000z","exit":"sold at 30¢ avg","qty":6,"pnl":0.12}}
