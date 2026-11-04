@@ -2571,6 +2571,18 @@
    "momentum": "DOWN",
    "sellId": "DH108VYG13D5",
    "sellPx": 0.285405
+  },
+  {
+   "T0": 1793810700,
+   "slug": "cpceth-eth-updown-15m-2026-11-04-1645z",
+   "side": null,
+   "buyPx": null,
+   "buyLeft": null,
+   "qty": 0,
+   "sold": 0,
+   "exit": "no fill",
+   "pnl": null,
+   "momentum": "UP"
   }
  ],
  "balanceStart": 17.4956,
