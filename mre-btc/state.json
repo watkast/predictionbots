@@ -2006,17 +2006,19 @@
   {
    "T0": 1793826000,
    "slug": "cpc-btc-updown-15m-2026-11-04-2100z",
-   "side": null,
-   "buyPx": null,
-   "buyLeft": null,
-   "qty": 0,
-   "sold": 0,
-   "exit": null,
-   "pnl": null,
-   "momentum": "DOWN"
+   "side": "DOWN",
+   "buyPx": 0.275,
+   "buyLeft": 792,
+   "qty": 6,
+   "sold": 6,
+   "exit": "sold at 32¢ avg",
+   "pnl": 0.26,
+   "momentum": "DOWN",
+   "sellId": "DH4V92M013D9",
+   "sellPx": 0.3179089666666666
   }
  ],
  "balanceStart": 95.086,
- "balanceNow": 139.6653,
+ "balanceNow": 225.3055,
  "errors": 0
 }
