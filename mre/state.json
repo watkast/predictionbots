@@ -1796,9 +1796,22 @@
    "momentum": "UP",
    "sellId": "DGM3G5N033D5",
    "sellPx": 0.3048768
+  },
+  {
+   "T0": 1793756700,
+   "slug": "cpceth-eth-updown-15m-2026-11-04-0145z",
+   "side": "DOWN",
+   "buyPx": 0.28500000000000003,
+   "buyLeft": 715,
+   "qty": 4,
+   "sold": 4,
+   "exit": null,
+   "pnl": null,
+   "momentum": "DOWN",
+   "sellId": "DGMA9VZ013CT"
   }
  ],
  "balanceStart": 17.4956,
- "balanceNow": 80.2339,
+ "balanceNow": 80.3539,
  "errors": 0
 }
