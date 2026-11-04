@@ -1882,3 +1882,4 @@
 {"t":1793827830238,"k":"settle","d":{"slug":"cpceth-eth-updown-15m-2026-11-04-2115z","result":"DOWN","side":"UP","qty":2,"pnl":-0.55}}
 {"t":1793828160978,"k":"round","d":{"slug":"cpceth-eth-updown-15m-2026-11-04-2130z","buysPulled":"no entry inside the last 9 min","held":0}}
 {"t":1793828160979,"k":"round","d":{"slug":"cpceth-eth-updown-15m-2026-11-04-2130z","exit":"no fill"}}
+{"t":1793828702000,"k":"stop","d":{}}
