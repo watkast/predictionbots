@@ -1805,10 +1805,11 @@
    "buyLeft": 715,
    "qty": 4,
    "sold": 4,
-   "exit": null,
-   "pnl": null,
+   "exit": "sold at 31¢ avg",
+   "pnl": 0.12,
    "momentum": "DOWN",
-   "sellId": "DGMA9VZ013CT"
+   "sellId": "DGMA9VZ013CT",
+   "sellPx": 0.31463355
   }
  ],
  "balanceStart": 17.4956,
