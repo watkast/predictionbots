@@ -1755,13 +1755,35 @@
    "buyLeft": 739,
    "qty": 6,
    "sold": 0,
+   "exit": "6 lost at the bell",
+   "pnl": -1.65,
+   "momentum": "UP",
+   "sellId": "DGKNEA5013D3",
+   "_sold": 0,
+   "_proceeds": 0,
+   "_cost": 1.6500000000000001,
+   "_sell": {
+    "id": "DGKNEA5013D3",
+    "qty": 6,
+    "base": 0
+   },
+   "result": "DOWN"
+  },
+  {
+   "T0": 1793754900,
+   "slug": "cpceth-eth-updown-15m-2026-11-04-0115z",
+   "side": "DOWN",
+   "buyPx": 0.28,
+   "buyLeft": 696,
+   "qty": 5,
+   "sold": 5,
    "exit": null,
    "pnl": null,
-   "momentum": "UP",
-   "sellId": "DGKNEA5013D3"
+   "momentum": "DOWN",
+   "sellId": "DGKWQ3XG13D7"
   }
  ],
  "balanceStart": 17.4956,
- "balanceNow": 78.8839,
+ "balanceNow": 86.8339,
  "errors": 0
 }
