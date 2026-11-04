@@ -1248,3 +1248,5 @@
 {"t":1793805305537,"k":"ladder","d":{"slug":"cpc-btc-updown-15m-2026-11-04-1515z","ids":["DGZVMHPG13D1","DGZVMJQ013CZ","DGZVMKE053D7","DGZVMM4013CT","DGZVMMP013CZ","DGZVMNAG13CZ"]}}
 {"t":1793805305537,"k":"rest","d":{"slug":"cpc-btc-updown-15m-2026-11-04-1515z","side":"UP","momentum":"last round closed UP","at":0.3,"ladder":"25–30¢","rungs":6,"qty":1}}
 {"t":1793805330421,"k":"settle","d":{"slug":"cpc-btc-updown-15m-2026-11-04-1500z","result":"UP","side":"DOWN","qty":6,"pnl":-1.65}}
+{"t":1793805661968,"k":"round","d":{"slug":"cpc-btc-updown-15m-2026-11-04-1515z","buysPulled":"no entry inside the last 9 min","held":0}}
+{"t":1793805661968,"k":"round","d":{"slug":"cpc-btc-updown-15m-2026-11-04-1515z","exit":"no fill"}}
