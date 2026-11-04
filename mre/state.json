@@ -2340,10 +2340,11 @@
    "buyLeft": 883,
    "qty": 1,
    "sold": 1,
-   "exit": null,
-   "pnl": null,
+   "exit": "sold at 31¢ avg",
+   "pnl": 0.01,
    "momentum": "DOWN",
-   "sellId": "DGX2F3FG13CT"
+   "sellId": "DGX2F3FG13CT",
+   "sellPx": 0.31463355
   }
  ],
  "balanceStart": 17.4956,
