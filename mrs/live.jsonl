@@ -9797,3 +9797,6 @@
 {"t": 1793810474.218, "k": "balance_check", "code": 200, "fields": ["balance", "balance_breakdown", "balance_dollars", "portfolio_value", "updated_ts"], "ok": false}
 {"t": 1793810474.218, "k": "start", "mode": "live", "balance_ok": false}
 {"t": 1793810474.513, "k": "switch", "on": true, "code": 200, "via": "api"}
+{"t": 1793830821.402, "k": "balance_check", "code": 200, "fields": ["balance", "balance_breakdown", "balance_dollars", "portfolio_value", "updated_ts"], "ok": false}
+{"t": 1793830821.402, "k": "start", "mode": "live", "balance_ok": false}
+{"t": 1793830821.654, "k": "switch", "on": true, "code": 200, "via": "api"}

@@ -1,6 +1,6 @@
 # Mr. S — live
 
-Updated 2026-11-04 22:16 UTC · mode **live** · switch **ON** · live leagues: usa.1
+Updated 2026-11-04 22:25 UTC · mode **live** · switch **ON** · live leagues: usa.1
 
 ## ⚠️ Kalshi balance below the $50 risk cap — fund the account (orders still try, capped by cash)
 
@@ -12,8 +12,6 @@ Updated 2026-11-04 22:16 UTC · mode **live** · switch **ON** · live leagues: 
 
 ## Right now
 games in play/just ended: 10 · matched to Kalshi: 0 · to Polymarket: 7 · decided markets agreed by both: 0 · disagreements: 0
-
-Kalshi series with open markets: KXBELGIANPLBTTS, KXBELGIANPLTOTAL, KXUCL1H, KXUCL1HBTTS, KXUCL1HTOTAL, KXUCLBTTS, KXUCLTOTAL, KXUEL1H, KXUEL1HBTTS, KXUEL1HTOTAL, KXUELBTTS, KXUELTOTAL
 
 ### Last blocks
 - KXUCLTOTAL-26NOV04RBLMCI-7: no asks (already repriced)
