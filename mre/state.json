@@ -2125,9 +2125,22 @@
    "momentum": "DOWN",
    "sellId": "DGSEHSBG13D1",
    "sellPx": 0.30487679999999995
+  },
+  {
+   "T0": 1793779200,
+   "slug": "cpceth-eth-updown-15m-2026-11-04-0800z",
+   "side": "DOWN",
+   "buyPx": 0.275,
+   "buyLeft": 791,
+   "qty": 6,
+   "sold": 3,
+   "exit": null,
+   "pnl": null,
+   "momentum": "DOWN",
+   "sellId": "DGSP67CG13D3"
   }
  ],
  "balanceStart": 17.4956,
- "balanceNow": 66.9364,
+ "balanceNow": 70.0464,
  "errors": 0
 }

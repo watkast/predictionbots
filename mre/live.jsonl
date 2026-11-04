@@ -1503,3 +1503,15 @@
 {"t":1793778669379,"k":"exit","d":{"slug":"cpceth-eth-updown-15m-2026-11-04-0745z","side":"DOWN","armed":0.31,"avg":0.275,"src":"ws"}}
 {"t":1793778674925,"k":"fill","d":{"slug":"cpceth-eth-updown-15m-2026-11-04-0745z","side":"DOWN","sold":0.31999999999999995,"qty":2,"soldTotal":6,"of":6,"exit":"stall","peak":0.34,"bid":0.32,"slip":0.01}}
 {"t":1793778674927,"k":"round","d":{"slug":"cpceth-eth-updown-15m-2026-11-04-0745z","exit":"sold at 30¢ avg","qty":6,"pnl":0.18}}
+{"t":1793779205890,"k":"ladder","d":{"slug":"cpceth-eth-updown-15m-2026-11-04-0800z","ids":["DGSMGFVG13CZ","DGSMGH6G13D9","DGSMGJ5013D3","DGSMGK3G13D9","DGSMGM9G13D7","DGSMGNMG13D3"]}}
+{"t":1793779205890,"k":"rest","d":{"slug":"cpceth-eth-updown-15m-2026-11-04-0800z","side":"DOWN","momentum":"last round closed DOWN","at":0.3,"ladder":"25–30¢","rungs":6,"qty":1}}
+{"t":1793779308597,"k":"fill","d":{"slug":"cpceth-eth-updown-15m-2026-11-04-0800z","side":"DOWN","px":0.3,"qty":1,"heldTotal":1,"of":6}}
+{"t":1793779308720,"k":"rest","d":{"slug":"cpceth-eth-updown-15m-2026-11-04-0800z","side":"DOWN","sellAt":0.6,"qty":1,"id":"DGSN9S0G13CZ"}}
+{"t":1793779330918,"k":"fill","d":{"slug":"cpceth-eth-updown-15m-2026-11-04-0800z","side":"DOWN","px":0.29,"qty":2,"heldTotal":3,"of":6}}
+{"t":1793779331253,"k":"rest","d":{"slug":"cpceth-eth-updown-15m-2026-11-04-0800z","side":"DOWN","sellAt":0.6,"qty":3,"id":"DGSNF94013D1"}}
+{"t":1793779346363,"k":"exit","d":{"slug":"cpceth-eth-updown-15m-2026-11-04-0800z","side":"DOWN","armed":0.33,"avg":0.29,"src":"ws"}}
+{"t":1793779359520,"k":"fill","d":{"slug":"cpceth-eth-updown-15m-2026-11-04-0800z","side":"DOWN","sold":0.47,"qty":3,"soldTotal":3,"of":3,"exit":"stall","peak":0.49,"bid":0.47,"slip":0.01}}
+{"t":1793779422050,"k":"fill","d":{"slug":"cpceth-eth-updown-15m-2026-11-04-0800z","side":"DOWN","px":0.285,"qty":1,"heldTotal":4,"of":6}}
+{"t":1793779422146,"k":"rest","d":{"slug":"cpceth-eth-updown-15m-2026-11-04-0800z","side":"DOWN","sellAt":0.6,"qty":1,"id":"DGSP5F6G13D5"}}
+{"t":1793779424933,"k":"fill","d":{"slug":"cpceth-eth-updown-15m-2026-11-04-0800z","side":"DOWN","px":0.275,"qty":2,"heldTotal":6,"of":6}}
+{"t":1793779425247,"k":"rest","d":{"slug":"cpceth-eth-updown-15m-2026-11-04-0800z","side":"DOWN","sellAt":0.6,"qty":3,"id":"DGSP67CG13D3"}}
