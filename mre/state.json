@@ -2723,9 +2723,22 @@
    "exit": "no fill",
    "pnl": null,
    "momentum": "UP"
+  },
+  {
+   "T0": 1793820600,
+   "slug": "cpceth-eth-updown-15m-2026-11-04-1930z",
+   "side": "UP",
+   "buyPx": 0.275,
+   "buyLeft": 708,
+   "qty": 6,
+   "sold": 0,
+   "exit": null,
+   "pnl": null,
+   "momentum": "UP",
+   "sellId": "DH3J10V013D8"
   }
  ],
  "balanceStart": 17.4956,
- "balanceNow": 72.3264,
+ "balanceNow": 69.0264,
  "errors": 0
 }
