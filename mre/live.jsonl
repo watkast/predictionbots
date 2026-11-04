@@ -1867,3 +1867,7 @@
 {"t":1793825271057,"k":"round","d":{"slug":"cpceth-eth-updown-15m-2026-11-04-2045z","exit":"sold at 26¢ avg","qty":6,"pnl":-0.11}}
 {"t":1793826005743,"k":"ladder","d":{"slug":"cpceth-eth-updown-15m-2026-11-04-2100z","ids":["DH4SJ90013CT","DH4SJ9X013D3","DH4SJAT013CZ","DH4SJC4013D1","DH4SJCZG53D9","DH4SJDR053D1"]}}
 {"t":1793826005744,"k":"rest","d":{"slug":"cpceth-eth-updown-15m-2026-11-04-2100z","side":"UP","momentum":"last round closed UP","at":0.3,"ladder":"25–30¢","rungs":6,"qty":1}}
+{"t":1793826361341,"k":"round","d":{"slug":"cpceth-eth-updown-15m-2026-11-04-2100z","buysPulled":"no entry inside the last 9 min","held":0}}
+{"t":1793826361342,"k":"round","d":{"slug":"cpceth-eth-updown-15m-2026-11-04-2100z","exit":"no fill"}}
+{"t":1793826905803,"k":"ladder","d":{"slug":"cpceth-eth-updown-15m-2026-11-04-2115z","ids":["DH50E0AG13D6","DH50E10013D6","DH50E37013D9","DH50E3RG53D7","DH50E4H013CZ","DH50E56G13D8"]}}
+{"t":1793826905803,"k":"rest","d":{"slug":"cpceth-eth-updown-15m-2026-11-04-2115z","side":"UP","momentum":"last round closed UP","at":0.3,"ladder":"25–30¢","rungs":6,"qty":1}}

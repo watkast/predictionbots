@@ -1,13 +1,14 @@
 # Mr. E — live progress
 
-Market **cpceth-eth-updown-15m** · mode **live** · rests 1 share at every cent from 25¢ to 30¢ on both sides until 9:00 left, sells the first fill at 60¢ · started Nov 2, 8:45 AM ET · updated Nov 4, 4:05 PM ET
-Account balance $17.50 at start → $9.57 now (shared with Mr. P)
+Market **cpceth-eth-updown-15m** · mode **live** · rests 1 share at every cent from 25¢ to 30¢ on both sides until 9:00 left, sells the first fill at 60¢ · started Nov 2, 8:45 AM ET · updated Nov 4, 4:15 PM ET
+Account balance $17.50 at start → $1.30 now (shared with Mr. P)
 
-**Rounds 211 · fills 160 · sold at 60¢ 112 · held and won 0 · held and lost 43 · no fill 48 · P&L −$9.06** · errors 0
+**Rounds 212 · fills 160 · sold at 60¢ 112 · held and won 0 · held and lost 43 · no fill 49 · P&L −$9.06** · errors 0
 
 | round (ET) | side | bought | exit | P&L |
 |---|---|---|---|---|
-| Nov 4, 4:00 PM | — | — | open | — |
+| Nov 4, 4:15 PM | — | — | open | — |
+| Nov 4, 4:00 PM | — | — | no fill | — |
 | Nov 4, 3:45 PM | UP ×6 | 28¢ at 14:09 | sold at 26¢ avg | −$0.11 |
 | Nov 4, 3:30 PM | — | — | no fill | — |
 | Nov 4, 3:15 PM | — | — | no fill | — |
@@ -66,6 +67,5 @@ Account balance $17.50 at start → $9.57 now (shared with Mr. P)
 | Nov 4, 1:30 AM | — | — | no fill | — |
 | Nov 4, 1:15 AM | DOWN ×6 | 28¢ at 12:52 | sold at 25¢ avg | −$0.17 |
 | Nov 4, 1:00 AM | — | — | no fill | — |
-| Nov 4, 12:45 AM | — | — | no fill | — |
 
 Every order, fill and settlement: `live.jsonl` beside this file. Source: `scripts/mre_live.js`.
