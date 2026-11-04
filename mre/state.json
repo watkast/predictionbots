@@ -2623,6 +2623,17 @@
    "momentum": "UP",
    "sellId": "DH1TYNQG13D1",
    "sellPx": 0.38332000000000005
+  },
+  {
+   "T0": 1793814300,
+   "slug": "cpceth-eth-updown-15m-2026-11-04-1745z",
+   "side": null,
+   "buyPx": null,
+   "buyLeft": null,
+   "qty": 0,
+   "sold": 0,
+   "exit": null,
+   "pnl": null
   }
  ],
  "balanceStart": 17.4956,
