@@ -2097,9 +2097,22 @@
    "momentum": "UP",
    "sellId": "DGS0FJH013CX",
    "sellPx": 0.2659888
+  },
+  {
+   "T0": 1793777400,
+   "slug": "cpceth-eth-updown-15m-2026-11-04-0730z",
+   "side": "UP",
+   "buyPx": 0.29,
+   "buyLeft": 660,
+   "qty": 3,
+   "sold": 0,
+   "exit": null,
+   "pnl": null,
+   "momentum": "UP",
+   "sellId": "DGS8RS2G13D5"
   }
  ],
  "balanceStart": 17.4956,
- "balanceNow": 72.6664,
+ "balanceNow": 70.1464,
  "errors": 0
 }
