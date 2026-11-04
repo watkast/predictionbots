@@ -1,13 +1,14 @@
 # Mr. E (BTC) — live progress
 
-Market **cpc-btc-updown-15m** · mode **live** · rests 1 share at every cent from 25¢ to 30¢ on both sides until 9:00 left, sells the first fill at 60¢ · started Nov 3, 1:22 AM ET · updated Nov 4, 2:20 PM ET
+Market **cpc-btc-updown-15m** · mode **live** · rests 1 share at every cent from 25¢ to 30¢ on both sides until 9:00 left, sells the first fill at 60¢ · started Nov 3, 1:22 AM ET · updated Nov 4, 2:30 PM ET
 Account balance $95.09 at start → $72.33 now (shared with Mr. P)
 
-**Rounds 136 · fills 96 · sold at 60¢ 73 · held and won 0 · held and lost 19 · no fill 38 · P&L −$6.04** · errors 0
+**Rounds 137 · fills 96 · sold at 60¢ 73 · held and won 0 · held and lost 19 · no fill 39 · P&L −$6.04** · errors 0
 
 | round (ET) | side | bought | exit | P&L |
 |---|---|---|---|---|
-| Nov 4, 2:15 PM | — | — | open | — |
+| Nov 4, 2:30 PM | — | — | open | — |
+| Nov 4, 2:15 PM | — | — | no fill | — |
 | Nov 4, 2:00 PM | — | — | no fill | — |
 | Nov 4, 1:45 PM | DOWN ×6 | 28¢ at 12:04 | sold at 27¢ avg | −$0.01 |
 | Nov 4, 1:30 PM | — | — | no fill | — |
@@ -66,6 +67,5 @@ Account balance $95.09 at start → $72.33 now (shared with Mr. P)
 | Nov 3, 10:30 PM | UP ×6 | 28¢ at 13:28 | sold at 46¢ avg | +$1.13 |
 | Nov 3, 10:15 PM | DOWN ×6 | 28¢ at 13:16 | sold at 30¢ avg | +$0.12 |
 | Nov 3, 10:00 PM | — | — | no fill | — |
-| Nov 3, 9:45 PM | — | — | no fill | — |
 
 Every order, fill and settlement: `live.jsonl` beside this file. Source: `scripts/mre_live.js`.
