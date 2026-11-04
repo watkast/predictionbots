@@ -1700,9 +1700,22 @@
    "momentum": "UP",
    "sellId": "DGZEBP3G13D6",
    "sellPx": 0.29513395
+  },
+  {
+   "T0": 1793804400,
+   "slug": "cpc-btc-updown-15m-2026-11-04-1500z",
+   "side": "DOWN",
+   "buyPx": 0.275,
+   "buyLeft": 835,
+   "qty": 6,
+   "sold": 0,
+   "exit": null,
+   "pnl": null,
+   "momentum": "DOWN",
+   "sellId": "DGZN939G13D1"
   }
  ],
  "balanceStart": 95.086,
- "balanceNow": 72.2464,
+ "balanceNow": 76.5964,
  "errors": 0
 }
