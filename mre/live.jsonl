@@ -1801,3 +1801,5 @@
 {"t":1793816129036,"k":"settle","d":{"slug":"cpceth-eth-updown-15m-2026-11-04-1800z","result":"UP","side":"DOWN","qty":6,"pnl":-1.65}}
 {"t":1793816461832,"k":"round","d":{"slug":"cpceth-eth-updown-15m-2026-11-04-1815z","buysPulled":"no entry inside the last 9 min","held":0}}
 {"t":1793816461832,"k":"round","d":{"slug":"cpceth-eth-updown-15m-2026-11-04-1815z","exit":"no fill"}}
+{"t":1793817005536,"k":"ladder","d":{"slug":"cpceth-eth-updown-15m-2026-11-04-1830z","ids":["DH2MX0CG13D5","DH2MX17G13D6","DH2MX1X013D3","DH2MX2D013D6","DH2MX35013D5","DH2MX3N013D9"]}}
+{"t":1793817005537,"k":"rest","d":{"slug":"cpceth-eth-updown-15m-2026-11-04-1830z","side":"DOWN","momentum":"last round closed DOWN","at":0.3,"ladder":"25–30¢","rungs":6,"qty":1}}
