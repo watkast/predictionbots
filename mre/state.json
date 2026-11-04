@@ -2411,9 +2411,23 @@
    "momentum": "UP",
    "sellId": "DGY4VCZ013D1",
    "sellPx": 0.29513395
+  },
+  {
+   "T0": 1793799000,
+   "slug": "cpceth-eth-updown-15m-2026-11-04-1330z",
+   "side": "UP",
+   "buyPx": 0.275,
+   "buyLeft": 866,
+   "qty": 6,
+   "sold": 6,
+   "exit": "sold at 31¢ avg",
+   "pnl": 0.24,
+   "momentum": "UP",
+   "sellId": "DGYBTCMG13CZ",
+   "sellPx": 0.31463355000000004
   }
  ],
  "balanceStart": 17.4956,
- "balanceNow": 74.7264,
+ "balanceNow": 75.0264,
  "errors": 0
 }
