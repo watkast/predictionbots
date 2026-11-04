@@ -1296,3 +1296,8 @@
 {"t":1793811963153,"k":"round","d":{"slug":"cpc-btc-updown-15m-2026-11-04-1700z","buysPulled":"no entry inside the last 9 min","held":0}}
 {"t":1793811963154,"k":"round","d":{"slug":"cpc-btc-updown-15m-2026-11-04-1700z","exit":"no fill"}}
 {"t":1793812502000,"k":"stop","d":{}}
+{"t":1793812805066,"k":"start","d":{"mode":"live","market":"cpc-btc-updown-15m-","buy":0.3,"ladder":[0.25,0.3],"sell":0.6,"qty":1,"noBuyLeft":540,"node":"v22.23.4"}}
+{"t":1793812805210,"k":"balance","d":{"cash":70.9364,"total":70.9364}}
+{"t":1793812805212,"k":"round","d":{"slug":"cpc-btc-updown-15m-2026-11-04-1715z","skipped":"joined mid-round — waiting for the next open"}}
+{"t":1793813405624,"k":"ladder","d":{"slug":"cpc-btc-updown-15m-2026-11-04-1730z","ids":["DH1SE3JG13CT","DH1SE46G13CX","DH1SE4YG13D8","DH1SE5SG13CT","DH1SE6GG13D7","DH1SE77013D7"]}}
+{"t":1793813405624,"k":"rest","d":{"slug":"cpc-btc-updown-15m-2026-11-04-1730z","side":"UP","momentum":"last round closed UP","at":0.3,"ladder":"25–30¢","rungs":6,"qty":1}}
