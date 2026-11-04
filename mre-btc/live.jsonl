@@ -1381,3 +1381,7 @@
 {"t":1793820915887,"k":"round","d":{"slug":"cpc-btc-updown-15m-2026-11-04-1930z","exit":"sold at 28¢ avg","qty":6,"pnl":0}}
 {"t":1793821506113,"k":"ladder","d":{"slug":"cpc-btc-updown-15m-2026-11-04-1945z","ids":["DH3Q7S6G13D6","DH3Q7SR013D9","DH3Q7TPG53D9","DH3Q7V7G53D8","DH3Q7VR013CT","DH3Q7WAG13D7"]}}
 {"t":1793821506113,"k":"rest","d":{"slug":"cpc-btc-updown-15m-2026-11-04-1945z","side":"DOWN","momentum":"last round closed DOWN","at":0.3,"ladder":"25–30¢","rungs":6,"qty":1}}
+{"t":1793821861282,"k":"round","d":{"slug":"cpc-btc-updown-15m-2026-11-04-1945z","buysPulled":"no entry inside the last 9 min","held":0}}
+{"t":1793821861283,"k":"round","d":{"slug":"cpc-btc-updown-15m-2026-11-04-1945z","exit":"no fill"}}
+{"t":1793822406729,"k":"ladder","d":{"slug":"cpc-btc-updown-15m-2026-11-04-2000z","ids":["DH3Y3CA013D5","DH3Y3D4G13CX","DH3Y3DX053D9","DH3Y3EG013CX","DH3Y3FE013D5","DH3Y3RD013D9"]}}
+{"t":1793822406729,"k":"rest","d":{"slug":"cpc-btc-updown-15m-2026-11-04-2000z","side":"DOWN","momentum":"last round closed DOWN","at":0.3,"ladder":"25–30¢","rungs":6,"qty":1}}
