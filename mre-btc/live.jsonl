@@ -1291,3 +1291,7 @@
 {"t":1793810705580,"k":"rest","d":{"slug":"cpc-btc-updown-15m-2026-11-04-1645z","side":"UP","momentum":"last round closed UP","at":0.3,"ladder":"25–30¢","rungs":6,"qty":1}}
 {"t":1793811062661,"k":"round","d":{"slug":"cpc-btc-updown-15m-2026-11-04-1645z","buysPulled":"no entry inside the last 9 min","held":0}}
 {"t":1793811062661,"k":"round","d":{"slug":"cpc-btc-updown-15m-2026-11-04-1645z","exit":"no fill"}}
+{"t":1793811605732,"k":"ladder","d":{"slug":"cpc-btc-updown-15m-2026-11-04-1700z","ids":["DH1BPNNG13D3","DH1BPPGG13CT","DH1BPQC013D3","DH1BPR5G13D9","DH1BPRXG13D7","DH1BPSK013D9"]}}
+{"t":1793811605732,"k":"rest","d":{"slug":"cpc-btc-updown-15m-2026-11-04-1700z","side":"DOWN","momentum":"last round closed DOWN","at":0.3,"ladder":"25–30¢","rungs":6,"qty":1}}
+{"t":1793811963153,"k":"round","d":{"slug":"cpc-btc-updown-15m-2026-11-04-1700z","buysPulled":"no entry inside the last 9 min","held":0}}
+{"t":1793811963154,"k":"round","d":{"slug":"cpc-btc-updown-15m-2026-11-04-1700z","exit":"no fill"}}
