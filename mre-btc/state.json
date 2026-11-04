@@ -1638,6 +1638,18 @@
    "momentum": "DOWN",
    "sellId": "DGYK9GQ013D8",
    "sellPx": 0.3439872
+  },
+  {
+   "T0": 1793800800,
+   "slug": "cpc-btc-updown-15m-2026-11-04-1400z",
+   "side": null,
+   "buyPx": null,
+   "buyLeft": null,
+   "qty": 0,
+   "sold": 0,
+   "exit": "no fill",
+   "pnl": null,
+   "momentum": "DOWN"
   }
  ],
  "balanceStart": 95.086,
