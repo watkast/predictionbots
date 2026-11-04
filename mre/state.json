@@ -2029,9 +2029,23 @@
    "exit": "no fill",
    "pnl": null,
    "momentum": "DOWN"
+  },
+  {
+   "T0": 1793772900,
+   "slug": "cpceth-eth-updown-15m-2026-11-04-0615z",
+   "side": "DOWN",
+   "buyPx": 0.275,
+   "buyLeft": 772,
+   "qty": 6,
+   "sold": 6,
+   "exit": "sold at 25¢ avg",
+   "pnl": -0.17,
+   "momentum": "DOWN",
+   "sellId": "DGR5Q79013CT",
+   "sellPx": 0.24662820000000005
   }
  ],
  "balanceStart": 17.4956,
- "balanceNow": 70.6364,
+ "balanceNow": 69.8864,
  "errors": 0
 }
