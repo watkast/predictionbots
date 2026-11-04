@@ -2798,17 +2798,18 @@
    "T0": 1793825100,
    "slug": "cpceth-eth-updown-15m-2026-11-04-2045z",
    "side": "UP",
-   "buyPx": 0.28500000000000003,
+   "buyPx": 0.275,
    "buyLeft": 849,
-   "qty": 4,
-   "sold": 0,
-   "exit": null,
-   "pnl": null,
+   "qty": 6,
+   "sold": 6,
+   "exit": "sold at 26¢ avg",
+   "pnl": -0.11,
    "momentum": "UP",
-   "sellId": "DH4K1RBG13D1"
+   "sellId": "DH4K2DDG13D3",
+   "sellPx": 0.25630155
   }
  ],
  "balanceStart": 17.4956,
- "balanceNow": 102.41,
+ "balanceNow": 89.0594,
  "errors": 0
 }
