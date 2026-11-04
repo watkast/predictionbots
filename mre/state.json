@@ -2687,16 +2687,19 @@
   {
    "T0": 1793817900,
    "slug": "cpceth-eth-updown-15m-2026-11-04-1845z",
-   "side": null,
-   "buyPx": null,
-   "buyLeft": null,
-   "qty": 0,
-   "sold": 0,
-   "exit": null,
-   "pnl": null
+   "side": "DOWN",
+   "buyPx": 0.275,
+   "buyLeft": 699,
+   "qty": 6,
+   "sold": 6,
+   "exit": "sold at 32¢ avg",
+   "pnl": 0.3,
+   "momentum": "DOWN",
+   "sellId": "DH2XDF7013CT",
+   "sellPx": 0.3244042
   }
  ],
  "balanceStart": 17.4956,
- "balanceNow": 72.0064,
+ "balanceNow": 72.3064,
  "errors": 0
 }
