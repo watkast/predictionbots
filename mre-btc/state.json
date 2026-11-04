@@ -1141,9 +1141,21 @@
    "momentum": "DOWN",
    "sellId": "DGP1VZP013CZ",
    "sellPx": 0.27568995
+  },
+  {
+   "T0": 1793764800,
+   "slug": "cpc-btc-updown-15m-2026-11-04-0400z",
+   "side": null,
+   "buyPx": null,
+   "buyLeft": null,
+   "qty": 0,
+   "sold": 0,
+   "exit": null,
+   "pnl": null,
+   "momentum": "UP"
   }
  ],
  "balanceStart": 95.086,
- "balanceNow": 82.3239,
+ "balanceNow": 82.3639,
  "errors": 0
 }
