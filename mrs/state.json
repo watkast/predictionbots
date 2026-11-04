@@ -436,7 +436,7 @@
   "KXUCL1HTOTAL-26NOV04RCLCOM-2": "settling (67s)",
   "KXUCLTOTAL-26NOV04RCLCOM-2": "no asks (already repriced)",
   "KXUCL1HTOTAL-26NOV04SLAARS-2": "no asks (already repriced)",
-  "KXUCLTOTAL-26NOV04SLAARS-2": "no asks (already repriced)",
+  "KXUCLTOTAL-26NOV04SLAARS-2": "Polymarket does not confirm",
   "KXUCL1HTOTAL-26NOV04RBLMCI-1": "settling (188s)",
   "KXUCLTOTAL-26NOV04RBLMCI-1": "settling (68s)",
   "KXBELGIANPLTOTAL-26NOV04KORYRM-1": "settling (59s)",
@@ -506,8 +506,8 @@
   "KXUCLTOTAL-26NOV04RCLCOM-9": "no asks (already repriced)",
   "KXUCLTOTAL-26NOV04BVBRBB-3": "no asks (already repriced)",
   "KXUCLTOTAL-26NOV04RBLMCI-5": "no asks (already repriced)",
-  "KXUCLTOTAL-26NOV04FCPNAP-4": "settling (149s)",
-  "KXUCLTOTAL-26NOV04VIKSBH-4": "settling (149s)"
+  "KXUCLTOTAL-26NOV04FCPNAP-4": "no asks (already repriced)",
+  "KXUCLTOTAL-26NOV04VIKSBH-4": "no asks (already repriced)"
  },
  "started": 1793687692.6057825,
  "ht": {
