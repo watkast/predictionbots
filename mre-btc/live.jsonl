@@ -1102,3 +1102,5 @@
 {"t":1793785506403,"k":"ladder","d":{"slug":"cpc-btc-updown-15m-2026-11-04-0945z","ids":["DGV4JJSG13D5","DGV4JMB033D9","DGV4JRV013CT","DGV4JT7G13D6","DGV4JVD013D8","DGV4JWA013D1"]}}
 {"t":1793785506404,"k":"rest","d":{"slug":"cpc-btc-updown-15m-2026-11-04-0945z","side":"UP","momentum":"last round closed UP","at":0.3,"ladder":"25–30¢","rungs":6,"qty":1}}
 {"t":1793785529999,"k":"settle","d":{"slug":"cpc-btc-updown-15m-2026-11-04-0930z","result":"UP","side":"DOWN","qty":6,"pnl":-1.65}}
+{"t":1793785862336,"k":"round","d":{"slug":"cpc-btc-updown-15m-2026-11-04-0945z","buysPulled":"no entry inside the last 9 min","held":0}}
+{"t":1793785862336,"k":"round","d":{"slug":"cpc-btc-updown-15m-2026-11-04-0945z","exit":"no fill"}}
