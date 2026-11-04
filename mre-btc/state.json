@@ -1183,13 +1183,36 @@
    "buyLeft": 775,
    "qty": 6,
    "sold": 0,
-   "exit": null,
-   "pnl": null,
+   "exit": "6 lost at the bell",
+   "pnl": -1.65,
    "momentum": "unknown",
-   "sellId": "DGPWBKK013D8"
+   "sellId": "DGPWBKK013D8",
+   "_sold": 0,
+   "_proceeds": 0,
+   "_cost": 1.6500000000000001,
+   "_sell": {
+    "id": "DGPWBKK013D8",
+    "qty": 6,
+    "base": 0
+   },
+   "result": "UP"
+  },
+  {
+   "T0": 1793768400,
+   "slug": "cpc-btc-updown-15m-2026-11-04-0500z",
+   "side": "UP",
+   "buyPx": 0.275,
+   "buyLeft": 838,
+   "qty": 6,
+   "sold": 6,
+   "exit": "sold at 30¢ avg",
+   "pnl": 0.15,
+   "momentum": "UP",
+   "sellId": "DGQ354R053D7",
+   "sellPx": 0.300005375
   }
  ],
  "balanceStart": 95.086,
- "balanceNow": 88.8239,
+ "balanceNow": 76.9939,
  "errors": 0
 }
