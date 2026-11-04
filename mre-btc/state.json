@@ -1987,12 +1987,12 @@
    "buyLeft": null,
    "qty": 0,
    "sold": 0,
-   "exit": null,
+   "exit": "no fill",
    "pnl": null,
    "momentum": "UP"
   }
  ],
  "balanceStart": 95.086,
- "balanceNow": 65.3764,
+ "balanceNow": 73.0564,
  "errors": 0
 }

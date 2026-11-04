@@ -1393,3 +1393,5 @@
 {"t":1793823661060,"k":"round","d":{"slug":"cpc-btc-updown-15m-2026-11-04-2015z","exit":"no fill"}}
 {"t":1793824205877,"k":"ladder","d":{"slug":"cpc-btc-updown-15m-2026-11-04-2030z","ids":["DH4BTTEG13D6","DH4BTVA013D6","DH4BTW0G13D1","DH4BTWRG13D8","DH4BTXEG13D1","DH4BTZY053D3"]}}
 {"t":1793824205877,"k":"rest","d":{"slug":"cpc-btc-updown-15m-2026-11-04-2030z","side":"UP","momentum":"last round closed UP","at":0.3,"ladder":"25–30¢","rungs":6,"qty":1}}
+{"t":1793824561514,"k":"round","d":{"slug":"cpc-btc-updown-15m-2026-11-04-2030z","buysPulled":"no entry inside the last 9 min","held":0}}
+{"t":1793824561514,"k":"round","d":{"slug":"cpc-btc-updown-15m-2026-11-04-2030z","exit":"no fill"}}
