@@ -1924,9 +1924,22 @@
    "momentum": "UP",
    "sellId": "DGP7BEH013D7",
    "sellPx": 0.3439872
+  },
+  {
+   "T0": 1793765700,
+   "slug": "cpceth-eth-updown-15m-2026-11-04-0415z",
+   "side": "UP",
+   "buyPx": 0.275,
+   "buyLeft": 620,
+   "qty": 6,
+   "sold": 0,
+   "exit": null,
+   "pnl": null,
+   "momentum": "UP",
+   "sellId": "DGPFPAT053D9"
   }
  ],
  "balanceStart": 17.4956,
- "balanceNow": 82.3639,
+ "balanceNow": 80.7139,
  "errors": 0
 }
