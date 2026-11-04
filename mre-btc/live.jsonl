@@ -1324,3 +1324,5 @@
 {"t":1793814661310,"k":"round","d":{"slug":"cpc-btc-updown-15m-2026-11-04-1745z","exit":"sold at 52¢ avg","qty":2,"pnl":0.46}}
 {"t":1793815205925,"k":"ladder","d":{"slug":"cpc-btc-updown-15m-2026-11-04-1800z","ids":["DH275J0093CX","DH275K2G13D1","DH275KS033D7","DH275MJ013CX","DH275NR013CT","DH275QB013D7"]}}
 {"t":1793815205925,"k":"rest","d":{"slug":"cpc-btc-updown-15m-2026-11-04-1800z","side":"UP","momentum":"last round closed UP","at":0.3,"ladder":"25–30¢","rungs":6,"qty":1}}
+{"t":1793815561781,"k":"round","d":{"slug":"cpc-btc-updown-15m-2026-11-04-1800z","buysPulled":"no entry inside the last 9 min","held":0}}
+{"t":1793815561782,"k":"round","d":{"slug":"cpc-btc-updown-15m-2026-11-04-1800z","exit":"no fill"}}
