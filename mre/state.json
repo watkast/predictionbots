@@ -2823,17 +2823,18 @@
   {
    "T0": 1793826900,
    "slug": "cpceth-eth-updown-15m-2026-11-04-2115z",
-   "side": null,
-   "buyPx": null,
-   "buyLeft": null,
-   "qty": 0,
+   "side": "UP",
+   "buyPx": 0.275,
+   "buyLeft": 796,
+   "qty": 2,
    "sold": 0,
    "exit": null,
    "pnl": null,
-   "momentum": "UP"
+   "momentum": "UP",
+   "sellId": "DH516NV013D3"
   }
  ],
  "balanceStart": 17.4956,
- "balanceNow": 1.3046,
+ "balanceNow": 19.7766,
  "errors": 0
 }
