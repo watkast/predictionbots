@@ -1599,3 +1599,5 @@
 {"t":1793791261153,"k":"round","d":{"slug":"cpceth-eth-updown-15m-2026-11-04-1115z","exit":"no fill"}}
 {"t":1793791805945,"k":"ladder","d":{"slug":"cpceth-eth-updown-15m-2026-11-04-1130z","ids":["DGWMMP4G13CX","DGWMMQAG13D5","DGWMMR9G13D1","DGWMMS8G13D8","DGWMMT9G13CT","DGWMMVM013D5"]}}
 {"t":1793791805945,"k":"rest","d":{"slug":"cpceth-eth-updown-15m-2026-11-04-1130z","side":"UP","momentum":"last round closed UP","at":0.3,"ladder":"25–30¢","rungs":6,"qty":1}}
+{"t":1793792161548,"k":"round","d":{"slug":"cpceth-eth-updown-15m-2026-11-04-1130z","buysPulled":"no entry inside the last 9 min","held":0}}
+{"t":1793792161549,"k":"round","d":{"slug":"cpceth-eth-updown-15m-2026-11-04-1130z","exit":"no fill"}}
