@@ -2168,13 +2168,25 @@
    "buyLeft": 768,
    "qty": 1,
    "sold": 1,
-   "exit": null,
-   "pnl": null,
+   "exit": "sold at 37¢ avg",
+   "pnl": 0.07,
    "momentum": "UP",
-   "sellId": "DGT36W9G13CT"
+   "sellId": "DGT36W9G13CT",
+   "sellPx": 0.37346595
+  },
+  {
+   "T0": 1793781900,
+   "slug": "cpceth-eth-updown-15m-2026-11-04-0845z",
+   "side": null,
+   "buyPx": null,
+   "buyLeft": null,
+   "qty": 0,
+   "sold": 0,
+   "exit": null,
+   "pnl": null
   }
  ],
  "balanceStart": 17.4956,
- "balanceNow": 80.2164,
+ "balanceNow": 71.0864,
  "errors": 0
 }
