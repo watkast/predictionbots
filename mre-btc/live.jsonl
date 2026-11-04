@@ -1295,3 +1295,4 @@
 {"t":1793811605732,"k":"rest","d":{"slug":"cpc-btc-updown-15m-2026-11-04-1700z","side":"DOWN","momentum":"last round closed DOWN","at":0.3,"ladder":"25–30¢","rungs":6,"qty":1}}
 {"t":1793811963153,"k":"round","d":{"slug":"cpc-btc-updown-15m-2026-11-04-1700z","buysPulled":"no entry inside the last 9 min","held":0}}
 {"t":1793811963154,"k":"round","d":{"slug":"cpc-btc-updown-15m-2026-11-04-1700z","exit":"no fill"}}
+{"t":1793812502000,"k":"stop","d":{}}
