@@ -972,3 +972,16 @@
 {"t":1793773805842,"k":"rest","d":{"slug":"cpc-btc-updown-15m-2026-11-04-0630z","side":"UP","momentum":"last round closed UP","at":0.3,"ladder":"25–30¢","rungs":6,"qty":1}}
 {"t":1793774162749,"k":"round","d":{"slug":"cpc-btc-updown-15m-2026-11-04-0630z","buysPulled":"no entry inside the last 9 min","held":0}}
 {"t":1793774162750,"k":"round","d":{"slug":"cpc-btc-updown-15m-2026-11-04-0630z","exit":"no fill"}}
+{"t":1793774706701,"k":"ladder","d":{"slug":"cpc-btc-updown-15m-2026-11-04-0645z","ids":["DGRJ61E013D1","DGRJ62W013D9","DGRJ644013D8","DGRJ657013D9","DGRJ66B013CX","DGRJ67MG13D8"]}}
+{"t":1793774706702,"k":"rest","d":{"slug":"cpc-btc-updown-15m-2026-11-04-0645z","side":"DOWN","momentum":"last round closed DOWN","at":0.3,"ladder":"25–30¢","rungs":6,"qty":1}}
+{"t":1793774881501,"k":"fill","d":{"slug":"cpc-btc-updown-15m-2026-11-04-0645z","side":"DOWN","px":0.3,"qty":1,"heldTotal":1,"of":6}}
+{"t":1793774881628,"k":"rest","d":{"slug":"cpc-btc-updown-15m-2026-11-04-0645z","side":"DOWN","sellAt":0.6,"qty":1,"id":"DGRKGY8013CX"}}
+{"t":1793774886245,"k":"fill","d":{"slug":"cpc-btc-updown-15m-2026-11-04-0645z","side":"DOWN","px":0.295,"qty":1,"heldTotal":2,"of":6}}
+{"t":1793774886666,"k":"rest","d":{"slug":"cpc-btc-updown-15m-2026-11-04-0645z","side":"DOWN","sellAt":0.6,"qty":2,"id":"DGRKJ5NG13D7"}}
+{"t":1793774893014,"k":"exit","d":{"slug":"cpc-btc-updown-15m-2026-11-04-0645z","side":"DOWN","armed":0.37,"avg":0.295,"src":"ws"}}
+{"t":1793774896964,"k":"fill","d":{"slug":"cpc-btc-updown-15m-2026-11-04-0645z","side":"DOWN","sold":0.37,"qty":2,"soldTotal":2,"of":2,"exit":"stall","peak":0.39,"bid":0.37,"slip":0.01}}
+{"t":1793774983901,"k":"fill","d":{"slug":"cpc-btc-updown-15m-2026-11-04-0645z","side":"DOWN","px":0.28,"qty":2.98,"heldTotal":4.98,"of":6}}
+{"t":1793774984017,"k":"rest","d":{"slug":"cpc-btc-updown-15m-2026-11-04-0645z","side":"DOWN","sellAt":0.6,"qty":2.98,"id":"DGRM9Y8013D6"}}
+{"t":1793774987438,"k":"fill","d":{"slug":"cpc-btc-updown-15m-2026-11-04-0645z","side":"DOWN","px":0.275,"qty":1.02,"heldTotal":6,"of":6}}
+{"t":1793774987810,"k":"rest","d":{"slug":"cpc-btc-updown-15m-2026-11-04-0645z","side":"DOWN","sellAt":0.6,"qty":4,"id":"DGRMAVSG13D5"}}
+{"t":1793775061465,"k":"round","d":{"slug":"cpc-btc-updown-15m-2026-11-04-0645z","buysPulled":"no entry inside the last 9 min","held":6}}

@@ -1286,9 +1286,22 @@
    "exit": "no fill",
    "pnl": null,
    "momentum": "UP"
+  },
+  {
+   "T0": 1793774700,
+   "slug": "cpc-btc-updown-15m-2026-11-04-0645z",
+   "side": "DOWN",
+   "buyPx": 0.275,
+   "buyLeft": 718,
+   "qty": 6,
+   "sold": 2,
+   "exit": null,
+   "pnl": null,
+   "momentum": "DOWN",
+   "sellId": "DGRMAVSG13D5"
   }
  ],
  "balanceStart": 95.086,
- "balanceNow": 72.9564,
+ "balanceNow": 76.0764,
  "errors": 0
 }
