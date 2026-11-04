@@ -1776,6 +1776,18 @@
    "momentum": "DOWN",
    "sellId": "DH0GBP3013CZ",
    "sellPx": 0.27568995
+  },
+  {
+   "T0": 1793808900,
+   "slug": "cpc-btc-updown-15m-2026-11-04-1615z",
+   "side": null,
+   "buyPx": null,
+   "buyLeft": null,
+   "qty": 0,
+   "sold": 0,
+   "exit": null,
+   "pnl": null,
+   "momentum": "UP"
   }
  ],
  "balanceStart": 95.086,
