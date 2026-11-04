@@ -2853,9 +2853,21 @@
    "exit": "no fill",
    "pnl": null,
    "momentum": "DOWN"
+  },
+  {
+   "T0": 1793829600,
+   "slug": "cpceth-eth-updown-15m-2026-11-04-2200z",
+   "side": null,
+   "buyPx": null,
+   "buyLeft": null,
+   "qty": 0,
+   "sold": 0,
+   "exit": "no fill",
+   "pnl": null,
+   "momentum": "DOWN"
   }
  ],
  "balanceStart": 17.4956,
- "balanceNow": 113.242,
+ "balanceNow": 15.0108,
  "errors": 0
 }

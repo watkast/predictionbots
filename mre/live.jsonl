@@ -1886,3 +1886,7 @@
 {"t":1793828952780,"k":"start","d":{"mode":"live","market":"cpceth-eth-updown-15m-","buy":0.3,"ladder":[0.25,0.3],"sell":0.6,"qty":1,"noBuyLeft":540,"node":"v22.23.4"}}
 {"t":1793828953044,"k":"balance","d":{"cash":0.7947,"total":14.1747}}
 {"t":1793828953046,"k":"round","d":{"slug":"cpceth-eth-updown-15m-2026-11-04-2145z","skipped":"joined mid-round — waiting for the next open"}}
+{"t":1793829606003,"k":"ladder","d":{"slug":"cpceth-eth-updown-15m-2026-11-04-2200z","ids":["DH5N16Z013D1","DH5N17Z013CZ","DH5N192G13D6","DH5N1A2013D1","DH5N1B8G33CX","DH5N1CJ013D3"]}}
+{"t":1793829606004,"k":"rest","d":{"slug":"cpceth-eth-updown-15m-2026-11-04-2200z","side":"DOWN","momentum":"last round closed DOWN","at":0.3,"ladder":"25–30¢","rungs":6,"qty":1}}
+{"t":1793829961810,"k":"round","d":{"slug":"cpceth-eth-updown-15m-2026-11-04-2200z","buysPulled":"no entry inside the last 9 min","held":0}}
+{"t":1793829961811,"k":"round","d":{"slug":"cpceth-eth-updown-15m-2026-11-04-2200z","exit":"no fill"}}
