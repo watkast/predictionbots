@@ -2032,17 +2032,18 @@
   {
    "T0": 1793827800,
    "slug": "cpc-btc-updown-15m-2026-11-04-2130z",
-   "side": null,
-   "buyPx": null,
-   "buyLeft": null,
-   "qty": 0,
+   "side": "DOWN",
+   "buyPx": 0.27,
+   "buyLeft": 563,
+   "qty": 5,
    "sold": 0,
    "exit": null,
    "pnl": null,
-   "momentum": "DOWN"
+   "momentum": "DOWN",
+   "sellId": "DH59TSV013D1"
   }
  ],
  "balanceStart": 95.086,
- "balanceNow": 27.0875,
+ "balanceNow": 39.0993,
  "errors": 0
 }

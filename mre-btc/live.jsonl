@@ -1422,3 +1422,6 @@
 {"t":1793827260253,"k":"round","d":{"slug":"cpc-btc-updown-15m-2026-11-04-2115z","exit":"no fill"}}
 {"t":1793827805731,"k":"ladder","d":{"slug":"cpc-btc-updown-15m-2026-11-04-2130z","ids":["DH579R4053D3","DH579RZ013CX","DH579SNG13D1","DH579TGG13D9","DH579V8013D1","DH579W2G53D1"]}}
 {"t":1793827805732,"k":"rest","d":{"slug":"cpc-btc-updown-15m-2026-11-04-2130z","side":"DOWN","momentum":"last round closed DOWN","at":0.3,"ladder":"25–30¢","rungs":6,"qty":1}}
+{"t":1793828137169,"k":"fill","d":{"slug":"cpc-btc-updown-15m-2026-11-04-2130z","side":"DOWN","px":0.27,"qty":5,"heldTotal":5,"of":6}}
+{"t":1793828137217,"k":"rest","d":{"slug":"cpc-btc-updown-15m-2026-11-04-2130z","side":"DOWN","sellAt":0.6,"qty":5,"id":"DH59TSV013D1"}}
+{"t":1793828160714,"k":"round","d":{"slug":"cpc-btc-updown-15m-2026-11-04-2130z","buysPulled":"no entry inside the last 9 min","held":5}}
