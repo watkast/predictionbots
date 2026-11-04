@@ -1846,14 +1846,27 @@
    "buyPx": 0.29500000000000004,
    "buyLeft": 617,
    "qty": 2,
+   "sold": 2,
+   "exit": "sold at 52¢ avg",
+   "pnl": 0.46,
+   "momentum": "DOWN",
+   "sellId": "DH22DJQ013D9",
+   "sellPx": 0.5227362
+  },
+  {
+   "T0": 1793815200,
+   "slug": "cpc-btc-updown-15m-2026-11-04-1800z",
+   "side": null,
+   "buyPx": null,
+   "buyLeft": null,
+   "qty": 0,
    "sold": 0,
    "exit": null,
    "pnl": null,
-   "momentum": "DOWN",
-   "sellId": "DH22DJQ013D9"
+   "momentum": "UP"
   }
  ],
  "balanceStart": 95.086,
- "balanceNow": 77.8364,
+ "balanceNow": 73.1864,
  "errors": 0
 }
