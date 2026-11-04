@@ -1440,9 +1440,21 @@
    "momentum": "UP",
    "sellId": "DGTH0XCG13D8",
    "sellPx": 0.32440420000000003
+  },
+  {
+   "T0": 1793783700,
+   "slug": "cpc-btc-updown-15m-2026-11-04-0915z",
+   "side": null,
+   "buyPx": null,
+   "buyLeft": null,
+   "qty": 0,
+   "sold": 0,
+   "exit": null,
+   "pnl": null,
+   "momentum": "DOWN"
   }
  ],
  "balanceStart": 95.086,
- "balanceNow": 71.3064,
+ "balanceNow": 80.4164,
  "errors": 0
 }
