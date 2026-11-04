@@ -1097,3 +1097,8 @@
 {"t":1793784712455,"k":"rest","d":{"slug":"cpc-btc-updown-15m-2026-11-04-0930z","side":"DOWN","sellAt":0.6,"qty":5,"id":"DGTYH1K013D5"}}
 {"t":1793784715330,"k":"fill","d":{"slug":"cpc-btc-updown-15m-2026-11-04-0930z","side":"DOWN","px":0.275,"qty":1,"heldTotal":6,"of":6}}
 {"t":1793784715695,"k":"rest","d":{"slug":"cpc-btc-updown-15m-2026-11-04-0930z","side":"DOWN","sellAt":0.6,"qty":6,"id":"DGTYHTX013CT"}}
+{"t":1793784961656,"k":"round","d":{"slug":"cpc-btc-updown-15m-2026-11-04-0930z","buysPulled":"no entry inside the last 9 min","held":6}}
+{"t":1793785499751,"k":"round","d":{"slug":"cpc-btc-updown-15m-2026-11-04-0930z","held":"DOWN","qty":6,"of":6,"px":0.275}}
+{"t":1793785506403,"k":"ladder","d":{"slug":"cpc-btc-updown-15m-2026-11-04-0945z","ids":["DGV4JJSG13D5","DGV4JMB033D9","DGV4JRV013CT","DGV4JT7G13D6","DGV4JVD013D8","DGV4JWA013D1"]}}
+{"t":1793785506404,"k":"rest","d":{"slug":"cpc-btc-updown-15m-2026-11-04-0945z","side":"UP","momentum":"last round closed UP","at":0.3,"ladder":"25–30¢","rungs":6,"qty":1}}
+{"t":1793785529999,"k":"settle","d":{"slug":"cpc-btc-updown-15m-2026-11-04-0930z","result":"UP","side":"DOWN","qty":6,"pnl":-1.65}}

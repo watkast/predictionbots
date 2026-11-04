@@ -1461,13 +1461,34 @@
    "buyLeft": 791,
    "qty": 6,
    "sold": 0,
+   "exit": "6 lost at the bell",
+   "pnl": -1.65,
+   "momentum": "DOWN",
+   "sellId": "DGTYHTX013CT",
+   "_sold": 0,
+   "_proceeds": 0,
+   "_cost": 1.6500000000000001,
+   "_sell": {
+    "id": "DGTYHTX013CT",
+    "qty": 6,
+    "base": 0
+   },
+   "result": "UP"
+  },
+  {
+   "T0": 1793785500,
+   "slug": "cpc-btc-updown-15m-2026-11-04-0945z",
+   "side": null,
+   "buyPx": null,
+   "buyLeft": null,
+   "qty": 0,
+   "sold": 0,
    "exit": null,
    "pnl": null,
-   "momentum": "DOWN",
-   "sellId": "DGTYHTX013CT"
+   "momentum": "UP"
   }
  ],
  "balanceStart": 95.086,
- "balanceNow": 85.0464,
+ "balanceNow": 73.0464,
  "errors": 0
 }
