@@ -1153,9 +1153,22 @@
    "exit": "no fill",
    "pnl": null,
    "momentum": "UP"
+  },
+  {
+   "T0": 1793765700,
+   "slug": "cpc-btc-updown-15m-2026-11-04-0415z",
+   "side": "UP",
+   "buyPx": 0.295,
+   "buyLeft": 548,
+   "qty": 2,
+   "sold": 0,
+   "exit": null,
+   "pnl": null,
+   "momentum": "UP",
+   "sellId": "DGPG73Z013CX"
   }
  ],
  "balanceStart": 95.086,
- "balanceNow": 82.3639,
+ "balanceNow": 80.1239,
  "errors": 0
 }
