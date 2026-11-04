@@ -1690,9 +1690,23 @@
    "exit": "no fill",
    "pnl": null,
    "momentum": "DOWN"
+  },
+  {
+   "T0": 1793750400,
+   "slug": "cpceth-eth-updown-15m-2026-11-04-0000z",
+   "side": "DOWN",
+   "buyPx": 0.275,
+   "buyLeft": 882,
+   "qty": 6,
+   "sold": 6,
+   "exit": "sold at 33¢ avg",
+   "pnl": 0.36,
+   "momentum": "DOWN",
+   "sellId": "DGJRYAPG13CZ",
+   "sellPx": 0.33418875
   }
  ],
  "balanceStart": 17.4956,
- "balanceNow": 63.976,
+ "balanceNow": 49.3004,
  "errors": 0
 }
