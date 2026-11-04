@@ -2609,9 +2609,23 @@
    "momentum": "DOWN",
    "sellId": "DH1MHYE013CT",
    "sellPx": 0.285405
+  },
+  {
+   "T0": 1793813400,
+   "slug": "cpceth-eth-updown-15m-2026-11-04-1730z",
+   "side": "UP",
+   "buyPx": 0.275,
+   "buyLeft": 724,
+   "qty": 6,
+   "sold": 6,
+   "exit": "sold at 38¢ avg",
+   "pnl": 0.65,
+   "momentum": "UP",
+   "sellId": "DH1TYNQG13D1",
+   "sellPx": 0.38332000000000005
   }
  ],
  "balanceStart": 17.4956,
- "balanceNow": 70.9364,
+ "balanceNow": 72.0764,
  "errors": 0
 }
