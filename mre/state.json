@@ -2159,9 +2159,22 @@
    "exit": "no fill",
    "pnl": null,
    "momentum": "UP"
+  },
+  {
+   "T0": 1793781000,
+   "slug": "cpceth-eth-updown-15m-2026-11-04-0830z",
+   "side": "UP",
+   "buyPx": 0.3,
+   "buyLeft": 768,
+   "qty": 1,
+   "sold": 1,
+   "exit": null,
+   "pnl": null,
+   "momentum": "UP",
+   "sellId": "DGT36W9G13CT"
   }
  ],
  "balanceStart": 17.4956,
- "balanceNow": 67.0564,
+ "balanceNow": 80.2164,
  "errors": 0
 }
