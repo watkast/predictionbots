@@ -2243,9 +2243,23 @@
    "exit": "no fill",
    "pnl": null,
    "momentum": "UP"
+  },
+  {
+   "T0": 1793786400,
+   "slug": "cpceth-eth-updown-15m-2026-11-04-1000z",
+   "side": "UP",
+   "buyPx": 0.3,
+   "buyLeft": 648,
+   "qty": 1,
+   "sold": 1,
+   "exit": "sold at 36¢ avg",
+   "pnl": 0.06,
+   "momentum": "UP",
+   "sellId": "DGVDAMSG13D3",
+   "sellPx": 0.3636258
   }
  ],
  "balanceStart": 17.4956,
- "balanceNow": 73.0464,
+ "balanceNow": 73.1064,
  "errors": 0
 }
