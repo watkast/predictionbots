@@ -838,3 +838,5 @@
 {"t":1793760661452,"k":"round","d":{"slug":"cpc-btc-updown-15m-2026-11-04-0245z","exit":"no fill"}}
 {"t":1793761205603,"k":"ladder","d":{"slug":"cpc-btc-updown-15m-2026-11-04-0300z","ids":["DGNB5ZM013D3","DGNB609G13CX","DGNB60WG13CZ","DGNB61G013D1","DGNB621G13CT","DGNB62N013D1"]}}
 {"t":1793761205604,"k":"rest","d":{"slug":"cpc-btc-updown-15m-2026-11-04-0300z","side":"DOWN","momentum":"last round closed DOWN","at":0.3,"ladder":"25–30¢","rungs":6,"qty":1}}
+{"t":1793761560547,"k":"round","d":{"slug":"cpc-btc-updown-15m-2026-11-04-0300z","buysPulled":"no entry inside the last 9 min","held":0}}
+{"t":1793761560547,"k":"round","d":{"slug":"cpc-btc-updown-15m-2026-11-04-0300z","exit":"no fill"}}
