@@ -1322,6 +1322,20 @@
    "momentum": "UP",
    "sellId": "DGRTSQE013CZ",
    "sellPx": 0.36362580000000005
+  },
+  {
+   "T0": 1793776500,
+   "slug": "cpc-btc-updown-15m-2026-11-04-0715z",
+   "side": "UP",
+   "buyPx": 0.275,
+   "buyLeft": 818,
+   "qty": 6,
+   "sold": 6,
+   "exit": "sold at 28¢ avg",
+   "pnl": 0.02,
+   "momentum": "UP",
+   "sellId": "DGS0RGK013D5",
+   "sellPx": 0.2789306166666666
   }
  ],
  "balanceStart": 95.086,
