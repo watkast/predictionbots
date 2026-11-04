@@ -1743,3 +1743,7 @@
 {"t":1793811061161,"k":"round","d":{"slug":"cpceth-eth-updown-15m-2026-11-04-1645z","exit":"no fill"}}
 {"t":1793811605620,"k":"ladder","d":{"slug":"cpceth-eth-updown-15m-2026-11-04-1700z","ids":["DH1BPN0G13D3","DH1BPNV053CT","DH1BPPH013D3","DH1BPQA053D6","DH1BPR2013CT","DH1BPRS033D5"]}}
 {"t":1793811605621,"k":"rest","d":{"slug":"cpceth-eth-updown-15m-2026-11-04-1700z","side":"DOWN","momentum":"last round closed DOWN","at":0.3,"ladder":"25–30¢","rungs":6,"qty":1}}
+{"t":1793811962403,"k":"round","d":{"slug":"cpceth-eth-updown-15m-2026-11-04-1700z","buysPulled":"no entry inside the last 9 min","held":0}}
+{"t":1793811962403,"k":"round","d":{"slug":"cpceth-eth-updown-15m-2026-11-04-1700z","exit":"no fill"}}
+{"t":1793812505964,"k":"ladder","d":{"slug":"cpceth-eth-updown-15m-2026-11-04-1715z","ids":["DH1JJBZG53D6","DH1JJDX013D3","DH1JJF2013CZ","DH1JJGHG13CT","DH1JJJ3G13D5","DH1JJJQG13D8"]}}
+{"t":1793812505965,"k":"rest","d":{"slug":"cpceth-eth-updown-15m-2026-11-04-1715z","side":"DOWN","momentum":"last round closed DOWN","at":0.3,"ladder":"25–30¢","rungs":6,"qty":1}}
