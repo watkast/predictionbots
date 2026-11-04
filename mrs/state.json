@@ -344,8 +344,8 @@
   "KXUCLTOTAL-26NOV04SLAARS-1": "no asks (already repriced)",
   "KXUCL1HTOTAL-26NOV04VIKSBH-1": "no asks (already repriced)",
   "KXUCLTOTAL-26NOV04VIKSBH-1": "no asks (already repriced)",
-  "KXUCL1HTOTAL-26NOV04FCPNAP-1": "settling (220s)",
-  "KXUCLTOTAL-26NOV04FCPNAP-1": "settling (220s)"
+  "KXUCL1HTOTAL-26NOV04FCPNAP-1": "no asks (already repriced)",
+  "KXUCLTOTAL-26NOV04FCPNAP-1": "no asks (already repriced)"
  },
  "started": 1793687692.6057825,
  "ht": {
@@ -396,6 +396,10 @@
   "401915382": [
    1,
    1
+  ],
+  "401878967": [
+   0,
+   0
   ]
  }
 }
