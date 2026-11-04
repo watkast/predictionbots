@@ -1113,9 +1113,23 @@
    "momentum": "DOWN",
    "sellId": "DGNKYG2053D5",
    "sellPx": 0.2951409
+  },
+  {
+   "T0": 1793763000,
+   "slug": "cpc-btc-updown-15m-2026-11-04-0330z",
+   "side": "UP",
+   "buyPx": 0.275,
+   "buyLeft": 808,
+   "qty": 6,
+   "sold": 6,
+   "exit": "sold at 46¢ avg",
+   "pnl": 1.13,
+   "momentum": "UP",
+   "sellId": "DGNSN8DG13CT",
+   "sellPx": 0.46265280000000003
   }
  ],
  "balanceStart": 95.086,
- "balanceNow": 80.7139,
+ "balanceNow": 81.8439,
  "errors": 0
 }
