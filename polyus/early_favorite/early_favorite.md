@@ -1,23 +1,23 @@
 # Early Favorite v2 - forward test
 
 Rule (frozen): at 2:00 elapsed (13:00 left), else 3:00, buy the leading side if its ask is 0.80-0.95; $100 per round; hold to settlement; taker fee 0.0695*p*(1-p). Paper only.
-Forward test started 2026-10-23T00:00:00Z. Updated 2026-11-04T17:15:07Z.
+Forward test started 2026-10-23T00:00:00Z. Updated 2026-11-04T23:39:41Z.
 
 **Losing: forward win rate is below break-even at the prices paid.**
 
 | | Forward | Backtest (Oct 6-22) |
 |---|---|---|
-| Rounds | 199 | 272 |
-| Win rate | 83.4% | 89.3% |
-| Break-even win rate at prices paid | 84.9% | - |
+| Rounds | 203 | 272 |
+| Win rate | 83.2% | 89.3% |
+| Break-even win rate at prices paid | 85.0% | - |
 | Average ask | 0.840 | 0.838 |
-| Net at $100/round | $-386.43 | $+1,486 |
-| Per round | -1.94% | +5.46% |
+| Net at $100/round | $-441.91 | $+1,486 |
+| Per round | -2.18% | +5.46% |
 | Max drawdown | $-843.92 | $-403 |
 | Longest losing streak | 5 | 2 |
 | Entry timing | 13:00 / 12:00 left | same |
 
-Rounds where the rule did not trigger: 1004. Pending (not settled or not fetched yet): 18.
+Rounds where the rule did not trigger: 1026. Pending (not settled or not fetched yet): 18.
 
 ## By day (UTC)
 
@@ -35,7 +35,7 @@ Rounds where the rule did not trigger: 1004. Pending (not settled or not fetched
 | 2026-11-01 | $+118.14 |
 | 2026-11-02 | $-313.40 |
 | 2026-11-03 | $+1.61 |
-| 2026-11-04 | $+226.10 |
+| 2026-11-04 | $+170.62 |
 
 ## Chart pull at the check (parallel column - not part of the rule)
 
@@ -43,7 +43,7 @@ Pull = EMA 9/21 and Supertrend on BRTI 1-minute candles, as drawn by research/ma
 
 | Pull at the check | Rounds | Win rate | Net |
 |---|---|---|---|
-| with the favorite 3/3 | 147 | 85.0% | $-96.81 |
+| with the favorite 3/3 | 151 | 84.8% | $-152.29 |
 | with the favorite 1/3 | 44 | 79.5% | $-215.71 |
 | against the favorite | 8 | 75.0% | $-73.91 |
 
@@ -53,18 +53,14 @@ What if the position were sold at 5:00 left whenever the favorite's bid is under
 
 | | Hold (the rule) | Cut under 45c at 5:00 left |
 |---|---|---|
-| Rounds with a 5:00-left price | 199 | same |
-| Positions cut | - | 18 (15 would have lost, 3 would have won) |
-| Net at $100/round | $-386.43 | $-316.27 (+70.16) |
+| Rounds with a 5:00-left price | 203 | same |
+| Positions cut | - | 20 (16 would have lost, 4 would have won) |
+| Net at $100/round | $-441.91 | $-429.77 (+12.14) |
 
 ## Last 20 rounds
 
 | Window (UTC) | Min | Side | Ask | Pull | Result | P&L | Running |
 |---|---|---|---|---|---|---|---|
-| 11-03 06:15 | 2 | Up | 0.83 | -1 | won | $+19.30 | $-619.58 |
-| 11-03 06:30 | 2 | Up | 0.82 | +3 | won | $+20.70 | $-598.88 |
-| 11-03 06:45 | 2 | Down | 0.80 | +3 | won | $+23.61 | $-575.27 |
-| 11-03 07:15 | 3 | Up | 0.80 | +3 | won | $+23.61 | $-551.66 |
 | 11-03 12:00 | 2 | Down | 0.84 | +3 | LOST | $-101.11 | $-652.77 |
 | 11-03 13:30 | 2 | Up | 0.88 | +3 | won | $+12.80 | $-639.97 |
 | 11-03 14:00 | 3 | Down | 0.92 | +3 | won | $+8.14 | $-631.83 |
@@ -81,3 +77,7 @@ What if the position were sold at 5:00 left whenever the favorite's bid is under
 | 11-04 13:30 | 3 | Down | 0.80 | +1 | won | $+23.61 | $-419.68 |
 | 11-04 14:00 | 3 | Down | 0.84 | +3 | won | $+17.94 | $-401.74 |
 | 11-04 14:30 | 2 | Up | 0.86 | +3 | won | $+15.31 | $-386.43 |
+| 11-04 18:00 | 2 | Up | 0.89 | +3 | won | $+11.60 | $-374.83 |
+| 11-04 19:00 | 2 | Down | 0.80 | +3 | won | $+23.61 | $-351.22 |
+| 11-04 20:30 | 3 | Up | 0.84 | +3 | LOST | $-101.11 | $-452.33 |
+| 11-04 23:00 | 2 | Down | 0.90 | +3 | won | $+10.42 | $-441.91 |
