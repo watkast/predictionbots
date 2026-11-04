@@ -1,6 +1,6 @@
 # Mr. S — live
 
-Updated 2026-11-04 13:59 UTC · mode **live** · switch **ON** · live leagues: usa.1
+Updated 2026-11-04 14:04 UTC · mode **live** · switch **ON** · live leagues: usa.1
 
 ## ⚠️ Kalshi balance below the $50 risk cap — fund the account (orders still try, capped by cash)
 
