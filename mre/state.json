@@ -2457,14 +2457,28 @@
    "buyPx": 0.28500000000000003,
    "buyLeft": 807,
    "qty": 4,
-   "sold": 3,
+   "sold": 4,
+   "exit": "sold at 31¢ avg",
+   "pnl": 0.12,
+   "momentum": "DOWN",
+   "sellId": "DGZ363Y013D7",
+   "sellPx": 0.31465439999999995
+  },
+  {
+   "T0": 1793802600,
+   "slug": "cpceth-eth-updown-15m-2026-11-04-1430z",
+   "side": "DOWN",
+   "buyPx": 0.275,
+   "buyLeft": 875,
+   "qty": 6,
+   "sold": 0,
    "exit": null,
    "pnl": null,
    "momentum": "DOWN",
-   "sellId": "DGZ363Y013D7"
+   "sellId": "DGZ782DG13CT"
   }
  ],
  "balanceStart": 17.4956,
- "balanceNow": 76.0864,
+ "balanceNow": 84.1264,
  "errors": 0
 }

@@ -1685,3 +1685,14 @@
 {"t":1793802100115,"k":"round","d":{"slug":"cpceth-eth-updown-15m-2026-11-04-1415z","buysPulled":"no entry inside the last 9 min","held":4}}
 {"t":1793802100115,"k":"fill","d":{"slug":"cpceth-eth-updown-15m-2026-11-04-1415z","side":"DOWN","px":0.285,"qty":1,"heldTotal":4,"of":6}}
 {"t":1793802100260,"k":"rest","d":{"slug":"cpceth-eth-updown-15m-2026-11-04-1415z","side":"DOWN","sellAt":0.6,"qty":1,"id":"DGZ363Y013D7"}}
+{"t":1793802300721,"k":"exit","d":{"slug":"cpceth-eth-updown-15m-2026-11-04-1415z","side":"DOWN","armed":0.34,"avg":0.285,"src":"ws"}}
+{"t":1793802314071,"k":"fill","d":{"slug":"cpceth-eth-updown-15m-2026-11-04-1415z","side":"DOWN","sold":0.36,"qty":1,"soldTotal":4,"of":4,"exit":"stall","peak":0.36,"bid":0.36,"slip":0.01}}
+{"t":1793802314572,"k":"round","d":{"slug":"cpceth-eth-updown-15m-2026-11-04-1415z","exit":"sold at 31¢ avg","qty":4,"pnl":0.12}}
+{"t":1793802606088,"k":"ladder","d":{"slug":"cpceth-eth-updown-15m-2026-11-04-1430z","ids":["DGZ71DK013CZ","DGZ71EW013D8","DGZ71G8013D9","DGZ71HE013CZ","DGZ71JG013D8","DGZ71KPG13D6"]}}
+{"t":1793802606089,"k":"rest","d":{"slug":"cpceth-eth-updown-15m-2026-11-04-1430z","side":"DOWN","momentum":"last round closed DOWN","at":0.3,"ladder":"25–30¢","rungs":6,"qty":1}}
+{"t":1793802624659,"k":"fill","d":{"slug":"cpceth-eth-updown-15m-2026-11-04-1430z","side":"DOWN","px":0.295,"qty":2,"heldTotal":2,"of":6}}
+{"t":1793802624768,"k":"rest","d":{"slug":"cpceth-eth-updown-15m-2026-11-04-1430z","side":"DOWN","sellAt":0.6,"qty":2,"id":"DGZ765MG13CT"}}
+{"t":1793802627787,"k":"fill","d":{"slug":"cpceth-eth-updown-15m-2026-11-04-1430z","side":"DOWN","px":0.28,"qty":3,"heldTotal":5,"of":6}}
+{"t":1793802628124,"k":"rest","d":{"slug":"cpceth-eth-updown-15m-2026-11-04-1430z","side":"DOWN","sellAt":0.6,"qty":5,"id":"DGZ76ZW013CZ"}}
+{"t":1793802631328,"k":"fill","d":{"slug":"cpceth-eth-updown-15m-2026-11-04-1430z","side":"DOWN","px":0.275,"qty":1,"heldTotal":6,"of":6}}
+{"t":1793802632552,"k":"rest","d":{"slug":"cpceth-eth-updown-15m-2026-11-04-1430z","side":"DOWN","sellAt":0.6,"qty":6,"id":"DGZ782DG13CT"}}
