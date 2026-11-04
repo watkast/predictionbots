@@ -1,6 +1,6 @@
 # Mr. S — live
 
-Updated 2026-11-04 19:27 UTC · mode **live** · switch **ON** · live leagues: usa.1
+Updated 2026-11-04 19:31 UTC · mode **live** · switch **ON** · live leagues: usa.1
 
 ## ⚠️ Kalshi balance below the $50 risk cap — fund the account (orders still try, capped by cash)
 
@@ -11,7 +11,7 @@ Updated 2026-11-04 19:27 UTC · mode **live** · switch **ON** · live leagues: 
 0 buys · 0 settled · 0 right / 0 wrong · P&L **$+0.00** · open $0.00
 
 ## Right now
-games in play/just ended: 3 · matched to Kalshi: 2 · to Polymarket: 2 · decided markets agreed by both: 1 · disagreements: 0
+games in play/just ended: 3 · matched to Kalshi: 2 · to Polymarket: 2 · decided markets agreed by both: 2 · disagreements: 0
 
 Kalshi series with open markets: KXUCL1H, KXUCL1HBTTS, KXUCL1HTOTAL, KXUCLBTTS, KXUCLTOTAL, KXUEL1H, KXUEL1HBTTS, KXUEL1HTOTAL, KXUELBTTS, KXUELTOTAL
 
@@ -27,7 +27,7 @@ Kalshi series with open markets: KXUCL1H, KXUCL1HBTTS, KXUCL1HTOTAL, KXUCLBTTS, 
 - KXUCLTOTAL-26NOV04FENLFC-4: settling (80s)
 - KXUCLTOTAL-26NOV04AEKRMA-3: settling (0s)
 - KXUCLTOTAL-26NOV04AEKRMA-4: no asks (already repriced)
-- KXUCLTOTAL-26NOV04FENLFC-5: settling (131s)
+- KXUCLTOTAL-26NOV04FENLFC-5: no asks (already repriced)
 
 ---
 caps: $10/order · $20/game · $40/day · $50 open risk · ask 0.6–0.97 · score stable ≥ 240s in ESPN and Polymarket
