@@ -178,7 +178,9 @@
   "KXUCL1HTOTAL-26NOV04VIKSBH-2": 1793824136.7074866,
   "KXUCL1HBTTS-26NOV04VIKSBH-BTTS": 1793824136.7075505,
   "KXUCLTOTAL-26NOV04VIKSBH-2": 1793824136.7075942,
-  "KXUCLBTTS-26NOV04VIKSBH-BTTS": 1793824136.707618
+  "KXUCLBTTS-26NOV04VIKSBH-BTTS": 1793824136.707618,
+  "KXUCL1HTOTAL-26NOV04RCLCOM-2": 1793824464.695917,
+  "KXUCLTOTAL-26NOV04RCLCOM-2": 1793824464.6960042
  },
  "blocked": {
   "KXUCL1HTOTAL-26NOV03GALVFB-2": "settling (99s)",
@@ -344,20 +346,22 @@
   "KXUCLTOTAL-26NOV04AEKRMA-8": "no asks (already repriced)",
   "KXUCLTOTAL-26NOV04AEKRMA-7": "no asks (already repriced)",
   "KXUCLTOTAL-26NOV04AEKRMA-6": "no asks (already repriced)",
-  "KXUCL1HTOTAL-26NOV04RCLCOM-1": "no asks (already repriced)",
-  "KXUCLTOTAL-26NOV04RCLCOM-1": "no asks (already repriced)",
+  "KXUCL1HTOTAL-26NOV04RCLCOM-1": "settling (171s)",
+  "KXUCLTOTAL-26NOV04RCLCOM-1": "settling (40s)",
   "KXUCL1HTOTAL-26NOV04SLAARS-1": "no asks (already repriced)",
   "KXUCLTOTAL-26NOV04SLAARS-1": "no asks (already repriced)",
-  "KXUCL1HTOTAL-26NOV04VIKSBH-1": "settling (220s)",
+  "KXUCL1HTOTAL-26NOV04VIKSBH-1": "no asks (already repriced)",
   "KXUCLTOTAL-26NOV04VIKSBH-1": "settling (128s)",
   "KXUCL1HTOTAL-26NOV04FCPNAP-1": "no asks (already repriced)",
   "KXUCLTOTAL-26NOV04FCPNAP-1": "no asks (already repriced)",
   "KXUCL1HTOTAL-26NOV04PSVBRU-1": "no asks (already repriced)",
   "KXUCLTOTAL-26NOV04PSVBRU-1": "no asks (already repriced)",
-  "KXUCL1HTOTAL-26NOV04VIKSBH-2": "settling (220s)",
-  "KXUCL1HBTTS-26NOV04VIKSBH-BTTS": "settling (220s)",
-  "KXUCLTOTAL-26NOV04VIKSBH-2": "settling (220s)",
-  "KXUCLBTTS-26NOV04VIKSBH-BTTS": "settling (220s)"
+  "KXUCL1HTOTAL-26NOV04VIKSBH-2": "no asks (already repriced)",
+  "KXUCL1HBTTS-26NOV04VIKSBH-BTTS": "no asks (already repriced)",
+  "KXUCLTOTAL-26NOV04VIKSBH-2": "no asks (already repriced)",
+  "KXUCLBTTS-26NOV04VIKSBH-BTTS": "no asks (already repriced)",
+  "KXUCL1HTOTAL-26NOV04RCLCOM-2": "settling (171s)",
+  "KXUCLTOTAL-26NOV04RCLCOM-2": "settling (171s)"
  },
  "started": 1793687692.6057825,
  "ht": {
