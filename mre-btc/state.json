@@ -1734,9 +1734,23 @@
    "exit": "no fill",
    "pnl": null,
    "momentum": "UP"
+  },
+  {
+   "T0": 1793806200,
+   "slug": "cpc-btc-updown-15m-2026-11-04-1530z",
+   "side": "DOWN",
+   "buyPx": 0.275,
+   "buyLeft": 690,
+   "qty": 6,
+   "sold": 6,
+   "exit": "sold at 30¢ avg",
+   "pnl": 0.12,
+   "momentum": "DOWN",
+   "sellId": "DH044R2G13D1",
+   "sellPx": 0.29513395000000003
   }
  ],
  "balanceStart": 95.086,
- "balanceNow": 70.5964,
+ "balanceNow": 70.7164,
  "errors": 0
 }
