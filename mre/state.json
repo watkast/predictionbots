@@ -2383,9 +2383,22 @@
    "exit": "no fill",
    "pnl": null,
    "momentum": "DOWN"
+  },
+  {
+   "T0": 1793797200,
+   "slug": "cpceth-eth-updown-15m-2026-11-04-1300z",
+   "side": "DOWN",
+   "buyPx": 0.275,
+   "buyLeft": 868,
+   "qty": 6,
+   "sold": 2,
+   "exit": null,
+   "pnl": null,
+   "momentum": "DOWN",
+   "sellId": "DGXYD6P013D1"
   }
  ],
  "balanceStart": 17.4956,
- "balanceNow": 74.4564,
+ "balanceNow": 77.5164,
  "errors": 0
 }
