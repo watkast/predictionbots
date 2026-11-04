@@ -2218,10 +2218,29 @@
    "buyLeft": 837,
    "qty": 6,
    "sold": 0,
-   "exit": null,
+   "exit": "held to the bell",
    "pnl": null,
    "momentum": "DOWN",
-   "sellId": "DGTY9KD053D6"
+   "sellId": "DGTY9KD053D6",
+   "_sold": 0,
+   "_proceeds": 0,
+   "_cost": 1.6500000000000001,
+   "_sell": {
+    "id": "DGTY9KD053D6",
+    "qty": 6,
+    "base": 0
+   }
+  },
+  {
+   "T0": 1793785500,
+   "slug": "cpceth-eth-updown-15m-2026-11-04-0945z",
+   "side": null,
+   "buyPx": null,
+   "buyLeft": null,
+   "qty": 0,
+   "sold": 0,
+   "exit": null,
+   "pnl": null
   }
  ],
  "balanceStart": 17.4956,
