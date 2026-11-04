@@ -2646,8 +2646,8 @@
    "buyLeft": 885,
    "qty": 6,
    "sold": 0,
-   "exit": "held to the bell",
-   "pnl": null,
+   "exit": "6 lost at the bell",
+   "pnl": -1.65,
    "momentum": "DOWN",
    "sellId": "DH27F62G53D5",
    "_sold": 0,
@@ -2657,7 +2657,8 @@
     "id": "DH27F62G53D5",
     "qty": 6,
     "base": 0
-   }
+   },
+   "result": "UP"
   },
   {
    "T0": 1793816100,
@@ -2667,11 +2668,12 @@
    "buyLeft": null,
    "qty": 0,
    "sold": 0,
-   "exit": null,
-   "pnl": null
+   "exit": "no fill",
+   "pnl": null,
+   "momentum": "UP"
   }
  ],
  "balanceStart": 17.4956,
- "balanceNow": 77.5364,
+ "balanceNow": 72.0064,
  "errors": 0
 }
