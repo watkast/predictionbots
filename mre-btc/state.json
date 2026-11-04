@@ -1510,9 +1510,22 @@
    "exit": "no fill",
    "pnl": null,
    "momentum": "UP"
+  },
+  {
+   "T0": 1793792700,
+   "slug": "cpc-btc-updown-15m-2026-11-04-1145z",
+   "side": "DOWN",
+   "buyPx": 0.28500000000000003,
+   "buyLeft": 825,
+   "qty": 4,
+   "sold": 0,
+   "exit": null,
+   "pnl": null,
+   "momentum": "DOWN",
+   "sellId": "DGWW4C2013CT"
   }
  ],
  "balanceStart": 95.086,
- "balanceNow": 74.6564,
+ "balanceNow": 77.5164,
  "errors": 0
 }
