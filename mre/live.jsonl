@@ -1854,3 +1854,9 @@
 {"t":1793823662332,"k":"round","d":{"slug":"cpceth-eth-updown-15m-2026-11-04-2015z","exit":"no fill"}}
 {"t":1793824205498,"k":"ladder","d":{"slug":"cpceth-eth-updown-15m-2026-11-04-2030z","ids":["DH4BTTQ013D3","DH4BTVA053CZ","DH4BTVTG13D3","DH4BTW9G13CZ","DH4BTWT013D3","DH4BTXB013CX"]}}
 {"t":1793824205499,"k":"rest","d":{"slug":"cpceth-eth-updown-15m-2026-11-04-2030z","side":"UP","momentum":"last round closed UP","at":0.3,"ladder":"25–30¢","rungs":6,"qty":1}}
+{"t":1793824560791,"k":"round","d":{"slug":"cpceth-eth-updown-15m-2026-11-04-2030z","buysPulled":"no entry inside the last 9 min","held":0}}
+{"t":1793824560792,"k":"round","d":{"slug":"cpceth-eth-updown-15m-2026-11-04-2030z","exit":"no fill"}}
+{"t":1793825105814,"k":"ladder","d":{"slug":"cpceth-eth-updown-15m-2026-11-04-2045z","ids":["DH4JPJD013CX","DH4JPK5G13D5","DH4JPM7G53CX","DH4JPN7G13D8","DH4JPP1G13CX","DH4JPQ1013CZ"]}}
+{"t":1793825105815,"k":"rest","d":{"slug":"cpceth-eth-updown-15m-2026-11-04-2045z","side":"UP","momentum":"last round closed UP","at":0.3,"ladder":"25–30¢","rungs":6,"qty":1}}
+{"t":1793825150998,"k":"fill","d":{"slug":"cpceth-eth-updown-15m-2026-11-04-2045z","side":"UP","px":0.285,"qty":4,"heldTotal":4,"of":6}}
+{"t":1793825151035,"k":"rest","d":{"slug":"cpceth-eth-updown-15m-2026-11-04-2045z","side":"UP","sellAt":0.6,"qty":4,"id":"DH4K1RBG13D1"}}
