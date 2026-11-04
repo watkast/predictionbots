@@ -1040,3 +1040,14 @@
 {"t":1793778454698,"k":"exit","d":{"slug":"cpc-btc-updown-15m-2026-11-04-0745z","side":"DOWN","armed":0.31,"avg":0.275,"src":"ws"}}
 {"t":1793778462652,"k":"fill","d":{"slug":"cpc-btc-updown-15m-2026-11-04-0745z","side":"DOWN","sold":0.31999999999999995,"qty":6,"soldTotal":6,"of":6,"exit":"stall","peak":0.34,"bid":0.32,"slip":0.01}}
 {"t":1793778464154,"k":"round","d":{"slug":"cpc-btc-updown-15m-2026-11-04-0745z","exit":"sold at 30¢ avg","qty":6,"pnl":0.18}}
+{"t":1793779205902,"k":"ladder","d":{"slug":"cpc-btc-updown-15m-2026-11-04-0800z","ids":["DGSMGFXG13D8","DGSMGH6013D5","DGSMGJ8G13D6","DGSMGK9G13D8","DGSMGM9013D6","DGSMGNKG13D7"]}}
+{"t":1793779205903,"k":"rest","d":{"slug":"cpc-btc-updown-15m-2026-11-04-0800z","side":"DOWN","momentum":"last round closed DOWN","at":0.3,"ladder":"25–30¢","rungs":6,"qty":1}}
+{"t":1793779302678,"k":"fill","d":{"slug":"cpc-btc-updown-15m-2026-11-04-0800z","side":"DOWN","px":0.3,"qty":1,"heldTotal":1,"of":6}}
+{"t":1793779302785,"k":"rest","d":{"slug":"cpc-btc-updown-15m-2026-11-04-0800z","side":"DOWN","sellAt":0.6,"qty":1,"id":"DGSN8AJG13D1"}}
+{"t":1793779305870,"k":"fill","d":{"slug":"cpc-btc-updown-15m-2026-11-04-0800z","side":"DOWN","px":0.285,"qty":3,"heldTotal":4,"of":6}}
+{"t":1793779306223,"k":"rest","d":{"slug":"cpc-btc-updown-15m-2026-11-04-0800z","side":"DOWN","sellAt":0.6,"qty":4,"id":"DGSN95CG13D5"}}
+{"t":1793779309089,"k":"fill","d":{"slug":"cpc-btc-updown-15m-2026-11-04-0800z","side":"DOWN","px":0.275,"qty":2,"heldTotal":6,"of":6}}
+{"t":1793779309450,"k":"rest","d":{"slug":"cpc-btc-updown-15m-2026-11-04-0800z","side":"DOWN","sellAt":0.6,"qty":6,"id":"DGSN9YFG13D6"}}
+{"t":1793779353894,"k":"exit","d":{"slug":"cpc-btc-updown-15m-2026-11-04-0800z","side":"DOWN","armed":0.31,"avg":0.275,"src":"ws"}}
+{"t":1793779367356,"k":"fill","d":{"slug":"cpc-btc-updown-15m-2026-11-04-0800z","side":"DOWN","sold":0.36,"qty":6,"soldTotal":6,"of":6,"exit":"stall","peak":0.42,"bid":0.36,"slip":0.01}}
+{"t":1793779368857,"k":"round","d":{"slug":"cpc-btc-updown-15m-2026-11-04-0800z","exit":"sold at 34¢ avg","qty":6,"pnl":0.41}}
