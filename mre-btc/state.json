@@ -2037,13 +2037,34 @@
    "buyLeft": 563,
    "qty": 5,
    "sold": 0,
-   "exit": null,
-   "pnl": null,
+   "exit": "5 lost at the bell",
+   "pnl": -1.35,
    "momentum": "DOWN",
-   "sellId": "DH59TSV013D1"
+   "sellId": "DH59TSV013D1",
+   "_sold": 0,
+   "_proceeds": 0,
+   "_cost": 1.35,
+   "_sell": {
+    "id": "DH59TSV013D1",
+    "qty": 5,
+    "base": 0
+   },
+   "result": "UP"
+  },
+  {
+   "T0": 1793828700,
+   "slug": "cpc-btc-updown-15m-2026-11-04-2145z",
+   "side": null,
+   "buyPx": null,
+   "buyLeft": null,
+   "qty": 0,
+   "sold": 0,
+   "exit": "no fill",
+   "pnl": null,
+   "momentum": "UP"
   }
  ],
  "balanceStart": 95.086,
- "balanceNow": 39.0993,
+ "balanceNow": 13.5057,
  "errors": 0
 }
