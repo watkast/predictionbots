@@ -1169,3 +1169,14 @@
 {"t":1793797206551,"k":"rest","d":{"slug":"cpc-btc-updown-15m-2026-11-04-1300z","side":"UP","momentum":"last round closed UP","at":0.3,"ladder":"25–30¢","rungs":6,"qty":1}}
 {"t":1793797562214,"k":"round","d":{"slug":"cpc-btc-updown-15m-2026-11-04-1300z","buysPulled":"no entry inside the last 9 min","held":0}}
 {"t":1793797562214,"k":"round","d":{"slug":"cpc-btc-updown-15m-2026-11-04-1300z","exit":"no fill"}}
+{"t":1793798105682,"k":"ladder","d":{"slug":"cpc-btc-updown-15m-2026-11-04-1315z","ids":["DGY4PR4G13D8","DGY4PS3013D6","DGY4PSQ013D5","DGY4PTG013D6","DGY4PVN013D3","DGY4PW8G13CZ"]}}
+{"t":1793798105682,"k":"rest","d":{"slug":"cpc-btc-updown-15m-2026-11-04-1315z","side":"UP","momentum":"last round closed UP","at":0.3,"ladder":"25–30¢","rungs":6,"qty":1}}
+{"t":1793798117156,"k":"fill","d":{"slug":"cpc-btc-updown-15m-2026-11-04-1315z","side":"UP","px":0.285,"qty":4,"heldTotal":4,"of":6}}
+{"t":1793798117203,"k":"rest","d":{"slug":"cpc-btc-updown-15m-2026-11-04-1315z","side":"UP","sellAt":0.6,"qty":4,"id":"DGY4SPG013CX"}}
+{"t":1793798119391,"k":"fill","d":{"slug":"cpc-btc-updown-15m-2026-11-04-1315z","side":"UP","px":0.277,"qty":1.62,"heldTotal":5.62,"of":6}}
+{"t":1793798119584,"k":"rest","d":{"slug":"cpc-btc-updown-15m-2026-11-04-1315z","side":"UP","sellAt":0.6,"qty":5.62,"id":"DGY4T93013D9"}}
+{"t":1793798122582,"k":"fill","d":{"slug":"cpc-btc-updown-15m-2026-11-04-1315z","side":"UP","px":0.275,"qty":0.38,"heldTotal":6,"of":6}}
+{"t":1793798122744,"k":"rest","d":{"slug":"cpc-btc-updown-15m-2026-11-04-1315z","side":"UP","sellAt":0.6,"qty":6,"id":"DGY4V1KG13CT"}}
+{"t":1793798129343,"k":"exit","d":{"slug":"cpc-btc-updown-15m-2026-11-04-1315z","side":"UP","armed":0.31,"avg":0.275,"src":"ws"}}
+{"t":1793798131398,"k":"fill","d":{"slug":"cpc-btc-updown-15m-2026-11-04-1315z","side":"UP","sold":0.28,"qty":6,"soldTotal":6,"of":6,"exit":"stall","peak":0.31,"bid":0.29,"slip":0.01}}
+{"t":1793798131899,"k":"round","d":{"slug":"cpc-btc-updown-15m-2026-11-04-1315z","exit":"sold at 27¢ avg","qty":6,"pnl":-0.05}}
