@@ -1976,13 +1976,14 @@
    "buyLeft": 753,
    "qty": 2,
    "sold": 2,
-   "exit": null,
-   "pnl": null,
+   "exit": "sold at 30¢ avg",
+   "pnl": 0.02,
    "momentum": "UP",
-   "sellId": "DGQ36GMG13CZ"
+   "sellId": "DGQ36GMG13CZ",
+   "sellPx": 0.3048768
   }
  ],
  "balanceStart": 17.4956,
- "balanceNow": 76.9939,
+ "balanceNow": 88.4239,
  "errors": 0
 }
