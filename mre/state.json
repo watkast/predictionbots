@@ -2134,10 +2134,18 @@
    "buyLeft": 791,
    "qty": 6,
    "sold": 3,
-   "exit": null,
+   "exit": "held to the bell",
    "pnl": null,
    "momentum": "DOWN",
-   "sellId": "DGSP67CG13D3"
+   "sellId": "DGSP67CG13D3",
+   "_sold": 3,
+   "_proceeds": 1.35806265,
+   "_cost": 1.6500000000000001,
+   "_sell": {
+    "id": "DGSP67CG13D3",
+    "qty": 3,
+    "base": 3
+   }
   }
  ],
  "balanceStart": 17.4956,
