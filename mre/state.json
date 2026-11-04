@@ -2472,13 +2472,34 @@
    "buyLeft": 875,
    "qty": 6,
    "sold": 0,
-   "exit": null,
-   "pnl": null,
+   "exit": "6 lost at the bell",
+   "pnl": -1.65,
    "momentum": "DOWN",
-   "sellId": "DGZ782DG13CT"
+   "sellId": "DGZ782DG13CT",
+   "_sold": 0,
+   "_proceeds": 0,
+   "_cost": 1.6500000000000001,
+   "_sell": {
+    "id": "DGZ782DG13CT",
+    "qty": 6,
+    "base": 0
+   },
+   "result": "UP"
+  },
+  {
+   "T0": 1793803500,
+   "slug": "cpceth-eth-updown-15m-2026-11-04-1445z",
+   "side": null,
+   "buyPx": null,
+   "buyLeft": null,
+   "qty": 0,
+   "sold": 0,
+   "exit": "no fill",
+   "pnl": null,
+   "momentum": "UP"
   }
  ],
  "balanceStart": 17.4956,
- "balanceNow": 84.1264,
+ "balanceNow": 72.2464,
  "errors": 0
 }
