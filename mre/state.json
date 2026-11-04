@@ -2391,14 +2391,15 @@
    "buyPx": 0.275,
    "buyLeft": 868,
    "qty": 6,
-   "sold": 2,
-   "exit": null,
-   "pnl": null,
+   "sold": 6,
+   "exit": "sold at 31¢ avg",
+   "pnl": 0.2,
    "momentum": "DOWN",
-   "sellId": "DGXYD6P013D1"
+   "sellId": "DGXYD6P013D1",
+   "sellPx": 0.30820318333333335
   }
  ],
  "balanceStart": 17.4956,
- "balanceNow": 77.5164,
+ "balanceNow": 74.6564,
  "errors": 0
 }
