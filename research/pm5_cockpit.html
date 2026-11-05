@@ -56,10 +56,11 @@ input{width:100%;margin-top:3px;background:var(--bg);color:var(--tx);border:1px 
   <div class="c"><small>Proj. final</small><div class="num" id="v-proj">—</div><em id="v-projs">—</em></div>
   <div class="c"><small>Fair UP</small><div class="num" id="v-p">—</div><em id="v-ps">—</em></div>
 </div>
-<div class="grid">
-  <div class="c"><small>PM UP ask/bid</small><div class="num" id="v-up">—</div><em id="v-eup">edge —</em></div>
-  <div class="c"><small>PM DOWN ask/bid</small><div class="num" id="v-dn">—</div><em id="v-edn">edge —</em></div>
-  <div class="c"><small>Spot lead</small><div class="num" id="v-lead">—</div><em id="v-leads">—</em></div>
+<div class="grid" style="grid-template-columns:1fr">
+  <!-- ask/bid cells hidden for now (Noah, 2026-11-05); the call card still uses the book. Remove style="display:none" to bring them back. -->
+  <div class="c" style="display:none"><small>PM UP ask/bid</small><div class="num" id="v-up">—</div><em id="v-eup">edge —</em></div>
+  <div class="c" style="display:none"><small>PM DOWN ask/bid</small><div class="num" id="v-dn">—</div><em id="v-edn">edge —</em></div>
+  <div class="c"><small>Spot lead vs PM line</small><div class="num" id="v-lead">—</div><em id="v-leads">—</em></div>
 </div>
 <div class="grid">
   <div class="c"><small>Spot (CB)</small><div class="num" id="v-spot">—</div><em id="v-spots">—</em></div>
