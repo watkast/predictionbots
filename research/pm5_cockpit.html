@@ -66,6 +66,11 @@ input{width:100%;margin-top:3px;background:var(--bg);color:var(--tx);border:1px 
   <div class="c"><small>2-min trend</small><div class="num" id="v-t2">—</div><em id="v-t2s">—</em></div>
   <div class="c"><small>10-min trend</small><div class="num" id="v-t10">—</div><em id="v-t10s">—</em></div>
 </div>
+<div class="grid">
+  <div class="c"><small>30-min trend</small><div class="num" id="v-t30">—</div><em id="v-t30s">—</em></div>
+  <div class="c"><small>60-min trend</small><div class="num" id="v-t60">—</div><em id="v-t60s">—</em></div>
+  <div class="c"><small>Trend stack</small><div class="num" id="v-stk">—</div><em id="v-stks">2 · 10 · 30 · 60 min</em></div>
+</div>
 
 <canvas id="cv"></canvas>
 <div class="note" id="note"></div>
@@ -106,7 +111,8 @@ const median = a => { if (!a.length) return NaN; const s = [...a].sort((x, y) =>
 const slugOf = (pre, T0) => { const d = new Date(T0 * 1000).toISOString(); return `${pre}${d.slice(0, 10)}-${d.slice(11, 13)}${d.slice(14, 16)}z`; };
 
 // ---------- state ----------
-const cb = new Map();          // second -> last Coinbase price
+const cb = new Map();          // second -> last Coinbase price (real ticks only — the vol model reads these)
+const cbFill = new Map();      // second -> price interpolated from 1-min candles (trends only, never vol)
 const idx = new Map();         // second -> PM index (trailing average)
 const F = { cb: { px: NaN, at: 0, ws: null }, bn: { px: NaN, at: 0, ws: null } };
 const R = { T0: 0, slug: '', pre: S.pre || null, target: NaN, tsrc: '', fee: 0.0695, book: null, bookAt: 0, termsAt: 0, termsTries: 0, found: null,
@@ -130,11 +136,12 @@ function wsBinance() {
 setInterval(() => { for (const k of ['cb', 'bn']) { const w = F[k].ws; if (w && w.readyState === 1 && Date.now() - F[k].at > 8000) try { w.close(); } catch (e) {} } }, 3000);
 async function backfill() {   // trades (seconds) + 1-min candles (for the 10-min trend at load)
   try { const c = await (await fetch('https://api.exchange.coinbase.com/products/BTC-USD/candles?granularity=60')).json();
-    if (Array.isArray(c)) for (const [t, , , op, cl] of c.slice(0, 30)) for (let s = 0; s < 60; s++) if (!cb.has(t + s)) cb.set(t + s, op + (cl - op) * (s + 0.5) / 60); } catch (e) {}
+    if (Array.isArray(c)) for (const [t, , , op, cl] of c.slice(0, 120)) for (let s = 0; s < 60; s++) cbFill.set(t + s, op + (cl - op) * (s + 0.5) / 60); } catch (e) {}
   try { const tr = await (await fetch('https://api.exchange.coinbase.com/products/BTC-USD/trades?limit=1000')).json();
     if (Array.isArray(tr)) for (const t of tr.reverse()) cb.set(Math.floor(Date.parse(t.time) / 1000), +t.price); } catch (e) {}
 }
-const cbAt = s => { for (let k = 0; k < 30; k++) { const v = cb.get(s - k); if (v) return v; } return NaN; };   // last known price at second s
+const cbAt = s => { for (let k = 0; k < 30; k++) { const v = cb.get(s - k); if (v) return v; } const f = cbFill.get(s); return f || NaN; };
+setInterval(() => { const cut = Math.floor(Date.now() / 1000) - 3 * 3600; for (const m of [cb, cbFill]) for (const k of m.keys()) if (k < cut) m.delete(k); }, 60000);   // last known price at second s
 
 // ---------- PM gateway (through the relay) ----------
 async function pmGet(path, ms = 1800) {
@@ -207,6 +214,8 @@ function slope(spanS, now) {   // least-squares $/s over the last spanS seconds 
   for (let s = now - spanS; s <= now; s++) { const v = cbAt(s); if (!v) continue; const x = s - now; n++; sx += x; sy += v; sxx += x * x; sxy += x * v; }
   if (n < spanS * 0.5) return NaN; const d = n * sxx - sx * sx; return d ? (n * sxy - sx * sy) / d : NaN;
 }
+const LS = { at: 0, s30: NaN, s60: NaN };   // long slopes, recomputed every 5 s
+function longSlopes(now) { if (now - LS.at >= 5) { LS.at = now; LS.s30 = slope(2700, now); LS.s60 = slope(5400, now); } return LS; }
 function sigma(now) {          // $/√s from 1-s Coinbase changes over the last 10 min, floored
   const d = []; for (let s = now - 600; s < now; s++) { const a = cb.get(s), b = cb.get(s + 1); if (a && b) d.push(b - a); }
   if (d.length < 60) return NaN; const m = d.reduce((x, y) => x + y, 0) / d.length;
@@ -261,6 +270,11 @@ function render(ms, now, left) {
   // trends
   if (Number.isFinite(s2) && fresh) { const d = s2 * 120; set('v-t2', (d >= 0 ? '▲ ' : '▼ ') + fS(d), 'num ' + (d >= 0 ? 'g' : 'r')); set('v-t2s', '→ ' + f$(spot + d)); } else set('v-t2', '—', 'num');
   if (Number.isFinite(s10) && fresh) { const d = s10 * 600; set('v-t10', (d >= 0 ? '▲ ' : '▼ ') + fS(d), 'num ' + (d >= 0 ? 'g' : 'r')); set('v-t10s', '→ ' + f$(spot + d)); } else set('v-t10', '—', 'num');
+  const L = longSlopes(now), tr = [[s2, 120], [s10, 600], [L.s30, 1800], [L.s60, 3600]];
+  for (const [id, sl, h] of [['v-t30', L.s30, 1800], ['v-t60', L.s60, 3600]]) {
+    if (Number.isFinite(sl) && fresh) { const d = sl * h; set(id, (d >= 0 ? '▲ ' : '▼ ') + fS(d), 'num ' + (d >= 0 ? 'g' : 'r')); set(id + 's', '→ ' + f$(spot + d)); } else set(id, '—', 'num'); }
+  const ups = tr.filter(([v]) => Number.isFinite(v) && v > 0).length, dns = tr.filter(([v]) => Number.isFinite(v) && v < 0).length;
+  set('v-stk', ups + dns ? `${ups}▲ ${dns}▼` : '—', 'num ' + (ups === 4 ? 'g' : dns === 4 ? 'r' : 'y'));
   set('v-spot', f$(spot), 'num'); set('v-spots', Number.isFinite(F.bn.px) && ms - F.bn.at < 6000 ? 'BN.US ' + fS(F.bn.px - spot) : 'BN.US —');
 
   // PM line + lead
