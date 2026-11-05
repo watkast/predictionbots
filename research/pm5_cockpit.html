@@ -88,7 +88,7 @@ input{width:100%;margin-top:3px;background:var(--bg);color:var(--tx);border:1px 
 const $ = id => document.getElementById(id);
 const ROUND = 300;
 const DEFAULT_RELAY = 'https://pm15-relay-worker.machwonder.workers.dev';
-const PREFIXES = ['cpc-btc-updown-5m-', 'cpc-btc-updown-5min-', 'cpcbtc-btc-updown-5m-'];
+const PREFIXES = ['cpc-btc-updown-5m-', 'btc-updown-5m-', 'cpcbtc-btc-updown-5m-'];   // web event page = btc-updown-5m-<start>z; 15-min markets add cpc-
 const LSK = 'pm5.settings';
 const S = Object.assign({ relay: '', pre: '', edge: 6, win: 60 }, (() => { try { return JSON.parse(localStorage.getItem(LSK) || '{}'); } catch (e) { return {}; } })());
 const saveS = () => { try { localStorage.setItem(LSK, JSON.stringify(S)); } catch (e) {} };
@@ -110,7 +110,7 @@ const cb = new Map();          // second -> last Coinbase price
 const idx = new Map();         // second -> PM index (trailing average)
 const F = { cb: { px: NaN, at: 0, ws: null }, bn: { px: NaN, at: 0, ws: null } };
 const R = { T0: 0, slug: '', pre: S.pre || null, target: NaN, tsrc: '', fee: 0.0695, book: null, bookAt: 0, termsAt: 0, termsTries: 0, found: null,
-            last: null, offs: [], offset: NaN, offSd: NaN, idxLatest: 0, pmOk: null, pmErr: '' };
+            last: null, chk: { n: 0, ok: 0 }, offs: [], offset: NaN, offSd: NaN, idxLatest: 0, pmOk: null, pmErr: '' };
 
 // ---------- WebSockets ----------
 function addCb(ms, px) { if (!(px > 1000)) return; cb.set(Math.floor(ms / 1000), px); F.cb.px = px; F.cb.at = Date.now(); dirty = true; }
@@ -167,6 +167,7 @@ async function fetchPrevSettle(T0) {
   try { const j = await pmGet('/v1/market/slug/' + slugOf(R.pre, T0)); const m = (j && j.market) || j || {}; const t = m.assetPriceTerms || {};
     const sp = val(t.settlementPrice), ptb = val(t.priceToBeat);
     if (Number.isFinite(sp) && Number.isFinite(ptb)) R.last = { res: sp >= ptb ? 'UP' : 'DOWN', margin: sp - ptb };
+    const ix = idx.get(T0 + ROUND - 1); if (Number.isFinite(sp) && ix) { R.chk.n++; if (Math.abs(sp - ix) <= 0.02) R.chk.ok++; }   // does the 5-min market settle on the index at T-1?
     if (Number.isFinite(sp) && !Number.isFinite(R.target)) { R.target = sp; R.tsrc = 'last settle'; } } catch (e) {}
 }
 async function fetchBook() {
@@ -229,7 +230,7 @@ function project(now, spot, mu, sig, T) {
 let dirty = true, lastBook = 0, lastIdx = 0, lastRender = 0;
 function newRound(T0) {
   const prev = R.T0; Object.assign(R, { T0, slug: R.pre ? slugOf(R.pre, T0) : '', target: NaN, tsrc: '', book: null, bookAt: 0, termsTries: 0 });
-  fetchTerms(); if (prev) setTimeout(() => fetchPrevSettle(prev), 4000);
+  fetchTerms(); if (prev) { setTimeout(() => fetchPrevSettle(prev), 4000); setTimeout(() => fetchPrevSettle(prev), 30000); }
 }
 function tick() {
   if (document.hidden) return;
@@ -306,7 +307,7 @@ function render(ms, now, left) {
     else { h = (p >= 0.5 ? 'UP' : 'DOWN') + ' for now'; sub = `no edge ≥ ${S.edge}¢ · flip chance ${fp(Math.min(p, 1 - p))}`; }
   }
   $('act').className = 'act ' + cls; set('act-h', h); set('act-s', sub);
-  set('note', Number.isFinite(R.offset) ? `index offset ${fS(R.offset, 2)} ±${(R.offSd || 0).toFixed(2)} · σ ${Number.isFinite(sig) ? sig.toFixed(1) : '—'} $/√s · fee ${R.fee}` : 'calibrating PM index vs Coinbase…');
+  set('note', Number.isFinite(R.offset) ? `index offset ${fS(R.offset, 2)} ±${(R.offSd || 0).toFixed(2)} · σ ${Number.isFinite(sig) ? sig.toFixed(1) : '—'} $/√s · fee ${R.fee} · settle check ${R.chk.ok}/${R.chk.n} matched index` : 'calibrating PM index vs Coinbase…');
   draw(now, spot, pr, T);
 }
 
