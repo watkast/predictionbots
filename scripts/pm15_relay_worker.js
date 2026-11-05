@@ -4,6 +4,7 @@
 //     wrapped with the mobile viewport / home-screen metas, cached at the edge for 60 s. That URL is where the cockpit
 //     is opened on a phone: Safari -> Share -> Add to Home Screen. The claude.ai artifact copy cannot reach Coinbase
 //     or this relay (the artifact origin blocks outbound connections), so it only shows the layout.
+//     GET /5m -> research/pm5_cockpit.html, the 5-minute BTC cockpit (same relay, same caching).
 //     ?ref=<branch-or-sha> serves another revision (testing); ?fresh=1 bypasses the edge cache.
 //
 //  2. RELAYS three read-only Polymarket US gateway endpoints with the CORS header a browser page needs:
@@ -23,6 +24,7 @@
 const UPSTREAM = 'https://gateway.polymarket.us';
 const PAGE_REPO = 'watkast/predictionbots';
 const PAGE_PATH = 'research/pm15_copilot.html';
+const PAGES = { '/': PAGE_PATH, '/app': PAGE_PATH, '/index.html': PAGE_PATH, '/5m': 'research/pm5_cockpit.html', '/pm5': 'research/pm5_cockpit.html' };
 const ALLOWED = [/^\/v1\/market\/slug\/[a-z0-9-]+$/, /^\/v1\/markets\/[a-z0-9-]+\/book$/, /^\/v1\/asset-prices\/history$/];
 const HISTORY_PARAMS = { assets: /^crypto:[a-z]{2,10}$/, from: /^\d{1,12}$/, to: /^\d{1,12}$/, bucket: /^ASSET_PRICE_BUCKET_(1S|1M|5M|15M|1H)$/ };
 const HEAD = '<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">'
@@ -43,17 +45,18 @@ export default {
     if (request.method !== 'GET') return new Response('not found', { status: 404, headers: cors });
 
     // ---- 1. the cockpit page
-    if (url.pathname === '/' || url.pathname === '/app' || url.pathname === '/index.html') {
+    if (PAGES[url.pathname]) {
+      const path = PAGES[url.pathname];
       const ref = /^[A-Za-z0-9._\/-]{1,80}$/.test(url.searchParams.get('ref') || '') ? url.searchParams.get('ref') : 'main';
-      const src = `https://raw.githubusercontent.com/${PAGE_REPO}/${ref}/${PAGE_PATH}`;
+      const src = `https://raw.githubusercontent.com/${PAGE_REPO}/${ref}/${path}`;
       const fresh = url.searchParams.has('fresh');
       const r = await fetch(src, { cf: fresh ? { cacheTtl: 0 } : { cacheTtl: 60, cacheEverything: true }, headers: { 'User-Agent': 'pm15-copilot worker' } });
       if (!r.ok) return new Response(`cockpit source unavailable (${r.status} from GitHub for ${ref})`, { status: 502, headers: { 'Content-Type': 'text/plain' } });
       const body = await r.text();
       const page = /^\s*<!doctype/i.test(body) ? body : HEAD + body + '</body></html>';
-      return new Response(page, { status: 200, headers: { 'Content-Type': 'text/html; charset=utf-8', 'Cache-Control': 'no-store', 'X-PM15-Source': `${ref}/${PAGE_PATH}` } });
+      return new Response(page, { status: 200, headers: { 'Content-Type': 'text/html; charset=utf-8', 'Cache-Control': 'no-store', 'X-PM15-Source': `${ref}/${path}` } });
     }
-    if (url.pathname === '/health') return new Response(JSON.stringify({ ok: true, routes: ['/', '/v1/market/slug/{slug}', '/v1/markets/{slug}/book', '/v1/asset-prices/history'] }), { headers: { ...cors, 'Content-Type': 'application/json' } });
+    if (url.pathname === '/health') return new Response(JSON.stringify({ ok: true, routes: ['/', '/5m', '/v1/market/slug/{slug}', '/v1/markets/{slug}/book', '/v1/asset-prices/history'] }), { headers: { ...cors, 'Content-Type': 'application/json' } });
 
     // ---- 2. the relay
     if (!ALLOWED.some(re => re.test(url.pathname))) return new Response('not found', { status: 404, headers: cors });

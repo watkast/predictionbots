@@ -1,0 +1,347 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="PM5">
+<meta name="theme-color" content="#0a0d14">
+<meta name="robots" content="noindex">
+<title>PM5 Cockpit</title>
+<style>
+:root{--bg:#0a0d14;--card:#121826;--line:#1f2838;--tx:#e6ebf5;--mut:#7d8aa3;--up:#22c55e;--dn:#ef4444;--warn:#f5b301;--acc:#38bdf8}
+*{box-sizing:border-box;margin:0;padding:0}
+html,body{background:var(--bg);color:var(--tx);font:15px/1.3 -apple-system,BlinkMacSystemFont,"SF Pro Text",system-ui,sans-serif;-webkit-text-size-adjust:100%}
+body{padding:max(10px,env(safe-area-inset-top)) 12px 24px;max-width:640px;margin:0 auto}
+.num{font-variant-numeric:tabular-nums;font-family:"SF Mono",ui-monospace,Menlo,monospace}
+.top{display:flex;justify-content:space-between;align-items:center;margin-bottom:8px}
+.top .rnd{color:var(--mut);font-size:13px}
+.dots{display:flex;gap:8px;font-size:11px;color:var(--mut)}
+.dot::before{content:"";display:inline-block;width:7px;height:7px;border-radius:50%;background:var(--dn);margin-right:4px;vertical-align:middle}
+.dot.on::before{background:var(--up)}.dot.slow::before{background:var(--warn)}
+.clock{font-size:54px;font-weight:700;text-align:center;letter-spacing:-1px;line-height:1}
+.bar{height:4px;background:var(--line);border-radius:2px;margin:8px 0 10px;overflow:hidden}
+.bar i{display:block;height:100%;background:var(--acc);width:0}
+.act{border-radius:14px;padding:14px;text-align:center;background:var(--card);border:1px solid var(--line);margin-bottom:10px}
+.act b{display:block;font-size:30px;letter-spacing:.5px}
+.act span{color:var(--mut);font-size:13px}
+.act.up{border-color:var(--up)}.act.up b{color:var(--up)}
+.act.dn{border-color:var(--dn)}.act.dn b{color:var(--dn)}
+.act.wait b{color:var(--tx)}.act.bad b{color:var(--warn)}
+.grid{display:grid;grid-template-columns:repeat(3,1fr);gap:6px;margin-bottom:6px}
+.c{background:var(--card);border:1px solid var(--line);border-radius:10px;padding:8px 9px;min-width:0}
+.c small{display:block;color:var(--mut);font-size:11px;text-transform:uppercase;letter-spacing:.4px;margin-bottom:2px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.c div{font-size:18px;font-weight:600;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.c em{display:block;font-style:normal;font-size:11px;color:var(--mut);margin-top:1px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.g{color:var(--up)}.r{color:var(--dn)}.y{color:var(--warn)}
+canvas{width:100%;height:170px;display:block;background:var(--card);border:1px solid var(--line);border-radius:10px;margin:4px 0 8px}
+.note{color:var(--mut);font-size:12px;min-height:16px;margin-bottom:8px}
+details{background:var(--card);border:1px solid var(--line);border-radius:10px;padding:8px 10px;font-size:13px}
+summary{color:var(--mut);cursor:pointer}
+label{display:block;margin-top:8px;color:var(--mut);font-size:12px}
+input{width:100%;margin-top:3px;background:var(--bg);color:var(--tx);border:1px solid var(--line);border-radius:6px;padding:7px;font:14px ui-monospace,Menlo,monospace}
+</style>
+</head>
+<body>
+<div class="top"><div class="rnd" id="rnd">BTC 5-min · —</div>
+  <div class="dots"><span class="dot" id="d-cb">CB</span><span class="dot" id="d-bn">BN</span><span class="dot" id="d-pm">PM</span></div></div>
+<div class="clock num" id="clock">–:––</div>
+<div class="bar"><i id="prog"></i></div>
+
+<div class="act wait" id="act"><b id="act-h">Starting…</b><span id="act-s">connecting feeds</span></div>
+
+<div class="grid">
+  <div class="c"><small>Price to beat</small><div class="num" id="v-tgt">—</div><em id="v-tgts">—</em></div>
+  <div class="c"><small>Proj. final</small><div class="num" id="v-proj">—</div><em id="v-projs">—</em></div>
+  <div class="c"><small>Fair UP</small><div class="num" id="v-p">—</div><em id="v-ps">—</em></div>
+</div>
+<div class="grid">
+  <div class="c"><small>PM UP ask/bid</small><div class="num" id="v-up">—</div><em id="v-eup">edge —</em></div>
+  <div class="c"><small>PM DOWN ask/bid</small><div class="num" id="v-dn">—</div><em id="v-edn">edge —</em></div>
+  <div class="c"><small>Spot lead</small><div class="num" id="v-lead">—</div><em id="v-leads">—</em></div>
+</div>
+<div class="grid">
+  <div class="c"><small>Spot (CB)</small><div class="num" id="v-spot">—</div><em id="v-spots">—</em></div>
+  <div class="c"><small>2-min trend</small><div class="num" id="v-t2">—</div><em id="v-t2s">—</em></div>
+  <div class="c"><small>10-min trend</small><div class="num" id="v-t10">—</div><em id="v-t10s">—</em></div>
+</div>
+
+<canvas id="cv"></canvas>
+<div class="note" id="note"></div>
+
+<details><summary>Settings</summary>
+  <label>Relay URL (your Cloudflare worker; blank = default)<input id="s-relay" placeholder="https://pm15-relay-worker.machwonder.workers.dev"></label>
+  <label>Market slug prefix (blank = auto-detect)<input id="s-pre" placeholder="cpc-btc-updown-5m-"></label>
+  <label>Minimum edge to call a buy, ¢ after fee<input id="s-edge" type="number" step="1" min="0" max="50"></label>
+  <label>Settlement average window, seconds (15-min market = 60)<input id="s-win" type="number" step="1" min="1" max="300"></label>
+</details>
+
+<script>
+'use strict';
+/* PM5 Cockpit — Polymarket US 5-minute BTC Up/Down, built for speed.
+   Feeds: Coinbase + Binance.US WebSockets (sub-second, browser-direct) · PM US gateway via the relay worker:
+   market terms (price to beat), Up-side book, 1-s index series (PM's trailing average; its T-1 value settles).
+   Model: projected final = offset + mean over the settlement window of (known Coinbase seconds, then today's spot);
+   uncertainty = the random-walk variance of the unseen seconds of that average + offset noise. Fair UP = Φ(z).
+   Direction calls are "for now" — nothing shown here is a sure thing. */
+const $ = id => document.getElementById(id);
+const ROUND = 300;
+const DEFAULT_RELAY = 'https://pm15-relay-worker.machwonder.workers.dev';
+const PREFIXES = ['cpc-btc-updown-5m-', 'cpc-btc-updown-5min-', 'cpcbtc-btc-updown-5m-'];
+const LSK = 'pm5.settings';
+const S = Object.assign({ relay: '', pre: '', edge: 6, win: 60 }, (() => { try { return JSON.parse(localStorage.getItem(LSK) || '{}'); } catch (e) { return {}; } })());
+const saveS = () => { try { localStorage.setItem(LSK, JSON.stringify(S)); } catch (e) {} };
+const relay = () => (S.relay || (location.origin.indexOf('workers.dev') > 0 ? location.origin : DEFAULT_RELAY)).replace(/\/$/, '');
+const fee = (p, c) => c * p * (1 - p);
+const val = v => (v && typeof v === 'object') ? Number(v.value) : Number(v);
+const f$ = (x, d = 0) => Number.isFinite(x) ? '$' + x.toLocaleString('en-US', { minimumFractionDigits: d, maximumFractionDigits: d }) : '—';
+const fS = (x, d = 0) => Number.isFinite(x) ? (x >= 0 ? '+' : '−') + '$' + Math.abs(x).toLocaleString('en-US', { minimumFractionDigits: d, maximumFractionDigits: d }) : '—';
+const fc = x => Number.isFinite(x) ? Math.round(x * 100) + '¢' : '—';
+const fe = x => Number.isFinite(x) ? (x >= 0 ? '+' : '−') + Math.abs(x * 100).toFixed(0) + '¢' : '—';
+const fp = p => !Number.isFinite(p) ? '—' : p > 0.995 ? '>99%' : p < 0.005 ? '<1%' : (p * 100).toFixed(p > 0.9 || p < 0.1 ? 1 : 0) + '%';
+function ncdf(z) { const t = 1 / (1 + 0.2316419 * Math.abs(z)), d = 0.3989423 * Math.exp(-z * z / 2);
+  const p = d * t * (0.3193815 + t * (-0.3565638 + t * (1.781478 + t * (-1.821256 + t * 1.330274)))); return z > 0 ? 1 - p : p; }
+const median = a => { if (!a.length) return NaN; const s = [...a].sort((x, y) => x - y), m = s.length >> 1; return s.length % 2 ? s[m] : (s[m - 1] + s[m]) / 2; };
+const slugOf = (pre, T0) => { const d = new Date(T0 * 1000).toISOString(); return `${pre}${d.slice(0, 10)}-${d.slice(11, 13)}${d.slice(14, 16)}z`; };
+
+// ---------- state ----------
+const cb = new Map();          // second -> last Coinbase price
+const idx = new Map();         // second -> PM index (trailing average)
+const F = { cb: { px: NaN, at: 0, ws: null }, bn: { px: NaN, at: 0, ws: null } };
+const R = { T0: 0, slug: '', pre: S.pre || null, target: NaN, tsrc: '', fee: 0.0695, book: null, bookAt: 0, termsAt: 0, termsTries: 0, found: null,
+            last: null, offs: [], offset: NaN, offSd: NaN, idxLatest: 0, pmOk: null, pmErr: '' };
+
+// ---------- WebSockets ----------
+function addCb(ms, px) { if (!(px > 1000)) return; cb.set(Math.floor(ms / 1000), px); F.cb.px = px; F.cb.at = Date.now(); dirty = true; }
+function wsCoinbase() {
+  let ws; try { ws = new WebSocket('wss://ws-feed.exchange.coinbase.com'); } catch (e) { return setTimeout(wsCoinbase, 3000); }
+  F.cb.ws = ws;
+  ws.onopen = () => ws.send(JSON.stringify({ type: 'subscribe', product_ids: ['BTC-USD'], channels: ['ticker'] }));
+  ws.onmessage = e => { const m = JSON.parse(e.data); if (m.type === 'ticker' && m.price) addCb(Date.now(), +m.price); };
+  ws.onclose = () => setTimeout(wsCoinbase, 1500); ws.onerror = () => { try { ws.close(); } catch (e) {} };
+}
+function wsBinance() {
+  let ws; try { ws = new WebSocket('wss://stream.binance.us:9443/ws/btcusd@trade'); } catch (e) { return setTimeout(wsBinance, 5000); }
+  F.bn.ws = ws;
+  ws.onmessage = e => { const m = JSON.parse(e.data); if (m.p) { F.bn.px = +m.p; F.bn.at = Date.now(); dirty = true; } };
+  ws.onclose = () => setTimeout(wsBinance, 3000); ws.onerror = () => { try { ws.close(); } catch (e) {} };
+}
+setInterval(() => { for (const k of ['cb', 'bn']) { const w = F[k].ws; if (w && w.readyState === 1 && Date.now() - F[k].at > 8000) try { w.close(); } catch (e) {} } }, 3000);
+async function backfill() {   // trades (seconds) + 1-min candles (for the 10-min trend at load)
+  try { const c = await (await fetch('https://api.exchange.coinbase.com/products/BTC-USD/candles?granularity=60')).json();
+    if (Array.isArray(c)) for (const [t, , , op, cl] of c.slice(0, 30)) for (let s = 0; s < 60; s++) if (!cb.has(t + s)) cb.set(t + s, op + (cl - op) * (s + 0.5) / 60); } catch (e) {}
+  try { const tr = await (await fetch('https://api.exchange.coinbase.com/products/BTC-USD/trades?limit=1000')).json();
+    if (Array.isArray(tr)) for (const t of tr.reverse()) cb.set(Math.floor(Date.parse(t.time) / 1000), +t.price); } catch (e) {}
+}
+const cbAt = s => { for (let k = 0; k < 30; k++) { const v = cb.get(s - k); if (v) return v; } return NaN; };   // last known price at second s
+
+// ---------- PM gateway (through the relay) ----------
+async function pmGet(path, ms = 1800) {
+  const ac = new AbortController(), to = setTimeout(() => ac.abort(), ms);
+  try { const r = await fetch(relay() + path, { signal: ac.signal, headers: { Accept: 'application/json' }, cache: 'no-store' });
+    if (!r.ok) throw new Error('HTTP ' + r.status); R.pmOk = true; return await r.json(); }
+  catch (e) { R.pmErr = String(e.message || e).slice(0, 60); throw e; } finally { clearTimeout(to); }
+}
+let busy = { terms: false, book: false, idx: false };
+async function fetchTerms() {
+  if (busy.terms) return; busy.terms = true; R.termsAt = Date.now(); R.termsTries++;
+  try {
+    const list = R.pre ? [R.pre] : PREFIXES;
+    for (const pre of list) {
+      const slug = slugOf(pre, R.T0);
+      try {
+        const j = await pmGet('/v1/market/slug/' + slug); const m = (j && j.market) || j || {}; const t = m.assetPriceTerms || {};
+        R.pre = pre; R.slug = slug; R.found = true;
+        const ptb = val(t.priceToBeat), c = val(m.feeCoefficient);
+        if (Number.isFinite(c) && c > 0 && c < 0.5) R.fee = c;
+        if (Number.isFinite(ptb)) { R.target = ptb; R.tsrc = 'PM terms'; }
+        return;
+      } catch (e) { if (!/HTTP 404/.test(R.pmErr)) break; }
+    }
+    if (R.found === null || R.termsTries > 3) R.found = false;
+  } finally { busy.terms = false; }
+}
+async function fetchPrevSettle(T0) {
+  if (!R.pre) return;
+  try { const j = await pmGet('/v1/market/slug/' + slugOf(R.pre, T0)); const m = (j && j.market) || j || {}; const t = m.assetPriceTerms || {};
+    const sp = val(t.settlementPrice), ptb = val(t.priceToBeat);
+    if (Number.isFinite(sp) && Number.isFinite(ptb)) R.last = { res: sp >= ptb ? 'UP' : 'DOWN', margin: sp - ptb };
+    if (Number.isFinite(sp) && !Number.isFinite(R.target)) { R.target = sp; R.tsrc = 'last settle'; } } catch (e) {}
+}
+async function fetchBook() {
+  if (!R.slug || busy.book) return; busy.book = true;
+  try { const j = await pmGet('/v1/markets/' + R.slug + '/book', 1200); const md = (j && j.marketData) || j || {};
+    const side = k => (md[k] || []).map(e => [val(e.px), val(e.qty)]).filter(x => Number.isFinite(x[0]) && x[1] > 0);
+    const b = side('bids').sort((x, y) => y[0] - x[0]), o = side('offers').sort((x, y) => x[0] - y[0]);
+    R.book = { upAsk: o.length ? o[0][0] : NaN, upAskQ: o.length ? o[0][1] : 0, upBid: b.length ? b[0][0] : NaN, upBidQ: b.length ? b[0][1] : 0 };
+    R.bookAt = Date.now(); dirty = true;
+  } catch (e) {} finally { busy.book = false; }
+}
+async function fetchIdx() {
+  if (busy.idx) return; busy.idx = true;
+  const now = Math.floor(Date.now() / 1000), from = R.idxLatest ? Math.max(R.idxLatest - 3, now - 200) : now - 200;
+  try { const j = await pmGet('/v1/asset-prices/history?assets=crypto:btc&from=' + from + '&to=0&bucket=ASSET_PRICE_BUCKET_1S');
+    for (const ser of (j && j.series) || []) for (const c of ser.candles || []) { const ts = +c.timestamp, v = +c.close;
+      if (Number.isFinite(ts) && v > 1000) { idx.set(ts, v); if (ts > R.idxLatest) R.idxLatest = ts; } }
+    calibrate(now); if (!Number.isFinite(R.target) && idx.get(R.T0 - 1)) { R.target = idx.get(R.T0 - 1); R.tsrc = 'PM index'; }
+    dirty = true;
+  } catch (e) {} finally { busy.idx = false; }
+}
+// offset = PM index minus Coinbase's average over the same window; median of the last 90 seconds
+function calibrate(now) {
+  const W = S.win;
+  for (let t = now - 95; t <= now - 2; t++) {
+    const a = idx.get(t); if (!a || R.offs.some(o => o[0] === t)) continue;
+    let sum = 0, n = 0; for (let s = t - W + 1; s <= t; s++) { const v = cbAt(s); if (v) { sum += v; n++; } }
+    if (n >= W * 0.8) R.offs.push([t, a - sum / n]);
+  }
+  R.offs.sort((x, y) => x[0] - y[0]); while (R.offs.length > 90) R.offs.shift();
+  if (R.offs.length >= 15) { const v = R.offs.map(o => o[1]), m = median(v); R.offset = m; R.offSd = median(v.map(x => Math.abs(x - m))) * 1.4826; }
+}
+
+// ---------- the model ----------
+function slope(spanS, now) {   // least-squares $/s over the last spanS seconds of Coinbase 1-s closes
+  let n = 0, sx = 0, sy = 0, sxx = 0, sxy = 0;
+  for (let s = now - spanS; s <= now; s++) { const v = cbAt(s); if (!v) continue; const x = s - now; n++; sx += x; sy += v; sxx += x * x; sxy += x * v; }
+  if (n < spanS * 0.5) return NaN; const d = n * sxx - sx * sx; return d ? (n * sxy - sx * sy) / d : NaN;
+}
+function sigma(now) {          // $/√s from 1-s Coinbase changes over the last 10 min, floored
+  const d = []; for (let s = now - 600; s < now; s++) { const a = cb.get(s), b = cb.get(s + 1); if (a && b) d.push(b - a); }
+  if (d.length < 60) return NaN; const m = d.reduce((x, y) => x + y, 0) / d.length;
+  const sd = Math.sqrt(d.reduce((x, y) => x + (y - m) ** 2, 0) / (d.length - 1)); return Math.max(sd, 0.8);
+}
+function project(now, spot, mu, sig, T) {
+  const W = S.win, off = Number.isFinite(R.offset) ? R.offset : 0;
+  let sum = 0; const fut = [];
+  for (let s = T - W; s <= T - 1; s++) {
+    if (s <= now) { const v = cbAt(s); sum += Number.isFinite(v) ? v : spot; }
+    else { const k = s - now; fut.push(k); sum += spot + mu * k; }
+  }
+  const mean = sum / W + off;
+  let mm = 0; const m = fut.length; for (let i = 0; i < m; i++) mm += fut[i] * (2 * (m - 1 - i) + 1);   // Σ min(fi,fj), fut ascending
+  const offVar = Number.isFinite(R.offSd) ? R.offSd ** 2 : 25;
+  const sd = Math.sqrt((sig * sig * mm) / (W * W) + offVar + 0.25);
+  return { mean, sd };
+}
+
+// ---------- loop ----------
+let dirty = true, lastBook = 0, lastIdx = 0, lastRender = 0;
+function newRound(T0) {
+  const prev = R.T0; Object.assign(R, { T0, slug: R.pre ? slugOf(R.pre, T0) : '', target: NaN, tsrc: '', book: null, bookAt: 0, termsTries: 0 });
+  fetchTerms(); if (prev) setTimeout(() => fetchPrevSettle(prev), 4000);
+}
+function tick() {
+  if (document.hidden) return;
+  const ms = Date.now(), now = Math.floor(ms / 1000), T0 = Math.floor(now / ROUND) * ROUND;
+  if (T0 !== R.T0) newRound(T0);
+  const left = R.T0 + ROUND - ms / 1000;
+  if (!Number.isFinite(R.target) || !R.slug) { if (ms - R.termsAt > 4000) fetchTerms(); }
+  if (ms - lastBook > (left <= 120 ? 900 : 2000)) { lastBook = ms; fetchBook(); }
+  if (ms - lastIdx > (left <= 90 ? 2000 : 3000)) { lastIdx = ms; fetchIdx(); }
+  if (ms - lastRender > 200 || dirty) { lastRender = ms; dirty = false; render(ms, now, left); }
+}
+setInterval(tick, 100);
+document.addEventListener('visibilitychange', () => { if (!document.hidden) { backfill(); R.idxLatest = 0; fetchIdx(); fetchTerms(); } });
+
+// ---------- render ----------
+const set = (id, t, cls) => { const e = $(id); if (e.textContent !== t) e.textContent = t; if (cls !== undefined && e.className !== cls) e.className = cls; };
+function render(ms, now, left) {
+  const fresh = ms - F.cb.at < 4000, spot = F.cb.px, T = R.T0 + ROUND;
+  const mm = Math.max(0, Math.floor(left / 60)), ss = Math.max(0, Math.floor(left % 60));
+  set('clock', `${mm}:${String(ss).padStart(2, '0')}`, 'clock num' + (left < 30 ? ' r' : left < 90 ? ' y' : ''));
+  $('prog').style.width = (100 * (1 - left / ROUND)).toFixed(1) + '%';
+  const hm = new Date(R.T0 * 1000).toISOString().slice(11, 16);
+  set('rnd', `BTC 5-min · ${hm}z` + (R.last ? ` · last ${R.last.res} ${fS(R.last.margin)}` : ''));
+  $('d-cb').className = 'dot' + (fresh ? ' on' : ''); $('d-bn').className = 'dot' + (ms - F.bn.at < 6000 ? ' on' : '');
+  const pmAge = ms - R.bookAt; $('d-pm').className = 'dot' + (pmAge < 4000 ? ' on' : pmAge < 15000 ? ' slow' : '');
+
+  const sig = sigma(now), s2 = slope(180, now), s10 = slope(900, now);
+  // trends
+  if (Number.isFinite(s2) && fresh) { const d = s2 * 120; set('v-t2', (d >= 0 ? '▲ ' : '▼ ') + fS(d), 'num ' + (d >= 0 ? 'g' : 'r')); set('v-t2s', '→ ' + f$(spot + d)); } else set('v-t2', '—', 'num');
+  if (Number.isFinite(s10) && fresh) { const d = s10 * 600; set('v-t10', (d >= 0 ? '▲ ' : '▼ ') + fS(d), 'num ' + (d >= 0 ? 'g' : 'r')); set('v-t10s', '→ ' + f$(spot + d)); } else set('v-t10', '—', 'num');
+  set('v-spot', f$(spot), 'num'); set('v-spots', Number.isFinite(F.bn.px) && ms - F.bn.at < 6000 ? 'BN.US ' + fS(F.bn.px - spot) : 'BN.US —');
+
+  // PM line + lead
+  const pmLine = idx.get(R.idxLatest), lag = R.idxLatest ? now - R.idxLatest : NaN;
+  let impl = NaN; { let sum = 0, n = 0; for (let s = now - S.win + 1; s <= now; s++) { const v = cbAt(s); if (v) { sum += v; n++; } } if (n > S.win * 0.8 && Number.isFinite(R.offset)) impl = sum / n + R.offset; }
+  set('v-lead', Number.isFinite(impl) && pmLine ? fS(impl - pmLine) : '—', 'num ' + (impl - pmLine >= 0 ? 'g' : 'r'));
+  set('v-leads', pmLine ? `PM ${f$(pmLine)} · ${Number.isFinite(lag) ? lag + 's old' : ''}` : 'PM index —');
+
+  // target
+  set('v-tgt', f$(R.target, 2), 'num'); set('v-tgts', R.tsrc || (R.found === false ? 'market not found' : 'loading'));
+
+  // projection + fair value
+  let p = NaN, pr = null;
+  if (fresh && Number.isFinite(R.target) && Number.isFinite(sig)) {
+    const settled = idx.get(T - 1);
+    if (left <= 0 && settled) { pr = { mean: settled, sd: 0.01 }; }
+    else pr = project(now, spot, 0, sig, T);
+    p = ncdf((pr.mean - R.target) / pr.sd);
+    const prT = Number.isFinite(s2) && left > 0 ? project(now, spot, s2 * 0.5, sig, T) : null;
+    const pT = prT ? ncdf((prT.mean - R.target) / prT.sd) : NaN;
+    set('v-proj', f$(pr.mean), 'num ' + (pr.mean >= R.target ? 'g' : 'r'));
+    set('v-projs', fS(pr.mean - R.target) + ' ±' + Math.round(pr.sd));
+    set('v-p', fp(p), 'num ' + (p >= 0.5 ? 'g' : 'r')); set('v-ps', 'w/ trend ' + fp(pT));
+  } else { set('v-proj', '—', 'num'); set('v-p', '—', 'num'); set('v-ps', !Number.isFinite(sig) ? 'warming up vol' : '—'); }
+
+  // book + edges
+  const bk = R.book && pmAge < 8000 ? R.book : null;
+  const upAsk = bk ? bk.upAsk : NaN, upBid = bk ? bk.upBid : NaN, dnAsk = bk && Number.isFinite(upBid) ? 1 - upBid : NaN, dnBid = bk && Number.isFinite(upAsk) ? 1 - upAsk : NaN;
+  set('v-up', bk ? `${fc(upAsk)} / ${fc(upBid)}` : '—', 'num'); set('v-dn', bk ? `${fc(dnAsk)} / ${fc(dnBid)}` : '—', 'num');
+  const eUp = Number.isFinite(p) && upAsk > 0 ? p - upAsk - fee(upAsk, R.fee) : NaN, eDn = Number.isFinite(p) && dnAsk > 0 ? (1 - p) - dnAsk - fee(dnAsk, R.fee) : NaN;
+  set('v-eup', 'edge ' + fe(eUp), eUp >= S.edge / 100 ? 'g' : ''); set('v-edn', 'edge ' + fe(eDn), eDn >= S.edge / 100 ? 'g' : '');
+
+  // the call
+  let cls = 'wait', h = 'WAIT', sub = '';
+  if (!fresh) { cls = 'bad'; h = 'NO FEED'; sub = 'Coinbase price stale — nothing to act on'; }
+  else if (R.found === false) { cls = 'bad'; h = 'MARKET NOT FOUND'; sub = 'set the slug prefix in Settings (' + (R.pmErr || 'no reply') + ')'; }
+  else if (!Number.isFinite(R.target)) { sub = 'waiting for the price to beat'; }
+  else if (!Number.isFinite(p)) { sub = 'warming up volatility (~1 min)'; }
+  else if (left <= 0) { h = (pr.mean >= R.target ? 'UP' : 'DOWN') + ' settling'; sub = 'round closed'; }
+  else if (!bk) { h = (p >= 0.5 ? 'UP' : 'DOWN') + ' for now'; sub = 'no live book · flip chance ' + fp(Math.min(p, 1 - p)); }
+  else {
+    const best = (eUp >= (eDn || -1)) ? ['UP', eUp, upAsk, bk.upAskQ] : ['DOWN', eDn, dnAsk, bk.upBidQ];
+    if (best[1] >= S.edge / 100) { cls = best[0] === 'UP' ? 'up' : 'dn'; h = `BUY ${best[0]} ≤ ${fc(best[2])}`; sub = `edge ${fe(best[1])} after fee · ${Math.round(best[3])} shares at that price · flip chance ${fp(best[0] === 'UP' ? 1 - p : p)}`; }
+    else { h = (p >= 0.5 ? 'UP' : 'DOWN') + ' for now'; sub = `no edge ≥ ${S.edge}¢ · flip chance ${fp(Math.min(p, 1 - p))}`; }
+  }
+  $('act').className = 'act ' + cls; set('act-h', h); set('act-s', sub);
+  set('note', Number.isFinite(R.offset) ? `index offset ${fS(R.offset, 2)} ±${(R.offSd || 0).toFixed(2)} · σ ${Number.isFinite(sig) ? sig.toFixed(1) : '—'} $/√s · fee ${R.fee}` : 'calibrating PM index vs Coinbase…');
+  draw(now, spot, pr, T);
+}
+
+// ---------- chart: last 5 min — spot+offset (blue), PM index (white), target (orange), projection (dot) ----------
+const cv = $('cv'), cx = cv.getContext('2d');
+function draw(now, spot, pr, T) {
+  const dpr = window.devicePixelRatio || 1, w = cv.clientWidth, h = cv.clientHeight;
+  if (cv.width !== w * dpr) { cv.width = w * dpr; cv.height = h * dpr; }
+  cx.setTransform(dpr, 0, 0, dpr, 0, 0); cx.clearRect(0, 0, w, h);
+  const t0 = now - 300, t1 = T + 5, off = Number.isFinite(R.offset) ? R.offset : 0;
+  const pts = [], ip = []; let lo = Infinity, hi = -Infinity;
+  for (let s = t0; s <= now; s++) { const v = cb.get(s); if (v) { pts.push([s, v + off]); lo = Math.min(lo, v + off); hi = Math.max(hi, v + off); }
+    const i = idx.get(s); if (i) { ip.push([s, i]); lo = Math.min(lo, i); hi = Math.max(hi, i); } }
+  if (Number.isFinite(R.target)) { lo = Math.min(lo, R.target); hi = Math.max(hi, R.target); }
+  if (pr) { lo = Math.min(lo, pr.mean - pr.sd); hi = Math.max(hi, pr.mean + pr.sd); }
+  if (!pts.length || !(hi > lo)) return; const pad = (hi - lo) * 0.1 + 2; lo -= pad; hi += pad;
+  const X = s => (s - t0) / (t1 - t0) * w, Y = v => h - (v - lo) / (hi - lo) * h;
+  cx.fillStyle = 'rgba(56,189,248,.07)'; cx.fillRect(X(R.T0), 0, X(T) - X(R.T0), h);
+  cx.strokeStyle = 'rgba(245,179,1,.35)'; cx.setLineDash([3, 3]); cx.beginPath(); cx.moveTo(X(T - S.win), 0); cx.lineTo(X(T - S.win), h); cx.stroke(); cx.setLineDash([]);
+  if (Number.isFinite(R.target)) { cx.strokeStyle = '#f59e0b'; cx.lineWidth = 1.5; cx.beginPath(); cx.moveTo(0, Y(R.target)); cx.lineTo(w, Y(R.target)); cx.stroke(); }
+  const line = (a, c, lw) => { cx.strokeStyle = c; cx.lineWidth = lw; cx.beginPath(); a.forEach(([s, v], i) => i ? cx.lineTo(X(s), Y(v)) : cx.moveTo(X(s), Y(v))); cx.stroke(); };
+  line(pts, '#38bdf8', 1.5); if (ip.length > 1) line(ip, 'rgba(230,235,245,.85)', 1.5);
+  if (pr) { const x = X(T - 1), y = Y(pr.mean); cx.strokeStyle = pr.mean >= R.target ? '#22c55e' : '#ef4444'; cx.lineWidth = 2;
+    cx.beginPath(); cx.moveTo(x, Y(pr.mean + pr.sd)); cx.lineTo(x, Y(pr.mean - pr.sd)); cx.stroke();
+    cx.fillStyle = cx.strokeStyle; cx.beginPath(); cx.arc(x, y, 4, 0, 7); cx.fill(); }
+}
+
+// ---------- settings ----------
+$('s-relay').value = S.relay; $('s-pre').value = S.pre; $('s-edge').value = S.edge; $('s-win').value = S.win;
+for (const id of ['s-relay', 's-pre', 's-edge', 's-win']) $(id).addEventListener('change', () => {
+  S.relay = $('s-relay').value.trim(); S.pre = $('s-pre').value.trim(); S.edge = Math.max(0, +$('s-edge').value || 6);
+  S.win = Math.min(300, Math.max(1, Math.round(+$('s-win').value || 60))); saveS();
+  R.pre = S.pre || null; R.found = null; R.offs = []; R.offset = NaN; newRound(R.T0); });
+
+backfill(); wsCoinbase(); wsBinance(); tick();
+</script>
+</body>
+</html>
