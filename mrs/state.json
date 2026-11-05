@@ -566,10 +566,10 @@
   "KXUCLTOTAL-26NOV04BVBRBB-4": "no asks (already repriced)",
   "KXUEL1HTOTAL-26NOV05BENLPO-1": "no asks (already repriced)",
   "KXUELTOTAL-26NOV05BENLPO-1": "no asks (already repriced)",
-  "KXUEL1HTOTAL-26NOV05RCCUSG-1": "settling (113s)",
-  "KXUELTOTAL-26NOV05RCCUSG-1": "settling (113s)",
-  "KXUEL1HTOTAL-26NOV05TORARA-1": "settling (20s)",
-  "KXUELTOTAL-26NOV05TORARA-1": "settling (20s)"
+  "KXUEL1HTOTAL-26NOV05RCCUSG-1": "no asks (already repriced)",
+  "KXUELTOTAL-26NOV05RCCUSG-1": "no asks (already repriced)",
+  "KXUEL1HTOTAL-26NOV05TORARA-1": "no asks (already repriced)",
+  "KXUELTOTAL-26NOV05TORARA-1": "no asks (already repriced)"
  },
  "started": 1793687692.6057825,
  "ht": {
