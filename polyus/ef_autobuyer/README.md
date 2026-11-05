@@ -1,9 +1,9 @@
 # Early Favorite auto-buyer v1 (paper)
 
 Paper only. Reads the live Polymarket US book at 13:00 left, else 12:00 left; buys the favorite if its ask is 80-95c with a limit at ask+1c, filled only against size actually resting on the book.
-Updated 2026-11-05T06:38:50Z.
+Updated 2026-11-05T06:48:53Z.
 
-Rounds watched: 1113. Entries: 138. Settled: 138.
+Rounds watched: 1114. Entries: 139. Settled: 138.
 
 Win rate: 114/138 = 82.6%
 
@@ -13,13 +13,12 @@ Win rate: 114/138 = 82.6%
 | $100 | 98% | 99% | 0.845 | $-466.24 | -3.42% |
 | $250 | 91% | 96% | 0.846 | $-1,061.29 | -3.19% |
 
-Live $100 fill price minus the backtest's display price: +1.21c average over 134 entries (the backtest edge was about +4.2c, so this gap is what it must survive).
+Live $100 fill price minus the backtest's display price: +1.18c average over 136 entries (the backtest edge was about +4.2c, so this gap is what it must survive).
 
 ## Last 20 entries
 
 | Window (UTC) | Left | Side | Ask | Depth at ask | $100 fill | Result | P&L $100 |
 |---|---|---|---|---|---|---|---|
-| 11-02T22:45 | 12:00 | Up | 0.83 | 720 | 100% @ 0.830 | WIN | +19.30 |
 | 11-02T23:00 | 13:00 | Down | 0.91 | 87 | 100% @ 0.912 | WIN | +9.03 |
 | 11-03T00:15 | 13:00 | Up | 0.82 | 119 | 100% @ 0.820 | WIN | +20.67 |
 | 11-03T03:45 | 12:00 | Up | 0.93 | 1351 | 100% @ 0.930 | WIN | +7.04 |
@@ -39,6 +38,7 @@ Live $100 fill price minus the backtest's display price: +1.21c average over 134
 | 11-04T23:00 | 13:00 | Down | 0.90 | 40 | 100% @ 0.906 | WIN | +9.68 |
 | 11-05T03:45 | 12:00 | Down | 0.87 | 331 | 100% @ 0.870 | WIN | +14.04 |
 | 11-05T06:15 | 12:00 | Up | 0.80 | 74 | 100% @ 0.804 | WIN | +23.00 |
+| 11-05T06:45 | 13:00 | Up | 0.82 | 1024 | 100% @ 0.820 | - | +0.00 |
 
-Book reads: 2178, failed: 651, re-tried: 654, median latency 0.04s.
-Entries read more than 20 s after their target second: 18 of 138 (avg 31 s late).
+Book reads: 2179, failed: 651, re-tried: 654, median latency 0.04s.
+Entries read more than 20 s after their target second: 18 of 139 (avg 31 s late).
