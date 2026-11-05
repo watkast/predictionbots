@@ -582,7 +582,7 @@
   "KXUCLTOTAL-26NOV04BVBRBB-5": "no asks (already repriced)",
   "KXUCLTOTAL-26NOV04BVBRBB-4": "no asks (already repriced)",
   "KXUEL1HTOTAL-26NOV05BENLPO-1": "no asks (already repriced)",
-  "KXUELTOTAL-26NOV05BENLPO-1": "settling (12s)",
+  "KXUELTOTAL-26NOV05BENLPO-1": "settling (200s)",
   "KXUEL1HTOTAL-26NOV05RCCUSG-1": "no asks (already repriced)",
   "KXUELTOTAL-26NOV05RCCUSG-1": "settling (120s)",
   "KXUEL1HTOTAL-26NOV05TORARA-1": "settling (180s)",
@@ -610,7 +610,7 @@
   "KXUELTOTAL-26NOV05TORARA-2": "no asks (already repriced)",
   "KXUELBTTS-26NOV05TORARA-BTTS": "no asks (already repriced)",
   "KXUEL1HTOTAL-26NOV05STUCEL-3": "no asks (already repriced)",
-  "KXUELTOTAL-26NOV05STUCEL-3": "no asks (already repriced)",
+  "KXUELTOTAL-26NOV05STUCEL-3": "Polymarket does not confirm",
   "KXUEL1HTOTAL-26NOV05CELBES-3": "no Polymarket twin",
   "KXUEL1HTOTAL-26NOV05CELBES-2": "no Polymarket twin",
   "KXUEL1HTOTAL-26NOV05CELBES-1": "no Polymarket twin",
@@ -659,7 +659,7 @@
   "KXUELTOTAL-26NOV05TORARA-3": "no asks (already repriced)",
   "KXUELTOTAL-26NOV05CELBES-2": "no Polymarket twin",
   "KXUELBTTS-26NOV05CELBES-BTTS": "no Polymarket twin",
-  "KXUELTOTAL-26NOV05BENLPO-2": "settling (12s)"
+  "KXUELTOTAL-26NOV05BENLPO-2": "no asks (already repriced)"
  },
  "started": 1793687692.6057825,
  "ht": {
