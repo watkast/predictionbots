@@ -1,29 +1,5 @@
 [
  {
-  "t": "2026-11-05T11:32:00Z",
-  "path": "/v1/markets/cpc-btc-updown-15m-2026-11-05-1130z/book",
-  "status": 404,
-  "body": "{\"code\":5,\"message\":\"The server was unable to process your request.\",\"details\":[]}"
- },
- {
-  "t": "2026-11-05T11:32:05Z",
-  "path": "/v1/markets/cpc-btc-updown-15m-2026-11-05-1130z/book",
-  "status": 404,
-  "body": "{\"code\":5,\"message\":\"The server was unable to process your request.\",\"details\":[]}"
- },
- {
-  "t": "2026-11-05T11:32:10Z",
-  "path": "/v1/markets/cpc-btc-updown-15m-2026-11-05-1130z/book",
-  "status": 404,
-  "body": "{\"code\":5,\"message\":\"The server was unable to process your request.\",\"details\":[]}"
- },
- {
-  "t": "2026-11-05T11:32:15Z",
-  "path": "/v1/markets/cpc-btc-updown-15m-2026-11-05-1130z/book",
-  "status": 404,
-  "body": "{\"code\":5,\"message\":\"The server was unable to process your request.\",\"details\":[]}"
- },
- {
   "t": "2026-11-05T11:32:20Z",
   "path": "/v1/markets/cpc-btc-updown-15m-2026-11-05-1130z/book",
   "status": 404,
@@ -212,6 +188,114 @@
  {
   "t": "2026-11-05T11:48:40Z",
   "path": "/v1/markets/cpc-btc-updown-15m-2026-11-05-1145z/book",
+  "status": 404,
+  "body": "{\"code\":5,\"message\":\"The server was unable to process your request.\",\"details\":[]}"
+ },
+ {
+  "t": "2026-11-05T12:02:00Z",
+  "path": "/v1/markets/cpc-btc-updown-15m-2026-11-05-1200z/book",
+  "status": 404,
+  "body": "{\"code\":5,\"message\":\"The server was unable to process your request.\",\"details\":[]}"
+ },
+ {
+  "t": "2026-11-05T12:02:05Z",
+  "path": "/v1/markets/cpc-btc-updown-15m-2026-11-05-1200z/book",
+  "status": 404,
+  "body": "{\"code\":5,\"message\":\"The server was unable to process your request.\",\"details\":[]}"
+ },
+ {
+  "t": "2026-11-05T12:02:10Z",
+  "path": "/v1/markets/cpc-btc-updown-15m-2026-11-05-1200z/book",
+  "status": 404,
+  "body": "{\"code\":5,\"message\":\"The server was unable to process your request.\",\"details\":[]}"
+ },
+ {
+  "t": "2026-11-05T12:02:15Z",
+  "path": "/v1/markets/cpc-btc-updown-15m-2026-11-05-1200z/book",
+  "status": 404,
+  "body": "{\"code\":5,\"message\":\"The server was unable to process your request.\",\"details\":[]}"
+ },
+ {
+  "t": "2026-11-05T12:02:20Z",
+  "path": "/v1/markets/cpc-btc-updown-15m-2026-11-05-1200z/book",
+  "status": 404,
+  "body": "{\"code\":5,\"message\":\"The server was unable to process your request.\",\"details\":[]}"
+ },
+ {
+  "t": "2026-11-05T12:02:25Z",
+  "path": "/v1/markets/cpc-btc-updown-15m-2026-11-05-1200z/book",
+  "status": 404,
+  "body": "{\"code\":5,\"message\":\"The server was unable to process your request.\",\"details\":[]}"
+ },
+ {
+  "t": "2026-11-05T12:02:30Z",
+  "path": "/v1/markets/cpc-btc-updown-15m-2026-11-05-1200z/book",
+  "status": 404,
+  "body": "{\"code\":5,\"message\":\"The server was unable to process your request.\",\"details\":[]}"
+ },
+ {
+  "t": "2026-11-05T12:02:35Z",
+  "path": "/v1/markets/cpc-btc-updown-15m-2026-11-05-1200z/book",
+  "status": 404,
+  "body": "{\"code\":5,\"message\":\"The server was unable to process your request.\",\"details\":[]}"
+ },
+ {
+  "t": "2026-11-05T12:02:40Z",
+  "path": "/v1/markets/cpc-btc-updown-15m-2026-11-05-1200z/book",
+  "status": 404,
+  "body": "{\"code\":5,\"message\":\"The server was unable to process your request.\",\"details\":[]}"
+ },
+ {
+  "t": "2026-11-05T12:03:00Z",
+  "path": "/v1/markets/cpc-btc-updown-15m-2026-11-05-1200z/book",
+  "status": 404,
+  "body": "{\"code\":5,\"message\":\"The server was unable to process your request.\",\"details\":[]}"
+ },
+ {
+  "t": "2026-11-05T12:03:05Z",
+  "path": "/v1/markets/cpc-btc-updown-15m-2026-11-05-1200z/book",
+  "status": 404,
+  "body": "{\"code\":5,\"message\":\"The server was unable to process your request.\",\"details\":[]}"
+ },
+ {
+  "t": "2026-11-05T12:03:10Z",
+  "path": "/v1/markets/cpc-btc-updown-15m-2026-11-05-1200z/book",
+  "status": 404,
+  "body": "{\"code\":5,\"message\":\"The server was unable to process your request.\",\"details\":[]}"
+ },
+ {
+  "t": "2026-11-05T12:03:15Z",
+  "path": "/v1/markets/cpc-btc-updown-15m-2026-11-05-1200z/book",
+  "status": 404,
+  "body": "{\"code\":5,\"message\":\"The server was unable to process your request.\",\"details\":[]}"
+ },
+ {
+  "t": "2026-11-05T12:03:20Z",
+  "path": "/v1/markets/cpc-btc-updown-15m-2026-11-05-1200z/book",
+  "status": 404,
+  "body": "{\"code\":5,\"message\":\"The server was unable to process your request.\",\"details\":[]}"
+ },
+ {
+  "t": "2026-11-05T12:03:25Z",
+  "path": "/v1/markets/cpc-btc-updown-15m-2026-11-05-1200z/book",
+  "status": 404,
+  "body": "{\"code\":5,\"message\":\"The server was unable to process your request.\",\"details\":[]}"
+ },
+ {
+  "t": "2026-11-05T12:03:30Z",
+  "path": "/v1/markets/cpc-btc-updown-15m-2026-11-05-1200z/book",
+  "status": 404,
+  "body": "{\"code\":5,\"message\":\"The server was unable to process your request.\",\"details\":[]}"
+ },
+ {
+  "t": "2026-11-05T12:03:35Z",
+  "path": "/v1/markets/cpc-btc-updown-15m-2026-11-05-1200z/book",
+  "status": 404,
+  "body": "{\"code\":5,\"message\":\"The server was unable to process your request.\",\"details\":[]}"
+ },
+ {
+  "t": "2026-11-05T12:03:40Z",
+  "path": "/v1/markets/cpc-btc-updown-15m-2026-11-05-1200z/book",
   "status": 404,
   "body": "{\"code\":5,\"message\":\"The server was unable to process your request.\",\"details\":[]}"
  }
