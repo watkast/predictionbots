@@ -1,11 +1,11 @@
 # Mr. P — sports radar
 
-Updated 2026-11-05T00:35:10Z by `run-20261104T1852-41891417992` (last 7 days). Read-only scanner of every sports market on Polymarket US and Kalshi — it never places orders.
+Updated 2026-11-05T00:37:00Z by `run-20261104T1852-41891417992` (last 7 days). Read-only scanner of every sports market on Polymarket US and Kalshi — it never places orders.
 Kit: `mrp/mrp_sports_radar.py` on the `mrp` branch. Raw tape: `mrp/radar/<run>/`.
 
 # Sports radar report
 
-records 3,727,371 | 2026-11-02 00:33Z → 00:31Z | runs 24 | pairs matched 1481 | errors {'sp.k.always:KXNFLGAME': 1, 'sp.stream': 48}
+records 3,725,388 | 2026-11-02 00:35Z → 00:31Z | runs 24 | pairs matched 1481 | errors {'sp.k.always:KXNFLGAME': 1, 'sp.stream': 48}
 
 ## Catalogue (latest inventory, 21:57Z)
 
@@ -85,8 +85,8 @@ Polymarket US sports events 4844 of 5834 active events; Kalshi near-term sports 
 | dutch_k_sell | 2 | 3 | 0.0663 | 0 min | 0/0 |
 | dutch_pm | 37 | 2396 | 0.4629 | 48 min | 0/0 |
 | implication_k | 18 | 81 | 0.1304 | 8 min | 0/0 |
-| lag_k_settled | 169 | 28521 | 0.9893 | 299 min | 27099/28472 |
-| lag_k_settled_closed | 155 | 2390 | 0.9893 | 111 min | 0/2390 |
+| lag_k_settled | 169 | 28500 | 0.9893 | 299 min | 27078/28451 |
+| lag_k_settled_closed | 154 | 2386 | 0.9893 | 111 min | 0/2386 |
 
 Top by persistence × hits:
 
@@ -350,38 +350,38 @@ change% = share of scan cycles (60 s) where the best quote moved; react = median
 
 | venue | sport | markets | snapshots | two-sided | med spread | change% | react (min) | round sizes | med size |
 |---|---|---|---|---|---|---|---|---|---|
-| pm | tennis | 2064 | 190044 | 93% | 0.010 | 25% | 0.5 (n=97459) | - | - |
-| pm | esports | 3204 | 75647 | 77% | 0.020 | 18% | 0.5 (n=15345) | - | - |
-| pm | soccer | 522 | 65100 | 84% | 0.010 | 14% | 0.6 (n=888) | - | - |
-| pm | table-tennis | 1569 | 47157 | 94% | 0.020 | 28% | 0.5 (n=22086) | - | - |
-| pm | basketball | 686 | 37829 | 70% | 0.030 | 17% | 0.6 (n=7728) | - | - |
+| pm | tennis | 2064 | 189997 | 93% | 0.010 | 25% | 0.5 (n=97457) | - | - |
+| pm | esports | 3201 | 75559 | 77% | 0.020 | 18% | 0.5 (n=15327) | - | - |
+| pm | soccer | 522 | 65046 | 84% | 0.010 | 14% | 0.6 (n=888) | - | - |
+| pm | table-tennis | 1569 | 47104 | 94% | 0.020 | 28% | 0.5 (n=22081) | - | - |
+| pm | basketball | 686 | 37827 | 70% | 0.030 | 17% | 0.6 (n=7727) | - | - |
 | pm | golf | 1286 | 22169 | 41% | 0.007 | 4% | - (n=0) | - | - |
-| pm | climate | 215 | 10916 | 75% | 0.050 | 27% | - (n=0) | - | - |
-| pm | ice-hockey | 42 | 2876 | 91% | 0.020 | 13% | 0.6 (n=139) | - | - |
+| pm | climate | 215 | 10874 | 75% | 0.050 | 27% | - (n=0) | - | - |
+| pm | ice-hockey | 41 | 2870 | 91% | 0.020 | 13% | 0.6 (n=139) | - | - |
 | pm | beach-volleyball | 56 | 2112 | 84% | 0.010 | 21% | 0.5 (n=1025) | - | - |
 | pm | macro | 106 | 1437 | 39% | 0.120 | 20% | - (n=0) | - | - |
 | pm | pickleball | 222 | 1348 | 35% | 0.210 | 4% | - (n=0) | - | - |
-| pm | football | 10 | 936 | 93% | 0.005 | 20% | 2.1 (n=44) | - | - |
+| pm | football | 10 | 932 | 93% | 0.005 | 20% | 2.1 (n=44) | - | - |
 | pm | cricket | 5 | 753 | 95% | 0.020 | 21% | 0.7 (n=100) | - | - |
 | pm | baseball | 2 | 629 | 97% | 0.060 | 29% | 0.5 (n=14) | - | - |
 | pm | technology | 24 | 482 | 57% | 0.120 | 30% | - (n=0) | - | - |
-| k | KXNCAAFGAME College Football Game | 516 | 568543 | 100% | 0.130 | 3% | - | 7% | 13 |
-| k | KXCS2MAP Counter-Strike 2 Map Win | 576 | 118721 | 94% | 0.880 | 4% | - | 19% | 97 |
-| k | KXNBA3PT NBA Player Threes | 1862 | 103466 | 74% | 0.140 | 13% | - | 31% | 40 |
+| k | KXNCAAFGAME College Football Game | 516 | 568252 | 100% | 0.130 | 3% | - | 7% | 13 |
+| k | KXCS2MAP Counter-Strike 2 Map Win | 576 | 118685 | 94% | 0.880 | 4% | - | 19% | 97 |
+| k | KXNBA3PT NBA Player Threes | 1862 | 103318 | 74% | 0.140 | 13% | - | 31% | 40 |
 | k | KXNFLPASSYDSPRECISE Pass Yards Precise | 8569 | 100400 | 0% | 0.390 | 0% | - | 0% | 1 |
-| k | KXNFLGAME NFL Game | 68 | 83085 | 100% | 0.010 | 2% | - | 4% | 27646 |
+| k | KXNFLGAME NFL Game | 68 | 83027 | 100% | 0.010 | 2% | - | 4% | 27678 |
 | k | KXUCLSCORE Correct Score | 594 | 82567 | 56% | 0.010 | 5% | - | 16% | 3000 |
 | k | KXNCAAMBTOTAL Men's College Basketball | 2946 | 81948 | 62% | 0.050 | 9% | - | 26% | 110 |
 | k | KXNCAAFTEAMTOTAL College Football Team To | 1444 | 80329 | 97% | 0.040 | 1% | - | 31% | 100 |
 | k | KXNCAAMBSPREAD Men's College Basketball | 2398 | 65286 | 60% | 0.040 | 8% | - | 27% | 101 |
-| k | KXNBAAST NBA Player Assists | 798 | 64995 | 78% | 0.160 | 13% | - | 29% | 32 |
-| k | KXNBAPTS NBA Player Points | 930 | 59578 | 78% | 0.120 | 18% | - | 24% | 30 |
+| k | KXNBAAST NBA Player Assists | 798 | 64831 | 78% | 0.160 | 13% | - | 29% | 32 |
+| k | KXNBAPTS NBA Player Points | 930 | 59364 | 78% | 0.120 | 18% | - | 24% | 30 |
 | k | KXNHLGOAL NHL Goalscorer | 1161 | 56677 | 51% | 0.080 | 11% | - | 33% | 35 |
-| k | KXESOCCERGAME eSoccer Game | 3990 | 55872 | 16% | 0.740 | 6% | - | 37% | 13 |
+| k | KXESOCCERGAME eSoccer Game | 3990 | 55816 | 15% | 0.740 | 6% | - | 37% | 12 |
 | k | KXNCAAWBTOTAL Women's College Basketba | 1616 | 53746 | 27% | 0.490 | 2% | - | 13% | 41 |
 | k | KXNCAAFSPREAD College Football Spread | 2183 | 48777 | 90% | 0.030 | 1% | - | 26% | 500 |
-| k | KXNBAREB NBA Player Rebounds | 1046 | 47708 | 71% | 0.170 | 20% | - | 28% | 25 |
-| k | KXNBA3PTPROT NBA Player Threes Protec | 1838 | 44007 | 21% | 0.150 | 2% | - | 26% | 162 |
+| k | KXNBAREB NBA Player Rebounds | 1046 | 47461 | 71% | 0.170 | 20% | - | 28% | 25 |
+| k | KXNBA3PTPROT NBA Player Threes Protec | 1838 | 43936 | 21% | 0.150 | 2% | - | 26% | 162 |
 | k | KXNCAAWBSPREAD Women's College Basketba | 1235 | 42901 | 24% | 0.490 | 3% | - | 19% | 41 |
 | k | KXNCAAWBGAME Women's College Basketba | 588 | 40806 | 84% | 0.250 | 6% | - | 21% | 22 |
 | k | KXNCAAF1HSPREAD College Football 1st Hal | 1311 | 36645 | 97% | 0.135 | 1% | - | 34% | 15 |
@@ -390,20 +390,20 @@ change% = share of scan cycles (60 s) where the best quote moved; react = median
 | k | KXNCAAFTOTAL College Football Total P | 1474 | 31538 | 85% | 0.030 | 1% | - | 28% | 302 |
 | k | KXATPCHALLENGERMATCH Challenger ATP  | 336 | 31215 | 90% | 0.010 | 9% | - | 4% | 1264 |
 | k | KXNCAAF1HTOTAL College Football 1st Hal | 867 | 27889 | 97% | 0.250 | 2% | - | 21% | 44 |
-| k | KXNBAASTPROT NBA Player Assists Prote | 765 | 27866 | 20% | 0.140 | 2% | - | 18% | 162 |
+| k | KXNBAASTPROT NBA Player Assists Prote | 765 | 27808 | 20% | 0.140 | 2% | - | 18% | 162 |
 | k | KXAFCCLSCORE Correct Score | 424 | 27142 | 38% | 0.020 | 2% | - | 14% | 493 |
 | k | KXNBA2HSPREAD NBA 2nd Half Spread | 342 | 26731 | 70% | 0.330 | 27% | - | 45% | 100 |
-| k | KXNBAPRA NBA Player Points + Rebo | 633 | 25248 | 63% | 0.420 | 19% | - | 13% | 5 |
 | k | KXUCLGOAL UCL Goalscorer | 730 | 25211 | 56% | 0.060 | 15% | - | 19% | 29 |
+| k | KXNBAPRA NBA Player Points + Rebo | 633 | 25179 | 63% | 0.420 | 19% | - | 13% | 5 |
 | k | KXNBA2HTOTAL NBA 2nd Half Total | 342 | 25002 | 70% | 0.450 | 22% | - | 36% | 60 |
 | k | KXUCLTOTAL Champions League Total G | 145 | 23654 | 80% | 0.010 | 9% | - | 6% | 8375 |
 | k | KXWTASETWINNER WTA Set Winner | 204 | 23364 | 89% | 0.030 | 5% | - | 13% | 25 |
-| k | KXNBAPTSPROT NBA Player Points Protec | 865 | 23066 | 21% | 0.070 | 3% | - | 15% | 162 |
+| k | KXNBAPTSPROT NBA Player Points Protec | 865 | 23023 | 21% | 0.070 | 3% | - | 15% | 162 |
 | k | KXNFLTOTALPRECISE Total Precise | 1824 | 22039 | 4% | 0.060 | 2% | - | 21% | 2 |
 | k | KXATPSETWINNER ATP Set Winner | 196 | 20810 | 91% | 0.030 | 6% | - | 10% | 106 |
 | k | KXUCLTEAMTOTAL UCL Team Total | 161 | 20493 | 79% | 0.020 | 12% | - | 14% | 784 |
-| k | KXNBA1HSPREAD NBA 1st Half Spread | 342 | 20295 | 68% | 0.080 | 16% | - | 23% | 200 |
-| k | KXNBAREBPROT NBA Player Rebounds Prot | 1009 | 20186 | 17% | 0.160 | 4% | - | 23% | 200 |
+| k | KXNBA1HSPREAD NBA 1st Half Spread | 342 | 20272 | 68% | 0.080 | 16% | - | 23% | 200 |
+| k | KXNBAREBPROT NBA Player Rebounds Prot | 1009 | 20144 | 17% | 0.160 | 4% | - | 23% | 200 |
 | k | KXDOTA2MAP Dota 2 Map Winner | 250 | 20039 | 92% | 0.850 | 6% | - | 11% | 34 |
 
 ## Schema notes (raw keys seen)
