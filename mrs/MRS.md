@@ -1,6 +1,6 @@
 # Mr. S — live
 
-Updated 2026-11-06 20:03 UTC · mode **live** · switch **OFF** · live leagues: usa.1
+Updated 2026-11-06 20:08 UTC · mode **live** · switch **OFF** · live leagues: usa.1
 
 ## ⚠️ Kalshi balance below the $50 risk cap — fund the account (orders still try, capped by cash)
 
@@ -18,7 +18,7 @@ Kalshi series with open markets: KXAUTBUNDESBTTS, KXAUTBUNDESTOTAL, KXBELGIANPLB
 ### Last blocks
 - KXEREDIVISIE1HBTTS-26NOV06WILZWO-BTTS: no asks (already repriced)
 - KXEREDIVISIETOTAL-26NOV06WILZWO-2: no asks (already repriced)
-- KXAUTBUNDESTOTAL-26NOV06SCRWAC-2: settling (98s)
+- KXAUTBUNDESTOTAL-26NOV06SCRWAC-2: settling (20s)
 - KXBUNDESLIGA1HTOTAL-26NOV06HSVBMG-1: no asks (already repriced)
 - KXBUNDESLIGATOTAL-26NOV06HSVBMG-1: no asks (already repriced)
 - KXEREDIVISIE1HTOTAL-26NOV06WILZWO-3: no asks (already repriced)
@@ -26,8 +26,8 @@ Kalshi series with open markets: KXAUTBUNDESBTTS, KXAUTBUNDESTOTAL, KXBELGIANPLB
 - KXEREDIVISIE1H-26NOV06WILZWO-WIL: settling (123s)
 - KXEREDIVISIE1H-26NOV06WILZWO-TIE: settling (123s)
 - KXBELGIANPLTOTAL-26NOV06STABEV-1: no asks (already repriced)
-- KXAUTBUNDESTOTAL-26NOV06SCRWAC-3: settling (98s)
-- KXAUTBUNDESTOTAL-26NOV06SCRWAC-4: settling (98s)
+- KXAUTBUNDESTOTAL-26NOV06SCRWAC-3: settling (199s)
+- KXAUTBUNDESTOTAL-26NOV06SCRWAC-4: Polymarket does not confirm
 
 ---
 caps: $10/order · $20/game · $40/day · $50 open risk · ask 0.6–0.97 · score stable ≥ 240s in ESPN and Polymarket
