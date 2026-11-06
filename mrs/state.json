@@ -2,7 +2,6 @@
  "trades": [],
  "halted": null,
  "seen": {
-  "KXUCLTOTAL-26NOV03MUNROM-5": 1793742335.404238,
   "KXUCLTOTAL-26NOV03BOGLIL-7": 1793742566.3597357,
   "KXUCLTOTAL-26NOV03BOGLIL-6": 1793742566.3799891,
   "KXUCLTOTAL-26NOV03BOGLIL-5": 1793742566.3990123,
@@ -683,13 +682,13 @@
   "KXLIGUE1TOTAL-26NOV06TFCRCS-2": "no asks (already repriced)",
   "KXSERIEATOTAL-26NOV06VENUDI-3": "no asks (already repriced)",
   "KXBELGIANPLTOTAL-26NOV06STABEV-2": "settling (188s)",
-  "KXEPLTOTAL-26NOV06EVECOV-1": "settling (173s)",
+  "KXEPLTOTAL-26NOV06EVECOV-1": "no asks (already repriced)",
   "KXLIGUE1TOTAL-26NOV06TFCRCS-3": "no asks (already repriced)",
   "KXLIGUE1BTTS-26NOV06TFCRCS-BTTS": "no asks (already repriced)",
   "KXBELGIANPLTOTAL-26NOV06STABEV-3": "no asks (already repriced)",
-  "KXEPLTOTAL-26NOV06EVECOV-2": "settling (173s)",
-  "KXEPLBTTS-26NOV06EVECOV-BTTS": "settling (173s)",
-  "KXEPLTOTAL-26NOV06EVECOV-3": "settling (173s)",
+  "KXEPLTOTAL-26NOV06EVECOV-2": "no asks (already repriced)",
+  "KXEPLBTTS-26NOV06EVECOV-BTTS": "no asks (already repriced)",
+  "KXEPLTOTAL-26NOV06EVECOV-3": "no asks (already repriced)",
   "KXLIGUE1TOTAL-26NOV06TFCRCS-4": "no asks (already repriced)",
   "KXLIGAPORTUGAL1HTOTAL-26NOV06FAMARO-3": "settling (165s)",
   "KXLIGAPORTUGAL1HTOTAL-26NOV06FAMARO-2": "settling (165s)",
@@ -710,7 +709,7 @@
   "KXSERIEATOTAL-26NOV06VENUDI-6": "no asks (already repriced)",
   "KXSERIEATOTAL-26NOV06VENUDI-5": "no asks (already repriced)",
   "KXSERIEATOTAL-26NOV06VENUDI-4": "no asks (already repriced)",
-  "KXEPLTOTAL-26NOV06EVECOV-4": "settling (173s)"
+  "KXEPLTOTAL-26NOV06EVECOV-4": "no asks (already repriced)"
  },
  "started": 1793687692.6057825,
  "ht": {
