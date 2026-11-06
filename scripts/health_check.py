@@ -46,6 +46,7 @@ WATCH = [
     ("carry-report", "carry", "main", "reports/carry_paper.json", 8, "carry report on main"),
     ("trend-report", "trend", "main", "reports/trend_paper.json", 80, "weekday trend paper tick (22:23 UTC)"),
     ("bounty-scan", "bounty-scan", "data", "bounty/index.json", 192, "weekly bounty scan"),
+    ("mrh-state", "mrh-paper", "data", "mrh/state.json", 8, "Mr. H Coinbase paper hopper state (published every 10 min while scanning)"),
 ]
 ERROR_LOGS = ["polyus/*/errors.jsonl", "*/errors.jsonl", "errors.jsonl"]     # under the data worktree
 

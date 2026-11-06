@@ -47,6 +47,8 @@ the paper / record / backtest / carry / bounty schedules are off, `workflow_disp
 live line of research is **Early Favorite** on Polymarket US 15-min BTC: `research/early_favorite_playbook.md`,
 `scripts/early_favorite_tracker.py` (forward test, `polyus.yml`), `scripts/ef_autobuyer.py` (live-book
 paper fills, `ef-autobuyer.yml`), `research/early_favorite_signal.pine` (the TradingView HUD).
+**Mr. H** (`mrh/README.md`, `scripts/mrh_paper.py`, `mrh-paper.yml`): Coinbase spot "hopper", paper only — does $4 hopping
+between coins pumping right now beat 1.8%/hop in fees? Report at `mrh/MRH.md` on the `data` branch.
 Live cockpit: `research/pm15_copilot.html` **v4.0** — open it at **https://pm15-relay-worker.machwonder.workers.dev/** (the relay
 worker serves this file straight from `main`, wrapped with the mobile viewport; Safari → Share → Add to Home Screen). The
 claude.ai artifact copy only shows the layout: that origin blocks outbound connections, so neither Coinbase nor the relay

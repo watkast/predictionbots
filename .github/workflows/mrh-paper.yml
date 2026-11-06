@@ -1,0 +1,67 @@
+# Mr. H — Coinbase "hopper", PAPER ONLY (scripts/mrh_paper.py). No key, no orders: public candles + ticker.
+# Scans every USD pair with >= $100k 24-h volume every 5 minutes; two paper books (aggressive / standard) hop a
+# compounding $4 between pumping coins with real taker fees; every signal is scored with its forward return.
+# Each run watches ~5.6 h and publishes mrh/ to the `data` branch every 10 min. Pause: commit mrh/PAUSED on main.
+name: mrh-paper
+on:
+  schedule:
+    - cron: "17 * * * *"
+  workflow_dispatch:
+    inputs:
+      minutes:
+        description: "Minutes to watch"
+        default: "335"
+
+permissions:
+  contents: write
+
+concurrency:
+  group: mrh-paper-${{ github.ref }}
+  cancel-in-progress: false
+
+jobs:
+  hop:
+    runs-on: ubuntu-latest
+    timeout-minutes: 355
+    steps:
+      - uses: actions/checkout@v4
+      - name: Paused?
+        run: '[ -f mrh/PAUSED ] && { echo "mrh/PAUSED exists — not running"; exit 0; } || true'
+      - uses: actions/setup-python@v5
+        with: { python-version: "3.13" }
+      - run: pip install httpx
+      - run: python scripts/mrh_paper.py selftest
+      - name: Pull existing state
+        run: |
+          git fetch origin data || true
+          git worktree add ../datawt origin/data
+          mkdir -p data/mrh
+          cp -r ../datawt/mrh/. data/mrh/ 2>/dev/null || true
+      - name: Hop (paper), publishing every 10 minutes
+        run: |
+          [ -f mrh/PAUSED ] && exit 0
+          git config --global user.name "predictionbots-mrh"
+          git config --global user.email "bots@users.noreply.github.com"
+          publish() {
+            cd ../datawt
+            for i in 1 2 3 4 5; do
+              git fetch -q origin data && git reset -q --hard origin/data
+              mkdir -p mrh
+              cp -r "$GITHUB_WORKSPACE/data/mrh/." mrh/
+              rm -f mrh/state.json.tmp
+              git add -A mrh
+              git commit -qm "mrh $(date -u +%FT%TZ)" || { cd "$GITHUB_WORKSPACE"; return 0; }
+              git push -q origin HEAD:data && { cd "$GITHUB_WORKSPACE"; return 0; }
+              sleep $((RANDOM % 20 + 5))
+            done
+            cd "$GITHUB_WORKSPACE"
+          }
+          python scripts/mrh_paper.py run --out data/mrh --minutes "${{ github.event.inputs.minutes || '335' }}" &
+          pid=$!
+          while kill -0 $pid 2>/dev/null; do
+            sleep 600
+            publish || true
+          done
+          wait $pid; rc=$?
+          publish
+          exit $rc
