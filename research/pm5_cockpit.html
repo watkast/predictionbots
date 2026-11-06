@@ -323,12 +323,12 @@ function render(ms, now, left) {
   }
   $('act').className = 'act ' + cls; set('act-h', h); set('act-s', sub);
   set('note', Number.isFinite(R.offset) ? `index offset ${fS(R.offset, 2)} ±${(R.offSd || 0).toFixed(2)} · σ ${Number.isFinite(sig) ? sig.toFixed(1) : '—'} $/√s · fee ${R.fee} · settle check ${R.chk.ok}/${R.chk.n} matched index` : 'calibrating PM index vs Coinbase…');
-  draw(now, spot, pr, T, fresh ? s2 : NaN);
+  draw(now, spot, pr, T, fresh ? s2 : NaN, fresh ? slope(60, now) : NaN, fresh ? slope(20, now) : NaN);
 }
 
 // ---------- chart: last 5 min — spot+offset (blue), PM index (white), target (orange), projection (dot) ----------
 const cv = $('cv'), cx = cv.getContext('2d');
-function draw(now, spot, pr, T, s2) {
+function draw(now, spot, pr, T, s2, s1, s20) {
   const dpr = window.devicePixelRatio || 1, w = cv.clientWidth, h = cv.clientHeight;
   if (cv.width !== w * dpr) { cv.width = w * dpr; cv.height = h * dpr; }
   cx.setTransform(dpr, 0, 0, dpr, 0, 0); cx.clearRect(0, 0, w, h);
@@ -340,6 +340,10 @@ function draw(now, spot, pr, T, s2) {
   if (pr) { lo = Math.min(lo, pr.mean - pr.sd); hi = Math.max(hi, pr.mean + pr.sd); }
   const p2 = Number.isFinite(s2) && spot > 0 ? spot + off + s2 * 120 : NaN;     // 2-min trend end point (index scale)
   if (Number.isFinite(p2)) { lo = Math.min(lo, p2); hi = Math.max(hi, p2); }
+  // short trends, each projected ahead by its own fit length: last 60 s → next 60 s, last 20 s → next 20 s
+  const shorts = [[s1, 60, '#f5b301', '1m'], [s20, 20, '#e879f9', '20s']].filter(([v]) => Number.isFinite(v) && spot > 0)
+    .map(([v, H, c, lb]) => ({ end: spot + off + v * H, H, c, lb, d: v * H }));
+  for (const q of shorts) { lo = Math.min(lo, q.end); hi = Math.max(hi, q.end); }
   if (!pts.length || !(hi > lo)) return; const pad = (hi - lo) * 0.1 + 2; lo -= pad; hi += pad;
   const X = s => (s - t0) / (t1 - t0) * w, Y = v => h - (v - lo) / (hi - lo) * h;
   cx.fillStyle = 'rgba(56,189,248,.07)'; cx.fillRect(X(R.T0), 0, X(T) - X(R.T0), h);
@@ -358,6 +362,14 @@ function draw(now, spot, pr, T, s2) {
   if (pr) { const x = X(T - 1), y = Y(pr.mean); cx.strokeStyle = pr.mean >= R.target ? '#22c55e' : '#ef4444'; cx.lineWidth = 2;
     cx.beginPath(); cx.moveTo(x, Y(pr.mean + pr.sd)); cx.lineTo(x, Y(pr.mean - pr.sd)); cx.stroke();
     cx.fillStyle = cx.strokeStyle; cx.beginPath(); cx.arc(x, y, 4, 0, 7); cx.fill(); }
+  // 1-min (amber) and 20-s (pink) trend lines in front of the price, drawn on top
+  cx.font = '600 11px -apple-system,system-ui,sans-serif';
+  shorts.forEach((q, i) => {
+    cx.strokeStyle = q.c; cx.lineWidth = 2; cx.setLineDash(i ? [2, 3] : [4, 3]);
+    cx.beginPath(); cx.moveTo(X(now), Y(spot + off)); cx.lineTo(X(now + q.H), Y(q.end)); cx.stroke(); cx.setLineDash([]);
+    cx.fillStyle = q.c; cx.beginPath(); cx.arc(X(now + q.H), Y(q.end), 2.5, 0, 7); cx.fill();
+    cx.textAlign = 'right'; cx.fillText((q.d >= 0 ? '▲ ' : '▼ ') + q.lb + ' ' + fS(q.d), w - 4, 27 + 14 * i); cx.textAlign = 'left';
+  });
 }
 
 // ---------- settings ----------
