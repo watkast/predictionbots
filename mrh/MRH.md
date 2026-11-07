@@ -1,21 +1,21 @@
 # Mr. H — Coinbase hopper, PAPER
 
-Updated 2026-11-07T18:35:29Z · scans 166 · universe 112 coins (USD pairs with ≥ $100k 24-h volume) · fees 0.9% taker each way · start $4.00
+Updated 2026-11-07T18:45:29Z · scans 168 · universe 112 coins (USD pairs with ≥ $100k 24-h volume) · fees 0.9% taker each way · start $4.00
 
 ## Books (one position at a time, all-in every hop)
 
 | profile | bankroll | vs start | peak | hops | win % | avg net/hop | fees paid | open |
 |---|---|---|---|---|---|---|---|---|
-| aggressive | $3.27 | -18.2% | $4.00 | 4 | 25% | -4.66% | $0.298 | RITUAL-USD @ 0.02404 |
+| aggressive | $3.24 | -19.1% | $4.00 | 4 | 25% | -4.66% | $0.298 | RITUAL-USD @ 0.02404 |
 | standard | $3.51 | -12.2% | $4.00 | 5 | 20% | -2.33% | $0.365 | CRO-USD @ 0.04914 |
-| aggressive_swap | $3.97 | -0.7% | $4.00 | 0 | 0% | +0.00% | $0.036 | RITUAL-USD @ 0.02404 |
+| aggressive_swap | $3.93 | -1.8% | $4.00 | 0 | 0% | +0.00% | $0.036 | RITUAL-USD @ 0.02404 |
 
 ## Signal forward returns (every signal, whether or not a book took it)
 
 | profile | signals | scored | median +15m | median +1h | median +4h | % beat 1.8% at +1h | median 4%-trail hop net | max run-up (med) | max drawdown (med) |
 |---|---|---|---|---|---|---|---|---|---|
 | aggressive | 17 | 9 | +1.62% | -0.99% | +2.17% | 33% | -1.61% | +7.60% | -5.61% |
-| standard | 16 | 10 | +0.32% | -0.53% | +1.04% | 30% | -3.56% | +7.49% | -4.55% |
+| standard | 16 | 11 | +0.00% | -0.99% | -0.09% | 27% | -2.25% | +7.38% | -4.19% |
 
 ## Aggressive signals by BTC regime (BTC's own move in the hour before the signal)
 
@@ -53,7 +53,7 @@ Updated 2026-11-07T18:35:29Z · scans 166 · universe 112 coins (USD pairs with 
 | 11-07T13:35 | standard | CAP | +3.2% | 53.6 | y | 0.44% | in_position | -1.0% | -0.1% |
 | 11-07T13:35 | standard | CLANKER | +1.2% | 9.0 | y | 0.26% | in_position | … | … |
 | 11-07T13:50 | aggressive | CAP | +3.3% | 11.0 | n | 0.60% | in_position | -8.9% | -6.2% |
-| 11-07T14:35 | standard | APR | +1.2% | 17.9 | y | 0.24% | y | … | … |
+| 11-07T14:35 | standard | APR | +1.2% | 17.9 | y | 0.24% | y | -2.1% | -0.5% |
 | 11-07T14:45 | aggressive | ICNT | +4.0% | 3.5 | y | 0.26% | in_position | … | … |
 | 11-07T14:45 | standard | ICNT | +4.0% | 3.5 | y | 0.26% | in_position | … | … |
 | 11-07T15:00 | aggressive | CAP | +3.2% | 4.0 | n | 0.36% | in_position | … | … |
