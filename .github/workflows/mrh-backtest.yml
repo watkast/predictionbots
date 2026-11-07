@@ -1,0 +1,55 @@
+# Mr. H BACKTEST: replay the hopper's signal rule (the very same evaluate / forward_score / trail_pnl from
+# scripts/mrh_paper.py) over N days of Coinbase 5-minute history for the whole universe. Public endpoints, no key,
+# no orders. Produces the signal table in minutes instead of the weeks the paper twin needs to score 40 live signals.
+# Dispatch by hand. Results: the run's Summary page, and `mrh-backtest/` on the `data` branch (BACKTEST.md,
+# backtest_signals.jsonl, coins.json). ~30 days x ~110 coins is ~3,200 paced requests, 10-15 minutes.
+name: mrh-backtest
+on:
+  workflow_dispatch:
+    inputs:
+      days:
+        description: "Days of history to replay"
+        default: "30"
+      top:
+        description: "Only the N most liquid coins (0 = whole universe)"
+        default: "0"
+
+permissions:
+  contents: write
+
+concurrency:
+  group: mrh-backtest
+  cancel-in-progress: false
+
+jobs:
+  replay:
+    runs-on: ubuntu-latest
+    timeout-minutes: 120
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with: { python-version: "3.13" }
+      - run: pip install httpx
+      - run: python scripts/mrh_paper.py selftest && python scripts/mrh_backtest.py selftest
+      - name: Replay
+        run: >
+          python scripts/mrh_backtest.py run --out data/mrh-backtest
+          --days "${{ github.event.inputs.days || '30' }}" --top "${{ github.event.inputs.top || '0' }}"
+      - name: Summary
+        run: cat data/mrh-backtest/BACKTEST.md >> "$GITHUB_STEP_SUMMARY"
+      - name: Publish to the data branch
+        run: |
+          git config --global user.name "predictionbots-mrh"
+          git config --global user.email "bots@users.noreply.github.com"
+          git fetch origin data || true
+          git worktree add ../datawt origin/data
+          for i in 1 2 3 4 5; do
+            git -C ../datawt fetch -q origin data && git -C ../datawt reset -q --hard origin/data
+            mkdir -p ../datawt/mrh-backtest
+            cp data/mrh-backtest/BACKTEST.md data/mrh-backtest/backtest_signals.jsonl data/mrh-backtest/coins.json ../datawt/mrh-backtest/
+            git -C ../datawt add -A mrh-backtest
+            git -C ../datawt commit -qm "mrh-backtest $(date -u +%FT%TZ)" || { echo "nothing new to publish"; exit 0; }
+            git -C ../datawt push -q origin HEAD:data && exit 0
+            sleep $((RANDOM % 20 + 5))
+          done
+          echo "publish failed after 5 tries"; exit 1
