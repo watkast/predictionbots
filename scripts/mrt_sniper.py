@@ -544,7 +544,7 @@ class Sniper:
                 event(self.out, "run_end", minutes=minutes)
                 self.stop.set()
                 break
-            if t - last_switch >= 60:
+            if t - last_switch >= 60 and not self.dry:                 # a dry run needs no switch: it sends nothing
                 last_switch = t
                 on = switch_on(self.out)
                 if on is False:
