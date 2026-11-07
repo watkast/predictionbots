@@ -1,19 +1,19 @@
 # Mr. H — Coinbase hopper, PAPER
 
-Updated 2026-11-07T14:50:29Z · scans 130 · universe 112 coins (USD pairs with ≥ $100k 24-h volume) · fees 0.9% taker each way · start $4.00
+Updated 2026-11-07T15:00:29Z · scans 132 · universe 112 coins (USD pairs with ≥ $100k 24-h volume) · fees 0.9% taker each way · start $4.00
 
 ## Books (one position at a time, all-in every hop)
 
 | profile | bankroll | vs start | peak | hops | win % | avg net/hop | fees paid | open |
 |---|---|---|---|---|---|---|---|---|
-| aggressive | $3.72 | -6.9% | $4.00 | 2 | 50% | -2.10% | $0.173 | ALIGN-USD @ 0.0043 |
-| standard | $3.67 | -8.2% | $4.00 | 4 | 25% | -1.77% | $0.301 | APR-USD @ 0.0424 |
+| aggressive | $3.68 | -8.0% | $4.00 | 2 | 50% | -2.10% | $0.173 | ALIGN-USD @ 0.0043 |
+| standard | $3.68 | -8.0% | $4.00 | 4 | 25% | -1.77% | $0.301 | APR-USD @ 0.0424 |
 
 ## Signal forward returns (every signal, whether or not a book took it)
 
 | profile | signals | scored | median +15m | median +1h | median +4h | % beat 1.8% at +1h | median 4%-trail hop net | max run-up (med) | max drawdown (med) |
 |---|---|---|---|---|---|---|---|---|---|
-| aggressive | 12 | 1 | -3.30% | -12.31% | -15.61% | 0% | -6.60% | +1.85% | -19.23% |
+| aggressive | 13 | 1 | -3.30% | -12.31% | -15.61% | 0% | -6.60% | +1.85% | -19.23% |
 | standard | 15 | 3 | -1.22% | -2.44% | -3.80% | 0% | -5.77% | +0.20% | -4.19% |
 
 ## Verdict
@@ -35,7 +35,6 @@ Updated 2026-11-07T14:50:29Z · scans 130 · universe 112 coins (USD pairs with 
 
 | time (UTC) | profile | coin | impulse | vol× | >2h high | spread | taken | +1h | +4h |
 |---|---|---|---|---|---|---|---|---|---|
-| 11-07T11:35 | standard | ICNT | +4.1% | 59.4 | y | 0.48% | in_position | … | … |
 | 11-07T11:40 | aggressive | ICNT | +5.3% | 54.9 | y | 0.37% | in_position | … | … |
 | 11-07T11:40 | standard | ICNT | +5.3% | 54.9 | y | 0.37% | in_position | … | … |
 | 11-07T12:05 | aggressive | ICNT | +3.8% | 3.1 | n | 0.75% | spread | … | … |
@@ -50,3 +49,4 @@ Updated 2026-11-07T14:50:29Z · scans 130 · universe 112 coins (USD pairs with 
 | 11-07T14:35 | standard | APR | +1.2% | 17.9 | y | 0.24% | y | … | … |
 | 11-07T14:45 | aggressive | ICNT | +4.0% | 3.5 | y | 0.26% | in_position | … | … |
 | 11-07T14:45 | standard | ICNT | +4.0% | 3.5 | y | 0.26% | in_position | … | … |
+| 11-07T15:00 | aggressive | CAP | +3.2% | 4.0 | n | 0.36% | in_position | … | … |
