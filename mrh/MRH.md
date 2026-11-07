@@ -1,20 +1,20 @@
 # Mr. H — Coinbase hopper, PAPER
 
-Updated 2026-11-07T17:45:30Z · scans 156 · universe 112 coins (USD pairs with ≥ $100k 24-h volume) · fees 0.9% taker each way · start $4.00
+Updated 2026-11-07T17:55:29Z · scans 158 · universe 112 coins (USD pairs with ≥ $100k 24-h volume) · fees 0.9% taker each way · start $4.00
 
 ## Books (one position at a time, all-in every hop)
 
 | profile | bankroll | vs start | peak | hops | win % | avg net/hop | fees paid | open |
 |---|---|---|---|---|---|---|---|---|
-| aggressive | $3.26 | -18.4% | $4.00 | 4 | 25% | -4.66% | $0.298 | RITUAL-USD @ 0.02404 |
-| standard | $3.51 | -12.3% | $4.00 | 5 | 20% | -2.33% | $0.365 | CRO-USD @ 0.04914 |
+| aggressive | $3.26 | -18.5% | $4.00 | 4 | 25% | -4.66% | $0.298 | RITUAL-USD @ 0.02404 |
+| standard | $3.50 | -12.4% | $4.00 | 5 | 20% | -2.33% | $0.365 | CRO-USD @ 0.04914 |
 | aggressive_swap | $3.96 | -1.0% | $4.00 | 0 | 0% | +0.00% | $0.036 | RITUAL-USD @ 0.02404 |
 
 ## Signal forward returns (every signal, whether or not a book took it)
 
 | profile | signals | scored | median +15m | median +1h | median +4h | % beat 1.8% at +1h | median 4%-trail hop net | max run-up (med) | max drawdown (med) |
 |---|---|---|---|---|---|---|---|---|---|
-| aggressive | 15 | 8 | +2.06% | +0.30% | +3.19% | 38% | -0.94% | +10.04% | -5.27% |
+| aggressive | 15 | 9 | +1.62% | -0.99% | +2.17% | 33% | -1.61% | +7.60% | -5.61% |
 | standard | 16 | 10 | +0.32% | -0.53% | +1.04% | 30% | -3.56% | +7.49% | -4.55% |
 
 ## Aggressive signals by BTC regime (BTC's own move in the hour before the signal)
@@ -27,7 +27,7 @@ Updated 2026-11-07T17:45:30Z · scans 156 · universe 112 coins (USD pairs with 
 
 ## Verdict
 
-**Not yet.** Needs 40 scored aggressive signals (8 so far) and 30 closed aggressive hops (4 so far) before this says anything. Until then every number above is noise.
+**Not yet.** Needs 40 scored aggressive signals (9 so far) and 30 closed aggressive hops (4 so far) before this says anything. Until then every number above is noise.
 
 ## Last 20 hops
 
@@ -54,7 +54,7 @@ Updated 2026-11-07T17:45:30Z · scans 156 · universe 112 coins (USD pairs with 
 | 11-07T13:35 | aggressive | CAP | +3.2% | 53.6 | y | 0.44% | in_position | -1.0% | -0.1% |
 | 11-07T13:35 | standard | CAP | +3.2% | 53.6 | y | 0.44% | in_position | -1.0% | -0.1% |
 | 11-07T13:35 | standard | CLANKER | +1.2% | 9.0 | y | 0.26% | in_position | … | … |
-| 11-07T13:50 | aggressive | CAP | +3.3% | 11.0 | n | 0.60% | in_position | … | … |
+| 11-07T13:50 | aggressive | CAP | +3.3% | 11.0 | n | 0.60% | in_position | -8.9% | -6.2% |
 | 11-07T14:35 | standard | APR | +1.2% | 17.9 | y | 0.24% | y | … | … |
 | 11-07T14:45 | aggressive | ICNT | +4.0% | 3.5 | y | 0.26% | in_position | … | … |
 | 11-07T14:45 | standard | ICNT | +4.0% | 3.5 | y | 0.26% | in_position | … | … |
