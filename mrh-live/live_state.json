@@ -1,35 +1,15 @@
 {
  "started": "2026-11-07T00:42:01Z",
- "pos": {
-  "pid": "ALIGN-USD",
-  "qty": 1874.0,
-  "entry_px": 0.0043,
-  "cost": 8.1307238,
-  "hw": 0.0043,
-  "t_in": "2026-11-07T13:20:30Z",
-  "hw_t": "2026-11-07T13:20:30Z",
-  "signal": {
-   "impulse": 0.0238,
-   "vol_mult": 6.84,
-   "above_2h_high": false
-  },
-  "stop": {
-   "order_id": "e85804f1-c1d7-4f26-be17-0e4a92904787",
-   "stop_px": 0.004128,
-   "t": "2026-11-07T13:20:31Z"
-  },
-  "order_id": "c19027aa-026f-4ae7-b55a-c904cedaa37d",
-  "last_bid": 0.00415
- },
+ "pos": null,
  "start_usd": 3.4418,
- "hops": 3,
+ "hops": 4,
  "wins": 2,
- "fees": 0.3056264135696412,
+ "fees": 0.3751143335696412,
  "peak": 17.72644249380356,
  "hops_by_day": {
-  "2026-11-07": 3
+  "2026-11-07": 4
  },
- "cycles": 177,
+ "cycles": 178,
  "halted": null,
  "universe": [
   {
@@ -1402,9 +1382,9 @@
   }
  },
  "last": {
-  "t": "2026-11-07T15:10:15Z",
-  "usd": 0.0043,
-  "total": 7.7814,
-  "pos": "ALIGN-USD"
+  "t": "2026-11-07T15:15:15Z",
+  "usd": 7.6557,
+  "total": 7.6557,
+  "pos": null
  }
 }
