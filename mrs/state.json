@@ -724,10 +724,10 @@
   "KXMLSTOTAL-26NOV07NYRBATL-2": 1794090288.3146021,
   "KXMLSTOTAL-26NOV07MIACLT-5": 1794090438.0937543,
   "KXMLSTOTAL-26NOV07CINNSH-1": 1794090774.1113634,
-  "KXMLSTOTAL-26NOV07PHITOR-4": 1794090789.0930963
+  "KXMLSTOTAL-26NOV07PHITOR-4": 1794090789.0930963,
+  "KXMLSTOTAL-26NOV07CHICLB-6": 1794091065.3284087
  },
  "blocked": {
-  "KXEPLTOTAL-26NOV07FULNEW-4": "no asks (already repriced)",
   "KXEPLTOTAL-26NOV07FULNEW-3": "no asks (already repriced)",
   "KXLALIGATOTAL-26NOV07ESPDEP-6": "Polymarket does not confirm",
   "KXLALIGATOTAL-26NOV07ESPDEP-5": "Polymarket does not confirm",
@@ -987,7 +987,7 @@
   "KXMLS1H-26NOV07ORLNE-NE": "switch off",
   "KXMLS1HBTTS-26NOV07ORLNE-BTTS": "switch off",
   "KXMLS1HTOTAL-26NOV07PHITOR-3": "Polymarket does not confirm",
-  "KXMLSTOTAL-26NOV07PHITOR-3": "settling (25s)",
+  "KXMLSTOTAL-26NOV07PHITOR-3": "settling (213s)",
   "KXLALIGATOTAL-26NOV07VCFRMA-7": "no asks (already repriced)",
   "KXLALIGATOTAL-26NOV07VCFRMA-6": "no asks (already repriced)",
   "KXLALIGATOTAL-26NOV07VCFRMA-5": "no asks (already repriced)",
@@ -1000,7 +1000,7 @@
   "KXMLS1H-26NOV07CINNSH-NSH": "switch off",
   "KXMLS1H-26NOV07CINNSH-CIN": "switch off",
   "KXMLS1HBTTS-26NOV07CINNSH-BTTS": "switch off",
-  "KXMLSTOTAL-26NOV07CHICLB-5": "switch off",
+  "KXMLSTOTAL-26NOV07CHICLB-5": "Polymarket does not confirm",
   "KXMLS1H-26NOV07MIACLT-TIE": "Polymarket does not confirm",
   "KXMLS1H-26NOV07MIACLT-MIA": "Polymarket does not confirm",
   "KXMLS1H-26NOV07MIACLT-CLT": "Polymarket does not confirm",
@@ -1025,8 +1025,9 @@
   "KXMLSBTTS-26NOV07MIACLT-BTTS": "switch off",
   "KXMLSTOTAL-26NOV07NYRBATL-2": "switch off",
   "KXMLSTOTAL-26NOV07MIACLT-5": "switch off",
-  "KXMLSTOTAL-26NOV07CINNSH-1": "settling (41s)",
-  "KXMLSTOTAL-26NOV07PHITOR-4": "settling (25s)"
+  "KXMLSTOTAL-26NOV07CINNSH-1": "switch off",
+  "KXMLSTOTAL-26NOV07PHITOR-4": "switch off",
+  "KXMLSTOTAL-26NOV07CHICLB-6": "settling (82s)"
  },
  "started": 1793687692.6057825,
  "ht": {
