@@ -34,8 +34,12 @@ the backstop. Report: `mrh-live/LIVE.md` on the `data` branch, with `live_state.
 The exchange is the truth: every cycle reconciles balances, open orders and fills. A coin bought by hand is adopted
 and trailed (entry = last buy fill, else the bid); a stop that filled while the bot slept is booked from its fill.
 
+**Swap:** a coin that has made no new high for 2 h (`MRH_LIVE_SWAP_AFTER_H`, 0 disables), or one that was adopted
+rather than signalled, is sold at market to take a fresh signal in another coin — with the whole stack, proceeds plus
+any USD that arrived meanwhile, so a deposit goes to work on the next signal instead of waiting for a stop-out.
+
 Guards: `mrh/LIVE_ON` on main and no `mrh/PAUSED` (checked every cycle); one position; 6 hops per UTC day
-(`MRH_LIVE_MAX_HOPS_DAY`); $12 per entry (`MRH_LIVE_MAX_USD` — a deposit does not become bot money); halts below
+(`MRH_LIVE_MAX_HOPS_DAY`); $200 per entry (`MRH_LIVE_MAX_USD` — the stack goes in whole, up to this); halts below
 $1.20 total (`MRH_LIVE_FLOOR_USD`, Coinbase's $1 minimum would strand anything smaller); never touches any asset
 other than USD and the one coin it holds (dust, LOOM and friends are ignored). USDC is not bankroll — hold USD.
 Keep no other open orders on the coin it holds: a hand-placed sell locks the coins and the bot's stop cannot park.
