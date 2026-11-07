@@ -708,7 +708,7 @@
   "KXEPL1HBTTS-26NOV07LEETOT-BTTS": "no asks (already repriced)",
   "KXLALIGA1HTOTAL-26NOV07MCFSAN-1": "Polymarket does not confirm",
   "KXLALIGATOTAL-26NOV07MCFSAN-1": "no asks (already repriced)",
-  "KXSUPERLIGTOTAL-26NOV07SAMKON-1": "settling (102s)"
+  "KXSUPERLIGTOTAL-26NOV07SAMKON-1": "no asks (already repriced)"
  },
  "started": 1793687692.6057825,
  "ht": {
@@ -866,6 +866,10 @@
   ],
   "401878758": [
    0,
+   0
+  ],
+  "401888250": [
+   1,
    0
   ]
  }
