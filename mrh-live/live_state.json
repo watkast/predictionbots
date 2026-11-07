@@ -1,29 +1,15 @@
 {
  "started": "2026-11-07T00:42:01Z",
- "pos": {
-  "pid": "ZEC-USD",
-  "qty": 0.00259558,
-  "entry_px": 1326.04,
-  "cost": 3.4418429032,
-  "hw": 1358.5,
-  "t_in": "2026-11-07T00:42:02Z",
-  "signal": {
-   "adopted": true
-  },
-  "stop": {
-   "order_id": "6a2a7f24-7d22-4974-9f81-ea77bd23b2ae",
-   "stop_px": 1304.1599999999999,
-   "t": "2026-11-07T02:15:16Z"
-  },
-  "last_bid": 1305.79
- },
+ "pos": null,
  "start_usd": 3.4418,
- "hops": 0,
+ "hops": 1,
  "wins": 0,
- "fees": 0.0,
+ "fees": 0.030453550803,
  "peak": 3.5260954300000003,
- "hops_by_day": {},
- "cycles": 73,
+ "hops_by_day": {
+  "2026-11-07": 1
+ },
+ "cycles": 74,
  "halted": null,
  "universe": [
   {
@@ -1384,9 +1370,9 @@
   }
  },
  "last": {
-  "t": "2026-11-07T06:35:15Z",
-  "usd": 0.0,
-  "total": 3.3893,
-  "pos": "ZEC-USD"
+  "t": "2026-11-07T06:40:15Z",
+  "usd": 3.3533,
+  "total": 3.3533,
+  "pos": null
  }
 }

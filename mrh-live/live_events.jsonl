@@ -12,3 +12,4 @@
 {"t": "2026-11-07T02:10:16Z", "ev": "order_sent", "label": "park_stop", "pid": "ZEC-USD", "side": "SELL", "cfg": {"stop_limit_stop_limit_gtc": {"base_size": "0.00259558", "limit_price": "1282.51", "stop_price": "1302.04", "stop_direction": "STOP_DIRECTION_STOP_DOWN"}}, "order_id": "fe3fd83d-9c2c-4766-a500-8238e90459db"}
 {"t": "2026-11-07T02:15:16Z", "ev": "order_sent", "label": "park_stop", "pid": "ZEC-USD", "side": "SELL", "cfg": {"stop_limit_stop_limit_gtc": {"base_size": "0.00259558", "limit_price": "1284.59", "stop_price": "1304.15", "stop_direction": "STOP_DIRECTION_STOP_DOWN"}}, "order_id": "6a2a7f24-7d22-4974-9f81-ea77bd23b2ae"}
 {"t": "2026-11-07T06:18:07Z", "ev": "start", "mode": "live", "key": "1957dba3ea6c", "alg": "EdDSA", "max_usd": 12.0, "floor": 1.2, "max_hops_day": 6}
+{"t": "2026-11-07T06:40:15Z", "ev": "sold", "pid": "ZEC-USD", "px": 1303.65, "net": -0.0886, "net_pct": -0.0257, "reason": "stop"}
