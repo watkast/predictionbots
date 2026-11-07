@@ -1,21 +1,21 @@
 # Mr. H — Coinbase hopper, PAPER
 
-Updated 2026-11-07T21:15:29Z · scans 198 · universe 112 coins (USD pairs with ≥ $100k 24-h volume) · fees 0.9% taker each way · start $4.00
+Updated 2026-11-07T21:25:30Z · scans 200 · universe 112 coins (USD pairs with ≥ $100k 24-h volume) · fees 0.9% taker each way · start $4.00
 
 ## Books (one position at a time, all-in every hop)
 
 | profile | bankroll | vs start | peak | hops | win % | avg net/hop | fees paid | open |
 |---|---|---|---|---|---|---|---|---|
-| aggressive | $3.31 | -17.2% | $4.00 | 5 | 40% | -3.62% | $0.328 | — |
+| aggressive | $3.31 | -17.2% | $4.00 | 5 | 40% | -3.62% | $0.358 | MEZO-USD @ 0.004897 |
 | standard | $3.47 | -13.2% | $4.00 | 5 | 20% | -2.33% | $0.365 | CRO-USD @ 0.04914 |
-| aggressive_swap | $4.02 | +0.5% | $4.02 | 1 | 100% | +0.50% | $0.073 | — |
+| aggressive_swap | $4.02 | +0.5% | $4.02 | 1 | 100% | +0.50% | $0.109 | MEZO-USD @ 0.004897 |
 
 ## Signal forward returns (every signal, whether or not a book took it)
 
 | profile | signals | scored | median +15m | median +1h | median +4h | % beat 1.8% at +1h | median 4%-trail hop net | max run-up (med) | max drawdown (med) |
 |---|---|---|---|---|---|---|---|---|---|
-| aggressive | 20 | 12 | -0.26% | -1.43% | -0.27% | 25% | -4.05% | +5.72% | -7.71% |
-| standard | 20 | 12 | -0.18% | -0.95% | -0.28% | 25% | -3.88% | +5.72% | -4.55% |
+| aggressive | 22 | 12 | -0.26% | -1.43% | -0.27% | 25% | -4.05% | +5.72% | -7.71% |
+| standard | 21 | 12 | -0.18% | -0.95% | -0.28% | 25% | -3.88% | +5.72% | -4.55% |
 
 ## Aggressive signals by BTC regime (BTC's own move in the hour before the signal)
 
@@ -49,9 +49,6 @@ Updated 2026-11-07T21:15:29Z · scans 198 · universe 112 coins (USD pairs with 
 
 | time (UTC) | profile | coin | impulse | vol× | >2h high | spread | taken | +1h | +4h |
 |---|---|---|---|---|---|---|---|---|---|
-| 11-07T14:45 | aggressive | ICNT | +4.0% | 3.5 | y | 0.26% | in_position | -0.9% | -7.7% |
-| 11-07T14:45 | standard | ICNT | +4.0% | 3.5 | y | 0.26% | in_position | -0.9% | -7.7% |
-| 11-07T15:00 | aggressive | CAP | +3.2% | 4.0 | n | 0.36% | in_position | -1.9% | -0.4% |
 | 11-07T15:35 | aggressive | RITUAL | +3.0% | 4.2 | n | 0.04% | y | -9.0% | -3.7% |
 | 11-07T17:40 | standard | CRO | +1.2% | 80.5 | y | 0.12% | y | … | … |
 | 11-07T17:45 | aggressive | RITUAL | +3.2% | 3.6 | n | 0.08% | y | … | … |
@@ -64,3 +61,6 @@ Updated 2026-11-07T21:15:29Z · scans 198 · universe 112 coins (USD pairs with 
 | 11-07T19:10 | standard | RITUAL | +1.1% | 9.9 | y | 1.05% | spread | … | … |
 | 11-07T19:25 | standard | PROMPT | +2.0% | 4.7 | y | 0.05% | in_position | … | … |
 | 11-07T19:55 | aggressive | DEGEN | +5.5% | 32.6 | n | 0.62% | spread | … | … |
+| 11-07T21:20 | aggressive | MEZO | +3.8% | 18.0 | n | 0.55% | y | … | … |
+| 11-07T21:25 | aggressive | MEZO | +2.4% | 10.4 | y | 0.42% | in_position | … | … |
+| 11-07T21:25 | standard | MEZO | +2.4% | 10.4 | y | 0.42% | in_position | … | … |
