@@ -1,0 +1,58 @@
+# Mr. H LIVE (REAL MONEY, hard-capped): the Coinbase hopper's aggressive profile with a real key (scripts/mrh_live.py).
+# Enter on a 5-min impulse candle (>= +2% on >= 3x volume, spread <= 0.6%), whole bankroll; exit on a 4% trailing stop
+# that is PARKED ON THE EXCHANGE as a stop-limit sell (so a dump between runs still gets out) plus a 5-minute backstop.
+# Caps: MRH_LIVE_MAX_USD per entry (12), 6 hops/day, halts below $1.20 total. Only ever touches USD + the coin it holds.
+# Switch: mrh/LIVE_ON on main (delete it, or add mrh/PAUSED, to stop new orders; cancel the job to stop at once).
+# Secrets: COINBASE_API_KEY (CDP key name) + COINBASE_API_SECRET (its private key) — View + Trade only, NO Transfer.
+# Starts on merge (push trigger) and re-dispatches itself while the switch exists; the 6-hourly cron is a backstop.
+# Report: mrh-live/LIVE.md on the `data` branch every 5 minutes (the paper twin's report is mrh/MRH.md).
+name: mrh-live
+on:
+  schedule:
+    - cron: "41 */6 * * *"
+  workflow_dispatch:
+    inputs:
+      minutes:
+        description: "Minutes to run"
+        default: "335"
+      mode:
+        description: "live (orders) or dry (everything but orders)"
+        default: "live"
+  push:
+    branches: [main]
+    paths: ["mrh/LIVE_ON", ".github/workflows/mrh-live.yml", "scripts/mrh_live.py", "scripts/gha_mrh_live.sh"]
+
+permissions:
+  contents: write
+  actions: write
+
+concurrency:
+  group: mrh-live
+  cancel-in-progress: false
+
+jobs:
+  live:
+    runs-on: ubuntu-latest
+    timeout-minutes: 355
+    env:
+      COINBASE_API_KEY: ${{ secrets.COINBASE_API_KEY }}
+      COINBASE_API_SECRET: ${{ secrets.COINBASE_API_SECRET }}
+      MRH_DIR: ${{ github.workspace }}/data/mrh-live
+      GH_TOKEN: ${{ github.token }}
+    steps:
+      - uses: actions/checkout@v4
+      - name: Switch?
+        id: sw
+        run: |
+          if [ -f mrh/LIVE_ON ] && [ ! -f mrh/PAUSED ]; then echo "on=true" >> "$GITHUB_OUTPUT"
+          else echo "mrh/LIVE_ON missing or mrh/PAUSED present — not running"; echo "on=false" >> "$GITHUB_OUTPUT"; fi
+      - uses: actions/setup-python@v5
+        if: steps.sw.outputs.on == 'true'
+        with: { python-version: "3.13" }
+      - if: steps.sw.outputs.on == 'true'
+        run: pip install httpx cryptography
+      - if: steps.sw.outputs.on == 'true'
+        run: python scripts/mrh_paper.py selftest && python scripts/mrh_live.py selftest
+      - name: Trade (publishing every 5 minutes)
+        if: steps.sw.outputs.on == 'true'
+        run: bash scripts/gha_mrh_live.sh "${{ github.event.inputs.minutes || '335' }}" "${{ github.event.inputs.mode || 'live' }}"
