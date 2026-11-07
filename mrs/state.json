@@ -921,7 +921,7 @@
   "KXLIGUE11HTOTAL-26NOV07AUXPAR-1": "no asks (already repriced)",
   "KXLIGUE1TOTAL-26NOV07AUXPAR-1": "no asks (already repriced)",
   "KXLIGAPORTUGAL1HTOTAL-26NOV07ALVCAS-1": "no asks (already repriced)",
-  "KXLIGAPORTUGALTOTAL-26NOV07ALVCAS-1": "settling (102s)",
+  "KXLIGAPORTUGALTOTAL-26NOV07ALVCAS-1": "no asks (already repriced)",
   "KXSERIEATOTAL-26NOV07PARBFC-3": "no asks (already repriced)",
   "KXSERIEABTTS-26NOV07PARBFC-BTTS": "no asks (already repriced)",
   "KXEPLTOTAL-26NOV07NFOMCI-3": "no asks (already repriced)",
@@ -972,8 +972,8 @@
   "KXEPLTOTAL-26NOV07NFOMCI-7": "no asks (already repriced)",
   "KXEPLTOTAL-26NOV07NFOMCI-6": "no asks (already repriced)",
   "KXEPLTOTAL-26NOV07NFOMCI-5": "no asks (already repriced)",
-  "KXLIGAPORTUGALTOTAL-26NOV07ALVCAS-2": "settling (102s)",
-  "KXLIGAPORTUGALBTTS-26NOV07ALVCAS-BTTS": "settling (102s)"
+  "KXLIGAPORTUGALTOTAL-26NOV07ALVCAS-2": "no asks (already repriced)",
+  "KXLIGAPORTUGALBTTS-26NOV07ALVCAS-BTTS": "no asks (already repriced)"
  },
  "started": 1793687692.6057825,
  "ht": {
