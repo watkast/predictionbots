@@ -19,7 +19,7 @@
    "t": "2026-11-07T19:05:16Z"
   },
   "order_id": "26858cde-aa0d-4b1e-beb6-bdc2a1c47ebe",
-  "last_bid": 0.02549
+  "last_bid": 0.02535
  },
  "start_usd": 3.4418,
  "hops": 5,
@@ -29,7 +29,7 @@
  "hops_by_day": {
   "2026-11-07": 5
  },
- "cycles": 225,
+ "cycles": 226,
  "halted": null,
  "universe": [
   {
@@ -1402,9 +1402,9 @@
   }
  },
  "last": {
-  "t": "2026-11-07T19:05:16Z",
+  "t": "2026-11-07T19:10:15Z",
   "usd": 0.0093,
-  "total": 7.5798,
+  "total": 7.5382,
   "pos": "RITUAL-USD"
  }
 }
