@@ -1,20 +1,20 @@
 # Mr. H — Coinbase hopper, PAPER
 
-Updated 2026-11-07T13:30:29Z · scans 114 · universe 112 coins (USD pairs with ≥ $100k 24-h volume) · fees 0.9% taker each way · start $4.00
+Updated 2026-11-07T13:40:29Z · scans 116 · universe 112 coins (USD pairs with ≥ $100k 24-h volume) · fees 0.9% taker each way · start $4.00
 
 ## Books (one position at a time, all-in every hop)
 
 | profile | bankroll | vs start | peak | hops | win % | avg net/hop | fees paid | open |
 |---|---|---|---|---|---|---|---|---|
-| aggressive | $3.73 | -6.7% | $4.00 | 2 | 50% | -2.10% | $0.173 | ALIGN-USD @ 0.0043 |
-| standard | $3.63 | -9.2% | $4.00 | 3 | 0% | -3.80% | $0.234 | CAP-USD @ 0.09713 |
+| aggressive | $3.71 | -7.2% | $4.00 | 2 | 50% | -2.10% | $0.173 | ALIGN-USD @ 0.0043 |
+| standard | $3.80 | -5.1% | $4.00 | 3 | 0% | -3.80% | $0.234 | CAP-USD @ 0.09713 |
 
 ## Signal forward returns (every signal, whether or not a book took it)
 
 | profile | signals | scored | median +15m | median +1h | median +4h | % beat 1.8% at +1h | median 4%-trail hop net | max run-up (med) | max drawdown (med) |
 |---|---|---|---|---|---|---|---|---|---|
-| aggressive | 9 | 0 | +nan% | +nan% | +nan% | nan% | +nan% | +nan% | +nan% |
-| standard | 11 | 2 | -1.07% | -1.26% | -3.72% | 0% | -5.64% | +0.20% | -4.18% |
+| aggressive | 10 | 0 | +nan% | +nan% | +nan% | nan% | +nan% | +nan% | +nan% |
+| standard | 13 | 2 | -1.07% | -1.26% | -3.72% | 0% | -5.64% | +0.20% | -4.18% |
 
 ## Verdict
 
@@ -34,9 +34,6 @@ Updated 2026-11-07T13:30:29Z · scans 114 · universe 112 coins (USD pairs with 
 
 | time (UTC) | profile | coin | impulse | vol× | >2h high | spread | taken | +1h | +4h |
 |---|---|---|---|---|---|---|---|---|---|
-| 11-07T10:45 | aggressive | DEGEN | +6.7% | 4.5 | y | 0.80% | spread | … | … |
-| 11-07T10:45 | standard | DEGEN | +6.7% | 4.5 | y | 0.80% | spread | … | … |
-| 11-07T11:20 | aggressive | ICNT | +6.0% | 51.6 | y | 0.26% | y | … | … |
 | 11-07T11:20 | standard | ICNT | +6.0% | 51.6 | y | 0.26% | in_position | … | … |
 | 11-07T11:25 | aggressive | ICNT | +3.6% | 13.3 | y | 0.28% | in_position | … | … |
 | 11-07T11:25 | standard | ICNT | +3.6% | 13.3 | y | 0.28% | y | … | … |
@@ -49,3 +46,6 @@ Updated 2026-11-07T13:30:29Z · scans 114 · universe 112 coins (USD pairs with 
 | 11-07T13:20 | aggressive | ALIGN | +2.4% | 6.8 | n | 0.23% | y | … | … |
 | 11-07T13:25 | aggressive | CAP | +2.6% | 3.5 | y | 0.48% | in_position | … | … |
 | 11-07T13:25 | standard | CAP | +2.6% | 3.5 | y | 0.48% | in_position | … | … |
+| 11-07T13:35 | aggressive | CAP | +3.2% | 53.6 | y | 0.44% | in_position | … | … |
+| 11-07T13:35 | standard | CAP | +3.2% | 53.6 | y | 0.44% | in_position | … | … |
+| 11-07T13:35 | standard | CLANKER | +1.2% | 9.0 | y | 0.26% | in_position | … | … |
