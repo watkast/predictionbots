@@ -1,6 +1,6 @@
 # Mr. H — Coinbase hopper, PAPER
 
-Updated 2026-11-07T17:25:30Z · scans 152 · universe 112 coins (USD pairs with ≥ $100k 24-h volume) · fees 0.9% taker each way · start $4.00
+Updated 2026-11-07T17:35:29Z · scans 154 · universe 112 coins (USD pairs with ≥ $100k 24-h volume) · fees 0.9% taker each way · start $4.00
 
 ## Books (one position at a time, all-in every hop)
 
@@ -14,8 +14,8 @@ Updated 2026-11-07T17:25:30Z · scans 152 · universe 112 coins (USD pairs with 
 
 | profile | signals | scored | median +15m | median +1h | median +4h | % beat 1.8% at +1h | median 4%-trail hop net | max run-up (med) | max drawdown (med) |
 |---|---|---|---|---|---|---|---|---|---|
-| aggressive | 14 | 6 | -1.78% | -0.14% | +3.67% | 33% | -3.07% | +10.29% | -7.59% |
-| standard | 15 | 8 | -1.07% | -0.97% | +0.74% | 25% | -5.64% | +5.72% | -4.55% |
+| aggressive | 14 | 7 | -0.25% | +1.58% | +4.22% | 43% | -0.27% | +12.48% | -4.92% |
+| standard | 15 | 9 | -0.93% | -0.07% | +2.17% | 33% | -5.51% | +7.38% | -4.19% |
 
 ## Aggressive signals by BTC regime (BTC's own move in the hour before the signal)
 
@@ -27,7 +27,7 @@ Updated 2026-11-07T17:25:30Z · scans 152 · universe 112 coins (USD pairs with 
 
 ## Verdict
 
-**Not yet.** Needs 40 scored aggressive signals (6 so far) and 30 closed aggressive hops (4 so far) before this says anything. Until then every number above is noise.
+**Not yet.** Needs 40 scored aggressive signals (7 so far) and 30 closed aggressive hops (4 so far) before this says anything. Until then every number above is noise.
 
 ## Last 20 hops
 
@@ -51,8 +51,8 @@ Updated 2026-11-07T17:25:30Z · scans 152 · universe 112 coins (USD pairs with 
 | 11-07T12:05 | aggressive | ICNT | +3.8% | 3.1 | n | 0.75% | spread | +5.1% | +5.2% |
 | 11-07T13:10 | standard | CAP | +1.9% | 3.1 | y | 0.15% | y | +7.1% | +6.1% |
 | 11-07T13:20 | aggressive | ALIGN | +2.4% | 6.8 | n | 0.23% | y | … | … |
-| 11-07T13:25 | aggressive | CAP | +2.6% | 3.5 | y | 0.48% | in_position | … | … |
-| 11-07T13:25 | standard | CAP | +2.6% | 3.5 | y | 0.48% | in_position | … | … |
+| 11-07T13:25 | aggressive | CAP | +2.6% | 3.5 | y | 0.48% | in_position | +3.6% | +4.2% |
+| 11-07T13:25 | standard | CAP | +2.6% | 3.5 | y | 0.48% | in_position | +3.6% | +4.2% |
 | 11-07T13:35 | aggressive | CAP | +3.2% | 53.6 | y | 0.44% | in_position | … | … |
 | 11-07T13:35 | standard | CAP | +3.2% | 53.6 | y | 0.44% | in_position | … | … |
 | 11-07T13:35 | standard | CLANKER | +1.2% | 9.0 | y | 0.26% | in_position | … | … |
