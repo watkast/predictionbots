@@ -883,14 +883,14 @@
   "KXLALIGATOTAL-26NOV07ESPDEP-1": "Polymarket does not confirm",
   "KXLALIGABTTS-26NOV07ESPDEP-BTTS": "Polymarket does not confirm",
   "KXSUPERLIGTOTAL-26NOV07GALAMS-3": "settling (83s)",
-  "KXSUPERLIGTOTAL-26NOV07GALAMS-4": "settling (139s)",
-  "KXSUPERLIGBTTS-26NOV07GALAMS-BTTS": "settling (139s)",
+  "KXSUPERLIGTOTAL-26NOV07GALAMS-4": "no asks (already repriced)",
+  "KXSUPERLIGBTTS-26NOV07GALAMS-BTTS": "no asks (already repriced)",
   "KXEREDIVISIETOTAL-26NOV07FORTEL-9": "no Polymarket twin",
   "KXEREDIVISIETOTAL-26NOV07FORTEL-8": "no Polymarket twin",
   "KXEREDIVISIETOTAL-26NOV07FORTEL-7": "no Polymarket twin",
   "KXEREDIVISIETOTAL-26NOV07FORTEL-6": "no Polymarket twin",
   "KXEREDIVISIETOTAL-26NOV07FORTEL-5": "no Polymarket twin",
-  "KXSUPERLIGTOTAL-26NOV07GALAMS-5": "settling (139s)"
+  "KXSUPERLIGTOTAL-26NOV07GALAMS-5": "no asks (already repriced)"
  },
  "started": 1793687692.6057825,
  "ht": {
