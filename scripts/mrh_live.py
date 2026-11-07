@@ -9,6 +9,9 @@ with real orders on Coinbase Advanced Trade:
   exit    4% trailing stop from the high-water mark, enforced two ways: a stop-limit sell PARKED ON THE EXCHANGE
           (a dump while the runner sleeps, or in the gap between runs, still gets out) and the bot's own market-sell
           backstop on the live bid every 5 minutes.
+  swap    a coin that has made no new high for MRH_LIVE_SWAP_AFTER_H hours (or one that was adopted rather than
+          signalled) is sold at market to take a fresh signal in another coin, with the whole stack: proceeds + any
+          USD that arrived meanwhile. The paper twin runs this as its aggressive_swap book.
 
 Guards: switch file mrh/LIVE_ON on main and no mrh/PAUSED (checked every cycle); one position; at most
 MRH_LIVE_MAX_HOPS_DAY sells per UTC day; MRH_LIVE_MAX_USD per entry (a deposit does not become bot money); halts
@@ -55,9 +58,11 @@ STOP_REPLACE_MIN = 0.001           # re-park the stop when the high-water mark m
 DUST_USD = 1.00                    # holdings worth less than this are not "a position"
 STABLES = {"USD", "USDC", "USDT", "DAI", "PYUSD", "GUSD", "USDP", "TUSD", "EURC", "USDS", "RLUSD", "PAX", "EUR", "GBP"}
 
-MAX_USD = float(os.environ.get("MRH_LIVE_MAX_USD", "12"))          # per entry
+MAX_USD = float(os.environ.get("MRH_LIVE_MAX_USD", "200"))         # per entry: the whole stack goes in, up to this
 FLOOR_USD = float(os.environ.get("MRH_LIVE_FLOOR_USD", "1.20"))    # halt below this total
 MAX_HOPS_DAY = int(os.environ.get("MRH_LIVE_MAX_HOPS_DAY", "6"))
+SWAP_AFTER_H = float(os.environ.get("MRH_LIVE_SWAP_AFTER_H", "2"))  # a coin with no new high for this long gives way to a
+                                                                     # fresh signal (0 = never swap); adopted coins always do
 REPO = os.environ.get("GITHUB_REPOSITORY", "watkast/predictionbots")
 
 now, iso, parse_iso, CANDLE_S, LOOKBACK = paper.now, paper.iso, paper.parse_iso, paper.CANDLE_S, paper.LOOKBACK
@@ -462,7 +467,7 @@ def buy(ex: CDP, cb, out: Path, st: dict, dry: bool, sig: dict, usd: float) -> d
         return None
     cost = (f["value"] if f["value"] else f["qty"] * f["px"]) + f["fee"]
     st["fees"] += f["fee"]
-    st["pos"] = {"pid": pid, "qty": f["qty"], "entry_px": f["px"], "cost": cost, "hw": f["px"], "t_in": iso(now()),
+    st["pos"] = {"pid": pid, "qty": f["qty"], "entry_px": f["px"], "cost": cost, "hw": f["px"], "t_in": iso(now()), "hw_t": iso(now()),
                  "signal": {k: sig[k] for k in ("impulse", "vol_mult", "above_2h_high")}, "stop": None, "order_id": f["order_id"]}
     rec = {"t": iso(now()), "ev": "buy", "pid": pid, "px": f["px"], "qty": f["qty"], "cost": round(cost, 4), "fee": f["fee"], "signal": st["pos"]["signal"],
            "order_id": f["order_id"]}
@@ -519,7 +524,7 @@ def reconcile(ex: CDP, cb, out: Path, st: dict) -> tuple[float, list[dict]]:
                     break
         except Exception as e:
             event(out, "open_orders_error", err=str(e)[:200])
-        st["pos"] = {"pid": h["pid"], "qty": h["qty"], "entry_px": entry, "cost": cost, "hw": max(entry, h["bid"]), "t_in": iso(now()),
+        st["pos"] = {"pid": h["pid"], "qty": h["qty"], "entry_px": entry, "cost": cost, "hw": max(entry, h["bid"]), "t_in": iso(now()), "hw_t": iso(now()),
                      "signal": {"adopted": True}, "stop": stop, "last_bid": h["bid"]}
         event(out, "adopted", pid=h["pid"], qty=h["qty"], entry_px=entry, value=round(h["value"], 2), stop=bool(stop))
     total = usd + (st["pos"]["qty"] * st["pos"]["last_bid"] if st["pos"] else 0.0)
@@ -532,15 +537,26 @@ def reconcile(ex: CDP, cb, out: Path, st: dict) -> tuple[float, list[dict]]:
 
 # ----------------------------------------------------------------------------------------------- one cycle
 
+def swap_due(pos: dict) -> bool:
+    """Adopted coins (never a signal) are always swappable; signalled ones once they stop making highs."""
+    if not SWAP_AFTER_H:
+        return False
+    if pos.get("signal", {}).get("adopted"):
+        return True
+    return (now() - parse_iso(pos.get("hw_t") or pos["t_in"])).total_seconds() >= SWAP_AFTER_H * 3600
+
+
 def cycle(ex: CDP, cb, out: Path, st: dict, dry: bool, t: datetime | None = None) -> dict:
     t = t or now()
     refresh_universe(cb, st, t)
     usd, held = reconcile(ex, cb, out, st)
     pos = st["pos"]
     total = st["last"]["total"]
+    hops_today = st["hops_by_day"].get(iso(now())[:10], 0)         # same clock as book_sell
     if pos:
         bid = cb.ticker(pos["pid"])["bid"] if pos.get("last_bid") is None else pos["last_bid"]
-        pos["hw"] = max(pos["hw"], bid)
+        if bid > pos["hw"]:
+            pos["hw"], pos["hw_t"] = bid, iso(now())
         stop_px = pos["hw"] * (1 - TRAIL)
         if bid <= stop_px:
             market_sell_all(ex, cb, out, st, dry, "trail")        # backstop: the parked stop should have done this
@@ -548,12 +564,22 @@ def cycle(ex: CDP, cb, out: Path, st: dict, dry: bool, t: datetime | None = None
             pass                                                   # reconcile books it next cycle
         else:
             park_stop(ex, cb, out, st, dry)
+        # swap: a dead or adopted coin gives way to a fresh signal, and the whole stack (proceeds + idle USD) goes in
+        if st["pos"] and swap_due(st["pos"]) and not st["halted"] and hops_today < MAX_HOPS_DAY:
+            sig = best_signal(cb, out, st, t)
+            if sig and sig["pid"] != st["pos"]["pid"]:
+                event(out, "signal", swap_from=st["pos"]["pid"], **sig)
+                market_sell_all(ex, cb, out, st, dry, "swap")
+                if dry or st["pos"] is None:                       # never double up: buy only once the sale is booked
+                    usd, _ = holdings(ex, cb, st)
+                    if buy(ex, cb, out, st, dry, sig, usd):
+                        park_stop(ex, cb, out, st, dry)
     elif st["halted"]:
         pass
     elif total < FLOOR_USD:
         st["halted"] = f"floor: ${total:.2f} < ${FLOOR_USD:.2f}"
         event(out, "halted", reason=st["halted"])
-    elif st["hops_by_day"].get(iso(now())[:10], 0) >= MAX_HOPS_DAY:    # same clock as book_sell
+    elif hops_today >= MAX_HOPS_DAY:
         st.setdefault("last", {})["note"] = "daily hop cap"
     else:
         sig = best_signal(cb, out, st, t)
@@ -578,7 +604,7 @@ def report(out: Path) -> str:
     L = ["# Mr. H — Coinbase hopper, LIVE (real money)\n",
          f"Updated {iso(now())} · cycles {st['cycles']} · universe {len(st['universe'])} coins · profile aggressive "
          f"(+{PROFILE['impulse']*100:.0f}% impulse, {PROFILE['vol_mult']:.0f}× volume, {TRAIL*100:.0f}% trail) · caps ${MAX_USD:.2f}/entry, "
-         f"{MAX_HOPS_DAY} hops/day, floor ${FLOOR_USD:.2f}\n"]
+         f"{MAX_HOPS_DAY} hops/day, floor ${FLOOR_USD:.2f}, swap after {SWAP_AFTER_H:g} h without a new high\n"]
     if st.get("halted"):
         L.append(f"**HALTED: {st['halted']}** — remove mrh/LIVE_ON, fix, delete `halted` in live_state.json on the data branch, restore.\n")
     L.append("## Book\n")
@@ -820,6 +846,24 @@ def selftest() -> None:
     ex.bal["USD"] = 0.90
     cycle(ex, cb, out, st, False, t2 + timedelta(minutes=20))
     assert st["halted"] and st["halted"].startswith("floor"), st["halted"]
+    # --- swap: an adopted coin plus idle USD (a deposit) gives way to a fresh signal with the whole stack
+    out3 = Path(tempfile.mkdtemp()) / "mrh"
+    cb3 = paper.FakeCB()
+    cb3.bids["FLAT-USD"] = 10.0
+    ex3 = FakeEx(cb3, usd=10.0, coins={"FLAT": 0.345})
+    st3 = load_state(out3)
+    cycle(ex3, cb3, out3, st3, False, t2)                                       # PUMP signal candle has closed
+    pos = st3["pos"]
+    assert pos and pos["pid"] == "PUMP-USD" and st3["hops"] == 1, (pos, st3["hops"])
+    tr = paper.read_jsonl(out3 / "live_trades.jsonl")
+    assert [x["ev"] for x in tr] == ["sell", "buy"] and tr[0]["reason"] == "swap" and tr[0]["pid"] == "FLAT-USD", tr
+    stack = 10.0 + 0.345 * 10.0 * (1 - paper.TAKER_FEE)                          # deposit + FLAT proceeds, all in
+    assert abs(pos["cost"] - float(floor_to(stack, "0.01"))) < 1e-9 and ex3.bal["USD"] < 0.01, (pos["cost"], stack, ex3.bal)
+    assert pos["stop"]["order_id"] and len(ex3.open_orders("PUMP-USD")) == 1 and not ex3.open_orders("FLAT-USD")
+    # a signalled coin is NOT swappable while it keeps making highs, and IS once it has gone stale
+    assert not swap_due(pos)
+    pos["hw_t"] = iso(now() - timedelta(hours=3))
+    assert swap_due(pos)
     # --- dry mode sends nothing
     ex2 = FakeEx(cb, usd=4.0)
     st2 = load_state(Path(tempfile.mkdtemp()) / "mrh")
