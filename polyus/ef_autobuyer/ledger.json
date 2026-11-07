@@ -48302,6 +48302,90 @@
 "tries": 9
 }
 ],
-"entry": null
+"entry": null,
+"settled": "no_entry"
+},
+"cpc-btc-updown-15m-2026-11-07-0930z": {
+"slug": "cpc-btc-updown-15m-2026-11-07-0930z",
+"window_start": 1794043800,
+"checks": [
+{
+"at": 120,
+"t": 120.0,
+"latency_s": 0.08,
+"ok": true,
+"tries": 1,
+"state": "MARKET_STATE_OPEN",
+"fav": "Down",
+"fav_ask": 0.79,
+"long_px": 0.21,
+"short_px": 0.79,
+"up_bid": 0.21,
+"up_ask": 0.22
+},
+{
+"at": 180,
+"t": 180.0,
+"latency_s": 0.044,
+"ok": true,
+"tries": 1,
+"state": "MARKET_STATE_OPEN",
+"fav": "Down",
+"fav_ask": 0.81,
+"long_px": 0.2,
+"short_px": 0.8,
+"up_bid": 0.19,
+"up_ask": 0.2
+}
+],
+"entry": {
+"side": "Down",
+"ask": 0.81,
+"limit": 0.82,
+"depth_at_best": 178.0,
+"top5": [
+[
+0.81,
+178.0
+],
+[
+0.82,
+675.8
+],
+[
+0.83,
+599.0
+],
+[
+0.84,
+421.0
+],
+[
+0.85,
+420.0
+]
+],
+"fills": {
+"50": {
+"shares": 61.7284,
+"spent": 50.0,
+"vwap": 0.81,
+"fill_frac": 1.0
+},
+"100": {
+"shares": 123.4568,
+"spent": 100.0,
+"vwap": 0.81,
+"fill_frac": 1.0
+},
+"250": {
+"shares": 307.0488,
+"spent": 250.0,
+"vwap": 0.8142,
+"fill_frac": 1.0
+}
+},
+"check": 180
+}
 }
 }
