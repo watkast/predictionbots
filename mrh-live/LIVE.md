@@ -1,12 +1,12 @@
 # Mr. H — Coinbase hopper, LIVE (real money)
 
-Updated 2026-11-07T15:00:16Z · cycles 175 · universe 112 coins · profile aggressive (+2% impulse, 3× volume, 4% trail) · caps $200.00/entry, 6 hops/day, floor $1.20, swap after 2 h without a new high
+Updated 2026-11-07T15:05:16Z · cycles 176 · universe 112 coins · profile aggressive (+2% impulse, 3× volume, 4% trail) · caps $200.00/entry, 6 hops/day, floor $1.20, swap after 2 h without a new high
 
 ## Book
 
 | now | start | vs start | peak | USD free | hops | win % | fees paid | position |
 |---|---|---|---|---|---|---|---|---|
-| $7.82 | $3.44 | +127.2% | $17.73 | $0.00 | 3 | 67% | $0.306 | ALIGN 1874 @ 0.0043 · hw 0.0043 · stop 0.004128 (parked) |
+| $7.80 | $3.44 | +126.6% | $17.73 | $0.00 | 3 | 67% | $0.306 | ALIGN 1874 @ 0.0043 · hw 0.0043 · stop 0.004128 (parked) |
 
 ## Hops
 
