@@ -1057,7 +1057,7 @@
   "KXMLSTOTAL-26NOV07CINNSH-5": "switch off",
   "KXMLSTOTAL-26NOV07CINNSH-4": "switch off",
   "KXMLSTOTAL-26NOV07CINNSH-3": "switch off",
-  "KXMLSBTTS-26NOV07CINNSH-BTTS": "switch off",
+  "KXMLSBTTS-26NOV07CINNSH-BTTS": "settling (11s)",
   "KXLIGAMX1HTOTAL-26NOV07ATLPAC-1": "Polymarket does not confirm",
   "KXLIGAMXTOTAL-26NOV07ATLPAC-1": "settling (135s)",
   "KXMLSTOTAL-26NOV07MIACLT-10": "switch off",
@@ -1073,7 +1073,7 @@
   "KXMLSTOTAL-26NOV07PHITOR-7": "switch off",
   "KXMLSTOTAL-26NOV07PHITOR-6": "switch off",
   "KXLIGAMX1HTOTAL-26NOV07ATLPAC-2": "Polymarket does not confirm",
-  "KXLIGAMXTOTAL-26NOV07ATLPAC-2": "settling (135s)"
+  "KXLIGAMXTOTAL-26NOV07ATLPAC-2": "no asks (already repriced)"
  },
  "started": 1793687692.6057825,
  "ht": {
