@@ -1,0 +1,3 @@
+{"t": "2026-11-07T00:42:01Z", "ev": "start", "mode": "live", "key": "1957dba3ea6c", "alg": "EdDSA", "max_usd": 12.0, "floor": 1.2, "max_hops_day": 6}
+{"t": "2026-11-07T00:42:02Z", "ev": "adopted", "pid": "ZEC-USD", "qty": 0.00259558, "entry_px": 1326.04, "value": 3.44, "stop": false}
+{"t": "2026-11-07T00:42:03Z", "ev": "order_sent", "label": "park_stop", "pid": "ZEC-USD", "side": "SELL", "cfg": {"stop_limit_stop_limit_gtc": {"base_size": "0.00259558", "limit_price": "1253.9", "stop_price": "1272.99", "stop_direction": "STOP_DIRECTION_STOP_DOWN"}}, "order_id": "7202376e-d222-4600-a633-3dfbf706e9da"}
