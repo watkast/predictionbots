@@ -1,6 +1,6 @@
 # Mr. H — Coinbase hopper, PAPER
 
-Updated 2026-11-07T07:05:28Z · scans 56 · universe 111 coins (USD pairs with ≥ $100k 24-h volume) · fees 0.9% taker each way · start $4.00
+Updated 2026-11-07T07:15:28Z · scans 58 · universe 111 coins (USD pairs with ≥ $100k 24-h volume) · fees 0.9% taker each way · start $4.00
 
 ## Books (one position at a time, all-in every hop)
 
@@ -14,7 +14,7 @@ Updated 2026-11-07T07:05:28Z · scans 56 · universe 111 coins (USD pairs with �
 | profile | signals | scored | median +15m | median +1h | median +4h | % beat 1.8% at +1h | median 4%-trail hop net | max run-up (med) | max drawdown (med) |
 |---|---|---|---|---|---|---|---|---|---|
 | aggressive | 1 | 0 | +nan% | +nan% | +nan% | nan% | +nan% | +nan% | +nan% |
-| standard | 2 | 0 | +nan% | +nan% | +nan% | nan% | +nan% | +nan% | +nan% |
+| standard | 3 | 0 | +nan% | +nan% | +nan% | nan% | +nan% | +nan% | +nan% |
 
 ## Verdict
 
@@ -33,3 +33,4 @@ Updated 2026-11-07T07:05:28Z · scans 56 · universe 111 coins (USD pairs with �
 | 11-07T04:05 | standard | ICNT | +1.2% | 11.2 | y | 0.26% | y | … | … |
 | 11-07T04:25 | standard | PROMPT | +1.9% | 6.9 | y | 0.05% | in_position | … | … |
 | 11-07T06:25 | aggressive | GROVE | +5.5% | 6.5 | n | 0.11% | y | … | … |
+| 11-07T07:15 | standard | QNT | +1.6% | 12.2 | y | 0.06% | in_position | … | … |
