@@ -1,12 +1,12 @@
 # Mr. H — Coinbase hopper, LIVE (real money)
 
-Updated 2026-11-07T11:30:16Z · cycles 132 · universe 112 coins · profile aggressive (+2% impulse, 3× volume, 4% trail) · caps $12.00/entry, 6 hops/day, floor $1.20
+Updated 2026-11-07T11:35:16Z · cycles 133 · universe 112 coins · profile aggressive (+2% impulse, 3× volume, 4% trail) · caps $12.00/entry, 6 hops/day, floor $1.20
 
 ## Book
 
 | now | start | vs start | peak | USD free | hops | win % | fees paid | position |
 |---|---|---|---|---|---|---|---|---|
-| $7.90 | $3.44 | +129.7% | $17.73 | $0.03 | 2 | 50% | $0.159 | ICNT 24.7 @ 0.3088 · hw 0.3188 · stop 0.306048 (parked) |
+| $8.30 | $3.44 | +141.0% | $17.73 | $0.03 | 2 | 50% | $0.159 | ICNT 24.7 @ 0.3088 · hw 0.3346 · stop 0.321216 (parked) |
 
 ## Hops
 
@@ -17,7 +17,6 @@ Updated 2026-11-07T11:30:16Z · cycles 132 · universe 112 coins · profile aggr
 
 ## Last 25 events
 
-- `11-07T02:10:16` **order_sent** label="park_stop", pid="ZEC-USD", side="SELL", cfg={"stop_limit_stop_limit_gtc": {"base_size": "0.00259558", "l, order_id="fe3fd83d-9c2c-4766-a500-8238e90459db"
 - `11-07T02:15:16` **order_sent** label="park_stop", pid="ZEC-USD", side="SELL", cfg={"stop_limit_stop_limit_gtc": {"base_size": "0.00259558", "l, order_id="6a2a7f24-7d22-4974-9f81-ea77bd23b2ae"
 - `11-07T06:18:07` **start** mode="live", key="1957dba3ea6c", alg="EdDSA", max_usd=12.0, floor=1.2, max_hops_day=6
 - `11-07T06:40:15` **sold** pid="ZEC-USD", px=1303.65, net=-0.0886, net_pct=-0.0257, reason="stop"
@@ -42,6 +41,7 @@ Updated 2026-11-07T11:30:16Z · cycles 132 · universe 112 coins · profile aggr
 - `11-07T11:20:31` **order_sent** label="park_stop", pid="ICNT-USD", side="SELL", cfg={"stop_limit_stop_limit_gtc": {"base_size": "24.7", "limit_p, order_id="0005956f-3221-4059-ab7a-f2eeff0ca7c9"
 - `11-07T11:25:16` **order_sent** label="park_stop", pid="ICNT-USD", side="SELL", cfg={"stop_limit_stop_limit_gtc": {"base_size": "24.7", "limit_p, order_id="da65648e-ee26-4ae0-bec3-ed9ba9f934cd"
 - `11-07T11:30:16` **order_sent** label="park_stop", pid="ICNT-USD", side="SELL", cfg={"stop_limit_stop_limit_gtc": {"base_size": "24.7", "limit_p, order_id="f0cfa567-d39a-47b6-8373-ac5f68cf0022"
+- `11-07T11:35:16` **order_sent** label="park_stop", pid="ICNT-USD", side="SELL", cfg={"stop_limit_stop_limit_gtc": {"base_size": "24.7", "limit_p, order_id="af9b66f0-9d2d-4f24-9989-349c30c6cf29"
 
 Paper twin and the signal table (the real verdict): mrh/MRH.md on this branch.
 
