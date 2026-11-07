@@ -1,12 +1,12 @@
 # Mr. H — Coinbase hopper, LIVE (real money)
 
-Updated 2026-11-07T13:15:29Z · cycles 154 · universe 111 coins · profile aggressive (+2% impulse, 3× volume, 4% trail) · caps $200.00/entry, 6 hops/day, floor $1.20, swap after 2 h without a new high
+Updated 2026-11-07T13:20:31Z · cycles 155 · universe 111 coins · profile aggressive (+2% impulse, 3× volume, 4% trail) · caps $200.00/entry, 6 hops/day, floor $1.20, swap after 2 h without a new high
 
 ## Book
 
 | now | start | vs start | peak | USD free | hops | win % | fees paid | position |
 |---|---|---|---|---|---|---|---|---|
-| $8.13 | $3.44 | +136.4% | $17.73 | $8.13 | 3 | 67% | $0.233 | — |
+| $8.13 | $3.44 | +136.4% | $17.73 | $8.13 | 3 | 67% | $0.306 | ALIGN 1874 @ 0.0043 · hw 0.0043 · stop 0.004128 (parked) |
 
 ## Hops
 
@@ -18,10 +18,6 @@ Updated 2026-11-07T13:15:29Z · cycles 154 · universe 111 coins · profile aggr
 
 ## Last 25 events
 
-- `11-07T08:30:29` **order_sent** label="buy", pid="CT-USD", side="BUY", cfg={"market_market_ioc": {"quote_size": "3.35327"}}, order_id="44f551fc-18e9-4080-badb-84b56e2255be"
-- `11-07T08:30:30` **bought** pid="CT-USD", px=0.1346421440664, qty=24.5, cost=3.3284
-- `11-07T08:30:31` **order_sent** label="park_stop", pid="CT-USD", side="SELL", cfg={"stop_limit_stop_limit_gtc": {"base_size": "24.5", "limit_p, order_id="c56d9f6b-d910-4be1-85bf-758b6b78a42a"
-- `11-07T08:35:16` **order_sent** label="park_stop", pid="CT-USD", side="SELL", cfg={"stop_limit_stop_limit_gtc": {"base_size": "24.5", "limit_p, order_id="689d359a-d186-4e84-aaaa-7f0bbb5544d0"
 - `11-07T08:40:16` **order_sent** label="park_stop", pid="CT-USD", side="SELL", cfg={"stop_limit_stop_limit_gtc": {"base_size": "24.5", "limit_p, order_id="bc443bbb-9e45-4a0e-a7f8-0277ba461ad0"
 - `11-07T08:45:16` **order_sent** label="park_stop", pid="CT-USD", side="SELL", cfg={"stop_limit_stop_limit_gtc": {"base_size": "24.5", "limit_p, order_id="cccad378-8363-4964-88a9-d5e8894c0c6a"
 - `11-07T08:50:16` **order_sent** label="park_stop", pid="CT-USD", side="SELL", cfg={"stop_limit_stop_limit_gtc": {"base_size": "24.5", "limit_p, order_id="b7f91be3-6799-4ed8-b05e-3c51bac52a3c"
@@ -43,6 +39,10 @@ Updated 2026-11-07T13:15:29Z · cycles 154 · universe 111 coins · profile aggr
 - `11-07T11:45:16` **sold** pid="ICNT-USD", px=0.3311, net=0.4086, net_pct=0.0531, reason="stop"
 - `11-07T11:53:07` **start** mode="live", key="1957dba3ea6c", alg="EdDSA", max_usd=200.0, floor=1.2, max_hops_day=6
 - `11-07T12:05:15` **signal_skipped** reason="spread", pid="ICNT-USD", candle_start=1794052800, impulse=0.0375, vol_mult=3.11, above_2h_high=false, close=0.3179, bid=0.3165, ask=0.3189, spread=0.0075
+- `11-07T13:20:15` **signal** pid="ALIGN-USD", candle_start=1794057300, impulse=0.0238, vol_mult=6.84, above_2h_high=false, close=0.0043, bid=0.00429, ask=0.0043, spread=0.0023
+- `11-07T13:20:29` **order_sent** label="buy", pid="ALIGN-USD", side="BUY", cfg={"market_market_ioc": {"quote_size": "8.135"}}, order_id="c19027aa-026f-4ae7-b55a-c904cedaa37d"
+- `11-07T13:20:30` **bought** pid="ALIGN-USD", px=0.0043, qty=1874.0, cost=8.1307
+- `11-07T13:20:31` **order_sent** label="park_stop", pid="ALIGN-USD", side="SELL", cfg={"stop_limit_stop_limit_gtc": {"base_size": "1874", "limit_p, order_id="e85804f1-c1d7-4f26-be17-0e4a92904787"
 
 Paper twin and the signal table (the real verdict): mrh/MRH.md on this branch.
 
