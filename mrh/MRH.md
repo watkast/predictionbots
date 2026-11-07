@@ -1,6 +1,6 @@
 # Mr. H — Coinbase hopper, PAPER
 
-Updated 2026-11-07T23:00:29Z · scans 218 · universe 112 coins (USD pairs with ≥ $100k 24-h volume) · fees 0.9% taker each way · start $4.00
+Updated 2026-11-07T23:10:29Z · scans 220 · universe 112 coins (USD pairs with ≥ $100k 24-h volume) · fees 0.9% taker each way · start $4.00
 
 ## Books (one position at a time, all-in every hop)
 
@@ -14,20 +14,20 @@ Updated 2026-11-07T23:00:29Z · scans 218 · universe 112 coins (USD pairs with 
 
 | profile | signals | scored | median +15m | median +1h | median +4h | % beat 1.8% at +1h | median 4%-trail hop net | max run-up (med) | max drawdown (med) |
 |---|---|---|---|---|---|---|---|---|---|
-| aggressive | 27 | 14 | -0.32% | -1.43% | -0.57% | 21% | -5.92% | +4.20% | -6.38% |
-| standard | 23 | 12 | -0.18% | -0.95% | -0.28% | 25% | -3.88% | +5.72% | -4.55% |
+| aggressive | 27 | 15 | -0.37% | -1.87% | -0.69% | 20% | -5.87% | +4.33% | -6.89% |
+| standard | 23 | 14 | -0.29% | -1.19% | -0.28% | 21% | -3.69% | +5.11% | -4.55% |
 
 ## Aggressive signals by BTC regime (BTC's own move in the hour before the signal)
 
 | BTC 1h | signals | median +1h | median 4%-trail hop net | % beat 1.8% at +1h |
 |---|---|---|---|---|
 | ≤ −0.5% (downdraft) | 0 | — | — | — |
-| −0.5% … +0.5% (flat) | 2 | -3.45% | -6.46% | 0% |
+| −0.5% … +0.5% (flat) | 3 | -5.25% | -6.02% | 0% |
 | ≥ +0.5% (bid under the market) | 0 | — | — | — |
 
 ## Verdict
 
-**Not yet.** Needs 40 scored aggressive signals (14 so far) and 30 closed aggressive hops (7 so far) before this says anything. Until then every number above is noise.
+**Not yet.** Needs 40 scored aggressive signals (15 so far) and 30 closed aggressive hops (7 so far) before this says anything. Until then every number above is noise.
 
 ## Last 20 hops
 
@@ -53,8 +53,8 @@ Updated 2026-11-07T23:00:29Z · scans 218 · universe 112 coins (USD pairs with 
 
 | time (UTC) | profile | coin | impulse | vol× | >2h high | spread | taken | +1h | +4h |
 |---|---|---|---|---|---|---|---|---|---|
-| 11-07T19:05 | aggressive | RITUAL | +3.7% | 3.3 | y | 0.04% | in_position | … | … |
-| 11-07T19:05 | standard | RITUAL | +3.7% | 3.3 | y | 0.04% | in_position | … | … |
+| 11-07T19:05 | aggressive | RITUAL | +3.7% | 3.3 | y | 0.04% | in_position | -5.2% | -5.2% |
+| 11-07T19:05 | standard | RITUAL | +3.7% | 3.3 | y | 0.04% | in_position | -5.2% | -5.2% |
 | 11-07T19:10 | standard | RITUAL | +1.1% | 9.9 | y | 1.05% | spread | … | … |
 | 11-07T19:25 | standard | PROMPT | +2.0% | 4.7 | y | 0.05% | in_position | … | … |
 | 11-07T19:55 | aggressive | DEGEN | +5.5% | 32.6 | n | 0.62% | spread | … | … |
