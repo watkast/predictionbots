@@ -5,7 +5,7 @@
   "qty": 24.7,
   "entry_px": 0.3088,
   "cost": 7.69600624,
-  "hw": 0.3088,
+  "hw": 0.3166,
   "t_in": "2026-11-07T11:20:30Z",
   "signal": {
    "impulse": 0.0597,
@@ -13,11 +13,12 @@
    "above_2h_high": true
   },
   "stop": {
-   "order_id": "0005956f-3221-4059-ab7a-f2eeff0ca7c9",
-   "stop_px": 0.296448,
-   "t": "2026-11-07T11:20:31Z"
+   "order_id": "da65648e-ee26-4ae0-bec3-ed9ba9f934cd",
+   "stop_px": 0.303936,
+   "t": "2026-11-07T11:25:16Z"
   },
-  "order_id": "e01e35d2-f80f-44af-9f46-176ad9afcf77"
+  "order_id": "e01e35d2-f80f-44af-9f46-176ad9afcf77",
+  "last_bid": 0.3166
  },
  "start_usd": 3.4418,
  "hops": 2,
@@ -27,7 +28,7 @@
  "hops_by_day": {
   "2026-11-07": 2
  },
- "cycles": 130,
+ "cycles": 131,
  "halted": null,
  "universe": [
   {
@@ -1400,9 +1401,9 @@
   }
  },
  "last": {
-  "t": "2026-11-07T11:20:15Z",
-  "usd": 7.7264,
-  "total": 7.7264,
-  "pos": null
+  "t": "2026-11-07T11:25:15Z",
+  "usd": 0.0304,
+  "total": 7.8505,
+  "pos": "ICNT-USD"
  }
 }
