@@ -619,10 +619,10 @@
   "KXEPL1H-26NOV07NFOMCI-TIE": 1794075628.196216,
   "KXEPL1H-26NOV07NFOMCI-NFO": 1794075628.196241,
   "KXEPL1H-26NOV07NFOMCI-MCI": 1794075628.196264,
-  "KXEPL1HBTTS-26NOV07NFOMCI-BTTS": 1794075628.196282
+  "KXEPL1HBTTS-26NOV07NFOMCI-BTTS": 1794075628.196282,
+  "KXBELGIANPLTOTAL-26NOV07OHLYRM-1": 1794075896.8522086
  },
  "blocked": {
-  "KXBUNDESLIGATOTAL-26NOV06HSVBMG-4": "no asks (already repriced)",
   "KXSERIEATOTAL-26NOV06VENUDI-2": "no asks (already repriced)",
   "KXSERIEABTTS-26NOV06VENUDI-BTTS": "no asks (already repriced)",
   "KXLIGUE1TOTAL-26NOV06TFCRCS-2": "no asks (already repriced)",
@@ -879,13 +879,13 @@
   "KXEREDIVISIETOTAL-26NOV07FORTEL-6": "no Polymarket twin",
   "KXEREDIVISIETOTAL-26NOV07FORTEL-5": "no Polymarket twin",
   "KXSUPERLIGTOTAL-26NOV07GALAMS-5": "settling (211s)",
-  "KXEPL1HTOTAL-26NOV07NFOMCI-1": "Polymarket does not confirm",
+  "KXEPL1HTOTAL-26NOV07NFOMCI-1": "no asks (already repriced)",
   "KXEPLTOTAL-26NOV07NFOMCI-1": "no asks (already repriced)",
   "KXBUNDESLIGA1HTOTAL-26NOV07VFBSVW-1": "no asks (already repriced)",
   "KXBUNDESLIGATOTAL-26NOV07VFBSVW-1": "no asks (already repriced)",
   "KXSUPERLIGTOTAL-26NOV07GALAMS-6": "no Polymarket twin",
   "KXSUPERLIGTOTAL-26NOV07GOZBAS-3": "no Polymarket twin",
-  "KXEPL1HTOTAL-26NOV07NFOMCI-2": "Polymarket does not confirm",
+  "KXEPL1HTOTAL-26NOV07NFOMCI-2": "no asks (already repriced)",
   "KXEPLTOTAL-26NOV07NFOMCI-2": "no asks (already repriced)",
   "KXSERIEA1HTOTAL-26NOV07PARBFC-3": "no asks (already repriced)",
   "KXSERIEA1HTOTAL-26NOV07PARBFC-2": "no asks (already repriced)",
@@ -917,11 +917,12 @@
   "KXLALIGA1H-26NOV07OSAATH-TIE": "no asks (already repriced)",
   "KXLALIGA1H-26NOV07OSAATH-OSA": "no asks (already repriced)",
   "KXLALIGA1HBTTS-26NOV07OSAATH-BTTS": "Polymarket does not confirm",
-  "KXEPL1HTOTAL-26NOV07NFOMCI-3": "Polymarket does not confirm",
-  "KXEPL1H-26NOV07NFOMCI-TIE": "Polymarket does not confirm",
-  "KXEPL1H-26NOV07NFOMCI-NFO": "Polymarket does not confirm",
-  "KXEPL1H-26NOV07NFOMCI-MCI": "Polymarket does not confirm",
-  "KXEPL1HBTTS-26NOV07NFOMCI-BTTS": "Polymarket does not confirm"
+  "KXEPL1HTOTAL-26NOV07NFOMCI-3": "no asks (already repriced)",
+  "KXEPL1H-26NOV07NFOMCI-TIE": "no asks (already repriced)",
+  "KXEPL1H-26NOV07NFOMCI-NFO": "no asks (already repriced)",
+  "KXEPL1H-26NOV07NFOMCI-MCI": "no asks (already repriced)",
+  "KXEPL1HBTTS-26NOV07NFOMCI-BTTS": "no asks (already repriced)",
+  "KXBELGIANPLTOTAL-26NOV07OHLYRM-1": "settling (37s)"
  },
  "started": 1793687692.6057825,
  "ht": {
