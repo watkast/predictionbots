@@ -11,24 +11,12 @@
   },
   "standard": {
    "name": "standard",
-   "bankroll": 0.0,
+   "bankroll": 3.7934904369636966,
    "peak": 4.0,
-   "pos": {
-    "pid": "ICNT-USD",
-    "entry_px": 0.303,
-    "qty": 13.082508250825082,
-    "cost": 4.0,
-    "hw": 0.303,
-    "t_in": "2026-11-07T04:05:15Z",
-    "signal": {
-     "impulse": 0.0124,
-     "vol_mult": 11.25,
-     "above_2h_high": true
-    }
-   },
-   "hops": 0,
+   "pos": null,
+   "hops": 1,
    "wins": 0,
-   "fees": 0.036
+   "fees": 0.07045147722772277
   }
  },
  "universe": [
@@ -589,7 +577,7 @@
   }
  ],
  "universe_t": "2026-11-07T06:50:15Z",
- "scans": 58,
+ "scans": 61,
  "started": "2026-11-06T22:20:22Z",
- "last_scan": "2026-11-07T07:15:15Z"
+ "last_scan": "2026-11-07T07:30:15Z"
 }
