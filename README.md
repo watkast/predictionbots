@@ -47,6 +47,11 @@ the paper / record / backtest / carry / bounty schedules are off, `workflow_disp
 live line of research is **Early Favorite** on Polymarket US 15-min BTC: `research/early_favorite_playbook.md`,
 `scripts/early_favorite_tracker.py` (forward test, `polyus.yml`), `scripts/ef_autobuyer.py` (live-book
 paper fills, `ef-autobuyer.yml`), `research/early_favorite_signal.pine` (the TradingView HUD).
+**Mr. T** (`mrt/README.md`, `scripts/mrt_sniper.py`, `mrt-live.yml`): the terminal sniper — Polymarket US crypto Up/Down
+markets in their final seconds, where the 60-second settlement average has locked but the winner is still offered below $1
+(Mr. P's recorder found 168 such moments in 3.9 days). One IOC buy of ≤10 contracts when the remaining prints would need
+≥6 bps/s to flip it; fill rate is the experiment. Switch `mrt/LIVE_ON`; report `mrt/MRT.md` on `mrp-data`.
+
 **Mr. H** (`mrh/README.md`, `scripts/mrh_paper.py`, `mrh-paper.yml`): Coinbase spot "hopper" — does $4 hopping
 between coins pumping right now beat 1.8%/hop in fees? Report at `mrh/MRH.md` on the `data` branch; live book
 (`scripts/mrh_live.py`, `mrh-live.yml`) at `mrh-live/LIVE.md`; historical replay of the same rule

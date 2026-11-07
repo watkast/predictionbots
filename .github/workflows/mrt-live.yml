@@ -1,0 +1,67 @@
+# Mr. T — the terminal sniper (REAL MONEY, tiny, hard-capped): Polymarket US crypto Up/Down markets, the final seconds.
+# Settlement is the 60-second average of the CF Benchmarks index; with a few seconds left the outcome is decided, yet the
+# winning side is still offered below $1 in ~4% of windows (Mr. P's recorder, Nov 4–7). One immediate-or-cancel buy of up to
+# MRT_MAX_QTY contracts at that ask when the remaining prints would need >= MRT_MIN_MOVE_BPS/s to flip it. The question it
+# answers: are those asks real? Fill rate is the experiment; a loss at these margins is a logic error and halts it.
+# Switch: mrt/LIVE_ON on main (checked every minute; delete it to stop; cancel the job to stop at once — IOC orders never rest).
+# Starts on merge (push trigger) and re-dispatches itself while the switch exists; the 6-hourly cron is a backstop.
+# Report: mrt/MRT.md on the `mrp-data` branch every 5 minutes. Mode "dry" runs feeds + gate and logs would_fire only.
+name: mrt-live
+on:
+  schedule:
+    - cron: "29 */6 * * *"
+  workflow_dispatch:
+    inputs:
+      minutes:
+        description: "Minutes to run"
+        default: "335"
+      mode:
+        description: "live (orders) or dry (feeds + gate, no orders)"
+        default: "live"
+  push:
+    branches: [main]
+    paths: ["mrt/LIVE_ON", ".github/workflows/mrt-live.yml", "scripts/mrt_sniper.py", "scripts/gha_mrt_live.sh"]
+
+permissions:
+  contents: write
+  actions: write
+
+concurrency:
+  group: mrt-live
+  cancel-in-progress: false
+
+jobs:
+  live:
+    runs-on: ubuntu-latest
+    timeout-minutes: 355
+    env:
+      POLYMARKET_KEY_ID: ${{ secrets.POLYMARKET_KEY_ID }}
+      POLYMARKET_SECRET_KEY: ${{ secrets.POLYMARKET_SECRET_KEY }}
+      KALSHI_KEY_ID: ${{ secrets.KALSHI_KEY_ID }}
+      KALSHI_PRIVATE_KEY_PEM: ${{ secrets.KALSHI_PRIVATE_KEY_PEM }}
+      MRT_DIR: ${{ github.workspace }}/data/mrt
+      MRT_SNIPE_T: ${{ vars.MRT_SNIPE_T || '5.0' }}
+      MRT_MIN_MOVE_BPS: ${{ vars.MRT_MIN_MOVE_BPS || '6' }}
+      MRT_MAX_ASK: ${{ vars.MRT_MAX_ASK || '0.90' }}
+      MRT_MAX_QTY: ${{ vars.MRT_MAX_QTY || '10' }}
+      MRT_MIN_QTY: ${{ vars.MRT_MIN_QTY || '5' }}
+      MRT_MAX_TRADES_DAY: ${{ vars.MRT_MAX_TRADES_DAY || '60' }}
+      MRT_HALT_LOSSES: ${{ vars.MRT_HALT_LOSSES || '2' }}
+      GH_TOKEN: ${{ github.token }}
+    steps:
+      - uses: actions/checkout@v4
+      - name: Switch?
+        id: sw
+        run: |
+          if [ -f mrt/LIVE_ON ] || [ "${{ github.event.inputs.mode }}" = "dry" ]; then echo "on=true" >> "$GITHUB_OUTPUT"
+          else echo "mrt/LIVE_ON missing — not running"; echo "on=false" >> "$GITHUB_OUTPUT"; fi
+      - uses: actions/setup-python@v5
+        if: steps.sw.outputs.on == 'true'
+        with: { python-version: "3.13" }
+      - if: steps.sw.outputs.on == 'true'
+        run: pip install -r mrp/requirements.txt
+      - if: steps.sw.outputs.on == 'true'
+        run: python scripts/mrt_sniper.py selftest
+      - name: Snipe (publishing every 5 minutes)
+        if: steps.sw.outputs.on == 'true'
+        run: bash scripts/gha_mrt_live.sh "${{ github.event.inputs.minutes || '335' }}" "${{ github.event.inputs.mode || 'live' }}"
