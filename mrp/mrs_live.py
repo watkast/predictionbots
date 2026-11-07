@@ -66,6 +66,9 @@ MIN_ASK = float(E("MRS_MIN_ASK", "0.60"))
 MAX_ASK = float(E("MRS_MAX_ASK", "0.97"))
 MIN_EDGE = float(E("MRS_MIN_EDGE", "0.01"))        # $ per contract after the taker fee
 SETTLE_S = float(E("MRS_SETTLE_S", "240"))
+# A finished first half needs less: reviews of a late goal happen before the half-time whistle, and Kalshi closes 1H
+# markets ~5 min after half-time (seen 2026-11-03 UCL: every 1H decision died at "settling 100-219 s").
+SETTLE_H1_S = float(E("MRS_SETTLE_H1_S", "60"))
 CYCLE = float(E("MRS_CYCLE", "10"))
 K_FEE = 0.07
 SWITCH_URL = E("MRS_SWITCH_URL", "https://raw.githubusercontent.com/watkast/predictionbots/main/mrs/LIVE_ON")
@@ -460,7 +463,7 @@ def report(st: dict, info: dict):
     if st["blocked"]:
         L += ["### Last blocks", *[f"- {k}: {v}" for k, v in list(st["blocked"].items())[-12:]], ""]
     L += ["---", f"caps: ${ORDER_USD:g}/order · ${GAME_USD:g}/game · ${DAY_USD:g}/day · ${RISK_USD:g} open risk · ask {MIN_ASK}–{MAX_ASK} · "
-          f"score stable ≥ {SETTLE_S:g}s in ESPN and Polymarket"]
+          f"score stable ≥ {SETTLE_S:g}s ({SETTLE_H1_S:g}s for a finished 1H) in ESPN and Polymarket"]
     with open(MD_P, "w") as fh:
         fh.write("\n".join(L) + "\n")
 
@@ -538,7 +541,7 @@ def main():
                         last["k"][lg] = now()
                         info["series_found"] |= {m["series"] for m in kcache[lg]}
             for eg in games:
-                ea = ages_e.age(eg["slug"], (eg["score"], eg["h1"]))
+                ea = ages_e.age(eg["slug"], (eg["score"],))      # goals only (half-time must not reset it)
                 ge = D.build_game(eg, ea)
                 if ge is None:
                     continue
@@ -556,7 +559,7 @@ def main():
                 if pe is not None:
                     info["pmatched"] += 1
                     p2 = dict(pe, sport="soccer")
-                    gp = D.build_game(p2, ages_p.age(pe["slug"], (pe.get("score"), json.dumps(pe.get("periodScores"), sort_keys=True))))
+                    gp = D.build_game(p2, ages_p.age(pe["slug"], (pe.get("score"),)))
                 # Kalshi markets for this game
                 kms = []
                 for km in kcache.get(eg["league"], []):
@@ -586,7 +589,9 @@ def main():
                                 pm_dec=dp.reason)
                         st["blocked"][km["t"]] = "Polymarket does not confirm" if gp else "no Polymarket twin"
                         continue
-                    if min(ge.score_age_s, gp.score_age_s) < SETTLE_S:
+                    need = SETTLE_H1_S if (kind.startswith("h1") and eg["period"] in ("HT", "2H", "FT", "ET")
+                                           and str(gp.period).upper() in D.AFTER_FIRST_HALF) else SETTLE_S
+                    if min(ge.score_age_s, gp.score_age_s) < need:
                         st["blocked"][km["t"]] = f"settling ({int(min(ge.score_age_s, gp.score_age_s))}s)"
                         continue
                     info["agreed"] += 1
