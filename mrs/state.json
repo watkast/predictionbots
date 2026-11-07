@@ -919,9 +919,9 @@
   "KXLIGAPORTUGALTOTAL-26NOV07ALVCAS-4": "no Polymarket twin",
   "KXLIGAPORTUGALTOTAL-26NOV07ALVCAS-3": "no Polymarket twin",
   "KXSERIEA1HTOTAL-26NOV07ROMSAS-1": "no asks (already repriced)",
-  "KXSERIEATOTAL-26NOV07ROMSAS-1": "settling (32s)",
+  "KXSERIEATOTAL-26NOV07ROMSAS-1": "no asks (already repriced)",
   "KXSERIEA1HTOTAL-26NOV07ROMSAS-2": "no asks (already repriced)",
-  "KXSERIEATOTAL-26NOV07ROMSAS-2": "settling (32s)",
+  "KXSERIEATOTAL-26NOV07ROMSAS-2": "no asks (already repriced)",
   "KXAUTBUNDESTOTAL-26NOV07SVRASK-5": "no Polymarket twin",
   "KXAUTBUNDESTOTAL-26NOV07SVRASK-6": "no Polymarket twin",
   "KXAUTBUNDESTOTAL-26NOV07SVRASK-9": "no Polymarket twin",
@@ -957,7 +957,7 @@
   "KXLIGUE11HTOTAL-26NOV07PSGEST-2": "no asks (already repriced)",
   "KXLIGUE11HBTTS-26NOV07PSGEST-BTTS": "no asks (already repriced)",
   "KXBELGIANPLTOTAL-26NOV07RAFCLOM-3": "no asks (already repriced)",
-  "KXSERIEATOTAL-26NOV07ROMSAS-3": "settling (32s)"
+  "KXSERIEATOTAL-26NOV07ROMSAS-3": "no asks (already repriced)"
  },
  "started": 1793687692.6057825,
  "ht": {
