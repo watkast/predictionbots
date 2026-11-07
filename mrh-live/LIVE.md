@@ -1,6 +1,6 @@
 # Mr. H — Coinbase hopper, LIVE (real money)
 
-Updated 2026-11-07T06:15:15Z · cycles 68 · universe 111 coins · profile aggressive (+2% impulse, 3× volume, 4% trail) · caps $12.00/entry, 6 hops/day, floor $1.20
+Updated 2026-11-07T06:20:15Z · cycles 70 · universe 111 coins · profile aggressive (+2% impulse, 3× volume, 4% trail) · caps $12.00/entry, 6 hops/day, floor $1.20
 
 ## Book
 
@@ -28,6 +28,7 @@ Updated 2026-11-07T06:15:15Z · cycles 68 · universe 111 coins · profile aggre
 - `11-07T02:05:16` **order_sent** label="park_stop", pid="ZEC-USD", side="SELL", cfg={"stop_limit_stop_limit_gtc": {"base_size": "0.00259558", "l, order_id="b8cded36-4e35-4014-bed0-42da012c108b"
 - `11-07T02:10:16` **order_sent** label="park_stop", pid="ZEC-USD", side="SELL", cfg={"stop_limit_stop_limit_gtc": {"base_size": "0.00259558", "l, order_id="fe3fd83d-9c2c-4766-a500-8238e90459db"
 - `11-07T02:15:16` **order_sent** label="park_stop", pid="ZEC-USD", side="SELL", cfg={"stop_limit_stop_limit_gtc": {"base_size": "0.00259558", "l, order_id="6a2a7f24-7d22-4974-9f81-ea77bd23b2ae"
+- `11-07T06:18:07` **start** mode="live", key="1957dba3ea6c", alg="EdDSA", max_usd=12.0, floor=1.2, max_hops_day=6
 
 Paper twin and the signal table (the real verdict): mrh/MRH.md on this branch.
 
