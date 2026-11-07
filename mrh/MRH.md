@@ -1,21 +1,21 @@
 # Mr. H — Coinbase hopper, PAPER
 
-Updated 2026-11-07T18:55:29Z · scans 170 · universe 112 coins (USD pairs with ≥ $100k 24-h volume) · fees 0.9% taker each way · start $4.00
+Updated 2026-11-07T19:05:30Z · scans 172 · universe 112 coins (USD pairs with ≥ $100k 24-h volume) · fees 0.9% taker each way · start $4.00
 
 ## Books (one position at a time, all-in every hop)
 
 | profile | bankroll | vs start | peak | hops | win % | avg net/hop | fees paid | open |
 |---|---|---|---|---|---|---|---|---|
-| aggressive | $3.29 | -17.6% | $4.00 | 4 | 25% | -4.66% | $0.298 | RITUAL-USD @ 0.02404 |
-| standard | $3.52 | -12.1% | $4.00 | 5 | 20% | -2.33% | $0.365 | CRO-USD @ 0.04914 |
-| aggressive_swap | $4.00 | +0.0% | $4.00 | 0 | 0% | +0.00% | $0.036 | RITUAL-USD @ 0.02404 |
+| aggressive | $3.46 | -13.5% | $4.00 | 4 | 25% | -4.66% | $0.298 | RITUAL-USD @ 0.02404 |
+| standard | $3.51 | -12.2% | $4.00 | 5 | 20% | -2.33% | $0.365 | CRO-USD @ 0.04914 |
+| aggressive_swap | $4.20 | +5.1% | $4.00 | 0 | 0% | +0.00% | $0.036 | RITUAL-USD @ 0.02404 |
 
 ## Signal forward returns (every signal, whether or not a book took it)
 
 | profile | signals | scored | median +15m | median +1h | median +4h | % beat 1.8% at +1h | median 4%-trail hop net | max run-up (med) | max drawdown (med) |
 |---|---|---|---|---|---|---|---|---|---|
-| aggressive | 18 | 10 | +0.68% | -0.95% | +1.04% | 30% | -3.74% | +7.49% | -7.71% |
-| standard | 16 | 12 | -0.18% | -0.95% | -0.28% | 25% | -3.88% | +5.72% | -4.55% |
+| aggressive | 19 | 11 | -0.25% | -0.99% | -0.09% | 27% | -2.23% | +7.38% | -5.61% |
+| standard | 18 | 12 | -0.18% | -0.95% | -0.28% | 25% | -3.88% | +5.72% | -4.55% |
 
 ## Aggressive signals by BTC regime (BTC's own move in the hour before the signal)
 
@@ -27,7 +27,7 @@ Updated 2026-11-07T18:55:29Z · scans 170 · universe 112 coins (USD pairs with 
 
 ## Verdict
 
-**Not yet.** Needs 40 scored aggressive signals (10 so far) and 30 closed aggressive hops (4 so far) before this says anything. Until then every number above is noise.
+**Not yet.** Needs 40 scored aggressive signals (11 so far) and 30 closed aggressive hops (4 so far) before this says anything. Until then every number above is noise.
 
 ## Last 20 hops
 
@@ -47,18 +47,18 @@ Updated 2026-11-07T18:55:29Z · scans 170 · universe 112 coins (USD pairs with 
 
 | time (UTC) | profile | coin | impulse | vol× | >2h high | spread | taken | +1h | +4h |
 |---|---|---|---|---|---|---|---|---|---|
-| 11-07T13:25 | standard | CAP | +2.6% | 3.5 | y | 0.48% | in_position | +3.6% | +4.2% |
-| 11-07T13:35 | aggressive | CAP | +3.2% | 53.6 | y | 0.44% | in_position | -1.0% | -0.1% |
-| 11-07T13:35 | standard | CAP | +3.2% | 53.6 | y | 0.44% | in_position | -1.0% | -0.1% |
 | 11-07T13:35 | standard | CLANKER | +1.2% | 9.0 | y | 0.26% | in_position | … | … |
 | 11-07T13:50 | aggressive | CAP | +3.3% | 11.0 | n | 0.60% | in_position | -8.9% | -6.2% |
 | 11-07T14:35 | standard | APR | +1.2% | 17.9 | y | 0.24% | y | -2.1% | -0.5% |
 | 11-07T14:45 | aggressive | ICNT | +4.0% | 3.5 | y | 0.26% | in_position | -0.9% | -7.7% |
 | 11-07T14:45 | standard | ICNT | +4.0% | 3.5 | y | 0.26% | in_position | -0.9% | -7.7% |
-| 11-07T15:00 | aggressive | CAP | +3.2% | 4.0 | n | 0.36% | in_position | … | … |
+| 11-07T15:00 | aggressive | CAP | +3.2% | 4.0 | n | 0.36% | in_position | -1.9% | -0.4% |
 | 11-07T15:35 | aggressive | RITUAL | +3.0% | 4.2 | n | 0.04% | y | … | … |
 | 11-07T17:40 | standard | CRO | +1.2% | 80.5 | y | 0.12% | y | … | … |
 | 11-07T17:45 | aggressive | RITUAL | +3.2% | 3.6 | n | 0.08% | y | … | … |
 | 11-07T18:05 | aggressive | ICNT | +2.2% | 6.6 | n | 0.15% | in_position | … | … |
 | 11-07T18:35 | aggressive | DEGEN | +3.0% | 3.5 | n | 0.40% | in_position | … | … |
 | 11-07T18:55 | aggressive | MEZO | +3.9% | 4.5 | n | 0.85% | spread | … | … |
+| 11-07T19:00 | standard | MET | +1.2% | 38.8 | y | 0.09% | in_position | … | … |
+| 11-07T19:05 | aggressive | RITUAL | +3.7% | 3.3 | y | 0.04% | in_position | … | … |
+| 11-07T19:05 | standard | RITUAL | +3.7% | 3.3 | y | 0.04% | in_position | … | … |
