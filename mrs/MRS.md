@@ -1,6 +1,6 @@
 # Mr. S — live
 
-Updated 2026-11-07 13:59 UTC · mode **live** · switch **OFF** · live leagues: usa.1
+Updated 2026-11-07 14:05 UTC · mode **live** · switch **OFF** · live leagues: usa.1
 
 ## ⚠️ Kalshi balance below the $50 risk cap — fund the account (orders still try, capped by cash)
 
@@ -11,9 +11,9 @@ Updated 2026-11-07 13:59 UTC · mode **live** · switch **OFF** · live leagues:
 0 buys · 0 settled · 0 right / 0 wrong · P&L **$+0.00** · open $0.00
 
 ## Right now
-games in play/just ended: 10 · matched to Kalshi: 3 · to Polymarket: 3 · decided markets agreed by both: 2 · disagreements: 0
+games in play/just ended: 11 · matched to Kalshi: 4 · to Polymarket: 4 · decided markets agreed by both: 2 · disagreements: 0
 
-Kalshi series with open markets: KXEPL1H, KXEPL1HBTTS, KXEPL1HTOTAL, KXEPLBTTS, KXEPLTOTAL, KXLALIGA1H, KXLALIGA1HBTTS, KXLALIGA1HTOTAL, KXLALIGABTTS, KXLALIGATOTAL, KXSAUDIPLBTTS, KXSAUDIPLTOTAL, KXSUPERLIGBTTS, KXSUPERLIGTOTAL
+Kalshi series with open markets: KXEPL1H, KXEPL1HBTTS, KXEPL1HTOTAL, KXEPLBTTS, KXEPLTOTAL, KXLALIGA1H, KXLALIGA1HBTTS, KXLALIGA1HTOTAL, KXLALIGABTTS, KXLALIGATOTAL, KXSAUDIPLBTTS, KXSAUDIPLTOTAL, KXSERIEA1H, KXSERIEA1HBTTS, KXSERIEA1HTOTAL, KXSERIEABTTS, KXSERIEATOTAL, KXSUPERLIGBTTS, KXSUPERLIGTOTAL
 
 ### Last blocks
 - KXEPL1HTOTAL-26NOV07LEETOT-3: no asks (already repriced)
