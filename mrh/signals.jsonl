@@ -1,1 +1,2 @@
 {"t": "2026-11-07T04:05:15Z", "profile": "standard", "pid": "ICNT-USD", "candle_start": 1794024000, "impulse": 0.0124, "vol_mult": 11.25, "above_2h_high": true, "close": 0.3022, "bid": 0.3022, "ask": 0.303, "spread": 0.0026, "taken": true, "scored": false}
+{"t": "2026-11-07T04:25:15Z", "profile": "standard", "pid": "PROMPT-USD", "candle_start": 1794025200, "impulse": 0.0187, "vol_mult": 6.93, "above_2h_high": true, "close": 0.02068, "bid": 0.02064, "ask": 0.02065, "spread": 0.0005, "taken": false, "scored": false, "skip": "in_position"}
