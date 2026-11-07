@@ -1,12 +1,12 @@
 # Mr. H — Coinbase hopper, LIVE (real money)
 
-Updated 2026-11-07T08:30:31Z · cycles 96 · universe 111 coins · profile aggressive (+2% impulse, 3× volume, 4% trail) · caps $12.00/entry, 6 hops/day, floor $1.20
+Updated 2026-11-07T08:35:16Z · cycles 97 · universe 111 coins · profile aggressive (+2% impulse, 3× volume, 4% trail) · caps $12.00/entry, 6 hops/day, floor $1.20
 
 ## Book
 
 | now | start | vs start | peak | USD free | hops | win % | fees paid | position |
 |---|---|---|---|---|---|---|---|---|
-| $3.35 | $3.44 | -2.6% | $3.53 | $3.35 | 1 | 0% | $0.060 | CT 24.5 @ 0.134642 · hw 0.134642 · stop 0.129256 (parked) |
+| $3.33 | $3.44 | -3.2% | $3.53 | $0.02 | 1 | 0% | $0.060 | CT 24.5 @ 0.134642 · hw 0.13504 · stop 0.129638 (parked) |
 
 ## Hops
 
@@ -35,6 +35,7 @@ Updated 2026-11-07T08:30:31Z · cycles 96 · universe 111 coins · profile aggre
 - `11-07T08:30:29` **order_sent** label="buy", pid="CT-USD", side="BUY", cfg={"market_market_ioc": {"quote_size": "3.35327"}}, order_id="44f551fc-18e9-4080-badb-84b56e2255be"
 - `11-07T08:30:30` **bought** pid="CT-USD", px=0.1346421440664, qty=24.5, cost=3.3284
 - `11-07T08:30:31` **order_sent** label="park_stop", pid="CT-USD", side="SELL", cfg={"stop_limit_stop_limit_gtc": {"base_size": "24.5", "limit_p, order_id="c56d9f6b-d910-4be1-85bf-758b6b78a42a"
+- `11-07T08:35:16` **order_sent** label="park_stop", pid="CT-USD", side="SELL", cfg={"stop_limit_stop_limit_gtc": {"base_size": "24.5", "limit_p, order_id="689d359a-d186-4e84-aaaa-7f0bbb5544d0"
 
 Paper twin and the signal table (the real verdict): mrh/MRH.md on this branch.
 
