@@ -1,20 +1,20 @@
 # Mr. H — Coinbase hopper, PAPER
 
-Updated 2026-11-07T03:55:28Z · scans 18 · universe 111 coins (USD pairs with ≥ $100k 24-h volume) · fees 0.9% taker each way · start $4.00
+Updated 2026-11-07T04:05:28Z · scans 20 · universe 111 coins (USD pairs with ≥ $100k 24-h volume) · fees 0.9% taker each way · start $4.00
 
 ## Books (one position at a time, all-in every hop)
 
 | profile | bankroll | vs start | peak | hops | win % | avg net/hop | fees paid | open |
 |---|---|---|---|---|---|---|---|---|
 | aggressive | $4.00 | +0.0% | $4.00 | 0 | 0% | +0.00% | $0.000 | — |
-| standard | $4.00 | +0.0% | $4.00 | 0 | 0% | +0.00% | $0.000 | — |
+| standard | $3.95 | -1.2% | $4.00 | 0 | 0% | +0.00% | $0.036 | ICNT-USD @ 0.303 |
 
 ## Signal forward returns (every signal, whether or not a book took it)
 
 | profile | signals | scored | median +15m | median +1h | median +4h | % beat 1.8% at +1h | median 4%-trail hop net | max run-up (med) | max drawdown (med) |
 |---|---|---|---|---|---|---|---|---|---|
 | aggressive | 0 | 0 | +nan% | +nan% | +nan% | nan% | +nan% | +nan% | +nan% |
-| standard | 0 | 0 | +nan% | +nan% | +nan% | nan% | +nan% | +nan% | +nan% |
+| standard | 1 | 0 | +nan% | +nan% | +nan% | nan% | +nan% | +nan% | +nan% |
 
 ## Verdict
 
@@ -29,3 +29,4 @@ Updated 2026-11-07T03:55:28Z · scans 18 · universe 111 coins (USD pairs with �
 
 | time (UTC) | profile | coin | impulse | vol× | >2h high | spread | taken | +1h | +4h |
 |---|---|---|---|---|---|---|---|---|---|
+| 11-07T04:05 | standard | ICNT | +1.2% | 11.2 | y | 0.26% | y | … | … |
