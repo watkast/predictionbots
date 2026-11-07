@@ -1,6 +1,6 @@
 # Mr. H — Coinbase hopper, LIVE (real money)
 
-Updated 2026-11-07T17:25:34Z · cycles 204 · universe 113 coins · profile aggressive (+2% impulse, 3× volume, 4% trail) · caps $200.00/entry, 6 hops/day, floor $1.20, swap after 2 h without a new high
+Updated 2026-11-07T17:30:35Z · cycles 206 · universe 113 coins · profile aggressive (+2% impulse, 3× volume, 4% trail) · caps $200.00/entry, 6 hops/day, floor $1.20, swap after 2 h without a new high
 
 ## Book
 
@@ -20,7 +20,6 @@ Updated 2026-11-07T17:25:34Z · cycles 204 · universe 113 coins · profile aggr
 
 ## Last 25 events
 
-- `11-07T09:50:15` **sold** pid="CT-USD", px=0.1392775510204082, net=0.0532, net_pct=0.016, reason="stop"
 - `11-07T09:50:15` **signal_skipped** reason="spread", pid="MEZO-USD", candle_start=1794044700, impulse=0.022, vol_mult=4.66, above_2h_high=false, close=0.005346, bid=0.00537, ask=0.00543, spread=0.011
 - `11-07T10:45:15` **signal_skipped** reason="spread", pid="DEGEN-USD", candle_start=1794048000, impulse=0.0666, vol_mult=4.51, above_2h_high=true, close=0.001234, bid=0.001233, ask=0.001243, spread=0.008
 - `11-07T11:20:15` **signal** pid="ICNT-USD", candle_start=1794050100, impulse=0.0597, vol_mult=51.61, above_2h_high=true, close=0.3072, bid=0.3079, ask=0.3087, spread=0.0026
@@ -45,6 +44,7 @@ Updated 2026-11-07T17:25:34Z · cycles 204 · universe 113 coins · profile aggr
 - `11-07T15:35:36` **order_sent** label="park_stop", pid="RITUAL-USD", side="SELL", cfg={"stop_limit_stop_limit_gtc": {"base_size": "286", "limit_pr, order_id="d4919e89-db58-4f48-8793-878f56985812"
 - `11-07T15:40:16` **order_sent** label="park_stop", pid="RITUAL-USD", side="SELL", cfg={"stop_limit_stop_limit_gtc": {"base_size": "286", "limit_pr, order_id="927eec6d-8a26-4df8-baeb-381b49d61634"
 - `11-07T16:15:15` **sold** pid="RITUAL-USD", px=0.02537, net=-0.4423, net_pct=-0.0579, reason="stop"
+- `11-07T17:28:28` **start** mode="live", key="1957dba3ea6c", alg="EdDSA", max_usd=200.0, floor=1.2, max_hops_day=6
 
 Paper twin and the signal table (the real verdict): mrh/MRH.md on this branch.
 
