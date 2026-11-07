@@ -1059,7 +1059,7 @@
   "KXMLSTOTAL-26NOV07CINNSH-3": "switch off",
   "KXMLSBTTS-26NOV07CINNSH-BTTS": "switch off",
   "KXLIGAMX1HTOTAL-26NOV07ATLPAC-1": "Polymarket does not confirm",
-  "KXLIGAMXTOTAL-26NOV07ATLPAC-1": "settling (30s)",
+  "KXLIGAMXTOTAL-26NOV07ATLPAC-1": "settling (135s)",
   "KXMLSTOTAL-26NOV07MIACLT-10": "switch off",
   "KXMLSTOTAL-26NOV07MIACLT-9": "switch off",
   "KXMLSTOTAL-26NOV07MIACLT-8": "switch off",
@@ -1068,12 +1068,12 @@
   "KXMLSTOTAL-26NOV07CHICLB-10": "switch off",
   "KXMLSTOTAL-26NOV07CHICLB-9": "switch off",
   "KXMLSTOTAL-26NOV07CHICLB-8": "switch off",
-  "KXMLSTOTAL-26NOV07PHITOR-9": "Polymarket does not confirm",
-  "KXMLSTOTAL-26NOV07PHITOR-8": "Polymarket does not confirm",
-  "KXMLSTOTAL-26NOV07PHITOR-7": "Polymarket does not confirm",
-  "KXMLSTOTAL-26NOV07PHITOR-6": "Polymarket does not confirm",
+  "KXMLSTOTAL-26NOV07PHITOR-9": "switch off",
+  "KXMLSTOTAL-26NOV07PHITOR-8": "switch off",
+  "KXMLSTOTAL-26NOV07PHITOR-7": "switch off",
+  "KXMLSTOTAL-26NOV07PHITOR-6": "switch off",
   "KXLIGAMX1HTOTAL-26NOV07ATLPAC-2": "Polymarket does not confirm",
-  "KXLIGAMXTOTAL-26NOV07ATLPAC-2": "settling (30s)"
+  "KXLIGAMXTOTAL-26NOV07ATLPAC-2": "settling (135s)"
  },
  "started": 1793687692.6057825,
  "ht": {
