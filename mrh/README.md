@@ -13,6 +13,7 @@ Public endpoints only — no API key. Results on the `data` branch: `mrh/MRH.md`
 |---|---|---|
 | **aggressive** (the one Noah wants) | one 5-min candle ≥ +2% on ≥ 3× the 2-h median volume | 4% trailing stop from the high-water mark, nothing else |
 | **standard** (control) | same, and the candle must close above the prior 2-h high | 3% trail |
+| **aggressive_swap** (variant) | aggressive's own signals (logs none of its own) | 4% trail, **and** a coin that has made no new high for 2 h is sold at the bid to take a fresh signal in another coin |
 
 Both: USD pairs with ≥ $100k 24-h volume, stablecoins/wrappers excluded, spread ≤ 0.6%, one position at a time,
 the whole bankroll every hop (compounding), fills at the touch (ask in, bid out), no hard stop, no time stop.
@@ -20,6 +21,9 @@ the whole bankroll every hop (compounding), fills at the touch (ask in, bid out)
 **The real verdict** is the signal table, not the books: every signal is scored with its +15 m / +1 h / +4 h return,
 max run-up, max drawdown and what a 4%-trail hop from it would have netted. That is independent of which coin the
 single-position book was sitting in. Verdict unlocks at 40 scored aggressive signals and 30 closed aggressive hops.
+Every signal is also stamped with `hour_utc` and BTC's own 1-h / 2-h move at that moment (`btc_1h`, `btc_2h`); the
+report breaks aggressive signals down by BTC regime, because an alt breakout into a market-wide dump is a different
+bet from one with a bid under the market. If the regime rows diverge, a BTC gate goes into live; not before.
 
 ## Live (real money, hard-capped)
 
