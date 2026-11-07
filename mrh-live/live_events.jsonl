@@ -27,3 +27,4 @@
 {"t": "2026-11-07T09:30:16Z", "ev": "order_sent", "label": "park_stop", "pid": "CT-USD", "side": "SELL", "cfg": {"stop_limit_stop_limit_gtc": {"base_size": "24.5", "limit_price": "0.13745", "stop_price": "0.13954", "stop_direction": "STOP_DIRECTION_STOP_DOWN"}}, "order_id": "a52ed754-3b64-415f-b252-465cd0987a15"}
 {"t": "2026-11-07T09:50:15Z", "ev": "sold", "pid": "CT-USD", "px": 0.1392775510204082, "net": 0.0532, "net_pct": 0.016, "reason": "stop"}
 {"t": "2026-11-07T09:50:15Z", "ev": "signal_skipped", "reason": "spread", "pid": "MEZO-USD", "candle_start": 1794044700, "impulse": 0.022, "vol_mult": 4.66, "above_2h_high": false, "close": 0.005346, "bid": 0.00537, "ask": 0.00543, "spread": 0.011}
+{"t": "2026-11-07T10:45:15Z", "ev": "signal_skipped", "reason": "spread", "pid": "DEGEN-USD", "candle_start": 1794048000, "impulse": 0.0666, "vol_mult": 4.51, "above_2h_high": true, "close": 0.001234, "bid": 0.001233, "ask": 0.001243, "spread": 0.008}
