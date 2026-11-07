@@ -28,3 +28,7 @@
 {"t": "2026-11-07T09:50:15Z", "ev": "sold", "pid": "CT-USD", "px": 0.1392775510204082, "net": 0.0532, "net_pct": 0.016, "reason": "stop"}
 {"t": "2026-11-07T09:50:15Z", "ev": "signal_skipped", "reason": "spread", "pid": "MEZO-USD", "candle_start": 1794044700, "impulse": 0.022, "vol_mult": 4.66, "above_2h_high": false, "close": 0.005346, "bid": 0.00537, "ask": 0.00543, "spread": 0.011}
 {"t": "2026-11-07T10:45:15Z", "ev": "signal_skipped", "reason": "spread", "pid": "DEGEN-USD", "candle_start": 1794048000, "impulse": 0.0666, "vol_mult": 4.51, "above_2h_high": true, "close": 0.001234, "bid": 0.001233, "ask": 0.001243, "spread": 0.008}
+{"t": "2026-11-07T11:20:15Z", "ev": "signal", "pid": "ICNT-USD", "candle_start": 1794050100, "impulse": 0.0597, "vol_mult": 51.61, "above_2h_high": true, "close": 0.3072, "bid": 0.3079, "ask": 0.3087, "spread": 0.0026}
+{"t": "2026-11-07T11:20:29Z", "ev": "order_sent", "label": "buy", "pid": "ICNT-USD", "side": "BUY", "cfg": {"market_market_ioc": {"quote_size": "7.7264"}}, "order_id": "e01e35d2-f80f-44af-9f46-176ad9afcf77"}
+{"t": "2026-11-07T11:20:30Z", "ev": "bought", "pid": "ICNT-USD", "px": 0.3088, "qty": 24.7, "cost": 7.696}
+{"t": "2026-11-07T11:20:31Z", "ev": "order_sent", "label": "park_stop", "pid": "ICNT-USD", "side": "SELL", "cfg": {"stop_limit_stop_limit_gtc": {"base_size": "24.7", "limit_price": "0.292", "stop_price": "0.2964", "stop_direction": "STOP_DIRECTION_STOP_DOWN"}}, "order_id": "0005956f-3221-4059-ab7a-f2eeff0ca7c9"}

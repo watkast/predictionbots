@@ -1,12 +1,12 @@
 # Mr. H — Coinbase hopper, LIVE (real money)
 
-Updated 2026-11-07T11:15:29Z · cycles 129 · universe 112 coins · profile aggressive (+2% impulse, 3× volume, 4% trail) · caps $12.00/entry, 6 hops/day, floor $1.20
+Updated 2026-11-07T11:20:31Z · cycles 130 · universe 112 coins · profile aggressive (+2% impulse, 3× volume, 4% trail) · caps $12.00/entry, 6 hops/day, floor $1.20
 
 ## Book
 
 | now | start | vs start | peak | USD free | hops | win % | fees paid | position |
 |---|---|---|---|---|---|---|---|---|
-| $7.73 | $3.44 | +124.5% | $17.73 | $7.73 | 2 | 50% | $0.091 | — |
+| $7.73 | $3.44 | +124.5% | $17.73 | $7.73 | 2 | 50% | $0.159 | ICNT 24.7 @ 0.3088 · hw 0.3088 · stop 0.296448 (parked) |
 
 ## Hops
 
@@ -17,10 +17,6 @@ Updated 2026-11-07T11:15:29Z · cycles 129 · universe 112 coins · profile aggr
 
 ## Last 25 events
 
-- `11-07T01:05:16` **order_sent** label="park_stop", pid="ZEC-USD", side="SELL", cfg={"stop_limit_stop_limit_gtc": {"base_size": "0.00259558", "l, order_id="2f43a279-0ba2-42c2-94c2-342991549aa4"
-- `11-07T01:10:16` **order_sent** label="park_stop", pid="ZEC-USD", side="SELL", cfg={"stop_limit_stop_limit_gtc": {"base_size": "0.00259558", "l, order_id="525348a5-9906-4504-80a9-4277a3f28a1c"
-- `11-07T01:25:16` **order_sent** label="park_stop", pid="ZEC-USD", side="SELL", cfg={"stop_limit_stop_limit_gtc": {"base_size": "0.00259558", "l, order_id="669d3979-75e1-46f1-b11d-17099e661a1a"
-- `11-07T01:35:16` **order_sent** label="park_stop", pid="ZEC-USD", side="SELL", cfg={"stop_limit_stop_limit_gtc": {"base_size": "0.00259558", "l, order_id="15d3a87a-56f7-4410-9809-57dfb6e72331"
 - `11-07T01:45:17` **order_sent** label="park_stop", pid="ZEC-USD", side="SELL", cfg={"stop_limit_stop_limit_gtc": {"base_size": "0.00259558", "l, order_id="5bb6b9d5-4c66-47d5-9f86-938a22d3d033"
 - `11-07T02:05:16` **order_sent** label="park_stop", pid="ZEC-USD", side="SELL", cfg={"stop_limit_stop_limit_gtc": {"base_size": "0.00259558", "l, order_id="b8cded36-4e35-4014-bed0-42da012c108b"
 - `11-07T02:10:16` **order_sent** label="park_stop", pid="ZEC-USD", side="SELL", cfg={"stop_limit_stop_limit_gtc": {"base_size": "0.00259558", "l, order_id="fe3fd83d-9c2c-4766-a500-8238e90459db"
@@ -42,6 +38,10 @@ Updated 2026-11-07T11:15:29Z · cycles 129 · universe 112 coins · profile aggr
 - `11-07T09:50:15` **sold** pid="CT-USD", px=0.1392775510204082, net=0.0532, net_pct=0.016, reason="stop"
 - `11-07T09:50:15` **signal_skipped** reason="spread", pid="MEZO-USD", candle_start=1794044700, impulse=0.022, vol_mult=4.66, above_2h_high=false, close=0.005346, bid=0.00537, ask=0.00543, spread=0.011
 - `11-07T10:45:15` **signal_skipped** reason="spread", pid="DEGEN-USD", candle_start=1794048000, impulse=0.0666, vol_mult=4.51, above_2h_high=true, close=0.001234, bid=0.001233, ask=0.001243, spread=0.008
+- `11-07T11:20:15` **signal** pid="ICNT-USD", candle_start=1794050100, impulse=0.0597, vol_mult=51.61, above_2h_high=true, close=0.3072, bid=0.3079, ask=0.3087, spread=0.0026
+- `11-07T11:20:29` **order_sent** label="buy", pid="ICNT-USD", side="BUY", cfg={"market_market_ioc": {"quote_size": "7.7264"}}, order_id="e01e35d2-f80f-44af-9f46-176ad9afcf77"
+- `11-07T11:20:30` **bought** pid="ICNT-USD", px=0.3088, qty=24.7, cost=7.696
+- `11-07T11:20:31` **order_sent** label="park_stop", pid="ICNT-USD", side="SELL", cfg={"stop_limit_stop_limit_gtc": {"base_size": "24.7", "limit_p, order_id="0005956f-3221-4059-ab7a-f2eeff0ca7c9"
 
 Paper twin and the signal table (the real verdict): mrh/MRH.md on this branch.
 

@@ -1,15 +1,33 @@
 {
  "started": "2026-11-07T00:42:01Z",
- "pos": null,
+ "pos": {
+  "pid": "ICNT-USD",
+  "qty": 24.7,
+  "entry_px": 0.3088,
+  "cost": 7.69600624,
+  "hw": 0.3088,
+  "t_in": "2026-11-07T11:20:30Z",
+  "signal": {
+   "impulse": 0.0597,
+   "vol_mult": 51.61,
+   "above_2h_high": true
+  },
+  "stop": {
+   "order_id": "0005956f-3221-4059-ab7a-f2eeff0ca7c9",
+   "stop_px": 0.296448,
+   "t": "2026-11-07T11:20:31Z"
+  },
+  "order_id": "e01e35d2-f80f-44af-9f46-176ad9afcf77"
+ },
  "start_usd": 3.4418,
  "hops": 2,
  "wins": 1,
- "fees": 0.09085284356964121,
+ "fees": 0.1594990835696412,
  "peak": 17.72644249380356,
  "hops_by_day": {
   "2026-11-07": 2
  },
- "cycles": 129,
+ "cycles": 130,
  "halted": null,
  "universe": [
   {
@@ -1382,7 +1400,7 @@
   }
  },
  "last": {
-  "t": "2026-11-07T11:15:15Z",
+  "t": "2026-11-07T11:20:15Z",
   "usd": 7.7264,
   "total": 7.7264,
   "pos": null
