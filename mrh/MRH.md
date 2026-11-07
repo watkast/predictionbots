@@ -1,19 +1,19 @@
 # Mr. H — Coinbase hopper, PAPER
 
-Updated 2026-11-07T13:10:28Z · scans 110 · universe 112 coins (USD pairs with ≥ $100k 24-h volume) · fees 0.9% taker each way · start $4.00
+Updated 2026-11-07T13:20:29Z · scans 112 · universe 112 coins (USD pairs with ≥ $100k 24-h volume) · fees 0.9% taker each way · start $4.00
 
 ## Books (one position at a time, all-in every hop)
 
 | profile | bankroll | vs start | peak | hops | win % | avg net/hop | fees paid | open |
 |---|---|---|---|---|---|---|---|---|
-| aggressive | $3.83 | -4.3% | $4.00 | 2 | 50% | -2.10% | $0.139 | — |
-| standard | $3.52 | -12.0% | $4.00 | 3 | 0% | -3.80% | $0.234 | CAP-USD @ 0.09713 |
+| aggressive | $3.78 | -5.4% | $4.00 | 2 | 50% | -2.10% | $0.173 | ALIGN-USD @ 0.0043 |
+| standard | $3.49 | -12.8% | $4.00 | 3 | 0% | -3.80% | $0.234 | CAP-USD @ 0.09713 |
 
 ## Signal forward returns (every signal, whether or not a book took it)
 
 | profile | signals | scored | median +15m | median +1h | median +4h | % beat 1.8% at +1h | median 4%-trail hop net | max run-up (med) | max drawdown (med) |
 |---|---|---|---|---|---|---|---|---|---|
-| aggressive | 7 | 0 | +nan% | +nan% | +nan% | nan% | +nan% | +nan% | +nan% |
+| aggressive | 8 | 0 | +nan% | +nan% | +nan% | nan% | +nan% | +nan% | +nan% |
 | standard | 10 | 2 | -1.07% | -1.26% | -3.72% | 0% | -5.64% | +0.20% | -4.18% |
 
 ## Verdict
@@ -34,7 +34,6 @@ Updated 2026-11-07T13:10:28Z · scans 110 · universe 112 coins (USD pairs with 
 
 | time (UTC) | profile | coin | impulse | vol× | >2h high | spread | taken | +1h | +4h |
 |---|---|---|---|---|---|---|---|---|---|
-| 11-07T06:25 | aggressive | GROVE | +5.5% | 6.5 | n | 0.11% | y | … | … |
 | 11-07T07:15 | standard | QNT | +1.6% | 12.2 | y | 0.06% | in_position | -2.4% | -3.6% |
 | 11-07T10:20 | standard | ALIGN | +1.1% | 4.3 | y | 0.22% | y | … | … |
 | 11-07T10:45 | aggressive | DEGEN | +6.7% | 4.5 | y | 0.80% | spread | … | … |
@@ -49,3 +48,4 @@ Updated 2026-11-07T13:10:28Z · scans 110 · universe 112 coins (USD pairs with 
 | 11-07T11:40 | standard | ICNT | +5.3% | 54.9 | y | 0.37% | in_position | … | … |
 | 11-07T12:05 | aggressive | ICNT | +3.8% | 3.1 | n | 0.75% | spread | … | … |
 | 11-07T13:10 | standard | CAP | +1.9% | 3.1 | y | 0.15% | y | … | … |
+| 11-07T13:20 | aggressive | ALIGN | +2.4% | 6.8 | n | 0.23% | y | … | … |
