@@ -1,13 +1,13 @@
 # Mr. H — Coinbase hopper, PAPER
 
-Updated 2026-11-07T06:35:29Z · scans 50 · universe 111 coins (USD pairs with ≥ $100k 24-h volume) · fees 0.9% taker each way · start $4.00
+Updated 2026-11-07T06:45:28Z · scans 52 · universe 111 coins (USD pairs with ≥ $100k 24-h volume) · fees 0.9% taker each way · start $4.00
 
 ## Books (one position at a time, all-in every hop)
 
 | profile | bankroll | vs start | peak | hops | win % | avg net/hop | fees paid | open |
 |---|---|---|---|---|---|---|---|---|
-| aggressive | $3.93 | -1.8% | $4.00 | 0 | 0% | +0.00% | $0.036 | GROVE-USD @ 0.00907 |
-| standard | $3.88 | -3.1% | $4.00 | 0 | 0% | +0.00% | $0.036 | ICNT-USD @ 0.303 |
+| aggressive | $3.76 | -6.0% | $4.00 | 1 | 0% | -6.01% | $0.070 | — |
+| standard | $3.87 | -3.2% | $4.00 | 0 | 0% | +0.00% | $0.036 | ICNT-USD @ 0.303 |
 
 ## Signal forward returns (every signal, whether or not a book took it)
 
@@ -18,12 +18,13 @@ Updated 2026-11-07T06:35:29Z · scans 50 · universe 111 coins (USD pairs with �
 
 ## Verdict
 
-**Not yet.** Needs 40 scored aggressive signals (0 so far) and 30 closed aggressive hops (0 so far) before this says anything. Until then every number above is noise.
+**Not yet.** Needs 40 scored aggressive signals (0 so far) and 30 closed aggressive hops (1 so far) before this says anything. Until then every number above is noise.
 
 ## Last 20 hops
 
 | time (UTC) | book | coin | in | out | held | net | reason | bankroll |
 |---|---|---|---|---|---|---|---|---|
+| 11-07T06:45 | aggressive | GROVE | 0.00907 | 0.00868 | 20 m | -6.01% | trail | $3.76 |
 
 ## Last 15 signals
 
