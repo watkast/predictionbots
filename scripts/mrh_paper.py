@@ -53,7 +53,11 @@ PROFILES = {
     # name: (min impulse close/open, min vol multiple, require close > prior 2h high, trailing stop)
     "aggressive": dict(impulse=0.02, vol_mult=3.0, need_2h_high=False, trail=0.04),
     "standard":   dict(impulse=0.01, vol_mult=3.0, need_2h_high=True,  trail=0.03),
+    # same signal and trail as aggressive (variant_of: shares its signals, logs none of its own), but a position that
+    # has not made a new high for swap_after_h hours is SOLD at the bid to take a fresh signal in another coin
+    "aggressive_swap": dict(impulse=0.02, vol_mult=3.0, need_2h_high=False, trail=0.04, variant_of="aggressive", swap_after_h=2),
 }
+BASE_PROFILES = {n: p for n, p in PROFILES.items() if not p.get("variant_of")}
 HORIZONS = {"r15m": 3, "r1h": 12, "r4h": 48}   # forward candles after the signal candle
 
 
@@ -214,6 +218,7 @@ class Position:
     hw: float             # high-water mark on bid
     t_in: str
     signal: dict
+    hw_t: str = ""        # when the high-water mark was last raised (swap variants: staleness clock)
 
 
 @dataclass
@@ -234,7 +239,7 @@ class Book:
         fee = cost * TAKER_FEE
         self.fees += fee
         self.bankroll = 0.0
-        self.pos = asdict(Position(pid, ask, qty, cost, ask, iso(t), signal))
+        self.pos = asdict(Position(pid, ask, qty, cost, ask, iso(t), signal, iso(t)))
         return {"t": iso(t), "book": self.name, "ev": "buy", "pid": pid, "px": ask, "qty": qty, "cost": cost, "fee": fee,
                 "signal": signal}
 
@@ -242,7 +247,8 @@ class Book:
         p = self.pos
         if not p or bid <= 0:
             return None
-        p["hw"] = max(p["hw"], bid)
+        if bid > p["hw"]:
+            p["hw"], p["hw_t"] = bid, iso(t)
         stop = p["hw"] * (1 - trail)
         if reason_force is None and bid > stop:
             return None
@@ -299,6 +305,14 @@ def read_jsonl(f: Path) -> list[dict]:
 
 # ----------------------------------------------------------------------------------------------- one scan
 
+def swap_due(pos: dict, prof: dict, pid: str, t: datetime) -> bool:
+    """Variant books only: the held coin has made no new high for swap_after_h hours and the signal is another coin."""
+    h = prof.get("swap_after_h")
+    if not h or pid == pos["pid"]:
+        return False
+    return (t - parse_iso(pos.get("hw_t") or pos["t_in"])) >= timedelta(hours=h)
+
+
 def scan(cb: Coinbase, out: Path, st: dict, t: datetime | None = None) -> dict:
     t = t or now()
     books = {n: Book(**st["books"][n]) for n in PROFILES}
@@ -322,37 +336,51 @@ def scan(cb: Coinbase, out: Path, st: dict, t: datetime | None = None) -> dict:
     start = end - CANDLE_S * (LOOKBACK + 3)
     n_sig = 0
     cand: dict[str, list[tuple[str, dict]]] = {}     # pid -> [(profile, signal)]
+    regime: dict = {}                                 # BTC's own 1h / 2h move at scan time, stamped on every signal
     for u in st["universe"]:
         try:
             cs = closed_candles(cb.candles(u["id"], start, end), t)
         except Exception as e:  # one bad product must not kill the scan
             append(out, "scan_errors.jsonl", {"t": iso(t), "pid": u["id"], "err": str(e)[:300]})
             continue
-        for name, prof in PROFILES.items():
+        if u["id"] == "BTC-USD" and len(cs) >= 25 and cs[-13]["close"] > 0 and cs[-25]["close"] > 0:
+            regime = {"btc_1h": round(cs[-1]["close"] / cs[-13]["close"] - 1, 4), "btc_2h": round(cs[-1]["close"] / cs[-25]["close"] - 1, 4)}
+        for name, prof in BASE_PROFILES.items():
             sig = evaluate(cs, prof)
             if sig:
                 cand.setdefault(u["id"], []).append((name, sig))
-    # 3) per profile, take the strongest candidate (biggest impulse) that passes the spread gate
+    # 3) per book, take the strongest candidate (biggest impulse) that passes the spread gate; variants share their base's signals
     for name, bk in books.items():
         prof = PROFILES[name]
-        opts = sorted(((s["impulse"], pid, s) for pid, lst in cand.items() for n, s in lst if n == name), reverse=True)
+        base = prof.get("variant_of", name)
+        opts = sorted(((s["impulse"], pid, s) for pid, lst in cand.items() for n, s in lst if n == base), reverse=True)
         for _imp, pid, sig in opts:
             tick_cache.setdefault(pid, cb.ticker(pid))
             tk = tick_cache[pid]
             spread = (tk["ask"] - tk["bid"]) / tk["ask"] if tk["ask"] > 0 else 9
-            srec = {"t": iso(t), "profile": name, "pid": pid, **sig, "bid": tk["bid"], "ask": tk["ask"], "spread": round(spread, 4),
-                    "taken": False, "scored": False}
+            taken, skip = False, None
             if spread > MAX_SPREAD:
-                srec["skip"] = "spread"
-            elif bk.pos:
-                srec["skip"] = "in_position"
+                skip = "spread"
+            elif bk.pos and not swap_due(bk.pos, prof, pid, t):
+                skip = "in_position"
             else:
+                if bk.pos:                                 # swap: dump the stale coin at the bid, take the fresh signal
+                    cur = bk.pos["pid"]
+                    tick_cache.setdefault(cur, cb.ticker(cur))
+                    rec = bk.mark(tick_cache[cur]["bid"], t, prof["trail"], "swap")
+                    if rec:
+                        append(out, "trades.jsonl", rec)
                 rec = bk.enter(pid, tk["ask"], t, {k: sig[k] for k in ("impulse", "vol_mult", "above_2h_high")}, uni[pid]["quote_min"])
                 if rec:
                     append(out, "trades.jsonl", rec)
-                    srec["taken"] = True
-            append(out, "signals.jsonl", srec)
-            n_sig += 1
+                    taken = True
+            if base == name:                               # one signal record per base profile (variants log none)
+                srec = {"t": iso(t), "profile": name, "pid": pid, **sig, "bid": tk["bid"], "ask": tk["ask"], "spread": round(spread, 4),
+                        "hour_utc": t.hour, **regime, "taken": taken, "scored": False}
+                if skip:
+                    srec["skip"] = skip
+                append(out, "signals.jsonl", srec)
+                n_sig += 1
     st["books"] = {n: asdict(b) for n, b in books.items()}
     st["scans"] += 1
     st["last_scan"] = iso(t)
@@ -420,12 +448,24 @@ def report(out: Path) -> str:
     L.append("## Signal forward returns (every signal, whether or not a book took it)\n")
     L.append("| profile | signals | scored | median +15m | median +1h | median +4h | % beat 1.8% at +1h | median 4%-trail hop net | max run-up (med) | max drawdown (med) |")
     L.append("|---|---|---|---|---|---|---|---|---|---|")
-    for name in PROFILES:
+    for name in BASE_PROFILES:
         ss = [s for s in sigs if s["profile"] == name]
         sc = [s for s in ss if s.get("scored")]
         def med(k): return statistics.median([s[k] for s in sc]) * 100 if sc else float("nan")
         beat = (sum(s["r1h"] > 2 * TAKER_FEE for s in sc) / len(sc) * 100) if sc else float("nan")
         L.append(f"| {name} | {len(ss)} | {len(sc)} | {med('r15m'):+.2f}% | {med('r1h'):+.2f}% | {med('r4h'):+.2f}% | {beat:.0f}% | {med('trail4_net'):+.2f}% | {med('max_up_4h'):+.2f}% | {med('max_down_4h'):+.2f}% |")
+    L.append("")
+    L.append("## Aggressive signals by BTC regime (BTC's own move in the hour before the signal)\n")
+    L.append("| BTC 1h | signals | median +1h | median 4%-trail hop net | % beat 1.8% at +1h |")
+    L.append("|---|---|---|---|---|")
+    reg = [s for s in sigs if s["profile"] == "aggressive" and s.get("scored") and "btc_1h" in s]
+    for label, lo, hi in (("≤ −0.5% (downdraft)", -9, -0.005), ("−0.5% … +0.5% (flat)", -0.005, 0.005), ("≥ +0.5% (bid under the market)", 0.005, 9)):
+        g = [s for s in reg if lo <= s["btc_1h"] < hi]
+        if not g:
+            L.append(f"| {label} | 0 | — | — | — |")
+            continue
+        L.append(f"| {label} | {len(g)} | {statistics.median([s['r1h'] for s in g])*100:+.2f}% | {statistics.median([s['trail4_net'] for s in g])*100:+.2f}% | "
+                 f"{sum(s['r1h'] > 2 * TAKER_FEE for s in g) / len(g) * 100:.0f}% |")
     L.append("")
     sc_all = [s for s in sigs if s.get("scored") and s["profile"] == "aggressive"]
     hops_all = [x for x in trades if x["ev"] == "sell" and x["book"] == "aggressive"]
@@ -549,7 +589,33 @@ def selftest() -> None:
     assert all(s["scored"] and s["r4h"] > 0 for s in sg), sg
     assert abs(trail_pnl([{"close": 1.0}, {"close": 1.2}, {"close": 1.1}], 1.0, 0.05) - (1.1 * (1 - TAKER_FEE) / (1 + TAKER_FEE) - 1)) < 1e-12
     txt = report(out)
-    assert "Not yet." in txt and "PUMP" in txt
+    assert "Not yet." in txt and "PUMP" in txt and "BTC regime" in txt
+    # swap variant: a stale FLAT position (no new high for 3 h) is swapped into a fresh PUMP signal; the plain
+    # aggressive book, holding the same stale coin, just sits ("in_position"); signals.jsonl gets no variant records
+    out2 = Path(tempfile.mkdtemp()) / "mrh"
+    cb2 = FakeCB()
+    cb2.bids["FLAT-USD"] = 10.0
+    st2 = load_state(out2)
+    t0 = datetime.fromtimestamp(cb2.t0 + CANDLE_S * 41 + 20, tz=timezone.utc)
+    stale = t0 - timedelta(hours=3)
+    for n in ("aggressive", "aggressive_swap"):
+        bk = Book(**st2["books"][n])
+        bk.enter("FLAT-USD", 10.0, stale, {"impulse": 0.02, "vol_mult": 3.0, "above_2h_high": False}, 1.0)
+        st2["books"][n] = asdict(bk)
+    st2["universe"] = build_universe(cb2.products()); st2["universe_t"] = iso(t0)
+    scan(cb2, out2, st2, t0)
+    assert st2["books"]["aggressive"]["pos"]["pid"] == "FLAT-USD", st2["books"]["aggressive"]
+    sw = st2["books"]["aggressive_swap"]
+    assert sw["pos"]["pid"] == "PUMP-USD" and sw["hops"] == 1, sw
+    tr = [x for x in read_jsonl(out2 / "trades.jsonl") if x["book"] == "aggressive_swap"]
+    assert [x["ev"] for x in tr[-2:]] == ["sell", "buy"] and tr[-2]["reason"] == "swap" and tr[-2]["pid"] == "FLAT-USD", tr
+    sg = read_jsonl(out2 / "signals.jsonl")
+    assert {x["profile"] for x in sg} == {"aggressive", "standard"} and all("hour_utc" in x for x in sg), sg
+    assert next(x for x in sg if x["profile"] == "aggressive")["skip"] == "in_position"
+    # a fresh high resets the staleness clock: no swap right after a new high
+    cb2.bids["PUMP-USD"] = 1.30
+    scan(cb2, out2, st2, t0 + timedelta(minutes=5))
+    assert st2["books"]["aggressive_swap"]["pos"]["hw_t"] == iso(t0 + timedelta(minutes=5))
     print("selftest ok:", {n: round(st["books"][n]["bankroll"], 4) for n in PROFILES})
 
 
