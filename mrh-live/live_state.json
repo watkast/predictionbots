@@ -18,7 +18,8 @@
    "stop_px": 0.004128,
    "t": "2026-11-07T13:20:31Z"
   },
-  "order_id": "c19027aa-026f-4ae7-b55a-c904cedaa37d"
+  "order_id": "c19027aa-026f-4ae7-b55a-c904cedaa37d",
+  "last_bid": 0.00424
  },
  "start_usd": 3.4418,
  "hops": 3,
@@ -28,7 +29,7 @@
  "hops_by_day": {
   "2026-11-07": 3
  },
- "cycles": 155,
+ "cycles": 156,
  "halted": null,
  "universe": [
   {
@@ -1389,9 +1390,9 @@
   }
  },
  "last": {
-  "t": "2026-11-07T13:20:15Z",
-  "usd": 8.135,
-  "total": 8.135,
-  "pos": null
+  "t": "2026-11-07T13:25:16Z",
+  "usd": 0.0043,
+  "total": 7.95,
+  "pos": "ALIGN-USD"
  }
 }
