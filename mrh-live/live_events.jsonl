@@ -49,3 +49,4 @@
 {"t": "2026-11-07T15:35:35Z", "ev": "bought", "pid": "RITUAL-USD", "px": 0.02645, "qty": 286.0, "cost": 7.6328}
 {"t": "2026-11-07T15:35:36Z", "ev": "order_sent", "label": "park_stop", "pid": "RITUAL-USD", "side": "SELL", "cfg": {"stop_limit_stop_limit_gtc": {"base_size": "286", "limit_price": "0.02501", "stop_price": "0.02539", "stop_direction": "STOP_DIRECTION_STOP_DOWN"}}, "order_id": "d4919e89-db58-4f48-8793-878f56985812"}
 {"t": "2026-11-07T15:40:16Z", "ev": "order_sent", "label": "park_stop", "pid": "RITUAL-USD", "side": "SELL", "cfg": {"stop_limit_stop_limit_gtc": {"base_size": "286", "limit_price": "0.02506", "stop_price": "0.02544", "stop_direction": "STOP_DIRECTION_STOP_DOWN"}}, "order_id": "927eec6d-8a26-4df8-baeb-381b49d61634"}
+{"t": "2026-11-07T16:15:15Z", "ev": "sold", "pid": "RITUAL-USD", "px": 0.02537, "net": -0.4423, "net_pct": -0.0579, "reason": "stop"}
