@@ -58,7 +58,13 @@ import mrh_paper as paper  # noqa: E402  (shared universe / signal / candle logi
 BOT = "mrh-live"
 HOST = "api.coinbase.com"
 PRIV = "/api/v3/brokerage"
-PROFILE = paper.PROFILES["aggressive"]
+# The signal profile: paper's "aggressive" by default; the workflow dials the impulse threshold, volume multiple and
+# trail without a code change. The 30-day replay (mrh-backtest/BACKTEST.md) found the only positive cells at >= 5%
+# impulses with an 8% trail — a fat right tail paying for a losing median — so live hunts those by default on GHA.
+PROFILE = dict(paper.PROFILES["aggressive"],
+               impulse=float(os.environ.get("MRH_LIVE_IMPULSE", paper.PROFILES["aggressive"]["impulse"])),
+               vol_mult=float(os.environ.get("MRH_LIVE_VOL_MULT", paper.PROFILES["aggressive"]["vol_mult"])),
+               trail=float(os.environ.get("MRH_LIVE_TRAIL", paper.PROFILES["aggressive"]["trail"])))
 TRAIL = PROFILE["trail"]
 CID_PREFIX = "mrh-live-"
 MAKER_FEE = 0.005                  # Coinbase Advanced Intro-tier maker fee (the 0.9% in paper is the taker fee)
@@ -981,7 +987,7 @@ def report(out: Path) -> str:
     flows = st.get("flows", 0.0)
     L = ["# Mr. H — Coinbase hopper, LIVE (real money, maker on every order)\n",
          f"Updated {iso(now())} · cycles {st['cycles']} · universe {len(st['universe'])} coins · profile aggressive "
-         f"(+{PROFILE['impulse']*100:.0f}% impulse, {PROFILE['vol_mult']:.0f}× volume, {TRAIL*100:.0f}% trail) · post-only limit orders at the touch "
+         f"(+{PROFILE['impulse']*100:g}% impulse, {PROFILE['vol_mult']:g}× volume, {TRAIL*100:g}% trail) · post-only limit orders at the touch "
          f"(maker {MAKER_FEE*100:.1f}%) · entry TTL {ENTRY_TTL_MIN:g} min, chase cap +{ENTRY_CHASE*100:g}% · disaster stop {DISASTER_GAP*100:g}% under the trail · "
          f"panic sell {PANIC_GAP*100:g}% under it · caps ${MAX_USD:.2f}/entry, {MAX_HOPS_DAY} hops/day, floor ${FLOOR_USD:.2f}, swap after {SWAP_AFTER_H:g} h\n"]
     if st.get("halted"):
@@ -1034,7 +1040,8 @@ def run(out: Path, minutes: float, dry: bool) -> None:
         ex, cb = CDP(key, sec), paper.Coinbase()
         st = load_state(out)
         event(out, "start", mode="dry" if dry else "live", key=key[-12:], alg=ex.alg, max_usd=MAX_USD, floor=FLOOR_USD, max_hops_day=MAX_HOPS_DAY,
-              maker=True, fast_s=FAST_S, entry_ttl_min=ENTRY_TTL_MIN, entry_chase=ENTRY_CHASE, disaster_gap=DISASTER_GAP, panic_gap=PANIC_GAP)
+              maker=True, fast_s=FAST_S, entry_ttl_min=ENTRY_TTL_MIN, entry_chase=ENTRY_CHASE, disaster_gap=DISASTER_GAP, panic_gap=PANIC_GAP,
+              impulse=PROFILE["impulse"], vol_mult=PROFILE["vol_mult"], trail=TRAIL)
         t_end = time.time() + minutes * 60
         bad = 0
         while True:

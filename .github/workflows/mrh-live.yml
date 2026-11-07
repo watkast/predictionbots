@@ -4,7 +4,8 @@
 # trailing stop worked as a POST-ONLY limit sell at the ask, chased down, checked every 20 s. Two optional exceptions:
 # a stop-limit parked 6% UNDER the trail for the minutes between runs (MRH_LIVE_DISASTER_GAP, 0 = none) and a market
 # "panic" sell if the bid is 3% under the trail while the maker exit still rests (MRH_LIVE_PANIC_GAP, 0 = never).
-# Caps: MRH_LIVE_MAX_USD per entry, 6 hops/day, halts below $1.20 total. Only ever touches USD + the coin it holds.
+# Profile (env, dialable as repo variables): MRH_LIVE_IMPULSE 0.05, MRH_LIVE_VOL_MULT 3, MRH_LIVE_TRAIL 0.08 — the tail hunter the
+# 30-day replay pointed at. Caps: MRH_LIVE_MAX_USD per entry, 4 hops/day (fee budget: at most ~4%/day at the 1% maker round trip), halts below $1.20 total. Only touches USD + the coin held.
 # Switch: mrh/LIVE_ON on main (delete it, or add mrh/PAUSED, to stop new orders; cancel the job to stop at once).
 # Secrets: COINBASE_API_KEY (CDP key name) + COINBASE_API_SECRET (its private key) — View + Trade only, NO Transfer.
 # Starts on merge (push trigger) and re-dispatches itself while the switch exists; the 6-hourly cron is a backstop.
@@ -41,6 +42,16 @@ jobs:
       COINBASE_API_KEY: ${{ secrets.COINBASE_API_KEY }}
       COINBASE_API_SECRET: ${{ secrets.COINBASE_API_SECRET }}
       MRH_DIR: ${{ github.workspace }}/data/mrh-live
+      # Tail hunter (Nov 7): the 30-day replay's only positive cells were >= 5% impulses with an 8% trail (fat right tail,
+      # losing median). Dial here; the code's own defaults are paper's 2% / 3x / 4%.
+      MRH_LIVE_IMPULSE: ${{ vars.MRH_LIVE_IMPULSE || '0.05' }}
+      MRH_LIVE_VOL_MULT: ${{ vars.MRH_LIVE_VOL_MULT || '3' }}
+      MRH_LIVE_TRAIL: ${{ vars.MRH_LIVE_TRAIL || '0.08' }}
+      MRH_LIVE_MAX_HOPS_DAY: ${{ vars.MRH_LIVE_MAX_HOPS_DAY || '4' }}
+      MRH_LIVE_ENTRY_CHASE: ${{ vars.MRH_LIVE_ENTRY_CHASE || '0.02' }}
+      MRH_LIVE_ENTRY_TTL_MIN: ${{ vars.MRH_LIVE_ENTRY_TTL_MIN || '15' }}
+      MRH_LIVE_DISASTER_GAP: ${{ vars.MRH_LIVE_DISASTER_GAP || '0.06' }}
+      MRH_LIVE_PANIC_GAP: ${{ vars.MRH_LIVE_PANIC_GAP || '0.03' }}
       GH_TOKEN: ${{ github.token }}
     steps:
       - uses: actions/checkout@v4
