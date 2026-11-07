@@ -1,13 +1,13 @@
 # Mr. H — Coinbase hopper, PAPER
 
-Updated 2026-11-07T16:35:29Z · scans 142 · universe 112 coins (USD pairs with ≥ $100k 24-h volume) · fees 0.9% taker each way · start $4.00
+Updated 2026-11-07T16:45:29Z · scans 144 · universe 112 coins (USD pairs with ≥ $100k 24-h volume) · fees 0.9% taker each way · start $4.00
 
 ## Books (one position at a time, all-in every hop)
 
 | profile | bankroll | vs start | peak | hops | win % | avg net/hop | fees paid | open |
 |---|---|---|---|---|---|---|---|---|
 | aggressive | $3.29 | -17.6% | $4.00 | 4 | 25% | -4.66% | $0.268 | — |
-| standard | $3.59 | -10.2% | $4.00 | 4 | 25% | -1.77% | $0.301 | APR-USD @ 0.0424 |
+| standard | $3.54 | -11.4% | $4.00 | 5 | 20% | -2.33% | $0.333 | — |
 | aggressive_swap | $4.00 | +0.0% | $4.00 | 0 | 0% | +0.00% | $0.000 | — |
 
 ## Signal forward returns (every signal, whether or not a book took it)
@@ -41,6 +41,7 @@ Updated 2026-11-07T16:35:29Z · scans 142 · universe 112 coins (USD pairs with 
 | 11-07T14:10 | standard | CAP | 0.09713 | 0.1032 | 60 m | +4.35% | trail | $3.71 |
 | 11-07T15:15 | aggressive | ALIGN | 0.0043 | 0.00412 | 115 m | -5.90% | trail | $3.60 |
 | 11-07T16:26 | aggressive | RITUAL | 0.02644 | 0.02463 | 51 m | -8.51% | trail | $3.29 |
+| 11-07T16:45 | standard | APR | 0.0424 | 0.0412 | 130 m | -4.57% | trail | $3.54 |
 
 ## Last 15 signals
 
