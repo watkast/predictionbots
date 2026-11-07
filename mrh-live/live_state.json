@@ -9,7 +9,7 @@
  "hops_by_day": {
   "2026-11-07": 6
  },
- "cycles": 272,
+ "cycles": 273,
  "halted": null,
  "universe": [
   {
@@ -1382,10 +1382,15 @@
   }
  },
  "last": {
-  "t": "2026-11-07T23:00:15Z",
+  "t": "2026-11-07T23:30:02Z",
   "usd": 7.2317,
   "total": 7.2317,
   "pos": null,
+  "entry": null,
   "note": "daily hop cap"
- }
+ },
+ "entry": null,
+ "pending_sig": null,
+ "flows": 0.0,
+ "last_trade_t": null
 }
