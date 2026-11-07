@@ -13,3 +13,7 @@
 {"t": "2026-11-07T02:15:16Z", "ev": "order_sent", "label": "park_stop", "pid": "ZEC-USD", "side": "SELL", "cfg": {"stop_limit_stop_limit_gtc": {"base_size": "0.00259558", "limit_price": "1284.59", "stop_price": "1304.15", "stop_direction": "STOP_DIRECTION_STOP_DOWN"}}, "order_id": "6a2a7f24-7d22-4974-9f81-ea77bd23b2ae"}
 {"t": "2026-11-07T06:18:07Z", "ev": "start", "mode": "live", "key": "1957dba3ea6c", "alg": "EdDSA", "max_usd": 12.0, "floor": 1.2, "max_hops_day": 6}
 {"t": "2026-11-07T06:40:15Z", "ev": "sold", "pid": "ZEC-USD", "px": 1303.65, "net": -0.0886, "net_pct": -0.0257, "reason": "stop"}
+{"t": "2026-11-07T08:30:15Z", "ev": "signal", "pid": "CT-USD", "candle_start": 1794039900, "impulse": 0.0258, "vol_mult": 33.07, "above_2h_high": true, "close": 0.13465, "bid": 0.13442, "ask": 0.13459, "spread": 0.0013}
+{"t": "2026-11-07T08:30:29Z", "ev": "order_sent", "label": "buy", "pid": "CT-USD", "side": "BUY", "cfg": {"market_market_ioc": {"quote_size": "3.35327"}}, "order_id": "44f551fc-18e9-4080-badb-84b56e2255be"}
+{"t": "2026-11-07T08:30:30Z", "ev": "bought", "pid": "CT-USD", "px": 0.1346421440664, "qty": 24.5, "cost": 3.3284}
+{"t": "2026-11-07T08:30:31Z", "ev": "order_sent", "label": "park_stop", "pid": "CT-USD", "side": "SELL", "cfg": {"stop_limit_stop_limit_gtc": {"base_size": "24.5", "limit_price": "0.12731", "stop_price": "0.12925", "stop_direction": "STOP_DIRECTION_STOP_DOWN"}}, "order_id": "c56d9f6b-d910-4be1-85bf-758b6b78a42a"}
