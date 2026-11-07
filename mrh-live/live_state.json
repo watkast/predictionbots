@@ -1,15 +1,35 @@
 {
  "started": "2026-11-07T00:42:01Z",
- "pos": null,
+ "pos": {
+  "pid": "RITUAL-USD",
+  "qty": 286.0,
+  "entry_px": 0.02645,
+  "cost": 7.632782300000001,
+  "hw": 0.02651,
+  "t_in": "2026-11-07T15:35:35Z",
+  "hw_t": "2026-11-07T15:40:16Z",
+  "signal": {
+   "impulse": 0.0305,
+   "vol_mult": 4.16,
+   "above_2h_high": false
+  },
+  "stop": {
+   "order_id": "927eec6d-8a26-4df8-baeb-381b49d61634",
+   "stop_px": 0.0254496,
+   "t": "2026-11-07T15:40:16Z"
+  },
+  "order_id": "fd9abb19-3649-4d87-b049-9b410d9f6c41",
+  "last_bid": 0.02651
+ },
  "start_usd": 3.4418,
  "hops": 4,
  "wins": 2,
- "fees": 0.3751143335696412,
+ "fees": 0.4431966335696412,
  "peak": 17.72644249380356,
  "hops_by_day": {
   "2026-11-07": 4
  },
- "cycles": 181,
+ "cycles": 183,
  "halted": null,
  "universe": [
   {
@@ -1382,9 +1402,9 @@
   }
  },
  "last": {
-  "t": "2026-11-07T15:30:15Z",
-  "usd": 7.6557,
-  "total": 7.6557,
-  "pos": null
+  "t": "2026-11-07T15:40:16Z",
+  "usd": 0.0229,
+  "total": 7.6047,
+  "pos": "RITUAL-USD"
  }
 }
