@@ -1,12 +1,12 @@
 # Mr. H — Coinbase hopper, PAPER
 
-Updated 2026-11-07T15:10:29Z · scans 134 · universe 112 coins (USD pairs with ≥ $100k 24-h volume) · fees 0.9% taker each way · start $4.00
+Updated 2026-11-07T15:20:29Z · scans 136 · universe 112 coins (USD pairs with ≥ $100k 24-h volume) · fees 0.9% taker each way · start $4.00
 
 ## Books (one position at a time, all-in every hop)
 
 | profile | bankroll | vs start | peak | hops | win % | avg net/hop | fees paid | open |
 |---|---|---|---|---|---|---|---|---|
-| aggressive | $3.66 | -8.5% | $4.00 | 2 | 50% | -2.10% | $0.173 | ALIGN-USD @ 0.0043 |
+| aggressive | $3.60 | -10.0% | $4.00 | 3 | 33% | -3.37% | $0.206 | — |
 | standard | $3.64 | -9.1% | $4.00 | 4 | 25% | -1.77% | $0.301 | APR-USD @ 0.0424 |
 
 ## Signal forward returns (every signal, whether or not a book took it)
@@ -18,7 +18,7 @@ Updated 2026-11-07T15:10:29Z · scans 134 · universe 112 coins (USD pairs with 
 
 ## Verdict
 
-**Not yet.** Needs 40 scored aggressive signals (1 so far) and 30 closed aggressive hops (2 so far) before this says anything. Until then every number above is noise.
+**Not yet.** Needs 40 scored aggressive signals (1 so far) and 30 closed aggressive hops (3 so far) before this says anything. Until then every number above is noise.
 
 ## Last 20 hops
 
@@ -30,6 +30,7 @@ Updated 2026-11-07T15:10:29Z · scans 134 · universe 112 coins (USD pairs with 
 | 11-07T11:45 | aggressive | ICNT | 0.3087 | 0.32 | 25 m | +1.80% | trail | $3.83 |
 | 11-07T11:45 | standard | ICNT | 0.3173 | 0.32 | 20 m | -0.96% | trail | $3.56 |
 | 11-07T14:10 | standard | CAP | 0.09713 | 0.1032 | 60 m | +4.35% | trail | $3.71 |
+| 11-07T15:15 | aggressive | ALIGN | 0.0043 | 0.00412 | 115 m | -5.90% | trail | $3.60 |
 
 ## Last 15 signals
 
