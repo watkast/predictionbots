@@ -557,10 +557,10 @@
   "KXBELGIANPLBTTS-26NOV07WESRCH-BTTS": 1794069512.667935,
   "KXEPLTOTAL-26NOV07FULNEW-1": 1794069552.7391517,
   "KXEPLTOTAL-26NOV07FULNEW-2": 1794069769.3121183,
-  "KXEPLBTTS-26NOV07FULNEW-BTTS": 1794069769.3121393
+  "KXEPLBTTS-26NOV07FULNEW-BTTS": 1794069769.3121393,
+  "KXSUPERLIGTOTAL-26NOV07GALAMS-2": 1794070109.2007632
  },
  "blocked": {
-  "KXUELTOTAL-26NOV05LEVOLM-2": "no asks (already repriced)",
   "KXUELBTTS-26NOV05LEVOLM-BTTS": "no asks (already repriced)",
   "KXUELTOTAL-26NOV05TORARA-5": "no asks (already repriced)",
   "KXUELTOTAL-26NOV05SUNDIN-7": "no asks (already repriced)",
@@ -812,7 +812,7 @@
   "KXLALIGA1H-26NOV07ESPDEP-ESP": "no asks (already repriced)",
   "KXLALIGA1H-26NOV07ESPDEP-DEP": "no asks (already repriced)",
   "KXLALIGA1HBTTS-26NOV07ESPDEP-BTTS": "no asks (already repriced)",
-  "KXSUPERLIGTOTAL-26NOV07GALAMS-1": "no asks (already repriced)",
+  "KXSUPERLIGTOTAL-26NOV07GALAMS-1": "settling (104s)",
   "KXSERIEATOTAL-26NOV07TORLEC-6": "no asks (already repriced)",
   "KXSERIEATOTAL-26NOV07TORLEC-5": "no asks (already repriced)",
   "KXSERIEATOTAL-26NOV07TORLEC-4": "no asks (already repriced)",
@@ -857,9 +857,10 @@
   "KXBELGIANPLTOTAL-26NOV07WESRCH-4": "no asks (already repriced)",
   "KXBELGIANPLTOTAL-26NOV07WESRCH-5": "no asks (already repriced)",
   "KXBELGIANPLBTTS-26NOV07WESRCH-BTTS": "no asks (already repriced)",
-  "KXEPLTOTAL-26NOV07FULNEW-1": "settling (201s)",
-  "KXEPLTOTAL-26NOV07FULNEW-2": "settling (201s)",
-  "KXEPLBTTS-26NOV07FULNEW-BTTS": "settling (201s)"
+  "KXEPLTOTAL-26NOV07FULNEW-1": "no asks (already repriced)",
+  "KXEPLTOTAL-26NOV07FULNEW-2": "no asks (already repriced)",
+  "KXEPLBTTS-26NOV07FULNEW-BTTS": "no asks (already repriced)",
+  "KXSUPERLIGTOTAL-26NOV07GALAMS-2": "settling (158s)"
  },
  "started": 1793687692.6057825,
  "ht": {
@@ -1070,6 +1071,14 @@
   "401875555": [
    2,
    2
+  ],
+  "401881750": [
+   0,
+   1
+  ],
+  "401888371": [
+   2,
+   0
   ]
  }
 }
