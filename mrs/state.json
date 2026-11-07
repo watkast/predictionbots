@@ -628,15 +628,15 @@
   "KXSERIEATOTAL-26NOV07PARBFC-3": 1794076970.9659123,
   "KXSERIEABTTS-26NOV07PARBFC-BTTS": 1794076970.9659657,
   "KXEPLTOTAL-26NOV07NFOMCI-3": 1794076997.1791143,
-  "KXEPLBTTS-26NOV07NFOMCI-BTTS": 1794076997.1791692
+  "KXEPLBTTS-26NOV07NFOMCI-BTTS": 1794076997.1791692,
+  "KXLIGUE11HTOTAL-26NOV07AUXPAR-3": 1794077366.4661858,
+  "KXLIGUE11HTOTAL-26NOV07AUXPAR-2": 1794077366.4662104,
+  "KXLIGUE11H-26NOV07AUXPAR-TIE": 1794077366.46625,
+  "KXLIGUE11H-26NOV07AUXPAR-PAR": 1794077366.4662743,
+  "KXLIGUE11H-26NOV07AUXPAR-AUX": 1794077366.4662964,
+  "KXLIGUE11HBTTS-26NOV07AUXPAR-BTTS": 1794077366.4663138
  },
  "blocked": {
-  "KXLIGAPORTUGAL1H-26NOV06FAMARO-TIE": "settling (2s)",
-  "KXLIGAPORTUGAL1H-26NOV06FAMARO-FAM": "settling (2s)",
-  "KXLIGAPORTUGAL1H-26NOV06FAMARO-ARO": "settling (2s)",
-  "KXLIGAPORTUGAL1HBTTS-26NOV06FAMARO-BTTS": "settling (165s)",
-  "KXLIGUE1TOTAL-26NOV06TFCRCS-7": "no asks (already repriced)",
-  "KXLIGUE1TOTAL-26NOV06TFCRCS-6": "no asks (already repriced)",
   "KXLIGUE1TOTAL-26NOV06TFCRCS-5": "no asks (already repriced)",
   "KXBELGIANPLTOTAL-26NOV06STABEV-7": "no Polymarket twin",
   "KXBELGIANPLTOTAL-26NOV06STABEV-6": "no Polymarket twin",
@@ -872,13 +872,13 @@
   "KXEREDIVISIETOTAL-26NOV07FORTEL-5": "no Polymarket twin",
   "KXSUPERLIGTOTAL-26NOV07GALAMS-5": "settling (211s)",
   "KXEPL1HTOTAL-26NOV07NFOMCI-1": "no asks (already repriced)",
-  "KXEPLTOTAL-26NOV07NFOMCI-1": "settling (140s)",
+  "KXEPLTOTAL-26NOV07NFOMCI-1": "no asks (already repriced)",
   "KXBUNDESLIGA1HTOTAL-26NOV07VFBSVW-1": "no asks (already repriced)",
   "KXBUNDESLIGATOTAL-26NOV07VFBSVW-1": "no asks (already repriced)",
   "KXSUPERLIGTOTAL-26NOV07GALAMS-6": "no Polymarket twin",
   "KXSUPERLIGTOTAL-26NOV07GOZBAS-3": "no Polymarket twin",
   "KXEPL1HTOTAL-26NOV07NFOMCI-2": "no asks (already repriced)",
-  "KXEPLTOTAL-26NOV07NFOMCI-2": "settling (140s)",
+  "KXEPLTOTAL-26NOV07NFOMCI-2": "no asks (already repriced)",
   "KXSERIEA1HTOTAL-26NOV07PARBFC-3": "no asks (already repriced)",
   "KXSERIEA1HTOTAL-26NOV07PARBFC-2": "no asks (already repriced)",
   "KXSERIEA1HTOTAL-26NOV07PARBFC-1": "no asks (already repriced)",
@@ -896,7 +896,7 @@
   "KXSUPERLIGTOTAL-26NOV07GOZBAS-4": "no Polymarket twin",
   "KXEREDIVISIE1HTOTAL-26NOV07ADOSPA-1": "no asks (already repriced)",
   "KXEREDIVISIETOTAL-26NOV07ADOSPA-1": "no asks (already repriced)",
-  "KXSERIEATOTAL-26NOV07PARBFC-1": "settling (108s)",
+  "KXSERIEATOTAL-26NOV07PARBFC-1": "no asks (already repriced)",
   "KXBUNDESLIGA1HTOTAL-26NOV07VFBSVW-3": "no asks (already repriced)",
   "KXBUNDESLIGA1HTOTAL-26NOV07VFBSVW-2": "no asks (already repriced)",
   "KXBUNDESLIGA1H-26NOV07VFBSVW-VFB": "no asks (already repriced)",
@@ -922,15 +922,21 @@
   "KXEREDIVISIE1H-26NOV07ADOSPA-SPA": "no asks (already repriced)",
   "KXEREDIVISIE1H-26NOV07ADOSPA-ADO": "no asks (already repriced)",
   "KXEREDIVISIE1HBTTS-26NOV07ADOSPA-BTTS": "Polymarket does not confirm",
-  "KXSERIEATOTAL-26NOV07PARBFC-2": "settling (108s)",
-  "KXLIGUE11HTOTAL-26NOV07AUXPAR-1": "Polymarket does not confirm",
+  "KXSERIEATOTAL-26NOV07PARBFC-2": "no asks (already repriced)",
+  "KXLIGUE11HTOTAL-26NOV07AUXPAR-1": "no asks (already repriced)",
   "KXLIGUE1TOTAL-26NOV07AUXPAR-1": "settling (168s)",
   "KXLIGAPORTUGAL1HTOTAL-26NOV07ALVCAS-1": "no asks (already repriced)",
   "KXLIGAPORTUGALTOTAL-26NOV07ALVCAS-1": "no asks (already repriced)",
-  "KXSERIEATOTAL-26NOV07PARBFC-3": "settling (108s)",
-  "KXSERIEABTTS-26NOV07PARBFC-BTTS": "settling (108s)",
-  "KXEPLTOTAL-26NOV07NFOMCI-3": "settling (140s)",
-  "KXEPLBTTS-26NOV07NFOMCI-BTTS": "settling (140s)"
+  "KXSERIEATOTAL-26NOV07PARBFC-3": "no asks (already repriced)",
+  "KXSERIEABTTS-26NOV07PARBFC-BTTS": "no asks (already repriced)",
+  "KXEPLTOTAL-26NOV07NFOMCI-3": "no asks (already repriced)",
+  "KXEPLBTTS-26NOV07NFOMCI-BTTS": "no asks (already repriced)",
+  "KXLIGUE11HTOTAL-26NOV07AUXPAR-3": "no asks (already repriced)",
+  "KXLIGUE11HTOTAL-26NOV07AUXPAR-2": "no asks (already repriced)",
+  "KXLIGUE11H-26NOV07AUXPAR-TIE": "no asks (already repriced)",
+  "KXLIGUE11H-26NOV07AUXPAR-PAR": "no asks (already repriced)",
+  "KXLIGUE11H-26NOV07AUXPAR-AUX": "no asks (already repriced)",
+  "KXLIGUE11HBTTS-26NOV07AUXPAR-BTTS": "no asks (already repriced)"
  },
  "started": 1793687692.6057825,
  "ht": {
@@ -1176,6 +1182,10 @@
   ],
   "401875552": [
    1,
+   0
+  ],
+  "401876411": [
+   0,
    0
   ]
  }
