@@ -1,7 +1,10 @@
-# Mr. H LIVE (REAL MONEY, hard-capped): the Coinbase hopper's aggressive profile with a real key (scripts/mrh_live.py).
-# Enter on a 5-min impulse candle (>= +2% on >= 3x volume, spread <= 0.6%), whole bankroll; exit on a 4% trailing stop
-# that is PARKED ON THE EXCHANGE as a stop-limit sell (so a dump between runs still gets out) plus a 5-minute backstop.
-# Caps: MRH_LIVE_MAX_USD per entry (12), 6 hops/day, halts below $1.20 total. Only ever touches USD + the coin it holds.
+# Mr. H LIVE (REAL MONEY, hard-capped, MAKER ON EVERY ORDER): the Coinbase hopper's aggressive profile with a real key
+# (scripts/mrh_live.py). Enter on a 5-min impulse candle (>= +2% on >= 3x volume, spread <= 0.6%) with a POST-ONLY limit
+# buy at the bid (chased up to the bid within +2% of the signal close, cancelled after 15 min unfilled); exit on a 4%
+# trailing stop worked as a POST-ONLY limit sell at the ask, chased down, checked every 20 s. Two optional exceptions:
+# a stop-limit parked 6% UNDER the trail for the minutes between runs (MRH_LIVE_DISASTER_GAP, 0 = none) and a market
+# "panic" sell if the bid is 3% under the trail while the maker exit still rests (MRH_LIVE_PANIC_GAP, 0 = never).
+# Caps: MRH_LIVE_MAX_USD per entry, 6 hops/day, halts below $1.20 total. Only ever touches USD + the coin it holds.
 # Switch: mrh/LIVE_ON on main (delete it, or add mrh/PAUSED, to stop new orders; cancel the job to stop at once).
 # Secrets: COINBASE_API_KEY (CDP key name) + COINBASE_API_SECRET (its private key) — View + Trade only, NO Transfer.
 # Starts on merge (push trigger) and re-dispatches itself while the switch exists; the 6-hourly cron is a backstop.

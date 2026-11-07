@@ -40,36 +40,45 @@ What it cannot see: the live spread gate (needs a live ticker) — subtract up t
 (stops fire on candle closes). Coinbase omits 5-minute candles with no trades, so the thinnest coins' "4 hours" can
 be longer.
 
-## Live (real money, hard-capped)
+## Live (real money, hard-capped, maker on every order)
 
 `scripts/mrh_live.py`, run by `.github/workflows/mrh-live.yml` (335-min runs that re-dispatch themselves; the
 6-hourly cron is a backstop). The **aggressive** profile with a real key — same universe, same signal, same spread
-gate as paper — plus one thing paper cannot do: the 4% trailing stop is **parked on the exchange** as a stop-limit
-sell (limit 1.5% under the stop) and re-parked whenever the high-water mark rises. A dump while the runner sleeps,
-or in the minute between runs, hits the resting order; the bot's own market sell on the live bid every 5 minutes is
-the backstop. Report: `mrh-live/LIVE.md` on the `data` branch, with `live_state.json`, `live_trades.jsonl`, `live_events.jsonl`
-(its own directory: the paper job republishes all of `mrh/` every 10 minutes).
+gate as paper — and **every order is a post-only limit order** (maker 0.5% instead of taker 0.9%: a 1.0% round trip
+instead of 1.8%, which on Nov 7 was the entire difference between break-even and the day's loss):
+
+- **Entry:** a post-only buy rests at the best bid for the whole bankroll. If the bid runs away it is re-priced up to
+  the bid, never above the signal close × (1 + `MRH_LIVE_ENTRY_CHASE`, 2%); unfilled after `MRH_LIVE_ENTRY_TTL_MIN`
+  (15) minutes it is cancelled. We fill on the give-back or we pass — never chase a spike at the ask.
+- **Exit:** the 4% trail is watched every `MRH_LIVE_FAST_S` (20) seconds. When the bid touches it (two ticks in a
+  row, or one tick 1% under), a post-only sell is posted at the ask and chased *down* to the new ask whenever the
+  market leaves it behind. Partial fills are aggregated; the hop books when the last share goes.
+- **Two optional exceptions** (the only taker-able orders): a stop-limit parked `MRH_LIVE_DISASTER_GAP` (6%) *under*
+  the trail for the minutes nobody is watching between runs (0 parks nothing), and a market **panic** sell if the bid
+  is `MRH_LIVE_PANIC_GAP` (3%) under the trail while the maker exit is still resting (0 = never take, unbounded).
+- **Swap:** the stale coin is sold maker; the fresh signal is bought (maker) once the sell fills, if it is still
+  fresh (15 min) and its spread still passes.
+
+Report: `mrh-live/LIVE.md` on the `data` branch, with `live_state.json`, `live_trades.jsonl`, `live_events.jsonl`
+(its own directory). Every hop shows its fee and whether it was maker, mixed or taker. Deposits and withdrawals are
+detected and shown separately from P&L.
 
 The exchange is the truth: every cycle reconciles balances, open orders and fills. A coin bought by hand is adopted
-and trailed (entry = last buy fill, else the bid); a stop that filled while the bot slept is booked from its fill.
+and trailed (entry = last buy fill, else the bid); a sell that filled while the bot slept is booked from its fill.
 
-**Swap:** a coin that has made no new high for 2 h (`MRH_LIVE_SWAP_AFTER_H`, 0 disables), or one that was adopted
-rather than signalled, is sold at market to take a fresh signal in another coin — with the whole stack, proceeds plus
-any USD that arrived meanwhile, so a deposit goes to work on the next signal instead of waiting for a stop-out.
-
-Guards: `mrh/LIVE_ON` on main and no `mrh/PAUSED` (checked every cycle); one position; 6 hops per UTC day
-(`MRH_LIVE_MAX_HOPS_DAY`); $200 per entry (`MRH_LIVE_MAX_USD` — the stack goes in whole, up to this); halts below
-$1.20 total (`MRH_LIVE_FLOOR_USD`, Coinbase's $1 minimum would strand anything smaller); never touches any asset
-other than USD and the one coin it holds (dust, LOOM and friends are ignored). USDC is not bankroll — hold USD.
-Keep no other open orders on the coin it holds: a hand-placed sell locks the coins and the bot's stop cannot park.
+Guards: `mrh/LIVE_ON` on main and no `mrh/PAUSED` (checked every cycle); one position or one resting buy; 6 hops per
+UTC day (`MRH_LIVE_MAX_HOPS_DAY`); $200 per entry (`MRH_LIVE_MAX_USD` — the stack goes in whole, up to this); halts
+below $1.20 total (`MRH_LIVE_FLOOR_USD`, Coinbase's $1 minimum would strand anything smaller); never touches any
+asset other than USD and the one coin it holds (dust, LOOM and friends are ignored). USDC is not bankroll — hold USD.
+Keep no other open orders on the coin it holds: a hand-placed sell locks the coins and the bot's orders cannot post.
 
 **Setup (once):** a CDP API key at Coinbase Developer Platform with **View + Trade only — no Transfer**, no IP
 allowlist (Actions runners rotate IPs). Repo secrets `COINBASE_API_KEY` (the key name,
 `organizations/…/apiKeys/…`) and `COINBASE_API_SECRET` (the private key; EC PEM or the newer base64 Ed25519 form —
 escaped `\n` is fine). Without the secrets the workflow exits doing nothing.
 
-**Stop:** delete `mrh/LIVE_ON` (or add `mrh/PAUSED`) on main — no new orders from the next cycle; a parked stop stays
-on the exchange until it fills or you cancel it. Cancel the running job to stop at once. **Dry run:** dispatch the
+**Stop:** delete `mrh/LIVE_ON` (or add `mrh/PAUSED`) on main — no new orders from the next cycle; a resting sell or
+parked stop stays on the exchange until it fills or you cancel it. Cancel the running job to stop at once. **Dry run:** dispatch the
 workflow with mode `dry` — everything (auth, reconcile, signals) except sending orders.
 
 **Known lies to avoid:** Coinbase's `price_percentage_change_24h` was wrong on 4 of 6 coins checked on Nov 6 —
