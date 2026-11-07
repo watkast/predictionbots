@@ -2,8 +2,6 @@
  "trades": [],
  "halted": null,
  "seen": {
-  "KXUCLTOTAL-26NOV04FENLFC-4": 1793819956.0176911,
-  "KXUCLTOTAL-26NOV04AEKRMA-3": 1793820015.3430464,
   "KXUCLTOTAL-26NOV04AEKRMA-4": 1793820184.488877,
   "KXUCLTOTAL-26NOV04FENLFC-5": 1793820304.657907,
   "KXUCLTOTAL-26NOV04AEKRMA-5": 1793821044.4410481,
@@ -949,12 +947,12 @@
   "KXAUTBUNDESBTTS-26NOV07SVRASK-BTTS": "no asks (already repriced)",
   "KXEPLTOTAL-26NOV07NFOMCI-4": "no asks (already repriced)",
   "KXAUTBUNDESTOTAL-26NOV07SVRASK-3": "no asks (already repriced)",
-  "KXBELGIANPLTOTAL-26NOV07OHLYRM-2": "no asks (already repriced)",
-  "KXBELGIANPLTOTAL-26NOV07OHLYRM-6": "no asks (already repriced)",
-  "KXBELGIANPLTOTAL-26NOV07OHLYRM-5": "no asks (already repriced)",
-  "KXBELGIANPLTOTAL-26NOV07OHLYRM-4": "no asks (already repriced)",
-  "KXBELGIANPLTOTAL-26NOV07OHLYRM-3": "no asks (already repriced)",
-  "KXBELGIANPLBTTS-26NOV07OHLYRM-BTTS": "no asks (already repriced)",
+  "KXBELGIANPLTOTAL-26NOV07OHLYRM-2": "no Polymarket twin",
+  "KXBELGIANPLTOTAL-26NOV07OHLYRM-6": "no Polymarket twin",
+  "KXBELGIANPLTOTAL-26NOV07OHLYRM-5": "no Polymarket twin",
+  "KXBELGIANPLTOTAL-26NOV07OHLYRM-4": "no Polymarket twin",
+  "KXBELGIANPLTOTAL-26NOV07OHLYRM-3": "no Polymarket twin",
+  "KXBELGIANPLBTTS-26NOV07OHLYRM-BTTS": "no Polymarket twin",
   "KXAUTBUNDESTOTAL-26NOV07SVRASK-4": "no asks (already repriced)",
   "KXLALIGATOTAL-26NOV07OSAATH-1": "Polymarket does not confirm"
  },
@@ -1211,6 +1209,10 @@
   "401885402": [
    0,
    1
+  ],
+  "401881752": [
+   2,
+   2
   ]
  }
 }
