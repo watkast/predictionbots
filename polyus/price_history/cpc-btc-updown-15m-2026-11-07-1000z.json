@@ -1,0 +1,1 @@
+{"slug": "cpc-btc-updown-15m-2026-11-07-1000z", "windowStart": 1794045600.0, "windowEnd": 1794046500.0, "priceToBeat": {"value": "75956.52", "currency": "USD"}, "settlementPrice": null, "feeCoefficient": 0.095, "history": [{"timestamp": 1794045600, "longPrice": 0.45, "shortPrice": 0.56}]}
