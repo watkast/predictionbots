@@ -1,20 +1,20 @@
 # Mr. H — Coinbase hopper, PAPER
 
-Updated 2026-11-07T11:30:28Z · scans 90 · universe 111 coins (USD pairs with ≥ $100k 24-h volume) · fees 0.9% taker each way · start $4.00
+Updated 2026-11-07T11:40:29Z · scans 92 · universe 111 coins (USD pairs with ≥ $100k 24-h volume) · fees 0.9% taker each way · start $4.00
 
 ## Books (one position at a time, all-in every hop)
 
 | profile | bankroll | vs start | peak | hops | win % | avg net/hop | fees paid | open |
 |---|---|---|---|---|---|---|---|---|
-| aggressive | $3.85 | -3.8% | $4.00 | 1 | 0% | -6.01% | $0.104 | ICNT-USD @ 0.3087 |
-| standard | $3.58 | -10.6% | $4.00 | 2 | 0% | -5.23% | $0.170 | ICNT-USD @ 0.3173 |
+| aggressive | $4.17 | +4.3% | $4.00 | 1 | 0% | -6.01% | $0.104 | ICNT-USD @ 0.3087 |
+| standard | $3.88 | -3.0% | $4.00 | 2 | 0% | -5.23% | $0.170 | ICNT-USD @ 0.3173 |
 
 ## Signal forward returns (every signal, whether or not a book took it)
 
 | profile | signals | scored | median +15m | median +1h | median +4h | % beat 1.8% at +1h | median 4%-trail hop net | max run-up (med) | max drawdown (med) |
 |---|---|---|---|---|---|---|---|---|---|
-| aggressive | 4 | 0 | +nan% | +nan% | +nan% | nan% | +nan% | +nan% | +nan% |
-| standard | 7 | 2 | -1.07% | -1.26% | -3.72% | 0% | -5.64% | +0.20% | -4.18% |
+| aggressive | 6 | 0 | +nan% | +nan% | +nan% | nan% | +nan% | +nan% | +nan% |
+| standard | 9 | 2 | -1.07% | -1.26% | -3.72% | 0% | -5.64% | +0.20% | -4.18% |
 
 ## Verdict
 
@@ -43,3 +43,7 @@ Updated 2026-11-07T11:30:28Z · scans 90 · universe 111 coins (USD pairs with �
 | 11-07T11:20 | standard | ICNT | +6.0% | 51.6 | y | 0.26% | in_position | … | … |
 | 11-07T11:25 | aggressive | ICNT | +3.6% | 13.3 | y | 0.28% | in_position | … | … |
 | 11-07T11:25 | standard | ICNT | +3.6% | 13.3 | y | 0.28% | y | … | … |
+| 11-07T11:35 | aggressive | ICNT | +4.1% | 59.4 | y | 0.48% | in_position | … | … |
+| 11-07T11:35 | standard | ICNT | +4.1% | 59.4 | y | 0.48% | in_position | … | … |
+| 11-07T11:40 | aggressive | ICNT | +5.3% | 54.9 | y | 0.37% | in_position | … | … |
+| 11-07T11:40 | standard | ICNT | +5.3% | 54.9 | y | 0.37% | in_position | … | … |
