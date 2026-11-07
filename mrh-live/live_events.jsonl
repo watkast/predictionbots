@@ -37,3 +37,4 @@
 {"t": "2026-11-07T11:35:16Z", "ev": "order_sent", "label": "park_stop", "pid": "ICNT-USD", "side": "SELL", "cfg": {"stop_limit_stop_limit_gtc": {"base_size": "24.7", "limit_price": "0.3163", "stop_price": "0.3212", "stop_direction": "STOP_DIRECTION_STOP_DOWN"}}, "order_id": "af9b66f0-9d2d-4f24-9989-349c30c6cf29"}
 {"t": "2026-11-07T11:40:16Z", "ev": "order_sent", "label": "park_stop", "pid": "ICNT-USD", "side": "SELL", "cfg": {"stop_limit_stop_limit_gtc": {"base_size": "24.7", "limit_price": "0.3267", "stop_price": "0.3317", "stop_direction": "STOP_DIRECTION_STOP_DOWN"}}, "order_id": "18eb25a1-0ef9-4e13-88dd-6f56c4b4ea3b"}
 {"t": "2026-11-07T11:45:16Z", "ev": "sold", "pid": "ICNT-USD", "px": 0.3311, "net": 0.4086, "net_pct": 0.0531, "reason": "stop"}
+{"t": "2026-11-07T11:53:07Z", "ev": "start", "mode": "live", "key": "1957dba3ea6c", "alg": "EdDSA", "max_usd": 200.0, "floor": 1.2, "max_hops_day": 6}
