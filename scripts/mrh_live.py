@@ -1233,7 +1233,10 @@ class FakeEx:
 def selftest() -> None:
     import tempfile
     from datetime import timedelta
-    global MAX_HOPS_DAY
+    # the selftest's numbers assume paper's profile and the code defaults, whatever the workflow env dials for live
+    global MAX_HOPS_DAY, PROFILE, TRAIL, DISASTER_GAP, PANIC_GAP, ENTRY_CHASE, ENTRY_TTL_MIN, SWAP_AFTER_H, MAX_USD, FLOOR_USD
+    PROFILE = dict(paper.PROFILES["aggressive"])
+    TRAIL, DISASTER_GAP, PANIC_GAP, ENTRY_CHASE, ENTRY_TTL_MIN, SWAP_AFTER_H, MAX_USD, FLOOR_USD, MAX_HOPS_DAY = 0.04, 0.06, 0.03, 0.02, 15.0, 2.0, 200.0, 1.20, 6
     # --- JWT: both key types sign a verifiable token with the right claims
     from cryptography.hazmat.primitives import hashes, serialization
     from cryptography.hazmat.primitives.asymmetric import ec, ed25519
