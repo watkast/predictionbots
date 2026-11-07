@@ -326,8 +326,9 @@ function render(ms, now, left) {
   draw(now, spot, pr, T, fresh ? s2 : NaN, fresh ? slope(60, now) : NaN, fresh ? slope(20, now) : NaN);
 }
 
-// ---------- chart: last 5 min — spot+offset (blue), PM index (white), target (orange), projection (dot) ----------
+// ---------- chart: last 5 min — spot+offset (blue), 10-min avg of spot (violet), PM index (white), target (orange), projection (dot) ----------
 const cv = $('cv'), cx = cv.getContext('2d');
+const AVG = 600;   // the 10-min average: trailing simple mean of Coinbase 1-s prices, one point per visible second
 function draw(now, spot, pr, T, s2, s1, s20) {
   const dpr = window.devicePixelRatio || 1, w = cv.clientWidth, h = cv.clientHeight;
   if (cv.width !== w * dpr) { cv.width = w * dpr; cv.height = h * dpr; }
@@ -336,6 +337,17 @@ function draw(now, spot, pr, T, s2, s1, s20) {
   const pts = [], ip = []; let lo = Infinity, hi = -Infinity;
   for (let s = t0; s <= now; s++) { const v = cb.get(s); if (v) { pts.push([s, v + off]); lo = Math.min(lo, v + off); hi = Math.max(hi, v + off); }
     const i = idx.get(s); if (i) { ip.push([s, i]); lo = Math.min(lo, i); hi = Math.max(hi, i); } }
+  // 10-min average on the index scale (same shift as the blue line), running sum over cbAt (ticks, else candle fill); needs half the window present
+  const sma = []; {
+    const vals = []; for (let s = t0 - AVG + 1; s <= now; s++) vals.push(cbAt(s));
+    let sum = 0, n = 0;
+    for (let k = 0; k < vals.length; k++) {
+      const v = vals[k]; if (Number.isFinite(v)) { sum += v; n++; }
+      if (k >= AVG) { const o = vals[k - AVG]; if (Number.isFinite(o)) { sum -= o; n--; } }
+      const s = t0 - AVG + 1 + k; if (s >= t0 && n >= AVG / 2) sma.push([s, sum / n + off]);
+    }
+    for (const [, v] of sma) { lo = Math.min(lo, v); hi = Math.max(hi, v); }
+  }
   if (Number.isFinite(R.target)) { lo = Math.min(lo, R.target); hi = Math.max(hi, R.target); }
   if (pr) { lo = Math.min(lo, pr.mean - pr.sd); hi = Math.max(hi, pr.mean + pr.sd); }
   const p2 = Number.isFinite(s2) && spot > 0 ? spot + off + s2 * 120 : NaN;     // 2-min trend end point (index scale)
@@ -358,6 +370,7 @@ function draw(now, spot, pr, T, s2, s1, s20) {
   cx.strokeStyle = 'rgba(245,179,1,.35)'; cx.setLineDash([3, 3]); cx.beginPath(); cx.moveTo(X(T - S.win), 0); cx.lineTo(X(T - S.win), h); cx.stroke(); cx.setLineDash([]);
   if (Number.isFinite(R.target)) { cx.strokeStyle = '#f59e0b'; cx.lineWidth = 1.5; cx.beginPath(); cx.moveTo(0, Y(R.target)); cx.lineTo(w, Y(R.target)); cx.stroke(); }
   const line = (a, c, lw) => { cx.strokeStyle = c; cx.lineWidth = lw; cx.beginPath(); a.forEach(([s, v], i) => i ? cx.lineTo(X(s), Y(v)) : cx.moveTo(X(s), Y(v))); cx.stroke(); };
+  if (sma.length > 1) line(sma, 'rgba(167,139,250,.9)', 1.5);   // 10-min avg, behind the price
   line(pts, '#38bdf8', 1.5); if (ip.length > 1) line(ip, 'rgba(230,235,245,.85)', 1.5);
   if (pr) { const x = X(T - 1), y = Y(pr.mean); cx.strokeStyle = pr.mean >= R.target ? '#22c55e' : '#ef4444'; cx.lineWidth = 2;
     cx.beginPath(); cx.moveTo(x, Y(pr.mean + pr.sd)); cx.lineTo(x, Y(pr.mean - pr.sd)); cx.stroke();
@@ -370,6 +383,12 @@ function draw(now, spot, pr, T, s2, s1, s20) {
     cx.fillStyle = q.c; cx.beginPath(); cx.arc(X(now + q.H), Y(q.end), 2.5, 0, 7); cx.fill();
     cx.textAlign = 'right'; cx.fillText((q.d >= 0 ? '▲ ' : '▼ ') + q.lb + ' ' + fS(q.d), w - 4, 27 + 14 * i); cx.textAlign = 'left';
   });
+  if (sma.length) {   // 10-min avg readout, top-left over the history: its current value and where spot sits against it (index scale, so the offset cancels)
+    const a = sma[sma.length - 1][1], d = spot > 0 ? spot + off - a : NaN;
+    const txt = '10m avg ' + f$(a) + (Number.isFinite(d) ? ' · spot ' + fS(d) : ''), tw = cx.measureText(txt).width;
+    cx.fillStyle = 'rgba(15,19,28,.72)'; cx.fillRect(2, 3, tw + 8, 15);
+    cx.fillStyle = '#a78bfa'; cx.textAlign = 'left'; cx.fillText(txt, 6, 14);
+  }
 }
 
 // ---------- settings ----------
