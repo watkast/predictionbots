@@ -25,6 +25,21 @@ Every signal is also stamped with `hour_utc` and BTC's own 1-h / 2-h move at tha
 report breaks aggressive signals down by BTC regime, because an alt breakout into a market-wide dump is a different
 bet from one with a bid under the market. If the regime rows diverge, a BTC gate goes into live; not before.
 
+## Backtest (the same verdict, in minutes)
+
+`scripts/mrh_backtest.py`, run by `.github/workflows/mrh-backtest.yml` (dispatch by hand; `days` default 30,
+`top` 0 = whole universe). Replays the signal rule over Coinbase's 5-minute history for every coin in the universe
+with the **same** `evaluate` / `forward_score` / `trail_pnl` as paper and live — public endpoints, no key, no orders —
+and scores every signal the way the paper table does, plus the net of a hop at a 3 / 4 / 6 / 8 / 12 % trail, a
+*continuation* entry (wait one candle, enter only if it held), BTC's 1-h / 2-h regime at the signal, the hour, and a
+`fresh` flag (first signal of a spike; the rest are the same event). Verdict in plain words at the top of the
+report: `mrh-backtest/BACKTEST.md` on the `data` branch, and the run's Summary page. Paper scores one to three
+aggressive signals a day, so this is how the 40-signal question gets answered this week instead of next month.
+
+What it cannot see: the live spread gate (needs a live ticker) — subtract up to 0.6% a hop — and intrabar stop fills
+(stops fire on candle closes). Coinbase omits 5-minute candles with no trades, so the thinnest coins' "4 hours" can
+be longer.
+
 ## Live (real money, hard-capped)
 
 `scripts/mrh_live.py`, run by `.github/workflows/mrh-live.yml` (335-min runs that re-dispatch themselves; the
