@@ -5,25 +5,25 @@
   "qty": 0.00259558,
   "entry_px": 1326.04,
   "cost": 3.4418429032,
-  "hw": 1330.73,
+  "hw": 1333.66,
   "t_in": "2026-11-07T00:42:02Z",
   "signal": {
    "adopted": true
   },
   "stop": {
-   "order_id": "81d382ac-25cd-41a4-b9ce-e18d95b1fbfb",
-   "stop_px": 1277.5008,
-   "t": "2026-11-07T00:50:16Z"
+   "order_id": "06ea2e09-758f-44e7-a5e7-c07f78bd0d1d",
+   "stop_px": 1280.3136,
+   "t": "2026-11-07T00:55:16Z"
   },
-  "last_bid": 1330.73
+  "last_bid": 1333.66
  },
  "start_usd": 3.4418,
  "hops": 0,
  "wins": 0,
  "fees": 0.0,
- "peak": 3.4540161734000003,
+ "peak": 3.4616212228000003,
  "hops_by_day": {},
- "cycles": 3,
+ "cycles": 4,
  "halted": null,
  "universe": [
   {
@@ -1384,9 +1384,9 @@
   }
  },
  "last": {
-  "t": "2026-11-07T00:50:15Z",
+  "t": "2026-11-07T00:55:15Z",
   "usd": 0.0,
-  "total": 3.454,
+  "total": 3.4616,
   "pos": "ZEC-USD"
  }
 }
