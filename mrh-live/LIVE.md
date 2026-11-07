@@ -1,12 +1,12 @@
 # Mr. H — Coinbase hopper, LIVE (real money)
 
-Updated 2026-11-07T02:00:16Z · cycles 17 · universe 111 coins · profile aggressive (+2% impulse, 3× volume, 4% trail) · caps $12.00/entry, 6 hops/day, floor $1.20
+Updated 2026-11-07T02:05:16Z · cycles 18 · universe 111 coins · profile aggressive (+2% impulse, 3× volume, 4% trail) · caps $12.00/entry, 6 hops/day, floor $1.20
 
 ## Book
 
 | now | start | vs start | peak | USD free | hops | win % | fees paid | position |
 |---|---|---|---|---|---|---|---|---|
-| $3.50 | $3.44 | +1.8% | $3.50 | $0.00 | 0 | 0% | $0.000 | ZEC 0.00259558 @ 1326.04 · hw 1349.58 · stop 1295.6 (parked) |
+| $3.51 | $3.44 | +1.9% | $3.51 | $0.00 | 0 | 0% | $0.000 | ZEC 0.00259558 @ 1326.04 · hw 1350.96 · stop 1296.92 (parked) |
 
 ## Hops
 
@@ -25,6 +25,7 @@ Updated 2026-11-07T02:00:16Z · cycles 17 · universe 111 coins · profile aggre
 - `11-07T01:25:16` **order_sent** label="park_stop", pid="ZEC-USD", side="SELL", cfg={"stop_limit_stop_limit_gtc": {"base_size": "0.00259558", "l, order_id="669d3979-75e1-46f1-b11d-17099e661a1a"
 - `11-07T01:35:16` **order_sent** label="park_stop", pid="ZEC-USD", side="SELL", cfg={"stop_limit_stop_limit_gtc": {"base_size": "0.00259558", "l, order_id="15d3a87a-56f7-4410-9809-57dfb6e72331"
 - `11-07T01:45:17` **order_sent** label="park_stop", pid="ZEC-USD", side="SELL", cfg={"stop_limit_stop_limit_gtc": {"base_size": "0.00259558", "l, order_id="5bb6b9d5-4c66-47d5-9f86-938a22d3d033"
+- `11-07T02:05:16` **order_sent** label="park_stop", pid="ZEC-USD", side="SELL", cfg={"stop_limit_stop_limit_gtc": {"base_size": "0.00259558", "l, order_id="b8cded36-4e35-4014-bed0-42da012c108b"
 
 Paper twin and the signal table (the real verdict): mrh/MRH.md on this branch.
 
