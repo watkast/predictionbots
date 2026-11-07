@@ -1,0 +1,19 @@
+{
+ "started": "2026-11-07T23:33:06.996Z",
+ "attempts": 0,
+ "fills": 0,
+ "trades": 0,
+ "wins": 0,
+ "losses": 0,
+ "pnl": 0.0,
+ "fees": 0.0,
+ "streak_losses": 0,
+ "trades_by_day": {},
+ "halted": null,
+ "open": {},
+ "fired": [],
+ "qualified": 0,
+ "last": {
+  "cash": 4.0046
+ }
+}

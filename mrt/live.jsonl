@@ -1,0 +1,2 @@
+{"t": "2026-11-07T23:33:07.151Z", "ev": "start", "mode": "dry", "cash": 4.0046, "snipe_t": 5.0, "min_move_bps": 6.0, "max_ask": 0.9, "max_qty": 10.0, "min_prints": 52, "coins": ["btc", "eth", "sol", "xrp"]}
+{"t": "2026-11-07T23:33:07.607Z", "ev": "switch_off", "note": "mrt/LIVE_ON missing on main \u2014 stopping"}
