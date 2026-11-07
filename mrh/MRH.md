@@ -1,24 +1,24 @@
 # Mr. H — Coinbase hopper, PAPER
 
-Updated 2026-11-07T15:20:29Z · scans 136 · universe 112 coins (USD pairs with ≥ $100k 24-h volume) · fees 0.9% taker each way · start $4.00
+Updated 2026-11-07T15:30:29Z · scans 138 · universe 112 coins (USD pairs with ≥ $100k 24-h volume) · fees 0.9% taker each way · start $4.00
 
 ## Books (one position at a time, all-in every hop)
 
 | profile | bankroll | vs start | peak | hops | win % | avg net/hop | fees paid | open |
 |---|---|---|---|---|---|---|---|---|
 | aggressive | $3.60 | -10.0% | $4.00 | 3 | 33% | -3.37% | $0.206 | — |
-| standard | $3.64 | -9.1% | $4.00 | 4 | 25% | -1.77% | $0.301 | APR-USD @ 0.0424 |
+| standard | $3.62 | -9.5% | $4.00 | 4 | 25% | -1.77% | $0.301 | APR-USD @ 0.0424 |
 
 ## Signal forward returns (every signal, whether or not a book took it)
 
 | profile | signals | scored | median +15m | median +1h | median +4h | % beat 1.8% at +1h | median 4%-trail hop net | max run-up (med) | max drawdown (med) |
 |---|---|---|---|---|---|---|---|---|---|
-| aggressive | 13 | 1 | -3.30% | -12.31% | -15.61% | 0% | -6.60% | +1.85% | -19.23% |
-| standard | 15 | 3 | -1.22% | -2.44% | -3.80% | 0% | -5.77% | +0.20% | -4.19% |
+| aggressive | 13 | 3 | +7.52% | +1.58% | +7.75% | 33% | -0.27% | +13.77% | -4.92% |
+| standard | 15 | 5 | -0.93% | -0.07% | -3.65% | 20% | -5.51% | +1.85% | -4.19% |
 
 ## Verdict
 
-**Not yet.** Needs 40 scored aggressive signals (1 so far) and 30 closed aggressive hops (3 so far) before this says anything. Until then every number above is noise.
+**Not yet.** Needs 40 scored aggressive signals (3 so far) and 30 closed aggressive hops (3 so far) before this says anything. Until then every number above is noise.
 
 ## Last 20 hops
 
