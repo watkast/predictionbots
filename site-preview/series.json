@@ -1,0 +1,1402 @@
+[
+{
+"venue": "kalshi",
+"slug": "kxmvecrosscategory",
+"title": "MVE Cross Category",
+"category": "Exotics",
+"open": 55710
+},
+{
+"venue": "kalshi",
+"slug": "kxmvecrosscategory0",
+"title": "MVE Cross Category",
+"category": "Exotics",
+"open": 5288
+},
+{
+"venue": "kalshi",
+"slug": "kxchnslspread",
+"title": "Spread",
+"category": "Sports",
+"open": 1
+},
+{
+"venue": "kalshi",
+"slug": "kxchnsltotal",
+"title": "Point Total",
+"category": "Sports",
+"open": 1
+},
+{
+"venue": "pmus",
+"slug": "aec-nba-min-sac",
+"title": "aec-nba-min-sac",
+"category": "sports",
+"open": 2
+},
+{
+"venue": "pmus",
+"slug": "aec-nba-cle-mia",
+"title": "aec-nba-cle-mia",
+"category": "sports",
+"open": 2
+},
+{
+"venue": "pmus",
+"slug": "aec-nba-tor-phi",
+"title": "aec-nba-tor-phi",
+"category": "sports",
+"open": 2
+},
+{
+"venue": "pmus",
+"slug": "aec-nba-gs-sa",
+"title": "aec-nba-gs-sa",
+"category": "sports",
+"open": 2
+},
+{
+"venue": "pmus",
+"slug": "aec-nfl-lac-ten",
+"title": "aec-nfl-lac-ten",
+"category": "sports",
+"open": 1
+},
+{
+"venue": "pmus",
+"slug": "aec-nfl-car-gb",
+"title": "aec-nfl-car-gb",
+"category": "sports",
+"open": 1
+},
+{
+"venue": "pmus",
+"slug": "aec-nfl-min-det",
+"title": "aec-nfl-min-det",
+"category": "sports",
+"open": 1
+},
+{
+"venue": "pmus",
+"slug": "aec-nfl-atl-ne",
+"title": "aec-nfl-atl-ne",
+"category": "sports",
+"open": 1
+},
+{
+"venue": "pmus",
+"slug": "aec-nfl-no-lar",
+"title": "aec-nfl-no-lar",
+"category": "sports",
+"open": 1
+},
+{
+"venue": "pmus",
+"slug": "aec-nfl-bal-mia",
+"title": "aec-nfl-bal-mia",
+"category": "sports",
+"open": 1
+},
+{
+"venue": "pmus",
+"slug": "aec-nfl-chi-cin",
+"title": "aec-nfl-chi-cin",
+"category": "sports",
+"open": 1
+},
+{
+"venue": "pmus",
+"slug": "aec-nfl-sf-nyg",
+"title": "aec-nfl-sf-nyg",
+"category": "sports",
+"open": 1
+},
+{
+"venue": "pmus",
+"slug": "aec-nfl-den-hou",
+"title": "aec-nfl-den-hou",
+"category": "sports",
+"open": 1
+},
+{
+"venue": "pmus",
+"slug": "aec-nfl-ind-pit",
+"title": "aec-nfl-ind-pit",
+"category": "sports",
+"open": 1
+},
+{
+"venue": "pmus",
+"slug": "aec-nfl-jax-lv",
+"title": "aec-nfl-jax-lv",
+"category": "sports",
+"open": 1
+},
+{
+"venue": "pmus",
+"slug": "aec-nfl-kc-buf",
+"title": "aec-nfl-kc-buf",
+"category": "sports",
+"open": 1
+},
+{
+"venue": "pmus",
+"slug": "aec-nfl-sea-was",
+"title": "aec-nfl-sea-was",
+"category": "sports",
+"open": 1
+},
+{
+"venue": "pmus",
+"slug": "aec-nfl-ari-dal",
+"title": "aec-nfl-ari-dal",
+"category": "sports",
+"open": 1
+},
+{
+"venue": "pmus",
+"slug": "aec-nfl-lv-den",
+"title": "aec-nfl-lv-den",
+"category": "sports",
+"open": 1
+},
+{
+"venue": "pmus",
+"slug": "aec-nfl-no-car",
+"title": "aec-nfl-no-car",
+"category": "sports",
+"open": 1
+},
+{
+"venue": "pmus",
+"slug": "aec-nfl-atl-ind",
+"title": "aec-nfl-atl-ind",
+"category": "sports",
+"open": 1
+},
+{
+"venue": "pmus",
+"slug": "aec-nfl-bal-min",
+"title": "aec-nfl-bal-min",
+"category": "sports",
+"open": 1
+},
+{
+"venue": "pmus",
+"slug": "aec-nfl-nyg-chi",
+"title": "aec-nfl-nyg-chi",
+"category": "sports",
+"open": 1
+},
+{
+"venue": "pmus",
+"slug": "aec-nfl-jax-hou",
+"title": "aec-nfl-jax-hou",
+"category": "sports",
+"open": 1
+},
+{
+"venue": "pmus",
+"slug": "aec-nfl-cle-nyj",
+"title": "aec-nfl-cle-nyj",
+"category": "sports",
+"open": 1
+},
+{
+"venue": "pmus",
+"slug": "aec-nfl-buf-mia",
+"title": "aec-nfl-buf-mia",
+"category": "sports",
+"open": 1
+},
+{
+"venue": "pmus",
+"slug": "aec-nfl-ne-tb",
+"title": "aec-nfl-ne-tb",
+"category": "sports",
+"open": 1
+},
+{
+"venue": "pmus",
+"slug": "aec-nfl-det-was",
+"title": "aec-nfl-det-was",
+"category": "sports",
+"open": 1
+},
+{
+"venue": "pmus",
+"slug": "aec-nfl-ari-sea",
+"title": "aec-nfl-ari-sea",
+"category": "sports",
+"open": 1
+},
+{
+"venue": "pmus",
+"slug": "aec-nfl-lar-sf",
+"title": "aec-nfl-lar-sf",
+"category": "sports",
+"open": 1
+},
+{
+"venue": "pmus",
+"slug": "aec-nfl-pit-lac",
+"title": "aec-nfl-pit-lac",
+"category": "sports",
+"open": 1
+},
+{
+"venue": "pmus",
+"slug": "aec-nfl-phi-gb",
+"title": "aec-nfl-phi-gb",
+"category": "sports",
+"open": 1
+},
+{
+"venue": "pmus",
+"slug": "aec-nfl-nyj-ne",
+"title": "aec-nfl-nyj-ne",
+"category": "sports",
+"open": 1
+},
+{
+"venue": "pmus",
+"slug": "aec-nba-sa-chi",
+"title": "aec-nba-sa-chi",
+"category": "sports",
+"open": 1
+},
+{
+"venue": "pmus",
+"slug": "aec-nba-ind-gs",
+"title": "aec-nba-ind-gs",
+"category": "sports",
+"open": 1
+},
+{
+"venue": "pmus",
+"slug": "aec-nba-min-uta",
+"title": "aec-nba-min-uta",
+"category": "sports",
+"open": 1
+},
+{
+"venue": "pmus",
+"slug": "aec-nba-was-det",
+"title": "aec-nba-was-det",
+"category": "sports",
+"open": 1
+},
+{
+"venue": "pmus",
+"slug": "aec-nba-no-pho",
+"title": "aec-nba-no-pho",
+"category": "sports",
+"open": 1
+},
+{
+"venue": "pmus",
+"slug": "aec-nba-atl-lac",
+"title": "aec-nba-atl-lac",
+"category": "sports",
+"open": 1
+},
+{
+"venue": "pmus",
+"slug": "aec-nba-hou-mil",
+"title": "aec-nba-hou-mil",
+"category": "sports",
+"open": 1
+},
+{
+"venue": "pmus",
+"slug": "aec-nba-por-orl",
+"title": "aec-nba-por-orl",
+"category": "sports",
+"open": 1
+},
+{
+"venue": "pmus",
+"slug": "aec-nba-lal-cha",
+"title": "aec-nba-lal-cha",
+"category": "sports",
+"open": 1
+},
+{
+"venue": "pmus",
+"slug": "aec-nba-bkn-ny",
+"title": "aec-nba-bkn-ny",
+"category": "sports",
+"open": 1
+},
+{
+"venue": "pmus",
+"slug": "aec-nba-chi-cle",
+"title": "aec-nba-chi-cle",
+"category": "sports",
+"open": 1
+},
+{
+"venue": "pmus",
+"slug": "aec-nba-lal-atl",
+"title": "aec-nba-lal-atl",
+"category": "sports",
+"open": 1
+},
+{
+"venue": "pmus",
+"slug": "aec-nba-bos-orl",
+"title": "aec-nba-bos-orl",
+"category": "sports",
+"open": 1
+},
+{
+"venue": "pmus",
+"slug": "aec-nba-dal-was",
+"title": "aec-nba-dal-was",
+"category": "sports",
+"open": 1
+},
+{
+"venue": "pmus",
+"slug": "aec-nba-pho-lac",
+"title": "aec-nba-pho-lac",
+"category": "sports",
+"open": 1
+},
+{
+"venue": "pmus",
+"slug": "aec-nba-det-phi",
+"title": "aec-nba-det-phi",
+"category": "sports",
+"open": 1
+},
+{
+"venue": "pmus",
+"slug": "aec-nba-mil-dal",
+"title": "aec-nba-mil-dal",
+"category": "sports",
+"open": 1
+},
+{
+"venue": "pmus",
+"slug": "aec-nba-ind-den",
+"title": "aec-nba-ind-den",
+"category": "sports",
+"open": 1
+},
+{
+"venue": "pmus",
+"slug": "aec-nba-por-mia",
+"title": "aec-nba-por-mia",
+"category": "sports",
+"open": 1
+},
+{
+"venue": "pmus",
+"slug": "aec-nba-no-sa",
+"title": "aec-nba-no-sa",
+"category": "sports",
+"open": 1
+},
+{
+"venue": "pmus",
+"slug": "aec-nba-okc-mem",
+"title": "aec-nba-okc-mem",
+"category": "sports",
+"open": 1
+},
+{
+"venue": "pmus",
+"slug": "aec-nfl-was-mia",
+"title": "aec-nfl-was-mia",
+"category": "sports",
+"open": 1
+},
+{
+"venue": "pmus",
+"slug": "aec-nfl-tb-buf",
+"title": "aec-nfl-tb-buf",
+"category": "sports",
+"open": 1
+},
+{
+"venue": "pmus",
+"slug": "aec-nfl-lac-jax",
+"title": "aec-nfl-lac-jax",
+"category": "sports",
+"open": 1
+},
+{
+"venue": "pmus",
+"slug": "aec-nfl-car-atl",
+"title": "aec-nfl-car-atl",
+"category": "sports",
+"open": 1
+},
+{
+"venue": "pmus",
+"slug": "aec-nfl-hou-ten",
+"title": "aec-nfl-hou-ten",
+"category": "sports",
+"open": 1
+},
+{
+"venue": "pmus",
+"slug": "aec-nfl-cin-pit",
+"title": "aec-nfl-cin-pit",
+"category": "sports",
+"open": 1
+},
+{
+"venue": "pmus",
+"slug": "aec-nfl-gb-nyg",
+"title": "aec-nfl-gb-nyg",
+"category": "sports",
+"open": 1
+},
+{
+"venue": "pmus",
+"slug": "aec-nfl-chi-min",
+"title": "aec-nfl-chi-min",
+"category": "sports",
+"open": 1
+},
+{
+"venue": "pmus",
+"slug": "aec-nba-gs-okc",
+"title": "aec-nba-gs-okc",
+"category": "sports",
+"open": 1
+},
+{
+"venue": "pmus",
+"slug": "aec-nba-tor-bkn",
+"title": "aec-nba-tor-bkn",
+"category": "sports",
+"open": 1
+},
+{
+"venue": "pmus",
+"slug": "aec-nba-ind-uta",
+"title": "aec-nba-ind-uta",
+"category": "sports",
+"open": 1
+},
+{
+"venue": "pmus",
+"slug": "aec-nba-bos-phi",
+"title": "aec-nba-bos-phi",
+"category": "sports",
+"open": 1
+},
+{
+"venue": "pmus",
+"slug": "aec-nba-mem-ny",
+"title": "aec-nba-mem-ny",
+"category": "sports",
+"open": 1
+},
+{
+"venue": "pmus",
+"slug": "aec-nfl-kc-den",
+"title": "aec-nfl-kc-den",
+"category": "sports",
+"open": 1
+},
+{
+"venue": "pmus",
+"slug": "aec-nfl-det-phi",
+"title": "aec-nfl-det-phi",
+"category": "sports",
+"open": 1
+},
+{
+"venue": "pmus",
+"slug": "aec-nfl-sf-ari",
+"title": "aec-nfl-sf-ari",
+"category": "sports",
+"open": 1
+},
+{
+"venue": "pmus",
+"slug": "aec-nfl-bal-cle",
+"title": "aec-nfl-bal-cle",
+"category": "sports",
+"open": 1
+},
+{
+"venue": "pmus",
+"slug": "aec-nfl-sea-lar",
+"title": "aec-nfl-sea-lar",
+"category": "sports",
+"open": 1
+},
+{
+"venue": "pmus",
+"slug": "aec-nba-den-sac",
+"title": "aec-nba-den-sac",
+"category": "sports",
+"open": 1
+},
+{
+"venue": "pmus",
+"slug": "aec-nba-pho-dal",
+"title": "aec-nba-pho-dal",
+"category": "sports",
+"open": 1
+},
+{
+"venue": "pmus",
+"slug": "aec-nba-was-hou",
+"title": "aec-nba-was-hou",
+"category": "sports",
+"open": 1
+},
+{
+"venue": "pmus",
+"slug": "aec-nba-mem-bos",
+"title": "aec-nba-mem-bos",
+"category": "sports",
+"open": 1
+},
+{
+"venue": "pmus",
+"slug": "aec-nba-por-no",
+"title": "aec-nba-por-no",
+"category": "sports",
+"open": 1
+},
+{
+"venue": "pmus",
+"slug": "aec-nba-mil-cha",
+"title": "aec-nba-mil-cha",
+"category": "sports",
+"open": 1
+},
+{
+"venue": "pmus",
+"slug": "aec-nba-orl-ny",
+"title": "aec-nba-orl-ny",
+"category": "sports",
+"open": 1
+},
+{
+"venue": "pmus",
+"slug": "aec-nba-chi-det",
+"title": "aec-nba-chi-det",
+"category": "sports",
+"open": 1
+},
+{
+"venue": "pmus",
+"slug": "aec-nfl-dal-lv",
+"title": "aec-nfl-dal-lv",
+"category": "sports",
+"open": 1
+},
+{
+"venue": "pmus",
+"slug": "aec-nba-atl-sac",
+"title": "aec-nba-atl-sac",
+"category": "sports",
+"open": 1
+},
+{
+"venue": "pmus",
+"slug": "aec-nba-den-lac",
+"title": "aec-nba-den-lac",
+"category": "sports",
+"open": 1
+},
+{
+"venue": "pmus",
+"slug": "aec-nba-lal-okc",
+"title": "aec-nba-lal-okc",
+"category": "sports",
+"open": 1
+},
+{
+"venue": "pmus",
+"slug": "aec-nba-atl-uta",
+"title": "aec-nba-atl-uta",
+"category": "sports",
+"open": 1
+},
+{
+"venue": "pmus",
+"slug": "aec-nba-ind-pho",
+"title": "aec-nba-ind-pho",
+"category": "sports",
+"open": 1
+},
+{
+"venue": "pmus",
+"slug": "aec-nba-tor-cle",
+"title": "aec-nba-tor-cle",
+"category": "sports",
+"open": 1
+},
+{
+"venue": "pmus",
+"slug": "aec-nba-mia-ny",
+"title": "aec-nba-mia-ny",
+"category": "sports",
+"open": 1
+},
+{
+"venue": "pmus",
+"slug": "aec-nba-bkn-orl",
+"title": "aec-nba-bkn-orl",
+"category": "sports",
+"open": 1
+},
+{
+"venue": "pmus",
+"slug": "aec-nba-lac-dal",
+"title": "aec-nba-lac-dal",
+"category": "sports",
+"open": 1
+},
+{
+"venue": "pmus",
+"slug": "aec-nba-lal-no",
+"title": "aec-nba-lal-no",
+"category": "sports",
+"open": 1
+},
+{
+"venue": "pmus",
+"slug": "aec-nba-cha-mil",
+"title": "aec-nba-cha-mil",
+"category": "sports",
+"open": 1
+},
+{
+"venue": "pmus",
+"slug": "aec-nba-sac-min",
+"title": "aec-nba-sac-min",
+"category": "sports",
+"open": 1
+},
+{
+"venue": "pmus",
+"slug": "aec-nba-por-hou",
+"title": "aec-nba-por-hou",
+"category": "sports",
+"open": 1
+},
+{
+"venue": "pmus",
+"slug": "aec-nba-phi-det",
+"title": "aec-nba-phi-det",
+"category": "sports",
+"open": 1
+},
+{
+"venue": "pmus",
+"slug": "aec-nba-lal-mil",
+"title": "aec-nba-lal-mil",
+"category": "sports",
+"open": 1
+},
+{
+"venue": "pmus",
+"slug": "aec-nba-den-min",
+"title": "aec-nba-den-min",
+"category": "sports",
+"open": 1
+},
+{
+"venue": "pmus",
+"slug": "aec-nba-tor-ind",
+"title": "aec-nba-tor-ind",
+"category": "sports",
+"open": 1
+},
+{
+"venue": "pmus",
+"slug": "aec-nba-okc-cha",
+"title": "aec-nba-okc-cha",
+"category": "sports",
+"open": 1
+},
+{
+"venue": "pmus",
+"slug": "aec-nba-mem-cle",
+"title": "aec-nba-mem-cle",
+"category": "sports",
+"open": 1
+},
+{
+"venue": "pmus",
+"slug": "aec-nfl-buf-hou",
+"title": "aec-nfl-buf-hou",
+"category": "sports",
+"open": 1
+},
+{
+"venue": "pmus",
+"slug": "aec-nba-lac-bos",
+"title": "aec-nba-lac-bos",
+"category": "sports",
+"open": 1
+},
+{
+"venue": "pmus",
+"slug": "aec-nba-bkn-was",
+"title": "aec-nba-bkn-was",
+"category": "sports",
+"open": 1
+},
+{
+"venue": "pmus",
+"slug": "aec-nba-sac-sa",
+"title": "aec-nba-sac-sa",
+"category": "sports",
+"open": 1
+},
+{
+"venue": "pmus",
+"slug": "aec-nba-orl-hou",
+"title": "aec-nba-orl-hou",
+"category": "sports",
+"open": 1
+},
+{
+"venue": "pmus",
+"slug": "aec-nba-por-dal",
+"title": "aec-nba-por-dal",
+"category": "sports",
+"open": 1
+},
+{
+"venue": "pmus",
+"slug": "aec-nba-atl-pho",
+"title": "aec-nba-atl-pho",
+"category": "sports",
+"open": 1
+},
+{
+"venue": "pmus",
+"slug": "aec-nba-chi-uta",
+"title": "aec-nba-chi-uta",
+"category": "sports",
+"open": 1
+},
+{
+"venue": "pmus",
+"slug": "aec-nba-gs-no",
+"title": "aec-nba-gs-no",
+"category": "sports",
+"open": 1
+},
+{
+"venue": "pmus",
+"slug": "aec-nba-cha-tor",
+"title": "aec-nba-cha-tor",
+"category": "sports",
+"open": 1
+},
+{
+"venue": "pmus",
+"slug": "aec-nba-lac-phi",
+"title": "aec-nba-lac-phi",
+"category": "sports",
+"open": 1
+},
+{
+"venue": "pmus",
+"slug": "aec-nba-chi-den",
+"title": "aec-nba-chi-den",
+"category": "sports",
+"open": 1
+},
+{
+"venue": "pmus",
+"slug": "aec-nba-ind-det",
+"title": "aec-nba-ind-det",
+"category": "sports",
+"open": 1
+},
+{
+"venue": "pmus",
+"slug": "aec-nba-ny-mia",
+"title": "aec-nba-ny-mia",
+"category": "sports",
+"open": 1
+},
+{
+"venue": "pmus",
+"slug": "aec-nba-dal-min",
+"title": "aec-nba-dal-min",
+"category": "sports",
+"open": 1
+},
+{
+"venue": "pmus",
+"slug": "aec-nba-okc-no",
+"title": "aec-nba-okc-no",
+"category": "sports",
+"open": 1
+},
+{
+"venue": "pmus",
+"slug": "aec-nba-mil-cle",
+"title": "aec-nba-mil-cle",
+"category": "sports",
+"open": 1
+},
+{
+"venue": "pmus",
+"slug": "aec-nfl-ind-kc",
+"title": "aec-nfl-ind-kc",
+"category": "sports",
+"open": 1
+},
+{
+"venue": "pmus",
+"slug": "aec-nfl-nyg-det",
+"title": "aec-nfl-nyg-det",
+"category": "sports",
+"open": 1
+},
+{
+"venue": "pmus",
+"slug": "aec-nfl-ne-cin",
+"title": "aec-nfl-ne-cin",
+"category": "sports",
+"open": 1
+},
+{
+"venue": "pmus",
+"slug": "aec-nfl-min-gb",
+"title": "aec-nfl-min-gb",
+"category": "sports",
+"open": 1
+},
+{
+"venue": "pmus",
+"slug": "aec-nfl-pit-chi",
+"title": "aec-nfl-pit-chi",
+"category": "sports",
+"open": 1
+},
+{
+"venue": "pmus",
+"slug": "aec-nfl-nyj-bal",
+"title": "aec-nfl-nyj-bal",
+"category": "sports",
+"open": 1
+},
+{
+"venue": "pmus",
+"slug": "aec-nfl-sea-ten",
+"title": "aec-nfl-sea-ten",
+"category": "sports",
+"open": 1
+},
+{
+"venue": "pmus",
+"slug": "aec-nfl-atl-no",
+"title": "aec-nfl-atl-no",
+"category": "sports",
+"open": 1
+},
+{
+"venue": "pmus",
+"slug": "aec-nfl-cle-lv",
+"title": "aec-nfl-cle-lv",
+"category": "sports",
+"open": 1
+},
+{
+"venue": "pmus",
+"slug": "aec-nfl-jax-ari",
+"title": "aec-nfl-jax-ari",
+"category": "sports",
+"open": 1
+},
+{
+"venue": "pmus",
+"slug": "aec-nba-mem-sa",
+"title": "aec-nba-mem-sa",
+"category": "sports",
+"open": 1
+},
+{
+"venue": "pmus",
+"slug": "aec-nba-gs-orl",
+"title": "aec-nba-gs-orl",
+"category": "sports",
+"open": 1
+},
+{
+"venue": "pmus",
+"slug": "aec-nfl-tb-lar",
+"title": "aec-nfl-tb-lar",
+"category": "sports",
+"open": 1
+},
+{
+"venue": "pmus",
+"slug": "aec-nfl-phi-dal",
+"title": "aec-nfl-phi-dal",
+"category": "sports",
+"open": 1
+},
+{
+"venue": "pmus",
+"slug": "aec-nba-det-atl",
+"title": "aec-nba-det-atl",
+"category": "sports",
+"open": 1
+},
+{
+"venue": "pmus",
+"slug": "aec-nba-bos-bkn",
+"title": "aec-nba-bos-bkn",
+"category": "sports",
+"open": 1
+},
+{
+"venue": "pmus",
+"slug": "aec-nba-pho-por",
+"title": "aec-nba-pho-por",
+"category": "sports",
+"open": 1
+},
+{
+"venue": "pmus",
+"slug": "aec-nba-uta-lal",
+"title": "aec-nba-uta-lal",
+"category": "sports",
+"open": 1
+},
+{
+"venue": "pmus",
+"slug": "aec-nba-sac-okc",
+"title": "aec-nba-sac-okc",
+"category": "sports",
+"open": 1
+},
+{
+"venue": "pmus",
+"slug": "aec-nba-cha-ind",
+"title": "aec-nba-cha-ind",
+"category": "sports",
+"open": 1
+},
+{
+"venue": "pmus",
+"slug": "aec-nba-den-no",
+"title": "aec-nba-den-no",
+"category": "sports",
+"open": 1
+},
+{
+"venue": "pmus",
+"slug": "aec-nba-was-min",
+"title": "aec-nba-was-min",
+"category": "sports",
+"open": 1
+},
+{
+"venue": "pmus",
+"slug": "aec-nba-hou-cle",
+"title": "aec-nba-hou-cle",
+"category": "sports",
+"open": 1
+},
+{
+"venue": "pmus",
+"slug": "aec-nba-gs-mia",
+"title": "aec-nba-gs-mia",
+"category": "sports",
+"open": 1
+},
+{
+"venue": "pmus",
+"slug": "aec-nfl-car-sf",
+"title": "aec-nfl-car-sf",
+"category": "sports",
+"open": 1
+},
+{
+"venue": "pmus",
+"slug": "aec-nba-chi-por",
+"title": "aec-nba-chi-por",
+"category": "sports",
+"open": 1
+},
+{
+"venue": "pmus",
+"slug": "aec-nba-ny-dal",
+"title": "aec-nba-ny-dal",
+"category": "sports",
+"open": 1
+},
+{
+"venue": "pmus",
+"slug": "aec-nba-phi-mil",
+"title": "aec-nba-phi-mil",
+"category": "sports",
+"open": 1
+},
+{
+"venue": "pmus",
+"slug": "aec-nba-sac-mem",
+"title": "aec-nba-sac-mem",
+"category": "sports",
+"open": 1
+},
+{
+"venue": "pmus",
+"slug": "aec-nba-lac-orl",
+"title": "aec-nba-lac-orl",
+"category": "sports",
+"open": 1
+},
+{
+"venue": "pmus",
+"slug": "aec-nba-atl-sa",
+"title": "aec-nba-atl-sa",
+"category": "sports",
+"open": 1
+},
+{
+"venue": "pmus",
+"slug": "aec-nba-min-pho",
+"title": "aec-nba-min-pho",
+"category": "sports",
+"open": 1
+},
+{
+"venue": "pmus",
+"slug": "aec-nba-ind-cle",
+"title": "aec-nba-ind-cle",
+"category": "sports",
+"open": 1
+},
+{
+"venue": "pmus",
+"slug": "aec-nba-mia-chi",
+"title": "aec-nba-mia-chi",
+"category": "sports",
+"open": 1
+},
+{
+"venue": "pmus",
+"slug": "aec-nba-no-dal",
+"title": "aec-nba-no-dal",
+"category": "sports",
+"open": 1
+},
+{
+"venue": "pmus",
+"slug": "aec-nba-was-tor",
+"title": "aec-nba-was-tor",
+"category": "sports",
+"open": 1
+},
+{
+"venue": "pmus",
+"slug": "aec-nba-bkn-bos",
+"title": "aec-nba-bkn-bos",
+"category": "sports",
+"open": 1
+},
+{
+"venue": "pmus",
+"slug": "aec-nba-okc-uta",
+"title": "aec-nba-okc-uta",
+"category": "sports",
+"open": 1
+},
+{
+"venue": "pmus",
+"slug": "aec-nba-por-gs",
+"title": "aec-nba-por-gs",
+"category": "sports",
+"open": 1
+},
+{
+"venue": "pmus",
+"slug": "aec-nba-den-hou",
+"title": "aec-nba-den-hou",
+"category": "sports",
+"open": 1
+},
+{
+"venue": "pmus",
+"slug": "aec-nfl-gb-det",
+"title": "aec-nfl-gb-det",
+"category": "sports",
+"open": 1
+},
+{
+"venue": "pmus",
+"slug": "aec-nba-lac-cha",
+"title": "aec-nba-lac-cha",
+"category": "sports",
+"open": 1
+},
+{
+"venue": "pmus",
+"slug": "aec-nba-ny-orl",
+"title": "aec-nba-ny-orl",
+"category": "sports",
+"open": 1
+},
+{
+"venue": "pmus",
+"slug": "aec-nba-mem-dal",
+"title": "aec-nba-mem-dal",
+"category": "sports",
+"open": 1
+},
+{
+"venue": "pmus",
+"slug": "aec-nba-det-mil",
+"title": "aec-nba-det-mil",
+"category": "sports",
+"open": 1
+},
+{
+"venue": "pmus",
+"slug": "aec-nba-was-chi",
+"title": "aec-nba-was-chi",
+"category": "sports",
+"open": 1
+},
+{
+"venue": "pmus",
+"slug": "aec-nba-atl-no",
+"title": "aec-nba-atl-no",
+"category": "sports",
+"open": 1
+},
+{
+"venue": "pmus",
+"slug": "aec-nfl-cin-bal",
+"title": "aec-nfl-cin-bal",
+"category": "sports",
+"open": 1
+},
+{
+"venue": "pmus",
+"slug": "aec-nfl-kc-dal",
+"title": "aec-nfl-kc-dal",
+"category": "sports",
+"open": 1
+},
+{
+"venue": "pmus",
+"slug": "aec-nba-sac-den",
+"title": "aec-nba-sac-den",
+"category": "sports",
+"open": 1
+},
+{
+"venue": "pmus",
+"slug": "aec-nfl-chi-phi",
+"title": "aec-nfl-chi-phi",
+"category": "sports",
+"open": 1
+},
+{
+"venue": "pmus",
+"slug": "aec-nba-mia-phi",
+"title": "aec-nba-mia-phi",
+"category": "sports",
+"open": 1
+},
+{
+"venue": "pmus",
+"slug": "aec-nba-sa-pho",
+"title": "aec-nba-sa-pho",
+"category": "sports",
+"open": 1
+},
+{
+"venue": "pmus",
+"slug": "aec-nba-lal-uta",
+"title": "aec-nba-lal-uta",
+"category": "sports",
+"open": 1
+},
+{
+"venue": "pmus",
+"slug": "aec-nba-por-okc",
+"title": "aec-nba-por-okc",
+"category": "sports",
+"open": 1
+},
+{
+"venue": "pmus",
+"slug": "aec-nba-lac-cle",
+"title": "aec-nba-lac-cle",
+"category": "sports",
+"open": 1
+},
+{
+"venue": "pmus",
+"slug": "aec-nba-bkn-tor",
+"title": "aec-nba-bkn-tor",
+"category": "sports",
+"open": 1
+},
+{
+"venue": "pmus",
+"slug": "aec-nba-orl-bos",
+"title": "aec-nba-orl-bos",
+"category": "sports",
+"open": 1
+},
+{
+"venue": "pmus",
+"slug": "aec-nba-cha-atl",
+"title": "aec-nba-cha-atl",
+"category": "sports",
+"open": 1
+},
+{
+"venue": "pmus",
+"slug": "aec-nba-den-mem",
+"title": "aec-nba-den-mem",
+"category": "sports",
+"open": 1
+},
+{
+"venue": "pmus",
+"slug": "aec-nba-chi-no",
+"title": "aec-nba-chi-no",
+"category": "sports",
+"open": 1
+},
+{
+"venue": "pmus",
+"slug": "aec-nba-dal-mia",
+"title": "aec-nba-dal-mia",
+"category": "sports",
+"open": 1
+},
+{
+"venue": "pmus",
+"slug": "aec-nba-cle-tor",
+"title": "aec-nba-cle-tor",
+"category": "sports",
+"open": 1
+},
+{
+"venue": "pmus",
+"slug": "aec-nba-por-mil",
+"title": "aec-nba-por-mil",
+"category": "sports",
+"open": 1
+},
+{
+"venue": "pmus",
+"slug": "aec-nba-det-ind",
+"title": "aec-nba-det-ind",
+"category": "sports",
+"open": 1
+},
+{
+"venue": "pmus",
+"slug": "aec-nba-ny-bkn",
+"title": "aec-nba-ny-bkn",
+"category": "sports",
+"open": 1
+},
+{
+"venue": "pmus",
+"slug": "aec-nba-uta-gs",
+"title": "aec-nba-uta-gs",
+"category": "sports",
+"open": 1
+},
+{
+"venue": "pmus",
+"slug": "aec-nba-hou-pho",
+"title": "aec-nba-hou-pho",
+"category": "sports",
+"open": 1
+},
+{
+"venue": "pmus",
+"slug": "aec-nfl-sf-cle",
+"title": "aec-nfl-sf-cle",
+"category": "sports",
+"open": 1
+},
+{
+"venue": "pmus",
+"slug": "aec-nfl-hou-ind",
+"title": "aec-nfl-hou-ind",
+"category": "sports",
+"open": 1
+},
+{
+"venue": "pmus",
+"slug": "aec-nfl-ari-tb",
+"title": "aec-nfl-ari-tb",
+"category": "sports",
+"open": 1
+},
+{
+"venue": "pmus",
+"slug": "aec-nfl-atl-nyj",
+"title": "aec-nfl-atl-nyj",
+"category": "sports",
+"open": 1
+},
+{
+"venue": "pmus",
+"slug": "aec-nfl-lar-car",
+"title": "aec-nfl-lar-car",
+"category": "sports",
+"open": 1
+},
+{
+"venue": "pmus",
+"slug": "aec-nfl-jax-ten",
+"title": "aec-nfl-jax-ten",
+"category": "sports",
+"open": 1
+},
+{
+"venue": "pmus",
+"slug": "aec-nfl-no-mia",
+"title": "aec-nfl-no-mia",
+"category": "sports",
+"open": 1
+},
+{
+"venue": "pmus",
+"slug": "aec-nfl-min-sea",
+"title": "aec-nfl-min-sea",
+"category": "sports",
+"open": 1
+},
+{
+"venue": "pmus",
+"slug": "aec-nba-atl-was",
+"title": "aec-nba-atl-was",
+"category": "sports",
+"open": 1
+},
+{
+"venue": "pmus",
+"slug": "aec-nba-orl-phi",
+"title": "aec-nba-orl-phi",
+"category": "sports",
+"open": 1
+},
+{
+"venue": "pmus",
+"slug": "aec-nfl-den-was",
+"title": "aec-nfl-den-was",
+"category": "sports",
+"open": 1
+}
+]
