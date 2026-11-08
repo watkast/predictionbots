@@ -309,7 +309,7 @@ HEAD = """<!doctype html><html lang="en"><head><meta charset="utf-8"><script>try
 <main id="main">"""
 FOOT = """</main>
 <footer><p>Prices come from the venue's public market data and change constantly; fees follow the venue's published schedule; the arithmetic is ours and you can check it. Nothing on this page is investment advice. Most participants in prediction markets lose money. Problem gambling help: 1-800-GAMBLER.</p>
-<p>Code and data: <a href="https://github.com/watkast/predictionbots">github.com/watkast/predictionbots</a> · hello@predictionbots.io</p></footer></div><script src="/theme.js" defer></script></body></html>"""
+<p>Code and data: <a href="https://github.com/watkast/predictionbots">github.com/watkast/predictionbots</a> · hello@predictionbots.io</p></footer></div><script src="/theme.js" defer></script><script src="/floor.js" defer></script></body></html>"""
 
 
 def esc(x) -> str:
@@ -380,6 +380,7 @@ def render_series(s: dict, built: str) -> str:
         out.append("</section>")
     out.append('<section><h2>Who actually wins this market</h2><ul><li>Whoever posts the resting orders and collects the spread' + (' without paying a fee' if v == 'pmus' or 'Resting orders pay no fee' in s['fee_note'] else '') + '.</li><li>The venue, on every fee.</li><li>Not, on average, the person clicking buy because the chart is going their way. <a href="/#ledger">That was us.</a></li></ul>')
     out.append('<p>Still want to play? <a href="/#deal">Read the deal first</a>: what the account asks for, what the bonus really is, and whether we are paid. Vendors sell bots for markets like this one; see the <a href="/#benchmark">bot benchmark</a> before you pay for one.</p></section>')
+    out.append(f'<div data-floor data-kind="market" data-key="{v}/{s["slug"]}" data-title="{esc(s["title"])} on {esc(s["venue_name"])}"></div>')
     out.append(FOOT)
     return "".join(out)
 
