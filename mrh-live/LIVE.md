@@ -1,6 +1,6 @@
 # Mr. H — Coinbase hopper, LIVE (real money, maker on every order)
 
-Updated 2026-11-08T04:10:15Z · cycles 329 · universe 113 coins · profile aggressive (+5% impulse, 3× volume, 8% trail) · post-only limit orders at the touch (maker 0.5%) · entry TTL 15 min, chase cap +2% · disaster stop 6% under the trail · panic sell 3% under it · caps $200.00/entry, 4 hops/day, floor $1.20, swap after 2 h
+Updated 2026-11-08T04:15:15Z · cycles 330 · universe 113 coins · profile aggressive (+5% impulse, 3× volume, 8% trail) · post-only limit orders at the touch (maker 0.5%) · entry TTL 15 min, chase cap +2% · disaster stop 6% under the trail · panic sell 3% under it · caps $200.00/entry, 4 hops/day, floor $1.20, swap after 2 h
 
 **HALTED: floor: $0.00 < $1.20** — remove mrh/LIVE_ON, fix, delete `halted` in live_state.json on the data branch, restore.
 
@@ -8,7 +8,7 @@ Updated 2026-11-08T04:10:15Z · cycles 329 · universe 113 coins · profile aggr
 
 | now | start | deposits | P&L | peak | USD free | hops | win % | fees paid | position / order |
 |---|---|---|---|---|---|---|---|---|---|
-| $6.91 | $3.44 | $-7.23 | $+10.69 (+310.7%) | $17.73 | $0.00 | 6 | 50% | $0.609 | CAP 69 @ 0.10315 · hw 0.10405 · stop 0.095726 · disaster 0.089483 parked |
+| $6.89 | $3.44 | $-7.23 | $+10.68 (+310.3%) | $17.73 | $0.00 | 6 | 50% | $0.609 | CAP 69 @ 0.10315 · hw 0.10405 · stop 0.095726 · disaster 0.089483 parked |
 
 ## Hops
 
