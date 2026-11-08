@@ -83,3 +83,8 @@ outbound only) · Stripe (subscriptions, when there is something to charge for) 
 - 2026-11-08 — SEO is an architecture, not adjectives: /benchmark/<bot> pages (the "is it legit" query, 115 of them),
   /learn/ settlement and fee explainers carrying the visualizations, research posts with Article/FAQ/Dataset structured
   data and OG images. Titles from personas' pain points (bot shopper, builder, active trader). Skeleton before launch.
+- 2026-11-08 — Mr. T falsified. Six-hour dry run plus a confirmation run with raw books: in the final seconds the winning
+  side is bid at 0.99 (tens of thousands of contracts) and never offered; the loser is offered at 0.01 and never bid.
+  The recorder's 168 "cheap winners" were stale book snapshots. Retired as a trade; the sniper code stays as the
+  final-seconds measurement feed and the post-2 story. Consequence: Mr. P's cross-venue "locks" are unproven until
+  rebuilt on a live book with age checks. Validated scanner list for the terminal is now: decided games (Mr. S).
