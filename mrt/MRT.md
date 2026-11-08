@@ -1,12 +1,12 @@
 # Mr. T — terminal sniper, LIVE (Polymarket US, real money, tiny)
 
-Updated 2026-11-08T02:03:41.581Z · started 2026-11-07T23:33:06.996Z · gate: last 5 s, ≥44 of 60 prints, flip needs ≥10 bps/s, leader ask ≤ 0.90, ≥5 offered, 10 contracts max · coins btc,eth,sol,xrp · 5m + 15m
+Updated 2026-11-08T02:08:41.766Z · started 2026-11-07T23:33:06.996Z · gate: last 5 s, ≥44 of 60 prints, flip needs ≥10 bps/s, leader ask ≤ 0.90, ≥5 offered, 10 contracts max · coins btc,eth,sol,xrp · 5m + 15m
 
 ## Scoreboard
 
 | qualifying moments | attempts | fills | fill rate | settled | wins | losses | P&L | fees | cash |
 |---|---|---|---|---|---|---|---|---|---|
-| 457 | 20 | 0 | 0% | 0 | 0 | 0 | $+0.00 | $0.000 | $1.17 |
+| 503 | 22 | 0 | 0% | 0 | 0 | 0 | $+0.00 | $0.000 | $1.17 |
 
 **Read it like this:** fill rate is the whole experiment — the data said the asks exist; only fills say they were real. A loss at these margins is a logic error, not variance.
 
@@ -37,31 +37,13 @@ Updated 2026-11-08T02:03:41.581Z · started 2026-11-07T23:33:06.996Z · gate: la
 - `11-08T01:54:55.160` **would_fire** slug="cpcxrp-xrp-updown-5m-2026-11-08-0150z", leader="UP", ask=0.01, qty=10, margin_bps=84.29, rem=4.842
 - `11-08T01:59:55.032` **would_fire** slug="cpcxrp-xrp-updown-15m-2026-11-08-0145z", leader="UP", ask=0.01, qty=10, margin_bps=46.88, rem=4.971
 - `11-08T01:59:55.141` **would_fire** slug="cpcxrp-xrp-updown-15m-2026-11-08-0145z", leader="UP", ask=0.01, qty=10, margin_bps=59.36, rem=4.862
+- `11-08T02:04:55.029` **would_fire** slug="cpcxrp-xrp-updown-5m-2026-11-08-0200z", leader="UP", ask=0.01, qty=10, margin_bps=129.66, rem=4.975
+- `11-08T02:04:55.134` **would_fire** slug="cpcxrp-xrp-updown-5m-2026-11-08-0200z", leader="UP", ask=0.01, qty=10, margin_bps=161.85, rem=4.869
 
 ## Last 40 gate readings (one per second per market in its final seconds)
 
 | time | market | s left | prints | leader | margin bps | ask | offered | verdict |
 |---|---|---|---|---|---|---|---|---|
-| 01:59:55.029 | own-15m-2026-11-08-0145z | 4.971 | 55 | DOWN | 46.11 | None | 0 | no ask |
-| 01:59:55.030 | own-15m-2026-11-08-0145z | 4.971 | 55 | DOWN | 66.73 | None | 0 | no ask |
-| 01:59:55.031 | own-15m-2026-11-08-0145z | 4.971 | 55 | DOWN | 131.43 | None | 0 | no ask |
-| 01:59:55.032 | own-15m-2026-11-08-0145z | 4.971 | 55 | UP | 46.88 | 0.01 | 387.36 | FIRE |
-| 01:59:55.034 | down-5m-2026-11-08-0155z | 4.971 | 55 | DOWN | 7.4 |  |  | margin |
-| 01:59:55.034 | down-5m-2026-11-08-0155z | 4.971 | 55 | DOWN | 27.47 | None | 0 | no ask |
-| 01:59:55.035 | down-5m-2026-11-08-0155z | 4.971 | 55 | DOWN | 34.88 | None | 0 | no ask |
-| 01:59:55.036 | down-5m-2026-11-08-0155z | 4.971 | 55 | UP | 0.79 |  |  | margin |
-| 01:59:56.086 | own-15m-2026-11-08-0145z | 3.915 | 56 | DOWN | 59.02 | None | 0 | no ask |
-| 01:59:56.087 | own-15m-2026-11-08-0145z | 3.915 | 56 | DOWN | 83.47 | None | 0 | no ask |
-| 01:59:56.088 | own-15m-2026-11-08-0145z | 3.915 | 56 | DOWN | 164.29 | None | 0 | no ask |
-| 01:59:56.089 | own-15m-2026-11-08-0145z | 3.915 | 57 | UP | 79.6 | 0.01 | 372.36 | FIRE |
-| 01:59:56.090 | down-5m-2026-11-08-0155z | 3.915 | 56 | DOWN | 10.63 | None | 0 | no ask |
-| 01:59:56.090 | down-5m-2026-11-08-0155z | 3.915 | 56 | DOWN | 34.39 | None | 0 | no ask |
-| 01:59:56.091 | down-5m-2026-11-08-0155z | 3.915 | 56 | DOWN | 43.6 | None | 0 | no ask |
-| 01:59:56.091 | down-5m-2026-11-08-0155z | 3.915 | 57 | UP | 0.14 |  |  | margin |
-| 01:59:57.140 | own-15m-2026-11-08-0145z | 2.86 | 58 | DOWN | 117.52 | None | 0 | no ask |
-| 01:59:57.141 | own-15m-2026-11-08-0145z | 2.86 | 58 | DOWN | 167.44 | None | 0 | no ask |
-| 01:59:57.142 | own-15m-2026-11-08-0145z | 2.86 | 58 | DOWN | 330.3 | None | 0 | no ask |
-| 01:59:57.142 | own-15m-2026-11-08-0145z | 2.86 | 58 | UP | 119.41 | 0.01 | 472.36 | FIRE |
 | 01:59:57.143 | down-5m-2026-11-08-0155z | 2.86 | 58 | DOWN | 20.74 | None | 0 | no ask |
 | 01:59:57.144 | down-5m-2026-11-08-0155z | 2.86 | 58 | DOWN | 69.28 | None | 0 | no ask |
 | 01:59:57.144 | down-5m-2026-11-08-0155z | 2.86 | 58 | DOWN | 88.9 | None | 0 | no ask |
@@ -82,6 +64,26 @@ Updated 2026-11-08T02:03:41.581Z · started 2026-11-07T23:33:06.996Z · gate: la
 | 01:59:59.252 | down-5m-2026-11-08-0155z | 0.753 | 60 | DOWN | inf | None | 0 | no ask |
 | 01:59:59.253 | down-5m-2026-11-08-0155z | 0.753 | 60 | DOWN | inf | None | 0 | no ask |
 | 01:59:59.253 | down-5m-2026-11-08-0155z | 0.753 | 60 | UP | inf | None | 0 | no ask |
+| 02:04:55.026 | down-5m-2026-11-08-0200z | 4.975 | 55 | DOWN | 38.83 | None | 0 | no ask |
+| 02:04:55.027 | down-5m-2026-11-08-0200z | 4.975 | 55 | DOWN | 52.87 | None | 0 | no ask |
+| 02:04:55.028 | down-5m-2026-11-08-0200z | 4.975 | 55 | DOWN | 95.36 | None | 0 | no ask |
+| 02:04:55.029 | down-5m-2026-11-08-0200z | 4.975 | 55 | UP | 129.66 | 0.01 | 3022.36 | FIRE |
+| 02:04:56.060 | down-5m-2026-11-08-0200z | 3.94 | 56 | DOWN | 48.55 | None | 0 | no ask |
+| 02:04:56.062 | down-5m-2026-11-08-0200z | 3.94 | 56 | DOWN | 66.09 | None | 0 | no ask |
+| 02:04:56.063 | down-5m-2026-11-08-0200z | 3.94 | 56 | DOWN | 119.19 | None | 0 | no ask |
+| 02:04:56.064 | down-5m-2026-11-08-0200z | 3.94 | 56 | UP | 161.85 | 0.01 | 2642.36 | FIRE |
+| 02:04:57.096 | down-5m-2026-11-08-0200z | 2.904 | 58 | DOWN | 97.06 | None | 0 | no ask |
+| 02:04:57.097 | down-5m-2026-11-08-0200z | 2.904 | 58 | DOWN | 131.99 | None | 0 | no ask |
+| 02:04:57.098 | down-5m-2026-11-08-0200z | 2.904 | 57 | DOWN | 158.93 | None | 0 | no ask |
+| 02:04:57.098 | down-5m-2026-11-08-0200z | 2.904 | 58 | UP | 323.88 | 0.01 | 2642.36 | FIRE |
+| 02:04:58.128 | down-5m-2026-11-08-0200z | 1.872 | 59 | DOWN | 194.13 | None | 0 | no ask |
+| 02:04:58.129 | down-5m-2026-11-08-0200z | 1.872 | 59 | DOWN | 264.16 | None | 0 | no ask |
+| 02:04:58.130 | down-5m-2026-11-08-0200z | 1.872 | 59 | DOWN | 476.78 | None | 0 | no ask |
+| 02:04:58.131 | down-5m-2026-11-08-0200z | 1.872 | 59 | UP | 647.94 | 0.01 | 2442.36 | FIRE |
+| 02:04:59.161 | down-5m-2026-11-08-0200z | 0.839 | 60 | DOWN | inf | None | 0 | no ask |
+| 02:04:59.162 | down-5m-2026-11-08-0200z | 0.839 | 60 | DOWN | inf | None | 0 | no ask |
+| 02:04:59.163 | down-5m-2026-11-08-0200z | 0.839 | 60 | DOWN | inf | None | 0 | no ask |
+| 02:04:59.164 | down-5m-2026-11-08-0200z | 0.839 | 60 | UP | inf | 0.01 | 2421.19 | FIRE |
 
 Where this came from: Mr. P's recorder, `mrp/windows.csv` and `mrp/REPORT.md` on this branch.
 
