@@ -1,6 +1,6 @@
 # Mr. H — Coinbase hopper, LIVE (real money, maker on every order)
 
-Updated 2026-11-08T01:45:16Z · cycles 300 · universe 114 coins · profile aggressive (+5% impulse, 3× volume, 8% trail) · post-only limit orders at the touch (maker 0.5%) · entry TTL 15 min, chase cap +2% · disaster stop 6% under the trail · panic sell 3% under it · caps $200.00/entry, 4 hops/day, floor $1.20, swap after 2 h
+Updated 2026-11-08T01:50:15Z · cycles 301 · universe 114 coins · profile aggressive (+5% impulse, 3× volume, 8% trail) · post-only limit orders at the touch (maker 0.5%) · entry TTL 15 min, chase cap +2% · disaster stop 6% under the trail · panic sell 3% under it · caps $200.00/entry, 4 hops/day, floor $1.20, swap after 2 h
 
 **HALTED: floor: $0.00 < $1.20** — remove mrh/LIVE_ON, fix, delete `halted` in live_state.json on the data branch, restore.
 
