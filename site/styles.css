@@ -45,6 +45,12 @@ header.top { display: flex; align-items: baseline; justify-content: space-betwee
 header.top .brand { font-weight: 600; font-size: 19px; letter-spacing: -0.01em; color: var(--ink); }
 header.top nav { display: flex; gap: 22px; flex-wrap: wrap; font-size: 15px; }
 header.top nav a { color: var(--ink-2); display: inline-block; padding: 6px 0; }
+.theme { display: inline-flex; gap: 2px; margin: 0; padding: 2px; border: 1px solid var(--rule); border-radius: 6px; font-size: 13px; }
+.theme legend { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); }
+.theme label { padding: 4px 8px; border-radius: 4px; cursor: pointer; color: var(--ink-2); display: inline-flex; align-items: center; gap: 4px; }
+.theme label:has(input:checked) { background: var(--ink); color: var(--paper); }
+.theme input { position: absolute; opacity: 0; width: 1px; height: 1px; }
+.theme label:has(input:focus-visible) { outline: 2px solid var(--brand); outline-offset: 2px; }
 
 .hero { padding: 56px 0 28px; }
 .hero h1 { font-size: clamp(34px, 5.6vw, 60px); line-height: 1.04; letter-spacing: -0.025em; font-weight: 600; margin: 0 0 20px; max-width: 18ch; }

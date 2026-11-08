@@ -2,6 +2,7 @@
 <html lang="en">
 <head>
 <meta charset="utf-8">
+<script>try{var t=localStorage.getItem("pb-theme");if(t==="dark"||t==="light")document.documentElement.setAttribute("data-theme",t)}catch(e){}</script>
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>How long until your balance is $0 in this market? — PredictionBots</title>
 <meta name="description" content="Enter your balance, your stake and your pace. Watch a few hundred simulated careers play through a Polymarket US or Kalshi market at the market's own odds, with the venue's fees, and see when the money runs out.">
@@ -56,6 +57,7 @@
       <a href="/#ledger">Our ledger</a>
       <a href="/#honest">How we're paid</a>
     </nav>
+    <fieldset class="theme" id="theme"><legend>Theme</legend><label><input type="radio" name="theme" value="system" checked> System</label><label><input type="radio" name="theme" value="dark"> Dark</label><label><input type="radio" name="theme" value="light"> Light</label></fieldset>
   </header>
 
   <main id="main">
@@ -108,5 +110,6 @@
 </div>
 <script src="/vendor/d3.v7.9.0.min.js"></script>
 <script src="/sim.js" defer></script>
+<script src="/theme.js" defer></script>
 </body>
 </html>

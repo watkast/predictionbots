@@ -2,6 +2,7 @@
 <html lang="en">
 <head>
 <meta charset="utf-8">
+<script>try{var t=localStorage.getItem("pb-theme");if(t==="dark"||t==="light")document.documentElement.setAttribute("data-theme",t)}catch(e){}</script>
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>PredictionBots — what prediction markets really cost</title>
 <meta name="description" content="Polymarket US and Kalshi, measured: what the fees really cost you, which trading bots actually work, how a market settles, and what we lost finding out. Free, no account, every number linked to its data.">
@@ -30,6 +31,7 @@
       <a href="#data">Data</a>
       <a href="#honest">How we're paid</a>
     </nav>
+    <fieldset class="theme" id="theme"><legend>Theme</legend><label><input type="radio" name="theme" value="system" checked> System</label><label><input type="radio" name="theme" value="dark"> Dark</label><label><input type="radio" name="theme" value="light"> Light</label></fieldset>
   </header>
 
   <main id="main">
@@ -256,5 +258,6 @@
   });
 })();
 </script>
+<script src="/theme.js" defer></script>
 </body>
 </html>

@@ -8,18 +8,18 @@ from pathlib import Path
 ROOT = Path(__file__).resolve().parent
 DIST = ROOT / "dist"
 TEMPLATE = """<!doctype html>
-<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+<html lang="en"><head><meta charset="utf-8"><script>try{{var t=localStorage.getItem("pb-theme");if(t==="dark"||t==="light")document.documentElement.setAttribute("data-theme",t)}}catch(e){{}}</script><meta name="viewport" content="width=device-width, initial-scale=1">
 <title>{title} — PredictionBots</title><meta name="description" content="{summary}">
 <meta property="og:title" content="{title}"><meta property="og:description" content="{summary}">{og_image}
 <link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@400;500;600&family=IBM+Plex+Mono:wght@400&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="/styles.css"></head>
 <body><a class="skip" href="#main">Skip to content</a><div class="wrap">
-<header class="top"><a class="brand" href="/">PredictionBots</a><nav><a href="/#truecost">True Cost</a><a href="/simulate.html">Simulator</a><a href="/#benchmark">Bot benchmark</a><a href="/#research">Research</a><a href="/#honest">How we're paid</a></nav></header>
+<header class="top"><a class="brand" href="/">PredictionBots</a><nav><a href="/#truecost">True Cost</a><a href="/simulate.html">Simulator</a><a href="/#benchmark">Bot benchmark</a><a href="/#research">Research</a><a href="/#honest">How we're paid</a></nav><fieldset class="theme" id="theme"><legend>Theme</legend><label><input type="radio" name="theme" value="system" checked> System</label><label><input type="radio" name="theme" value="dark"> Dark</label><label><input type="radio" name="theme" value="light"> Light</label></fieldset></header>
 <main id="main"><article class="post"><h1>{title}</h1><div class="meta">{date_h} · PredictionBots research</div><div class="body">{body}</div></article>
 <section id="waitlist"><h2>Get the next one</h2><p class="sub">Research posts and new benchmark rows as they publish. Nothing else, and you can leave with one click.</p>
 <form class="wait" id="wait-form" action="/api/waitlist" method="post"><input type="email" id="email" name="email" placeholder="you@example.com" required autocomplete="email" aria-label="Email"><button type="submit">Send me the posts</button></form><div class="wait-msg" id="wait-msg"></div></section></main>
-<footer><p>PredictionBots measures prediction markets and publishes its own record. Nothing on this site is investment advice. Prediction markets and crypto involve risk of loss, and most participants lose money. If gambling is a problem for you or someone you know, call 1-800-GAMBLER.</p><p>Code and data: <a href="https://github.com/watkast/predictionbots">github.com/watkast/predictionbots</a></p></footer>
+<script src="/theme.js" defer></script><footer><p>PredictionBots measures prediction markets and publishes its own record. Nothing on this site is investment advice. Prediction markets and crypto involve risk of loss, and most participants lose money. If gambling is a problem for you or someone you know, call 1-800-GAMBLER.</p><p>Code and data: <a href="https://github.com/watkast/predictionbots">github.com/watkast/predictionbots</a></p></footer>
 </div>
 <script>(function(){{var f=document.getElementById('wait-form'),m=document.getElementById('wait-msg');if(!f)return;f.addEventListener('submit',async function(e){{e.preventDefault();var b=f.querySelector('button');b.disabled=true;m.className='wait-msg';m.textContent='Adding you…';try{{var r=await fetch('/api/waitlist',{{method:'POST',headers:{{'Content-Type':'application/json'}},body:JSON.stringify({{email:f.email.value.trim(),source:location.pathname}})}});var j=await r.json().catch(function(){{return{{}}}});if(r.ok){{m.className='wait-msg ok';m.textContent=j.message||'You are on the list.';f.reset();}}else{{m.className='wait-msg err';m.textContent=j.error||'That did not go through.';}}}}catch(err){{m.className='wait-msg err';m.textContent='No connection. Try again in a moment.';}}b.disabled=false;}});}})();</script>
 </body></html>"""
@@ -54,7 +54,7 @@ def build():
     if DIST.exists():
         shutil.rmtree(DIST)
     DIST.mkdir()
-    for f in ("index.html", "styles.css", "ledger.js", "truecost.js", "simulate.html", "sim.js"):
+    for f in ("index.html", "styles.css", "ledger.js", "truecost.js", "simulate.html", "sim.js", "theme.js"):
         shutil.copy(ROOT / f, DIST / f)
     shutil.copytree(ROOT / "functions", DIST / "functions")
     shutil.copytree(ROOT / "vendor", DIST / "vendor")
