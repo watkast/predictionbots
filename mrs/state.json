@@ -1093,10 +1093,10 @@
   "KXLALIGA1H-26NOV08RSORVC-RSO": 1794153936.6154814,
   "KXLALIGA1HBTTS-26NOV08RSORVC-BTTS": 1794153936.6154997,
   "KXEREDIVISIE1HTOTAL-26NOV08CAMPSV-3": 1794153954.9761295,
-  "KXEREDIVISIETOTAL-26NOV08CAMPSV-3": 1794153954.976275
+  "KXEREDIVISIETOTAL-26NOV08CAMPSV-3": 1794153954.976275,
+  "KXAUTBUNDESTOTAL-26NOV08STURBS-1": 1794153995.5069942
  },
  "blocked": {
-  "KXMLS1H-26NOV07HOUSTL-HOU": "switch off",
   "KXMLS1HBTTS-26NOV07HOUSTL-BTTS": "switch off",
   "KXMLS1HTOTAL-26NOV07MINSJ-3": "Polymarket does not confirm",
   "KXMLS1HTOTAL-26NOV07MINSJ-2": "Polymarket does not confirm",
@@ -1335,7 +1335,7 @@
   "KXEPLTOTAL-26NOV08IPSBOU-3": "no asks (already repriced)",
   "KXEPLBTTS-26NOV08IPSBOU-BTTS": "no asks (already repriced)",
   "KXBELGIANPLTOTAL-26NOV08KAAKOR-1": "no asks (already repriced)",
-  "KXSUPERLIGTOTAL-26NOV08ALATRA-1": "Polymarket does not confirm",
+  "KXSUPERLIGTOTAL-26NOV08ALATRA-1": "settling (224s)",
   "KXEREDIVISIE1HTOTAL-26NOV08CAMPSV-1": "Polymarket does not confirm",
   "KXEREDIVISIETOTAL-26NOV08CAMPSV-1": "Polymarket does not confirm",
   "KXSERIEATOTAL-26NOV08GENACM-3": "no asks (already repriced)",
@@ -1386,16 +1386,17 @@
   "KXEPLBTTS-26NOV08SUNCFC-BTTS": "Polymarket does not confirm",
   "KXEREDIVISIE1HTOTAL-26NOV08CAMPSV-2": "Polymarket does not confirm",
   "KXEREDIVISIETOTAL-26NOV08CAMPSV-2": "Polymarket does not confirm",
-  "KXSUPERLIGTOTAL-26NOV08ALATRA-2": "Polymarket does not confirm",
-  "KXLALIGA1HTOTAL-26NOV08RSORVC-3": "Polymarket does not confirm",
-  "KXLALIGA1HTOTAL-26NOV08RSORVC-2": "Polymarket does not confirm",
-  "KXLALIGA1HTOTAL-26NOV08RSORVC-1": "Polymarket does not confirm",
-  "KXLALIGA1H-26NOV08RSORVC-TIE": "Polymarket does not confirm",
-  "KXLALIGA1H-26NOV08RSORVC-RVC": "Polymarket does not confirm",
-  "KXLALIGA1H-26NOV08RSORVC-RSO": "Polymarket does not confirm",
-  "KXLALIGA1HBTTS-26NOV08RSORVC-BTTS": "Polymarket does not confirm",
+  "KXSUPERLIGTOTAL-26NOV08ALATRA-2": "no asks (already repriced)",
+  "KXLALIGA1HTOTAL-26NOV08RSORVC-3": "no asks (already repriced)",
+  "KXLALIGA1HTOTAL-26NOV08RSORVC-2": "no asks (already repriced)",
+  "KXLALIGA1HTOTAL-26NOV08RSORVC-1": "no asks (already repriced)",
+  "KXLALIGA1H-26NOV08RSORVC-TIE": "no asks (already repriced)",
+  "KXLALIGA1H-26NOV08RSORVC-RVC": "no asks (already repriced)",
+  "KXLALIGA1H-26NOV08RSORVC-RSO": "no asks (already repriced)",
+  "KXLALIGA1HBTTS-26NOV08RSORVC-BTTS": "no asks (already repriced)",
   "KXEREDIVISIE1HTOTAL-26NOV08CAMPSV-3": "Polymarket does not confirm",
-  "KXEREDIVISIETOTAL-26NOV08CAMPSV-3": "Polymarket does not confirm"
+  "KXEREDIVISIETOTAL-26NOV08CAMPSV-3": "Polymarket does not confirm",
+  "KXAUTBUNDESTOTAL-26NOV08STURBS-1": "Polymarket does not confirm"
  },
  "started": 1793687692.6057825,
  "ht": {
