@@ -1184,11 +1184,11 @@
   "KXMLSTOTAL-26NOV07SEALAFC-5": "no Polymarket twin",
   "KXMLSTOTAL-26NOV07SEALAFC-4": "no Polymarket twin",
   "KXMLSBTTS-26NOV07HOUSTL-BTTS": "switch off",
-  "KXLIGAMXTOTAL-26NOV07TOLMON-3": "settling (239s)",
+  "KXLIGAMXTOTAL-26NOV07TOLMON-3": "no asks (already repriced)",
   "KXMLSTOTAL-26NOV07DALCOL-7": "switch off",
   "KXMLSTOTAL-26NOV07DALCOL-6": "switch off",
   "KXMLSTOTAL-26NOV07DALCOL-5": "switch off",
-  "KXLIGAMXTOTAL-26NOV07TIGCRA-3": "settling (239s)"
+  "KXLIGAMXTOTAL-26NOV07TIGCRA-3": "no asks (already repriced)"
  },
  "started": 1793687692.6057825,
  "ht": {
