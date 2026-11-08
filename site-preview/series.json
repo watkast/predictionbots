@@ -386,13 +386,6 @@
 },
 {
 "venue": "kalshi",
-"slug": "kxchnsltotal",
-"title": "Point Total",
-"category": "Sports",
-"open": 49
-},
-{
-"venue": "kalshi",
 "slug": "kxufcfight",
 "title": "UFC Fight",
 "category": "Sports",
@@ -411,6 +404,13 @@
 "title": "English Premier League Total Goals",
 "category": "Sports",
 "open": 30
+},
+{
+"venue": "kalshi",
+"slug": "kxchnsltotal",
+"title": "Point Total",
+"category": "Sports",
+"open": 47
 },
 {
 "venue": "kalshi",
@@ -2181,7 +2181,7 @@
 "slug": "kxidnsltotal",
 "title": "Point Total",
 "category": "Sports",
-"open": 20
+"open": 19
 },
 {
 "venue": "kalshi",
@@ -3028,7 +3028,7 @@
 "slug": "kxidnslspread",
 "title": "Spread",
 "category": "Sports",
-"open": 13
+"open": 14
 },
 {
 "venue": "kalshi",
@@ -4554,7 +4554,7 @@
 "slug": "kxnbaast",
 "title": "NBA Player Assists",
 "category": "Sports",
-"open": 168
+"open": 191
 },
 {
 "venue": "kalshi",
@@ -8278,7 +8278,7 @@
 "slug": "kxnba2d",
 "title": "NBA Player Double Double",
 "category": "Sports",
-"open": 31
+"open": 41
 },
 {
 "venue": "kalshi",
@@ -8341,7 +8341,7 @@
 "slug": "kxnbareb",
 "title": "NBA Player Rebounds",
 "category": "Sports",
-"open": 177
+"open": 204
 },
 {
 "venue": "kalshi",
@@ -18712,17 +18712,31 @@
 },
 {
 "venue": "kalshi",
+"slug": "kxlkltotal",
+"title": "LKL Lithuania Total",
+"category": "Sports",
+"open": 11
+},
+{
+"venue": "kalshi",
+"slug": "kxlklspread",
+"title": "LKL Lithuania Spread",
+"category": "Sports",
+"open": 12
+},
+{
+"venue": "kalshi",
 "slug": "kxslbtotal",
 "title": "England Super League Basketball Total",
 "category": "Sports",
-"open": 11
+"open": 33
 },
 {
 "venue": "kalshi",
 "slug": "kxslbspread",
 "title": "England Super League Basketball Spread",
 "category": "Sports",
-"open": 12
+"open": 36
 },
 {
 "venue": "kalshi",
@@ -52060,13 +52074,6 @@
 },
 {
 "venue": "pmus",
-"slug": "astatc-setkameua-riaole-osiser",
-"title": "Will Riabuha Oleksandr win set 1 against Osipov Sergey",
-"category": "Sports",
-"open": 3
-},
-{
-"venue": "pmus",
 "slug": "astatc-setkameua-kuzole-holevh",
 "title": "Will Kuzyshyn Oleh win set 1 against Holoborodko Evhenii",
 "category": "Sports",
@@ -52664,13 +52671,6 @@
 "venue": "pmus",
 "slug": "atc-uwcl-slb-fka",
 "title": "Will Sport Lisboa e Benfica win against FK Austria Wien in the UWCL match scheduled for Nov 11, 2026",
-"category": "Sports",
-"open": 3
-},
-{
-"venue": "pmus",
-"slug": "astatc-setkameua-lazrus-shyant",
-"title": "Will Lazebnyi Ruslan win set 1 against Shypilov Anton",
 "category": "Sports",
 "open": 3
 },
@@ -53378,6 +53378,13 @@
 "venue": "pmus",
 "slug": "astatc-setkamecz-krajan-rulluk",
 "title": "Will Krames Jan Sr win set 1 against Rulc Lukas",
+"category": "Sports",
+"open": 3
+},
+{
+"venue": "pmus",
+"slug": "astatc-setkamecz-kantom-bridav",
+"title": "Will Kanka Tomas win set 2 against Brichacek David",
 "category": "Sports",
 "open": 3
 },
@@ -55651,6 +55658,13 @@
 },
 {
 "venue": "pmus",
+"slug": "astatc-setkameua-riaole-osiser",
+"title": "Will Riabuha Oleksandr win set 2 against Osipov Sergey",
+"category": "Sports",
+"open": 2
+},
+{
+"venue": "pmus",
 "slug": "tsc-setkameua-blaole-makyar",
 "title": "Will the total in Blashkun Oleksandr vs. Makovka Yaroslav be more than 3.5",
 "category": "Sports",
@@ -56267,8 +56281,8 @@
 },
 {
 "venue": "pmus",
-"slug": "astatc-setkameua-bulser-kolpet",
-"title": "Will Bului Serhii win set 2 against Kolesnik Petro",
+"slug": "astatc-setkameua-lazrus-shyant",
+"title": "Will Lazebnyi Ruslan win set 2 against Shypilov Anton",
 "category": "Sports",
 "open": 2
 },
@@ -56983,13 +56997,6 @@
 "venue": "pmus",
 "slug": "tsc-setkamemd-yavole-scovla",
 "title": "Will the total in Yavorskiy Oleksandr vs. Scofari Vladimir be more than 3.5",
-"category": "Sports",
-"open": 2
-},
-{
-"venue": "pmus",
-"slug": "astatc-setkamecz-kantom-bridav",
-"title": "Will Kanka Tomas win set 2 against Brichacek David",
 "category": "Sports",
 "open": 2
 },
@@ -82496,13 +82503,6 @@
 },
 {
 "venue": "pmus",
-"slug": "aec-czechligapro-id2503634976537002",
-"title": "Who will win in the upcoming table-tennis event Milan Jasek vs Roman Guliak scheduled for November 8, 2026 at 8:30 AM UTC",
-"category": "Sports",
-"open": 1
-},
-{
-"venue": "pmus",
 "slug": "aec-czechligapro-id2503634976537038",
 "title": "Who will win in the upcoming table-tennis event Jan Mecl Jr vs Martin Huk scheduled for November 8, 2026 at 9:00 AM UTC",
 "category": "Sports",
@@ -83210,6 +83210,13 @@
 },
 {
 "venue": "pmus",
+"slug": "aec-ebb-phx-nop",
+"title": "Who will win in the upcoming ebasketball event Phoenix Suns (OldJhin) vs New Orleans Pelicans (Barmaley) scheduled for November 8, 2026 at 10:10 AM UTC",
+"category": "Sports",
+"open": 1
+},
+{
+"venue": "pmus",
 "slug": "aec-ebb-mia-phx",
 "title": "Who will win in the upcoming ebasketball event Miami Heat (lucker) vs Phoenix Suns (OldJhin) scheduled for November 8, 2026 at 9:00 AM UTC",
 "category": "Sports",
@@ -83331,13 +83338,6 @@
 "venue": "pmus",
 "slug": "aec-utr-schava-slaluc",
 "title": "Who will win in the upcoming tennis event Ava Schueller vs Lucie Slamenikova scheduled for November 8, 2026 at 8:00 AM UTC",
-"category": "Sports",
-"open": 1
-},
-{
-"venue": "pmus",
-"slug": "aec-utr-filkar-priole",
-"title": "Who will win in the upcoming tennis event Karol Filar vs Oleg Prihodko scheduled for November 8, 2026 at 8:00 AM UTC",
 "category": "Sports",
 "open": 1
 },
@@ -83989,13 +83989,6 @@
 "venue": "pmus",
 "slug": "aec-itfme-samche-bertan",
 "title": "Who will win in the upcoming tennis event Samuil Chestovaliev vs Beren Tan scheduled for November 8, 2026 at 12:00 AM UTC",
-"category": "Sports",
-"open": 1
-},
-{
-"venue": "pmus",
-"slug": "aec-itfme-valvan-jonhai",
-"title": "Who will win in the upcoming tennis event Valentin Vanta vs Jonah Haidarian scheduled for November 8, 2026 at 12:00 AM UTC",
 "category": "Sports",
 "open": 1
 },
@@ -87284,6 +87277,13 @@
 },
 {
 "venue": "pmus",
+"slug": "astatc-setkameua-bulser-kolpet",
+"title": "Will Bului Serhii win set 3 against Kolesnik Petro",
+"category": "Sports",
+"open": 1
+},
+{
+"venue": "pmus",
 "slug": "aec-setkameua-kubser-bokrom",
 "title": "Who will win in the upcoming table-tennis event Kubrak Serhii vs Boklah Roman scheduled for November 8, 2026 at 9:30 AM UTC",
 "category": "Sports",
@@ -88544,15 +88544,15 @@
 },
 {
 "venue": "pmus",
-"slug": "btc-updown-5m",
-"title": "BTC Up or Down, 5 minutes",
+"slug": "eth-updown-5m",
+"title": "ETH Up or Down, 5 minutes",
 "category": "Crypto",
 "open": 1
 },
 {
 "venue": "pmus",
-"slug": "xrp-updown-5m",
-"title": "XRP Up or Down, 5 minutes",
+"slug": "btc-updown-5m",
+"title": "BTC Up or Down, 5 minutes",
 "category": "Crypto",
 "open": 1
 },
@@ -88565,13 +88565,6 @@
 },
 {
 "venue": "pmus",
-"slug": "sol-updown-15m",
-"title": "SOL Up or Down, 15 minutes",
-"category": "Crypto",
-"open": 1
-},
-{
-"venue": "pmus",
 "slug": "sol-updown-5m",
 "title": "SOL Up or Down, 5 minutes",
 "category": "Crypto",
@@ -88579,15 +88572,22 @@
 },
 {
 "venue": "pmus",
-"slug": "eth-updown-15m",
-"title": "ETH Up or Down, 15 minutes",
+"slug": "sol-updown-15m",
+"title": "SOL Up or Down, 15 minutes",
 "category": "Crypto",
 "open": 1
 },
 {
 "venue": "pmus",
-"slug": "eth-updown-5m",
-"title": "ETH Up or Down, 5 minutes",
+"slug": "xrp-updown-5m",
+"title": "XRP Up or Down, 5 minutes",
+"category": "Crypto",
+"open": 1
+},
+{
+"venue": "pmus",
+"slug": "eth-updown-15m",
+"title": "ETH Up or Down, 15 minutes",
 "category": "Crypto",
 "open": 1
 },
