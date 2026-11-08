@@ -180,3 +180,9 @@ stated on every row. The accounts at both venues stay open for API keys only; ba
   marketing copy; stance line "We don't predict. We measure." Rename everything in one pass once the domain is bought.
 - 2026-11-08 — Prediction News v0 on the home page from site/data/news.json (5 sourced items); Endorsement Ledger page
   rendered from site/data/ledger.json (6 sourced entries), noindex and unlinked until Noah switches it on.
+- 2026-11-08 — Benchmark finding (not yet published): Turbine's documented reference bot ("buy the side the live index
+  favours vs. the strike") showed +26% per dollar on 51 Polymarket US windows with zero index latency, but the result
+  depends entirely on how fresh the index is: +21% at 5 s, +8% (interval includes zero) at 10 s, −20% at 20 s. The
+  edge is latency, not the rule — the same lesson as Mr T. Benchmark now replays with a 10 s index lag by default and
+  reports a 95% interval and a plain verdict (wins/loses only with ≥100 trades and a clean interval). Candidate post 4:
+  "The bot's edge is your ping."
