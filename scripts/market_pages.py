@@ -35,7 +35,7 @@ except Exception:  # selftest without httpx
 KALSHI = "https://external-api.kalshi.com/trade-api/v2"
 PMUS = "https://gateway.polymarket.us"
 SITE = "https://predictionbots.io"
-KALSHI_TAKER, PMUS_TAKER = 0.07, 0.0695
+KALSHI_TAKER, PMUS_TAKER = 0.07, 0.095   # Polymarket US: Θ for accounts under $10k of 30-day taker volume (schedule of 6 Nov 2026)
 LOG = lambda *a: print(*a, file=sys.stderr)
 
 
@@ -45,9 +45,7 @@ def fee_per_contract(venue: str, p: float) -> float:
 
 
 def fee_on(venue: str, p: float, dollars: float) -> float:
-    contracts = dollars / p
-    raw = contracts * fee_per_contract(venue, p)
-    return math.ceil(raw * 100 - 1e-9) / 100 if venue == "kalshi" else raw
+    return (dollars / p) * fee_per_contract(venue, p)
 
 
 def breakeven(venue: str, p: float) -> float:
@@ -81,7 +79,7 @@ def cents(p: float) -> str:
 
 # ----------------------------------------------------------------------------- fetch
 class Http:
-    def __init__(self, pace: float = 0.08):
+    def __init__(self, pace: float = 0.25):
         self.c = httpx.Client(timeout=30, headers={"User-Agent": "predictionbots-market-pages/1.0 (+https://predictionbots.io)"})
         self.pace = pace
         self.last = 0.0
@@ -133,13 +131,14 @@ def kalshi_price(m: dict) -> float | None:
 def fetch_kalshi(h: Http, max_series: int | None) -> dict[str, dict]:
     markets, cursor, pages = [], None, 0
     while True:
-        j = h.get(f"{KALSHI}/markets", {"status": "open", "limit": 1000, "cursor": cursor})
+        j = h.get(f"{KALSHI}/markets", {"status": "open", "limit": 1000, "cursor": cursor, "mve_filter": "exclude"})
         if not j:
             break
-        markets.extend(j.get("markets") or [])
+        got = j.get("markets") or []
+        markets.extend(got)
         cursor = j.get("cursor")
         pages += 1
-        if not cursor or pages > 60:
+        if not cursor or not got or pages > 400:
             break
     LOG(f"kalshi: {len(markets)} open markets in {pages} pages")
     by_series: dict[str, dict] = defaultdict(lambda: {"venue": "kalshi", "markets": [], "series": {}})
@@ -165,33 +164,26 @@ def fetch_kalshi(h: Http, max_series: int | None) -> dict[str, dict]:
 
 
 def fetch_pmus(h: Http, max_series: int | None) -> dict[str, dict]:
-    """Tolerant pager over /v1/markets; logs the shape so the next run can be made precise."""
-    markets, token, pages = [], None, 0
+    """Offset pager over /v1/markets (active, not closed); the API returns {"markets": [...]} with no cursor."""
+    markets, offset, pages, seen = [], 0, 0, set()
     while True:
-        params = {"limit": 200}
-        if token:
-            params["pageToken"] = token
-        j = h.get(f"{PMUS}/v1/markets", params)
-        if not j:
-            if pages == 0:
-                j = h.get(f"{PMUS}/v1/markets")
-                if not j:
-                    break
-            else:
-                break
-        if pages == 0:
-            LOG("pmus /v1/markets keys:", sorted(j.keys()) if isinstance(j, dict) else type(j))
-        items = j.get("markets") or j.get("data") or j.get("items") or (j if isinstance(j, list) else [])
+        j = h.get(f"{PMUS}/v1/markets", {"limit": 500, "offset": offset, "active": "true", "closed": "false"})
+        items = (j or {}).get("markets") or []
         if pages == 0 and items:
             LOG("pmus market keys:", sorted(items[0].keys()))
-        markets.extend(items)
-        token = j.get("nextPageToken") or j.get("next_page_token") or j.get("nextCursor") or j.get("cursor") if isinstance(j, dict) else None
+        new = [m for m in items if m.get("id") not in seen]
+        for m in new:
+            seen.add(m.get("id"))
+        markets.extend(new)
         pages += 1
-        if not token or pages > 100 or not items:
+        if not items or not new or pages > 200:
             break
+        offset += len(items)
     LOG(f"pmus: {len(markets)} markets in {pages} pages")
     by_series: dict[str, dict] = defaultdict(lambda: {"venue": "pmus", "markets": [], "series": {}})
     for m in markets:
+        if str(m.get("status") or "").upper() not in ("OPEN", "MARKET_STATUS_OPEN", ""):
+            continue
         slug = str(m.get("slug") or "")
         terms = m.get("assetPriceTerms") or {}
         if terms:
@@ -235,15 +227,28 @@ def norm_pmus(rec: dict) -> dict:
     rows = []
     for m in ms:
         p = None
+        sides = m.get("marketSides")
+        if isinstance(sides, list) and sides:
+            p = _num((sides[0] or {}).get("price"))
+        if p is None:
+            bb, ba = _num(m.get("bestBidQuote")), _num(m.get("bestAskQuote"))
+            if bb is not None and ba is not None and 0 < ba <= 1:
+                p = (bb + ba) / 2
         for k in ("yesPrice", "lastTradePrice", "price", "midPrice"):
-            p = _num(m.get(k))
             if p is not None:
                 break
-        if p is None and isinstance(m.get("outcomePrices"), list) and m["outcomePrices"]:
-            p = _num(m["outcomePrices"][0])
+            p = _num(m.get(k))
+        op = m.get("outcomePrices")
+        if isinstance(op, str):
+            try:
+                op = json.loads(op)
+            except Exception:
+                op = None
+        if p is None and isinstance(op, list) and op:
+            p = _num(op[0])
         if p is not None and p > 1:
             p = p / 100
-        rows.append({"title": m.get("title") or m.get("question") or m.get("slug"), "sub": "", "p": p if p and 0 < p < 1 else None,
+        rows.append({"title": m.get("question") or m.get("title") or m.get("slug"), "sub": "", "p": p if p and 0 < p < 1 else None,
                      "volume": _num(m.get("volume"), 0) or 0, "close": m.get("endDate") or m.get("closeTime") or m.get("windowEnd") or "",
                      "rules": m.get("description") or m.get("rules") or ""})
     key = rec["ticker"]
@@ -256,8 +261,10 @@ def norm_pmus(rec: dict) -> dict:
         rules = (f"A new market every {hz_words}. \"Up\" pays $1 if the CF Benchmarks {sym.upper()} index, averaged over the last 60 seconds of the window, "
                  f"is above the price at the open; \"Down\" pays $1 otherwise.")
     else:
-        title = (ms[0].get("eventTitle") or ms[0].get("title") or key).strip()
-        cat = str(ms[0].get("category") or "").strip()
+        q = str(ms[0].get("question") or ms[0].get("title") or "").strip()
+        # a sports event slug like aec-nfl-hou-ten: title from the question ("Houston vs Tennessee ...")
+        title = (ms[0].get("eventTitle") or (q.split("?")[0].strip() if q else "") or key).strip()
+        cat = str(ms[0].get("category") or "").strip().capitalize()
         rules = next((r["rules"] for r in rows if r["rules"]), "")
     return {"venue": "pmus", "venue_name": "Polymarket US", "slug": re.sub(r"[^a-z0-9-]+", "-", key.lower()).strip("-"), "title": title,
             "category": cat, "rules": rules, "sources": [], "fee_note": "Resting (maker) orders pay nothing; orders that take liquidity pay the fee.",
@@ -297,6 +304,8 @@ def render_series(s: dict, built: str) -> str:
     rows = [r for r in s["rows"] if r["p"] is not None]
     rows.sort(key=lambda r: -r["volume"])
     ps = sorted(r["p"] for r in rows)
+    if not ps:
+        ps = [r["p"] for r in s["rows"] if r["p"] is not None]
     p = ps[len(ps) // 2] if ps else 0.5
     v = s["venue"]
     fee1 = fee_per_contract(v, p)
@@ -311,7 +320,7 @@ def render_series(s: dict, built: str) -> str:
     desc = f"{s['venue_name']} {s['title']}: market price {pct(p)}, fee {cents(fee1)} a contract at that price, break-even win rate {pct(be)}, luck needed {lpct}. Plain words, no account."
     canon = f"{SITE}/markets/{v}/{s['slug']}/"
     faq = [{"@type": "Question", "name": f"What is the {s['title']} market on {s['venue_name']}?", "acceptedAnswer": {"@type": "Answer", "text": re.sub(r"\s+", " ", s["rules"] or f"A {s['venue_name']} market in the {s['category'] or 'general'} category. Contracts pay $1 if the stated outcome happens and nothing otherwise.")[:600]}},
-           {"@type": "Question", "name": f"What is the fee on {s['venue_name']} for this market?", "acceptedAnswer": {"@type": "Answer", "text": f"At the current typical price of {cents(p)}, about {cents(fee1)} per contract ({'7% × price × (1 − price), rounded up to the cent per order' if v == 'kalshi' else '6.95% × price × (1 − price) per share for orders that take liquidity'}). On a $50 trade that is about ${fee50:.2f}."}},
+           {"@type": "Question", "name": f"What is the fee on {s['venue_name']} for this market?", "acceptedAnswer": {"@type": "Answer", "text": f"At the current typical price of {cents(p)}, about {cents(fee1)} per contract ({'7% × price × (1 − price), rounded up, on orders that take liquidity' if v == 'kalshi' else '9.5% × price × (1 − price) per share on orders that take liquidity, the rate for accounts under $10,000 of 30-day volume since 6 November 2026; 6.95% in a new account\'s first week'}). On a $50 trade that is about ${fee50:.2f}."}},
            {"@type": "Question", "name": "What win rate do I need to break even?", "acceptedAnswer": {"@type": "Answer", "text": f"About {pct(be)} if you hold to settlement, against a market price of {pct(p)}. The gap is the fee."}}]
     ld = json.dumps({"@context": "https://schema.org", "@type": "FAQPage", "mainEntity": faq, "dateModified": built}, ensure_ascii=False)
     out = [HEAD.format(title=esc(title), desc=esc(desc), canon=canon, css=CSS, ld=ld)]
@@ -333,7 +342,7 @@ def render_series(s: dict, built: str) -> str:
             mark = " <b>(now)</b>" if abs(q - round(p, 2)) < 1e-9 else ""
             out.append(f'<tr><th scope="row">{cents(q)}{mark}</th><td class="num">{fee_per_contract(v, q)*100:.1f}¢</td><td class="num">${fee_on(v, q, 50):.2f}</td><td class="num">{breakeven(v, q)*100:.1f}%</td></tr>')
     out.append("</tbody></table></div>")
-    out.append(f'<p class="fine">{esc(s["fee_note"])} Formula: {"7% × contracts × price × (1 − price), rounded up to the cent per order" if v == "kalshi" else "6.95% × price × (1 − price) per share, taker"}. Break-even assumes you hold to settlement; trading out early pays the fee twice.</p>')
+    out.append(f'<p class="fine">{esc(s["fee_note"])} Formula: {"7% × contracts × price × (1 − price), rounded up, on orders that take liquidity" if v == "kalshi" else "9.5% × price × (1 − price) per share on orders that take liquidity (accounts under $10,000 of 30-day volume; 6.95% in a new account's first week and above $250,000)"}. Break-even assumes you hold to settlement; trading out early pays the fee twice.</p>')
     out.append(f'<p><a class="btn dark" href="/simulate.html?venue={v}&price={round(p*100)}&stake=20&week=20&bank=500">How long until your balance is $0 in this market? →</a></p></section>')
     if rows:
         out.append('<section><h2>Open contracts right now</h2><div class="ledger-wrap"><table class="ledger cells"><caption>Open contracts in this series with price, implied probability, volume and close time</caption><thead><tr><th scope="col">Contract</th><th scope="col" class="num">YES price</th><th scope="col" class="num">Implied</th><th scope="col" class="num">Fee at this price</th><th scope="col" class="num">Luck needed</th><th scope="col" class="num">Volume</th><th scope="col">Closes</th></tr></thead><tbody>')
@@ -427,8 +436,8 @@ def write(out: Path, series: list[dict]) -> int:
 def selftest() -> None:
     assert abs(fee_per_contract("kalshi", 0.5) - 0.0175) < 1e-12
     assert abs(fee_on("kalshi", 0.5, 50) - 1.75) < 1e-9
-    assert abs(fee_on("pmus", 0.3, 50) - 2.4325) < 1e-3
-    assert abs(breakeven("pmus", 0.5) - 0.51738) < 1e-4
+    assert abs(fee_on("pmus", 0.3, 50) - 3.325) < 1e-3
+    assert abs(breakeven("pmus", 0.5) - 0.52375) < 1e-4
     assert luck(0.5) == 1.0 and abs(luck(0.94) - 0.12) < 1e-9
     fake_k = {"venue": "kalshi", "ticker": "KXBTC5M", "series": {"title": "Bitcoin price, 5 minutes", "category": "Crypto", "fee_type": "quadratic", "settlement_sources": [{"name": "CF Benchmarks BRTI"}]},
               "markets": [{"ticker": "KXBTC5M-26NOV08-1200", "title": "BTC above 75,000 at 12:05?", "yes_bid_dollars": "0.48", "yes_ask_dollars": "0.52", "volume_fp": "1200", "close_time": "2026-11-08T12:05:00Z", "rules_primary": "Resolves YES if the BRTI 60-second average is above the open."}]}

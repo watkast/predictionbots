@@ -52,6 +52,7 @@
     <div class="calc">
       <form class="calc-in" onsubmit="return false">
         <label>Venue<select id="tc-venue"><option value="kalshi">Kalshi</option><option value="pmus">Polymarket US</option></select></label>
+        <label id="tc-tier-wrap" hidden>Polymarket US fee tier (30-day taker volume)<select id="tc-tier"><option value="t1">Under $10,000: 9.5% (most people)</option><option value="week1">New account, days 1–7: 6.95%</option><option value="t2">$10,000 to $50,000: 8.5%</option><option value="t3">$50,000 to $250,000: 7.5%</option><option value="t4">$250,000 and up: 6.95%</option></select></label>
         <label>Contract price (¢)<input id="tc-price" type="number" min="1" max="99" value="50" inputmode="numeric"></label>
         <label>Size per trade ($)<input id="tc-size" type="number" min="1" value="50" inputmode="decimal"></label>
         <label>Trades per week<input id="tc-week" type="number" min="0" value="20" inputmode="numeric"></label>
@@ -69,7 +70,7 @@
         <div class="calc-actions"><button type="button" class="btn" id="tc-share">Copy this result</button><a href="/simulate.html"><b>How long until your balance is $0?</b> Watch it play out →</a><a href="/posts/2026-11-08-free-money-that-wasnt.html">How settlement really works →</a></div>
       </div>
     </div>
-    <p class="fine">Kalshi: 7% × contracts × price × (1 − price), rounded up to the cent, on most markets. Polymarket US: 6.95% × price × (1 − price) per share for orders that take liquidity; resting orders pay nothing. "No edge" means your win rate equals the price, which is what the market is telling you it is. Sources: the venues' published fee schedules, linked from our <a href="https://github.com/watkast/predictionbots">repo</a>.</p>
+    <p class="fine">Kalshi (schedule of 7 July 2026): 7% × contracts × price × (1 − price), rounded up, on orders that take liquidity; most sports and economics series also charge resting orders 1.75%. Polymarket US (schedule of 6 November 2026): Θ × price × (1 − price) per share on orders that take liquidity, where Θ is 9.5% for accounts under $10,000 of 30-day taker volume, 8.5% to $50,000, 7.5% to $250,000 and 6.95% above; new accounts pay 6.95% for their first seven days; resting orders pay nothing. "No edge" means your win rate equals the price, which is what the market is telling you it is. Sources: the venues' published fee schedules, linked from our <a href="https://github.com/watkast/predictionbots">repo</a>.</p>
   </section>
 
   <section id="deal">
@@ -93,7 +94,7 @@
           <li>You open an account with a photo ID and a selfie. 18+, not in Nevada. A promo code cannot be added later.</li>
           <li>You deposit at least $10 and place one real-money trade.</li>
           <li>You get a $25 bonus. It has to be traded once before it can be withdrawn.</li>
-          <li>Taker fees are about <b>1.7¢ a share</b> at 50¢; resting orders are free.</li>
+          <li>Fees on a 50¢ share: about <b>1.7¢</b> in your first week, then <b>2.4¢</b> (9.5% × price × (1 − price), the rate for everyone under $10,000 a month since 6 November 2026); resting orders are free.</li>
           <li><b>We are not paid for this link yet.</b> If Polymarket approves us as a partner, the rate appears here the day they tell us.</li>
         </ol>
         <a class="btn dark" href="https://polymarket.us" rel="nofollow noopener">Open Polymarket US</a>

@@ -15,7 +15,7 @@
 <script type="application/ld+json">
 {"@context":"https://schema.org","@type":"FAQPage","mainEntity":[
  {"@type":"Question","name":"How long until my balance is $0 in a prediction market?","acceptedAnswer":{"@type":"Answer","text":"With no edge, your win rate equals the market price, so each trade's expected result is minus the fee. Time to zero depends on your stake relative to your balance and the fee at the price you trade; this tool simulates it for Polymarket US and Kalshi using their published fee formulas."}},
- {"@type":"Question","name":"What is the fee on Kalshi and Polymarket US?","acceptedAnswer":{"@type":"Answer","text":"Kalshi charges 7% × contracts × price × (1 − price), rounded up to the cent, on most markets. Polymarket US charges 6.95% × price × (1 − price) per share on orders that take liquidity; resting orders pay nothing."}},
+ {"@type":"Question","name":"What is the fee on Kalshi and Polymarket US?","acceptedAnswer":{"@type":"Answer","text":"Kalshi charges 7% × contracts × price × (1 − price), rounded up, on orders that take liquidity, and 1.75% on resting orders in most sports and economics series. Polymarket US charges Θ × price × (1 − price) per share on orders that take liquidity, where Θ is 9.5% for accounts under $10,000 of 30-day taker volume (6.95% for a new account's first week and for the largest accounts); resting orders pay nothing."}},
  {"@type":"Question","name":"Does doubling my stake after a loss help?","acceptedAnswer":{"@type":"Answer","text":"No. Doubling after a loss (a martingale) does not change the expected result of any trade; it concentrates the losses into fewer, larger ones and reaches $0 sooner. The tool lets you switch it on to see the difference."}}
 ]}
 </script>
@@ -70,6 +70,7 @@
     <div class="sim">
       <form class="sim-in" onsubmit="return false">
         <label>Venue<select id="sm-venue"><option value="kalshi">Kalshi</option><option value="pmus">Polymarket US</option></select></label>
+        <label id="sm-tier-wrap" hidden>Polymarket US fee tier (30-day taker volume)<select id="sm-tier"><option value="t1">Under $10,000: 9.5% (most people)</option><option value="week1">New account, days 1–7: 6.95%</option><option value="t2">$10,000 to $50,000: 8.5%</option><option value="t3">$50,000 to $250,000: 7.5%</option><option value="t4">$250,000 and up: 6.95%</option></select></label>
         <label>Contract price (¢)<input id="sm-price" type="number" min="1" max="99" value="50" inputmode="numeric"></label>
         <label>Stake per trade ($)<input id="sm-stake" type="number" min="1" value="20" inputmode="decimal"></label>
         <label>Trades per week<input id="sm-week" type="number" min="1" value="20" inputmode="numeric"></label>
@@ -89,7 +90,7 @@
         <div id="sm-table-wrap" class="ledger-wrap" hidden></div>
       </div>
     </div>
-    <p class="fine">How it works: each trade buys <code>stake ÷ price</code> contracts and pays the venue's fee on the way in (Kalshi: 7% × contracts × price × (1 − price), rounded up to the cent; Polymarket US: 6.95% × price × (1 − price) per share, taker). You win with probability equal to your win rate, which is the price unless you move the slider; a win pays $1 per contract, a loss pays nothing, and you hold to settlement. 300 careers, the same every time for the same inputs, so a result you share can be reproduced. This is what the arithmetic does on average; it is not a forecast of anyone's results, and it is not investment advice. Problem gambling help: 1-800-GAMBLER.</p>
+    <p class="fine">How it works: each trade buys <code>stake ÷ price</code> contracts and pays the venue's fee on the way in (Kalshi: 7% × contracts × price × (1 − price), rounded up; Polymarket US: Θ × price × (1 − price) per share for orders that take liquidity, Θ = 9.5% for accounts under $10,000 of 30-day volume since 6 November 2026, down to 6.95% for the largest accounts and for a new account's first week). You win with probability equal to your win rate, which is the price unless you move the slider; a win pays $1 per contract, a loss pays nothing, and you hold to settlement. 300 careers, the same every time for the same inputs, so a result you share can be reproduced. This is what the arithmetic does on average; it is not a forecast of anyone's results, and it is not investment advice. Problem gambling help: 1-800-GAMBLER.</p>
   </section>
 
   <section id="why">

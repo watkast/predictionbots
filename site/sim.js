@@ -1,21 +1,22 @@
 /* "How long until your balance is $0 in this market?"
    A few hundred simulated careers in one market: your win rate is the market's price (no edge) unless you move the
-   slider; the venue's fee formula is charged on every trade; you hold to settlement. The fan is the 10th–90th
+   slider; the venue's fee formula is charged on every trade (Kalshi 7%; Polymarket US by 30-day volume tier, 9.5% for
+   most people since 6 Nov 2026); you hold to settlement. The fan is the 10th–90th
    percentile of balances across careers; the narrated path is a real simulated career whose time-to-zero is the median.
    Nothing here is a forecast of any one person's results; it is what the arithmetic of the market does on average. */
 (function () {
   var $ = function (id) { return document.getElementById(id); };
-  var el = { venue: $('sm-venue'), price: $('sm-price'), stake: $('sm-stake'), week: $('sm-week'), bank: $('sm-bank'),
+  var el = { venue: $('sm-venue'), tier: $('sm-tier'), price: $('sm-price'), stake: $('sm-stake'), week: $('sm-week'), bank: $('sm-bank'),
              edge: $('sm-edge'), edgeOut: $('sm-edge-out'), martingale: $('sm-martingale'), chase: $('sm-chase'),
              run: $('sm-run'), play: $('sm-play'), share: $('sm-share'), head: $('sm-head'), sub: $('sm-sub'),
              narr: $('sm-narr'), stats: $('sm-stats'), chart: $('sm-chart'), tip: $('sm-tip') };
   if (!el.chart || typeof d3 === 'undefined') return;
 
   var N = 300, MAX_T = 4000;
-  function feeFor(v, p, contracts) {
-    var raw = (v === 'kalshi' ? 0.07 : 0.0695) * contracts * p * (1 - p);
-    return v === 'kalshi' ? Math.ceil(raw * 100 - 1e-9) / 100 : raw;
-  }
+  var PMUS = { week1: 0.0695, t1: 0.095, t2: 0.085, t3: 0.075, t4: 0.0695 };
+  function rateFor(v) { return v === 'kalshi' ? 0.07 : (PMUS[el.tier && el.tier.value] || PMUS.t1); }
+  function feeFor(v, p, contracts) { return rateFor(v) * contracts * p * (1 - p); }
+  function showTier() { var w = $('sm-tier-wrap'); if (w) w.hidden = el.venue.value !== 'pmus'; }
   // mulberry32 so the same inputs give the same picture (shareable, checkable)
   function rng(seed) { return function () { seed |= 0; seed = seed + 0x6D2B79F5 | 0; var t = Math.imul(seed ^ seed >>> 15, 1 | seed); t = t + Math.imul(t ^ t >>> 7, 61 | t) ^ t; return ((t ^ t >>> 14) >>> 0) / 4294967296; }; }
 
@@ -167,7 +168,7 @@
   }
 
   function syncEdge() { var p = Math.round((parseFloat(el.price.value) || 50)); var e = parseFloat(el.edge.value) || 0; el.edgeOut.textContent = (p + e) + '% (market says ' + p + '%' + (e ? ', you say you are ' + (e > 0 ? '+' : '') + e + ' points better' : ', no edge') + ')'; }
-  ['input', 'change'].forEach(function (evn) { [el.venue, el.price, el.stake, el.week, el.bank, el.edge].forEach(function (x) { x.addEventListener(evn, function () { syncEdge(); run(false); }); });
+  ['input', 'change'].forEach(function (evn) { [el.venue, el.tier, el.price, el.stake, el.week, el.bank, el.edge].forEach(function (x) { if (!x) return; x.addEventListener(evn, function () { showTier(); syncEdge(); run(false); }); });
     [el.martingale, el.chase].forEach(function (x) { x.addEventListener(evn, function () { if (x === el.martingale && x.checked) el.chase.checked = false; if (x === el.chase && x.checked) el.martingale.checked = false; run(false); }); }); });
   if (reduceMotion) el.play.textContent = 'Run again (animation off: reduced motion)';
   el.play.addEventListener('click', function () { run(true); });
@@ -175,5 +176,5 @@
   window.addEventListener('resize', function () { if (state) render(state.cfg, state.res, state.res.plotEnd); });
   // deep links: /simulate?venue=kalshi&price=52&stake=20&week=20&bank=500
   try { var q = new URLSearchParams(location.search); ['venue', 'price', 'stake', 'week', 'bank'].forEach(function (k) { if (q.get(k) && el[k]) el[k].value = q.get(k); }); } catch (e) {}
-  syncEdge(); run(true);
+  showTier(); syncEdge(); run(true);
 })();

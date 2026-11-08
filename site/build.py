@@ -16,7 +16,7 @@ TEMPLATE = """<!doctype html>
 <link rel="stylesheet" href="/styles.css"></head>
 <body><a class="skip" href="#main">Skip to content</a><div class="wrap">
 <header class="top"><a class="brand" href="/">PredictionBots</a><nav><a href="/#truecost">True Cost</a><a href="/simulate.html">Simulator</a><a href="/#benchmark">Bot benchmark</a><a href="/#research">Research</a><a href="/#honest">How we're paid</a></nav><fieldset class="theme" id="theme"><legend>Theme</legend><label><input type="radio" name="theme" value="system" checked> System</label><label><input type="radio" name="theme" value="dark"> Dark</label><label><input type="radio" name="theme" value="light"> Light</label></fieldset></header>
-<main id="main"><article class="post"><h1>{title}</h1><div class="meta">{date_h} · PredictionBots research</div><div class="body">{body}</div></article>
+<main id="main"><article class="post"><h1>{title}</h1><div class="meta">{date_h} · PredictionBots</div><div class="body">{body}</div></article>
 <section id="waitlist"><h2>Get the next one</h2><p class="sub">Research posts and new benchmark rows as they publish. Nothing else, and you can leave with one click.</p>
 <form class="wait" id="wait-form" action="/api/waitlist" method="post"><input type="email" id="email" name="email" placeholder="you@example.com" required autocomplete="email" aria-label="Email"><button type="submit">Send me the posts</button></form><div class="wait-msg" id="wait-msg"></div></section></main>
 <script src="/theme.js" defer></script><footer><p>PredictionBots measures prediction markets and publishes its own record. Nothing on this site is investment advice. Prediction markets and crypto involve risk of loss, and most participants lose money. If gambling is a problem for you or someone you know, call 1-800-GAMBLER.</p><p>Code and data: <a href="https://github.com/watkast/predictionbots">github.com/watkast/predictionbots</a></p></footer>
@@ -70,6 +70,22 @@ def build():
                               date_h=human_date(meta.get("date", "")), body=html)
         (DIST / "posts" / (md.stem + ".html")).write_text(out)
         print("built", md.stem)
+    # /learn/: evergreen explainers, same template, "Updated <date>" instead of a dateline, FAQ structured data if given
+    if (ROOT / "learn").exists():
+        (DIST / "learn").mkdir()
+        for md in sorted((ROOT / "learn").glob("*.md")):
+            meta, body = front_matter(md.read_text())
+            html = markdown.markdown(body, extensions=["extra", "smarty", "toc"])
+            faq = ""
+            if meta.get("faq"):
+                import json
+                qa = [q.split("|", 1) for q in meta["faq"] if "|" in q]
+                faq = '<script type="application/ld+json">' + json.dumps({"@context": "https://schema.org", "@type": "FAQPage", "mainEntity": [
+                    {"@type": "Question", "name": q.strip(), "acceptedAnswer": {"@type": "Answer", "text": a.strip()}} for q, a in qa]}, ensure_ascii=False) + "</script>"
+            out = TEMPLATE.format(title=meta.get("title", md.stem), summary=meta.get("summary", ""), og_image=faq,
+                                  date_h="Updated " + human_date(meta.get("updated", meta.get("date", ""))), body=html)
+            (DIST / "learn" / (md.stem + ".html")).write_text(out)
+            print("built learn/" + md.stem)
     print("site ->", DIST)
 
 
