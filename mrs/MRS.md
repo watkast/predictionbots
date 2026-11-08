@@ -1,6 +1,6 @@
 # Mr. S — live
 
-Updated 2026-11-08 16:30 UTC · mode **live** · switch **OFF** · live leagues: usa.1
+Updated 2026-11-08 16:35 UTC · mode **live** · switch **OFF** · live leagues: usa.1
 
 ## ⚠️ Kalshi balance below the $50 risk cap — fund the account (orders still try, capped by cash)
 
@@ -11,23 +11,23 @@ Updated 2026-11-08 16:30 UTC · mode **live** · switch **OFF** · live leagues:
 0 buys · 0 settled · 0 right / 0 wrong · P&L **$+0.00** · open $0.00
 
 ## Right now
-games in play/just ended: 30 · matched to Kalshi: 11 · to Polymarket: 11 · decided markets agreed by both: 5 · disagreements: 0
+games in play/just ended: 32 · matched to Kalshi: 13 · to Polymarket: 12 · decided markets agreed by both: 6 · disagreements: 0
 
 Kalshi series with open markets: KXAUTBUNDESBTTS, KXAUTBUNDESTOTAL, KXBELGIANPLBTTS, KXBELGIANPLTOTAL, KXBUNDESLIGA1H, KXBUNDESLIGA1HBTTS, KXBUNDESLIGA1HTOTAL, KXBUNDESLIGABTTS, KXBUNDESLIGATOTAL, KXEPL1H, KXEPL1HBTTS, KXEPL1HTOTAL, KXEPLBTTS, KXEPLTOTAL, KXEREDIVISIE1H, KXEREDIVISIE1HBTTS, KXEREDIVISIE1HTOTAL, KXEREDIVISIEBTTS, KXEREDIVISIETOTAL, KXLALIGA1H, KXLALIGA1HBTTS, KXLALIGA1HTOTAL, KXLALIGABTTS, KXLALIGATOTAL, KXLIGAPORTUGAL1H, KXLIGAPORTUGAL1HBTTS, KXLIGAPORTUGAL1HTOTAL, KXLIGAPORTUGALBTTS, KXLIGAPORTUGALTOTAL, KXLIGUE11H, KXLIGUE11HBTTS, KXLIGUE11HTOTAL, KXLIGUE1BTTS, KXLIGUE1TOTAL, KXSERIEA1H, KXSERIEA1HBTTS, KXSERIEA1HTOTAL, KXSERIEABTTS, KXSERIEATOTAL, KXSUPERLIGBTTS, KXSUPERLIGTOTAL
 
 ### Last blocks
-- KXAUTBUNDESTOTAL-26NOV08STURBS-2: settling (118s)
-- KXAUTBUNDESBTTS-26NOV08STURBS-BTTS: settling (58s)
-- KXLIGUE11HTOTAL-26NOV08ANGNIC-1: Polymarket does not confirm
-- KXLIGUE1TOTAL-26NOV08ANGNIC-1: no asks (already repriced)
-- KXLIGAPORTUGAL1HTOTAL-26NOV08SCLGIL-3: no asks (already repriced)
-- KXLIGAPORTUGAL1HTOTAL-26NOV08SCLGIL-2: no asks (already repriced)
-- KXLIGAPORTUGAL1H-26NOV08SCLGIL-TIE: no asks (already repriced)
-- KXLIGAPORTUGAL1H-26NOV08SCLGIL-SCL: no asks (already repriced)
 - KXLIGAPORTUGAL1H-26NOV08SCLGIL-GIL: no asks (already repriced)
 - KXLIGAPORTUGAL1HBTTS-26NOV08SCLGIL-BTTS: no asks (already repriced)
-- KXAUTBUNDESTOTAL-26NOV08STURBS-3: settling (58s)
-- KXAUTBUNDESTOTAL-26NOV08STURBS-4: settling (58s)
+- KXAUTBUNDESTOTAL-26NOV08STURBS-3: settling (182s)
+- KXAUTBUNDESTOTAL-26NOV08STURBS-4: no asks (already repriced)
+- KXEREDIVISIE1HTOTAL-26NOV08AZAGRO-3: no Polymarket twin
+- KXEREDIVISIE1H-26NOV08AZAGRO-TIE: no Polymarket twin
+- KXEREDIVISIE1H-26NOV08AZAGRO-GRO: no Polymarket twin
+- KXEREDIVISIE1H-26NOV08AZAGRO-AZA: no Polymarket twin
+- KXLIGUE11HTOTAL-26NOV08HACFCL-1: Polymarket does not confirm
+- KXLIGUE1TOTAL-26NOV08HACFCL-1: settling (71s)
+- KXEPL1HTOTAL-26NOV08MUNAVL-1: Polymarket does not confirm
+- KXEPLTOTAL-26NOV08MUNAVL-1: settling (0s)
 
 ---
 caps: $10/order · $20/game · $40/day · $50 open risk · ask 0.6–0.97 · score stable ≥ 240s (60s for a finished 1H) in ESPN and Polymarket
