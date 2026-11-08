@@ -1,6 +1,6 @@
 # Mr. H — Coinbase hopper, PAPER
 
-Updated 2026-11-08T18:30:30Z · scans 453 · universe 111 coins (USD pairs with ≥ $100k 24-h volume) · fees 0.9% taker each way · start $4.00
+Updated 2026-11-08T18:40:30Z · scans 455 · universe 111 coins (USD pairs with ≥ $100k 24-h volume) · fees 0.9% taker each way · start $4.00
 
 ## Books (one position at a time, all-in every hop)
 
@@ -14,7 +14,7 @@ Updated 2026-11-08T18:30:30Z · scans 453 · universe 111 coins (USD pairs with 
 
 | profile | signals | scored | median +15m | median +1h | median +4h | % beat 1.8% at +1h | median 4%-trail hop net | max run-up (med) | max drawdown (med) |
 |---|---|---|---|---|---|---|---|---|---|
-| aggressive | 66 | 53 | -0.37% | -2.63% | -1.37% | 19% | -5.13% | +7.45% | -10.26% |
+| aggressive | 67 | 53 | -0.37% | -2.63% | -1.37% | 19% | -5.13% | +7.45% | -10.26% |
 | standard | 58 | 41 | +0.00% | -1.38% | -0.69% | 22% | -2.25% | +6.06% | -6.23% |
 
 ## Aggressive signals by BTC regime (BTC's own move in the hour before the signal)
@@ -58,7 +58,6 @@ Updated 2026-11-08T18:30:30Z · scans 453 · universe 111 coins (USD pairs with 
 
 | time (UTC) | profile | coin | impulse | vol× | >2h high | spread | taken | +1h | +4h |
 |---|---|---|---|---|---|---|---|---|---|
-| 11-08T12:50 | aggressive | MEZO | +6.7% | 16.2 | y | 0.73% | spread | -4.8% | -12.7% |
 | 11-08T12:50 | standard | MEZO | +6.7% | 16.2 | y | 0.73% | spread | -4.8% | -12.7% |
 | 11-08T12:55 | aggressive | MEZO | +5.0% | 3.7 | y | 0.37% | in_position | -9.8% | -17.0% |
 | 11-08T12:55 | standard | MEZO | +5.0% | 3.7 | y | 0.37% | in_position | -9.8% | -17.0% |
@@ -73,3 +72,4 @@ Updated 2026-11-08T18:30:30Z · scans 453 · universe 111 coins (USD pairs with 
 | 11-08T15:50 | standard | CAP | +1.7% | 17.2 | y | 0.10% | in_position | … | … |
 | 11-08T17:05 | aggressive | BOBBOB | +2.0% | 4.6 | n | 0.49% | in_position | … | … |
 | 11-08T17:05 | standard | RSR | +1.7% | 9.3 | y | 0.68% | spread | … | … |
+| 11-08T18:40 | aggressive | FORTH | +4.3% | 7.6 | n | 2.04% | spread | … | … |
