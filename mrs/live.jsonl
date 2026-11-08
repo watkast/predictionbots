@@ -9828,3 +9828,6 @@
 {"t": 1794093760.346, "k": "start", "mode": "live", "balance_ok": false}
 {"t": 1794093760.592, "k": "switch", "on": false, "code": 404, "via": "api"}
 {"t": 1794105503.581, "k": "err", "where": "loop", "e": "ReadTimeout(ReadTimeoutError(\"HTTPSConnectionPool(host='gateway.polymarket.us', port=443): Read timed out. (read timeout=20.0)\"))"}
+{"t": 1794119113.062, "k": "balance_check", "code": 200, "fields": ["balance", "balance_breakdown", "balance_dollars", "portfolio_value", "updated_ts"], "ok": false}
+{"t": 1794119113.063, "k": "start", "mode": "live", "balance_ok": false}
+{"t": 1794119113.209, "k": "switch", "on": false, "code": 404, "via": "api"}
