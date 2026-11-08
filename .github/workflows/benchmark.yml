@@ -27,7 +27,8 @@ jobs:
       - uses: actions/checkout@v4
       - uses: actions/setup-python@v5
         with: { python-version: "3.13" }
-      - run: python scripts/benchmark_rules.py selftest
+      - run: pip install httpx
+      - run: python scripts/benchmark_rules.py selftest && python scripts/weather_resolve.py selftest
       - name: Fetch the recorder data (mrp-data, sparse)
         run: |
           mkdir -p ../rec && cd ../rec
@@ -52,13 +53,14 @@ jobs:
           git config --global user.email "bots@users.noreply.github.com"
           mkdir -p ../pub && cd ../pub
           git init -q && git remote add origin "https://x-access-token:${{ github.token }}@github.com/${{ github.repository }}.git"
-          git config core.sparseCheckout true && git sparse-checkout set --no-cone benchmark
+          git config core.sparseCheckout true && git sparse-checkout set --no-cone benchmark weather
           for i in 1 2 3 4 5; do
             git fetch -q --filter=blob:none --depth 1 origin mrp-data && git checkout -q -B mrp-data FETCH_HEAD
             mkdir -p benchmark
             cp "$GITHUB_WORKSPACE"/out/benchmark/benchmark.json "$GITHUB_WORKSPACE"/out/benchmark/BENCHMARK.md benchmark/
             gzip -c "$GITHUB_WORKSPACE"/btc15.json > benchmark/btc15_windows.json.gz
             if [ -f "$GITHUB_WORKSPACE"/out/benchmark_kalshi/benchmark.json ]; then cp "$GITHUB_WORKSPACE"/out/benchmark_kalshi/benchmark.json benchmark/benchmark_kalshi.json; cp "$GITHUB_WORKSPACE"/out/benchmark_kalshi/BENCHMARK.md benchmark/BENCHMARK_KALSHI.md; gzip -c "$GITHUB_WORKSPACE"/kbtc15.json > benchmark/kbtc15_windows.json.gz; fi
+            if [ -f weather/snapshots.jsonl ]; then python "$GITHUB_WORKSPACE"/scripts/weather_resolve.py run --snapshots weather/snapshots.jsonl --out weather || true; git add weather; fi
             git add -A benchmark
             git commit -qm "benchmark $(date -u +%FT%TZ)" || { echo "nothing new"; exit 0; }
             git push -q origin HEAD:mrp-data && exit 0
