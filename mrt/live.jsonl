@@ -1,2 +1,45 @@
 {"t": "2026-11-07T23:33:07.151Z", "ev": "start", "mode": "dry", "cash": 4.0046, "snipe_t": 5.0, "min_move_bps": 6.0, "max_ask": 0.9, "max_qty": 10.0, "min_prints": 52, "coins": ["btc", "eth", "sol", "xrp"]}
 {"t": "2026-11-07T23:33:07.607Z", "ev": "switch_off", "note": "mrt/LIVE_ON missing on main \u2014 stopping"}
+{"t": "2026-11-07T23:59:09.318Z", "ev": "start", "mode": "dry", "cash": 1.8596, "snipe_t": 5.0, "min_move_bps": 6.0, "max_ask": 0.9, "max_qty": 10.0, "min_prints": 52, "coins": ["btc", "eth", "sol", "xrp"]}
+{"t": "2026-11-07T23:59:09.607Z", "ev": "book_ws", "state": "connected"}
+{"t": "2026-11-07T23:59:09.628Z", "ev": "index_ws", "state": "connected"}
+{"t": "2026-11-07T23:59:55.076Z", "ev": "gate", "slug": "cpc-btc-updown-5m-2026-11-07-2355z", "rem": 4.923, "k": 45, "last": 75756.46, "ptb": 75776.49, "why": "prints", "ok": false}
+{"t": "2026-11-07T23:59:55.076Z", "ev": "gate", "slug": "cpc-btc-updown-15m-2026-11-07-2345z", "rem": 4.923, "k": 45, "last": 75756.46, "ptb": 75748.63, "why": "prints", "ok": false}
+{"t": "2026-11-07T23:59:55.076Z", "ev": "gate", "slug": "cpceth-eth-updown-5m-2026-11-07-2355z", "rem": 4.923, "k": 46, "last": 2236.77, "ptb": 2235.81, "why": "prints", "ok": false}
+{"t": "2026-11-07T23:59:55.077Z", "ev": "gate", "slug": "cpceth-eth-updown-15m-2026-11-07-2345z", "rem": 4.923, "k": 46, "last": 2236.77, "ptb": 2234.3, "why": "prints", "ok": false}
+{"t": "2026-11-07T23:59:55.077Z", "ev": "gate", "slug": "cpcsol-sol-updown-5m-2026-11-07-2355z", "rem": 4.923, "k": 46, "last": 89.7, "ptb": 89.7038, "why": "prints", "ok": false}
+{"t": "2026-11-07T23:59:55.077Z", "ev": "gate", "slug": "cpcsol-sol-updown-15m-2026-11-07-2345z", "rem": 4.923, "k": 46, "last": 89.7, "ptb": 89.5965, "why": "prints", "ok": false}
+{"t": "2026-11-07T23:59:55.077Z", "ev": "gate", "slug": "cpcxrp-xrp-updown-5m-2026-11-07-2355z", "rem": 4.923, "k": 45, "last": 1.16279, "ptb": 1.16195, "why": "prints", "ok": false}
+{"t": "2026-11-07T23:59:55.077Z", "ev": "gate", "slug": "cpcxrp-xrp-updown-15m-2026-11-07-2345z", "rem": 4.923, "k": 45, "last": 1.16279, "ptb": 1.16139, "why": "prints", "ok": false}
+{"t": "2026-11-07T23:59:56.086Z", "ev": "gate", "slug": "cpc-btc-updown-5m-2026-11-07-2355z", "rem": 3.913, "k": 46, "last": 75757.74, "ptb": 75776.49, "why": "prints", "ok": false}
+{"t": "2026-11-07T23:59:56.086Z", "ev": "gate", "slug": "cpc-btc-updown-15m-2026-11-07-2345z", "rem": 3.913, "k": 46, "last": 75757.74, "ptb": 75748.63, "why": "prints", "ok": false}
+{"t": "2026-11-07T23:59:56.086Z", "ev": "gate", "slug": "cpceth-eth-updown-5m-2026-11-07-2355z", "rem": 3.913, "k": 46, "last": 2236.77, "ptb": 2235.81, "why": "prints", "ok": false}
+{"t": "2026-11-07T23:59:56.087Z", "ev": "gate", "slug": "cpceth-eth-updown-15m-2026-11-07-2345z", "rem": 3.913, "k": 46, "last": 2236.77, "ptb": 2234.3, "why": "prints", "ok": false}
+{"t": "2026-11-07T23:59:56.087Z", "ev": "gate", "slug": "cpcsol-sol-updown-5m-2026-11-07-2355z", "rem": 3.913, "k": 47, "last": 89.69, "ptb": 89.7038, "why": "prints", "ok": false}
+{"t": "2026-11-07T23:59:56.087Z", "ev": "gate", "slug": "cpcsol-sol-updown-15m-2026-11-07-2345z", "rem": 3.913, "k": 47, "last": 89.69, "ptb": 89.5965, "why": "prints", "ok": false}
+{"t": "2026-11-07T23:59:56.087Z", "ev": "gate", "slug": "cpcxrp-xrp-updown-5m-2026-11-07-2355z", "rem": 3.913, "k": 47, "last": 1.16279, "ptb": 1.16195, "why": "prints", "ok": false}
+{"t": "2026-11-07T23:59:56.087Z", "ev": "gate", "slug": "cpcxrp-xrp-updown-15m-2026-11-07-2345z", "rem": 3.913, "k": 47, "last": 1.16279, "ptb": 1.16139, "why": "prints", "ok": false}
+{"t": "2026-11-07T23:59:57.096Z", "ev": "gate", "slug": "cpc-btc-updown-5m-2026-11-07-2355z", "rem": 2.904, "k": 47, "last": 75756.75, "ptb": 75776.49, "why": "prints", "ok": false}
+{"t": "2026-11-07T23:59:57.096Z", "ev": "gate", "slug": "cpc-btc-updown-15m-2026-11-07-2345z", "rem": 2.904, "k": 47, "last": 75756.75, "ptb": 75748.63, "why": "prints", "ok": false}
+{"t": "2026-11-07T23:59:57.096Z", "ev": "gate", "slug": "cpceth-eth-updown-5m-2026-11-07-2355z", "rem": 2.904, "k": 47, "last": 2236.76, "ptb": 2235.81, "why": "prints", "ok": false}
+{"t": "2026-11-07T23:59:57.096Z", "ev": "gate", "slug": "cpceth-eth-updown-15m-2026-11-07-2345z", "rem": 2.904, "k": 47, "last": 2236.76, "ptb": 2234.3, "why": "prints", "ok": false}
+{"t": "2026-11-07T23:59:57.096Z", "ev": "gate", "slug": "cpcsol-sol-updown-5m-2026-11-07-2355z", "rem": 2.904, "k": 48, "last": 89.7, "ptb": 89.7038, "why": "prints", "ok": false}
+{"t": "2026-11-07T23:59:57.096Z", "ev": "gate", "slug": "cpcsol-sol-updown-15m-2026-11-07-2345z", "rem": 2.904, "k": 48, "last": 89.7, "ptb": 89.5965, "why": "prints", "ok": false}
+{"t": "2026-11-07T23:59:57.096Z", "ev": "gate", "slug": "cpcxrp-xrp-updown-5m-2026-11-07-2355z", "rem": 2.904, "k": 47, "last": 1.16279, "ptb": 1.16195, "why": "prints", "ok": false}
+{"t": "2026-11-07T23:59:57.096Z", "ev": "gate", "slug": "cpcxrp-xrp-updown-15m-2026-11-07-2345z", "rem": 2.904, "k": 47, "last": 1.16279, "ptb": 1.16139, "why": "prints", "ok": false}
+{"t": "2026-11-07T23:59:58.104Z", "ev": "gate", "slug": "cpc-btc-updown-5m-2026-11-07-2355z", "rem": 1.896, "k": 49, "last": 75756.74, "ptb": 75776.49, "why": "prints", "ok": false}
+{"t": "2026-11-07T23:59:58.104Z", "ev": "gate", "slug": "cpc-btc-updown-15m-2026-11-07-2345z", "rem": 1.896, "k": 49, "last": 75756.74, "ptb": 75748.63, "why": "prints", "ok": false}
+{"t": "2026-11-07T23:59:58.104Z", "ev": "gate", "slug": "cpceth-eth-updown-5m-2026-11-07-2355z", "rem": 1.896, "k": 49, "last": 2236.79, "ptb": 2235.81, "why": "prints", "ok": false}
+{"t": "2026-11-07T23:59:58.104Z", "ev": "gate", "slug": "cpceth-eth-updown-15m-2026-11-07-2345z", "rem": 1.896, "k": 49, "last": 2236.79, "ptb": 2234.3, "why": "prints", "ok": false}
+{"t": "2026-11-07T23:59:58.104Z", "ev": "gate", "slug": "cpcsol-sol-updown-5m-2026-11-07-2355z", "rem": 1.896, "k": 49, "last": 89.7, "ptb": 89.7038, "why": "prints", "ok": false}
+{"t": "2026-11-07T23:59:58.104Z", "ev": "gate", "slug": "cpcsol-sol-updown-15m-2026-11-07-2345z", "rem": 1.896, "k": 49, "last": 89.7, "ptb": 89.5965, "why": "prints", "ok": false}
+{"t": "2026-11-07T23:59:58.104Z", "ev": "gate", "slug": "cpcxrp-xrp-updown-5m-2026-11-07-2355z", "rem": 1.896, "k": 49, "last": 1.16278, "ptb": 1.16195, "why": "prints", "ok": false}
+{"t": "2026-11-07T23:59:58.104Z", "ev": "gate", "slug": "cpcxrp-xrp-updown-15m-2026-11-07-2345z", "rem": 1.896, "k": 49, "last": 1.16278, "ptb": 1.16139, "why": "prints", "ok": false}
+{"t": "2026-11-07T23:59:59.111Z", "ev": "gate", "slug": "cpc-btc-updown-5m-2026-11-07-2355z", "rem": 0.889, "k": 50, "last": 75753.85, "ptb": 75776.49, "why": "prints", "ok": false}
+{"t": "2026-11-07T23:59:59.111Z", "ev": "gate", "slug": "cpc-btc-updown-15m-2026-11-07-2345z", "rem": 0.889, "k": 50, "last": 75753.85, "ptb": 75748.63, "why": "prints", "ok": false}
+{"t": "2026-11-07T23:59:59.111Z", "ev": "gate", "slug": "cpceth-eth-updown-5m-2026-11-07-2355z", "rem": 0.889, "k": 50, "last": 2236.52, "ptb": 2235.81, "why": "prints", "ok": false}
+{"t": "2026-11-07T23:59:59.111Z", "ev": "gate", "slug": "cpceth-eth-updown-15m-2026-11-07-2345z", "rem": 0.889, "k": 50, "last": 2236.52, "ptb": 2234.3, "why": "prints", "ok": false}
+{"t": "2026-11-07T23:59:59.111Z", "ev": "gate", "slug": "cpcsol-sol-updown-5m-2026-11-07-2355z", "rem": 0.889, "k": 50, "last": 89.69, "ptb": 89.7038, "why": "prints", "ok": false}
+{"t": "2026-11-07T23:59:59.111Z", "ev": "gate", "slug": "cpcsol-sol-updown-15m-2026-11-07-2345z", "rem": 0.889, "k": 50, "last": 89.69, "ptb": 89.5965, "why": "prints", "ok": false}
+{"t": "2026-11-07T23:59:59.111Z", "ev": "gate", "slug": "cpcxrp-xrp-updown-5m-2026-11-07-2355z", "rem": 0.889, "k": 49, "last": 1.16278, "ptb": 1.16195, "why": "prints", "ok": false}
+{"t": "2026-11-07T23:59:59.111Z", "ev": "gate", "slug": "cpcxrp-xrp-updown-15m-2026-11-07-2345z", "rem": 0.889, "k": 49, "last": 1.16278, "ptb": 1.16139, "why": "prints", "ok": false}
