@@ -1,12 +1,12 @@
 # Mr. H — Coinbase hopper, PAPER
 
-Updated 2026-11-08T21:55:32Z · scans 493 · universe 111 coins (USD pairs with ≥ $100k 24-h volume) · fees 0.9% taker each way · start $4.00
+Updated 2026-11-08T22:05:32Z · scans 495 · universe 111 coins (USD pairs with ≥ $100k 24-h volume) · fees 0.9% taker each way · start $4.00
 
 ## Books (one position at a time, all-in every hop)
 
 | profile | bankroll | vs start | peak | hops | win % | avg net/hop | fees paid | open |
 |---|---|---|---|---|---|---|---|---|
-| aggressive | $2.97 | -25.9% | $4.00 | 7 | 29% | -3.74% | $0.469 | DRV-USD @ 0.32104 |
+| aggressive | $2.84 | -29.0% | $4.00 | 8 | 25% | -4.00% | $0.521 | IRYS-USD @ 0.01717 |
 | standard | $3.12 | -21.9% | $4.00 | 9 | 11% | -2.67% | $0.575 | — |
 | aggressive_swap | $3.33 | -16.7% | $4.02 | 13 | 31% | -1.10% | $0.881 | ICNT-USD @ 0.3688 |
 
@@ -14,7 +14,7 @@ Updated 2026-11-08T21:55:32Z · scans 493 · universe 111 coins (USD pairs with 
 
 | profile | signals | scored | median +15m | median +1h | median +4h | % beat 1.8% at +1h | median 4%-trail hop net | max run-up (med) | max drawdown (med) |
 |---|---|---|---|---|---|---|---|---|---|
-| aggressive | 73 | 54 | -0.43% | -2.53% | -2.22% | 19% | -4.92% | +7.41% | -10.03% |
+| aggressive | 75 | 54 | -0.43% | -2.53% | -2.22% | 19% | -4.92% | +7.41% | -10.03% |
 | standard | 60 | 46 | -0.07% | -1.59% | -2.31% | 20% | -3.20% | +5.34% | -6.30% |
 
 ## Aggressive signals by BTC regime (BTC's own move in the hour before the signal)
@@ -27,13 +27,12 @@ Updated 2026-11-08T21:55:32Z · scans 493 · universe 111 coins (USD pairs with 
 
 ## Verdict
 
-**Not yet.** Needs 40 scored aggressive signals (54 so far) and 30 closed aggressive hops (7 so far) before this says anything. Until then every number above is noise.
+**Not yet.** Needs 40 scored aggressive signals (54 so far) and 30 closed aggressive hops (8 so far) before this says anything. Until then every number above is noise.
 
 ## Last 20 hops
 
 | time (UTC) | book | coin | in | out | held | net | reason | bankroll |
 |---|---|---|---|---|---|---|---|---|
-| 11-07T19:50 | aggressive | RITUAL | 0.02404 | 0.0246 | 125 m | +0.50% | trail | $3.31 |
 | 11-07T19:50 | aggressive_swap | RITUAL | 0.02404 | 0.0246 | 125 m | +0.50% | trail | $4.02 |
 | 11-07T21:50 | aggressive | MEZO | 0.004897 | 0.00468 | 30 m | -6.14% | trail | $3.11 |
 | 11-07T21:50 | aggressive_swap | MEZO | 0.004897 | 0.00468 | 30 m | -6.14% | trail | $3.77 |
@@ -53,13 +52,12 @@ Updated 2026-11-08T21:55:32Z · scans 493 · universe 111 coins (USD pairs with 
 | 11-08T19:35 | aggressive_swap | FORTH | 0.158 | 0.1675 | 50 m | +4.11% | trail | $3.58 |
 | 11-08T19:55 | aggressive_swap | FORTH | 0.174 | 0.167 | 15 m | -5.74% | trail | $3.37 |
 | 11-08T20:47 | standard | RSR | 0.001783 | 0.001721 | 32 m | -5.21% | trail | $3.12 |
+| 11-08T22:00 | aggressive | DRV | 0.32104 | 0.30804 | 1310 m | -5.77% | trail | $2.87 |
 
 ## Last 15 signals
 
 | time (UTC) | profile | coin | impulse | vol× | >2h high | spread | taken | +1h | +4h |
 |---|---|---|---|---|---|---|---|---|---|
-| 11-08T15:15 | standard | CAP | +3.6% | 15.1 | y | 0.38% | y | +0.9% | -7.1% |
-| 11-08T15:20 | standard | CAP | +1.3% | 22.6 | y | 0.49% | in_position | -1.2% | -6.2% |
 | 11-08T15:35 | standard | ICNT | +1.9% | 7.1 | y | 0.25% | in_position | -2.6% | -1.6% |
 | 11-08T15:50 | standard | CAP | +1.7% | 17.2 | y | 0.10% | in_position | -6.6% | -10.6% |
 | 11-08T17:05 | aggressive | BOBBOB | +2.0% | 4.6 | n | 0.49% | in_position | … | … |
@@ -73,3 +71,5 @@ Updated 2026-11-08T21:55:32Z · scans 493 · universe 111 coins (USD pairs with 
 | 11-08T20:10 | aggressive | ICNT | +2.4% | 6.6 | n | 0.49% | in_position | … | … |
 | 11-08T20:15 | standard | RSR | +1.9% | 3.0 | y | 0.11% | y | … | … |
 | 11-08T21:30 | aggressive | HNT | +2.3% | 3.8 | n | 0.63% | spread | … | … |
+| 11-08T22:05 | aggressive | IRYS | +2.3% | 10.1 | n | 0.12% | y | … | … |
+| 11-08T22:05 | aggressive | TRUMP | +2.3% | 24.6 | n | 0.07% | in_position | … | … |
