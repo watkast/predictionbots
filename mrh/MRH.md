@@ -1,6 +1,6 @@
 # Mr. H — Coinbase hopper, PAPER
 
-Updated 2026-11-08T16:30:31Z · scans 429 · universe 111 coins (USD pairs with ≥ $100k 24-h volume) · fees 0.9% taker each way · start $4.00
+Updated 2026-11-08T16:40:30Z · scans 431 · universe 111 coins (USD pairs with ≥ $100k 24-h volume) · fees 0.9% taker each way · start $4.00
 
 ## Books (one position at a time, all-in every hop)
 
@@ -14,20 +14,20 @@ Updated 2026-11-08T16:30:31Z · scans 429 · universe 111 coins (USD pairs with 
 
 | profile | signals | scored | median +15m | median +1h | median +4h | % beat 1.8% at +1h | median 4%-trail hop net | max run-up (med) | max drawdown (med) |
 |---|---|---|---|---|---|---|---|---|---|
-| aggressive | 65 | 47 | -0.37% | -2.63% | -0.69% | 17% | -5.33% | +7.38% | -9.80% |
-| standard | 57 | 36 | +0.00% | -1.32% | -0.23% | 19% | -2.92% | +5.34% | -5.36% |
+| aggressive | 65 | 48 | -0.36% | -2.53% | -0.70% | 19% | -5.23% | +7.41% | -8.81% |
+| standard | 57 | 37 | +0.00% | -1.26% | -0.37% | 22% | -2.25% | +5.66% | -5.10% |
 
 ## Aggressive signals by BTC regime (BTC's own move in the hour before the signal)
 
 | BTC 1h | signals | median +1h | median 4%-trail hop net | % beat 1.8% at +1h |
 |---|---|---|---|---|
 | ≤ −0.5% (downdraft) | 0 | — | — | — |
-| −0.5% … +0.5% (flat) | 35 | -2.77% | -5.33% | 14% |
+| −0.5% … +0.5% (flat) | 36 | -2.73% | -5.23% | 17% |
 | ≥ +0.5% (bid under the market) | 0 | — | — | — |
 
 ## Verdict
 
-**Not yet.** Needs 40 scored aggressive signals (47 so far) and 30 closed aggressive hops (7 so far) before this says anything. Until then every number above is noise.
+**Not yet.** Needs 40 scored aggressive signals (48 so far) and 30 closed aggressive hops (7 so far) before this says anything. Until then every number above is noise.
 
 ## Last 20 hops
 
