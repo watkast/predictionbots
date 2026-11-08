@@ -38,6 +38,8 @@ jobs:
         with: { python-version: "3.13" }
       - run: pip install httpx markdown
       - run: python scripts/market_pages.py selftest
+      - name: Reference rates (Treasury, TreasuryDirect)
+        run: python scripts/rates.py || true
       - name: Build the site
         run: python site/build.py
       - name: Generate market pages
@@ -68,7 +70,7 @@ jobs:
             git fetch -q --filter=blob:none --depth 1 origin mrp-data && git checkout -q -B mrp-data FETCH_HEAD
             rm -rf site-preview && mkdir -p site-preview/samples
             cp "$GITHUB_WORKSPACE"/site/dist/markets/index.html "$GITHUB_WORKSPACE"/site/dist/markets/series.json "$GITHUB_WORKSPACE"/site/dist/sitemap.xml site-preview/ 2>/dev/null || true
-            cp "$GITHUB_WORKSPACE"/gen.log site-preview/gen.log
+            cp "$GITHUB_WORKSPACE"/gen.log site-preview/gen.log; cp "$GITHUB_WORKSPACE"/site/data/rates.json site-preview/rates.json
             find "$GITHUB_WORKSPACE"/site/dist/markets -mindepth 3 -name index.html | head -8 | while read f; do d=$(basename $(dirname "$f")); cp "$f" "site-preview/samples/$d.html"; done
             git add -A site-preview
             git commit -qm "site-preview $(date -u +%FT%TZ)" || { echo "nothing new"; exit 0; }

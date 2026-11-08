@@ -130,6 +130,7 @@
     el.stats.innerHTML = '<span>Fee per trade <b>' + '$' + feeFor(cfg.venue, cfg.p, cfg.stake / cfg.p).toFixed(2) + '</b></span><span>Typical fees on the way to $0 <b>' + money(res.rep.fees) + '</b></span><span>Win rate to break even <b>' + pct(cfg.p + feeFor(cfg.venue, cfg.p, cfg.stake / cfg.p) / (cfg.stake / cfg.p)) + '</b></span>';
     var shown = (res.events || []).filter(function (e) { return e.t <= upto; });
     el.narr.innerHTML = shown.map(function (e) { return '<div class="ev"><b>' + e.title + '</b><p>' + e.text + '</p></div>'; }).join('') || '<div class="ev"><p>Press play to watch a typical career, or drag over the chart.</p></div>';
+    if (upto >= res.plotEnd && window.PB && window.PB.elsewhere) window.PB.elsewhere('sm-elsewhere', { bank: cfg.bank, monthlyLoss: feeFor(cfg.venue, cfg.p, cfg.stake / cfg.p) * cfg.week * 52 / 12 });
     el.share.dataset.text = 'How long until my balance is $0 in this market? ' + (cfg.venue === 'kalshi' ? 'Kalshi' : 'Polymarket US') + ' at ' + Math.round(cfg.p * 100) + '¢, $' + cfg.stake + ' a trade, ' + cfg.week + ' trades a week, starting with ' + money(cfg.bank) + ': median ' + medText + '; ' + pct(ruinPct) + ' of ' + N + ' simulated careers hit $0. predictionbots.io/simulate';
   }
 

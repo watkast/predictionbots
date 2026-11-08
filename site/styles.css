@@ -100,6 +100,12 @@ h3 { font-size: 19px; margin: 26px 0 6px; font-weight: 600; }
 .btn.dark { background: var(--ink); color: var(--paper); border-color: var(--ink); }
 .btn:hover { text-decoration: none; filter: brightness(1.05); }
 
+.elsewhere { margin-top: 22px; border-top: 1px solid var(--rule); padding-top: 6px; }
+.elsewhere h3 { margin: 22px 0 8px; }
+.elsewhere p, .elsewhere li { color: var(--ink); }
+.elsewhere ul { padding-left: 20px; display: flex; flex-direction: column; gap: 6px; margin: 0 0 8px; }
+.elsewhere .ledger td.win { color: var(--win); font-weight: 600; }
+
 /* True Cost calculator */
 .calc { display: grid; grid-template-columns: minmax(240px, 1fr) minmax(0, 1.4fr); gap: 28px; background: var(--paper-2); border: 1px solid var(--rule); border-radius: 8px; padding: 24px; }
 .calc-in { display: flex; flex-direction: column; gap: 12px; }

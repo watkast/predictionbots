@@ -56,6 +56,7 @@
     $('tc-streak').textContent = n ? pct(s5) : '—';
     $('tc-streak-sub').textContent = n ? ('Chance of 5 losses in a row inside a month; 7 in a row: ' + pct(s7)) : 'Add trades per week';
     $('tc-be').textContent = pct(beHold) + ' holding to settlement, ' + pct(beOut) + ' if you trade out early';
+    if (window.PB && window.PB.elsewhere) window.PB.elsewhere('tc-elsewhere', { bank: bankroll, monthlyLoss: feesMonth });
     var share = $('tc-share'); if (share) share.dataset.text =
       'True Cost (' + (v === 'kalshi' ? 'Kalshi' : 'Polymarket US') + '): ' + money(dollars) + ' at ' + Math.round(p * 100) + '¢ costs ' + money(fee) + ' in fees per trade. ' +
       n + ' trades a month = ' + money(feesMonth) + ' in fees, ' + pct(feesMonth / bankroll) + ' of a ' + money(bankroll) + ' bankroll. Break-even win rate ' + pct(beHold) + '. predictionbots.io/#truecost';
