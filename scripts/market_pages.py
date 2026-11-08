@@ -384,30 +384,49 @@ def render_series(s: dict, built: str) -> str:
     return "".join(out)
 
 
+def cat_slug(cat: str) -> str:
+    return "c-" + (re.sub(r"[^a-z0-9]+", "-", (cat or "other").lower()).strip("-") or "other")
+
+
+def render_category(venue_name: str, venue: str, cat: str, rows: list[dict], built: str) -> str:
+    title = f"{venue_name} {cat} markets: the odds, the fee, and how much luck each needs"
+    desc = f"{len(rows)} {venue_name} market series in {cat}, each with the market price, the fee at that price and a luck-needed meter."
+    ld = json.dumps({"@context": "https://schema.org", "@type": "CollectionPage", "name": title, "description": desc, "dateModified": built})
+    out = [HEAD.format(title=esc(title), desc=esc(desc), canon=f"{SITE}/markets/{venue}/{cat_slug(cat)}/", css=CSS, ld=ld)]
+    out.append(f'<p class="crumbs"><a href="/markets/">Markets</a> › {esc(venue_name)} › {esc(cat)}</p>')
+    out.append(f'<div class="hero" style="padding-top:18px"><h1 style="max-width:24ch">{esc(cat)} <span style="color:var(--ink-2);font-weight:500">on {esc(venue_name)}</span></h1><p class="lede">{esc(desc)} Rebuilt {built}.</p></div>')
+    out.append(f'<section><div class="ledger-wrap"><table class="ledger cells"><caption>{esc(venue_name)} {esc(cat)} series</caption><thead><tr><th scope="col">Series</th><th scope="col" class="num">Open</th><th scope="col" class="num">Typical price</th><th scope="col" class="num">Fee</th><th scope="col" class="num">Luck needed</th></tr></thead><tbody>')
+    for s_ in sorted(rows, key=lambda x: -sum(r["volume"] for r in x["rows"])):
+        ps = sorted(r["p"] for r in s_["rows"] if r["p"] is not None)
+        p = ps[len(ps) // 2] if ps else None
+        lk = "100%" if s_["crypto_minutes"] else (pct(luck(p)) if p is not None else "—")
+        if p is not None:
+            out.append(f'<tr><td><a href="/markets/{s_["venue"]}/{s_["slug"]}/">{esc(s_["title"])}</a></td><td class="num">{len(s_["rows"])}</td><td class="num">{cents(p)}</td><td class="num">{(fee_per_contract(s_["venue"], p)*100):.1f}¢</td><td class="num">{lk}</td></tr>')
+        else:
+            out.append(f'<tr><td><a href="/markets/{s_["venue"]}/{s_["slug"]}/">{esc(s_["title"])}</a></td><td class="num">{len(s_["rows"])}</td><td class="num">—</td><td class="num">—</td><td class="num">—</td></tr>')
+    out.append("</tbody></table></div></section>")
+    out.append(FOOT)
+    return "".join(out)
+
+
 def render_index(series: list[dict], built: str) -> str:
     title = "Every market on Kalshi and Polymarket US: the odds, the fee, and how much luck you need"
-    desc = "One plain-language page per market series: what the market says, the real-world odds, the fee at that price, and a luck-needed meter."
+    desc = "One plain-language page per market series: what the market says, the real-world odds where we have them, the fee at that price, and a luck-needed meter."
     ld = json.dumps({"@context": "https://schema.org", "@type": "CollectionPage", "name": title, "description": desc, "dateModified": built})
     out = [HEAD.format(title=esc(title), desc=esc(desc), canon=f"{SITE}/markets/", css=CSS, ld=ld)]
-    out.append(f'<div class="hero"><h1 style="max-width:22ch">Every market, with its odds, its fee and the luck it needs</h1><p class="lede">{esc(desc)} Rebuilt {built}. Crypto minutes read "pure luck"; everything else reads the share of outcomes the market itself cannot call.</p></div>')
-    for venue_name in ("Kalshi", "Polymarket US"):
-        rows = [s for s in series if s["venue_name"] == venue_name]
+    out.append(f'<div class="hero"><h1 style="max-width:22ch">Every market, with its odds, its fee and the luck it needs</h1><p class="lede">{esc(desc)} {len(series):,} series across both venues, rebuilt {built}. Crypto minutes read "pure luck"; everything else reads the share of outcomes the market itself cannot call.</p></div>')
+    for venue_name, venue in (("Kalshi", "kalshi"), ("Polymarket US", "pmus")):
+        rows = [s_ for s_ in series if s_["venue"] == venue]
         if not rows:
             continue
-        out.append(f'<section><h2>{venue_name} <span style="color:var(--ink-2);font-weight:500">· {len(rows)} series</span></h2>')
         bycat = defaultdict(list)
-        for s in rows:
-            bycat[s["category"] or "Other"].append(s)
-        for cat in sorted(bycat):
-            out.append(f'<h3>{esc(cat)}</h3><div class="ledger-wrap"><table class="ledger cells"><caption>{esc(venue_name)} {esc(cat)} series</caption><thead><tr><th scope="col">Series</th><th scope="col" class="num">Open</th><th scope="col" class="num">Typical price</th><th scope="col" class="num">Fee</th><th scope="col" class="num">Luck needed</th></tr></thead><tbody>')
-            for s in sorted(bycat[cat], key=lambda x: -sum(r["volume"] for r in x["rows"])):
-                ps = sorted(r["p"] for r in s["rows"] if r["p"] is not None)
-                p = ps[len(ps) // 2] if ps else None
-                lk = "100%" if s["crypto_minutes"] else (pct(luck(p)) if p is not None else "—")
-                out.append(f'<tr><td><a href="/markets/{s["venue"]}/{s["slug"]}/">{esc(s["title"])}</a></td><td class="num">{len(s["rows"])}</td><td class="num">{cents(p) if p is not None else "—"}</td><td class="num">{(fee_per_contract(s["venue"], p)*100):.1f}¢</td><td class="num">{lk}</td></tr>' if p is not None else
-                           f'<tr><td><a href="/markets/{s["venue"]}/{s["slug"]}/">{esc(s["title"])}</a></td><td class="num">{len(s["rows"])}</td><td class="num">—</td><td class="num">—</td><td class="num">—</td></tr>')
-            out.append("</tbody></table></div>")
-        out.append("</section>")
+        for s_ in rows:
+            bycat[s_["category"] or "Other"].append(s_)
+        out.append(f'<section><h2>{venue_name} <span style="color:var(--ink-2);font-weight:500">· {len(rows):,} series</span></h2><div class="ledger-wrap"><table class="ledger cells"><caption>{venue_name} categories</caption><thead><tr><th scope="col">Category</th><th scope="col" class="num">Series</th><th scope="col" class="num">Open contracts</th><th scope="col">Most traded right now</th></tr></thead><tbody>')
+        for cat in sorted(bycat, key=lambda c: -len(bycat[c])):
+            top = sorted(bycat[cat], key=lambda x: -sum(r["volume"] for r in x["rows"]))[:3]
+            out.append(f'<tr><td><a href="/markets/{venue}/{cat_slug(cat)}/">{esc(cat)}</a></td><td class="num">{len(bycat[cat]):,}</td><td class="num">{sum(len(x["rows"]) for x in bycat[cat]):,}</td><td>' + " · ".join(f'<a href="/markets/{x["venue"]}/{x["slug"]}/">{esc(x["title"][:60])}</a>' for x in top) + "</td></tr>")
+        out.append("</tbody></table></div></section>")
     out.append(FOOT)
     return "".join(out)
 
@@ -461,7 +480,17 @@ def write(out: Path, series: list[dict]) -> int:
         (d / "index.html").write_text(render_series(s, built), encoding="utf-8")
         urls.append(f"{SITE}/markets/{s['venue']}/{s['slug']}/")
         n += 1
-    (out / "index.html").write_text(render_index([s for s in series if s["rows"]], built), encoding="utf-8")
+    live = [s for s in series if s["rows"]]
+    (out / "index.html").write_text(render_index(live, built), encoding="utf-8")
+    cats = defaultdict(list)
+    for s in live:
+        cats[(s["venue"], s["category"] or "Other")].append(s)
+    for (venue, cat), rows in cats.items():
+        d = out / venue / cat_slug(cat)
+        d.mkdir(parents=True, exist_ok=True)
+        vn = "Kalshi" if venue == "kalshi" else "Polymarket US"
+        (d / "index.html").write_text(render_category(vn, venue, cat, rows, built), encoding="utf-8")
+        urls.append(f"{SITE}/markets/{venue}/{cat_slug(cat)}/")
     (out.parent / "sitemap.xml").write_text(sitemap(urls, now.isoformat()), encoding="utf-8")
     (out / "series.json").write_text(json.dumps([{"venue": s["venue"], "slug": s["slug"], "title": s["title"], "category": s["category"], "open": len(s["rows"])} for s in series], ensure_ascii=False, indent=0), encoding="utf-8")
     LOG(f"wrote {n} series pages + index + sitemap to {out}")
