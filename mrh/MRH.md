@@ -1,33 +1,33 @@
 # Mr. H — Coinbase hopper, PAPER
 
-Updated 2026-11-08T09:15:30Z · scans 342 · universe 112 coins (USD pairs with ≥ $100k 24-h volume) · fees 0.9% taker each way · start $4.00
+Updated 2026-11-08T09:25:32Z · scans 345 · universe 112 coins (USD pairs with ≥ $100k 24-h volume) · fees 0.9% taker each way · start $4.00
 
 ## Books (one position at a time, all-in every hop)
 
 | profile | bankroll | vs start | peak | hops | win % | avg net/hop | fees paid | open |
 |---|---|---|---|---|---|---|---|---|
-| aggressive | $3.01 | -24.7% | $4.00 | 7 | 29% | -3.74% | $0.469 | DRV-USD @ 0.32104 |
-| standard | $3.47 | -13.3% | $4.00 | 5 | 20% | -2.33% | $0.365 | CRO-USD @ 0.04914 |
-| aggressive_swap | $3.54 | -11.5% | $4.02 | 7 | 29% | -1.50% | $0.499 | ICNT-USD @ 0.3888 |
+| aggressive | $3.02 | -24.6% | $4.00 | 7 | 29% | -3.74% | $0.469 | DRV-USD @ 0.32104 |
+| standard | $3.45 | -13.7% | $4.00 | 5 | 20% | -2.33% | $0.365 | CRO-USD @ 0.04914 |
+| aggressive_swap | $3.28 | -18.1% | $4.02 | 8 | 25% | -2.37% | $0.528 | — |
 
 ## Signal forward returns (every signal, whether or not a book took it)
 
 | profile | signals | scored | median +15m | median +1h | median +4h | % beat 1.8% at +1h | median 4%-trail hop net | max run-up (med) | max drawdown (med) |
 |---|---|---|---|---|---|---|---|---|---|
-| aggressive | 50 | 27 | -0.26% | -4.44% | -0.69% | 15% | -5.70% | +6.16% | -7.82% |
-| standard | 40 | 22 | +0.12% | -1.59% | +0.81% | 18% | -3.69% | +5.88% | -5.36% |
+| aggressive | 52 | 28 | -0.32% | -4.56% | -0.70% | 14% | -5.71% | +5.72% | -7.74% |
+| standard | 42 | 22 | +0.12% | -1.59% | +0.81% | 18% | -3.69% | +5.88% | -5.36% |
 
 ## Aggressive signals by BTC regime (BTC's own move in the hour before the signal)
 
 | BTC 1h | signals | median +1h | median 4%-trail hop net | % beat 1.8% at +1h |
 |---|---|---|---|---|
 | ≤ −0.5% (downdraft) | 0 | — | — | — |
-| −0.5% … +0.5% (flat) | 15 | -5.25% | -5.70% | 7% |
+| −0.5% … +0.5% (flat) | 16 | -5.47% | -5.71% | 6% |
 | ≥ +0.5% (bid under the market) | 0 | — | — | — |
 
 ## Verdict
 
-**Not yet.** Needs 40 scored aggressive signals (27 so far) and 30 closed aggressive hops (7 so far) before this says anything. Until then every number above is noise.
+**Not yet.** Needs 40 scored aggressive signals (28 so far) and 30 closed aggressive hops (7 so far) before this says anything. Until then every number above is noise.
 
 ## Last 20 hops
 
@@ -52,15 +52,12 @@ Updated 2026-11-08T09:15:30Z · scans 342 · universe 112 coins (USD pairs with 
 | 11-08T05:50 | aggressive_swap | MEZO | 0.00406 | 0.004075 | 60 m | -1.43% | trail | $3.56 |
 | 11-08T06:35 | aggressive_swap | RITUAL | 0.03362 | 0.03225 | 5 m | -5.79% | trail | $3.35 |
 | 11-08T08:05 | aggressive_swap | ICNT | 0.3317 | 0.3606 | 50 m | +6.76% | trail | $3.58 |
+| 11-08T09:25 | aggressive_swap | ICNT | 0.3888 | 0.3624 | 10 m | -8.46% | trail | $3.27 |
 
 ## Last 15 signals
 
 | time (UTC) | profile | coin | impulse | vol× | >2h high | spread | taken | +1h | +4h |
 |---|---|---|---|---|---|---|---|---|---|
-| 11-08T07:05 | standard | RSR | +4.2% | 23.8 | y | 0.89% | spread | … | … |
-| 11-08T07:15 | aggressive | RSR | +5.6% | 10.8 | n | 2.14% | spread | … | … |
-| 11-08T07:15 | aggressive | ICNT | +3.2% | 34.0 | n | 0.51% | in_position | … | … |
-| 11-08T07:20 | aggressive | ICNT | +2.6% | 23.8 | y | 0.30% | in_position | … | … |
 | 11-08T07:20 | standard | ICNT | +2.6% | 23.8 | y | 0.30% | in_position | … | … |
 | 11-08T07:25 | aggressive | ICNT | +3.5% | 24.4 | y | 0.11% | in_position | … | … |
 | 11-08T07:25 | standard | ICNT | +3.5% | 24.4 | y | 0.11% | in_position | … | … |
@@ -72,3 +69,7 @@ Updated 2026-11-08T09:15:30Z · scans 342 · universe 112 coins (USD pairs with 
 | 11-08T08:00 | aggressive | MEZO | +2.5% | 13.6 | n | 0.58% | in_position | … | … |
 | 11-08T09:15 | aggressive | ICNT | +7.4% | 4.9 | y | 0.10% | in_position | … | … |
 | 11-08T09:15 | standard | ICNT | +7.4% | 4.9 | y | 0.10% | in_position | … | … |
+| 11-08T09:18 | aggressive | ICNT | +7.4% | 4.9 | y | 0.68% | spread | … | … |
+| 11-08T09:18 | standard | ICNT | +7.4% | 4.9 | y | 0.68% | spread | … | … |
+| 11-08T09:20 | aggressive | ICNT | +2.1% | 15.0 | y | 0.41% | in_position | … | … |
+| 11-08T09:20 | standard | ICNT | +2.1% | 15.0 | y | 0.41% | in_position | … | … |
