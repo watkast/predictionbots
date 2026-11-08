@@ -683,7 +683,7 @@
 "slug": "kxnfltdprot",
 "title": "Pro Football Touchdowns Protected",
 "category": "Sports",
-"open": 650
+"open": 652
 },
 {
 "venue": "kalshi",
@@ -6675,7 +6675,7 @@
 "slug": "kxczefnltotal",
 "title": "Point Total",
 "category": "Sports",
-"open": 18
+"open": 19
 },
 {
 "venue": "kalshi",
@@ -55630,13 +55630,6 @@
 },
 {
 "venue": "pmus",
-"slug": "astatc-setkameua-riaole-osiser",
-"title": "Will Riabuha Oleksandr win set 3 against Osipov Sergey",
-"category": "Sports",
-"open": 2
-},
-{
-"venue": "pmus",
 "slug": "tsc-setkameua-riaole-osiser",
 "title": "Will the total in Riabuha Oleksandr vs. Osipov Sergey be more than 3.5",
 "category": "Sports",
@@ -55744,13 +55737,6 @@
 "venue": "pmus",
 "slug": "tsc-setkameua-osiser-kundmy",
 "title": "Will the total in Osipov Sergey vs. Kunchurov Dmytro be more than 3.5",
-"category": "Sports",
-"open": 2
-},
-{
-"venue": "pmus",
-"slug": "tsc-setkamecz-hanjos-tumlad",
-"title": "Will the total in Hanacek Josef vs. Tuma Ladislav be more than 3.5",
 "category": "Sports",
 "open": 2
 },
@@ -56220,13 +56206,6 @@
 "venue": "pmus",
 "slug": "tsc-setkameua-fasand-koloole",
 "title": "Will the total in Fastov Andrii vs. Kolos Oleksandr be more than 3.5",
-"category": "Sports",
-"open": 2
-},
-{
-"venue": "pmus",
-"slug": "astatc-setkameua-lazrus-shyant",
-"title": "Will Lazebnyi Ruslan win set 3 against Shypilov Anton",
 "category": "Sports",
 "open": 2
 },
@@ -83063,13 +83042,6 @@
 },
 {
 "venue": "pmus",
-"slug": "aec-itfwo-valius-janboj",
-"title": "Who will win in the upcoming tennis event Valeriia Iushchenko vs Jana Bojovic scheduled for November 8, 2026 at 7:00 AM UTC",
-"category": "Sports",
-"open": 1
-},
-{
-"venue": "pmus",
 "slug": "aec-itfwo-yasezz-karpop",
 "title": "Who will win in the upcoming tennis event Yasmin Ezzat vs Karla Popovic scheduled for November 8, 2026 at 8:00 AM UTC",
 "category": "Sports",
@@ -85550,13 +85522,6 @@
 "venue": "pmus",
 "slug": "aec-setkameua-osiser-kundmy",
 "title": "Who will win in the upcoming table-tennis event Osipov Sergey vs Kunchurov Dmytro scheduled for November 8, 2026 at 1:05 PM UTC",
-"category": "Sports",
-"open": 1
-},
-{
-"venue": "pmus",
-"slug": "aec-setkamecz-hanjos-tumlad",
-"title": "Who will win in the upcoming table-tennis event Hanacek Josef vs Tuma Ladislav scheduled for November 8, 2026 at 8:45 AM UTC",
 "category": "Sports",
 "open": 1
 },
@@ -91878,6 +91843,20 @@
 "venue": "pmus",
 "slug": "astatc-setkameua-fasand-koloole",
 "title": "Will Fastov Andrii win set 4 against Kolos Oleksandr",
+"category": "Sports",
+"open": 1
+},
+{
+"venue": "pmus",
+"slug": "astatc-setkameua-lazrus-shyant",
+"title": "Will Lazebnyi Ruslan win set 4 against Shypilov Anton",
+"category": "Sports",
+"open": 1
+},
+{
+"venue": "pmus",
+"slug": "astatc-setkameua-riaole-osiser",
+"title": "Will Riabuha Oleksandr win set 4 against Osipov Sergey",
 "category": "Sports",
 "open": 1
 }
