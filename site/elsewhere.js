@@ -34,7 +34,7 @@
       '<li><a href="https://www.ncpgambling.org/help-treatment/help-by-state/" rel="noopener">Help in your state</a> (National Council on Problem Gambling): local counselors, often free.</li>' +
       '<li><a href="https://www.gamblersanonymous.org/ga/locations" rel="noopener">Gamblers Anonymous meetings</a>, in person and online, today.</li>' +
       '<li>Both venues offer self-exclusion and deposit limits in account settings; setting one tonight costs nothing.</li></ul>' +
-      '<p class="fine">Nothing on this site is medical or financial advice. If you are in immediate danger, call or text 988. <a href="/learn/what-the-research-says.html">What the research says about losing money here →</a></p>';
+      '<p class="fine">Nothing on this site is medical or financial advice. If you are in immediate danger, call or text 988. <a href="/learn/when-the-market-looks-like-the-only-way-out.html">When the market looks like the only way out: a ladder for tonight, this week and this month →</a> · <a href="/learn/what-the-research-says.html">What the research says →</a></p>';
   }
   function go(host, a) { if (rates !== null) return render(host, a); fetch('/data/rates.json', { cache: 'no-store' }).then(function (r) { return r.ok ? r.json() : {}; }).catch(function () { return {}; }).then(function (j) { rates = j || {}; render(host, a); }); }
   window.PB = window.PB || {};
