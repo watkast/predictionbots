@@ -477,17 +477,17 @@
 },
 {
 "venue": "kalshi",
-"slug": "kxchnsltotal",
-"title": "Point Total",
-"category": "Sports",
-"open": 55
-},
-{
-"venue": "kalshi",
 "slug": "kxnflmvp",
 "title": "AP Pro Football Regular Season MVP",
 "category": "Sports",
 "open": 49
+},
+{
+"venue": "kalshi",
+"slug": "kxchnsltotal",
+"title": "Point Total",
+"category": "Sports",
+"open": 52
 },
 {
 "venue": "kalshi",
@@ -1138,7 +1138,7 @@
 "slug": "kxkblgame",
 "title": "Korea KBL Game",
 "category": "Sports",
-"open": 4
+"open": 6
 },
 {
 "venue": "kalshi",
@@ -1219,13 +1219,6 @@
 },
 {
 "venue": "kalshi",
-"slug": "kxkleaguetotal",
-"title": "Point Total",
-"category": "Sports",
-"open": 11
-},
-{
-"venue": "kalshi",
 "slug": "kxtrumpact",
 "title": "Will Trump do anything today?",
 "category": "Politics",
@@ -1265,6 +1258,13 @@
 "title": "San Francisco High Temperature Daily",
 "category": "Climate and Weather",
 "open": 12
+},
+{
+"venue": "kalshi",
+"slug": "kxkleaguetotal",
+"title": "Point Total",
+"category": "Sports",
+"open": 10
 },
 {
 "venue": "kalshi",
@@ -3683,13 +3683,6 @@
 },
 {
 "venue": "kalshi",
-"slug": "kxdpwt3ball",
-"title": "DPWT 3-Ball",
-"category": "Sports",
-"open": 54
-},
-{
-"venue": "kalshi",
 "slug": "kxgtemp",
 "title": "Hottest year ever",
 "category": "Climate and Weather",
@@ -3701,6 +3694,13 @@
 "title": "F1 Biggest Mover",
 "category": "Sports",
 "open": 23
+},
+{
+"venue": "kalshi",
+"slug": "kxdpwt3ball",
+"title": "DPWT 3-Ball",
+"category": "Sports",
+"open": 51
 },
 {
 "venue": "kalshi",
@@ -5181,13 +5181,6 @@
 },
 {
 "venue": "kalshi",
-"slug": "kxesoccergame",
-"title": "eSoccer Game",
-"category": "Sports",
-"open": 150
-},
-{
-"venue": "kalshi",
 "slug": "kxucltop",
 "title": "UCL League Phase Top of Table",
 "category": "Sports",
@@ -6389,6 +6382,13 @@
 "title": "Romanian Liga I Game",
 "category": "Sports",
 "open": 9
+},
+{
+"venue": "kalshi",
+"slug": "kxesoccergame",
+"title": "eSoccer Game",
+"category": "Sports",
+"open": 147
 },
 {
 "venue": "kalshi",
@@ -8404,7 +8404,7 @@
 "slug": "kxnbareb",
 "title": "NBA Player Rebounds",
 "category": "Sports",
-"open": 146
+"open": 154
 },
 {
 "venue": "kalshi",
@@ -18719,6 +18719,34 @@
 },
 {
 "venue": "kalshi",
+"slug": "kxnbarebprot",
+"title": "NBA Player Rebounds Protected",
+"category": "Sports",
+"open": 177
+},
+{
+"venue": "kalshi",
+"slug": "kxnbaastprot",
+"title": "NBA Player Assists Protected",
+"category": "Sports",
+"open": 144
+},
+{
+"venue": "kalshi",
+"slug": "kxarglnbgame",
+"title": "Liga Nacional de Basquetbol Game",
+"category": "Sports",
+"open": 18
+},
+{
+"venue": "kalshi",
+"slug": "kxnbaptsleader",
+"title": "NBA Game Points Leader",
+"category": "Sports",
+"open": 24
+},
+{
+"venue": "kalshi",
 "slug": "kxnhlast",
 "title": "Pro Hockey Assists",
 "category": "Sports",
@@ -18744,27 +18772,6 @@
 "title": "Pts + Reb + Ast Protected",
 "category": "Sports",
 "open": 102
-},
-{
-"venue": "kalshi",
-"slug": "kxnbaastprot",
-"title": "NBA Player Assists Protected",
-"category": "Sports",
-"open": 128
-},
-{
-"venue": "kalshi",
-"slug": "kxnbarebprot",
-"title": "NBA Player Rebounds Protected",
-"category": "Sports",
-"open": 146
-},
-{
-"venue": "kalshi",
-"slug": "kxnbaptsleader",
-"title": "NBA Game Points Leader",
-"category": "Sports",
-"open": 19
 },
 {
 "venue": "kalshi",
@@ -18982,13 +18989,6 @@
 "title": "1st Half Winner",
 "category": "Sports",
 "open": 6
-},
-{
-"venue": "kalshi",
-"slug": "kxarglnbgame",
-"title": "Liga Nacional de Basquetbol Game",
-"category": "Sports",
-"open": 12
 },
 {
 "venue": "kalshi",
@@ -33457,7 +33457,7 @@
 "slug": "astatc-nba-bos-mil",
 "title": "Will Paul George record at least 10 points in BOS Celtics vs. MIL Bucks",
 "category": "Sports",
-"open": 241
+"open": 243
 },
 {
 "venue": "pmus",
@@ -33465,6 +33465,13 @@
 "title": "Will Giannis Antetokounmpo record at least 10 points in MIA Heat vs. SAC Kings",
 "category": "Sports",
 "open": 220
+},
+{
+"venue": "pmus",
+"slug": "astatc-nba-uta-min",
+"title": "Will Keyonte George record at least 10 points in UTA Jazz vs. MIN Timberwolves",
+"category": "Sports",
+"open": 216
 },
 {
 "venue": "pmus",
@@ -33986,13 +33993,6 @@
 },
 {
 "venue": "pmus",
-"slug": "astatc-nba-uta-min",
-"title": "Will Keyonte George record at least 10 points in UTA Jazz vs. MIN Timberwolves",
-"category": "Sports",
-"open": 120
-},
-{
-"venue": "pmus",
 "slug": "aachc-nfl-mostscrimtds",
 "title": "Regular Season Scrimmage TDs Leader",
 "category": "Sports",
@@ -34156,6 +34156,13 @@
 "venue": "pmus",
 "slug": "tsc-cfb-umass-toledo",
 "title": "Will the total in UMass vs. Toledo be more than 24.5",
+"category": "Sports",
+"open": 103
+},
+{
+"venue": "pmus",
+"slug": "astatc-nhl-phi-cgy",
+"title": "Will the NHL hockey game between Flyers and Flames on 2026-11-08 go into Overtime",
 "category": "Sports",
 "open": 103
 },
@@ -34340,13 +34347,6 @@
 "title": "Arsenal EPL Points",
 "category": "Sports",
 "open": 100
-},
-{
-"venue": "pmus",
-"slug": "astatc-nhl-phi-cgy",
-"title": "Will the NHL hockey game between Flyers and Flames on 2026-11-08 go into Overtime",
-"category": "Sports",
-"open": 98
 },
 {
 "venue": "pmus",
@@ -52697,22 +52697,8 @@
 },
 {
 "venue": "pmus",
-"slug": "astatc-setkameua-kotand-slomyk",
-"title": "Will Kotiash Andrii win set 1 against Slozka Mykola",
-"category": "Sports",
-"open": 3
-},
-{
-"venue": "pmus",
 "slug": "astatc-setkameua-giltar-kuzvol",
 "title": "Will Gil Taras win set 1 against Kuzmych Volodymyr",
-"category": "Sports",
-"open": 3
-},
-{
-"venue": "pmus",
-"slug": "astatc-setkameua-plivol-napole",
-"title": "Will Plishylo Volodymyr win set 2 against Napirko Oleh",
 "category": "Sports",
 "open": 3
 },
@@ -55840,13 +55826,6 @@
 },
 {
 "venue": "pmus",
-"slug": "tsc-setkamecz-tarmik-hlipet",
-"title": "Will the total in Taranko Mikhail vs. Hlina Petr be more than 3.5",
-"category": "Sports",
-"open": 2
-},
-{
-"venue": "pmus",
 "slug": "tsc-setkamecz-hanjos-tumlad",
 "title": "Will the total in Hanacek Josef vs. Tuma Ladislav be more than 3.5",
 "category": "Sports",
@@ -55856,13 +55835,6 @@
 "venue": "pmus",
 "slug": "astatc-dota2-ch-pr",
 "title": "Will CyberHero win Game 1 vs Power Rangers",
-"category": "Sports",
-"open": 2
-},
-{
-"venue": "pmus",
-"slug": "tsc-setkameua-osaole-solser",
-"title": "Will the total in Osadchyi Oleksandr vs. Solomko Serhii be more than 3.5",
 "category": "Sports",
 "open": 2
 },
@@ -56330,8 +56302,22 @@
 },
 {
 "venue": "pmus",
+"slug": "astatc-setkameua-kotand-slomyk",
+"title": "Will Kotiash Andrii win set 2 against Slozka Mykola",
+"category": "Sports",
+"open": 2
+},
+{
+"venue": "pmus",
 "slug": "tsc-setkameua-kotand-slomyk",
 "title": "Will the total in Kotiash Andrii vs. Slozka Mykola be more than 3.5",
+"category": "Sports",
+"open": 2
+},
+{
+"venue": "pmus",
+"slug": "astatc-setkameua-plivol-napole",
+"title": "Will Plishylo Volodymyr win set 3 against Napirko Oleh",
 "category": "Sports",
 "open": 2
 },
@@ -57081,13 +57067,6 @@
 "venue": "pmus",
 "slug": "tsc-setkamecz-kantom-bridav",
 "title": "Will the total in Kanka Tomas vs. Brichacek David be more than 3.5",
-"category": "Sports",
-"open": 2
-},
-{
-"venue": "pmus",
-"slug": "tsc-setkamecz-merrom-orlpet",
-"title": "Will the total in Merkl Roman vs. Orlowski Petr be more than 3.5",
 "category": "Sports",
 "open": 2
 },
@@ -82594,29 +82573,8 @@
 },
 {
 "venue": "pmus",
-"slug": "aec-czechligapro-id2503634976537000",
-"title": "Who will win in the upcoming table-tennis event Jan Pleskot vs David Barton scheduled for November 8, 2026 at 8:30 AM UTC",
-"category": "Sports",
-"open": 1
-},
-{
-"venue": "pmus",
 "slug": "aec-czechligapro-id2503634976537002",
 "title": "Who will win in the upcoming table-tennis event Milan Jasek vs Roman Guliak scheduled for November 8, 2026 at 8:30 AM UTC",
-"category": "Sports",
-"open": 1
-},
-{
-"venue": "pmus",
-"slug": "aec-czechligapro-id2503634976537008",
-"title": "Who will win in the upcoming table-tennis event Daniel Cupec vs Jiri Grohsgott scheduled for November 8, 2026 at 8:30 AM UTC",
-"category": "Sports",
-"open": 1
-},
-{
-"venue": "pmus",
-"slug": "aec-czechligapro-id2503634976537074",
-"title": "Who will win in the upcoming table-tennis event Frantisek Pusch vs Jan Mecl Jr scheduled for November 8, 2026 at 8:30 AM UTC",
 "category": "Sports",
 "open": 1
 },
@@ -83343,13 +83301,6 @@
 },
 {
 "venue": "pmus",
-"slug": "aec-ebb-phx-nop",
-"title": "Who will win in the upcoming ebasketball event Phoenix Suns (OldJhin) vs New Orleans Pelicans (Barmaley) scheduled for November 8, 2026 at 8:25 AM UTC",
-"category": "Sports",
-"open": 1
-},
-{
-"venue": "pmus",
 "slug": "aec-ebb-phx-det",
 "title": "Who will win in the upcoming ebasketball event Phoenix Suns (OldJhin) vs Detroit Pistons (Lalkoff) scheduled for November 8, 2026 at 9:35 AM UTC",
 "category": "Sports",
@@ -83385,13 +83336,6 @@
 },
 {
 "venue": "pmus",
-"slug": "aec-ebb-cle-min",
-"title": "Who will win in the upcoming ebasketball event Cleveland Cavaliers (zarla) vs Minnesota Timberwolves (rema) scheduled for November 8, 2026 at 8:20 AM UTC",
-"category": "Sports",
-"open": 1
-},
-{
-"venue": "pmus",
 "slug": "aec-ebb-cle-tor",
 "title": "Who will win in the upcoming ebasketball event Cleveland Cavaliers (zarla) vs Toronto Raptors (Losmi) scheduled for November 8, 2026 at 9:45 AM UTC",
 "category": "Sports",
@@ -83408,13 +83352,6 @@
 "venue": "pmus",
 "slug": "aec-ebb-ind-det",
 "title": "Who will win in the upcoming ebasketball event Indiana Pacers (Knez) vs Detroit Pistons (Rale) scheduled for November 8, 2026 at 9:10 AM UTC",
-"category": "Sports",
-"open": 1
-},
-{
-"venue": "pmus",
-"slug": "aec-ebbec-oly-par",
-"title": "Who will win in the upcoming ebasketball event Olympiacos (Kefa) vs Partizan (SnoopCat) scheduled for November 8, 2026 at 8:20 AM UTC",
 "category": "Sports",
 "open": 1
 },
@@ -83751,13 +83688,6 @@
 "venue": "pmus",
 "slug": "aec-atp-inamon-lorson",
 "title": "Who will win in the upcoming atp event Inaki Montes-de la Torre vs Lorenzo Sonego scheduled for November 8, 2026 at 11:00 AM UTC",
-"category": "Sports",
-"open": 1
-},
-{
-"venue": "pmus",
-"slug": "aec-itfme-maxben-arifei",
-"title": "Who will win in the upcoming tennis event Max Benaim vs Ari Feig scheduled for November 8, 2026 at 7:30 AM UTC",
 "category": "Sports",
 "open": 1
 },
@@ -85758,13 +85688,6 @@
 },
 {
 "venue": "pmus",
-"slug": "aec-ebbec-fen-rma",
-"title": "Who will win in the upcoming ebasketball event Fenerbahce (Riodan) vs Real Madrid (JoKeR) scheduled for November 8, 2026 at 8:20 AM UTC",
-"category": "Sports",
-"open": 1
-},
-{
-"venue": "pmus",
 "slug": "aec-ebbec-rma-par",
 "title": "Who will win in the upcoming ebasketball event Real Madrid (JoKeR) vs Partizan (SnoopCat) scheduled for November 8, 2026 at 9:30 AM UTC",
 "category": "Sports",
@@ -85802,20 +85725,6 @@
 "venue": "pmus",
 "slug": "aec-setkameua-riaole-osiser",
 "title": "Who will win in the upcoming table-tennis event Riabuha Oleksandr vs Osipov Sergey scheduled for November 8, 2026 at 9:05 AM UTC",
-"category": "Sports",
-"open": 1
-},
-{
-"venue": "pmus",
-"slug": "astatc-setkameua-bonyur-bilvol",
-"title": "Will Bondarenko Yurii win set 3 against Bilobrov Volodymyr",
-"category": "Sports",
-"open": 1
-},
-{
-"venue": "pmus",
-"slug": "astatc-setkameua-tsokos-ponole",
-"title": "Will Tsoi Kostiantyn win set 3 against Ponomarenko Oleh",
 "category": "Sports",
 "open": 1
 },
@@ -85921,13 +85830,6 @@
 "venue": "pmus",
 "slug": "aec-setkameua-osiser-kundmy",
 "title": "Who will win in the upcoming table-tennis event Osipov Sergey vs Kunchurov Dmytro scheduled for November 8, 2026 at 1:05 PM UTC",
-"category": "Sports",
-"open": 1
-},
-{
-"venue": "pmus",
-"slug": "aec-setkamecz-tarmik-hlipet",
-"title": "Who will win in the upcoming table-tennis event Taranko Mikhail vs Hlina Petr scheduled for November 8, 2026 at 8:15 AM UTC",
 "category": "Sports",
 "open": 1
 },
@@ -86740,13 +86642,6 @@
 "venue": "pmus",
 "slug": "aec-ppa-jacsoc-johgoi",
 "title": "Who will win in the upcoming pickleball event Jack Sock vs John Lucian Goins scheduled for November 8, 2026 at 4:00 PM UTC",
-"category": "Sports",
-"open": 1
-},
-{
-"venue": "pmus",
-"slug": "aec-setkameua-osaole-solser",
-"title": "Who will win in the upcoming table-tennis event Osadchyi Oleksandr vs Solomko Serhii scheduled for November 8, 2026 at 8:20 AM UTC",
 "category": "Sports",
 "open": 1
 },
@@ -88278,13 +88173,6 @@
 },
 {
 "venue": "pmus",
-"slug": "aec-setkamecz-merrom-orlpet",
-"title": "Who will win in the upcoming table-tennis event Merkl Roman vs Orlowski Petr scheduled for November 8, 2026 at 8:30 AM UTC",
-"category": "Sports",
-"open": 1
-},
-{
-"venue": "pmus",
 "slug": "aec-setkamecz-kantom-bridav",
 "title": "Who will win in the upcoming table-tennis event Kanka Tomas vs Brichacek David scheduled for November 8, 2026 at 9:00 AM UTC",
 "category": "Sports",
@@ -88530,29 +88418,8 @@
 },
 {
 "venue": "pmus",
-"slug": "sol-updown-5m",
-"title": "SOL Up or Down, 5 minutes",
-"category": "Crypto",
-"open": 1
-},
-{
-"venue": "pmus",
 "slug": "eth-updown-15m",
 "title": "ETH Up or Down, 15 minutes",
-"category": "Crypto",
-"open": 1
-},
-{
-"venue": "pmus",
-"slug": "eth-updown-5m",
-"title": "ETH Up or Down, 5 minutes",
-"category": "Crypto",
-"open": 1
-},
-{
-"venue": "pmus",
-"slug": "xrp-updown-15m",
-"title": "XRP Up or Down, 15 minutes",
 "category": "Crypto",
 "open": 1
 },
@@ -88565,6 +88432,13 @@
 },
 {
 "venue": "pmus",
+"slug": "xrp-updown-15m",
+"title": "XRP Up or Down, 15 minutes",
+"category": "Crypto",
+"open": 1
+},
+{
+"venue": "pmus",
 "slug": "sol-updown-15m",
 "title": "SOL Up or Down, 15 minutes",
 "category": "Crypto",
@@ -88572,8 +88446,15 @@
 },
 {
 "venue": "pmus",
-"slug": "btc-updown-5m",
-"title": "BTC Up or Down, 5 minutes",
+"slug": "sol-updown-5m",
+"title": "SOL Up or Down, 5 minutes",
+"category": "Crypto",
+"open": 1
+},
+{
+"venue": "pmus",
+"slug": "eth-updown-5m",
+"title": "ETH Up or Down, 5 minutes",
 "category": "Crypto",
 "open": 1
 },
@@ -88883,6 +88764,13 @@
 "slug": "aec-setkamecz-krajan-listom",
 "title": "Who will win in the upcoming table-tennis event Krames Jan Sr vs Liska Tomas scheduled for November 8, 2026 at 8:45 PM UTC",
 "category": "Sports",
+"open": 1
+},
+{
+"venue": "pmus",
+"slug": "btc-updown-5m",
+"title": "BTC Up or Down, 5 minutes",
+"category": "Crypto",
 "open": 1
 },
 {
@@ -92184,20 +92072,6 @@
 },
 {
 "venue": "pmus",
-"slug": "astatc-setkameua-tiuole-torole",
-"title": "Will Tiutiunnyk Oleksii win set 4 against Torianyk Oleh",
-"category": "Sports",
-"open": 1
-},
-{
-"venue": "pmus",
-"slug": "astatc-setkamecz-merrom-orlpet",
-"title": "Will Merkl Roman win set 4 against Orlowski Petr",
-"category": "Sports",
-"open": 1
-},
-{
-"venue": "pmus",
 "slug": "aec-czechligapro-id2503634976568852",
 "title": "Who will win in the upcoming table-tennis event Tomas Varnuska vs Kyryl Darin scheduled for November 9, 2026 at 7:00 AM UTC",
 "category": "Sports",
@@ -92340,6 +92214,20 @@
 "venue": "pmus",
 "slug": "astatc-setkameua-klyvit-aldden",
 "title": "Will Klymenko Vitalii win set 4 against Aldayev Denis",
+"category": "Sports",
+"open": 1
+},
+{
+"venue": "pmus",
+"slug": "astatc-setkameua-bonyur-bilvol",
+"title": "Will Bondarenko Yurii win set 4 against Bilobrov Volodymyr",
+"category": "Sports",
+"open": 1
+},
+{
+"venue": "pmus",
+"slug": "astatc-setkameua-tsokos-ponole",
+"title": "Will Tsoi Kostiantyn win set 4 against Ponomarenko Oleh",
 "category": "Sports",
 "open": 1
 }

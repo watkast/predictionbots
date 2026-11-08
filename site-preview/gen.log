@@ -1,4 +1,4 @@
-series cache: 4756 entries from cache/series_meta.json
+series cache: 4758 entries from cache/series_meta.json
   https://external-api.kalshi.com/trade-api/v2/markets -> 429; retry
   https://external-api.kalshi.com/trade-api/v2/markets -> 429; retry
   https://external-api.kalshi.com/trade-api/v2/markets -> 429; retry
@@ -10,8 +10,8 @@ series cache: 4756 entries from cache/series_meta.json
   https://external-api.kalshi.com/trade-api/v2/markets -> 429; retry
   https://external-api.kalshi.com/trade-api/v2/markets -> 429; retry
   https://external-api.kalshi.com/trade-api/v2/markets -> 429; retry
-kalshi: 186595 open markets in 187 pages
-kalshi: 4758 series, 2 to fetch (4756 cached)
+kalshi: 186653 open markets in 187 pages
+kalshi: 4758 series, 0 to fetch (4758 cached)
 pmus market keys: ['active', 'archived', 'assetPriceTerms', 'bestAskQuote', 'bestBidQuote', 'category', 'closed', 'color', 'comboEnabled', 'createdAt', 'description', 'endDate', 'ep3Status', 'ep3SyncedAt', 'eventSubcategory', 'feeCoefficient', 'gameStartTime', 'hidden', 'id', 'image', 'manualActivation', 'marketSides', 'marketType', 'minimumTradeQty', 'orderPriceMinTickSize', 'outcomePrices', 'outcomes', 'politics', 'question', 'slug', 'sportsMarketType', 'sportsMarketTypeV2', 'startDate', 'status', 'subtitle', 'tags', 'title', 'titleShort', 'updatedAt']
-pmus: 66866 markets in 136 pages
-wrote 13192 series pages + index + sitemap to site/dist/markets
+pmus: 66948 markets in 135 pages
+wrote 13176 series pages + index + sitemap to site/dist/markets
