@@ -41,7 +41,8 @@ jobs:
       KALSHI_PRIVATE_KEY_PEM: ${{ secrets.KALSHI_PRIVATE_KEY_PEM }}
       MRT_DIR: ${{ github.workspace }}/data/mrt
       MRT_SNIPE_T: ${{ vars.MRT_SNIPE_T || '5.0' }}
-      MRT_MIN_MOVE_BPS: ${{ vars.MRT_MIN_MOVE_BPS || '6' }}
+      MRT_MIN_MOVE_BPS: ${{ vars.MRT_MIN_MOVE_BPS || '10' }}
+      MRT_MIN_PRINTS: ${{ vars.MRT_MIN_PRINTS || '44' }}
       MRT_MAX_ASK: ${{ vars.MRT_MAX_ASK || '0.90' }}
       MRT_MAX_QTY: ${{ vars.MRT_MAX_QTY || '10' }}
       MRT_MIN_QTY: ${{ vars.MRT_MIN_QTY || '5' }}

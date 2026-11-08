@@ -13,8 +13,10 @@ fi
 WT="$GITHUB_WORKSPACE/../mrtwt"
 git config --global user.name "predictionbots-mrt"
 git config --global user.email "bots@users.noreply.github.com"
-if git fetch -q --depth 1 origin "$DATA_BRANCH" 2>/dev/null; then
-  git worktree add -q "$WT" "origin/$DATA_BRANCH"
+if git fetch -q --depth 1 --filter=blob:none origin "$DATA_BRANCH" 2>/dev/null; then
+  git worktree add -q --no-checkout "$WT" "origin/$DATA_BRANCH"       # blobless + sparse: only mrt/ is materialised (the branch is huge)
+  git -C "$WT" sparse-checkout set --no-cone "/$SUB/" 2>/dev/null || git -C "$WT" sparse-checkout set "$SUB"
+  git -C "$WT" checkout -q "origin/$DATA_BRANCH"
   for f in state.json live.jsonl trades.jsonl; do
     [ -f "$WT/$SUB/$f" ] && cp "$WT/$SUB/$f" "$OUT/$f"
   done
@@ -24,7 +26,7 @@ fi
 publish() {
   ( cd "$WT" || exit 0
     for i in 1 2 3 4 5; do
-      if git fetch -q --depth 1 origin "$DATA_BRANCH" 2>/dev/null; then git reset -q --hard "origin/$DATA_BRANCH"; fi
+      if git fetch -q --depth 1 --filter=blob:none origin "$DATA_BRANCH" 2>/dev/null; then git reset -q --hard "origin/$DATA_BRANCH"; fi
       mkdir -p "$SUB"
       for f in MRT.md state.json live.jsonl trades.jsonl errors.jsonl; do
         [ -f "$OUT/$f" ] && cp "$OUT/$f" "$SUB/$f"

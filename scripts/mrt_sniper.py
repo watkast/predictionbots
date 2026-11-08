@@ -9,10 +9,11 @@ by < 1.5 bps; with a 5-bps margin there were 170 qualifying moments in 3.9 days,
 asks are *hittable* is the question only a live order can answer. This bot asks it, 5–10 contracts at a time.
 
 Rule, every 100 ms for each live market in its last MRT_SNIPE_T seconds:
-  prints  k of the 60 settlement seconds are known (k >= MRT_MIN_PRINTS); sum_done, last print
+  prints  k of the 60 settlement seconds are known (k >= MRT_MIN_PRINTS; the index feed runs ~10 s behind the clock, so
+          expect 45–50 in the final seconds); sum_done, last print
   leader  UP if (sum_done + last * (60 - k)) / 60 >= price-to-beat else DOWN (ties go UP, per the rules)
   margin  the remaining prints would have to AVERAGE |need_rem_avg - last| >= MRT_MIN_MOVE_BPS of the index to flip it
-          (the 1-second move's p99.9 is 4–6 bps on every coin recorded)
+          (with 10–15 prints still unknown that is a sustained move; in 3.9 recorded days no qualifying moment flipped)
   price   the leader is offered at <= MRT_MAX_ASK with >= MRT_MIN_QTY contracts on the live WebSocket book
   fire    ONE immediate-or-cancel limit buy at that ask for min(MRT_MAX_QTY, cash / ask, offered) contracts; one retry if
           nothing filled and it still qualifies with > 0.8 s left. Fees here are the exchange's 0.0695·p·(1−p): ~0.3% at 95¢.
@@ -49,8 +50,8 @@ HORIZONS = {"5m": 300, "15m": 900}
 RTI_TO_SYM = {"BRTI": "btc"} | {f"{c.upper()}USD_RTI": c for c in ("eth", "sol", "xrp", "doge", "bnb", "hype", "near", "zec", "ltc", "link", "ada", "sui")}
 
 SNIPE_T = float(os.environ.get("MRT_SNIPE_T", "5.0"))             # start looking this many seconds before the close
-MIN_PRINTS = int(os.environ.get("MRT_MIN_PRINTS", "52"))           # of the 60 settlement prints must be in hand
-MIN_MOVE_BPS = float(os.environ.get("MRT_MIN_MOVE_BPS", "6"))      # remaining prints must average this far from the last one to flip it
+MIN_PRINTS = int(os.environ.get("MRT_MIN_PRINTS", "44"))           # of the 60 settlement prints must be in hand (the index feed runs ~10 s behind the clock: 45 at 5 s left, 50 at 1 s)
+MIN_MOVE_BPS = float(os.environ.get("MRT_MIN_MOVE_BPS", "10"))     # remaining prints must average this far from the last one to flip it (10–15 unknown prints at decision time)
 MAX_ASK = float(os.environ.get("MRT_MAX_ASK", "0.90"))             # never pay more than this for the leader
 MIN_QTY = float(os.environ.get("MRT_MIN_QTY", "5"))                # offered contracts at that ask
 MAX_QTY = float(os.environ.get("MRT_MAX_QTY", "10"))               # per trade
@@ -639,15 +640,16 @@ def selftest() -> None:
     assert o["intent"] == "ORDER_INTENT_BUY_SHORT" and o["price"]["value"] == "0.80" and o["tif"] == "TIME_IN_FORCE_IMMEDIATE_OR_CANCEL" and o["quantity"] == 10
     o2 = order_for("cpc-btc-updown-5m-x", "UP", 0.85, 7)
     assert o2["intent"] == "ORDER_INTENT_BUY_LONG" and o2["price"]["value"] == "0.85" and o2["quantity"] == 7
-    # too close to call: 57 prints at 100.004, remaining need ~99.92 — 8 bps/s away — passes at 6, fails at 10
+    # too close to call: 57 prints at 100.004, the remaining 3 would need to average ~99.92 — about 8 bps away — passes
+    # at a 6-bps margin, is refused at the default 10
     global MIN_MOVE_BPS
     prints_c = {s: 100.004 for s in range(end - 60, end - 3)}
     g3 = gate(prints_c, end, ptb, book, end - 3.0)
     assert g3["leader"] == "UP" and 7 < g3["margin_bps"] < 9, g3
-    assert g3["ok"]
-    MIN_MOVE_BPS = 10
-    assert not gate(prints_c, end, ptb, book, end - 3.0)["ok"] and gate(prints_c, end, ptb, book, end - 3.0)["why"] == "margin"
+    assert not g3["ok"] and g3["why"] == "margin"
     MIN_MOVE_BPS = 6
+    assert gate(prints_c, end, ptb, book, end - 3.0)["ok"]
+    MIN_MOVE_BPS = 10
     # gate refusals: too few prints, stale book, price, size
     assert gate({s: 100.2 for s in range(end - 60, end - 20)}, end, ptb, book, end - 3.0)["why"] == "prints"
     assert gate(prints, end, ptb, {**book, "at": end - 10}, end - 3.0)["why"] == "no book"

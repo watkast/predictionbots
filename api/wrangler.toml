@@ -1,0 +1,22 @@
+name = "predictionbots-api"
+main = "src/index.js"
+compatibility_date = "2026-10-01"
+compatibility_flags = ["nodejs_compat"]
+
+# Every 5 minutes: pull the bots' public logs from GitHub into KV (recent final-second moments, stats).
+[triggers]
+crons = ["*/5 * * * *"]
+
+[[kv_namespaces]]
+binding = "DATA"
+id = "REPLACE_WITH_KV_ID"          # wrangler kv namespace create DATA  -> paste the id here
+
+[vars]
+PAY_TO = "0xREPLACE_WITH_BASE_USDC_ADDRESS"     # where USDC lands (Base mainnet). Any EVM address you control.
+NETWORK = "eip155:8453"                          # Base mainnet; "eip155:84532" = Base Sepolia for testing
+FACILITATOR_URL = "https://x402.org/facilitator"
+PRICE_RECENT = "$0.002"
+PRICE_STATS = "$0.002"
+PRICE_LIVE = "$0.01"
+GITHUB_RAW = "https://raw.githubusercontent.com/watkast/predictionbots"
+# INGEST_KEY: set as a secret (wrangler secret put INGEST_KEY) — the always-on box posts live gate readings with it.
