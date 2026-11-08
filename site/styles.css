@@ -168,6 +168,11 @@ article.post .body table { border-collapse: collapse; width: 100%; margin: 18px 
 article.post .body th, article.post .body td { text-align: left; padding: 9px 12px; border-bottom: 1px solid var(--rule); vertical-align: top; }
 article.post .body th { color: var(--ink-2); font-weight: 500; font-size: 13px; }
 article.post .body tr:last-child td { border-bottom: 0; }
+.q-where { color: var(--ink-2); font-size: 13px; }
+article.post .body.wide-body { max-width: var(--max); }
+article.post .body.wide-body p.text { max-width: var(--text); }
+article.post .body.wide-body td, article.post .body.wide-body th { font-size: 14px; }
+article.post .body .ledger.cells th[scope=row] { font-weight: 600; color: var(--ink); font-size: 15px; }
 
 @media (prefers-reduced-motion: reduce) { * { animation: none !important; transition: none !important; } }
 @media (prefers-reduced-motion: no-preference) {

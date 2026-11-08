@@ -87,6 +87,32 @@ def build():
                                   date_h="Updated " + human_date(meta.get("updated", meta.get("date", ""))), body=html)
             (DIST / "learn" / (md.stem + ".html")).write_text(out)
             print("built learn/" + md.stem)
+    # /ledger/: the Endorsement Ledger from site/data/ledger.json (noindex until it is switched on)
+    led = ROOT / "data" / "ledger.json"
+    if led.exists():
+        import json
+        L = json.loads(led.read_text())
+        def fee_k(p): return 0.07 * p * (1 - p)
+        def fee_p(p): return 0.095 * p * (1 - p)
+        rows = []
+        for e in sorted(L["entries"], key=lambda e: e["date"], reverse=True):
+            v = e.get("venue_key", "kalshi"); p = float(e.get("market_price") or 0.5)
+            fee = fee_k(p) if v == "kalshi" else fee_p(p)
+            tc = f"{fee*100:.1f}¢ a contract at {round(p*100)}¢; break-even {round((p+fee)*100,1)}%"
+            quote = f"“{e['quote']}” <span class=\"q-where\">({e['quote_where']})</span>" if e.get("quote") else "<span class=\"q-where\">no public quote found</span>"
+            rows.append(f"<tr><th scope=\"row\">{e['figure']}<br><span class=\"q-where\">{e['role']}</span></th><td>{e['venue']}</td><td>{e['deal']}</td><td>{e['date']}</td><td>{quote}</td><td>{e['pay']}</td><td>{e['promoted']}<br><span class=\"q-where\">True Cost: {tc}</span></td><td><a href=\"{e['source']}\" rel=\"noopener nofollow\">{e['source_name']}</a></td></tr>")
+        body = ("<p class=\"text\">Who is paid, or partnered, to tell you to bet. Every entry is a publicly announced arrangement with the source it came from; quotes are verbatim from that source; "
+                "\"not disclosed\" means no public figure exists and we do not guess. Next to each entry is the True Cost of the kind of market being promoted, from the venue's fee schedule. "
+                "This is a record, not an accusation: nothing here says any promotion caused anyone's losses, and promoters who publicly criticise the venues will be listed too. Corrections: ledger@predictionbots.io.</p>"
+                "<div class=\"ledger-wrap\"><table class=\"ledger cells\"><caption>Public promoters of Kalshi and Polymarket US, with sources</caption><thead><tr><th scope=\"col\">Who</th><th scope=\"col\">Venue</th><th scope=\"col\">Arrangement</th><th scope=\"col\">Date</th><th scope=\"col\">What they said</th><th scope=\"col\">Pay</th><th scope=\"col\">What is promoted</th><th scope=\"col\">Source</th></tr></thead><tbody>"
+                + "".join(rows) + "</tbody></table></div>"
+                f"<p class=\"fine\">Updated {human_date(L['updated'])}. Polymarket US had announced no named celebrity partners in the reporting we have found as of that date; its 2025 partnership with X is a platform deal, not a personal endorsement.</p>")
+        out = TEMPLATE.format(title="The Endorsement Ledger: who is paid to tell you to bet", summary="Every public promoter of Kalshi and Polymarket US, with the source, the verbatim quote where one exists, disclosed pay or 'not disclosed', and the True Cost of what they promote.",
+                              og_image='<meta name="robots" content="noindex">', date_h="Updated " + human_date(L["updated"]), body=body)
+        out = out.replace('<div class="body">', '<div class="body wide-body">', 1)
+        (DIST / "ledger").mkdir(exist_ok=True)
+        (DIST / "ledger" / "index.html").write_text(out)
+        print("built ledger (noindex)")
     print("site ->", DIST)
 
 
