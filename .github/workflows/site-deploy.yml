@@ -1,7 +1,7 @@
 # SITE BUILD + DEPLOY: render the posts, generate one page per market series from the venues' public APIs, and deploy
 # to Cloudflare Pages when the CLOUDFLARE_API_TOKEN / CLOUDFLARE_ACCOUNT_ID secrets exist. Without them the build is
 # uploaded as a workflow artifact and a preview (the markets index, series.json and a few sample pages) is pushed to
-# `site-preview/` on the `data` branch so the output can be inspected. Hourly so the market pages stay current.
+# `site-preview/` on the small `mrp-data` branch (sparse, blobless) so the output can be inspected. Hourly so the market pages stay current.
 name: site-deploy
 on:
   workflow_dispatch:
@@ -56,23 +56,23 @@ jobs:
           accountId: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
           workingDirectory: site
           command: pages deploy dist --project-name=predictionbots --commit-dirty=true
-      - name: Publish a preview to the data branch (no Cloudflare secrets yet)
+      - name: Publish a preview to the mrp-data branch (no Cloudflare secrets yet)
         if: env.CF_TOKEN == ''
         run: |
           git config --global user.name "predictionbots-site"
           git config --global user.email "bots@users.noreply.github.com"
-          git fetch -q origin data || true
-          git worktree add ../datawt origin/data
+          mkdir -p ../pv && cd ../pv
+          git init -q && git remote add origin "https://x-access-token:${{ github.token }}@github.com/${{ github.repository }}.git"
+          git config core.sparseCheckout true && git sparse-checkout set --no-cone site-preview
           for i in 1 2 3 4 5; do
-            git -C ../datawt fetch -q origin data && git -C ../datawt reset -q --hard origin/data
-            rm -rf ../datawt/site-preview && mkdir -p ../datawt/site-preview
-            cp site/dist/markets/index.html site/dist/markets/series.json site/dist/sitemap.xml ../datawt/site-preview/ 2>/dev/null || true
-            cp gen.log ../datawt/site-preview/gen.log
-            mkdir -p ../datawt/site-preview/samples
-            find site/dist/markets -mindepth 3 -name index.html | head -6 | while read f; do d=$(basename $(dirname "$f")); cp "$f" "../datawt/site-preview/samples/$d.html"; done
-            git -C ../datawt add -A site-preview
-            git -C ../datawt commit -qm "site-preview $(date -u +%FT%TZ)" || { echo "nothing new"; exit 0; }
-            git -C ../datawt push -q origin HEAD:data && exit 0
+            git fetch -q --filter=blob:none --depth 1 origin mrp-data && git checkout -q -B mrp-data FETCH_HEAD
+            rm -rf site-preview && mkdir -p site-preview/samples
+            cp "$GITHUB_WORKSPACE"/site/dist/markets/index.html "$GITHUB_WORKSPACE"/site/dist/markets/series.json "$GITHUB_WORKSPACE"/site/dist/sitemap.xml site-preview/ 2>/dev/null || true
+            cp "$GITHUB_WORKSPACE"/gen.log site-preview/gen.log
+            find "$GITHUB_WORKSPACE"/site/dist/markets -mindepth 3 -name index.html | head -8 | while read f; do d=$(basename $(dirname "$f")); cp "$f" "site-preview/samples/$d.html"; done
+            git add -A site-preview
+            git commit -qm "site-preview $(date -u +%FT%TZ)" || { echo "nothing new"; exit 0; }
+            git push -q origin HEAD:mrp-data && exit 0
             sleep $((RANDOM % 20 + 5))
           done
           echo "publish failed after 5 tries"; exit 1
