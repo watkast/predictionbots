@@ -88,3 +88,10 @@ outbound only) · Stripe (subscriptions, when there is something to charge for) 
   The recorder's 168 "cheap winners" were stale book snapshots. Retired as a trade; the sniper code stays as the
   final-seconds measurement feed and the post-2 story. Consequence: Mr. P's cross-venue "locks" are unproven until
   rebuilt on a live book with age checks. Validated scanner list for the terminal is now: decided games (Mr. S).
+- 2026-11-08 — Pivot (Noah): we are not trading any more. PredictionBots becomes the sane resource for people the markets
+  lead into near-certain losses: what not to buy (Bot Benchmark), what the hoop really is (True Cost tools), research
+  that tests claims live (post 2: the "free money" that wasn't), the historical ledger as proof we played and lost like
+  everyone else, later a Reality Check browser extension. All live trading switched off (mrh/LIVE_ON removed; Mr. S and
+  Mr. T off). The recorder keeps running: the data is the product. Decided-games scanner shelved (helps a few take
+  money from slower players; not the mission). Revenue model: venue referrals with the truth above the button (Noah
+  to decide on the ethical stance), aligned sponsors, premium research, data licensing, API probes.
