@@ -1,6 +1,6 @@
 # Mr. H — Coinbase hopper, PAPER
 
-Updated 2026-11-08T16:10:31Z · scans 425 · universe 112 coins (USD pairs with ≥ $100k 24-h volume) · fees 0.9% taker each way · start $4.00
+Updated 2026-11-08T16:20:30Z · scans 427 · universe 112 coins (USD pairs with ≥ $100k 24-h volume) · fees 0.9% taker each way · start $4.00
 
 ## Books (one position at a time, all-in every hop)
 
@@ -8,7 +8,7 @@ Updated 2026-11-08T16:10:31Z · scans 425 · universe 112 coins (USD pairs with 
 |---|---|---|---|---|---|---|---|---|
 | aggressive | $3.01 | -24.8% | $4.00 | 7 | 29% | -3.74% | $0.469 | DRV-USD @ 0.32104 |
 | standard | $3.30 | -17.6% | $4.00 | 8 | 12% | -2.35% | $0.517 | — |
-| aggressive_swap | $3.79 | -5.2% | $4.02 | 9 | 33% | -0.28% | $0.627 | CAP-USD @ 0.10564 |
+| aggressive_swap | $3.65 | -8.7% | $4.02 | 10 | 30% | -0.67% | $0.660 | — |
 
 ## Signal forward returns (every signal, whether or not a book took it)
 
@@ -33,7 +33,6 @@ Updated 2026-11-08T16:10:31Z · scans 425 · universe 112 coins (USD pairs with 
 
 | time (UTC) | book | coin | in | out | held | net | reason | bankroll |
 |---|---|---|---|---|---|---|---|---|
-| 11-07T11:45 | standard | ICNT | 0.3173 | 0.32 | 20 m | -0.96% | trail | $3.56 |
 | 11-07T14:10 | standard | CAP | 0.09713 | 0.1032 | 60 m | +4.35% | trail | $3.71 |
 | 11-07T15:15 | aggressive | ALIGN | 0.0043 | 0.00412 | 115 m | -5.90% | trail | $3.60 |
 | 11-07T16:26 | aggressive | RITUAL | 0.02644 | 0.02463 | 51 m | -8.51% | trail | $3.29 |
@@ -53,6 +52,7 @@ Updated 2026-11-08T16:10:31Z · scans 425 · universe 112 coins (USD pairs with 
 | 11-08T13:05 | aggressive_swap | MEZO | 0.00408 | 0.004839 | 40 m | +16.48% | trail | $3.81 |
 | 11-08T13:55 | standard | VVV | 20.767 | 20.6601 | 160 m | -2.30% | trail | $3.34 |
 | 11-08T16:10 | standard | CAP | 0.10564 | 0.106 | 55 m | -1.46% | trail | $3.30 |
+| 11-08T16:20 | aggressive_swap | CAP | 0.10564 | 0.10301 | 65 m | -4.24% | trail | $3.65 |
 
 ## Last 15 signals
 
