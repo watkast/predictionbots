@@ -26,7 +26,7 @@ no referral links; one tap to report; three reports hide a post pending review; 
 1. D1 schema + Functions with a stub auth (dev) and the server-rendered thread page.
 2. Clerk keys (Noah creates the Clerk app; keys as Pages env vars) → real auth.
 3. Thread blocks embedded on: benchmark rows, posts, Learn pages, market pages (the generator emits the block).
-4. Moderation page for us (list reports, hide/unhide, badge, ban).
+4. Moderation: `/api/floor-admin?key=ADMIN_KEY` (GET reported posts; POST hide | unhide | ban | unban | badge). Built 8 Nov.
 5. Sitemap entries for threads with ≥ 3 posts.
 
 ## Status 8 Nov 2026
