@@ -9831,3 +9831,4 @@
 {"t": 1794119113.062, "k": "balance_check", "code": 200, "fields": ["balance", "balance_breakdown", "balance_dollars", "portfolio_value", "updated_ts"], "ok": false}
 {"t": 1794119113.063, "k": "start", "mode": "live", "balance_ok": false}
 {"t": 1794119113.209, "k": "switch", "on": false, "code": 404, "via": "api"}
+{"t": 1794119484.577, "k": "err", "where": "espn tur.1", "e": "Expecting value: line 1 column 1 (char 0)"}
