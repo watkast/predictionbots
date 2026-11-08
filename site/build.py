@@ -67,7 +67,6 @@ def build():
                       f'<h3>{_h.escape(it["headline"])}</h3><p><b>Our number:</b> {_h.escape(it["number"])} <a href="{_h.escape(it["ours"])}">More →</a></p></li>')
         idx = (DIST / "index.html").read_text().replace("<!--NEWS-->", "".join(li))
         (DIST / "index.html").write_text(idx)
-    shutil.copytree(ROOT / "functions", DIST / "functions")
     shutil.copytree(ROOT / "vendor", DIST / "vendor")
     shutil.copytree(ROOT / "data", DIST / "data")
     (DIST / "posts").mkdir()
