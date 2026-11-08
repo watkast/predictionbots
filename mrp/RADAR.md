@@ -1,11 +1,11 @@
 # Mr. P — sports radar
 
-Updated 2026-11-08T14:37:57Z by `run-20261108T1131-42455746484` (last 7 days). Read-only scanner of every sports market on Polymarket US and Kalshi — it never places orders.
+Updated 2026-11-08T14:49:31Z by `run-20261108T1131-42455746484` (last 7 days). Read-only scanner of every sports market on Polymarket US and Kalshi — it never places orders.
 Kit: `mrp/mrp_sports_radar.py` on the `mrp` branch. Raw tape: `mrp/radar/<run>/`.
 
 # Sports radar report
 
-records 4,696,739 | 2026-11-05 15:52Z → 14:36Z | runs 15 | pairs matched 1740 | errors {'sp.stream': 10, 'radar': 5}
+records 4,708,740 | 2026-11-05 15:52Z → 14:48Z | runs 15 | pairs matched 1742 | errors {'sp.stream': 10, 'radar': 5}
 
 ## Catalogue (latest inventory, 11:52Z)
 
@@ -78,24 +78,24 @@ Polymarket US sports events 4644 of 5568 active events; Kalshi near-term sports 
 
 | kind | distinct | hits | max margin $/contract | max persistence | fresh-BBO still open |
 |---|---|---|---|---|---|
-| decided_k | 248 | 4272 | 0.9893 | 35 min | 0/0 |
+| decided_k | 249 | 4274 | 0.9893 | 35 min | 0/0 |
 | decided_pm | 11 | 90 | 0.0373 | 9 min | 70/90 |
 | decided_pm_closed | 5 | 97 | 0.0272 | 18 min | 0/97 |
 | dutch_k | 14 | 200 | 0.0252 | 18 min | 0/0 |
 | dutch_pm | 58 | 2435 | 0.3987 | 47 min | 0/0 |
 | implication_k | 250 | 3418 | 0.7784 | 33 min | 0/0 |
-| lag_k_settled | 213 | 33882 | 0.9947 | 262 min | 26717/31662 |
-| lag_k_settled_closed | 187 | 3008 | 0.9947 | 202 min | 0/3008 |
+| lag_k_settled | 214 | 34114 | 0.9947 | 262 min | 26947/31894 |
+| lag_k_settled_closed | 188 | 3014 | 0.9947 | 202 min | 0/3014 |
 
 Top by persistence × hits:
 
 - **lag_k_settled** basketball — Baskets Bonn vs. Basketball Lowen Braunschweig — bid 0.99 ask - sell_yes @ 0.99 | margin 0.9891 | 203 min, 915 hits | score 97-87 FT
 - **lag_k_settled** football — South Florida vs. East Carolina — bid 0.29 ask 0.30 sell_yes @ 0.295 | margin 0.7008 | 115 min, 796 hits | fresh bbo 0.29/0.30 depth 45/67 | score 10-17 Q4
 - **lag_k_settled** basketball — Western Carolina vs. UNC Asheville — bid 0.99 ask - sell_yes @ 0.99 | margin 0.9891 | 262 min, 570 hits | fresh bbo 0.99/- depth 14/0 | score 83-75 FT
+- **lag_k_settled** basketball — KTP Basket Kotka vs. Lahti Basketball — bid 0.83 ask 0.87 buy_yes @ 0.87 | margin 0.8166 | 110 min, 696 hits | fresh bbo 0.83/0.87 depth 14/5 | score - NS
 - **lag_k_settled** football — Michigan State vs. Michigan — bid 0.78 ask 0.78 sell_yes @ 0.775 | margin 0.7848 | 180 min, 616 hits | fresh bbo 0.78/0.78 depth 65/34 | score 9-0 End Q3
 - **lag_k_settled** football — Iowa vs. Northwestern — bid 0.91 ask 0.91 sell_yes @ 0.905 | margin 0.8968 | 149 min, 641 hits | fresh bbo 0.91/0.91 depth 76/18 | score 14-0 HT
 - **lag_k_settled** football — Western Illinois vs. Eastern Illinois — bid 0.63 ask - sell_yes @ 0.63 | margin 0.9945 | 96 min, 694 hits | fresh bbo 0.63/- depth 11/0 | score 44-23 FT
-- **lag_k_settled** basketball — KTP Basket Kotka vs. Lahti Basketball — bid 0.83 ask 0.87 buy_yes @ 0.87 | margin 0.8166 | 110 min, 650 hits | fresh bbo 0.83/0.87 depth 14/5 | score - NS
 - **lag_k_settled** football — Alabama State vs. Texas Southern — bid 0.99 ask - sell_yes @ 0.995 | margin 0.9945 | 123 min, 486 hits | fresh bbo 0.99/- depth 11/0 | score 34-31 FT
 - **lag_k_settled** esports — LPH Gaming vs.  Phantom Academy — bid 0.57 ask 0.58 sell_yes @ 0.57 | margin 0.5467 | 120 min, 478 hits | fresh bbo 0.57/0.58 depth 7/8 | score - NS
 - **lag_k_settled** basketball — Northern Iowa (W) vs. South Dakota State (W) — bid 0.15 ask 0.16 sell_yes @ 0.15 | margin 0.1379 | 115 min, 458 hits | fresh bbo 0.15/0.16 depth 11/9 | score - NS
@@ -105,9 +105,9 @@ Top by persistence × hits:
 - **lag_k_settled** esports — Weibo Gaming vs. Dplus — bid 0.85 ask 0.98 buy_yes @ 0.98 | margin 0.3440 | 108 min, 389 hits | fresh bbo 0.85/0.98 depth 25/2 | score 0-0 Map 1
 - **lag_k_settled** football — South Dakota State vs. Northern Iowa — bid 0.99 ask - sell_yes @ 0.995 | margin 0.9945 | 182 min, 304 hits | score 41-15 FT
 - **lag_k_settled** tennis — Arcangioli - Cirotte vs. Lizunova - Masiianskaia — bid 0.64 ask 0.69 sell_yes @ 0.64 | margin 0.6800 | 100 min, 385 hits | fresh bbo 0.60/0.62 depth 11/17 | score 1-1:30-30 S1
+- **lag_k_settled** basketball — Maxima Roma vs. Pallacanestro Cantu — bid 0.85 ask 0.88 sell_yes @ 0.85 | margin 0.8486 | 96 min, 384 hits | fresh bbo 0.86/0.87 depth 31/13 | score - NS
 - **lag_k_settled** football — Louisville vs. Georgia Tech — bid 0.97 ask 0.97 sell_yes @ 0.97 | margin 0.9945 | 107 min, 350 hits | fresh bbo 0.97/0.97 depth 49/5 | score 27-10 HT
 - **lag_k_settled** basketball — Sacramento State vs. Santa Clara — bid 0.04 ask 0.05 sell_yes @ 0.04 | margin 0.0364 | 118 min, 327 hits | fresh bbo 0.04/0.05 depth 4/10 | score - NS
-- **lag_k_settled** basketball — Maxima Roma vs. Pallacanestro Cantu — bid 0.86 ask 0.88 sell_yes @ 0.86 | margin 0.8486 | 85 min, 338 hits | fresh bbo 0.86/0.88 depth 31/12 | score - NS
 - **lag_k_settled** football — West Florida vs. North Alabama — bid 0.34 ask 0.35 sell_yes @ 0.345 | margin 0.3332 | 111 min, 311 hits | fresh bbo 0.34/0.35 depth 22/20 | score - NS
 - **lag_k_settled** football — Temple vs. Navy — bid 0.01 ask 0.01 sell_yes @ 0.01 | margin 0.0592 | 118 min, 285 hits | fresh bbo -/0.01 depth 0/48 | score 14-35 Q3
 - **lag_k_settled** football — Kentucky vs. Tennessee — bid 0.01 ask 0.01 sell_yes @ 0.005 | margin 0.3381 | 102 min, 294 hits | fresh bbo -/0.01 depth 0/92 | score 6-27 Q4
@@ -207,25 +207,25 @@ Ledger L2-2026-11-01 (earlier ledgers excluded: none)
 | basketball | KXNCAAWBSPREAD | 98 | 98 | 0 | - | 0 | 0 | - | 0 / $0.00 | 98 / 0 |
 | football | KXNCAAFTOTAL | 86 | 81 | 5 | 2 | 0 | 0 | 0.62 (1974) | 0 / $0.00 | 86 / 0 |
 | soccer | KXUECLTOTAL | 75 | 68 | 7 | 4 | 0 | 0 | 0.80 (2054) | 59 / $1.76 | 68 / 0 |
+| soccer | KXSERIECTOTAL | 73 | 64 | 9 | 14 | 0 | 0 | 0.85 (48) | 0 / $0.00 | 69 / 0 |
 | soccer | KXUELTOTAL | 72 | 66 | 6 | 6 | 0 | 0 | 0.86 (188) | 875 / $26.24 | 66 / 1 |
-| soccer | KXSERIECTOTAL | 72 | 63 | 9 | 14 | 0 | 0 | 0.85 (48) | 0 / $0.00 | 68 / 0 |
-| soccer | KXBUNDESLIGA2TOTAL | 61 | 56 | 4 | 8 | 1 | 0 | 0.01 (14030) | 11015 / $330.45 | 47 / 1 |
+| soccer | KXBUNDESLIGA2TOTAL | 61 | 56 | 4 | 8 | 1 | 0 | 0.01 (14030) | 11015 / $330.45 | 60 / 1 |
 | soccer | KXMLSTOTAL | 60 | 60 | 0 | - | 0 | 0 | - | 0 / $0.00 | 32 / 0 |
 | soccer | KXTHAIL1TOTAL | 45 | 43 | 2 | 21 | 0 | 0 | 0.93 (0) | 0 / $0.00 | 45 / 0 |
 | basketball | KXNCAAWBGAME | 44 | 44 | 0 | - | 0 | 0 | - | 0 / $0.00 | 44 / 0 |
 | basketball | KXNCAAMBGAME | 44 | 44 | 0 | - | 0 | 0 | - | 0 / $0.00 | 44 / 0 |
-| tennis | KXATPSETWINNER | 42 | 42 | 0 | - | 0 | 0 | - | 0 / $0.00 | 40 / 0 |
+| tennis | KXATPSETWINNER | 42 | 42 | 0 | - | 0 | 0 | - | 0 / $0.00 | 42 / 0 |
 | soccer | KXIDNSLTOTAL | 42 | 39 | 2 | 158 | 0 | 1 | 0.87 (10) | 0 / $0.00 | 42 / 0 |
 | football | KXNCAAFSPREAD | 41 | 41 | 0 | - | 0 | 0 | - | 0 / $0.00 | 41 / 0 |
 | soccer | KXCHNSLTOTAL | 41 | 39 | 2 | 1011 | 0 | 0 | 0.47 (3506) | 722 / $21.67 | 41 / 0 |
 | basketball | KXEUROLEAGUETOTAL | 37 | 35 | 1 | 3 | 0 | 1 | 0.95 (200) | 0 / $0.00 | 33 / 0 |
 | soccer | KXCZEFNLTOTAL | 37 | 37 | 0 | - | 0 | 0 | - | 0 / $0.00 | 36 / 0 |
-| soccer | KXBELGIANPLTOTAL | 37 | 37 | 0 | - | 0 | 0 | - | 0 / $0.00 | 31 / 0 |
+| soccer | KXBELGIANPLTOTAL | 37 | 37 | 0 | - | 0 | 0 | - | 0 / $0.00 | 37 / 0 |
 | soccer | KXLIGAMXTOTAL | 37 | 35 | 1 | 242 | 1 | 0 | 0.60 (7) | 7233 / $216.99 | 37 / 0 |
 | soccer | KXARGPREMDIVTOTAL | 36 | 34 | 0 | - | 2 | 0 | 0.01 (69347) | 37106 / $1113.18 | 35 / 1 |
 | soccer | KXUECL1HTOTAL | 33 | 33 | 0 | - | 0 | 0 | - | 0 / $0.00 | 33 / 0 |
 | soccer | KXUECLSPREAD | 33 | 33 | 0 | - | 0 | 0 | - | 0 / $0.00 | 33 / 0 |
-| soccer | KXTFF1LIGTOTAL | 33 | 31 | 2 | 2 | 0 | 0 | 0.83 (9000) | 0 / $0.00 | 31 / 0 |
+| soccer | KXTFF1LIGTOTAL | 33 | 31 | 2 | 2 | 0 | 0 | 0.83 (9000) | 0 / $0.00 | 32 / 0 |
 | soccer | KXAUTBUNDESTOTAL | 25 | 21 | 2 | 4 | 0 | 2 | 0.98 (22) | 0 / $0.00 | 23 / 0 |
 | soccer | KXEKSTRAKLASATOTAL | 24 | 20 | 4 | 26 | 0 | 0 | 0.95 (24) | 0 / $0.00 | 24 / 0 |
 | soccer | KXMLSSPREAD | 22 | 22 | 0 | - | 0 | 0 | - | 0 / $0.00 | 4 / 0 |
@@ -235,8 +235,8 @@ Ledger L2-2026-11-01 (earlier ledgers excluded: none)
 | soccer | KXBRASILEIROBTOTAL | 20 | 19 | 0 | - | 1 | 0 | 0.01 (61246) | 3818 / $114.53 | 19 / 1 |
 | soccer | KXLIGAEXPTOTAL | 20 | 20 | 0 | - | 0 | 0 | - | 0 / $0.00 | 20 / 0 |
 | tennis | KXWTASETWINNER | 20 | 18 | 2 | 739 | 0 | 0 | 0.67 (103) | 359 / $10.78 | 19 / 0 |
+| soccer | KXALLSVENSKANTOTAL | 20 | 20 | 0 | - | 0 | 0 | - | 0 / $0.00 | 18 / 0 |
 | soccer | KXAPFDDHTOTAL | 19 | 18 | 1 | 3 | 0 | 0 | 0.98 (114) | 0 / $0.00 | 19 / 0 |
-| soccer | KXALLSVENSKANTOTAL | 19 | 19 | 0 | - | 0 | 0 | - | 0 / $0.00 | 18 / 0 |
 | soccer | KXLIGUE2TOTAL | 18 | 17 | 0 | - | 1 | 0 | 0.56 (600) | 48 / $1.44 | 18 / 0 |
 | soccer | KXJ2LEAGUETOTAL | 18 | 18 | 0 | - | 0 | 0 | - | 0 / $0.00 | 18 / 0 |
 | soccer | KXHUNNB1TOTAL | 17 | 17 | 0 | - | 0 | 0 | - | 0 / $0.00 | 17 / 0 |
@@ -269,18 +269,18 @@ Ledger L2-2026-11-01 (earlier ledgers excluded: none)
 | esports | KXCS2TOTALMAPS | 8 | 8 | 0 | - | 0 | 0 | - | 0 / $0.00 | 7 / 0 |
 | soccer | KXLALIGA2TOTAL | 8 | 6 | 2 | 2 | 0 | 0 | 0.84 (75) | 0 / $0.00 | 8 / 0 |
 | soccer | KXBUNDESLIGATOTAL | 8 | 8 | 0 | - | 0 | 0 | - | 0 / $0.00 | 8 / 0 |
-| esports | KXCS2GAME | 8 | 8 | 0 | - | 0 | 0 | - | 0 / $0.00 | 6 / 0 |
+| esports | KXCS2GAME | 8 | 8 | 0 | - | 0 | 0 | - | 0 / $0.00 | 8 / 0 |
+| soccer | KXROML1TOTAL | 7 | 7 | 0 | - | 0 | 0 | - | 0 / $0.00 | 5 / 0 |
 | soccer | KXJLEAGUE1HBTTS | 7 | 6 | 1 | 79 | 0 | 0 | 0.95 (1) | 3 / $0.09 | 7 / 0 |
 | soccer | KXUECL1H | 6 | 6 | 0 | - | 0 | 0 | - | 0 / $0.00 | 6 / 0 |
 | soccer | KXBRASILEIROB1HTOTAL | 6 | 6 | 0 | - | 0 | 0 | - | 0 / $0.00 | 6 / 0 |
-| soccer | KXUAEPLTOTAL | 6 | 6 | 0 | - | 0 | 0 | - | 0 / $0.00 | 5 / 0 |
+| soccer | KXUAEPLTOTAL | 6 | 6 | 0 | - | 0 | 0 | - | 0 / $0.00 | 6 / 0 |
 | soccer | KXBUNDESLIGA1HTOTAL | 6 | 6 | 0 | - | 0 | 0 | - | 0 / $0.00 | 6 / 0 |
-| soccer | KXSUPERLIGTOTAL | 6 | 6 | 0 | - | 0 | 0 | - | 0 / $0.00 | 4 / 0 |
+| soccer | KXSUPERLIGTOTAL | 6 | 6 | 0 | - | 0 | 0 | - | 0 / $0.00 | 6 / 0 |
 | soccer | KXKLEAGUE1HTOTAL | 6 | 6 | 0 | - | 0 | 0 | - | 0 / $0.00 | 6 / 0 |
 | soccer | KXUEL1HBTTS | 5 | 5 | 0 | - | 0 | 0 | - | 0 / $0.00 | 5 / 0 |
-| soccer | KXROML1TOTAL | 5 | 5 | 0 | - | 0 | 0 | - | 0 / $0.00 | 5 / 0 |
 | soccer | KXSVK1LTOTAL | 5 | 5 | 0 | - | 0 | 0 | - | 0 / $0.00 | 5 / 0 |
-| soccer | KXSERIECBTTS | 5 | 5 | 0 | - | 0 | 0 | - | 0 / $0.00 | 4 / 0 |
+| soccer | KXSERIECBTTS | 5 | 5 | 0 | - | 0 | 0 | - | 0 / $0.00 | 5 / 0 |
 | soccer | KXLIGAPORTUGALTOTAL | 5 | 5 | 0 | - | 0 | 0 | - | 0 / $0.00 | 5 / 0 |
 | soccer | KXCHLLDPTOTAL | 5 | 5 | 0 | - | 0 | 0 | - | 0 / $0.00 | 5 / 0 |
 | soccer | KXCHNSLBTTS | 5 | 4 | 0 | - | 1 | 0 | 0.12 (11) | 361 / $10.82 | 4 / 1 |
@@ -338,7 +338,7 @@ Ledger L2-2026-11-01 (earlier ledgers excluded: none)
 
 ## Decided-state engine (contracts the live score already settled, still trading)
 
-3353 contracts decided while active; 248 had a price leaving > 0.4c after fees; 68 of those were mispriced AFTER the score was stable (lock tier)
+3358 contracts decided while active; 249 had a price leaving > 0.4c after fees; 68 of those were mispriced AFTER the score was stable (lock tier)
 
 | sport | game | contract | decided | reason | max margin | mispriced for | lock margin | lock depth |
 |---|---|---|---|---|---|---|---|---|
@@ -374,7 +374,7 @@ Kalshi: settlement_ts − close_time per series (negative = settled before the s
 
 | series | n | median | p90 |
 |---|---|---|---|
-| KXESOCCERGAME eSoccer Game | 4092 | 4.0 min | 4.1 min |
+| KXESOCCERGAME eSoccer Game | 4107 | 4.0 min | 4.1 min |
 | KXNCAAMBTOTAL Men's College Basketball Total | 2504 | 4.0 min | 4.1 min |
 | KXNCAAFSPREAD College Football Spread | 2484 | 4.0 min | 4.1 min |
 | KXNCAAMBSPREAD Men's College Basketball Sprea | 1968 | 1.8 min | 1.8 min |
@@ -388,7 +388,7 @@ Kalshi: settlement_ts − close_time per series (negative = settled before the s
 | KXNBA3PTPROT NBA Player Threes Protected | 1069 | 2.6 min | 2.6 min |
 | KXNBAREBPROT NBA Player Rebounds Protected | 1061 | 2.6 min | 2.6 min |
 | KXNBAREB NBA Player Rebounds | 1046 | 2.0 min | 2.1 min |
-| KXLIGAPROMATCH Russia Liga Pro Match | 934 | 4.0 min | 4.1 min |
+| KXLIGAPROMATCH Russia Liga Pro Match | 938 | 4.0 min | 4.1 min |
 | KXNHLFIRSTGOAL NHL First Goal | 930 | 6.0 min | 6.0 min |
 | KXNHLAST Pro Hockey Assists | 876 | 6.0 min | 6.1 min |
 | KXNBAPTS NBA Player Points | 875 | 2.0 min | 2.1 min |
@@ -410,7 +410,7 @@ Kalshi: settlement_ts − close_time per series (negative = settled before the s
 | KXUECLSCORE Correct Score | 466 | 6.0 min | 6.1 min |
 | KXUELSCORE Correct Score | 454 | 6.0 min | 6.1 min |
 | KXBULLETBRAWLTOP Chess.com Bullet Brawl Top Fin | 420 | 5.1 min | 5.1 min |
-| KXCS2MAP Counter-Strike 2 Map Winner  | 404 | 3.0 min | 3.1 min |
+| KXCS2MAP Counter-Strike 2 Map Winner  | 406 | 3.0 min | 3.1 min |
 | KXNBA1HTEAMTOTAL NBA 1st Half Team Total | 374 | 2.5 min | 2.6 min |
 | KXNCAAF1QTOTAL College Football 1st Quarter T | 374 | 4.0 min | 4.1 min |
 | KXNCAAF2QTOTAL College Football 2nd Quarter T | 374 | 4.0 min | 4.1 min |
@@ -421,28 +421,28 @@ change% = share of scan cycles (60 s) where the best quote moved; react = median
 
 | venue | sport | markets | snapshots | two-sided | med spread | change% | react (min) | round sizes | med size |
 |---|---|---|---|---|---|---|---|---|---|
-| pm | soccer | 1743 | 233472 | 85% | 0.020 | 17% | 0.7 (n=3246) | - | - |
-| pm | tennis | 1353 | 120513 | 94% | 0.010 | 26% | 0.6 (n=66743) | - | - |
-| pm | esports | 3486 | 87413 | 80% | 0.020 | 19% | 0.5 (n=18215) | - | - |
-| pm | basketball | 941 | 71977 | 75% | 0.030 | 19% | 0.6 (n=15357) | - | - |
-| pm | table-tennis | 1532 | 49134 | 93% | 0.010 | 27% | 0.5 (n=27296) | - | - |
-| pm | football | 133 | 20928 | 91% | 0.005 | 20% | 1.4 (n=1041) | - | - |
+| pm | soccer | 1743 | 235797 | 85% | 0.020 | 17% | 0.7 (n=3298) | - | - |
+| pm | tennis | 1353 | 120814 | 94% | 0.010 | 26% | 0.6 (n=66947) | - | - |
+| pm | esports | 3492 | 87623 | 80% | 0.020 | 19% | 0.5 (n=18270) | - | - |
+| pm | basketball | 941 | 72044 | 75% | 0.030 | 19% | 0.6 (n=15365) | - | - |
+| pm | table-tennis | 1534 | 49346 | 93% | 0.010 | 27% | 0.5 (n=27461) | - | - |
+| pm | football | 133 | 20945 | 91% | 0.005 | 20% | 1.4 (n=1042) | - | - |
 | pm | climate | 162 | 12054 | 67% | 0.070 | 29% | - (n=0) | - | - |
-| pm | ice-hockey | 80 | 7358 | 83% | 0.060 | 14% | 0.6 (n=367) | - | - |
-| pm | cricket | 13 | 5565 | 89% | 0.060 | 10% | 0.7 (n=1006) | - | - |
-| pm | motorsports | 166 | 4849 | 50% | 0.060 | 12% | - (n=0) | - | - |
-| pm | beach-volleyball | 60 | 2806 | 91% | 0.010 | 22% | 0.6 (n=1479) | - | - |
-| pm | macro | 185 | 2123 | 49% | 0.020 | 16% | - (n=0) | - | - |
-| pm | mma | 16 | 1610 | 61% | 0.050 | 3% | - (n=0) | - | - |
-| pm | boxing | 37 | 838 | 81% | 0.060 | 27% | 7.2 (n=3) | - | - |
-| pm | pickleball | 75 | 666 | 78% | 0.180 | 18% | - (n=0) | - | - |
+| pm | ice-hockey | 80 | 7364 | 83% | 0.060 | 14% | 0.6 (n=367) | - | - |
+| pm | cricket | 13 | 5585 | 89% | 0.060 | 9% | 0.7 (n=1010) | - | - |
+| pm | motorsports | 166 | 4918 | 50% | 0.060 | 12% | - (n=0) | - | - |
+| pm | beach-volleyball | 60 | 2824 | 91% | 0.010 | 22% | 0.6 (n=1491) | - | - |
+| pm | macro | 185 | 2140 | 49% | 0.020 | 16% | - (n=0) | - | - |
+| pm | mma | 16 | 1612 | 61% | 0.050 | 3% | - (n=0) | - | - |
+| pm | boxing | 38 | 840 | 81% | 0.060 | 27% | 7.2 (n=3) | - | - |
+| pm | pickleball | 75 | 667 | 78% | 0.180 | 18% | - (n=0) | - | - |
 | pm | baseball | 3 | 500 | 90% | 0.050 | 20% | 0.6 (n=25) | - | - |
 | pm | technology | 9 | 18 | 0% | - | 0% | - (n=0) | - | - |
-| k | KXNCAAFGAME College Football Game | 750 | 882392 | 98% | 0.120 | 5% | - | 7% | 25 |
+| k | KXNCAAFGAME College Football Game | 750 | 885169 | 99% | 0.120 | 5% | - | 7% | 24 |
+| k | KXNFLGAME NFL Game | 58 | 126271 | 100% | 0.010 | 1% | - | 3% | 173483 |
 | k | KXNCAAFTEAMTOTAL College Football Team To | 1471 | 125943 | 87% | 0.030 | 2% | - | 31% | 220 |
-| k | KXNFLGAME NFL Game | 58 | 125564 | 100% | 0.010 | 1% | - | 3% | 172620 |
 | k | KXNBA3PT NBA Player Threes | 1188 | 125205 | 75% | 0.070 | 20% | - | 29% | 27 |
-| k | KXCS2MAP Counter-Strike 2 Map Win | 524 | 115082 | 96% | 0.530 | 6% | - | 25% | 80 |
+| k | KXCS2MAP Counter-Strike 2 Map Win | 524 | 115812 | 96% | 0.530 | 6% | - | 25% | 80 |
 | k | KXNCAAMBTOTAL Men's College Basketball | 2581 | 114508 | 68% | 0.070 | 11% | - | 21% | 100 |
 | k | KXNCAAMBSPREAD Men's College Basketball | 1993 | 90562 | 66% | 0.070 | 11% | - | 25% | 112 |
 | k | KXNBAREB NBA Player Rebounds | 1180 | 87611 | 79% | 0.080 | 22% | - | 28% | 35 |
@@ -450,9 +450,9 @@ change% = share of scan cycles (60 s) where the best quote moved; react = median
 | k | KXNBAAST NBA Player Assists | 891 | 80023 | 79% | 0.090 | 20% | - | 28% | 25 |
 | k | KXNCAAF1HSPREAD College Football 1st Hal | 1227 | 74089 | 82% | 0.030 | 5% | - | 27% | 228 |
 | k | KXNBAPTS NBA Player Points | 999 | 70144 | 76% | 0.060 | 26% | - | 28% | 40 |
-| k | KXDOTA2MAP Dota 2 Map Winner | 346 | 69090 | 97% | 0.430 | 5% | - | 15% | 30 |
+| k | KXDOTA2MAP Dota 2 Map Winner | 346 | 69551 | 97% | 0.420 | 5% | - | 15% | 30 |
 | k | KXNCAAWBTOTAL Women's College Basketba | 1680 | 67506 | 45% | 0.380 | 3% | - | 27% | 35 |
-| k | KXESOCCERGAME eSoccer Game | 4047 | 56930 | 22% | 0.810 | 5% | - | 22% | 37 |
+| k | KXESOCCERGAME eSoccer Game | 4062 | 57107 | 22% | 0.810 | 5% | - | 22% | 37 |
 | k | KXNCAAF1H College Football 1st Hal | 1125 | 52362 | 89% | 0.940 | 1% | - | 66% | 400 |
 | k | KXNCAAFTOTAL College Football Total P | 2226 | 49586 | 61% | 0.040 | 2% | - | 28% | 350 |
 | k | KXNBAPRA NBA Player Points + Rebo | 736 | 48596 | 78% | 0.260 | 19% | - | 12% | 5 |
