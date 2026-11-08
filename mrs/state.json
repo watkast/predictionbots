@@ -1079,13 +1079,13 @@
   "KXLIGAMX1H-26NOV07ATLPAC-PAC": "Polymarket does not confirm",
   "KXLIGAMX1H-26NOV07ATLPAC-ATL": "Polymarket does not confirm",
   "KXLIGAMX1HBTTS-26NOV07ATLPAC-BTTS": "no asks (already repriced)",
-  "KXLIGAMXTOTAL-26NOV07ATLPAC-3": "settling (81s)",
+  "KXLIGAMXTOTAL-26NOV07ATLPAC-3": "settling (40s)",
   "KXLIGAMXBTTS-26NOV07ATLPAC-BTTS": "no asks (already repriced)",
   "KXMLS1HTOTAL-26NOV07SEALAFC-1": "no Polymarket twin",
   "KXMLSTOTAL-26NOV07SEALAFC-1": "no Polymarket twin",
-  "KXMLS1HTOTAL-26NOV07ATXPOR-1": "switch off",
+  "KXMLS1HTOTAL-26NOV07ATXPOR-1": "Polymarket does not confirm",
   "KXMLSTOTAL-26NOV07ATXPOR-1": "switch off",
-  "KXLIGAMXTOTAL-26NOV07ATLPAC-4": "settling (3s)"
+  "KXLIGAMXTOTAL-26NOV07ATLPAC-4": "settling (40s)"
  },
  "started": 1793687692.6057825,
  "ht": {
