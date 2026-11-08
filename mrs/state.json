@@ -1083,8 +1083,8 @@
   "KXLIGAMXBTTS-26NOV07ATLPAC-BTTS": "no asks (already repriced)",
   "KXMLS1HTOTAL-26NOV07SEALAFC-1": "no Polymarket twin",
   "KXMLSTOTAL-26NOV07SEALAFC-1": "no Polymarket twin",
-  "KXMLS1HTOTAL-26NOV07ATXPOR-1": "settling (158s)",
-  "KXMLSTOTAL-26NOV07ATXPOR-1": "settling (158s)"
+  "KXMLS1HTOTAL-26NOV07ATXPOR-1": "Polymarket does not confirm",
+  "KXMLSTOTAL-26NOV07ATXPOR-1": "switch off"
  },
  "started": 1793687692.6057825,
  "ht": {
