@@ -1,33 +1,33 @@
 # Mr. H — Coinbase hopper, PAPER
 
-Updated 2026-11-08T06:50:30Z · scans 313 · universe 112 coins (USD pairs with ≥ $100k 24-h volume) · fees 0.9% taker each way · start $4.00
+Updated 2026-11-08T07:00:30Z · scans 315 · universe 112 coins (USD pairs with ≥ $100k 24-h volume) · fees 0.9% taker each way · start $4.00
 
 ## Books (one position at a time, all-in every hop)
 
 | profile | bankroll | vs start | peak | hops | win % | avg net/hop | fees paid | open |
 |---|---|---|---|---|---|---|---|---|
 | aggressive | $3.02 | -24.6% | $4.00 | 7 | 29% | -3.74% | $0.469 | DRV-USD @ 0.32104 |
-| standard | $3.48 | -13.1% | $4.00 | 5 | 20% | -2.33% | $0.365 | CRO-USD @ 0.04914 |
+| standard | $3.48 | -13.0% | $4.00 | 5 | 20% | -2.33% | $0.365 | CRO-USD @ 0.04914 |
 | aggressive_swap | $3.35 | -16.2% | $4.02 | 6 | 17% | -2.88% | $0.404 | — |
 
 ## Signal forward returns (every signal, whether or not a book took it)
 
 | profile | signals | scored | median +15m | median +1h | median +4h | % beat 1.8% at +1h | median 4%-trail hop net | max run-up (med) | max drawdown (med) |
 |---|---|---|---|---|---|---|---|---|---|
-| aggressive | 40 | 22 | -0.32% | -3.43% | -2.22% | 14% | -5.71% | +4.20% | -10.55% |
-| standard | 33 | 17 | -0.21% | -1.80% | -0.69% | 18% | -5.38% | +4.06% | -5.10% |
+| aggressive | 40 | 23 | -0.37% | -2.42% | -1.37% | 17% | -5.72% | +4.33% | -10.26% |
+| standard | 33 | 18 | -0.29% | -1.59% | -0.58% | 22% | -5.45% | +4.86% | -5.36% |
 
 ## Aggressive signals by BTC regime (BTC's own move in the hour before the signal)
 
 | BTC 1h | signals | median +1h | median 4%-trail hop net | % beat 1.8% at +1h |
 |---|---|---|---|---|
 | ≤ −0.5% (downdraft) | 0 | — | — | — |
-| −0.5% … +0.5% (flat) | 10 | -5.47% | -5.71% | 0% |
+| −0.5% … +0.5% (flat) | 11 | -5.25% | -5.72% | 9% |
 | ≥ +0.5% (bid under the market) | 0 | — | — | — |
 
 ## Verdict
 
-**Not yet.** Needs 40 scored aggressive signals (22 so far) and 30 closed aggressive hops (7 so far) before this says anything. Until then every number above is noise.
+**Not yet.** Needs 40 scored aggressive signals (23 so far) and 30 closed aggressive hops (7 so far) before this says anything. Until then every number above is noise.
 
 ## Last 20 hops
 
@@ -56,8 +56,8 @@ Updated 2026-11-08T06:50:30Z · scans 313 · universe 112 coins (USD pairs with 
 
 | time (UTC) | profile | coin | impulse | vol× | >2h high | spread | taken | +1h | +4h |
 |---|---|---|---|---|---|---|---|---|---|
-| 11-08T02:55 | aggressive | RITUAL | +8.5% | 5.0 | y | 0.74% | spread | … | … |
-| 11-08T02:55 | standard | RITUAL | +8.5% | 5.0 | y | 0.74% | spread | … | … |
+| 11-08T02:55 | aggressive | RITUAL | +8.5% | 5.0 | y | 0.74% | spread | +11.8% | +9.2% |
+| 11-08T02:55 | standard | RITUAL | +8.5% | 5.0 | y | 0.74% | spread | +11.8% | +9.2% |
 | 11-08T03:35 | aggressive | MEZO | +2.1% | 4.5 | n | 0.92% | spread | … | … |
 | 11-08T03:40 | aggressive | RITUAL | +5.1% | 8.1 | y | 0.71% | spread | … | … |
 | 11-08T03:40 | standard | RITUAL | +5.1% | 8.1 | y | 0.71% | spread | … | … |
