@@ -36,7 +36,7 @@ jobs:
       - uses: actions/checkout@v4
       - uses: actions/setup-python@v5
         with: { python-version: "3.13" }
-      - run: pip install httpx markdown
+      - run: pip install httpx markdown pillow
       - run: python scripts/market_pages.py selftest
       - name: Reference rates (Treasury, TreasuryDirect)
         run: python scripts/rates.py || true

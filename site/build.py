@@ -76,7 +76,7 @@ def build():
         meta, body = front_matter(md.read_text())
         html = markdown.markdown(body, extensions=["extra", "smarty"])
         imgs = meta.get("images") or []
-        og = f'<meta property="og:image" content="/posts/{imgs[0]}">' if imgs else ""
+        og = f'<meta property="og:image" content="/posts/{imgs[0]}"><meta name="twitter:card" content="summary_large_image">' if imgs else ""
         import html as _hh
         floor = f'<div class="wide" data-floor data-kind="post" data-key="{md.stem}" data-title="{_hh.escape(meta.get("title", md.stem))}"></div>'
         out = TEMPLATE.format(title=meta.get("title", md.stem), summary=meta.get("summary", ""), og_image=og,
@@ -97,7 +97,14 @@ def build():
                     {"@type": "Question", "name": q.strip(), "acceptedAnswer": {"@type": "Answer", "text": a.strip()}} for q, a in qa]}, ensure_ascii=False) + "</script>"
             import html as _hh
             floor = f'<div class="wide" data-floor data-kind="learn" data-key="{md.stem}" data-title="{_hh.escape(meta.get("title", md.stem))}"></div>'
-            out = TEMPLATE.format(title=meta.get("title", md.stem), summary=meta.get("summary", ""), og_image=faq,
+            ogimg = ""
+            try:
+                import sys as _s; _s.path.insert(0, str(ROOT)); import og as _og
+                if _og.card(meta.get("title", md.stem), "Learn", DIST / "og" / f"learn-{md.stem}.png"):
+                    ogimg = f'<meta property="og:image" content="/og/learn-{md.stem}.png"><meta name="twitter:card" content="summary_large_image">'
+            except Exception as e:
+                print("og card skipped:", e)
+            out = TEMPLATE.format(title=meta.get("title", md.stem), summary=meta.get("summary", ""), og_image=faq + ogimg,
                                   date_h="Updated " + human_date(meta.get("updated", meta.get("date", ""))), body=html, floor=floor)
             (DIST / "learn" / (md.stem + ".html")).write_text(out)
             print("built learn/" + md.stem)
@@ -127,6 +134,22 @@ def build():
         (DIST / "ledger").mkdir(exist_ok=True)
         (DIST / "ledger" / "index.html").write_text(out)
         print("built ledger (noindex)")
+    try:
+        import sys as _s; _s.path.insert(0, str(ROOT)); import og as _og
+        for name, title, kicker in (("home", "See the odds before you throw. What prediction markets really cost.", "Free, no account"),
+                                    ("simulate", "How long until your balance is $0 in this market?", "Simulator"),
+                                    ("reality", "Your prediction-market statement, computed in your browser", "Reality Check")):
+            _og.card(title, kicker, DIST / "og" / f"{name}.png")
+        for page, name in (("index.html", "home"), ("simulate.html", "simulate"), ("reality.html", "reality")):
+            f = DIST / page
+            t = f.read_text()
+            if 'property="og:image"' not in t:
+                t = t.replace('<meta property="og:title"', f'<meta property="og:image" content="/og/{name}.png"><meta name="twitter:card" content="summary_large_image">\n<meta property="og:title"', 1)
+            else:
+                t = t.replace('<meta property="og:image" content="/posts/img/free-money-snapshot-vs-live.png">', f'<meta property="og:image" content="/og/{name}.png"><meta name="twitter:card" content="summary_large_image">')
+            f.write_text(t)
+    except Exception as e:
+        print("og cards skipped:", e)
     print("site ->", DIST)
 
 
