@@ -76,3 +76,10 @@ outbound only) · Stripe (subscriptions, when there is something to charge for) 
 - 2026-11-08 — Bot Benchmark promoted to a first-class free product (the market research found 115 bots and zero
   independent tests; every review site is vendor-run). Vendors get an unedited reply under their row; we take no
   referral fees from any bot vendor.
+- 2026-11-08 — Visuals: D3 v7 for the signature animated explainers built from recorded reality (1-s index prints and books);
+  TradingView lightweight-charts for time series in the terminal; chart text as indexable SVG. First three: "Watch the
+  settlement lock" (real 5-minute window replay), "After you buy the spike" (1,172 signal paths), "A lock appears and
+  closes" (two venues, one contract, fee band).
+- 2026-11-08 — SEO is an architecture, not adjectives: /benchmark/<bot> pages (the "is it legit" query, 115 of them),
+  /learn/ settlement and fee explainers carrying the visualizations, research posts with Article/FAQ/Dataset structured
+  data and OG images. Titles from personas' pain points (bot shopper, builder, active trader). Skeleton before launch.
