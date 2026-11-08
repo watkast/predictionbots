@@ -309,6 +309,9 @@ def norm_pmus(rec: dict) -> dict:
         q = str(ms[0].get("question") or ms[0].get("title") or "").strip()
         # a sports event slug like aec-nfl-hou-ten: title from the question ("Houston vs Tennessee ...")
         title = (ms[0].get("eventTitle") or (q.split("?")[0].strip() if q else "") or key).strip()
+        mt = re.match(r"Who will win in the upcoming (\w[\w ]*?) event (.+?) scheduled for ([A-Z][a-z]+ \d{1,2}), \d{4}", title)
+        if mt:
+            title = f"{mt.group(2)} ({mt.group(1)}), {mt.group(3)}"
         cat = str(ms[0].get("category") or "").strip().capitalize()
         rules = next((r["rules"] for r in rows if r["rules"]), "")
     return {"venue": "pmus", "venue_name": "Polymarket US", "slug": re.sub(r"[^a-z0-9-]+", "-", key.lower()).strip("-"), "title": title,
