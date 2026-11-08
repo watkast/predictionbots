@@ -66,8 +66,8 @@ def luck_words(l: float, crypto_minutes: bool) -> tuple[str, str]:
     if l >= 0.4:
         return pct, "Half luck. The favorite is clear, the fee is not small, and the payout on the favorite is thin."
     if l >= 0.1:
-        return pct, "Mostly decided. You are paying a fee to collect a few cents the market already agrees on."
-    return pct, "Decided. The remaining cents are someone's rent for carrying the one-in-a-thousand flip."
+        return pct, "Mostly decided, says the market. You are paying a fee to collect a few cents the market already agrees on."
+    return pct, "All but decided, says the market. The remaining cents are the price of the rare surprise, and the fee comes off them first."
 
 
 def pct(x: float) -> str:
@@ -337,9 +337,9 @@ def render_series(s: dict, built: str) -> str:
     be = breakeven(v, p)
     l = 1.0 if s["crypto_minutes"] else (luck(p) if ps else 1.0)
     lpct, ltext = luck_words(l, s["crypto_minutes"])
-    real = "50%" if s["crypto_minutes"] else pct(p)
+    real = "50%" if s["crypto_minutes"] else "—"
     real_text = ("Five-minute and fifteen-minute moves have no measurable predictability; our own 30-day test of the most popular entry rule lost on 76% of trades."
-                 if s["crypto_minutes"] else "We have no independent base rate for this market yet; the market's own price is the best public forecast, and the fee sits on top of it.")
+                 if s["crypto_minutes"] else "No independent base rate yet. Until we connect one (sportsbook consensus, forecasts, the score), the market's own price is the best public forecast, and the fee sits on top of it.")
     title = f"{s['title']} on {s['venue_name']}: the odds, the fee, and how much luck you need"
     desc = f"{s['venue_name']} {s['title']}: market price {pct(p)}, fee {cents(fee1)} a contract at that price, break-even win rate {pct(be)}, luck needed {lpct}. Plain words, no account."
     canon = f"{SITE}/markets/{v}/{s['slug']}/"
