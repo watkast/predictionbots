@@ -65,3 +65,14 @@ outbound only) · Stripe (subscriptions, when there is something to charge for) 
 - 2026-11-07 — Mr T (terminal sniper) is the headline hypothesis; dry run first, live only on Noah's word.
 - 2026-11-08 — Index feed lags the clock by ~10 s; gate recalibrated (44 prints, 10-bps margin). Lesson for the terminal:
   every scanner must state its data latency.
+- 2026-11-08 — Monetization order (Noah's suggestion, adopted with one carve-out): sticky first, paid second. No programmatic
+  ads (audience blocks them, gambling classification restricts inventory, and the ads that would run are the bot vendors
+  we benchmark). Classy alternatives: venue referral programs (verify Kalshi / Polymarket US terms and payouts) and, later,
+  one labeled sponsor slot with a published no-bot-vendor rule. Carve-out: the x402 data API stays live from day one as
+  the zero-user revenue probe.
+- 2026-11-08 — Product rule: nothing requires a signup walkthrough. Anonymous gets the ledger, research, benchmark and a
+  delayed scanner preview; one tap (Google, Apple or magic link — Clerk free tier) saves alerts and watchlists; a card
+  only on upgrade to real-time alerts + cockpit. The data API never needs an account.
+- 2026-11-08 — Bot Benchmark promoted to a first-class free product (the market research found 115 bots and zero
+  independent tests; every review site is vendor-run). Vendors get an unedited reply under their row; we take no
+  referral fees from any bot vendor.
