@@ -33,25 +33,12 @@
   },
   "aggressive_swap": {
    "name": "aggressive_swap",
-   "bankroll": 0.0,
+   "bankroll": 3.373211979572505,
    "peak": 4.01983237936772,
-   "pos": {
-    "pid": "FORTH-USD",
-    "entry_px": 0.174,
-    "qty": 20.382314963851336,
-    "cost": 3.5787313861858046,
-    "hw": 0.1785,
-    "t_in": "2026-11-08T19:40:15Z",
-    "signal": {
-     "impulse": 0.0388,
-     "vol_mult": 3.12,
-     "above_2h_high": false
-    },
-    "hw_t": "2026-11-08T19:45:15Z"
-   },
-   "hops": 12,
+   "pos": null,
+   "hops": 13,
    "wins": 4,
-   "fees": 0.8197547252857397
+   "fees": 0.8503893446764083
   }
  },
  "universe": [
@@ -617,7 +604,7 @@
   }
  ],
  "universe_t": "2026-11-08T19:30:15Z",
- "scans": 469,
+ "scans": 471,
  "started": "2026-11-06T22:20:22Z",
- "last_scan": "2026-11-08T19:50:15Z"
+ "last_scan": "2026-11-08T20:00:15Z"
 }
