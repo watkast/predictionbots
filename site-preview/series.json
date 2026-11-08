@@ -358,13 +358,6 @@
 },
 {
 "venue": "kalshi",
-"slug": "kxitfmatch",
-"title": "ITF Men's Match",
-"category": "Sports",
-"open": 62
-},
-{
-"venue": "kalshi",
 "slug": "kxnflrec",
 "title": "Pro Football Player Receptions",
 "category": "Sports",
@@ -393,17 +386,17 @@
 },
 {
 "venue": "kalshi",
-"slug": "kxchnsltotal",
-"title": "Point Total",
-"category": "Sports",
-"open": 35
-},
-{
-"venue": "kalshi",
 "slug": "kxncaafplayoff",
 "title": "College Football Playoff Qualifiers",
 "category": "Sports",
 "open": 60
+},
+{
+"venue": "kalshi",
+"slug": "kxchnsltotal",
+"title": "Point Total",
+"category": "Sports",
+"open": 34
 },
 {
 "venue": "kalshi",
@@ -572,6 +565,13 @@
 "title": "Highest daily view count this week",
 "category": "Entertainment",
 "open": 194
+},
+{
+"venue": "kalshi",
+"slug": "kxitfmatch",
+"title": "ITF Men's Match",
+"category": "Sports",
+"open": 60
 },
 {
 "venue": "kalshi",
@@ -1387,13 +1387,6 @@
 },
 {
 "venue": "kalshi",
-"slug": "kxkleaguetotal",
-"title": "Point Total",
-"category": "Sports",
-"open": 7
-},
-{
-"venue": "kalshi",
 "slug": "kxnbaroy",
 "title": "NBA Rookie of the Year",
 "category": "Sports",
@@ -2105,6 +2098,13 @@
 "title": "NBA Total",
 "category": "Sports",
 "open": 203
+},
+{
+"venue": "kalshi",
+"slug": "kxkleaguetotal",
+"title": "Point Total",
+"category": "Sports",
+"open": 6
 },
 {
 "venue": "kalshi",
@@ -4400,7 +4400,7 @@
 "slug": "kxnbaast",
 "title": "NBA Player Assists",
 "category": "Sports",
-"open": 206
+"open": 223
 },
 {
 "venue": "kalshi",
@@ -8131,7 +8131,7 @@
 "slug": "kxnbareb",
 "title": "NBA Player Rebounds",
 "category": "Sports",
-"open": 241
+"open": 268
 },
 {
 "venue": "kalshi",
@@ -8348,7 +8348,7 @@
 "slug": "kxnba2d",
 "title": "NBA Player Double Double",
 "category": "Sports",
-"open": 46
+"open": 59
 },
 {
 "venue": "kalshi",
@@ -8446,7 +8446,7 @@
 "slug": "kxnba3d",
 "title": "NBA Player Triple Double",
 "category": "Sports",
-"open": 21
+"open": 23
 },
 {
 "venue": "kalshi",
@@ -11883,7 +11883,7 @@
 "slug": "kxnbapra",
 "title": "NBA Player Points + Rebounds + Assists",
 "category": "Sports",
-"open": 145
+"open": 196
 },
 {
 "venue": "kalshi",
@@ -18740,6 +18740,13 @@
 },
 {
 "venue": "kalshi",
+"slug": "kxnbaptsleader",
+"title": "NBA Game Points Leader",
+"category": "Sports",
+"open": 62
+},
+{
+"venue": "kalshi",
 "slug": "kxnbapraprot",
 "title": "Pts + Reb + Ast Protected",
 "category": "Sports",
@@ -18863,13 +18870,6 @@
 "title": "NBA Player Steals + Blocks",
 "category": "Sports",
 "open": 8
-},
-{
-"venue": "kalshi",
-"slug": "kxnbaptsleader",
-"title": "NBA Game Points Leader",
-"category": "Sports",
-"open": 35
 },
 {
 "venue": "kalshi",
@@ -33352,7 +33352,7 @@
 "slug": "tec-pga-austcham",
 "title": "Austin Championship Winner",
 "category": "Sports",
-"open": 463
+"open": 464
 },
 {
 "venue": "pmus",
@@ -34084,15 +34084,15 @@
 },
 {
 "venue": "pmus",
-"slug": "astatc-nfl-rec",
-"title": "Ja'Marr Chase Regular Season Receptions",
+"slug": "astatc-nhl-phi-cgy",
+"title": "Will the NHL hockey game between Flyers and Flames on 2026-11-08 go into Overtime",
 "category": "Sports",
-"open": 104
+"open": 106
 },
 {
 "venue": "pmus",
-"slug": "astatc-nhl-phi-cgy",
-"title": "Will the NHL hockey game between Flyers and Flames on 2026-11-08 go into Overtime",
+"slug": "astatc-nfl-rec",
+"title": "Ja'Marr Chase Regular Season Receptions",
 "category": "Sports",
 "open": 104
 },
@@ -34217,6 +34217,20 @@
 },
 {
 "venue": "pmus",
+"slug": "tsc-cfb-loulaf-lamon",
+"title": "Will the total in Louisiana vs. Louisiana-Monroe be more than 8.5",
+"category": "Sports",
+"open": 103
+},
+{
+"venue": "pmus",
+"slug": "tsc-cfb-flst-pitt",
+"title": "Will the total in Florida State vs. Pittsburgh be more than 11.5",
+"category": "Sports",
+"open": 103
+},
+{
+"venue": "pmus",
 "slug": "tsc-cfb-hou-col",
 "title": "Will the total in Houston vs. Colorado be more than 14.5",
 "category": "Sports",
@@ -34315,6 +34329,13 @@
 },
 {
 "venue": "pmus",
+"slug": "tsc-cfb-stan-vtech",
+"title": "Will the total in Stanford vs. Virginia Tech be more than 29.5",
+"category": "Sports",
+"open": 103
+},
+{
+"venue": "pmus",
 "slug": "tsc-cfb-tx-lsu",
 "title": "Will the total in Texas vs. LSU be more than 18.5",
 "category": "Sports",
@@ -34336,6 +34357,13 @@
 },
 {
 "venue": "pmus",
+"slug": "tsc-cfb-pur-iowa",
+"title": "Will the total in Purdue vs. Iowa be more than 17.5",
+"category": "Sports",
+"open": 102
+},
+{
+"venue": "pmus",
 "slug": "aachc-nhl",
 "title": "NHL Regular Season Points Totals",
 "category": "Sports",
@@ -34350,38 +34378,10 @@
 },
 {
 "venue": "pmus",
-"slug": "tsc-cfb-pur-iowa",
-"title": "Will the total in Purdue vs. Iowa be more than 17.5",
-"category": "Sports",
-"open": 101
-},
-{
-"venue": "pmus",
 "slug": "aachc-epl-pts",
 "title": "Arsenal EPL Points",
 "category": "Sports",
 "open": 100
-},
-{
-"venue": "pmus",
-"slug": "tsc-cfb-loulaf-lamon",
-"title": "Will the total in Louisiana vs. Louisiana-Monroe be more than 8.5",
-"category": "Sports",
-"open": 100
-},
-{
-"venue": "pmus",
-"slug": "tsc-cfb-flst-pitt",
-"title": "Will the total in Florida State vs. Pittsburgh be more than 11.5",
-"category": "Sports",
-"open": 100
-},
-{
-"venue": "pmus",
-"slug": "tsc-cfb-stan-vtech",
-"title": "Will the total in Stanford vs. Virginia Tech be more than 29.5",
-"category": "Sports",
-"open": 98
 },
 {
 "venue": "pmus",
@@ -34616,6 +34616,13 @@
 },
 {
 "venue": "pmus",
+"slug": "asc-cfb-lou-ncar",
+"title": "Will the Louisville cover -33.5 vs the North Carolina in Louisville vs. North Carolina",
+"category": "Sports",
+"open": 77
+},
+{
+"venue": "pmus",
 "slug": "asc-cfb-minnst-pennst",
 "title": "Will the Minnesota cover -17.5 vs the Penn State in Minnesota vs. Penn State",
 "category": "Sports",
@@ -34646,13 +34653,6 @@
 "venue": "pmus",
 "slug": "tec-pga-worlwide",
 "title": "World Wide Technology Championship Winner",
-"category": "Sports",
-"open": 74
-},
-{
-"venue": "pmus",
-"slug": "asc-cfb-lou-ncar",
-"title": "Will the Louisville cover -27.5 vs the North Carolina in Louisville vs. North Carolina",
 "category": "Sports",
 "open": 74
 },
@@ -35169,6 +35169,13 @@
 },
 {
 "venue": "pmus",
+"slug": "astatc-cfb-aubrn-mspst",
+"title": "Exact Margin of Victory: Auburn by 19-24",
+"category": "Sports",
+"open": 49
+},
+{
+"venue": "pmus",
 "slug": "astatc-cfb-nw-ohiost",
 "title": "Exact Margin of Victory: Northwestern by 25+",
 "category": "Sports",
@@ -35325,13 +35332,6 @@
 "venue": "pmus",
 "slug": "astatc-cfb-ndkst-hawaii",
 "title": "Exact Margin of Victory: North Dakota State by 13-18",
-"category": "Sports",
-"open": 43
-},
-{
-"venue": "pmus",
-"slug": "astatc-cfb-aubrn-mspst",
-"title": "Exact Margin of Victory: Auburn by 19-24",
 "category": "Sports",
 "open": 43
 },
@@ -38921,6 +38921,13 @@
 },
 {
 "venue": "pmus",
+"slug": "atc-nfl-lv-den",
+"title": "Will Las Vegas Raiders win the first half",
+"category": "Sports",
+"open": 18
+},
+{
+"venue": "pmus",
 "slug": "atc-nfl-pit-phi",
 "title": "Will Pittsburgh Steelers win the first half",
 "category": "Sports",
@@ -39330,13 +39337,6 @@
 "slug": "xrp-updown-daily",
 "title": "XRP Up or Down, daily",
 "category": "Crypto",
-"open": 15
-},
-{
-"venue": "pmus",
-"slug": "atc-nfl-lv-den",
-"title": "Will Las Vegas Raiders win the first half",
-"category": "Sports",
 "open": 15
 },
 {
@@ -41303,6 +41303,13 @@
 "venue": "pmus",
 "slug": "atc-cbb-wichst-usc",
 "title": "Will Wichita State reach 10 points before USC",
+"category": "Sports",
+"open": 10
+},
+{
+"venue": "pmus",
+"slug": "atc-cbb-marsh-ohiost",
+"title": "Will Marshall reach 10 points before Ohio State",
 "category": "Sports",
 "open": 10
 },
@@ -46040,13 +46047,6 @@
 },
 {
 "venue": "pmus",
-"slug": "atc-cbb-marsh-ohiost",
-"title": "Will Marshall reach 10 points before Ohio State",
-"category": "Sports",
-"open": 7
-},
-{
-"venue": "pmus",
 "slug": "scc-hrep-rep",
 "title": "2026 Midterms: Republican House Seats",
 "category": "Politics",
@@ -50667,27 +50667,6 @@
 },
 {
 "venue": "pmus",
-"slug": "atc-csl-bgu-ton",
-"title": "Will Beijing Guoan FC win against Chongqing Tonglianglong FC in the CSL match scheduled for Nov 8, 2026",
-"category": "Sports",
-"open": 3
-},
-{
-"venue": "pmus",
-"slug": "atc-csl-ygb-jin",
-"title": "Will Dalian Yingbo FC win against Tianjin Jinmen Hu FC in the CSL match scheduled for Nov 8, 2026",
-"category": "Sports",
-"open": 3
-},
-{
-"venue": "pmus",
-"slug": "atc-csl-sha-ron",
-"title": "Will Shandong Taishan FC win against Chengdu Rongcheng FC in the CSL match scheduled for Nov 8, 2026",
-"category": "Sports",
-"open": 3
-},
-{
-"venue": "pmus",
 "slug": "atc-csl-yun-wsz",
 "title": "Will Yunnan Yukun FC win against Wuhan San Zhen FC in the CSL match scheduled for Nov 8, 2026",
 "category": "Sports",
@@ -51906,13 +51885,6 @@
 },
 {
 "venue": "pmus",
-"slug": "atc-ebfsa-nap-bol",
-"title": "Will Napoli (v1nn) defeat Bologna (RuBIX) in the eBattles: Serie A match scheduled for Nov 8, 2026",
-"category": "Sports",
-"open": 3
-},
-{
-"venue": "pmus",
 "slug": "atc-ebfsa-juv-roma",
 "title": "Will Juventus (A1ose) defeat Roma (dor1an) in the eBattles: Serie A match scheduled for Nov 8, 2026",
 "category": "Sports",
@@ -51922,13 +51894,6 @@
 "venue": "pmus",
 "slug": "atc-ebfsa-bol-juv",
 "title": "Will Bologna (RuBIX) defeat Juventus (A1ose) in the eBattles: Serie A match scheduled for Nov 8, 2026",
-"category": "Sports",
-"open": 3
-},
-{
-"venue": "pmus",
-"slug": "atc-ebfsa-juv-sas",
-"title": "Will Juventus (A1ose) defeat Sassuolo (cl1vlind) in the eBattles: Serie A match scheduled for Nov 8, 2026",
 "category": "Sports",
 "open": 3
 },
