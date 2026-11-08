@@ -1,14 +1,14 @@
 # Mr. H — Coinbase hopper, PAPER
 
-Updated 2026-11-08T16:00:30Z · scans 423 · universe 112 coins (USD pairs with ≥ $100k 24-h volume) · fees 0.9% taker each way · start $4.00
+Updated 2026-11-08T16:10:31Z · scans 425 · universe 112 coins (USD pairs with ≥ $100k 24-h volume) · fees 0.9% taker each way · start $4.00
 
 ## Books (one position at a time, all-in every hop)
 
 | profile | bankroll | vs start | peak | hops | win % | avg net/hop | fees paid | open |
 |---|---|---|---|---|---|---|---|---|
 | aggressive | $3.01 | -24.8% | $4.00 | 7 | 29% | -3.74% | $0.469 | DRV-USD @ 0.32104 |
-| standard | $3.39 | -15.2% | $4.00 | 7 | 14% | -2.48% | $0.487 | CAP-USD @ 0.10564 |
-| aggressive_swap | $3.87 | -3.2% | $4.02 | 9 | 33% | -0.28% | $0.627 | CAP-USD @ 0.10564 |
+| standard | $3.30 | -17.6% | $4.00 | 8 | 12% | -2.35% | $0.517 | — |
+| aggressive_swap | $3.79 | -5.2% | $4.02 | 9 | 33% | -0.28% | $0.627 | CAP-USD @ 0.10564 |
 
 ## Signal forward returns (every signal, whether or not a book took it)
 
@@ -33,7 +33,6 @@ Updated 2026-11-08T16:00:30Z · scans 423 · universe 112 coins (USD pairs with 
 
 | time (UTC) | book | coin | in | out | held | net | reason | bankroll |
 |---|---|---|---|---|---|---|---|---|
-| 11-07T11:45 | aggressive | ICNT | 0.3087 | 0.32 | 25 m | +1.80% | trail | $3.83 |
 | 11-07T11:45 | standard | ICNT | 0.3173 | 0.32 | 20 m | -0.96% | trail | $3.56 |
 | 11-07T14:10 | standard | CAP | 0.09713 | 0.1032 | 60 m | +4.35% | trail | $3.71 |
 | 11-07T15:15 | aggressive | ALIGN | 0.0043 | 0.00412 | 115 m | -5.90% | trail | $3.60 |
@@ -53,6 +52,7 @@ Updated 2026-11-08T16:00:30Z · scans 423 · universe 112 coins (USD pairs with 
 | 11-08T10:30 | standard | CRO | 0.04914 | 0.04833 | 1010 m | -3.41% | delisted | $3.42 |
 | 11-08T13:05 | aggressive_swap | MEZO | 0.00408 | 0.004839 | 40 m | +16.48% | trail | $3.81 |
 | 11-08T13:55 | standard | VVV | 20.767 | 20.6601 | 160 m | -2.30% | trail | $3.34 |
+| 11-08T16:10 | standard | CAP | 0.10564 | 0.106 | 55 m | -1.46% | trail | $3.30 |
 
 ## Last 15 signals
 
