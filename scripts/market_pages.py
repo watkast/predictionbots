@@ -363,7 +363,11 @@ def render_series(s: dict, built: str) -> str:
     if wx_rows:
         top = wx_rows[0]
         real = pct(top["real"])
-        real_text_wx = f'For the most traded contract ({top["sub"] or top["title"]}): market {pct(top["p"])}, independent estimate {pct(top["real"])}. {top["real_why"]}. A gap smaller than the fee is not an edge.'
+        if "NWS" in (top["real_why"] or ""):
+            real_text_wx = (f'For the most traded contract ({top["sub"] or top["title"]}): market {pct(top["p"])}, our simple model {pct(top["real"])}. {top["real_why"]}. '
+                            'This model is untested: we score it against settled results every day and will publish whether it or the market called it better. Until then, treat the market as the better forecast; a gap is not an edge.')
+        else:
+            real_text_wx = f'For the most traded contract ({top["sub"] or top["title"]}): market {pct(top["p"])}, sportsbook consensus {pct(top["real"])}. {top["real_why"]}. A gap smaller than the fee is not an edge.'
     real_text = real_text_wx if wx_rows else ("Five-minute and fifteen-minute moves have no measurable predictability; our own 30-day test of the most popular entry rule lost on 76% of trades."
                  if s["crypto_minutes"] else "No independent base rate yet. Until we connect one (sportsbook consensus, forecasts, the score), the market's own price is the best public forecast, and the fee sits on top of it.")
     title = f"{s['title']} on {s['venue_name']}: the odds, the fee, and how much luck you need"

@@ -75,7 +75,7 @@ def fetch_ibond(client) -> tuple[float, str] | None:
     DATE = r"([A-Z][a-z]+ \d{1,2},? \d{4})"
     per = re.search(r"issued\s+" + DATE + r"\s*(?:through|to|-|\u2013)\s*" + DATE, t)
     period = f"{per.group(1)} to {per.group(2)}" if per else "current"
-    m2 = re.search(r"(?:current rate|composite rate)[^0-9%]{0,60}?([0-9]+\.[0-9]+)%", t, re.I)
+    m2 = re.search(r"(?:current (?:interest )?rate|composite rate)[^0-9%]{0,60}?([0-9]+\.[0-9]+)%", t, re.I)
     if m2:
         return float(m2.group(1)) / 100, period
     m = re.search(r"(?<!fixed rate of )([0-9]+\.[0-9]+)%\s*(?:composite)?[^%]{0,160}?issued\s+" + DATE, t)

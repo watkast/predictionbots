@@ -2,8 +2,8 @@
  "asof": "2026-11-08",
  "tbill_4w": 0.0395,
  "tbill_4w_date": "2026-11-06",
- "ibond": null,
- "ibond_period": null,
+ "ibond": 0.0551,
+ "ibond_period": "November 1, 2026 to April 30, 2027",
  "sources": {
   "tbill_4w": "U.S. Treasury, daily Treasury bill rates (coupon equivalent)",
   "ibond": "TreasuryDirect, Series I savings bonds, current composite rate"
