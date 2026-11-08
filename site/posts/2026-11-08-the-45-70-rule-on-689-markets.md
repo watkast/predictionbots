@@ -13,7 +13,7 @@ If you have read a tutorial or a vendor page about trading 15-minute Bitcoin mar
 
 ## The numbers
 
-| | |
+| Measure | Value |
 | --- | --- |
 | Windows recorded (BTC 15-minute, Polymarket US, 29 Oct to 8 Nov 2026) | 745; 689 usable (settled, with at least half the window's book on file) |
 | Trades | 689 (the rule found a side at 45¢ or less in every usable window) |
