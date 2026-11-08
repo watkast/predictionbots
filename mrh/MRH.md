@@ -1,6 +1,6 @@
 # Mr. H — Coinbase hopper, PAPER
 
-Updated 2026-11-08T14:35:32Z · scans 407 · universe 111 coins (USD pairs with ≥ $100k 24-h volume) · fees 0.9% taker each way · start $4.00
+Updated 2026-11-08T14:45:31Z · scans 409 · universe 111 coins (USD pairs with ≥ $100k 24-h volume) · fees 0.9% taker each way · start $4.00
 
 ## Books (one position at a time, all-in every hop)
 
@@ -15,7 +15,7 @@ Updated 2026-11-08T14:35:32Z · scans 407 · universe 111 coins (USD pairs with 
 | profile | signals | scored | median +15m | median +1h | median +4h | % beat 1.8% at +1h | median 4%-trail hop net | max run-up (med) | max drawdown (med) |
 |---|---|---|---|---|---|---|---|---|---|
 | aggressive | 64 | 45 | -0.50% | -2.69% | -0.71% | 16% | -5.70% | +6.16% | -10.26% |
-| standard | 52 | 33 | +0.00% | -1.38% | -0.09% | 21% | -3.60% | +6.06% | -6.36% |
+| standard | 53 | 33 | +0.00% | -1.38% | -0.09% | 21% | -3.60% | +6.06% | -6.36% |
 
 ## Aggressive signals by BTC regime (BTC's own move in the hour before the signal)
 
@@ -58,7 +58,6 @@ Updated 2026-11-08T14:35:32Z · scans 407 · universe 111 coins (USD pairs with 
 
 | time (UTC) | profile | coin | impulse | vol× | >2h high | spread | taken | +1h | +4h |
 |---|---|---|---|---|---|---|---|---|---|
-| 11-08T11:15 | standard | VVV | +1.9% | 29.6 | y | 0.26% | y | … | … |
 | 11-08T11:25 | standard | VVV | +1.8% | 30.5 | y | 0.22% | in_position | … | … |
 | 11-08T11:25 | standard | PEPE | +1.0% | 6.8 | y | 0.20% | in_position | … | … |
 | 11-08T12:25 | aggressive | MEZO | +3.8% | 10.5 | n | 0.42% | in_position | … | … |
@@ -73,3 +72,4 @@ Updated 2026-11-08T14:35:32Z · scans 407 · universe 111 coins (USD pairs with 
 | 11-08T13:00 | aggressive | MEZO | +8.2% | 22.6 | y | 0.57% | in_position | … | … |
 | 11-08T13:00 | standard | MEZO | +8.2% | 22.6 | y | 0.57% | in_position | … | … |
 | 11-08T14:05 | aggressive | RITUAL | +2.0% | 6.4 | n | 0.66% | spread | … | … |
+| 11-08T14:40 | standard | ALEO | +1.1% | 3.7 | y | 1.03% | spread | … | … |
