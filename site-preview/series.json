@@ -43,13 +43,6 @@
 },
 {
 "venue": "kalshi",
-"slug": "kxatpchallengermatch",
-"title": "Challenger ATP ",
-"category": "Sports",
-"open": 52
-},
-{
-"venue": "kalshi",
 "slug": "kxhouserace",
 "title": "House Race Winner?",
 "category": "Elections",
@@ -85,10 +78,10 @@
 },
 {
 "venue": "kalshi",
-"slug": "kxpresnomr",
-"title": "Republican Primary winner",
-"category": "Elections",
-"open": 50
+"slug": "kxwtamatch",
+"title": "WTA Tennis Match",
+"category": "Sports",
+"open": 8
 },
 {
 "venue": "kalshi",
@@ -96,6 +89,13 @@
 "title": "DP World Tour Tournament Winner",
 "category": "Sports",
 "open": 70
+},
+{
+"venue": "kalshi",
+"slug": "kxpresnomr",
+"title": "Republican Primary winner",
+"category": "Elections",
+"open": 50
 },
 {
 "venue": "kalshi",
@@ -148,10 +148,17 @@
 },
 {
 "venue": "kalshi",
-"slug": "kxdsenateseats",
-"title": "Democratic Senate seats",
-"category": "Elections",
-"open": 24
+"slug": "kxcs2game",
+"title": "Counter-Strike 2 Game",
+"category": "Sports",
+"open": 122
+},
+{
+"venue": "kalshi",
+"slug": "kxbtcd",
+"title": "Bitcoin price Above/below",
+"category": "Crypto",
+"open": 318
 },
 {
 "venue": "kalshi",
@@ -162,17 +169,17 @@
 },
 {
 "venue": "kalshi",
-"slug": "kxcs2game",
-"title": "Counter-Strike 2 Game",
-"category": "Sports",
-"open": 122
-},
-{
-"venue": "kalshi",
 "slug": "kxnflfirsttd",
 "title": "Pro Football First Touchdown",
 "category": "Sports",
 "open": 349
+},
+{
+"venue": "kalshi",
+"slug": "kxdsenateseats",
+"title": "Democratic Senate seats",
+"category": "Elections",
+"open": 24
 },
 {
 "venue": "kalshi",
@@ -183,10 +190,10 @@
 },
 {
 "venue": "kalshi",
-"slug": "kxbtcd",
-"title": "Bitcoin price Above/below",
-"category": "Crypto",
-"open": 318
+"slug": "kxitfmatch",
+"title": "ITF Men's Match",
+"category": "Sports",
+"open": 82
 },
 {
 "venue": "kalshi",
@@ -204,31 +211,17 @@
 },
 {
 "venue": "kalshi",
+"slug": "kxwt20match",
+"title": "Women's T20 Match",
+"category": "Sports",
+"open": 60
+},
+{
+"venue": "kalshi",
 "slug": "kxtrumpadminleave",
 "title": "Who will leave the Trump administration",
 "category": "Politics",
 "open": 109
-},
-{
-"venue": "kalshi",
-"slug": "kxwtamatch",
-"title": "WTA Tennis Match",
-"category": "Sports",
-"open": 8
-},
-{
-"venue": "kalshi",
-"slug": "kxitfmatch",
-"title": "ITF Men's Match",
-"category": "Sports",
-"open": 86
-},
-{
-"venue": "kalshi",
-"slug": "kxmlbnlroty",
-"title": "Pro Baseball National League Rookie of the Year",
-"category": "Sports",
-"open": 30
 },
 {
 "venue": "kalshi",
@@ -239,10 +232,24 @@
 },
 {
 "venue": "kalshi",
+"slug": "kxmlbnlroty",
+"title": "Pro Baseball National League Rookie of the Year",
+"category": "Sports",
+"open": 30
+},
+{
+"venue": "kalshi",
 "slug": "kxlolgame",
 "title": "League of Legends Game",
 "category": "Sports",
 "open": 8
+},
+{
+"venue": "kalshi",
+"slug": "kxchnslgame",
+"title": "Chinese Super League Game",
+"category": "Sports",
+"open": 24
 },
 {
 "venue": "kalshi",
@@ -267,13 +274,6 @@
 },
 {
 "venue": "kalshi",
-"slug": "kxwt20match",
-"title": "Women's T20 Match",
-"category": "Sports",
-"open": 62
-},
-{
-"venue": "kalshi",
 "slug": "kxnascarrace",
 "title": "NASCAR Race",
 "category": "Sports",
@@ -288,13 +288,6 @@
 },
 {
 "venue": "kalshi",
-"slug": "kxaleaguegame",
-"title": "Australian A League Game",
-"category": "Sports",
-"open": 3
-},
-{
-"venue": "kalshi",
 "slug": "kxisraelpm",
 "title": "Who will be the Prime Minister of Israel after their election?",
 "category": "Elections",
@@ -302,17 +295,10 @@
 },
 {
 "venue": "kalshi",
-"slug": "kxbtc15m",
-"title": "BTC 15 min",
-"category": "Crypto",
-"open": 1
-},
-{
-"venue": "kalshi",
-"slug": "kxchnslgame",
-"title": "Chinese Super League Game",
+"slug": "kxnflrecyds",
+"title": "Pro Football Receiving Yards",
 "category": "Sports",
-"open": 24
+"open": 1662
 },
 {
 "venue": "kalshi",
@@ -330,10 +316,10 @@
 },
 {
 "venue": "kalshi",
-"slug": "kxnflrecyds",
-"title": "Pro Football Receiving Yards",
+"slug": "kxitfwmatch",
+"title": "ITF Women's Match",
 "category": "Sports",
-"open": 1662
+"open": 60
 },
 {
 "venue": "kalshi",
@@ -351,17 +337,17 @@
 },
 {
 "venue": "kalshi",
-"slug": "kxncaafgame",
-"title": "College Football Game",
-"category": "Sports",
-"open": 512
-},
-{
-"venue": "kalshi",
 "slug": "kxnflnextteam",
 "title": "Player Next Team",
 "category": "Sports",
 "open": 726
+},
+{
+"venue": "kalshi",
+"slug": "kxncaafgame",
+"title": "College Football Game",
+"category": "Sports",
+"open": 512
 },
 {
 "venue": "kalshi",
@@ -372,13 +358,6 @@
 },
 {
 "venue": "kalshi",
-"slug": "kxlol",
-"title": "League of Legends",
-"category": "Sports",
-"open": 4
-},
-{
-"venue": "kalshi",
 "slug": "kxncaambgame",
 "title": "Men's College Basketball Game",
 "category": "Sports",
@@ -386,17 +365,17 @@
 },
 {
 "venue": "kalshi",
+"slug": "kxlol",
+"title": "League of Legends",
+"category": "Sports",
+"open": 4
+},
+{
+"venue": "kalshi",
 "slug": "kxatpmatch",
 "title": "ATP Tennis Match",
 "category": "Sports",
 "open": 14
-},
-{
-"venue": "kalshi",
-"slug": "kxaleaguetotal",
-"title": "Australia A League Total",
-"category": "Sports",
-"open": 5
 },
 {
 "venue": "kalshi",
@@ -421,6 +400,13 @@
 },
 {
 "venue": "kalshi",
+"slug": "kxepltotal",
+"title": "English Premier League Total Goals",
+"category": "Sports",
+"open": 30
+},
+{
+"venue": "kalshi",
 "slug": "kxncaafplayoff",
 "title": "College Football Playoff Qualifiers",
 "category": "Sports",
@@ -428,10 +414,10 @@
 },
 {
 "venue": "kalshi",
-"slug": "kxepltotal",
-"title": "English Premier League Total Goals",
-"category": "Sports",
-"open": 30
+"slug": "kxhegsethout",
+"title": "Hegseth out by...?",
+"category": "Politics",
+"open": 10
 },
 {
 "venue": "kalshi",
@@ -452,7 +438,7 @@
 "slug": "kxsenatedemlead",
 "title": "Who will win the next Senate Democratic Leader election?",
 "category": "Elections",
-"open": 14
+"open": 15
 },
 {
 "venue": "kalshi",
@@ -484,20 +470,6 @@
 },
 {
 "venue": "kalshi",
-"slug": "kxhegsethout",
-"title": "Hegseth out by...?",
-"category": "Politics",
-"open": 10
-},
-{
-"venue": "kalshi",
-"slug": "kxcs2map",
-"title": "Counter-Strike 2 Map Winner ",
-"category": "Sports",
-"open": 174
-},
-{
-"venue": "kalshi",
 "slug": "kxbluewavecombo",
 "title": "Will there be a blue wave?",
 "category": "Elections",
@@ -519,13 +491,6 @@
 },
 {
 "venue": "kalshi",
-"slug": "kxitfwmatch",
-"title": "ITF Women's Match",
-"category": "Sports",
-"open": 54
-},
-{
-"venue": "kalshi",
 "slug": "kxbundesligagame",
 "title": "Bundesliga Game",
 "category": "Sports",
@@ -540,17 +505,17 @@
 },
 {
 "venue": "kalshi",
+"slug": "kxchnsltotal",
+"title": "Point Total",
+"category": "Sports",
+"open": 57
+},
+{
+"venue": "kalshi",
 "slug": "kxrhouseseats",
 "title": "Republican house seats",
 "category": "Elections",
 "open": 11
-},
-{
-"venue": "kalshi",
-"slug": "kxhousepopvotemargin",
-"title": "National House popular vote margin?",
-"category": "Elections",
-"open": 10
 },
 {
 "venue": "kalshi",
@@ -561,17 +526,17 @@
 },
 {
 "venue": "kalshi",
-"slug": "kxytviewsw",
-"title": "Highest daily view count this week",
-"category": "Entertainment",
-"open": 194
-},
-{
-"venue": "kalshi",
 "slug": "kxnflmatchup",
 "title": "Pro Football Matchups",
 "category": "Sports",
 "open": 496
+},
+{
+"venue": "kalshi",
+"slug": "kxytviewsw",
+"title": "Highest daily view count this week",
+"category": "Entertainment",
+"open": 194
 },
 {
 "venue": "kalshi",
@@ -582,10 +547,17 @@
 },
 {
 "venue": "kalshi",
-"slug": "kxbtcy",
-"title": "BTC price range EOY",
-"category": "Crypto",
-"open": 28
+"slug": "kxhightsea",
+"title": "Seattle Maximum Temperature Daily",
+"category": "Climate and Weather",
+"open": 12
+},
+{
+"venue": "kalshi",
+"slug": "kxhousepopvotemargin",
+"title": "National House popular vote margin?",
+"category": "Elections",
+"open": 10
 },
 {
 "venue": "kalshi",
@@ -596,10 +568,10 @@
 },
 {
 "venue": "kalshi",
-"slug": "kxhightsea",
-"title": "Seattle Maximum Temperature Daily",
-"category": "Climate and Weather",
-"open": 12
+"slug": "kxbtcy",
+"title": "BTC price range EOY",
+"category": "Crypto",
+"open": 28
 },
 {
 "venue": "kalshi",
@@ -694,10 +666,17 @@
 },
 {
 "venue": "kalshi",
-"slug": "kxjbleaguegame",
-"title": "Japan B League Game",
+"slug": "kxcs2spread",
+"title": "CS2 Spread",
 "category": "Sports",
-"open": 34
+"open": 18
+},
+{
+"venue": "kalshi",
+"slug": "kxwtasetwinner",
+"title": "WTA Set Winner",
+"category": "Sports",
+"open": 16
 },
 {
 "venue": "kalshi",
@@ -715,17 +694,10 @@
 },
 {
 "venue": "kalshi",
-"slug": "kxchnsltotal",
-"title": "Point Total",
+"slug": "kxlaligaspread",
+"title": "La Liga Spread",
 "category": "Sports",
-"open": 60
-},
-{
-"venue": "kalshi",
-"slug": "kxnflwinmargin",
-"title": "Pro Football Win Margin",
-"category": "Sports",
-"open": 98
+"open": 20
 },
 {
 "venue": "kalshi",
@@ -743,17 +715,24 @@
 },
 {
 "venue": "kalshi",
+"slug": "kxnflwinmargin",
+"title": "Pro Football Win Margin",
+"category": "Sports",
+"open": 98
+},
+{
+"venue": "kalshi",
+"slug": "kxnfl1hspread",
+"title": "Pro Football 1st Half Spread",
+"category": "Sports",
+"open": 221
+},
+{
+"venue": "kalshi",
 "slug": "kxnextspeaker",
 "title": "Next House speaker",
 "category": "Elections",
 "open": 8
-},
-{
-"venue": "kalshi",
-"slug": "kxcs2spread",
-"title": "CS2 Spread",
-"category": "Sports",
-"open": 18
 },
 {
 "venue": "kalshi",
@@ -764,10 +743,10 @@
 },
 {
 "venue": "kalshi",
-"slug": "kxlaligaspread",
-"title": "La Liga Spread",
+"slug": "kxnbawest",
+"title": "Pro Basketball Western Conference Champion",
 "category": "Sports",
-"open": 20
+"open": 15
 },
 {
 "venue": "kalshi",
@@ -785,17 +764,17 @@
 },
 {
 "venue": "kalshi",
-"slug": "kxnfl1hspread",
-"title": "Pro Football 1st Half Spread",
-"category": "Sports",
-"open": 221
-},
-{
-"venue": "kalshi",
 "slug": "kxdhouseseats",
 "title": "Democratic House seats",
 "category": "Elections",
 "open": 12
+},
+{
+"venue": "kalshi",
+"slug": "kxkleaguegame",
+"title": "Korea K League Game",
+"category": "Sports",
+"open": 6
 },
 {
 "venue": "kalshi",
@@ -806,24 +785,17 @@
 },
 {
 "venue": "kalshi",
-"slug": "kxatp",
-"title": "Men's Tournament Winner",
-"category": "Sports",
-"open": 103
-},
-{
-"venue": "kalshi",
-"slug": "kxnewzealandparli",
-"title": "New Zealand election",
-"category": "Elections",
-"open": 7
-},
-{
-"venue": "kalshi",
 "slug": "houseakal",
 "title": "House Alaska at-large",
 "category": "Elections",
 "open": 3
+},
+{
+"venue": "kalshi",
+"slug": "kxatp",
+"title": "Men's Tournament Winner",
+"category": "Sports",
+"open": 103
 },
 {
 "venue": "kalshi",
@@ -848,10 +820,24 @@
 },
 {
 "venue": "kalshi",
-"slug": "kxnbawest",
-"title": "Pro Basketball Western Conference Champion",
+"slug": "kxnewzealandparli",
+"title": "New Zealand election",
+"category": "Elections",
+"open": 7
+},
+{
+"venue": "kalshi",
+"slug": "kxwtagtotal",
+"title": "WTA Total Games",
 "category": "Sports",
-"open": 15
+"open": 6
+},
+{
+"venue": "kalshi",
+"slug": "kxfeddecision",
+"title": "Fed meeting",
+"category": "Economics",
+"open": 50
 },
 {
 "venue": "kalshi",
@@ -876,10 +862,10 @@
 },
 {
 "venue": "kalshi",
-"slug": "kxdancingwiththestars",
-"title": "Who will win dancing with the stars?",
-"category": "Entertainment",
-"open": 7
+"slug": "kxnascarcupseries",
+"title": "NASCAR Cup Series Champion",
+"category": "Sports",
+"open": 35
 },
 {
 "venue": "kalshi",
@@ -890,17 +876,24 @@
 },
 {
 "venue": "kalshi",
-"slug": "kxfeddecision",
-"title": "Fed meeting",
-"category": "Economics",
-"open": 50
-},
-{
-"venue": "kalshi",
 "slug": "kxhormuzpeak",
 "title": "Peak traffic through the Strait of Hormuz?",
 "category": "Politics",
 "open": 16
+},
+{
+"venue": "kalshi",
+"slug": "kxchnslspread",
+"title": "Spread",
+"category": "Sports",
+"open": 43
+},
+{
+"venue": "kalshi",
+"slug": "kxdancingwiththestars",
+"title": "Who will win dancing with the stars?",
+"category": "Entertainment",
+"open": 7
 },
 {
 "venue": "kalshi",
@@ -911,13 +904,6 @@
 },
 {
 "venue": "kalshi",
-"slug": "kxnflot",
-"title": "Pro Football Overtime",
-"category": "Sports",
-"open": 15
-},
-{
-"venue": "kalshi",
 "slug": "kxnhlgame",
 "title": "NHL Game",
 "category": "Sports",
@@ -925,10 +911,17 @@
 },
 {
 "venue": "kalshi",
-"slug": "kxnascarcupseries",
-"title": "NASCAR Cup Series Champion",
+"slug": "kxnflot",
+"title": "Pro Football Overtime",
 "category": "Sports",
-"open": 35
+"open": 15
+},
+{
+"venue": "kalshi",
+"slug": "kxlaligabtts",
+"title": "La Liga BTTS",
+"category": "Sports",
+"open": 5
 },
 {
 "venue": "kalshi",
@@ -946,10 +939,10 @@
 },
 {
 "venue": "kalshi",
-"slug": "kxlaligabtts",
-"title": "La Liga BTTS",
+"slug": "kxeplspread",
+"title": "English Premier League Spread",
 "category": "Sports",
-"open": 5
+"open": 20
 },
 {
 "venue": "kalshi",
@@ -957,13 +950,6 @@
 "title": "F1 Race Podium Finisher",
 "category": "Sports",
 "open": 23
-},
-{
-"venue": "kalshi",
-"slug": "kxeplspread",
-"title": "English Premier League Spread",
-"category": "Sports",
-"open": 20
 },
 {
 "venue": "kalshi",
@@ -981,13 +967,6 @@
 },
 {
 "venue": "kalshi",
-"slug": "kxwtagtotal",
-"title": "WTA Total Games",
-"category": "Sports",
-"open": 6
-},
-{
-"venue": "kalshi",
 "slug": "kxelectionbill",
 "title": "Will proof of citizenship be required for federal voter registration?",
 "category": "Politics",
@@ -995,10 +974,10 @@
 },
 {
 "venue": "kalshi",
-"slug": "kxopensourceshare",
-"title": "Open weights AI market share",
-"category": "Science and Technology",
-"open": 45
+"slug": "kxeplscore",
+"title": "Correct Score",
+"category": "Sports",
+"open": 170
 },
 {
 "venue": "kalshi",
@@ -1016,10 +995,10 @@
 },
 {
 "venue": "kalshi",
-"slug": "kxcpi",
-"title": "CPI",
-"category": "Economics",
-"open": 32
+"slug": "kxvpresnomd",
+"title": "Democratic VP nom",
+"category": "Elections",
+"open": 51
 },
 {
 "venue": "kalshi",
@@ -1027,13 +1006,6 @@
 "title": "Big Ten Champion",
 "category": "Sports",
 "open": 18
-},
-{
-"venue": "kalshi",
-"slug": "kxeplscore",
-"title": "Correct Score",
-"category": "Sports",
-"open": 170
 },
 {
 "venue": "kalshi",
@@ -1051,13 +1023,6 @@
 },
 {
 "venue": "kalshi",
-"slug": "kxvpresnomd",
-"title": "Democratic VP nom",
-"category": "Elections",
-"open": 51
-},
-{
-"venue": "kalshi",
 "slug": "kxrainwknd",
 "title": "Where will it rain this weekend?",
 "category": "Climate and Weather",
@@ -1065,17 +1030,17 @@
 },
 {
 "venue": "kalshi",
-"slug": "kxipoanthropic",
-"title": "Anthropic IPO",
-"category": "Financials",
-"open": 6
+"slug": "kxnbaspread",
+"title": "NBA Spread",
+"category": "Sports",
+"open": 231
 },
 {
 "venue": "kalshi",
-"slug": "kxchnslspread",
-"title": "Spread",
-"category": "Sports",
-"open": 41
+"slug": "kxcpi",
+"title": "CPI",
+"category": "Economics",
+"open": 32
 },
 {
 "venue": "kalshi",
@@ -1093,17 +1058,17 @@
 },
 {
 "venue": "kalshi",
-"slug": "kxnbaspread",
-"title": "NBA Spread",
-"category": "Sports",
-"open": 231
+"slug": "kxipoanthropic",
+"title": "Anthropic IPO",
+"category": "Financials",
+"open": 6
 },
 {
 "venue": "kalshi",
-"slug": "kxcawealthtax",
-"title": "Will the California billionaire wealth tax initiative pass?",
-"category": "Elections",
-"open": 1
+"slug": "kxopensourceshare",
+"title": "Open weights AI market share",
+"category": "Science and Technology",
+"open": 45
 },
 {
 "venue": "kalshi",
@@ -1118,6 +1083,27 @@
 "title": "Alaska Governor",
 "category": "Elections",
 "open": 2
+},
+{
+"venue": "kalshi",
+"slug": "kxcawealthtax",
+"title": "Will the California billionaire wealth tax initiative pass?",
+"category": "Elections",
+"open": 1
+},
+{
+"venue": "kalshi",
+"slug": "kxcs2totalmaps",
+"title": "CS2 Total Maps",
+"category": "Sports",
+"open": 44
+},
+{
+"venue": "kalshi",
+"slug": "kxcs2map",
+"title": "Counter-Strike 2 Map Winner ",
+"category": "Sports",
+"open": 172
 },
 {
 "venue": "kalshi",
@@ -1142,6 +1128,13 @@
 },
 {
 "venue": "kalshi",
+"slug": "kxbtc",
+"title": "Bitcoin range",
+"category": "Crypto",
+"open": 318
+},
+{
+"venue": "kalshi",
 "slug": "kxsuezweekly",
 "title": "Traffic through the Suez Canal",
 "category": "Politics",
@@ -1160,6 +1153,13 @@
 "title": "Will Hakeem Jeffries be elected Speaker on the first ballot?",
 "category": "Elections",
 "open": 1
+},
+{
+"venue": "kalshi",
+"slug": "kxlaligatotal",
+"title": "La Liga Total",
+"category": "Sports",
+"open": 30
 },
 {
 "venue": "kalshi",
@@ -1184,31 +1184,10 @@
 },
 {
 "venue": "kalshi",
-"slug": "kxlaligatotal",
-"title": "La Liga Total",
-"category": "Sports",
-"open": 30
-},
-{
-"venue": "kalshi",
-"slug": "kxnfloroty",
-"title": "AP Pro Football Offensive Rookie of the Year",
-"category": "Sports",
-"open": 40
-},
-{
-"venue": "kalshi",
 "slug": "kxnflrshatt",
 "title": "Pro Football Rushing Attempts",
 "category": "Sports",
 "open": 152
-},
-{
-"venue": "kalshi",
-"slug": "kxtrumpact",
-"title": "Will Trump do anything today?",
-"category": "Politics",
-"open": 10
 },
 {
 "venue": "kalshi",
@@ -1226,10 +1205,17 @@
 },
 {
 "venue": "kalshi",
-"slug": "kxcs2totalmaps",
-"title": "CS2 Total Maps",
-"category": "Sports",
-"open": 44
+"slug": "kxtrumpact",
+"title": "Will Trump do anything today?",
+"category": "Politics",
+"open": 10
+},
+{
+"venue": "kalshi",
+"slug": "gta6",
+"title": "GTA 6 release date",
+"category": "Entertainment",
+"open": 4
 },
 {
 "venue": "kalshi",
@@ -1240,10 +1226,10 @@
 },
 {
 "venue": "kalshi",
-"slug": "kxkleaguegame",
-"title": "Korea K League Game",
+"slug": "kxatpchallengermatch",
+"title": "Challenger ATP ",
 "category": "Sports",
-"open": 6
+"open": 50
 },
 {
 "venue": "kalshi",
@@ -1261,20 +1247,6 @@
 },
 {
 "venue": "kalshi",
-"slug": "kxwtasetwinner",
-"title": "WTA Set Winner",
-"category": "Sports",
-"open": 16
-},
-{
-"venue": "kalshi",
-"slug": "gta6",
-"title": "GTA 6 release date",
-"category": "Entertainment",
-"open": 4
-},
-{
-"venue": "kalshi",
 "slug": "kxnflcoty",
 "title": "AP Pro Football Coach Of The Year",
 "category": "Sports",
@@ -1286,6 +1258,20 @@
 "title": "Pro Football player Passing Touchdowns",
 "category": "Sports",
 "open": 120
+},
+{
+"venue": "kalshi",
+"slug": "kxnfloroty",
+"title": "AP Pro Football Offensive Rookie of the Year",
+"category": "Sports",
+"open": 40
+},
+{
+"venue": "kalshi",
+"slug": "kxatpgtotal",
+"title": "ATP Total Games",
+"category": "Sports",
+"open": 9
 },
 {
 "venue": "kalshi",
@@ -1303,24 +1289,17 @@
 },
 {
 "venue": "kalshi",
-"slug": "kxatpgtotal",
-"title": "ATP Total Games",
+"slug": "kxkblgame",
+"title": "Korea KBL Game",
 "category": "Sports",
-"open": 9
+"open": 4
 },
 {
 "venue": "kalshi",
-"slug": "kxwtimax",
-"title": "WTI oil high",
-"category": "Commodities",
-"open": 30
-},
-{
-"venue": "kalshi",
-"slug": "kxcpicore",
-"title": "CPI core",
-"category": "Economics",
-"open": 33
+"slug": "kxkleaguetotal",
+"title": "Point Total",
+"category": "Sports",
+"open": 11
 },
 {
 "venue": "kalshi",
@@ -1338,6 +1317,20 @@
 },
 {
 "venue": "kalshi",
+"slug": "kxcpicore",
+"title": "CPI core",
+"category": "Economics",
+"open": 33
+},
+{
+"venue": "kalshi",
+"slug": "kxligaportugalgame",
+"title": "Liga Portugal Game",
+"category": "Sports",
+"open": 18
+},
+{
+"venue": "kalshi",
 "slug": "kxwti",
 "title": "WTI oil on day",
 "category": "Commodities",
@@ -1349,20 +1342,6 @@
 "title": "token usage",
 "category": "Science and Technology",
 "open": 13
-},
-{
-"venue": "kalshi",
-"slug": "kxbtc",
-"title": "Bitcoin range",
-"category": "Crypto",
-"open": 318
-},
-{
-"venue": "kalshi",
-"slug": "kxligaportugalgame",
-"title": "Liga Portugal Game",
-"category": "Sports",
-"open": 18
 },
 {
 "venue": "kalshi",
@@ -1394,31 +1373,10 @@
 },
 {
 "venue": "kalshi",
-"slug": "kxfitnessads",
-"title": "Fitness Centers Ad Spend",
-"category": "Financials",
-"open": 23
-},
-{
-"venue": "kalshi",
-"slug": "kxr6game",
-"title": "R6 Game",
+"slug": "kxnfl1htotal",
+"title": "Pro Football 1st  Half Total Points",
 "category": "Sports",
-"open": 10
-},
-{
-"venue": "kalshi",
-"slug": "kxhightlv",
-"title": "Las Vegas Max Daily Temperature",
-"category": "Climate and Weather",
-"open": 12
-},
-{
-"venue": "kalshi",
-"slug": "kxbelgianplgame",
-"title": "Belgian Pro League Game",
-"category": "Sports",
-"open": 12
+"open": 192
 },
 {
 "venue": "kalshi",
@@ -1429,10 +1387,38 @@
 },
 {
 "venue": "kalshi",
+"slug": "kxfitnessads",
+"title": "Fitness Centers Ad Spend",
+"category": "Financials",
+"open": 23
+},
+{
+"venue": "kalshi",
+"slug": "kxwtimax",
+"title": "WTI oil high",
+"category": "Commodities",
+"open": 30
+},
+{
+"venue": "kalshi",
 "slug": "kxnflrryds",
 "title": "Pro Football Rush and Receiving Yards",
 "category": "Sports",
 "open": 123
+},
+{
+"venue": "kalshi",
+"slug": "kxbelgianplgame",
+"title": "Belgian Pro League Game",
+"category": "Sports",
+"open": 12
+},
+{
+"venue": "kalshi",
+"slug": "kxhightlv",
+"title": "Las Vegas Max Daily Temperature",
+"category": "Climate and Weather",
+"open": 12
 },
 {
 "venue": "kalshi",
@@ -1443,10 +1429,17 @@
 },
 {
 "venue": "kalshi",
-"slug": "kxkblgame",
-"title": "Korea KBL Game",
+"slug": "kxlvavirgame",
+"title": "Latvian Virsliga Game",
 "category": "Sports",
-"open": 4
+"open": 15
+},
+{
+"venue": "kalshi",
+"slug": "kxnfl1h",
+"title": "Pro Football 1st Half Winner",
+"category": "Sports",
+"open": 42
 },
 {
 "venue": "kalshi",
@@ -1464,13 +1457,6 @@
 },
 {
 "venue": "kalshi",
-"slug": "kxlvavirgame",
-"title": "Latvian Virsliga Game",
-"category": "Sports",
-"open": 15
-},
-{
-"venue": "kalshi",
 "slug": "kxlolaward",
 "title": "League of Legends Award",
 "category": "Sports",
@@ -1478,17 +1464,17 @@
 },
 {
 "venue": "kalshi",
-"slug": "kxnfl1h",
-"title": "Pro Football 1st Half Winner",
-"category": "Sports",
-"open": 42
-},
-{
-"venue": "kalshi",
 "slug": "kxclosestsenate",
 "title": "closest senate race",
 "category": "Elections",
 "open": 20
+},
+{
+"venue": "kalshi",
+"slug": "kxatpexactmatch",
+"title": "ATP Exact Match Score",
+"category": "Sports",
+"open": 28
 },
 {
 "venue": "kalshi",
@@ -1527,24 +1513,10 @@
 },
 {
 "venue": "kalshi",
-"slug": "kxnfl1htotal",
-"title": "Pro Football 1st  Half Total Points",
-"category": "Sports",
-"open": 192
-},
-{
-"venue": "kalshi",
 "slug": "kxhegsethimpeach",
 "title": "Will Pete Hegseth be impeached?",
 "category": "Politics",
 "open": 3
-},
-{
-"venue": "kalshi",
-"slug": "kxatpexactmatch",
-"title": "ATP Exact Match Score",
-"category": "Sports",
-"open": 28
 },
 {
 "venue": "kalshi",
@@ -1555,13 +1527,6 @@
 },
 {
 "venue": "kalshi",
-"slug": "kxligafgame",
-"title": "Spanish Liga F Game",
-"category": "Sports",
-"open": 15
-},
-{
-"venue": "kalshi",
 "slug": "kxnflfg",
 "title": "Pro Football Field Goals",
 "category": "Sports",
@@ -1569,10 +1534,17 @@
 },
 {
 "venue": "kalshi",
-"slug": "kxratecutcount",
-"title": "Number of rate cuts",
-"category": "Economics",
-"open": 21
+"slug": "kxligafgame",
+"title": "Spanish Liga F Game",
+"category": "Sports",
+"open": 15
+},
+{
+"venue": "kalshi",
+"slug": "kxserieascore",
+"title": "Correct Score",
+"category": "Sports",
+"open": 150
 },
 {
 "venue": "kalshi",
@@ -1583,17 +1555,17 @@
 },
 {
 "venue": "kalshi",
-"slug": "kxgovtshutdown",
-"title": "Will the government shut down?",
-"category": "Politics",
-"open": 1
-},
-{
-"venue": "kalshi",
 "slug": "kxnflescalatorrecyds",
 "title": "Receiving Yards Escalator",
 "category": "Sports",
 "open": 67
+},
+{
+"venue": "kalshi",
+"slug": "kxgovtshutdown",
+"title": "Will the government shut down?",
+"category": "Politics",
+"open": 1
 },
 {
 "venue": "kalshi",
@@ -1611,10 +1583,10 @@
 },
 {
 "venue": "kalshi",
-"slug": "kxcasinoads",
-"title": "Casino Ad Spend",
-"category": "Financials",
-"open": 15
+"slug": "kxratecutcount",
+"title": "Number of rate cuts",
+"category": "Economics",
+"open": 21
 },
 {
 "venue": "kalshi",
@@ -1625,9 +1597,16 @@
 },
 {
 "venue": "kalshi",
-"slug": "kxsatoshibtcyear",
-"title": "Satoshi move bitcoin by year? ",
-"category": "Crypto",
+"slug": "kxcasinoads",
+"title": "Casino Ad Spend",
+"category": "Financials",
+"open": 15
+},
+{
+"venue": "kalshi",
+"slug": "kxmamdanieo",
+"title": "Will Mamdani sign an executive order?",
+"category": "Politics",
 "open": 1
 },
 {
@@ -1639,31 +1618,10 @@
 },
 {
 "venue": "kalshi",
-"slug": "kxserieascore",
-"title": "Correct Score",
-"category": "Sports",
-"open": 150
-},
-{
-"venue": "kalshi",
 "slug": "kx2028drun",
 "title": "2028 D running",
 "category": "Elections",
 "open": 45
-},
-{
-"venue": "kalshi",
-"slug": "kxmamdanieo",
-"title": "Will Mamdani sign an executive order?",
-"category": "Politics",
-"open": 1
-},
-{
-"venue": "kalshi",
-"slug": "kxdwtselimination",
-"title": "DANCING WITH THE STARS ELIMINATION",
-"category": "Entertainment",
-"open": 8
 },
 {
 "venue": "kalshi",
@@ -1674,10 +1632,10 @@
 },
 {
 "venue": "kalshi",
-"slug": "kxeth15m",
-"title": "ETH 15 min",
-"category": "Crypto",
-"open": 1
+"slug": "kxt20match",
+"title": "Men's T20 Cricket Match",
+"category": "Sports",
+"open": 26
 },
 {
 "venue": "kalshi",
@@ -1685,6 +1643,13 @@
 "title": "AP Pro Football Offensive Player Of The Year",
 "category": "Sports",
 "open": 69
+},
+{
+"venue": "kalshi",
+"slug": "kxdwtselimination",
+"title": "DANCING WITH THE STARS ELIMINATION",
+"category": "Entertainment",
+"open": 8
 },
 {
 "venue": "kalshi",
@@ -1702,6 +1667,13 @@
 },
 {
 "venue": "kalshi",
+"slug": "kxncaaffinalist",
+"title": "College Football Finalist",
+"category": "Sports",
+"open": 51
+},
+{
+"venue": "kalshi",
 "slug": "kxgta6ontime",
 "title": "GTA 6 release date on time",
 "category": "Entertainment",
@@ -1709,10 +1681,17 @@
 },
 {
 "venue": "kalshi",
-"slug": "kxncaaffinalist",
-"title": "College Football Finalist",
+"slug": "kxcpiyoy",
+"title": "Inflation",
+"category": "Economics",
+"open": 42
+},
+{
+"venue": "kalshi",
+"slug": "kxjleaguetotal",
+"title": "Point Total",
 "category": "Sports",
-"open": 51
+"open": 6
 },
 {
 "venue": "kalshi",
@@ -1751,13 +1730,6 @@
 },
 {
 "venue": "kalshi",
-"slug": "kxcpiyoy",
-"title": "Inflation",
-"category": "Economics",
-"open": 42
-},
-{
-"venue": "kalshi",
 "slug": "kxoscarnompic",
 "title": "Oscar nominations for Best Picture",
 "category": "Entertainment",
@@ -1793,10 +1765,24 @@
 },
 {
 "venue": "kalshi",
+"slug": "kxsatoshibtcyear",
+"title": "Satoshi move bitcoin by year? ",
+"category": "Crypto",
+"open": 1
+},
+{
+"venue": "kalshi",
 "slug": "kxalka",
 "title": "Alaska Air Annual KPI",
 "category": "Financials",
 "open": 10
+},
+{
+"venue": "kalshi",
+"slug": "kxjleaguegame",
+"title": "Japan J League Game",
+"category": "Sports",
+"open": 3
 },
 {
 "venue": "kalshi",
@@ -1807,17 +1793,17 @@
 },
 {
 "venue": "kalshi",
+"slug": "kxethd",
+"title": "Ethereum price Above/below",
+"category": "Crypto",
+"open": 390
+},
+{
+"venue": "kalshi",
 "slug": "kxsportsbookads",
 "title": "Online Sportsbook Ad Spend",
 "category": "Financials",
 "open": 17
-},
-{
-"venue": "kalshi",
-"slug": "kxlowtlax",
-"title": "Lowest Temperature in LA",
-"category": "Climate and Weather",
-"open": 12
 },
 {
 "venue": "kalshi",
@@ -1828,17 +1814,17 @@
 },
 {
 "venue": "kalshi",
+"slug": "kxlowtlax",
+"title": "Lowest Temperature in LA",
+"category": "Climate and Weather",
+"open": 12
+},
+{
+"venue": "kalshi",
 "slug": "kxcaelection",
 "title": "California general elections ",
 "category": "Elections",
 "open": 6
-},
-{
-"venue": "kalshi",
-"slug": "kxpgatop20",
-"title": "PGA Top 20 Finisher",
-"category": "Sports",
-"open": 113
 },
 {
 "venue": "kalshi",
@@ -1856,38 +1842,10 @@
 },
 {
 "venue": "kalshi",
-"slug": "kxethmaxmon",
-"title": "ETH Monthly One touch",
-"category": "Crypto",
-"open": 8
-},
-{
-"venue": "kalshi",
-"slug": "kxnfldroty",
-"title": "AP Pro Football Defensive Rookie of the Year",
+"slug": "kxnflpassatt",
+"title": "Pro Football Passing Attempts",
 "category": "Sports",
-"open": 40
-},
-{
-"venue": "kalshi",
-"slug": "kxkleaguetotal",
-"title": "Point Total",
-"category": "Sports",
-"open": 12
-},
-{
-"venue": "kalshi",
-"slug": "kxethd",
-"title": "Ethereum price Above/below",
-"category": "Crypto",
-"open": 390
-},
-{
-"venue": "kalshi",
-"slug": "kxtopartist",
-"title": "Top Artist on Spotify",
-"category": "Entertainment",
-"open": 10
+"open": 84
 },
 {
 "venue": "kalshi",
@@ -1898,10 +1856,38 @@
 },
 {
 "venue": "kalshi",
-"slug": "kxtrumpremove",
-"title": "Trump removed",
-"category": "Politics",
-"open": 3
+"slug": "kxethmaxmon",
+"title": "ETH Monthly One touch",
+"category": "Crypto",
+"open": 8
+},
+{
+"venue": "kalshi",
+"slug": "kxpgatop20",
+"title": "PGA Top 20 Finisher",
+"category": "Sports",
+"open": 113
+},
+{
+"venue": "kalshi",
+"slug": "kxnfldroty",
+"title": "AP Pro Football Defensive Rookie of the Year",
+"category": "Sports",
+"open": 40
+},
+{
+"venue": "kalshi",
+"slug": "kxjbleaguegame",
+"title": "Japan B League Game",
+"category": "Sports",
+"open": 32
+},
+{
+"venue": "kalshi",
+"slug": "kxtopartist",
+"title": "Top Artist on Spotify",
+"category": "Entertainment",
+"open": 10
 },
 {
 "venue": "kalshi",
@@ -1912,6 +1898,13 @@
 },
 {
 "venue": "kalshi",
+"slug": "kxtrumpremove",
+"title": "Trump removed",
+"category": "Politics",
+"open": 3
+},
+{
+"venue": "kalshi",
 "slug": "kxeredivisiegame",
 "title": "Eredivisie Game",
 "category": "Sports",
@@ -1919,10 +1912,10 @@
 },
 {
 "venue": "kalshi",
-"slug": "kxgameawards",
-"title": "Game Awards",
-"category": "Entertainment",
-"open": 89
+"slug": "kxnbapts",
+"title": "NBA Player Points",
+"category": "Sports",
+"open": 263
 },
 {
 "venue": "kalshi",
@@ -1933,17 +1926,24 @@
 },
 {
 "venue": "kalshi",
+"slug": "kxnfl1qspread",
+"title": "Pro Football 1st Quarter Spread",
+"category": "Sports",
+"open": 141
+},
+{
+"venue": "kalshi",
+"slug": "kxgameawards",
+"title": "Game Awards",
+"category": "Entertainment",
+"open": 89
+},
+{
+"venue": "kalshi",
 "slug": "kxncaambnextcoach",
 "title": "Men's College Basketball Next Coach",
 "category": "Sports",
 "open": 49
-},
-{
-"venue": "kalshi",
-"slug": "kxwta",
-"title": "Women's Tournament Winner",
-"category": "Sports",
-"open": 113
 },
 {
 "venue": "kalshi",
@@ -1954,10 +1954,24 @@
 },
 {
 "venue": "kalshi",
+"slug": "kxwta",
+"title": "Women's Tournament Winner",
+"category": "Sports",
+"open": 113
+},
+{
+"venue": "kalshi",
 "slug": "kxgpt",
 "title": "ChatGPT Release Date",
 "category": "Science and Technology",
 "open": 6
+},
+{
+"venue": "kalshi",
+"slug": "kxnfl1hft",
+"title": "1st Half Fulltime Result",
+"category": "Sports",
+"open": 135
 },
 {
 "venue": "kalshi",
@@ -1968,10 +1982,10 @@
 },
 {
 "venue": "kalshi",
-"slug": "kxnfl1hft",
-"title": "1st Half Fulltime Result",
+"slug": "kxnflrecydsprot",
+"title": "Receiving Yards Protected",
 "category": "Sports",
-"open": 135
+"open": 1662
 },
 {
 "venue": "kalshi",
@@ -1986,13 +2000,6 @@
 "title": "Grammy nominees for Album of the Year",
 "category": "Entertainment",
 "open": 28
-},
-{
-"venue": "kalshi",
-"slug": "kxnbapts",
-"title": "NBA Player Points",
-"category": "Sports",
-"open": 263
 },
 {
 "venue": "kalshi",
@@ -2014,13 +2021,6 @@
 "title": "La Liga First Half Winner",
 "category": "Sports",
 "open": 15
-},
-{
-"venue": "kalshi",
-"slug": "kxnflrecydsprot",
-"title": "Receiving Yards Protected",
-"category": "Sports",
-"open": 1662
 },
 {
 "venue": "kalshi",
@@ -2066,31 +2066,10 @@
 },
 {
 "venue": "kalshi",
-"slug": "kxnflpassatt",
-"title": "Pro Football Passing Attempts",
-"category": "Sports",
-"open": 84
-},
-{
-"venue": "kalshi",
 "slug": "popvotemov",
 "title": "Popular vote margin of victory",
 "category": "Elections",
 "open": 20
-},
-{
-"venue": "kalshi",
-"slug": "kxnfl1qspread",
-"title": "Pro Football 1st Quarter Spread",
-"category": "Sports",
-"open": 141
-},
-{
-"venue": "kalshi",
-"slug": "kxlolteemo",
-"title": "Teemo pick",
-"category": "Sports",
-"open": 1
 },
 {
 "venue": "kalshi",
@@ -2101,17 +2080,24 @@
 },
 {
 "venue": "kalshi",
+"slug": "kxlolteemo",
+"title": "Teemo pick",
+"category": "Sports",
+"open": 1
+},
+{
+"venue": "kalshi",
+"slug": "kxgoldd",
+"title": "Gold Daily",
+"category": "Commodities",
+"open": 40
+},
+{
+"venue": "kalshi",
 "slug": "kxlyftapp",
 "title": "Lyft app downloads",
 "category": "Financials",
 "open": 8
-},
-{
-"venue": "kalshi",
-"slug": "kxyellvisits",
-"title": "Yellowstone National Park annual recreation visits",
-"category": "Economics",
-"open": 1
 },
 {
 "venue": "kalshi",
@@ -2122,10 +2108,10 @@
 },
 {
 "venue": "kalshi",
-"slug": "kxgoldd",
-"title": "Gold Daily",
-"category": "Commodities",
-"open": 40
+"slug": "kxyellvisits",
+"title": "Yellowstone National Park annual recreation visits",
+"category": "Economics",
+"open": 1
 },
 {
 "venue": "kalshi",
@@ -2157,17 +2143,17 @@
 },
 {
 "venue": "kalshi",
-"slug": "kxdogemax1",
-"title": "Dogecoin hitting $1",
-"category": "Crypto",
-"open": 2
-},
-{
-"venue": "kalshi",
 "slug": "kxhightsan",
 "title": "High Temperature San Diego",
 "category": "Climate and Weather",
 "open": 12
+},
+{
+"venue": "kalshi",
+"slug": "kxslgreecegame",
+"title": "Super League Greece Game",
+"category": "Sports",
+"open": 15
 },
 {
 "venue": "kalshi",
@@ -2185,16 +2171,16 @@
 },
 {
 "venue": "kalshi",
-"slug": "kxbtc2026250",
-"title": "Will Bitcoin hit 250k in 2026? ",
-"category": "Crypto",
+"slug": "kxtrumpresign",
+"title": "Trump resign",
+"category": "Politics",
 "open": 1
 },
 {
 "venue": "kalshi",
-"slug": "kxtrumpresign",
-"title": "Trump resign",
-"category": "Politics",
+"slug": "kxbtc2026250",
+"title": "Will Bitcoin hit 250k in 2026? ",
+"category": "Crypto",
 "open": 1
 },
 {
@@ -2213,17 +2199,17 @@
 },
 {
 "venue": "kalshi",
+"slug": "kxsold",
+"title": "SOL Directional",
+"category": "Crypto",
+"open": 425
+},
+{
+"venue": "kalshi",
 "slug": "kxnbatotal",
 "title": "NBA Total",
 "category": "Sports",
 "open": 203
-},
-{
-"venue": "kalshi",
-"slug": "kxinxy",
-"title": "S&P 500 yearly range",
-"category": "Financials",
-"open": 59
 },
 {
 "venue": "kalshi",
@@ -2241,13 +2227,6 @@
 },
 {
 "venue": "kalshi",
-"slug": "kxcocacolapos",
-"title": "Coca-Cola Point of Sale Growth",
-"category": "Financials",
-"open": 11
-},
-{
-"venue": "kalshi",
 "slug": "kxhighmia",
 "title": "Highest temperature in Miami",
 "category": "Climate and Weather",
@@ -2255,9 +2234,16 @@
 },
 {
 "venue": "kalshi",
-"slug": "kxnwslgame",
-"title": "NWSL Game",
-"category": "Sports",
+"slug": "kxcocacolapos",
+"title": "Coca-Cola Point of Sale Growth",
+"category": "Financials",
+"open": 11
+},
+{
+"venue": "kalshi",
+"slug": "kxhighaus",
+"title": "Highest temperature in Austin",
+"category": "Climate and Weather",
 "open": 6
 },
 {
@@ -2276,13 +2262,6 @@
 },
 {
 "venue": "kalshi",
-"slug": "kxhighaus",
-"title": "Highest temperature in Austin",
-"category": "Climate and Weather",
-"open": 6
-},
-{
-"venue": "kalshi",
 "slug": "kxger3ltotal",
 "title": "Point Total",
 "category": "Sports",
@@ -2294,6 +2273,13 @@
 "title": "Point Total",
 "category": "Sports",
 "open": 24
+},
+{
+"venue": "kalshi",
+"slug": "kxdogemax1",
+"title": "Dogecoin hitting $1",
+"category": "Crypto",
+"open": 2
 },
 {
 "venue": "kalshi",
@@ -2325,20 +2311,6 @@
 },
 {
 "venue": "kalshi",
-"slug": "kxjleaguetotal",
-"title": "Point Total",
-"category": "Sports",
-"open": 6
-},
-{
-"venue": "kalshi",
-"slug": "kxnfllongrec",
-"title": "Longest Reception",
-"category": "Sports",
-"open": 152
-},
-{
-"venue": "kalshi",
 "slug": "kxnflteamsack",
 "title": "Pro Football Team Sacks",
 "category": "Sports",
@@ -2353,10 +2325,10 @@
 },
 {
 "venue": "kalshi",
-"slug": "kxlolqualifiers",
-"title": "League of Legends Qualifiers",
+"slug": "kxnfllongrec",
+"title": "Longest Reception",
 "category": "Sports",
-"open": 4
+"open": 152
 },
 {
 "venue": "kalshi",
@@ -2367,6 +2339,20 @@
 },
 {
 "venue": "kalshi",
+"slug": "kxlolqualifiers",
+"title": "League of Legends Qualifiers",
+"category": "Sports",
+"open": 4
+},
+{
+"venue": "kalshi",
+"slug": "kxhighchi",
+"title": "Highest temperature in Chicago",
+"category": "Climate and Weather",
+"open": 6
+},
+{
+"venue": "kalshi",
 "slug": "kxgopfavsen",
 "title": "Republican wins in Republican-favored Senate races",
 "category": "Elections",
@@ -2374,17 +2360,17 @@
 },
 {
 "venue": "kalshi",
+"slug": "kxnflnfceast",
+"title": "National Football Conference East Winner",
+"category": "Sports",
+"open": 4
+},
+{
+"venue": "kalshi",
 "slug": "kxhormuzmax",
 "title": "Maximum traffic through the Strait of Hormuz?",
 "category": "Politics",
 "open": 14
-},
-{
-"venue": "kalshi",
-"slug": "kxebasketballgame",
-"title": "eBasketball Game",
-"category": "Sports",
-"open": 18
 },
 {
 "venue": "kalshi",
@@ -2402,6 +2388,13 @@
 },
 {
 "venue": "kalshi",
+"slug": "kxinxy",
+"title": "S&P 500 yearly range",
+"category": "Financials",
+"open": 59
+},
+{
+"venue": "kalshi",
 "slug": "kxlagovisitcount",
 "title": "Mar-a-Lago visits",
 "category": "Politics",
@@ -2416,6 +2409,13 @@
 },
 {
 "venue": "kalshi",
+"slug": "kxmediareleasest",
+"title": "WILL THERE BE ANOTHER EPISODE OF STRANGER THINGS?",
+"category": "Entertainment",
+"open": 1
+},
+{
+"venue": "kalshi",
 "slug": "kxtrumpout27",
 "title": "Trump out as President?",
 "category": "Politics",
@@ -2423,10 +2423,17 @@
 },
 {
 "venue": "kalshi",
-"slug": "kxnflnfceast",
-"title": "National Football Conference East Winner",
+"slug": "kxtrumpapprove",
+"title": "Trump approval rating",
+"category": "Politics",
+"open": 9
+},
+{
+"venue": "kalshi",
+"slug": "kxlaliga1hspread",
+"title": "1st Half Spread",
 "category": "Sports",
-"open": 4
+"open": 10
 },
 {
 "venue": "kalshi",
@@ -2434,6 +2441,13 @@
 "title": "Call of Duty Games",
 "category": "Sports",
 "open": 4
+},
+{
+"venue": "kalshi",
+"slug": "kxlowtlv",
+"title": "Las Vegas Daily Low Temperature",
+"category": "Climate and Weather",
+"open": 12
 },
 {
 "venue": "kalshi",
@@ -2451,20 +2465,6 @@
 },
 {
 "venue": "kalshi",
-"slug": "kxmediareleasest",
-"title": "WILL THERE BE ANOTHER EPISODE OF STRANGER THINGS?",
-"category": "Entertainment",
-"open": 1
-},
-{
-"venue": "kalshi",
-"slug": "kxlaliga1hspread",
-"title": "1st Half Spread",
-"category": "Sports",
-"open": 10
-},
-{
-"venue": "kalshi",
 "slug": "kxnerivisits",
 "title": "New River Gorge National Park and Preserve recreation visits",
 "category": "Economics",
@@ -2472,31 +2472,10 @@
 },
 {
 "venue": "kalshi",
-"slug": "kxlowtlv",
-"title": "Las Vegas Daily Low Temperature",
-"category": "Climate and Weather",
-"open": 12
-},
-{
-"venue": "kalshi",
-"slug": "kxtrumpapprove",
-"title": "Trump approval rating",
-"category": "Politics",
-"open": 9
-},
-{
-"venue": "kalshi",
 "slug": "kxakmov",
 "title": "Alaska General Election MOV",
 "category": "Elections",
 "open": 10
-},
-{
-"venue": "kalshi",
-"slug": "kxhighchi",
-"title": "Highest temperature in Chicago",
-"category": "Climate and Weather",
-"open": 6
 },
 {
 "venue": "kalshi",
@@ -2528,17 +2507,24 @@
 },
 {
 "venue": "kalshi",
-"slug": "kxslgreecegame",
-"title": "Super League Greece Game",
+"slug": "kxnflafcnorth",
+"title": "American Football Conference North Winner",
+"category": "Sports",
+"open": 4
+},
+{
+"venue": "kalshi",
+"slug": "kxseriea1htotal",
+"title": "1st Half Total",
 "category": "Sports",
 "open": 15
 },
 {
 "venue": "kalshi",
-"slug": "kxnflafcnorth",
-"title": "American Football Conference North Winner",
+"slug": "kxloltotalmaps",
+"title": "League of Legends Total Games",
 "category": "Sports",
-"open": 4
+"open": 8
 },
 {
 "venue": "kalshi",
@@ -2549,13 +2535,6 @@
 },
 {
 "venue": "kalshi",
-"slug": "kxtrumpgolfd",
-"title": "Will Trump golf?",
-"category": "Politics",
-"open": 4
-},
-{
-"venue": "kalshi",
 "slug": "kxsrbsltotal",
 "title": "Point Total",
 "category": "Sports",
@@ -2563,10 +2542,10 @@
 },
 {
 "venue": "kalshi",
-"slug": "kxkleague1htotal",
-"title": "1st Half Total",
-"category": "Sports",
-"open": 6
+"slug": "kxtrumpgolfd",
+"title": "Will Trump golf?",
+"category": "Politics",
+"open": 4
 },
 {
 "venue": "kalshi",
@@ -2591,20 +2570,6 @@
 },
 {
 "venue": "kalshi",
-"slug": "kxloltotalmaps",
-"title": "League of Legends Total Games",
-"category": "Sports",
-"open": 8
-},
-{
-"venue": "kalshi",
-"slug": "kxlaliga",
-"title": "LA LIGA",
-"category": "Sports",
-"open": 20
-},
-{
-"venue": "kalshi",
 "slug": "kxeplcorners",
 "title": "EPL Corners",
 "category": "Sports",
@@ -2612,10 +2577,17 @@
 },
 {
 "venue": "kalshi",
-"slug": "kxaleaguespread",
-"title": "Australian A League Spread",
+"slug": "kxnwslgame",
+"title": "NWSL Game",
 "category": "Sports",
-"open": 4
+"open": 6
+},
+{
+"venue": "kalshi",
+"slug": "kxlaliga",
+"title": "LA LIGA",
+"category": "Sports",
+"open": 20
 },
 {
 "venue": "kalshi",
@@ -2633,17 +2605,17 @@
 },
 {
 "venue": "kalshi",
+"slug": "kxnflpassydsprot",
+"title": "Passing Yards Protected",
+"category": "Sports",
+"open": 266
+},
+{
+"venue": "kalshi",
 "slug": "kxrecssnber",
 "title": "Recession",
 "category": "Economics",
 "open": 2
-},
-{
-"venue": "kalshi",
-"slug": "kxtalaricocounties",
-"title": "How many Texas counties will James Talarico win in 2026?",
-"category": "Elections",
-"open": 13
 },
 {
 "venue": "kalshi",
@@ -2654,24 +2626,24 @@
 },
 {
 "venue": "kalshi",
-"slug": "kxwcw",
-"title": "Women's World Cup",
-"category": "Sports",
-"open": 32
-},
-{
-"venue": "kalshi",
-"slug": "kxnflpassydsprot",
-"title": "Passing Yards Protected",
-"category": "Sports",
-"open": 266
-},
-{
-"venue": "kalshi",
 "slug": "kxnflpasscomp",
 "title": "Pro Football Passing Completions",
 "category": "Sports",
 "open": 84
+},
+{
+"venue": "kalshi",
+"slug": "kxtalaricocounties",
+"title": "How many Texas counties will James Talarico win in 2026?",
+"category": "Elections",
+"open": 13
+},
+{
+"venue": "kalshi",
+"slug": "kxwcw",
+"title": "Women's World Cup",
+"category": "Sports",
+"open": 32
 },
 {
 "venue": "kalshi",
@@ -2689,10 +2661,10 @@
 },
 {
 "venue": "kalshi",
-"slug": "kxgtaonline",
-"title": "When will GTA VI release?",
-"category": "Entertainment",
-"open": 3
+"slug": "kxatpgspread",
+"title": "ATP Game Spread",
+"category": "Sports",
+"open": 9
 },
 {
 "venue": "kalshi",
@@ -2703,17 +2675,17 @@
 },
 {
 "venue": "kalshi",
+"slug": "kxgtaonline",
+"title": "When will GTA VI release?",
+"category": "Entertainment",
+"open": 3
+},
+{
+"venue": "kalshi",
 "slug": "kxweeksnum1",
 "title": "how many weeks will album be number 1 ",
 "category": "Entertainment",
 "open": 33
-},
-{
-"venue": "kalshi",
-"slug": "kxatpgspread",
-"title": "ATP Game Spread",
-"category": "Sports",
-"open": 9
 },
 {
 "venue": "kalshi",
@@ -2735,20 +2707,6 @@
 "title": "Will Ilhan Omar's citizenship be revoked?",
 "category": "Politics",
 "open": 1
-},
-{
-"venue": "kalshi",
-"slug": "kxjleaguegame",
-"title": "Japan J League Game",
-"category": "Sports",
-"open": 3
-},
-{
-"venue": "kalshi",
-"slug": "kxt20match",
-"title": "Men's T20 Cricket Match",
-"category": "Sports",
-"open": 26
 },
 {
 "venue": "kalshi",
@@ -2780,10 +2738,10 @@
 },
 {
 "venue": "kalshi",
-"slug": "kxchnslbtts",
-"title": "BTTS",
+"slug": "kxebasketballgame",
+"title": "eBasketball Game",
 "category": "Sports",
-"open": 8
+"open": 18
 },
 {
 "venue": "kalshi",
@@ -2801,10 +2759,17 @@
 },
 {
 "venue": "kalshi",
-"slug": "kxsol15m",
-"title": "SOL 15 min",
-"category": "Crypto",
-"open": 1
+"slug": "kxnfl1qtotal",
+"title": "Pro Football 1st Quarter Total",
+"category": "Sports",
+"open": 140
+},
+{
+"venue": "kalshi",
+"slug": "kxepl1h",
+"title": "Premier League First Half Winner",
+"category": "Sports",
+"open": 15
 },
 {
 "venue": "kalshi",
@@ -2829,24 +2794,10 @@
 },
 {
 "venue": "kalshi",
-"slug": "kxepl1h",
-"title": "Premier League First Half Winner",
-"category": "Sports",
-"open": 15
-},
-{
-"venue": "kalshi",
 "slug": "kxf1top10",
 "title": "F1 Top 10 Finishers",
 "category": "Sports",
 "open": 23
-},
-{
-"venue": "kalshi",
-"slug": "kxlowtsea",
-"title": "Low Temperature Seattle",
-"category": "Climate and Weather",
-"open": 12
 },
 {
 "venue": "kalshi",
@@ -2857,10 +2808,17 @@
 },
 {
 "venue": "kalshi",
+"slug": "kxlowtsea",
+"title": "Low Temperature Seattle",
+"category": "Climate and Weather",
+"open": 12
+},
+{
+"venue": "kalshi",
 "slug": "kxspeaker120",
 "title": "120th Congress: Who will be Speaker of the House?",
 "category": "Elections",
-"open": 7
+"open": 9
 },
 {
 "venue": "kalshi",
@@ -2871,10 +2829,24 @@
 },
 {
 "venue": "kalshi",
+"slug": "kxbolpdivgame",
+"title": "Bolivia Premier Division Game",
+"category": "Sports",
+"open": 12
+},
+{
+"venue": "kalshi",
 "slug": "kxfdvopensea",
 "title": "Opensea FDV ",
 "category": "Crypto",
 "open": 6
+},
+{
+"venue": "kalshi",
+"slug": "kxepl1hspread",
+"title": "EPL 1st Half Spread",
+"category": "Sports",
+"open": 10
 },
 {
 "venue": "kalshi",
@@ -2885,10 +2857,17 @@
 },
 {
 "venue": "kalshi",
-"slug": "kxepl1hspread",
-"title": "EPL 1st Half Spread",
+"slug": "kxodimatch",
+"title": "Men's ODI Cricket Match",
 "category": "Sports",
-"open": 10
+"open": 8
+},
+{
+"venue": "kalshi",
+"slug": "kxdota2game",
+"title": "Dota 2 Game",
+"category": "Sports",
+"open": 98
 },
 {
 "venue": "kalshi",
@@ -2913,20 +2892,6 @@
 },
 {
 "venue": "kalshi",
-"slug": "kxbolpdivgame",
-"title": "Bolivia Premier Division Game",
-"category": "Sports",
-"open": 12
-},
-{
-"venue": "kalshi",
-"slug": "kxswedenpm",
-"title": "Next Swedish Prime Minister",
-"category": "Elections",
-"open": 5
-},
-{
-"venue": "kalshi",
 "slug": "kxalitoout",
 "title": "Will Justice Alito retire?",
 "category": "Politics",
@@ -2941,10 +2906,10 @@
 },
 {
 "venue": "kalshi",
-"slug": "kxdota2game",
-"title": "Dota 2 Game",
-"category": "Sports",
-"open": 98
+"slug": "kxprstatehouse",
+"title": "House passes Puerto Rico statehood bill",
+"category": "Politics",
+"open": 1
 },
 {
 "venue": "kalshi",
@@ -2955,31 +2920,10 @@
 },
 {
 "venue": "kalshi",
-"slug": "kxprstatehouse",
-"title": "House passes Puerto Rico statehood bill",
-"category": "Politics",
-"open": 1
-},
-{
-"venue": "kalshi",
-"slug": "kxdoge15m",
-"title": "DOGE 15 min",
-"category": "Crypto",
-"open": 1
-},
-{
-"venue": "kalshi",
 "slug": "kxvaportteu",
 "title": "Port of Virginia container volume",
 "category": "Economics",
 "open": 6
-},
-{
-"venue": "kalshi",
-"slug": "kxsold",
-"title": "SOL Directional",
-"category": "Crypto",
-"open": 425
 },
 {
 "venue": "kalshi",
@@ -2997,6 +2941,13 @@
 },
 {
 "venue": "kalshi",
+"slug": "kxspritepos",
+"title": "Sprite Point of Sale Growth",
+"category": "Financials",
+"open": 8
+},
+{
+"venue": "kalshi",
 "slug": "kxeliteserientotal",
 "title": "Point Total",
 "category": "Sports",
@@ -3004,10 +2955,10 @@
 },
 {
 "venue": "kalshi",
-"slug": "kxspritepos",
-"title": "Sprite Point of Sale Growth",
-"category": "Financials",
-"open": 8
+"slug": "kxjleague1htotal",
+"title": "1st Half Total",
+"category": "Sports",
+"open": 3
 },
 {
 "venue": "kalshi",
@@ -3032,6 +2983,13 @@
 },
 {
 "venue": "kalshi",
+"slug": "kxlowtsan",
+"title": "Low Temperature San Diego",
+"category": "Climate and Weather",
+"open": 12
+},
+{
+"venue": "kalshi",
 "slug": "kxfnsmention",
 "title": "Fox News Sunday Mention",
 "category": "Mentions",
@@ -3043,6 +3001,20 @@
 "title": "Pro Baseball Next Team",
 "category": "Sports",
 "open": 93
+},
+{
+"venue": "kalshi",
+"slug": "kxxrpd",
+"title": "XRP Price above/below",
+"category": "Crypto",
+"open": 165
+},
+{
+"venue": "kalshi",
+"slug": "kxhmonth",
+"title": "Hottest month instance",
+"category": "Climate and Weather",
+"open": 2
 },
 {
 "venue": "kalshi",
@@ -3060,13 +3032,6 @@
 },
 {
 "venue": "kalshi",
-"slug": "kxhmonth",
-"title": "Hottest month instance",
-"category": "Climate and Weather",
-"open": 2
-},
-{
-"venue": "kalshi",
 "slug": "kxcfbunrankedupset",
 "title": "College Football Unranked Upsets",
 "category": "Sports",
@@ -3074,17 +3039,17 @@
 },
 {
 "venue": "kalshi",
+"slug": "kxhightsatx",
+"title": "San Antonio Daily Maximum Temperature",
+"category": "Climate and Weather",
+"open": 6
+},
+{
+"venue": "kalshi",
 "slug": "kxsol26500",
 "title": "Sol above 500 in 2026",
 "category": "Crypto",
 "open": 1
-},
-{
-"venue": "kalshi",
-"slug": "kxseriea1htotal",
-"title": "1st Half Total",
-"category": "Sports",
-"open": 15
 },
 {
 "venue": "kalshi",
@@ -3105,21 +3070,21 @@
 "slug": "kx2028rrun",
 "title": "2028 R running",
 "category": "Elections",
-"open": 41
+"open": 42
 },
 {
 "venue": "kalshi",
-"slug": "kxxrpd",
-"title": "XRP Price above/below",
-"category": "Crypto",
-"open": 165
-},
-{
-"venue": "kalshi",
-"slug": "kxodimatch",
-"title": "Men's ODI Cricket Match",
+"slug": "kxchnslbtts",
+"title": "BTTS",
 "category": "Sports",
-"open": 8
+"open": 7
+},
+{
+"venue": "kalshi",
+"slug": "kxr6game",
+"title": "R6 Game",
+"category": "Sports",
+"open": 6
 },
 {
 "venue": "kalshi",
@@ -3137,16 +3102,16 @@
 },
 {
 "venue": "kalshi",
-"slug": "kxglaciervisits",
-"title": "Glacier National Park annual visitation",
-"category": "Economics",
-"open": 1
+"slug": "kxswedenpm",
+"title": "Next Swedish Prime Minister",
+"category": "Elections",
+"open": 5
 },
 {
 "venue": "kalshi",
-"slug": "kxxrp15m",
-"title": "XRP 15 min",
-"category": "Crypto",
+"slug": "kxglaciervisits",
+"title": "Glacier National Park annual visitation",
+"category": "Economics",
 "open": 1
 },
 {
@@ -3158,10 +3123,10 @@
 },
 {
 "venue": "kalshi",
-"slug": "kxhightsatx",
-"title": "San Antonio Daily Maximum Temperature",
-"category": "Climate and Weather",
-"open": 6
+"slug": "kxnflteamfirsttd",
+"title": "Pro Football First Touchdown",
+"category": "Sports",
+"open": 352
 },
 {
 "venue": "kalshi",
@@ -3193,13 +3158,6 @@
 },
 {
 "venue": "kalshi",
-"slug": "kxnflteamfirsttd",
-"title": "Pro Football First Touchdown",
-"category": "Sports",
-"open": 352
-},
-{
-"venue": "kalshi",
 "slug": "kxrecordnflbest",
 "title": "best football record",
 "category": "Sports",
@@ -3207,17 +3165,17 @@
 },
 {
 "venue": "kalshi",
-"slug": "kxmarmadround",
-"title": "Reach March Madness Round",
-"category": "Sports",
-"open": 811
-},
-{
-"venue": "kalshi",
 "slug": "kxidnslspread",
 "title": "Spread",
 "category": "Sports",
 "open": 12
+},
+{
+"venue": "kalshi",
+"slug": "kxmarmadround",
+"title": "Reach March Madness Round",
+"category": "Sports",
+"open": 811
 },
 {
 "venue": "kalshi",
@@ -3242,38 +3200,10 @@
 },
 {
 "venue": "kalshi",
-"slug": "kxnewtaipeimayor",
-"title": "New Taipei mayoral election winner",
-"category": "Elections",
-"open": 2
-},
-{
-"venue": "kalshi",
-"slug": "kxbestllmchina",
-"title": "Chinese LLM best",
-"category": "Science and Technology",
-"open": 1
-},
-{
-"venue": "kalshi",
-"slug": "kxnflnfcsouth",
-"title": "National Football Conference South Winner",
-"category": "Sports",
-"open": 4
-},
-{
-"venue": "kalshi",
 "slug": "kxftnmention",
 "title": "Face The Nation",
 "category": "Mentions",
 "open": 16
-},
-{
-"venue": "kalshi",
-"slug": "kxaaagasm",
-"title": "US gas price",
-"category": "Economics",
-"open": 26
 },
 {
 "venue": "kalshi",
@@ -3284,6 +3214,27 @@
 },
 {
 "venue": "kalshi",
+"slug": "kxnewtaipeimayor",
+"title": "New Taipei mayoral election winner",
+"category": "Elections",
+"open": 2
+},
+{
+"venue": "kalshi",
+"slug": "kxnflnfcsouth",
+"title": "National Football Conference South Winner",
+"category": "Sports",
+"open": 4
+},
+{
+"venue": "kalshi",
+"slug": "kxaaagasm",
+"title": "US gas price",
+"category": "Economics",
+"open": 26
+},
+{
+"venue": "kalshi",
 "slug": "kxnvgovnotc",
 "title": "Nevada Governor None of These Candidates vote share",
 "category": "Elections",
@@ -3291,17 +3242,17 @@
 },
 {
 "venue": "kalshi",
-"slug": "kxncaafspread",
-"title": "College Football Spread",
-"category": "Sports",
-"open": 748
-},
-{
-"venue": "kalshi",
 "slug": "kxbrentd",
 "title": "Brent Oil Daily",
 "category": "Commodities",
 "open": 20
+},
+{
+"venue": "kalshi",
+"slug": "kxncaafspread",
+"title": "College Football Spread",
+"category": "Sports",
+"open": 915
 },
 {
 "venue": "kalshi",
@@ -3347,10 +3298,10 @@
 },
 {
 "venue": "kalshi",
-"slug": "kxvotehegsethimpeach",
-"title": "Will the House vote on impeaching Pete Hegseth?",
-"category": "Politics",
-"open": 3
+"slug": "kxwtiw",
+"title": "WTI oil weekly range",
+"category": "Commodities",
+"open": 27
 },
 {
 "venue": "kalshi",
@@ -3365,6 +3316,13 @@
 "title": "Pac-12 Champion",
 "category": "Sports",
 "open": 8
+},
+{
+"venue": "kalshi",
+"slug": "kxvotehegsethimpeach",
+"title": "Will the House vote on impeaching Pete Hegseth?",
+"category": "Politics",
+"open": 3
 },
 {
 "venue": "kalshi",
@@ -3389,10 +3347,10 @@
 },
 {
 "venue": "kalshi",
-"slug": "kxwtiw",
-"title": "WTI oil weekly range",
-"category": "Commodities",
-"open": 27
+"slug": "kxbestllmchina",
+"title": "Chinese LLM best",
+"category": "Science and Technology",
+"open": 1
 },
 {
 "venue": "kalshi",
@@ -3403,10 +3361,10 @@
 },
 {
 "venue": "kalshi",
-"slug": "kxnzpm",
-"title": "Next New Zealand Prime Minister",
-"category": "Elections",
-"open": 14
+"slug": "kxseriea1hscore",
+"title": "1st Half Correct Score",
+"category": "Sports",
+"open": 75
 },
 {
 "venue": "kalshi",
@@ -3424,10 +3382,17 @@
 },
 {
 "venue": "kalshi",
-"slug": "kxnfl1qtotal",
-"title": "Pro Football 1st Quarter Total",
+"slug": "kxnzpm",
+"title": "Next New Zealand Prime Minister",
+"category": "Elections",
+"open": 14
+},
+{
+"venue": "kalshi",
+"slug": "kxligamxspread",
+"title": "Liga MX Game",
 "category": "Sports",
-"open": 140
+"open": 12
 },
 {
 "venue": "kalshi",
@@ -3438,6 +3403,13 @@
 },
 {
 "venue": "kalshi",
+"slug": "kxhightmin",
+"title": "Minneapolis Daily High Temperature",
+"category": "Climate and Weather",
+"open": 6
+},
+{
+"venue": "kalshi",
 "slug": "kxtrumpmeetm",
 "title": "Trump meet monthly",
 "category": "Politics",
@@ -3445,8 +3417,8 @@
 },
 {
 "venue": "kalshi",
-"slug": "kxhightmin",
-"title": "Minneapolis Daily High Temperature",
+"slug": "kxhighden",
+"title": "Highest temperature in Denver",
 "category": "Climate and Weather",
 "open": 6
 },
@@ -3473,10 +3445,24 @@
 },
 {
 "venue": "kalshi",
-"slug": "kxhighden",
-"title": "Highest temperature in Denver",
-"category": "Climate and Weather",
-"open": 6
+"slug": "kxlolspread",
+"title": "League of Legends Spread",
+"category": "Sports",
+"open": 4
+},
+{
+"venue": "kalshi",
+"slug": "kxatpsetwinner",
+"title": "ATP Set Winner",
+"category": "Sports",
+"open": 28
+},
+{
+"venue": "kalshi",
+"slug": "kxthail1game",
+"title": "Thai League 1 Game",
+"category": "Sports",
+"open": 12
 },
 {
 "venue": "kalshi",
@@ -3494,27 +3480,6 @@
 },
 {
 "venue": "kalshi",
-"slug": "kxseriea1hbtts",
-"title": "1st Half BTTS",
-"category": "Sports",
-"open": 5
-},
-{
-"venue": "kalshi",
-"slug": "kxligamxspread",
-"title": "Liga MX Game",
-"category": "Sports",
-"open": 12
-},
-{
-"venue": "kalshi",
-"slug": "kxthail1game",
-"title": "Thai League 1 Game",
-"category": "Sports",
-"open": 12
-},
-{
-"venue": "kalshi",
 "slug": "kxperliga1game",
 "title": "Peru Liga 1 Game",
 "category": "Sports",
@@ -3522,16 +3487,23 @@
 },
 {
 "venue": "kalshi",
-"slug": "kxatpsetwinner",
-"title": "ATP Set Winner",
-"category": "Sports",
-"open": 28
-},
-{
-"venue": "kalshi",
 "slug": "kxbtcprice",
 "title": "will Bitcoin hit price target by date",
 "category": "Crypto",
+"open": 9
+},
+{
+"venue": "kalshi",
+"slug": "kxnhlspread",
+"title": "NHL Spread",
+"category": "Sports",
+"open": 64
+},
+{
+"venue": "kalshi",
+"slug": "kxdeepshare",
+"title": "DeepSeek market share",
+"category": "Science and Technology",
 "open": 9
 },
 {
@@ -3578,10 +3550,10 @@
 },
 {
 "venue": "kalshi",
-"slug": "kxdeepshare",
-"title": "DeepSeek market share",
-"category": "Science and Technology",
-"open": 9
+"slug": "kxjleaguespread",
+"title": "Spread",
+"category": "Sports",
+"open": 4
 },
 {
 "venue": "kalshi",
@@ -3599,17 +3571,10 @@
 },
 {
 "venue": "kalshi",
-"slug": "kxlolspread",
-"title": "League of Legends Spread",
+"slug": "kxseriea1hbtts",
+"title": "1st Half BTTS",
 "category": "Sports",
-"open": 4
-},
-{
-"venue": "kalshi",
-"slug": "kxlowtsan",
-"title": "Low Temperature San Diego",
-"category": "Climate and Weather",
-"open": 12
+"open": 5
 },
 {
 "venue": "kalshi",
@@ -3634,17 +3599,17 @@
 },
 {
 "venue": "kalshi",
+"slug": "kxnhlseasonpts",
+"title": "NHL Season Point Totals",
+"category": "Sports",
+"open": 320
+},
+{
+"venue": "kalshi",
 "slug": "kxncaafaward",
 "title": "College Football Award Winner",
 "category": "Sports",
 "open": 1055
-},
-{
-"venue": "kalshi",
-"slug": "kxoscarnomacto",
-"title": "Oscar nominations for Best Actor",
-"category": "Entertainment",
-"open": 34
 },
 {
 "venue": "kalshi",
@@ -3655,17 +3620,10 @@
 },
 {
 "venue": "kalshi",
-"slug": "kxnhlseasonpts",
-"title": "NHL Season Point Totals",
-"category": "Sports",
-"open": 320
-},
-{
-"venue": "kalshi",
-"slug": "kxdpwt3ball",
-"title": "DPWT 3-Ball",
-"category": "Sports",
-"open": 60
+"slug": "kxscourt",
+"title": "Next SCOTUS justice",
+"category": "Politics",
+"open": 41
 },
 {
 "venue": "kalshi",
@@ -3676,10 +3634,24 @@
 },
 {
 "venue": "kalshi",
+"slug": "kxf1biggestmover",
+"title": "F1 Biggest Mover",
+"category": "Sports",
+"open": 23
+},
+{
+"venue": "kalshi",
 "slug": "kxncaalax",
 "title": "College Lacrosse National Championship",
 "category": "Sports",
 "open": 48
+},
+{
+"venue": "kalshi",
+"slug": "kxdpwt3ball",
+"title": "DPWT 3-Ball",
+"category": "Sports",
+"open": 57
 },
 {
 "venue": "kalshi",
@@ -3697,31 +3669,10 @@
 },
 {
 "venue": "kalshi",
-"slug": "kxesoccergame",
-"title": "eSoccer Game",
-"category": "Sports",
-"open": 165
-},
-{
-"venue": "kalshi",
 "slug": "kxteamsinsc",
 "title": "Teams in Stanley Cup",
 "category": "Sports",
 "open": 256
-},
-{
-"venue": "kalshi",
-"slug": "kxf1biggestmover",
-"title": "F1 Biggest Mover",
-"category": "Sports",
-"open": 23
-},
-{
-"venue": "kalshi",
-"slug": "kxallsvenskangame",
-"title": "Allsvenskan Game",
-"category": "Sports",
-"open": 15
 },
 {
 "venue": "kalshi",
@@ -3739,17 +3690,17 @@
 },
 {
 "venue": "kalshi",
+"slug": "kxallsvenskangame",
+"title": "Allsvenskan Game",
+"category": "Sports",
+"open": 15
+},
+{
+"venue": "kalshi",
 "slug": "kxgreenterritory",
 "title": "Greenland acquisition",
 "category": "Politics",
 "open": 2
-},
-{
-"venue": "kalshi",
-"slug": "kxperformsuperbowl",
-"title": "Who will headline the Super Bowl halftime show?",
-"category": "Entertainment",
-"open": 146
 },
 {
 "venue": "kalshi",
@@ -3760,24 +3711,17 @@
 },
 {
 "venue": "kalshi",
+"slug": "kxk2leaguetotal",
+"title": "Point Total",
+"category": "Sports",
+"open": 6
+},
+{
+"venue": "kalshi",
 "slug": "kxnflstageofelim",
 "title": "Pro Football Stage of Elimination",
 "category": "Sports",
 "open": 192
-},
-{
-"venue": "kalshi",
-"slug": "kxseriea1hscore",
-"title": "1st Half Correct Score",
-"category": "Sports",
-"open": 75
-},
-{
-"venue": "kalshi",
-"slug": "kxepltop",
-"title": "EPL Top Finishers",
-"category": "Sports",
-"open": 80
 },
 {
 "venue": "kalshi",
@@ -3788,10 +3732,10 @@
 },
 {
 "venue": "kalshi",
-"slug": "kxmtgswitch",
-"title": "MTG party switch",
-"category": "Politics",
-"open": 6
+"slug": "kxleadersout",
+"title": "World leaders out this year?",
+"category": "Elections",
+"open": 35
 },
 {
 "venue": "kalshi",
@@ -3802,10 +3746,38 @@
 },
 {
 "venue": "kalshi",
+"slug": "kxepltop",
+"title": "EPL Top Finishers",
+"category": "Sports",
+"open": 80
+},
+{
+"venue": "kalshi",
+"slug": "kxperformsuperbowl",
+"title": "Who will headline the Super Bowl halftime show?",
+"category": "Entertainment",
+"open": 146
+},
+{
+"venue": "kalshi",
+"slug": "kxmtgswitch",
+"title": "MTG party switch",
+"category": "Politics",
+"open": 6
+},
+{
+"venue": "kalshi",
 "slug": "kxtrumprun",
 "title": "Trump run for a third term",
 "category": "Elections",
 "open": 3
+},
+{
+"venue": "kalshi",
+"slug": "kxnflfirsttdteam",
+"title": "Pro Football First Team to Score a Touchdown",
+"category": "Sports",
+"open": 42
 },
 {
 "venue": "kalshi",
@@ -3837,13 +3809,6 @@
 },
 {
 "venue": "kalshi",
-"slug": "kxnflfirsttdteam",
-"title": "Pro Football First Team to Score a Touchdown",
-"category": "Sports",
-"open": 42
-},
-{
-"venue": "kalshi",
 "slug": "kxnvdamention",
 "title": "NVIDIA Mention",
 "category": "Mentions",
@@ -3865,13 +3830,6 @@
 },
 {
 "venue": "kalshi",
-"slug": "kxgrammynomnaoty",
-"title": "Grammy nominees for New Artist of the Year",
-"category": "Entertainment",
-"open": 77
-},
-{
-"venue": "kalshi",
 "slug": "kxhighphil",
 "title": "Highest temperature in Philadelphia",
 "category": "Climate and Weather",
@@ -3879,17 +3837,17 @@
 },
 {
 "venue": "kalshi",
-"slug": "kxlaligatcorners",
-"title": "Team Corners",
-"category": "Sports",
-"open": 10
+"slug": "kxoscarnomacto",
+"title": "Oscar nominations for Best Actor",
+"category": "Entertainment",
+"open": 34
 },
 {
 "venue": "kalshi",
-"slug": "kxroleinproductiondoomsday",
-"title": "WHO WILL BE PLAYING WHAT IN AVENGERS DOOMSDAY",
+"slug": "kxgrammynomnaoty",
+"title": "Grammy nominees for New Artist of the Year",
 "category": "Entertainment",
-"open": 19
+"open": 77
 },
 {
 "venue": "kalshi",
@@ -3900,10 +3858,24 @@
 },
 {
 "venue": "kalshi",
+"slug": "kxlaligatcorners",
+"title": "Team Corners",
+"category": "Sports",
+"open": 10
+},
+{
+"venue": "kalshi",
 "slug": "kxnbastatleader",
 "title": "NBA Regular Season League Leader",
 "category": "Sports",
 "open": 692
+},
+{
+"venue": "kalshi",
+"slug": "kxroleinproductiondoomsday",
+"title": "WHO WILL BE PLAYING WHAT IN AVENGERS DOOMSDAY",
+"category": "Entertainment",
+"open": 19
 },
 {
 "venue": "kalshi",
@@ -3914,20 +3886,6 @@
 },
 {
 "venue": "kalshi",
-"slug": "kxmjschedule",
-"title": "MJ schedule",
-"category": "Politics",
-"open": 6
-},
-{
-"venue": "kalshi",
-"slug": "kxufcheavyweighttitle",
-"title": "UFC Heavyweight Title",
-"category": "Sports",
-"open": 12
-},
-{
-"venue": "kalshi",
 "slug": "kxswissleaguetotal",
 "title": "Point Total",
 "category": "Sports",
@@ -3935,10 +3893,24 @@
 },
 {
 "venue": "kalshi",
+"slug": "kxmjschedule",
+"title": "MJ schedule",
+"category": "Politics",
+"open": 6
+},
+{
+"venue": "kalshi",
 "slug": "kxeliteseriengame",
 "title": "Eliteserien Game",
 "category": "Sports",
 "open": 21
+},
+{
+"venue": "kalshi",
+"slug": "kxufcheavyweighttitle",
+"title": "UFC Heavyweight Title",
+"category": "Sports",
+"open": 12
 },
 {
 "venue": "kalshi",
@@ -3977,6 +3949,20 @@
 },
 {
 "venue": "kalshi",
+"slug": "kxnfl1hteamtotal",
+"title": "Pro Football 1st Half Team Total",
+"category": "Sports",
+"open": 324
+},
+{
+"venue": "kalshi",
+"slug": "kxseriea1hspread",
+"title": "1st Half Spread",
+"category": "Sports",
+"open": 10
+},
+{
+"venue": "kalshi",
 "slug": "kxmlbnlmvp",
 "title": "Pro Baseball National League MVP",
 "category": "Sports",
@@ -3998,6 +3984,13 @@
 },
 {
 "venue": "kalshi",
+"slug": "kxnfldsttd",
+"title": "Pro Football D/ST Touchdown",
+"category": "Sports",
+"open": 14
+},
+{
+"venue": "kalshi",
 "slug": "kxdcstatehoodhouse",
 "title": "House passage of a D.C. statehood bill",
 "category": "Politics",
@@ -4005,10 +3998,10 @@
 },
 {
 "venue": "kalshi",
-"slug": "kxnfldsttd",
-"title": "Pro Football D/ST Touchdown",
+"slug": "kxk2leaguegame",
+"title": "Korea K-League 2 Game",
 "category": "Sports",
-"open": 14
+"open": 3
 },
 {
 "venue": "kalshi",
@@ -4040,10 +4033,10 @@
 },
 {
 "venue": "kalshi",
-"slug": "kxthevoice",
-"title": "WHO WILL WIN THE VOICE?",
-"category": "Entertainment",
-"open": 28
+"slug": "kxidnslgame",
+"title": "Indonesia Super League Game",
+"category": "Sports",
+"open": 9
 },
 {
 "venue": "kalshi",
@@ -4054,17 +4047,17 @@
 },
 {
 "venue": "kalshi",
-"slug": "kxleadersout",
-"title": "World leaders out this year?",
-"category": "Elections",
-"open": 35
-},
-{
-"venue": "kalshi",
 "slug": "kxsoccerretire",
 "title": "Soccer Retire",
 "category": "Sports",
 "open": 13
+},
+{
+"venue": "kalshi",
+"slug": "kxthevoice",
+"title": "WHO WILL WIN THE VOICE?",
+"category": "Entertainment",
+"open": 28
 },
 {
 "venue": "kalshi",
@@ -4082,13 +4075,6 @@
 },
 {
 "venue": "kalshi",
-"slug": "kxkleague1h",
-"title": "1st Half Winner",
-"category": "Sports",
-"open": 6
-},
-{
-"venue": "kalshi",
 "slug": "kxrecalled",
 "title": "Recalled officials",
 "category": "Elections",
@@ -4103,17 +4089,17 @@
 },
 {
 "venue": "kalshi",
-"slug": "kxzec15m",
-"title": "Zcash 15min",
-"category": "Crypto",
-"open": 1
-},
-{
-"venue": "kalshi",
 "slug": "kxchessfideratingtop",
 "title": "Fide Chess Rating Top Ranked Players",
 "category": "Sports",
 "open": 360
+},
+{
+"venue": "kalshi",
+"slug": "kxepl1hscore",
+"title": "1st Half Correct Score",
+"category": "Sports",
+"open": 72
 },
 {
 "venue": "kalshi",
@@ -4131,10 +4117,24 @@
 },
 {
 "venue": "kalshi",
+"slug": "kxeliteserienspread",
+"title": "Spread",
+"category": "Sports",
+"open": 24
+},
+{
+"venue": "kalshi",
 "slug": "kxf1constructors",
 "title": "Formula 1 Constructors",
 "category": "Sports",
 "open": 11
+},
+{
+"venue": "kalshi",
+"slug": "kxnflrecprot",
+"title": "Receptions Protected",
+"category": "Sports",
+"open": 1117
 },
 {
 "venue": "kalshi",
@@ -4173,17 +4173,17 @@
 },
 {
 "venue": "kalshi",
-"slug": "kxnflrecprot",
-"title": "Receptions Protected",
-"category": "Sports",
-"open": 1117
-},
-{
-"venue": "kalshi",
 "slug": "kxlaligateamtotal",
 "title": "Team Total",
 "category": "Sports",
 "open": 30
+},
+{
+"venue": "kalshi",
+"slug": "kxnascartop5",
+"title": "NASCAR Top 5 Finishers",
+"category": "Sports",
+"open": 41
 },
 {
 "venue": "kalshi",
@@ -4201,20 +4201,6 @@
 },
 {
 "venue": "kalshi",
-"slug": "kxepl1hscore",
-"title": "1st Half Correct Score",
-"category": "Sports",
-"open": 72
-},
-{
-"venue": "kalshi",
-"slug": "kxnfl1hteamtotal",
-"title": "Pro Football 1st Half Team Total",
-"category": "Sports",
-"open": 324
-},
-{
-"venue": "kalshi",
 "slug": "kxlamov",
 "title": "Los Angeles mayoral election MOV",
 "category": "Elections",
@@ -4222,17 +4208,17 @@
 },
 {
 "venue": "kalshi",
+"slug": "kxlaliga1htotal",
+"title": "1st Half Total",
+"category": "Sports",
+"open": 15
+},
+{
+"venue": "kalshi",
 "slug": "kxlaliga1hbtts",
 "title": "1st Half BTTS",
 "category": "Sports",
 "open": 5
-},
-{
-"venue": "kalshi",
-"slug": "kxnascartop5",
-"title": "NASCAR Top 5 Finishers",
-"category": "Sports",
-"open": 41
 },
 {
 "venue": "kalshi",
@@ -4257,13 +4243,6 @@
 },
 {
 "venue": "kalshi",
-"slug": "kxvpresnomr",
-"title": "Republican VP nom",
-"category": "Elections",
-"open": 23
-},
-{
-"venue": "kalshi",
 "slug": "kxhightdc",
 "title": "Washington DC Daily Max Temp",
 "category": "Climate and Weather",
@@ -4271,10 +4250,10 @@
 },
 {
 "venue": "kalshi",
-"slug": "kxlolregion",
-"title": "Region of Champion",
+"slug": "kxlaliga2game",
+"title": "LaLiga 2 Game",
 "category": "Sports",
-"open": 3
+"open": 21
 },
 {
 "venue": "kalshi",
@@ -4285,10 +4264,31 @@
 },
 {
 "venue": "kalshi",
-"slug": "kxlaliga1htotal",
-"title": "1st Half Total",
+"slug": "kxvpresnomr",
+"title": "Republican VP nom",
+"category": "Elections",
+"open": 23
+},
+{
+"venue": "kalshi",
+"slug": "kxjleague1h",
+"title": "1st Half Winner",
 "category": "Sports",
-"open": 15
+"open": 3
+},
+{
+"venue": "kalshi",
+"slug": "kxsuperligtotal",
+"title": "Point Total",
+"category": "Sports",
+"open": 24
+},
+{
+"venue": "kalshi",
+"slug": "kxnflladderrecyds",
+"title": "Receiving Yards Ladder",
+"category": "Sports",
+"open": 67
 },
 {
 "venue": "kalshi",
@@ -4299,17 +4299,10 @@
 },
 {
 "venue": "kalshi",
-"slug": "kxeliteserienspread",
-"title": "Spread",
+"slug": "kxlolregion",
+"title": "Region of Champion",
 "category": "Sports",
-"open": 24
-},
-{
-"venue": "kalshi",
-"slug": "kxseriea1hspread",
-"title": "1st Half Spread",
-"category": "Sports",
-"open": 10
+"open": 3
 },
 {
 "venue": "kalshi",
@@ -4327,17 +4320,17 @@
 },
 {
 "venue": "kalshi",
+"slug": "kxkleaguespread",
+"title": "Spread",
+"category": "Sports",
+"open": 8
+},
+{
+"venue": "kalshi",
 "slug": "kxoscarsupactr",
 "title": "Oscar for Best Supporting Actress",
 "category": "Entertainment",
 "open": 16
-},
-{
-"venue": "kalshi",
-"slug": "kxlaliga2game",
-"title": "LaLiga 2 Game",
-"category": "Sports",
-"open": 21
 },
 {
 "venue": "kalshi",
@@ -4362,10 +4355,10 @@
 },
 {
 "venue": "kalshi",
-"slug": "kxnatgasw",
-"title": "Natural Gas Weekly",
-"category": "Commodities",
-"open": 40
+"slug": "kxhightatl",
+"title": "Atlanta Max Temperature",
+"category": "Climate and Weather",
+"open": 6
 },
 {
 "venue": "kalshi",
@@ -4411,24 +4404,10 @@
 },
 {
 "venue": "kalshi",
-"slug": "kxnetflixtopviewstv",
-"title": "NETFLIX TOP SHOW VIEW COUNT",
+"slug": "kxoscardir",
+"title": "Oscar for Best Director",
 "category": "Entertainment",
-"open": 11
-},
-{
-"venue": "kalshi",
-"slug": "kxnflladderrecyds",
-"title": "Receiving Yards Ladder",
-"category": "Sports",
-"open": 67
-},
-{
-"venue": "kalshi",
-"slug": "kxidnslgame",
-"title": "Indonesia Super League Game",
-"category": "Sports",
-"open": 9
+"open": 19
 },
 {
 "venue": "kalshi",
@@ -4446,20 +4425,6 @@
 },
 {
 "venue": "kalshi",
-"slug": "kxmedicaidworkhouse",
-"title": "House passage of a bill repealing Medicaid work requirements",
-"category": "Politics",
-"open": 1
-},
-{
-"venue": "kalshi",
-"slug": "kxsuperligtotal",
-"title": "Point Total",
-"category": "Sports",
-"open": 24
-},
-{
-"venue": "kalshi",
 "slug": "kxhightdal",
 "title": "Dallas Maximum Temperature",
 "category": "Climate and Weather",
@@ -4467,31 +4432,10 @@
 },
 {
 "venue": "kalshi",
-"slug": "kxnflrace",
-"title": "Pro Football Race to Points",
-"category": "Sports",
-"open": 210
-},
-{
-"venue": "kalshi",
-"slug": "kxuberapp",
-"title": "Uber - Request a ride app downloads",
-"category": "Financials",
-"open": 11
-},
-{
-"venue": "kalshi",
-"slug": "kxlaligacorners",
-"title": "Total Corners",
-"category": "Sports",
-"open": 25
-},
-{
-"venue": "kalshi",
-"slug": "kx30ymortw",
-"title": "30-year mortgage rate this week",
-"category": "Economics",
-"open": 20
+"slug": "kxmedicaidworkhouse",
+"title": "House passage of a bill repealing Medicaid work requirements",
+"category": "Politics",
+"open": 1
 },
 {
 "venue": "kalshi",
@@ -4502,10 +4446,31 @@
 },
 {
 "venue": "kalshi",
-"slug": "kxnextisraelpm",
-"title": "Next Prime Minister of Israel",
-"category": "Elections",
-"open": 13
+"slug": "kxnflrace",
+"title": "Pro Football Race to Points",
+"category": "Sports",
+"open": 210
+},
+{
+"venue": "kalshi",
+"slug": "kxlaligacorners",
+"title": "Total Corners",
+"category": "Sports",
+"open": 25
+},
+{
+"venue": "kalshi",
+"slug": "kxuberapp",
+"title": "Uber - Request a ride app downloads",
+"category": "Financials",
+"open": 11
+},
+{
+"venue": "kalshi",
+"slug": "kx30ymortw",
+"title": "30-year mortgage rate this week",
+"category": "Economics",
+"open": 20
 },
 {
 "venue": "kalshi",
@@ -4516,10 +4481,10 @@
 },
 {
 "venue": "kalshi",
-"slug": "kxalbumreleasedatefrank",
-"title": "WHEN WILL FRANK OCEAN RELEASE AN ALBUM?",
-"category": "Entertainment",
-"open": 5
+"slug": "kxnextisraelpm",
+"title": "Next Prime Minister of Israel",
+"category": "Elections",
+"open": 13
 },
 {
 "venue": "kalshi",
@@ -4544,6 +4509,13 @@
 },
 {
 "venue": "kalshi",
+"slug": "kxalbumreleasedatefrank",
+"title": "WHEN WILL FRANK OCEAN RELEASE AN ALBUM?",
+"category": "Entertainment",
+"open": 5
+},
+{
+"venue": "kalshi",
 "slug": "kxdisneyapp",
 "title": "Disney+ app downloads",
 "category": "Financials",
@@ -4551,17 +4523,10 @@
 },
 {
 "venue": "kalshi",
-"slug": "kxhightatl",
-"title": "Atlanta Max Temperature",
-"category": "Climate and Weather",
-"open": 6
-},
-{
-"venue": "kalshi",
-"slug": "kxnear15m",
-"title": "NEAR 15m",
-"category": "Crypto",
-"open": 1
+"slug": "kxnetflixtopviewstv",
+"title": "NETFLIX TOP SHOW VIEW COUNT",
+"category": "Entertainment",
+"open": 11
 },
 {
 "venue": "kalshi",
@@ -4572,6 +4537,13 @@
 },
 {
 "venue": "kalshi",
+"slug": "kxslgreecespread",
+"title": "Spread",
+"category": "Sports",
+"open": 20
+},
+{
+"venue": "kalshi",
 "slug": "kxbtcmax150",
 "title": "When will bitcoin hit 150k?",
 "category": "Crypto",
@@ -4579,17 +4551,17 @@
 },
 {
 "venue": "kalshi",
-"slug": "kxnhlspread",
-"title": "NHL Spread",
+"slug": "kxnbaast",
+"title": "NBA Player Assists",
 "category": "Sports",
-"open": 64
+"open": 128
 },
 {
 "venue": "kalshi",
-"slug": "kxk2leaguetotal",
+"slug": "kxidnsltotal",
 "title": "Point Total",
 "category": "Sports",
-"open": 6
+"open": 18
 },
 {
 "venue": "kalshi",
@@ -4600,10 +4572,10 @@
 },
 {
 "venue": "kalshi",
-"slug": "kxrugbywc",
-"title": "Men's Rugby World Cup Winner",
+"slug": "kxchlldpgame",
+"title": "Chile Liga de Primera Game",
 "category": "Sports",
-"open": 24
+"open": 18
 },
 {
 "venue": "kalshi",
@@ -4621,17 +4593,17 @@
 },
 {
 "venue": "kalshi",
-"slug": "kxchlldpgame",
-"title": "Chile Liga de Primera Game",
+"slug": "kxrugbywc",
+"title": "Men's Rugby World Cup Winner",
 "category": "Sports",
-"open": 18
+"open": 24
 },
 {
 "venue": "kalshi",
-"slug": "kxnbaast",
-"title": "NBA Player Assists",
+"slug": "kxbelgianpltotal",
+"title": "Point Total",
 "category": "Sports",
-"open": 102
+"open": 24
 },
 {
 "venue": "kalshi",
@@ -4663,6 +4635,13 @@
 },
 {
 "venue": "kalshi",
+"slug": "kxnatgasw",
+"title": "Natural Gas Weekly",
+"category": "Commodities",
+"open": 40
+},
+{
+"venue": "kalshi",
 "slug": "kxnflffptsladder",
 "title": "Fantasy Ladder",
 "category": "Sports",
@@ -4674,13 +4653,6 @@
 "title": "ChatGPT App downloads",
 "category": "Financials",
 "open": 11
-},
-{
-"venue": "kalshi",
-"slug": "kxbnb15m",
-"title": "BNB 15 min",
-"category": "Crypto",
-"open": 1
 },
 {
 "venue": "kalshi",
@@ -4705,6 +4677,13 @@
 },
 {
 "venue": "kalshi",
+"slug": "kxsolmaxy",
+"title": "Solana Max Yearly",
+"category": "Crypto",
+"open": 8
+},
+{
+"venue": "kalshi",
 "slug": "kxcopadobrasilgame",
 "title": "Copa do Brasil Game",
 "category": "Sports",
@@ -4712,10 +4691,10 @@
 },
 {
 "venue": "kalshi",
-"slug": "kxscourt",
-"title": "Next SCOTUS justice",
-"category": "Politics",
-"open": 41
+"slug": "kxkhlgame",
+"title": "KHL Game",
+"category": "Sports",
+"open": 22
 },
 {
 "venue": "kalshi",
@@ -4726,6 +4705,13 @@
 },
 {
 "venue": "kalshi",
+"slug": "kxhightbos",
+"title": "Boston Maximum Daily Temperature",
+"category": "Climate and Weather",
+"open": 6
+},
+{
+"venue": "kalshi",
 "slug": "kxczeflgame",
 "title": "Czech First League Game",
 "category": "Sports",
@@ -4733,17 +4719,10 @@
 },
 {
 "venue": "kalshi",
-"slug": "kxsolmaxy",
-"title": "Solana Max Yearly",
-"category": "Crypto",
-"open": 8
-},
-{
-"venue": "kalshi",
-"slug": "kxhightbos",
-"title": "Boston Maximum Daily Temperature",
-"category": "Climate and Weather",
-"open": 6
+"slug": "kxfirstsuperbowlsong",
+"title": "What will be the first Super Bowl Song played during halfitme?",
+"category": "Entertainment",
+"open": 22
 },
 {
 "venue": "kalshi",
@@ -4775,24 +4754,17 @@
 },
 {
 "venue": "kalshi",
-"slug": "kxaaagasmax",
-"title": "US highest gas price yearly",
-"category": "Economics",
-"open": 13
-},
-{
-"venue": "kalshi",
-"slug": "kxbelgianpltotal",
-"title": "Point Total",
-"category": "Sports",
-"open": 24
-},
-{
-"venue": "kalshi",
 "slug": "kxmlbalroty",
 "title": "Pro Baseball American League Rookie of the Year",
 "category": "Sports",
 "open": 30
+},
+{
+"venue": "kalshi",
+"slug": "kxaaagasmax",
+"title": "US highest gas price yearly",
+"category": "Economics",
+"open": 13
 },
 {
 "venue": "kalshi",
@@ -4810,13 +4782,6 @@
 },
 {
 "venue": "kalshi",
-"slug": "kxslgreecespread",
-"title": "Spread",
-"category": "Sports",
-"open": 20
-},
-{
-"venue": "kalshi",
 "slug": "kxnfl2hspread",
 "title": "Pro Football 2nd Half Spread",
 "category": "Sports",
@@ -4824,10 +4789,10 @@
 },
 {
 "venue": "kalshi",
-"slug": "kxhype15m",
-"title": "HYPE 15 min",
-"category": "Crypto",
-"open": 1
+"slug": "kxbrasileirobgame",
+"title": "Brasileiro Serie B Game",
+"category": "Sports",
+"open": 39
 },
 {
 "venue": "kalshi",
@@ -4866,10 +4831,10 @@
 },
 {
 "venue": "kalshi",
-"slug": "kxbrasileirobgame",
-"title": "Brasileiro Serie B Game",
+"slug": "kxhnltotal",
+"title": "Point Total",
 "category": "Sports",
-"open": 39
+"open": 12
 },
 {
 "venue": "kalshi",
@@ -4887,24 +4852,10 @@
 },
 {
 "venue": "kalshi",
-"slug": "kxfirstsuperbowlsong",
-"title": "What will be the first Super Bowl Song played during halfitme?",
-"category": "Entertainment",
-"open": 22
-},
-{
-"venue": "kalshi",
 "slug": "kxnbasixth",
 "title": "NBA Sixth Man of the Year",
 "category": "Sports",
 "open": 86
-},
-{
-"venue": "kalshi",
-"slug": "kxhnltotal",
-"title": "Point Total",
-"category": "Sports",
-"open": 12
 },
 {
 "venue": "kalshi",
@@ -4936,10 +4887,24 @@
 },
 {
 "venue": "kalshi",
-"slug": "kxuel",
-"title": "Europa Leauge champion",
+"slug": "kxeculptotal",
+"title": "Point Total",
 "category": "Sports",
-"open": 36
+"open": 24
+},
+{
+"venue": "kalshi",
+"slug": "kxstreamerawards",
+"title": "streamer awards",
+"category": "Entertainment",
+"open": 199
+},
+{
+"venue": "kalshi",
+"slug": "kxligafbtts",
+"title": "Both teams to score",
+"category": "Sports",
+"open": 2
 },
 {
 "venue": "kalshi",
@@ -4985,17 +4950,24 @@
 },
 {
 "venue": "kalshi",
-"slug": "kxstarshipspace",
-"title": "Starship launches to Space",
-"category": "Science and Technology",
-"open": 20
+"slug": "kxuel",
+"title": "Europa Leauge champion",
+"category": "Sports",
+"open": 36
 },
 {
 "venue": "kalshi",
-"slug": "kxkleaguespread",
-"title": "Spread",
+"slug": "kxhightnola",
+"title": "New Orleans Max temp Daily",
+"category": "Climate and Weather",
+"open": 6
+},
+{
+"venue": "kalshi",
+"slug": "kxnflladderrshyds",
+"title": "Rushing Yards Ladder",
 "category": "Sports",
-"open": 8
+"open": 32
 },
 {
 "venue": "kalshi",
@@ -5006,17 +4978,24 @@
 },
 {
 "venue": "kalshi",
+"slug": "kxnba1hspread",
+"title": "NBA 1st Half Spread",
+"category": "Sports",
+"open": 114
+},
+{
+"venue": "kalshi",
+"slug": "kxhightokc",
+"title": "Oklahoma City Maximum High Temperature",
+"category": "Climate and Weather",
+"open": 6
+},
+{
+"venue": "kalshi",
 "slug": "kxncaafconf",
 "title": "NCAAF Championship Conference",
 "category": "Sports",
 "open": 5
-},
-{
-"venue": "kalshi",
-"slug": "kxligafbtts",
-"title": "Both teams to score",
-"category": "Sports",
-"open": 2
 },
 {
 "venue": "kalshi",
@@ -5034,31 +5013,10 @@
 },
 {
 "venue": "kalshi",
-"slug": "kxhightnola",
-"title": "New Orleans Max temp Daily",
-"category": "Climate and Weather",
-"open": 6
-},
-{
-"venue": "kalshi",
-"slug": "kxeculptotal",
-"title": "Point Total",
-"category": "Sports",
-"open": 24
-},
-{
-"venue": "kalshi",
 "slug": "kxmlb",
 "title": "World Series",
 "category": "Sports",
 "open": 30
-},
-{
-"venue": "kalshi",
-"slug": "kxhightokc",
-"title": "Oklahoma City Maximum High Temperature",
-"category": "Climate and Weather",
-"open": 6
 },
 {
 "venue": "kalshi",
@@ -5073,6 +5031,34 @@
 "title": "Impeach a member of Trump's cabinet",
 "category": "Politics",
 "open": 6
+},
+{
+"venue": "kalshi",
+"slug": "kxstarshipspace",
+"title": "Starship launches to Space",
+"category": "Science and Technology",
+"open": 20
+},
+{
+"venue": "kalshi",
+"slug": "kxbundesliga2total",
+"title": "Point Total",
+"category": "Sports",
+"open": 18
+},
+{
+"venue": "kalshi",
+"slug": "kxnfllongrsh",
+"title": "Longest Rush",
+"category": "Sports",
+"open": 65
+},
+{
+"venue": "kalshi",
+"slug": "kxbundesligaspread",
+"title": "Bundesliga Spread",
+"category": "Sports",
+"open": 12
 },
 {
 "venue": "kalshi",
@@ -5097,6 +5083,13 @@
 },
 {
 "venue": "kalshi",
+"slug": "kxvalorantmap",
+"title": "Valorant Map Winner",
+"category": "Sports",
+"open": 42
+},
+{
+"venue": "kalshi",
 "slug": "kxncaafmwc",
 "title": "Mountain West Champion",
 "category": "Sports",
@@ -5111,31 +5104,10 @@
 },
 {
 "venue": "kalshi",
-"slug": "kxkhlgame",
-"title": "KHL Game",
-"category": "Sports",
-"open": 22
-},
-{
-"venue": "kalshi",
-"slug": "kxnflladderrshyds",
-"title": "Rushing Yards Ladder",
-"category": "Sports",
-"open": 32
-},
-{
-"venue": "kalshi",
 "slug": "kxpahlavihead",
 "title": "Will Pahlavi lead Iran?",
 "category": "Politics",
 "open": 1
-},
-{
-"venue": "kalshi",
-"slug": "kxvalorantmap",
-"title": "Valorant Map Winner",
-"category": "Sports",
-"open": 42
 },
 {
 "venue": "kalshi",
@@ -5146,24 +5118,10 @@
 },
 {
 "venue": "kalshi",
-"slug": "kxbundesliga2total",
-"title": "Point Total",
-"category": "Sports",
-"open": 18
-},
-{
-"venue": "kalshi",
 "slug": "kxespnapp",
 "title": "ESPN: Live Sports & Scores app downloads",
 "category": "Financials",
 "open": 8
-},
-{
-"venue": "kalshi",
-"slug": "kxkleague1hbtts",
-"title": "1st Half BTTS",
-"category": "Sports",
-"open": 2
 },
 {
 "venue": "kalshi",
@@ -5216,17 +5174,17 @@
 },
 {
 "venue": "kalshi",
-"slug": "kxstreamerawards",
-"title": "streamer awards",
-"category": "Entertainment",
-"open": 199
+"slug": "kxnflescalatorrec",
+"title": "Receptions Escalator",
+"category": "Sports",
+"open": 67
 },
 {
 "venue": "kalshi",
-"slug": "kxjleague1htotal",
-"title": "1st Half Total",
-"category": "Sports",
-"open": 3
+"slug": "kxxrpmaxmon",
+"title": "XRP Max Monthly",
+"category": "Crypto",
+"open": 7
 },
 {
 "venue": "kalshi",
@@ -5244,10 +5202,10 @@
 },
 {
 "venue": "kalshi",
-"slug": "kxidnsltotal",
-"title": "Point Total",
+"slug": "kxepl1hbtts",
+"title": "EPL 1st Half BTTS",
 "category": "Sports",
-"open": 18
+"open": 5
 },
 {
 "venue": "kalshi",
@@ -5272,20 +5230,6 @@
 },
 {
 "venue": "kalshi",
-"slug": "kxncaafnextcoach",
-"title": "College Football Next Coach",
-"category": "Sports",
-"open": 135
-},
-{
-"venue": "kalshi",
-"slug": "kxxrpmaxmon",
-"title": "XRP Max Monthly",
-"category": "Crypto",
-"open": 7
-},
-{
-"venue": "kalshi",
 "slug": "kxlowtewr",
 "title": "Newark, NJ (EWR) Daily Low Temp",
 "category": "Climate and Weather",
@@ -5293,10 +5237,10 @@
 },
 {
 "venue": "kalshi",
-"slug": "kxeredivisiespread",
-"title": "Eredivisie Spread",
+"slug": "kxncaafnextcoach",
+"title": "College Football Next Coach",
 "category": "Sports",
-"open": 20
+"open": 135
 },
 {
 "venue": "kalshi",
@@ -5321,17 +5265,17 @@
 },
 {
 "venue": "kalshi",
-"slug": "kxjleaguespread",
-"title": "Spread",
-"category": "Sports",
-"open": 4
-},
-{
-"venue": "kalshi",
 "slug": "kxgdpyear",
 "title": "Annual GDP",
 "category": "Economics",
 "open": 154
+},
+{
+"venue": "kalshi",
+"slug": "kxeredivisiespread",
+"title": "Eredivisie Spread",
+"category": "Sports",
+"open": 20
 },
 {
 "venue": "kalshi",
@@ -5349,17 +5293,17 @@
 },
 {
 "venue": "kalshi",
-"slug": "kxepl1hbtts",
-"title": "EPL 1st Half BTTS",
-"category": "Sports",
-"open": 5
-},
-{
-"venue": "kalshi",
 "slug": "kxearningsmentionhims",
 "title": "Hims Earnings",
 "category": "Mentions",
 "open": 19
+},
+{
+"venue": "kalshi",
+"slug": "kxlvavirspread",
+"title": "Spread",
+"category": "Sports",
+"open": 20
 },
 {
 "venue": "kalshi",
@@ -5370,10 +5314,10 @@
 },
 {
 "venue": "kalshi",
-"slug": "kxnfllongrsh",
-"title": "Longest Rush",
-"category": "Sports",
-"open": 65
+"slug": "kxhightphx",
+"title": "Phoenix High Temperature Daily",
+"category": "Climate and Weather",
+"open": 6
 },
 {
 "venue": "kalshi",
@@ -5381,13 +5325,6 @@
 "title": "Democratic House seats (Directional)",
 "category": "Elections",
 "open": 23
-},
-{
-"venue": "kalshi",
-"slug": "kxnhlplayoff",
-"title": "Playoff Qualifier",
-"category": "Sports",
-"open": 32
 },
 {
 "venue": "kalshi",
@@ -5412,10 +5349,24 @@
 },
 {
 "venue": "kalshi",
+"slug": "kxnhlplayoff",
+"title": "Playoff Qualifier",
+"category": "Sports",
+"open": 32
+},
+{
+"venue": "kalshi",
 "slug": "kxekstraklasaspread",
 "title": "Spread",
 "category": "Sports",
 "open": 12
+},
+{
+"venue": "kalshi",
+"slug": "kxnhlf10g",
+"title": "NHL Goal in First 10 Minutes",
+"category": "Sports",
+"open": 9
 },
 {
 "venue": "kalshi",
@@ -5447,13 +5398,6 @@
 },
 {
 "venue": "kalshi",
-"slug": "kxnhlf10g",
-"title": "NHL Goal in First 10 Minutes",
-"category": "Sports",
-"open": 9
-},
-{
-"venue": "kalshi",
 "slug": "kxkimkbarexam",
 "title": "WILL KIM K COMPLETE THE BAR EXAM",
 "category": "Entertainment",
@@ -5468,24 +5412,10 @@
 },
 {
 "venue": "kalshi",
-"slug": "kxhightphx",
-"title": "Phoenix High Temperature Daily",
-"category": "Climate and Weather",
-"open": 6
-},
-{
-"venue": "kalshi",
 "slug": "kxaaagasminm",
 "title": "US lowest gas price monthly",
 "category": "Economics",
 "open": 11
-},
-{
-"venue": "kalshi",
-"slug": "kxbundesligaspread",
-"title": "Bundesliga Spread",
-"category": "Sports",
-"open": 12
 },
 {
 "venue": "kalshi",
@@ -5552,13 +5482,6 @@
 },
 {
 "venue": "kalshi",
-"slug": "kxinxmaxy",
-"title": "S&P 500 max yearly",
-"category": "Financials",
-"open": 6
-},
-{
-"venue": "kalshi",
 "slug": "kxartiststreamsy",
 "title": "Artist Yearly Streams",
 "category": "Entertainment",
@@ -5622,24 +5545,17 @@
 },
 {
 "venue": "kalshi",
-"slug": "kxtopai",
-"title": "Top-ranked AI",
-"category": "Science and Technology",
-"open": 12
-},
-{
-"venue": "kalshi",
-"slug": "kxnba1hspread",
-"title": "NBA 1st Half Spread",
-"category": "Sports",
-"open": 114
-},
-{
-"venue": "kalshi",
 "slug": "kxukrplgame",
 "title": "Ukrainian Premier League Game",
 "category": "Sports",
 "open": 6
+},
+{
+"venue": "kalshi",
+"slug": "kxtopai",
+"title": "Top-ranked AI",
+"category": "Science and Technology",
+"open": 12
 },
 {
 "venue": "kalshi",
@@ -5699,6 +5615,13 @@
 },
 {
 "venue": "kalshi",
+"slug": "kxligapromatch",
+"title": "Russia Liga Pro Match",
+"category": "Sports",
+"open": 176
+},
+{
+"venue": "kalshi",
 "slug": "kxscrewwormcount",
 "title": "SCREWWORM CASES",
 "category": "Science and Technology",
@@ -5713,17 +5636,24 @@
 },
 {
 "venue": "kalshi",
-"slug": "kxoscardir",
-"title": "Oscar for Best Director",
-"category": "Entertainment",
-"open": 19
-},
-{
-"venue": "kalshi",
 "slug": "kxncaaftotal",
 "title": "College Football Total Points",
 "category": "Sports",
-"open": 494
+"open": 608
+},
+{
+"venue": "kalshi",
+"slug": "kxnflmostrshyds",
+"title": "Pro Football Most Rushing Yards",
+"category": "Sports",
+"open": 65
+},
+{
+"venue": "kalshi",
+"slug": "kxtff1liggame",
+"title": "TFF 1. Lig Game",
+"category": "Sports",
+"open": 12
 },
 {
 "venue": "kalshi",
@@ -5741,17 +5671,17 @@
 },
 {
 "venue": "kalshi",
-"slug": "kxnflmostrshyds",
-"title": "Pro Football Most Rushing Yards",
-"category": "Sports",
-"open": 65
-},
-{
-"venue": "kalshi",
 "slug": "kxnflmostrecyds",
 "title": "Pro Football Most Receiving Yards",
 "category": "Sports",
 "open": 123
+},
+{
+"venue": "kalshi",
+"slug": "kxligaftotal",
+"title": "Total",
+"category": "Sports",
+"open": 12
 },
 {
 "venue": "kalshi",
@@ -5804,6 +5734,13 @@
 },
 {
 "venue": "kalshi",
+"slug": "kxinxmaxy",
+"title": "S&P 500 max yearly",
+"category": "Financials",
+"open": 6
+},
+{
+"venue": "kalshi",
 "slug": "kxcollinsoutperformrcp",
 "title": "Will Susan Collins outperform the polls?",
 "category": "Elections",
@@ -5825,17 +5762,17 @@
 },
 {
 "venue": "kalshi",
-"slug": "kxligaftotal",
-"title": "Total",
-"category": "Sports",
-"open": 12
+"slug": "kxbiggestquake",
+"title": "Biggest earthquake",
+"category": "Climate and Weather",
+"open": 10
 },
 {
 "venue": "kalshi",
-"slug": "kxtff1liggame",
-"title": "TFF 1. Lig Game",
+"slug": "kxepltcorners",
+"title": "EPL Team Corners",
 "category": "Sports",
-"open": 12
+"open": 10
 },
 {
 "venue": "kalshi",
@@ -5916,6 +5853,13 @@
 },
 {
 "venue": "kalshi",
+"slug": "kxnbasoutheast",
+"title": "Pro Basketball Southeast Division Winner",
+"category": "Sports",
+"open": 5
+},
+{
+"venue": "kalshi",
 "slug": "kxf1topconstructor",
 "title": "F1 Top Constructor",
 "category": "Sports",
@@ -5965,17 +5909,17 @@
 },
 {
 "venue": "kalshi",
-"slug": "kxroleateventcoachella",
-"title": "WHO WILL HEADLINE COACHELLA?",
-"category": "Entertainment",
-"open": 116
-},
-{
-"venue": "kalshi",
 "slug": "kxleadernflrushyds",
 "title": "NFL leader rushing yards",
 "category": "Sports",
 "open": 29
+},
+{
+"venue": "kalshi",
+"slug": "kxroleateventcoachella",
+"title": "WHO WILL HEADLINE COACHELLA?",
+"category": "Entertainment",
+"open": 116
 },
 {
 "venue": "kalshi",
@@ -6000,17 +5944,17 @@
 },
 {
 "venue": "kalshi",
+"slug": "kxesoccergame",
+"title": "eSoccer Game",
+"category": "Sports",
+"open": 159
+},
+{
+"venue": "kalshi",
 "slug": "kxabaspread",
 "title": "Adriatic ABA Spread",
 "category": "Sports",
 "open": 24
-},
-{
-"venue": "kalshi",
-"slug": "kxmotogp",
-"title": "Moto GP World Champion",
-"category": "Sports",
-"open": 22
 },
 {
 "venue": "kalshi",
@@ -6056,10 +6000,31 @@
 },
 {
 "venue": "kalshi",
+"slug": "kxuclwgame",
+"title": "Champions League Women's Game",
+"category": "Sports",
+"open": 27
+},
+{
+"venue": "kalshi",
+"slug": "kxmotogp",
+"title": "Moto GP World Champion",
+"category": "Sports",
+"open": 22
+},
+{
+"venue": "kalshi",
 "slug": "kxdcfoiegras",
 "title": "DC foie gras ban initiative",
 "category": "Elections",
 "open": 1
+},
+{
+"venue": "kalshi",
+"slug": "kxautbundesspread",
+"title": "Spread",
+"category": "Sports",
+"open": 12
 },
 {
 "venue": "kalshi",
@@ -6084,6 +6049,13 @@
 },
 {
 "venue": "kalshi",
+"slug": "kxnflboth",
+"title": "Pro Football Both Teams to Score Points",
+"category": "Sports",
+"open": 56
+},
+{
+"venue": "kalshi",
 "slug": "kxfear",
 "title": "Fear and Greed index",
 "category": "Financials",
@@ -6102,13 +6074,6 @@
 "title": "NHL President's Trophy Winner",
 "category": "Sports",
 "open": 32
-},
-{
-"venue": "kalshi",
-"slug": "kxnflboth",
-"title": "Pro Football Both Teams to Score Points",
-"category": "Sports",
-"open": 56
 },
 {
 "venue": "kalshi",
@@ -6154,13 +6119,6 @@
 },
 {
 "venue": "kalshi",
-"slug": "kxsuperbowlad",
-"title": "Super Bowl ads",
-"category": "Companies",
-"open": 21
-},
-{
-"venue": "kalshi",
 "slug": "kxperliga1spread",
 "title": "Spread",
 "category": "Sports",
@@ -6168,17 +6126,10 @@
 },
 {
 "venue": "kalshi",
-"slug": "kxuclwgame",
-"title": "Champions League Women's Game",
-"category": "Sports",
-"open": 27
-},
-{
-"venue": "kalshi",
-"slug": "kxbiggestquake",
-"title": "Biggest earthquake",
-"category": "Climate and Weather",
-"open": 10
+"slug": "kxsuperbowlad",
+"title": "Super Bowl ads",
+"category": "Companies",
+"open": 21
 },
 {
 "venue": "kalshi",
@@ -6203,6 +6154,13 @@
 },
 {
 "venue": "kalshi",
+"slug": "kxncaafconfmatchup",
+"title": "College Football Conference Championship Matchup",
+"category": "Sports",
+"open": 865
+},
+{
+"venue": "kalshi",
 "slug": "kxbundesliga",
 "title": "BUNDESLIGA",
 "category": "Sports",
@@ -6217,17 +6175,17 @@
 },
 {
 "venue": "kalshi",
-"slug": "kxncaafconfmatchup",
-"title": "College Football Conference Championship Matchup",
-"category": "Sports",
-"open": 865
-},
-{
-"venue": "kalshi",
 "slug": "kxlowtphil",
 "title": "Lowest temperature in Philadelphia",
 "category": "Climate and Weather",
 "open": 6
+},
+{
+"venue": "kalshi",
+"slug": "kxoscaractr",
+"title": "Oscar for Best Actress",
+"category": "Entertainment",
+"open": 19
 },
 {
 "venue": "kalshi",
@@ -6245,6 +6203,13 @@
 },
 {
 "venue": "kalshi",
+"slug": "kxinxu",
+"title": "S&P 500 above/below",
+"category": "Financials",
+"open": 420
+},
+{
+"venue": "kalshi",
 "slug": "kxrockstarpos",
 "title": "Rockstar Energy Point of Sale Growth",
 "category": "Financials",
@@ -6256,13 +6221,6 @@
 "title": "Bud Light Point of Sale Growth",
 "category": "Financials",
 "open": 11
-},
-{
-"venue": "kalshi",
-"slug": "kxlvavirspread",
-"title": "Spread",
-"category": "Sports",
-"open": 20
 },
 {
 "venue": "kalshi",
@@ -6329,6 +6287,13 @@
 },
 {
 "venue": "kalshi",
+"slug": "kxvalorantgame",
+"title": "Valorant game winner",
+"category": "Sports",
+"open": 20
+},
+{
+"venue": "kalshi",
 "slug": "kxabrahamsa",
 "title": "Abraham Accord Saudi Arabia",
 "category": "Politics",
@@ -6340,20 +6305,6 @@
 "title": "NHL Pacific Division Winner",
 "category": "Sports",
 "open": 8
-},
-{
-"venue": "kalshi",
-"slug": "kxinxu",
-"title": "S&P 500 above/below",
-"category": "Financials",
-"open": 420
-},
-{
-"venue": "kalshi",
-"slug": "kxjleague1h",
-"title": "1st Half Winner",
-"category": "Sports",
-"open": 3
 },
 {
 "venue": "kalshi",
@@ -6413,6 +6364,13 @@
 },
 {
 "venue": "kalshi",
+"slug": "kxjleaguebtts",
+"title": "BTTS",
+"category": "Sports",
+"open": 1
+},
+{
+"venue": "kalshi",
 "slug": "kxfedreform",
 "title": "Which Federal Reserve precedents will be broken in 2026?",
 "category": "Economics",
@@ -6431,13 +6389,6 @@
 "title": "LOL Longest Game",
 "category": "Sports",
 "open": 3
-},
-{
-"venue": "kalshi",
-"slug": "kxnbasoutheast",
-"title": "Pro Basketball Southeast Division Winner",
-"category": "Sports",
-"open": 5
 },
 {
 "venue": "kalshi",
@@ -6476,10 +6427,10 @@
 },
 {
 "venue": "kalshi",
-"slug": "kxoscaractr",
-"title": "Oscar for Best Actress",
-"category": "Entertainment",
-"open": 19
+"slug": "kxlowtphx",
+"title": "Low Temperature Phoenix",
+"category": "Climate and Weather",
+"open": 6
 },
 {
 "venue": "kalshi",
@@ -6504,17 +6455,17 @@
 },
 {
 "venue": "kalshi",
+"slug": "kxtempmiah",
+"title": "Hourly Directional Miami Temperature",
+"category": "Climate and Weather",
+"open": 10
+},
+{
+"venue": "kalshi",
 "slug": "kxnbawinmargin",
 "title": "NBA Win Margin",
 "category": "Sports",
 "open": 56
-},
-{
-"venue": "kalshi",
-"slug": "kxlowtphx",
-"title": "Low Temperature Phoenix",
-"category": "Climate and Weather",
-"open": 6
 },
 {
 "venue": "kalshi",
@@ -6546,6 +6497,13 @@
 },
 {
 "venue": "kalshi",
+"slug": "kxeerstedivtotal",
+"title": "Point Total",
+"category": "Sports",
+"open": 12
+},
+{
+"venue": "kalshi",
 "slug": "kxnflpasstdsprot",
 "title": "Passing Touchdowns Protected",
 "category": "Sports",
@@ -6564,13 +6522,6 @@
 "title": "NHL Goalscorer",
 "category": "Sports",
 "open": 62
-},
-{
-"venue": "kalshi",
-"slug": "kxeerstedivtotal",
-"title": "Point Total",
-"category": "Sports",
-"open": 12
 },
 {
 "venue": "kalshi",
@@ -6637,13 +6588,6 @@
 },
 {
 "venue": "kalshi",
-"slug": "kxepltcorners",
-"title": "EPL Team Corners",
-"category": "Sports",
-"open": 10
-},
-{
-"venue": "kalshi",
 "slug": "kxtsad",
 "title": "Daily TSA passenger screenings",
 "category": "Economics",
@@ -6665,17 +6609,17 @@
 },
 {
 "venue": "kalshi",
+"slug": "kxnba3pt",
+"title": "NBA Player Threes",
+"category": "Sports",
+"open": 312
+},
+{
+"venue": "kalshi",
 "slug": "kxnhlseasongoals",
 "title": "Player to score X Goals in Season",
 "category": "Sports",
 "open": 87
-},
-{
-"venue": "kalshi",
-"slug": "kxvalorantgame",
-"title": "Valorant game winner",
-"category": "Sports",
-"open": 20
 },
 {
 "venue": "kalshi",
@@ -6686,13 +6630,6 @@
 },
 {
 "venue": "kalshi",
-"slug": "kxreccount",
-"title": "Reconciliation count",
-"category": "Politics",
-"open": 2
-},
-{
-"venue": "kalshi",
 "slug": "kxlowtttn",
 "title": "Trenton Daily low temp ",
 "category": "Climate and Weather",
@@ -6700,17 +6637,17 @@
 },
 {
 "venue": "kalshi",
+"slug": "kxreccount",
+"title": "Reconciliation count",
+"category": "Politics",
+"open": 2
+},
+{
+"venue": "kalshi",
 "slug": "kxhousedemleadrun",
 "title": "House Democratic leader race: who will run?",
 "category": "Elections",
 "open": 7
-},
-{
-"venue": "kalshi",
-"slug": "kxkashout",
-"title": "Kash Patel out as FBI Director?",
-"category": "Politics",
-"open": 8
 },
 {
 "venue": "kalshi",
@@ -6767,6 +6704,20 @@
 "title": "TSA check-ins this week",
 "category": "Economics",
 "open": 21
+},
+{
+"venue": "kalshi",
+"slug": "kxkashout",
+"title": "Kash Patel out as FBI Director?",
+"category": "Politics",
+"open": 8
+},
+{
+"venue": "kalshi",
+"slug": "kxnbapostasrec",
+"title": "NBA Best Record Post-All-Star Break",
+"category": "Sports",
+"open": 30
 },
 {
 "venue": "kalshi",
@@ -6833,17 +6784,17 @@
 },
 {
 "venue": "kalshi",
-"slug": "kxnbapostasrec",
-"title": "NBA Best Record Post-All-Star Break",
-"category": "Sports",
-"open": 30
-},
-{
-"venue": "kalshi",
 "slug": "kxpowerkwh",
 "title": "Average US electricity price this month",
 "category": "Economics",
 "open": 7
+},
+{
+"venue": "kalshi",
+"slug": "kxncaafsecq",
+"title": "College Football SEC Championship Qualifiers",
+"category": "Sports",
+"open": 16
 },
 {
 "venue": "kalshi",
@@ -6872,13 +6823,6 @@
 "title": "Liga MX Top Finishers",
 "category": "Sports",
 "open": 18
-},
-{
-"venue": "kalshi",
-"slug": "kxncaafsecq",
-"title": "College Football SEC Championship Qualifiers",
-"category": "Sports",
-"open": 16
 },
 {
 "venue": "kalshi",
@@ -6917,10 +6861,10 @@
 },
 {
 "venue": "kalshi",
-"slug": "kxnhlcalder",
-"title": "NHL Calder Memorial Trophy",
+"slug": "kxnflteamyds",
+"title": "Pro Football Team Yards",
 "category": "Sports",
-"open": 40
+"open": 140
 },
 {
 "venue": "kalshi",
@@ -6931,6 +6875,13 @@
 },
 {
 "venue": "kalshi",
+"slug": "kxvleague1game",
+"title": "Vietnam V-League 1 Game",
+"category": "Sports",
+"open": 3
+},
+{
+"venue": "kalshi",
 "slug": "kxoscarnomsupacto",
 "title": "Oscar nominations for Best Supporting Actor",
 "category": "Entertainment",
@@ -6938,17 +6889,17 @@
 },
 {
 "venue": "kalshi",
+"slug": "kxhype",
+"title": "Hype ",
+"category": "Crypto",
+"open": 390
+},
+{
+"venue": "kalshi",
 "slug": "kxnflroundqual",
 "title": "Pro Football Round Qualifier",
 "category": "Sports",
 "open": 64
-},
-{
-"venue": "kalshi",
-"slug": "kxk2leaguegame",
-"title": "Korea K-League 2 Game",
-"category": "Sports",
-"open": 3
 },
 {
 "venue": "kalshi",
@@ -6966,24 +6917,10 @@
 },
 {
 "venue": "kalshi",
-"slug": "kxf1occur",
-"title": "Formula 1 Event Occurrence",
-"category": "Sports",
-"open": 1
-},
-{
-"venue": "kalshi",
 "slug": "kxnasdaq100",
 "title": "Nasdaq range",
 "category": "Financials",
 "open": 60
-},
-{
-"venue": "kalshi",
-"slug": "kxnflteamyds",
-"title": "Pro Football Team Yards",
-"category": "Sports",
-"open": 140
 },
 {
 "venue": "kalshi",
@@ -7008,10 +6945,17 @@
 },
 {
 "venue": "kalshi",
-"slug": "kxvleague1game",
-"title": "Vietnam V-League 1 Game",
+"slug": "kxhightsdf",
+"title": "HIGHEST Temperature SATX",
+"category": "Climate and Weather",
+"open": 6
+},
+{
+"venue": "kalshi",
+"slug": "kxf1occur",
+"title": "Formula 1 Event Occurrence",
 "category": "Sports",
-"open": 3
+"open": 1
 },
 {
 "venue": "kalshi",
@@ -7029,10 +6973,10 @@
 },
 {
 "venue": "kalshi",
-"slug": "kxhightsdf",
-"title": "HIGHEST Temperature SATX",
-"category": "Climate and Weather",
-"open": 6
+"slug": "kxnhlcalder",
+"title": "NHL Calder Memorial Trophy",
+"category": "Sports",
+"open": 40
 },
 {
 "venue": "kalshi",
@@ -7071,13 +7015,6 @@
 },
 {
 "venue": "kalshi",
-"slug": "kxf1exactfinish",
-"title": "F1 Driver Championship Exact Finish",
-"category": "Sports",
-"open": 20
-},
-{
-"venue": "kalshi",
 "slug": "kxjoinronaldo",
 "title": "Cristiano Ronaldo",
 "category": "Sports",
@@ -7085,10 +7022,10 @@
 },
 {
 "venue": "kalshi",
-"slug": "kxautbundesspread",
-"title": "Spread",
-"category": "Sports",
-"open": 12
+"slug": "kxstate51",
+"title": "51st state ",
+"category": "Politics",
+"open": 8
 },
 {
 "venue": "kalshi",
@@ -7113,10 +7050,24 @@
 },
 {
 "venue": "kalshi",
+"slug": "kxlowtnyc",
+"title": "Lowest temperature in NYC",
+"category": "Climate and Weather",
+"open": 6
+},
+{
+"venue": "kalshi",
 "slug": "kxljubljanamayor",
 "title": "Ljubljana mayoral election winner",
 "category": "Elections",
 "open": 9
+},
+{
+"venue": "kalshi",
+"slug": "kxf1exactfinish",
+"title": "F1 Driver Championship Exact Finish",
+"category": "Sports",
+"open": 20
 },
 {
 "venue": "kalshi",
@@ -7148,8 +7099,8 @@
 },
 {
 "venue": "kalshi",
-"slug": "kxlowtnyc",
-"title": "Lowest temperature in NYC",
+"slug": "kxlowtchi",
+"title": "Lowest Temperature Chicago",
 "category": "Climate and Weather",
 "open": 6
 },
@@ -7159,13 +7110,6 @@
 "title": "Who will be in the next Israeli government?",
 "category": "Elections",
 "open": 21
-},
-{
-"venue": "kalshi",
-"slug": "kxlowtchi",
-"title": "Lowest Temperature Chicago",
-"category": "Climate and Weather",
-"open": 6
 },
 {
 "venue": "kalshi",
@@ -7218,6 +7162,13 @@
 },
 {
 "venue": "kalshi",
+"slug": "kxcpicoreyoy",
+"title": "Core inflation",
+"category": "Economics",
+"open": 31
+},
+{
+"venue": "kalshi",
 "slug": "kxzecmaxmon",
 "title": "ZEC monthly one touch ",
 "category": "Crypto",
@@ -7243,6 +7194,13 @@
 "title": "Eastern Conference Championship",
 "category": "Sports",
 "open": 16
+},
+{
+"venue": "kalshi",
+"slug": "kxncaambtopaprank",
+"title": "Men's College Basketball AP Poll Top Rank",
+"category": "Sports",
+"open": 6643
 },
 {
 "venue": "kalshi",
@@ -7284,7 +7242,14 @@
 "slug": "kxminlead120",
 "title": "House Minority Leader (120th Congress)",
 "category": "Elections",
-"open": 16
+"open": 17
+},
+{
+"venue": "kalshi",
+"slug": "kxseriecgame",
+"title": "Serie C Game",
+"category": "Sports",
+"open": 51
 },
 {
 "venue": "kalshi",
@@ -7323,20 +7288,6 @@
 },
 {
 "venue": "kalshi",
-"slug": "kxncaambtopaprank",
-"title": "Men's College Basketball AP Poll Top Rank",
-"category": "Sports",
-"open": 6643
-},
-{
-"venue": "kalshi",
-"slug": "kxstate51",
-"title": "51st state ",
-"category": "Politics",
-"open": 8
-},
-{
-"venue": "kalshi",
 "slug": "kxgptcost",
 "title": "GPT cost",
 "category": "Science and Technology",
@@ -7358,17 +7309,17 @@
 },
 {
 "venue": "kalshi",
+"slug": "kxsaffgame",
+"title": "SAFF Championship Game",
+"category": "Sports",
+"open": 9
+},
+{
+"venue": "kalshi",
 "slug": "kxnflffweektop",
 "title": "Weekly Fantasy Football Top Players",
 "category": "Sports",
 "open": 150
-},
-{
-"venue": "kalshi",
-"slug": "kxseriecgame",
-"title": "Serie C Game",
-"category": "Sports",
-"open": 51
 },
 {
 "venue": "kalshi",
@@ -7390,13 +7341,6 @@
 "title": "RAIN SEATTLE",
 "category": "Climate and Weather",
 "open": 7
-},
-{
-"venue": "kalshi",
-"slug": "kxcpicoreyoy",
-"title": "Core inflation",
-"category": "Economics",
-"open": 31
 },
 {
 "venue": "kalshi",
@@ -7435,13 +7379,6 @@
 },
 {
 "venue": "kalshi",
-"slug": "kxnewtariffs",
-"title": "New tariffs this month?",
-"category": "Politics",
-"open": 1
-},
-{
-"venue": "kalshi",
 "slug": "kxmonsterpos",
 "title": "Monster Energy Drinks Point of Sale Growth",
 "category": "Financials",
@@ -7477,6 +7414,13 @@
 },
 {
 "venue": "kalshi",
+"slug": "kxnewtariffs",
+"title": "New tariffs this month?",
+"category": "Politics",
+"open": 1
+},
+{
+"venue": "kalshi",
 "slug": "kxncaambwins",
 "title": "Men's College Basketball Win Totals",
 "category": "Sports",
@@ -7498,17 +7442,17 @@
 },
 {
 "venue": "kalshi",
+"slug": "kxinterstellar",
+"title": "Interstellar object",
+"category": "Science and Technology",
+"open": 1
+},
+{
+"venue": "kalshi",
 "slug": "kxlcpimaxyoy",
 "title": "Inflation surge this year",
 "category": "Economics",
 "open": 6
-},
-{
-"venue": "kalshi",
-"slug": "kxfrpresadvance",
-"title": "French presidential election: who will advance?",
-"category": "Elections",
-"open": 13
 },
 {
 "venue": "kalshi",
@@ -7519,10 +7463,10 @@
 },
 {
 "venue": "kalshi",
-"slug": "kxinterstellar",
-"title": "Interstellar object",
-"category": "Science and Technology",
-"open": 1
+"slug": "kxfrpresadvance",
+"title": "French presidential election: who will advance?",
+"category": "Elections",
+"open": 13
 },
 {
 "venue": "kalshi",
@@ -7561,10 +7505,24 @@
 },
 {
 "venue": "kalshi",
+"slug": "kxscottishpremspread",
+"title": "Spread",
+"category": "Sports",
+"open": 8
+},
+{
+"venue": "kalshi",
 "slug": "kxsolaxqual",
 "title": "Summer Olympics Lacrosse Qualifiers",
 "category": "Sports",
 "open": 46
+},
+{
+"venue": "kalshi",
+"slug": "kxnbah2hwins",
+"title": "NBA Head to Head Win Total",
+"category": "Sports",
+"open": 30
 },
 {
 "venue": "kalshi",
@@ -7585,13 +7543,6 @@
 "slug": "kxsuperligbtts",
 "title": "BTTS",
 "category": "Sports",
-"open": 4
-},
-{
-"venue": "kalshi",
-"slug": "kxratehike",
-"title": "Number of Fed rate hikes",
-"category": "Economics",
 "open": 4
 },
 {
@@ -7666,13 +7617,6 @@
 },
 {
 "venue": "kalshi",
-"slug": "kxdeclarepresfirstr",
-"title": "Who will be the first Republican listed to announce a 2028 presidential run?",
-"category": "Elections",
-"open": 37
-},
-{
-"venue": "kalshi",
 "slug": "kxligue1teamtotal",
 "title": "Team Total",
 "category": "Sports",
@@ -7701,17 +7645,17 @@
 },
 {
 "venue": "kalshi",
-"slug": "kxncaawv",
-"title": "Women's college volleyball champion",
-"category": "Sports",
-"open": 49
-},
-{
-"venue": "kalshi",
 "slug": "kxncaafh2hwins",
 "title": "College Football Head-to-Head Regular Season Wins",
 "category": "Sports",
 "open": 21
+},
+{
+"venue": "kalshi",
+"slug": "kxncaawv",
+"title": "Women's college volleyball champion",
+"category": "Sports",
+"open": 49
 },
 {
 "venue": "kalshi",
@@ -7782,6 +7726,27 @@
 "title": "Argentina Primera Division Game",
 "category": "Sports",
 "open": 3
+},
+{
+"venue": "kalshi",
+"slug": "kxgopimpeachvotes",
+"title": "House Republicans voting to impeach Trump",
+"category": "Politics",
+"open": 5
+},
+{
+"venue": "kalshi",
+"slug": "kxdeclarepresfirstr",
+"title": "Who will be the first Republican listed to announce a 2028 presidential run?",
+"category": "Elections",
+"open": 37
+},
+{
+"venue": "kalshi",
+"slug": "kxtempnychs",
+"title": "Hourly Directional NYC Temperature",
+"category": "Climate and Weather",
+"open": 10
 },
 {
 "venue": "kalshi",
@@ -7862,6 +7827,13 @@
 },
 {
 "venue": "kalshi",
+"slug": "kxratehike",
+"title": "Number of Fed rate hikes",
+"category": "Economics",
+"open": 4
+},
+{
+"venue": "kalshi",
 "slug": "kxhightewr",
 "title": "Newark, NJ (EWR) Daily Max Temp",
 "category": "Climate and Weather",
@@ -7887,13 +7859,6 @@
 "title": "Will Chuck Schumer be reelected Democratic leader by voice vote?",
 "category": "Elections",
 "open": 1
-},
-{
-"venue": "kalshi",
-"slug": "kxsaffgame",
-"title": "SAFF Championship Game",
-"category": "Sports",
-"open": 9
 },
 {
 "venue": "kalshi",
@@ -7939,6 +7904,13 @@
 },
 {
 "venue": "kalshi",
+"slug": "kxjleague1hbtts",
+"title": "1st Half BTTS",
+"category": "Sports",
+"open": 1
+},
+{
+"venue": "kalshi",
 "slug": "kxsteamtopseller",
 "title": "STEAM Top Sellers",
 "category": "Entertainment",
@@ -7967,10 +7939,10 @@
 },
 {
 "venue": "kalshi",
-"slug": "moon",
-"title": "NASA lands on the moon",
-"category": "Science and Technology",
-"open": 4
+"slug": "kxjleague1hspread",
+"title": "1st Half Spread",
+"category": "Sports",
+"open": 2
 },
 {
 "venue": "kalshi",
@@ -7981,6 +7953,13 @@
 },
 {
 "venue": "kalshi",
+"slug": "moon",
+"title": "NASA lands on the moon",
+"category": "Science and Technology",
+"open": 4
+},
+{
+"venue": "kalshi",
 "slug": "kxrainsfom",
 "title": "RAIN SAN FRANCISCO",
 "category": "Climate and Weather",
@@ -7988,24 +7967,17 @@
 },
 {
 "venue": "kalshi",
-"slug": "kxdota2map",
-"title": "Dota 2 Map Winner",
-"category": "Sports",
-"open": 196
-},
-{
-"venue": "kalshi",
-"slug": "kxnba3pt",
-"title": "NBA Player Threes",
-"category": "Sports",
-"open": 312
-},
-{
-"venue": "kalshi",
 "slug": "kxfacup",
 "title": "FA cup",
 "category": "Sports",
 "open": 24
+},
+{
+"venue": "kalshi",
+"slug": "kxdota2map",
+"title": "Dota 2 Map Winner",
+"category": "Sports",
+"open": 196
 },
 {
 "venue": "kalshi",
@@ -8027,13 +7999,6 @@
 "title": "Starbucks KPI",
 "category": "Financials",
 "open": 15
-},
-{
-"venue": "kalshi",
-"slug": "kxjleague1hbtts",
-"title": "1st Half BTTS",
-"category": "Sports",
-"open": 1
 },
 {
 "venue": "kalshi",
@@ -8093,13 +8058,6 @@
 },
 {
 "venue": "kalshi",
-"slug": "kxjleaguebtts",
-"title": "BTTS",
-"category": "Sports",
-"open": 1
-},
-{
-"venue": "kalshi",
 "slug": "kxgtapcrelease",
 "title": "Will the PC version of GTA 6 release before 2028?",
 "category": "Entertainment",
@@ -8111,6 +8069,13 @@
 "title": "Democrats not voting for Jeffries on the first Speaker ballot",
 "category": "Elections",
 "open": 7
+},
+{
+"venue": "kalshi",
+"slug": "kxlowtokc",
+"title": "Low Temperature Oklahoma City",
+"category": "Climate and Weather",
+"open": 6
 },
 {
 "venue": "kalshi",
@@ -8149,6 +8114,13 @@
 },
 {
 "venue": "kalshi",
+"slug": "kxkleaguebtts",
+"title": "BTTS",
+"category": "Sports",
+"open": 1
+},
+{
+"venue": "kalshi",
 "slug": "kxnewsomrun",
 "title": "Gavin Newsom announces presidential run by...?",
 "category": "Elections",
@@ -8184,13 +8156,6 @@
 },
 {
 "venue": "kalshi",
-"slug": "kxlowtokc",
-"title": "Low Temperature Oklahoma City",
-"category": "Climate and Weather",
-"open": 6
-},
-{
-"venue": "kalshi",
 "slug": "kxvg",
 "title": "Venture global quarter kpi",
 "category": "Financials",
@@ -8219,6 +8184,13 @@
 },
 {
 "venue": "kalshi",
+"slug": "kxligue1btts",
+"title": "Ligue 1 BTTS",
+"category": "Sports",
+"open": 6
+},
+{
+"venue": "kalshi",
 "slug": "kxaala",
 "title": "American Airlines Annual KPI",
 "category": "Financials",
@@ -8226,17 +8198,17 @@
 },
 {
 "venue": "kalshi",
-"slug": "kxrainmiam",
-"title": "Rain Miami",
-"category": "Climate and Weather",
-"open": 5
-},
-{
-"venue": "kalshi",
 "slug": "kxearningsmentionkkr",
 "title": "KKR",
 "category": "Mentions",
 "open": 10
+},
+{
+"venue": "kalshi",
+"slug": "kxeth",
+"title": "Ethereum range",
+"category": "Crypto",
+"open": 390
 },
 {
 "venue": "kalshi",
@@ -8268,13 +8240,6 @@
 },
 {
 "venue": "kalshi",
-"slug": "kxligue1btts",
-"title": "Ligue 1 BTTS",
-"category": "Sports",
-"open": 6
-},
-{
-"venue": "kalshi",
 "slug": "kxnbacupqual",
 "title": "Pro Basketball Cup Qualifiers",
 "category": "Sports",
@@ -8303,13 +8268,6 @@
 },
 {
 "venue": "kalshi",
-"slug": "kxtrumpfire",
-"title": "Trump firings",
-"category": "Politics",
-"open": 6
-},
-{
-"venue": "kalshi",
 "slug": "kxdesantisrun",
 "title": "Ron DeSantis announces presidential run by...?",
 "category": "Elections",
@@ -8317,10 +8275,17 @@
 },
 {
 "venue": "kalshi",
+"slug": "kxoscarnomdir",
+"title": "Oscar nominations for Best Director",
+"category": "Entertainment",
+"open": 27
+},
+{
+"venue": "kalshi",
 "slug": "kxnba2d",
 "title": "NBA Player Double Double",
 "category": "Sports",
-"open": 21
+"open": 26
 },
 {
 "venue": "kalshi",
@@ -8397,14 +8362,7 @@
 "slug": "kxnba3d",
 "title": "NBA Player Triple Double",
 "category": "Sports",
-"open": 13
-},
-{
-"venue": "kalshi",
-"slug": "kxnbah2hwins",
-"title": "NBA Head to Head Win Total",
-"category": "Sports",
-"open": 30
+"open": 14
 },
 {
 "venue": "kalshi",
@@ -8422,30 +8380,16 @@
 },
 {
 "venue": "kalshi",
-"slug": "kxnflescalatorrec",
-"title": "Receptions Escalator",
-"category": "Sports",
-"open": 67
-},
-{
-"venue": "kalshi",
 "slug": "kxnbareb",
 "title": "NBA Player Rebounds",
 "category": "Sports",
-"open": 117
+"open": 146
 },
 {
 "venue": "kalshi",
 "slug": "kxnumshutdowns",
 "title": "Number of government shutdowns?",
 "category": "Politics",
-"open": 7
-},
-{
-"venue": "kalshi",
-"slug": "kxiporippling",
-"title": "When will Rippling IPO",
-"category": "Financials",
 "open": 7
 },
 {
@@ -8457,10 +8401,10 @@
 },
 {
 "venue": "kalshi",
-"slug": "kxoscarnomdir",
-"title": "Oscar nominations for Best Director",
-"category": "Entertainment",
-"open": 27
+"slug": "kxiporippling",
+"title": "When will Rippling IPO",
+"category": "Financials",
+"open": 7
 },
 {
 "venue": "kalshi",
@@ -8468,6 +8412,20 @@
 "title": "When will Kari Lake be confirmed as Ambassador to Jamaica?",
 "category": "Politics",
 "open": 2
+},
+{
+"venue": "kalshi",
+"slug": "kxtrumpfire",
+"title": "Trump firings",
+"category": "Politics",
+"open": 6
+},
+{
+"venue": "kalshi",
+"slug": "kxrainmiam",
+"title": "Rain Miami",
+"category": "Climate and Weather",
+"open": 5
 },
 {
 "venue": "kalshi",
@@ -8499,6 +8457,13 @@
 },
 {
 "venue": "kalshi",
+"slug": "kxlowtmia",
+"title": "Lowest temperature in Miami",
+"category": "Climate and Weather",
+"open": 6
+},
+{
+"venue": "kalshi",
 "slug": "kxipl",
 "title": "IPL Winner",
 "category": "Sports",
@@ -8510,13 +8475,6 @@
 "title": "Supreme Court decisions",
 "category": "Politics",
 "open": 24
-},
-{
-"venue": "kalshi",
-"slug": "kxlowtmia",
-"title": "Lowest temperature in Miami",
-"category": "Climate and Weather",
-"open": 6
 },
 {
 "venue": "kalshi",
@@ -8576,10 +8534,10 @@
 },
 {
 "venue": "kalshi",
-"slug": "kxscottishpremspread",
-"title": "Spread",
+"slug": "kxncaambhor",
+"title": "Horizon League Conference Tournament",
 "category": "Sports",
-"open": 8
+"open": 12
 },
 {
 "venue": "kalshi",
@@ -8702,6 +8660,13 @@
 },
 {
 "venue": "kalshi",
+"slug": "kxbundesligabtts",
+"title": "Bundesliga BTTS",
+"category": "Sports",
+"open": 3
+},
+{
+"venue": "kalshi",
 "slug": "kxtrumpstates",
 "title": "Which states will Trump visit this year?",
 "category": "Politics",
@@ -8712,14 +8677,7 @@
 "slug": "kxsenatewithin1",
 "title": "Which Senate races will be within 1 point?",
 "category": "Elections",
-"open": 12
-},
-{
-"venue": "kalshi",
-"slug": "kxbundesligabtts",
-"title": "Bundesliga BTTS",
-"category": "Sports",
-"open": 3
+"open": 13
 },
 {
 "venue": "kalshi",
@@ -8933,17 +8891,17 @@
 },
 {
 "venue": "kalshi",
-"slug": "kxaaagasmin",
-"title": "US lowest gas price yearly",
-"category": "Economics",
-"open": 9
-},
-{
-"venue": "kalshi",
 "slug": "kxnflseasonrecyds",
 "title": "Receiving Yards",
 "category": "Sports",
 "open": 195
+},
+{
+"venue": "kalshi",
+"slug": "kxaaagasmin",
+"title": "US lowest gas price yearly",
+"category": "Economics",
+"open": 9
 },
 {
 "venue": "kalshi",
@@ -9059,13 +9017,6 @@
 },
 {
 "venue": "kalshi",
-"slug": "kxalbumrelease",
-"title": "WHO WILL RELEASE A NEW ALBUM",
-"category": "Entertainment",
-"open": 73
-},
-{
-"venue": "kalshi",
 "slug": "kxlnbelitegame",
 "title": "LNB Elite Game",
 "category": "Sports",
@@ -9087,6 +9038,13 @@
 },
 {
 "venue": "kalshi",
+"slug": "kxseriebgame",
+"title": "Serie B Game",
+"category": "Sports",
+"open": 9
+},
+{
+"venue": "kalshi",
 "slug": "kxauctionrecord",
 "title": "Will person break their auction record this season?",
 "category": "Entertainment",
@@ -9101,10 +9059,17 @@
 },
 {
 "venue": "kalshi",
-"slug": "kxseriebgame",
-"title": "Serie B Game",
+"slug": "kxligaportugal2game",
+"title": "Liga Portugal 2 Game",
 "category": "Sports",
-"open": 9
+"open": 6
+},
+{
+"venue": "kalshi",
+"slug": "kxbnbd",
+"title": "BNB Directional",
+"category": "Crypto",
+"open": 165
 },
 {
 "venue": "kalshi",
@@ -9157,13 +9122,6 @@
 },
 {
 "venue": "kalshi",
-"slug": "kxeth",
-"title": "Ethereum range",
-"category": "Crypto",
-"open": 390
-},
-{
-"venue": "kalshi",
 "slug": "kxaistreamseries",
 "title": "Will a major streaming platform offer a fully AI-generated scripted series by June 2026?",
 "category": "Financials",
@@ -9171,10 +9129,17 @@
 },
 {
 "venue": "kalshi",
-"slug": "kxnbaplayin",
-"title": "Which Team Will Make the Play-In Tournament",
+"slug": "kxisrfinmin",
+"title": "Who will be Israeli finance minister after the election?",
+"category": "Politics",
+"open": 18
+},
+{
+"venue": "kalshi",
+"slug": "kxnbadpoy",
+"title": "NBA Defensive Player of the Year",
 "category": "Sports",
-"open": 30
+"open": 48
 },
 {
 "venue": "kalshi",
@@ -9199,10 +9164,10 @@
 },
 {
 "venue": "kalshi",
-"slug": "kxisrfinmin",
-"title": "Who will be Israeli finance minister after the election?",
-"category": "Politics",
-"open": 18
+"slug": "kxkaohsiungmayor",
+"title": "Kaohsiung mayoral election winner",
+"category": "Elections",
+"open": 3
 },
 {
 "venue": "kalshi",
@@ -9213,13 +9178,6 @@
 },
 {
 "venue": "kalshi",
-"slug": "kxkaohsiungmayor",
-"title": "Kaohsiung mayoral election winner",
-"category": "Elections",
-"open": 3
-},
-{
-"venue": "kalshi",
 "slug": "kxncaafmac",
 "title": "MAC Champion",
 "category": "Sports",
@@ -9227,17 +9185,10 @@
 },
 {
 "venue": "kalshi",
-"slug": "kxjleague1hspread",
-"title": "1st Half Spread",
-"category": "Sports",
-"open": 2
-},
-{
-"venue": "kalshi",
-"slug": "kxnbawcfqual",
-"title": "NBA Western Conference Finals Qualifiers",
-"category": "Sports",
-"open": 15
+"slug": "kxgopstatesupermaj",
+"title": "Republican state legislative supermajorities",
+"category": "Elections",
+"open": 21
 },
 {
 "venue": "kalshi",
@@ -9248,17 +9199,17 @@
 },
 {
 "venue": "kalshi",
+"slug": "kxnbawcfqual",
+"title": "NBA Western Conference Finals Qualifiers",
+"category": "Sports",
+"open": 15
+},
+{
+"venue": "kalshi",
 "slug": "senateca",
 "title": "CA senate",
 "category": "Elections",
 "open": 2
-},
-{
-"venue": "kalshi",
-"slug": "kxearningsmentionkr",
-"title": "Kroger",
-"category": "Mentions",
-"open": 11
 },
 {
 "venue": "kalshi",
@@ -9269,10 +9220,10 @@
 },
 {
 "venue": "kalshi",
-"slug": "kxkleaguebtts",
-"title": "BTTS",
-"category": "Sports",
-"open": 1
+"slug": "kxtemplaxhs",
+"title": "Hourly Directional Coastal LA Temperature",
+"category": "Climate and Weather",
+"open": 10
 },
 {
 "venue": "kalshi",
@@ -9283,10 +9234,24 @@
 },
 {
 "venue": "kalshi",
+"slug": "kxapcallnc03",
+"title": "When will AP call the North Carolina 3rd District U.S. House election?",
+"category": "Elections",
+"open": 7
+},
+{
+"venue": "kalshi",
 "slug": "kxbestllm",
 "title": "Best LLM",
 "category": "Science and Technology",
 "open": 34
+},
+{
+"venue": "kalshi",
+"slug": "kxalbumrelease",
+"title": "WHO WILL RELEASE A NEW ALBUM",
+"category": "Entertainment",
+"open": 73
 },
 {
 "venue": "kalshi",
@@ -9301,6 +9266,13 @@
 "title": "Aguascalientes Governor winner",
 "category": "Elections",
 "open": 9
+},
+{
+"venue": "kalshi",
+"slug": "kxearningsmentionkr",
+"title": "Kroger",
+"category": "Mentions",
+"open": 11
 },
 {
 "venue": "kalshi",
@@ -9332,10 +9304,10 @@
 },
 {
 "venue": "kalshi",
-"slug": "kxgopstatesupermaj",
-"title": "Republican state legislative supermajorities",
-"category": "Elections",
-"open": 21
+"slug": "kxsjclowt",
+"title": "Monthly minimum temperature in San Jose",
+"category": "Climate and Weather",
+"open": 1
 },
 {
 "venue": "kalshi",
@@ -9343,13 +9315,6 @@
 "title": "Johannesburg mayoral election",
 "category": "Elections",
 "open": 7
-},
-{
-"venue": "kalshi",
-"slug": "kxnbadpoy",
-"title": "NBA Defensive Player of the Year",
-"category": "Sports",
-"open": 48
 },
 {
 "venue": "kalshi",
@@ -9371,6 +9336,13 @@
 "title": "Who will perform the next james Bond song",
 "category": "Entertainment",
 "open": 22
+},
+{
+"venue": "kalshi",
+"slug": "kxk2leaguebtts",
+"title": "BTTS",
+"category": "Sports",
+"open": 1
 },
 {
 "venue": "kalshi",
@@ -9399,13 +9371,6 @@
 "title": "BTTS",
 "category": "Sports",
 "open": 5
-},
-{
-"venue": "kalshi",
-"slug": "kxu3",
-"title": "Unemployment",
-"category": "Economics",
-"open": 14
 },
 {
 "venue": "kalshi",
@@ -9472,6 +9437,13 @@
 },
 {
 "venue": "kalshi",
+"slug": "kxu3",
+"title": "Unemployment",
+"category": "Economics",
+"open": 14
+},
+{
+"venue": "kalshi",
 "slug": "kxncaafmwcqual",
 "title": "College Football Mountain West Conference Championship Qualifiers",
 "category": "Sports",
@@ -9486,17 +9458,17 @@
 },
 {
 "venue": "kalshi",
-"slug": "kxinxvsgold",
-"title": "Will the S&P 500 outperform gold this year?",
-"category": "Financials",
-"open": 2
-},
-{
-"venue": "kalshi",
 "slug": "kxvoteomarexpel",
 "title": "Will the House vote on a resolution to expel Ilhan Omar?",
 "category": "Politics",
 "open": 3
+},
+{
+"venue": "kalshi",
+"slug": "kxinxvsgold",
+"title": "Will the S&P 500 outperform gold this year?",
+"category": "Financials",
+"open": 2
 },
 {
 "venue": "kalshi",
@@ -9521,17 +9493,10 @@
 },
 {
 "venue": "kalshi",
-"slug": "kxbnbd",
-"title": "BNB Directional",
-"category": "Crypto",
-"open": 165
-},
-{
-"venue": "kalshi",
-"slug": "kxligaportugal2game",
-"title": "Liga Portugal 2 Game",
+"slug": "kxmmafightnext",
+"title": "MMA Next Fight",
 "category": "Sports",
-"open": 6
+"open": 171
 },
 {
 "venue": "kalshi",
@@ -9539,6 +9504,13 @@
 "title": "Celsius Point of Sale Growth",
 "category": "Financials",
 "open": 11
+},
+{
+"venue": "kalshi",
+"slug": "kxnbaptsprot",
+"title": "NBA Player Points Protected",
+"category": "Sports",
+"open": 265
 },
 {
 "venue": "kalshi",
@@ -9598,13 +9570,6 @@
 },
 {
 "venue": "kalshi",
-"slug": "kxmmafightnext",
-"title": "MMA Next Fight",
-"category": "Sports",
-"open": 171
-},
-{
-"venue": "kalshi",
 "slug": "kxconcacafnlgame",
 "title": "CONCACAF Nations League Game",
 "category": "Sports",
@@ -9616,6 +9581,13 @@
 "title": "New Glenn",
 "category": "Science and Technology",
 "open": 5
+},
+{
+"venue": "kalshi",
+"slug": "kxnflpassydsprecise",
+"title": "Pass Yards Precise",
+"category": "Sports",
+"open": 16856
 },
 {
 "venue": "kalshi",
@@ -9633,13 +9605,6 @@
 },
 {
 "venue": "kalshi",
-"slug": "kxnflpassydsprecise",
-"title": "Pass Yards Precise",
-"category": "Sports",
-"open": 16856
-},
-{
-"venue": "kalshi",
 "slug": "kxwycoal",
 "title": "Wyoming coal production",
 "category": "Economics",
@@ -9651,13 +9616,6 @@
 "title": "5Y how low monthly",
 "category": "Financials",
 "open": 14
-},
-{
-"venue": "kalshi",
-"slug": "kxapcallnc03",
-"title": "When will AP call the North Carolina 3rd District U.S. House election?",
-"category": "Elections",
-"open": 7
 },
 {
 "venue": "kalshi",
@@ -9675,6 +9633,13 @@
 },
 {
 "venue": "kalshi",
+"slug": "kxafcongame",
+"title": "AFCON Game Winner",
+"category": "Sports",
+"open": 72
+},
+{
+"venue": "kalshi",
 "slug": "kxnextatlfed",
 "title": "Next Atlanta Fed president?",
 "category": "Economics",
@@ -9689,13 +9654,6 @@
 },
 {
 "venue": "kalshi",
-"slug": "kxoaihardware",
-"title": "What hardware will openAI/Jony Ive launch",
-"category": "Science and Technology",
-"open": 10
-},
-{
-"venue": "kalshi",
 "slug": "kxcollegegameday",
 "title": "College GameDay Location",
 "category": "Sports",
@@ -9707,6 +9665,13 @@
 "title": "Klarna KPI",
 "category": "Financials",
 "open": 8
+},
+{
+"venue": "kalshi",
+"slug": "kxtempchihs",
+"title": "Hourly Directional Chicago Metro Temperature",
+"category": "Climate and Weather",
+"open": 10
 },
 {
 "venue": "kalshi",
@@ -9752,17 +9717,17 @@
 },
 {
 "venue": "kalshi",
-"slug": "kx30yrdirhm",
-"title": "30Y how high monthly",
-"category": "Financials",
-"open": 33
-},
-{
-"venue": "kalshi",
 "slug": "kxtrumpflaviomeet",
 "title": "Trump and Flávio Bolsonaro meeting",
 "category": "Politics",
 "open": 2
+},
+{
+"venue": "kalshi",
+"slug": "kxsvk2lgame",
+"title": "Slovakian 2. Liga Game",
+"category": "Sports",
+"open": 6
 },
 {
 "venue": "kalshi",
@@ -9892,6 +9857,13 @@
 },
 {
 "venue": "kalshi",
+"slug": "kx30yrdirhm",
+"title": "30Y how high monthly",
+"category": "Financials",
+"open": 33
+},
+{
+"venue": "kalshi",
 "slug": "kxswissfedcouncil",
 "title": "Swiss Federal Council by-election winner",
 "category": "Elections",
@@ -9906,10 +9878,10 @@
 },
 {
 "venue": "kalshi",
-"slug": "kxgopimpeachvotes",
-"title": "House Republicans voting to impeach Trump",
-"category": "Politics",
-"open": 5
+"slug": "kxufcwelterweighttitle",
+"title": "UFC Welterweight Title",
+"category": "Sports",
+"open": 11
 },
 {
 "venue": "kalshi",
@@ -9924,6 +9896,20 @@
 "title": "Alberta referendum succeeds",
 "category": "Elections",
 "open": 1
+},
+{
+"venue": "kalshi",
+"slug": "kxbundesligawgame",
+"title": "German Women's Bundesliga Game",
+"category": "Sports",
+"open": 9
+},
+{
+"venue": "kalshi",
+"slug": "kxczefnlspread",
+"title": "Spread",
+"category": "Sports",
+"open": 12
 },
 {
 "venue": "kalshi",
@@ -9962,6 +9948,13 @@
 },
 {
 "venue": "kalshi",
+"slug": "kxchlldptotal",
+"title": "Point Total",
+"category": "Sports",
+"open": 36
+},
+{
+"venue": "kalshi",
 "slug": "kxcopadelrey",
 "title": "Copa del Rey Winner",
 "category": "Sports",
@@ -9973,13 +9966,6 @@
 "title": "Will Adam Hamilton outperform the polls?",
 "category": "Elections",
 "open": 1
-},
-{
-"venue": "kalshi",
-"slug": "kxbundesligawgame",
-"title": "German Women's Bundesliga Game",
-"category": "Sports",
-"open": 9
 },
 {
 "venue": "kalshi",
@@ -10137,17 +10123,17 @@
 },
 {
 "venue": "kalshi",
-"slug": "kxrgovcount",
-"title": "How many Republican Governors after the midterms?",
-"category": "Elections",
-"open": 8
-},
-{
-"venue": "kalshi",
 "slug": "kxsaffspread",
 "title": "Spread",
 "category": "Sports",
 "open": 8
+},
+{
+"venue": "kalshi",
+"slug": "kxoaihardware",
+"title": "What hardware will openAI/Jony Ive launch",
+"category": "Science and Technology",
+"open": 10
 },
 {
 "venue": "kalshi",
@@ -10200,6 +10186,13 @@
 },
 {
 "venue": "kalshi",
+"slug": "kxrgovcount",
+"title": "How many Republican Governors after the midterms?",
+"category": "Elections",
+"open": 8
+},
+{
+"venue": "kalshi",
 "slug": "kxcoinbase",
 "title": "Coinbase KPI",
 "category": "Financials",
@@ -10223,6 +10216,13 @@
 "venue": "kalshi",
 "slug": "kxabagame",
 "title": "Adriatic ABA Game",
+"category": "Sports",
+"open": 8
+},
+{
+"venue": "kalshi",
+"slug": "kxncaafpac12qual",
+"title": "College Football Pac-12 Championship Qualifiers",
 "category": "Sports",
 "open": 8
 },
@@ -10284,6 +10284,13 @@
 },
 {
 "venue": "kalshi",
+"slug": "kxnbaplayin",
+"title": "Which Team Will Make the Play-In Tournament",
+"category": "Sports",
+"open": 30
+},
+{
+"venue": "kalshi",
 "slug": "kxgopconfchair120",
 "title": "House Republican Conference Chair (120th Congress)",
 "category": "Elections",
@@ -10319,17 +10326,17 @@
 },
 {
 "venue": "kalshi",
+"slug": "kxlowtsatx",
+"title": "Lowest Temperature SATX",
+"category": "Climate and Weather",
+"open": 6
+},
+{
+"venue": "kalshi",
 "slug": "kxstarshipdock",
 "title": "Starships dock",
 "category": "Science and Technology",
 "open": 1
-},
-{
-"venue": "kalshi",
-"slug": "kxatp1rank",
-"title": "ATP #1 Ranked Player",
-"category": "Sports",
-"open": 12
 },
 {
 "venue": "kalshi",
@@ -10340,17 +10347,17 @@
 },
 {
 "venue": "kalshi",
+"slug": "kxpritzkerrun",
+"title": "J.B. Pritzker announces presidential run by...?",
+"category": "Elections",
+"open": 7
+},
+{
+"venue": "kalshi",
 "slug": "kxearningsmentionpsky",
 "title": "Paramount",
 "category": "Mentions",
 "open": 12
-},
-{
-"venue": "kalshi",
-"slug": "kxligapromatch",
-"title": "Russia Liga Pro Match",
-"category": "Sports",
-"open": 176
 },
 {
 "venue": "kalshi",
@@ -10396,13 +10403,6 @@
 },
 {
 "venue": "kalshi",
-"slug": "kxncaambhor",
-"title": "Horizon League Conference Tournament",
-"category": "Sports",
-"open": 12
-},
-{
-"venue": "kalshi",
 "slug": "kxnflseasonrshyds",
 "title": "Rushing Yards",
 "category": "Sports",
@@ -10435,13 +10435,6 @@
 "title": "Soccer Join Club",
 "category": "Sports",
 "open": 114
-},
-{
-"venue": "kalshi",
-"slug": "kxintlfriendlygame",
-"title": "International Friendly Game",
-"category": "Sports",
-"open": 48
 },
 {
 "venue": "kalshi",
@@ -10557,17 +10550,17 @@
 },
 {
 "venue": "kalshi",
+"slug": "kxtokenlaunch",
+"title": "Who will launch a token this year? ",
+"category": "Crypto",
+"open": 14
+},
+{
+"venue": "kalshi",
 "slug": "kxdogeminy",
 "title": "DOGE min yearly",
 "category": "Crypto",
 "open": 6
-},
-{
-"venue": "kalshi",
-"slug": "kxncaafpac12qual",
-"title": "College Football Pac-12 Championship Qualifiers",
-"category": "Sports",
-"open": 8
 },
 {
 "venue": "kalshi",
@@ -10592,13 +10585,6 @@
 },
 {
 "venue": "kalshi",
-"slug": "kxtokenlaunch",
-"title": "Who will launch a token this year? ",
-"category": "Crypto",
-"open": 14
-},
-{
-"venue": "kalshi",
 "slug": "kxcitymlbexpand",
 "title": "MLB expansion",
 "category": "Sports",
@@ -10610,13 +10596,6 @@
 "title": "When will Ramp IPO",
 "category": "Financials",
 "open": 7
-},
-{
-"venue": "kalshi",
-"slug": "kxlowtsatx",
-"title": "Lowest Temperature SATX",
-"category": "Climate and Weather",
-"open": 6
 },
 {
 "venue": "kalshi",
@@ -10648,10 +10627,10 @@
 },
 {
 "venue": "kalshi",
-"slug": "kxxisuccessor",
-"title": "Xi Jinping successor",
-"category": "Politics",
-"open": 14
+"slug": "kxearningsmentionrost",
+"title": "Ross Stores Earnings Call",
+"category": "Mentions",
+"open": 13
 },
 {
 "venue": "kalshi",
@@ -10694,6 +10673,13 @@
 "title": "Spread",
 "category": "Sports",
 "open": 8
+},
+{
+"venue": "kalshi",
+"slug": "kxcruzrun",
+"title": "Ted Cruz announces presidential run by...?",
+"category": "Elections",
+"open": 9
 },
 {
 "venue": "kalshi",
@@ -10795,20 +10781,6 @@
 },
 {
 "venue": "kalshi",
-"slug": "kxufcwelterweighttitle",
-"title": "UFC Welterweight Title",
-"category": "Sports",
-"open": 11
-},
-{
-"venue": "kalshi",
-"slug": "kxchlldptotal",
-"title": "Point Total",
-"category": "Sports",
-"open": 36
-},
-{
-"venue": "kalshi",
 "slug": "kxoscarsplay",
 "title": "Oscar for Best Original Screenplay",
 "category": "Entertainment",
@@ -10844,6 +10816,13 @@
 },
 {
 "venue": "kalshi",
+"slug": "kxchnsl",
+"title": "Chinese Super League",
+"category": "Sports",
+"open": 16
+},
+{
+"venue": "kalshi",
 "slug": "kxhousepopvsgb",
 "title": "2026 House popular vote vs. generic ballot",
 "category": "Elections",
@@ -10855,6 +10834,13 @@
 "title": "Southwest KPI",
 "category": "Companies",
 "open": 13
+},
+{
+"venue": "kalshi",
+"slug": "kxxisuccessor",
+"title": "Xi Jinping successor",
+"category": "Politics",
+"open": 14
 },
 {
 "venue": "kalshi",
@@ -10879,13 +10865,6 @@
 },
 {
 "venue": "kalshi",
-"slug": "kxnhlseasonppts",
-"title": "Season Player Points",
-"category": "Sports",
-"open": 90
-},
-{
-"venue": "kalshi",
 "slug": "kxwinstreakmanu",
 "title": "Man United Win Streak",
 "category": "Sports",
@@ -10907,17 +10886,24 @@
 },
 {
 "venue": "kalshi",
-"slug": "kxchnsl",
-"title": "Chinese Super League",
-"category": "Sports",
-"open": 16
-},
-{
-"venue": "kalshi",
 "slug": "kxtntransemp",
 "title": "Tennessee transportation equipment manufacturing employment",
 "category": "Economics",
 "open": 1
+},
+{
+"venue": "kalshi",
+"slug": "kxnhlseasonppts",
+"title": "Season Player Points",
+"category": "Sports",
+"open": 90
+},
+{
+"venue": "kalshi",
+"slug": "kxdnc28host",
+"title": "Who will host the 2028 Democratic national convention?",
+"category": "Politics",
+"open": 5
 },
 {
 "venue": "kalshi",
@@ -10984,13 +10970,6 @@
 },
 {
 "venue": "kalshi",
-"slug": "kxhnlgame",
-"title": "Croatia HNL Game",
-"category": "Sports",
-"open": 6
-},
-{
-"venue": "kalshi",
 "slug": "kxbelgianplbtts",
 "title": "BTTS",
 "category": "Sports",
@@ -11040,17 +11019,17 @@
 },
 {
 "venue": "kalshi",
+"slug": "kxintlfriendlygame",
+"title": "International Friendly Game",
+"category": "Sports",
+"open": 48
+},
+{
+"venue": "kalshi",
 "slug": "kxranklistgooglesearch2",
 "title": "Runner up top Search on google this year",
 "category": "Entertainment",
 "open": 11
-},
-{
-"venue": "kalshi",
-"slug": "kxsvk2lgame",
-"title": "Slovakian 2. Liga Game",
-"category": "Sports",
-"open": 6
 },
 {
 "venue": "kalshi",
@@ -11082,6 +11061,13 @@
 },
 {
 "venue": "kalshi",
+"slug": "kxhnlgame",
+"title": "Croatia HNL Game",
+"category": "Sports",
+"open": 6
+},
+{
+"venue": "kalshi",
 "slug": "kxncaafaccregtop",
 "title": "College Football ACC Regular Season Top Finishers",
 "category": "Sports",
@@ -11100,6 +11086,13 @@
 "title": "Will Mamdani raise property taxes?",
 "category": "Politics",
 "open": 1
+},
+{
+"venue": "kalshi",
+"slug": "kxlaliga2total",
+"title": "Point Total",
+"category": "Sports",
+"open": 24
 },
 {
 "venue": "kalshi",
@@ -11201,6 +11194,20 @@
 },
 {
 "venue": "kalshi",
+"slug": "kxczefnltotal",
+"title": "Point Total",
+"category": "Sports",
+"open": 18
+},
+{
+"venue": "kalshi",
+"slug": "kxlowtden",
+"title": "Lowest temperature in Denver",
+"category": "Climate and Weather",
+"open": 6
+},
+{
+"venue": "kalshi",
 "slug": "kxncaambsecreg",
 "title": "Men's College Basketball SEC Regular Season Champion",
 "category": "Sports",
@@ -11222,10 +11229,10 @@
 },
 {
 "venue": "kalshi",
-"slug": "kxlowtden",
-"title": "Lowest temperature in Denver",
-"category": "Climate and Weather",
-"open": 6
+"slug": "kxxrp",
+"title": "XRP Range",
+"category": "Crypto",
+"open": 165
 },
 {
 "venue": "kalshi",
@@ -11243,13 +11250,6 @@
 },
 {
 "venue": "kalshi",
-"slug": "kxjohnnydepp",
-"title": "Johnny Depp star in Pirates of the Caribbean?",
-"category": "Entertainment",
-"open": 1
-},
-{
-"venue": "kalshi",
 "slug": "kxisrnormcount",
 "title": "How many new countries will normalize relations with Israel before 2028?",
 "category": "Politics",
@@ -11261,6 +11261,13 @@
 "title": "Israeli Premier League Game",
 "category": "Sports",
 "open": 3
+},
+{
+"venue": "kalshi",
+"slug": "kxjohnnydepp",
+"title": "Johnny Depp star in Pirates of the Caribbean?",
+"category": "Entertainment",
+"open": 1
 },
 {
 "venue": "kalshi",
@@ -11327,13 +11334,6 @@
 },
 {
 "venue": "kalshi",
-"slug": "kxczefnltotal",
-"title": "Point Total",
-"category": "Sports",
-"open": 18
-},
-{
-"venue": "kalshi",
 "slug": "kxbrformin",
 "title": "Who will be Brazilian foreign minister after the election?",
 "category": "Politics",
@@ -11373,13 +11373,6 @@
 "title": "WHERE WILL YE PERFORM THIS YEAR",
 "category": "Entertainment",
 "open": 19
-},
-{
-"venue": "kalshi",
-"slug": "kxsjclowt",
-"title": "Monthly minimum temperature in San Jose",
-"category": "Climate and Weather",
-"open": 1
 },
 {
 "venue": "kalshi",
@@ -11481,13 +11474,6 @@
 },
 {
 "venue": "kalshi",
-"slug": "kxlaliga2total",
-"title": "Point Total",
-"category": "Sports",
-"open": 24
-},
-{
-"venue": "kalshi",
 "slug": "kxparkcopen",
 "title": "Park City Mountain Opening",
 "category": "Climate and Weather",
@@ -11499,13 +11485,6 @@
 "title": "Mid-Eastern Conference Tournament",
 "category": "Sports",
 "open": 8
-},
-{
-"venue": "kalshi",
-"slug": "kxaksenateround",
-"title": "AK Senate rounds",
-"category": "Elections",
-"open": 3
 },
 {
 "venue": "kalshi",
@@ -11558,6 +11537,13 @@
 },
 {
 "venue": "kalshi",
+"slug": "kxaksenateround",
+"title": "AK Senate rounds",
+"category": "Elections",
+"open": 3
+},
+{
+"venue": "kalshi",
 "slug": "kxlowtsdf",
 "title": "Lowest Temperature SDX",
 "category": "Climate and Weather",
@@ -11583,13 +11569,6 @@
 "title": "EFL Promotion",
 "category": "Sports",
 "open": 24
-},
-{
-"venue": "kalshi",
-"slug": "kxsongrelease",
-"title": "Who will release a new song?",
-"category": "Entertainment",
-"open": 26
 },
 {
 "venue": "kalshi",
@@ -11691,13 +11670,6 @@
 },
 {
 "venue": "kalshi",
-"slug": "kxk2leaguebtts",
-"title": "BTTS",
-"category": "Sports",
-"open": 1
-},
-{
-"venue": "kalshi",
 "slug": "kxparkcsnow",
 "title": "Park City Mountain snowfall",
 "category": "Climate and Weather",
@@ -11761,6 +11733,20 @@
 },
 {
 "venue": "kalshi",
+"slug": "kxnbapra",
+"title": "NBA Player Points + Rebounds + Assists",
+"category": "Sports",
+"open": 102
+},
+{
+"venue": "kalshi",
+"slug": "kxatp1rank",
+"title": "ATP #1 Ranked Player",
+"category": "Sports",
+"open": 12
+},
+{
+"venue": "kalshi",
 "slug": "kxnhlatlantic",
 "title": "NHL Atlantic Division Winner",
 "category": "Sports",
@@ -11800,6 +11786,13 @@
 "title": "BANTRABNS",
 "category": "Politics",
 "open": 1
+},
+{
+"venue": "kalshi",
+"slug": "kxnycstat",
+"title": "NYC statistics",
+"category": "Economics",
+"open": 54
 },
 {
 "venue": "kalshi",
@@ -11887,13 +11880,6 @@
 },
 {
 "venue": "kalshi",
-"slug": "kxczefnlspread",
-"title": "Spread",
-"category": "Sports",
-"open": 12
-},
-{
-"venue": "kalshi",
 "slug": "kxmarijuana280e",
 "title": "Will the Treasury grant retroactive cannabis tax relief?",
 "category": "Politics",
@@ -11912,13 +11898,6 @@
 "title": "Hurricanes",
 "category": "Climate and Weather",
 "open": 7
-},
-{
-"venue": "kalshi",
-"slug": "kxnbapra",
-"title": "NBA Player Points + Rebounds + Assists",
-"category": "Sports",
-"open": 82
 },
 {
 "venue": "kalshi",
@@ -11947,13 +11926,6 @@
 "title": "Team Total",
 "category": "Sports",
 "open": 18
-},
-{
-"venue": "kalshi",
-"slug": "kxnycstat",
-"title": "NYC statistics",
-"category": "Economics",
-"open": 54
 },
 {
 "venue": "kalshi",
@@ -11996,13 +11968,6 @@
 "title": "Bitcoin above $100,000 by a date",
 "category": "Crypto",
 "open": 1
-},
-{
-"venue": "kalshi",
-"slug": "kx10yrdirhm",
-"title": "10Y how high monthly",
-"category": "Financials",
-"open": 34
 },
 {
 "venue": "kalshi",
@@ -12202,6 +12167,13 @@
 },
 {
 "venue": "kalshi",
+"slug": "kxvtpermits",
+"title": "Vermont housing units authorized",
+"category": "Economics",
+"open": 13
+},
+{
+"venue": "kalshi",
 "slug": "kxearningsmentionnbis",
 "title": "Nebius Earnings",
 "category": "Mentions",
@@ -12328,13 +12300,6 @@
 },
 {
 "venue": "kalshi",
-"slug": "kxafcongame",
-"title": "AFCON Game Winner",
-"category": "Sports",
-"open": 72
-},
-{
-"venue": "kalshi",
 "slug": "kxaipareto",
 "title": "AI cost-efficiency frontier",
 "category": "Science and Technology",
@@ -12360,13 +12325,6 @@
 "title": "Steamboat opening",
 "category": "Climate and Weather",
 "open": 5
-},
-{
-"venue": "kalshi",
-"slug": "kxnbaptsprot",
-"title": "NBA Player Points Protected",
-"category": "Sports",
-"open": 263
 },
 {
 "venue": "kalshi",
@@ -12416,13 +12374,6 @@
 "title": "Syria recognition",
 "category": "Politics",
 "open": 1
-},
-{
-"venue": "kalshi",
-"slug": "kxcryptolead15m",
-"title": "Coin Race 15 minutes",
-"category": "Crypto",
-"open": 5
 },
 {
 "venue": "kalshi",
@@ -12489,6 +12440,13 @@
 },
 {
 "venue": "kalshi",
+"slug": "kxncaambmaa",
+"title": "Metro Atlantic Conference Tournament",
+"category": "Sports",
+"open": 13
+},
+{
+"venue": "kalshi",
 "slug": "kxdensuperligabtts",
 "title": "BTTS",
 "category": "Sports",
@@ -12500,6 +12458,13 @@
 "title": "Florida Senate race",
 "category": "Elections",
 "open": 2
+},
+{
+"venue": "kalshi",
+"slug": "kxsongrelease",
+"title": "Who will release a new song?",
+"category": "Entertainment",
+"open": 26
 },
 {
 "venue": "kalshi",
@@ -12612,13 +12577,6 @@
 "title": "SOL Min monthly",
 "category": "Crypto",
 "open": 7
-},
-{
-"venue": "kalshi",
-"slug": "kxdnc28host",
-"title": "Who will host the 2028 Democratic national convention?",
-"category": "Politics",
-"open": 5
 },
 {
 "venue": "kalshi",
@@ -12895,6 +12853,13 @@
 },
 {
 "venue": "kalshi",
+"slug": "kx10yrdirhm",
+"title": "10Y how high monthly",
+"category": "Financials",
+"open": 34
+},
+{
+"venue": "kalshi",
 "slug": "kxwaymo",
 "title": "Waymo IPO",
 "category": "Financials",
@@ -12965,6 +12930,13 @@
 },
 {
 "venue": "kalshi",
+"slug": "kxettantotal",
+"title": "Point Total",
+"category": "Sports",
+"open": 48
+},
+{
+"venue": "kalshi",
 "slug": "kxjudgecount",
 "title": "Judges confirmed",
 "category": "Politics",
@@ -12997,6 +12969,13 @@
 "title": "month over month core inflation",
 "category": "Economics",
 "open": 27
+},
+{
+"venue": "kalshi",
+"slug": "kxlaligaleader",
+"title": "La Liga Leader",
+"category": "Sports",
+"open": 24
 },
 {
 "venue": "kalshi",
@@ -13063,13 +13042,6 @@
 },
 {
 "venue": "kalshi",
-"slug": "kxmsftmention",
-"title": "Microsoft Mention",
-"category": "Mentions",
-"open": 16
-},
-{
-"venue": "kalshi",
 "slug": "kxunsec",
 "title": "Next UN Secretary-General",
 "category": "Politics",
@@ -13126,6 +13098,13 @@
 },
 {
 "venue": "kalshi",
+"slug": "kxhnlbtts",
+"title": "BTTS",
+"category": "Sports",
+"open": 2
+},
+{
+"venue": "kalshi",
 "slug": "kxargentinapres",
 "title": "Argentina presidential election",
 "category": "Elections",
@@ -13133,10 +13112,10 @@
 },
 {
 "venue": "kalshi",
-"slug": "kxvtpermits",
-"title": "Vermont housing units authorized",
-"category": "Economics",
-"open": 13
+"slug": "kxmsftmention",
+"title": "Microsoft Mention",
+"category": "Mentions",
+"open": 16
 },
 {
 "venue": "kalshi",
@@ -13171,7 +13150,7 @@
 "slug": "kxnba3ptprot",
 "title": "NBA Player Threes Protected",
 "category": "Sports",
-"open": 312
+"open": 313
 },
 {
 "venue": "kalshi",
@@ -13231,6 +13210,13 @@
 },
 {
 "venue": "kalshi",
+"slug": "kxwnba",
+"title": "WNBA Champion",
+"category": "Sports",
+"open": 15
+},
+{
+"venue": "kalshi",
 "slug": "kxmlsleader",
 "title": "MLS Leader",
 "category": "Sports",
@@ -13277,13 +13263,6 @@
 "title": "Top album on Spotify this year",
 "category": "Entertainment",
 "open": 14
-},
-{
-"venue": "kalshi",
-"slug": "kxkleague1hspread",
-"title": "1st Half Spread",
-"category": "Sports",
-"open": 4
 },
 {
 "venue": "kalshi",
@@ -13347,13 +13326,6 @@
 "title": "Pro Baseball Games Played in a Season",
 "category": "Sports",
 "open": 5
-},
-{
-"venue": "kalshi",
-"slug": "kxuecl",
-"title": "UEFA Conference League Winner",
-"category": "Sports",
-"open": 36
 },
 {
 "venue": "kalshi",
@@ -13476,6 +13448,13 @@
 },
 {
 "venue": "kalshi",
+"slug": "kxnflseasonrshtd",
+"title": "Rushing Touchdowns",
+"category": "Sports",
+"open": 217
+},
+{
+"venue": "kalshi",
 "slug": "kxrainpitm",
 "title": "Rain in Pittsburgh",
 "category": "Climate and Weather",
@@ -13497,24 +13476,10 @@
 },
 {
 "venue": "kalshi",
-"slug": "kxnflseasonrshtd",
-"title": "Rushing Touchdowns",
-"category": "Sports",
-"open": 217
-},
-{
-"venue": "kalshi",
 "slug": "kxnflteamdpts",
 "title": "Who will allow the least/most points this season",
 "category": "Sports",
 "open": 32
-},
-{
-"venue": "kalshi",
-"slug": "kxsailgprace",
-"title": "Sail GP Race",
-"category": "Sports",
-"open": 13
 },
 {
 "venue": "kalshi",
@@ -13543,13 +13508,6 @@
 "title": "Most Expensive Auction Work this year?",
 "category": "Entertainment",
 "open": 8
-},
-{
-"venue": "kalshi",
-"slug": "kxwnba",
-"title": "WNBA Champion",
-"category": "Sports",
-"open": 15
 },
 {
 "venue": "kalshi",
@@ -13599,6 +13557,13 @@
 "title": "Grok",
 "category": "Science and Technology",
 "open": 2
+},
+{
+"venue": "kalshi",
+"slug": "kxsailgprace",
+"title": "Sail GP Race",
+"category": "Sports",
+"open": 13
 },
 {
 "venue": "kalshi",
@@ -13655,6 +13620,13 @@
 "title": "Who will go on Alex Coopers Call her Daddy podcast",
 "category": "Entertainment",
 "open": 41
+},
+{
+"venue": "kalshi",
+"slug": "kxncaawbspread",
+"title": "Women's College Basketball Spread",
+"category": "Sports",
+"open": 308
 },
 {
 "venue": "kalshi",
@@ -13763,13 +13735,6 @@
 },
 {
 "venue": "kalshi",
-"slug": "kxspain2nd",
-"title": "Who will win the 2nd-most seats in Spain's Congress of Deputies?",
-"category": "Elections",
-"open": 3
-},
-{
-"venue": "kalshi",
 "slug": "kxczenblgame",
 "title": "Czech NBL Game",
 "category": "Sports",
@@ -13784,10 +13749,10 @@
 },
 {
 "venue": "kalshi",
-"slug": "kxnflseasonpasstds",
-"title": "Passing Touchdowns",
+"slug": "kxnbarace",
+"title": "NBA Race to Points",
 "category": "Sports",
-"open": 114
+"open": 90
 },
 {
 "venue": "kalshi",
@@ -13816,6 +13781,13 @@
 "title": "NBA 2nd Quarter Winner",
 "category": "Sports",
 "open": 45
+},
+{
+"venue": "kalshi",
+"slug": "kxlimamayor",
+"title": "Lima mayoral election",
+"category": "Elections",
+"open": 11
 },
 {
 "venue": "kalshi",
@@ -13868,13 +13840,6 @@
 },
 {
 "venue": "kalshi",
-"slug": "kxlaligaleader",
-"title": "La Liga Leader",
-"category": "Sports",
-"open": 24
-},
-{
-"venue": "kalshi",
 "slug": "kxust7ad",
 "title": "UST 7 Year Daily",
 "category": "Financials",
@@ -13914,6 +13879,13 @@
 "title": "Senate Race Winner?",
 "category": "Elections",
 "open": 12
+},
+{
+"venue": "kalshi",
+"slug": "kxsole",
+"title": "SOL Range",
+"category": "Crypto",
+"open": 425
 },
 {
 "venue": "kalshi",
@@ -14036,13 +14008,6 @@
 },
 {
 "venue": "kalshi",
-"slug": "kxnbarace",
-"title": "NBA Race to Points",
-"category": "Sports",
-"open": 90
-},
-{
-"venue": "kalshi",
 "slug": "kxmspsnowm",
 "title": "Minneapolis monthly snowfall",
 "category": "Climate and Weather",
@@ -14089,6 +14054,13 @@
 "title": "Major meteor strike",
 "category": "Science and Technology",
 "open": 1
+},
+{
+"venue": "kalshi",
+"slug": "kxfra14match",
+"title": "France Top 14 Rugby Match",
+"category": "Sports",
+"open": 4
 },
 {
 "venue": "kalshi",
@@ -14246,6 +14218,13 @@
 },
 {
 "venue": "kalshi",
+"slug": "kxuecl",
+"title": "UEFA Conference League Winner",
+"category": "Sports",
+"open": 36
+},
+{
+"venue": "kalshi",
 "slug": "kxnba3q",
 "title": "NBA 3rd Quarter Winner",
 "category": "Sports",
@@ -14344,10 +14323,10 @@
 },
 {
 "venue": "kalshi",
-"slug": "kxlimamayor",
-"title": "Lima mayoral election",
-"category": "Elections",
-"open": 11
+"slug": "kxnflseasonpasstds",
+"title": "Passing Touchdowns",
+"category": "Sports",
+"open": 114
 },
 {
 "venue": "kalshi",
@@ -14477,6 +14456,13 @@
 },
 {
 "venue": "kalshi",
+"slug": "kxwbcwelterweighttitle",
+"title": "Boxing Welterweight Title",
+"category": "Sports",
+"open": 18
+},
+{
+"venue": "kalshi",
 "slug": "kxconcacafnl",
 "title": "CONCACAF Nations League",
 "category": "Sports",
@@ -14572,13 +14558,6 @@
 "title": "Number of times Trump is impeached in his second term",
 "category": "Politics",
 "open": 4
-},
-{
-"venue": "kalshi",
-"slug": "kxsole",
-"title": "SOL Range",
-"category": "Crypto",
-"open": 425
 },
 {
 "venue": "kalshi",
@@ -14785,6 +14764,13 @@
 },
 {
 "venue": "kalshi",
+"slug": "kxhyped",
+"title": "Hype Directional",
+"category": "Crypto",
+"open": 390
+},
+{
+"venue": "kalshi",
 "slug": "kxnfldivisionwins",
 "title": "Pro Football Division Total Wins",
 "category": "Sports",
@@ -14796,13 +14782,6 @@
 "title": "CONMEBOL Libertadores",
 "category": "Sports",
 "open": 2
-},
-{
-"venue": "kalshi",
-"slug": "kxncaawbspread",
-"title": "Women's College Basketball Spread",
-"category": "Sports",
-"open": 308
 },
 {
 "venue": "kalshi",
@@ -14862,6 +14841,13 @@
 },
 {
 "venue": "kalshi",
+"slug": "kxekstraklasatotal",
+"title": "Point Total",
+"category": "Sports",
+"open": 18
+},
+{
+"venue": "kalshi",
 "slug": "kxnhlrichard",
 "title": "NHL Maurice \"Rocket\" Richard Trophy",
 "category": "Sports",
@@ -14887,13 +14873,6 @@
 "title": "EPL Last Place Finisher",
 "category": "Sports",
 "open": 20
-},
-{
-"venue": "kalshi",
-"slug": "kxfra14match",
-"title": "France Top 14 Rugby Match",
-"category": "Sports",
-"open": 4
 },
 {
 "venue": "kalshi",
@@ -14971,13 +14950,6 @@
 "title": "Critics Choice Award for Best Director",
 "category": "Entertainment",
 "open": 16
-},
-{
-"venue": "kalshi",
-"slug": "kxcopperw",
-"title": "Copper Weekly Price",
-"category": "Commodities",
-"open": 40
 },
 {
 "venue": "kalshi",
@@ -15086,13 +15058,6 @@
 },
 {
 "venue": "kalshi",
-"slug": "kxpritzkerrun",
-"title": "J.B. Pritzker announces presidential run by...?",
-"category": "Elections",
-"open": 7
-},
-{
-"venue": "kalshi",
 "slug": "kxnycminwage",
 "title": "Will Mamdani raise the minimum wage to $30 before 2027?",
 "category": "Politics",
@@ -15125,6 +15090,13 @@
 "title": "Macron vs Owens",
 "category": "Politics",
 "open": 1
+},
+{
+"venue": "kalshi",
+"slug": "kxcasen26",
+"title": "California State Senate District 26 winner",
+"category": "Elections",
+"open": 8
 },
 {
 "venue": "kalshi",
@@ -15219,6 +15191,13 @@
 },
 {
 "venue": "kalshi",
+"slug": "kxbslgame",
+"title": "Turkey BSL Game",
+"category": "Sports",
+"open": 8
+},
+{
+"venue": "kalshi",
 "slug": "kxhiltonoutperformrcp",
 "title": "Will Steve Hilton outperform the polls?",
 "category": "Elections",
@@ -15286,13 +15265,6 @@
 "title": "Venezuela Liga FUTVE game",
 "category": "Sports",
 "open": 6
-},
-{
-"venue": "kalshi",
-"slug": "kxbslgame",
-"title": "Turkey BSL Game",
-"category": "Sports",
-"open": 8
 },
 {
 "venue": "kalshi",
@@ -15408,13 +15380,6 @@
 },
 {
 "venue": "kalshi",
-"slug": "kxcasen26",
-"title": "California State Senate District 26 winner",
-"category": "Elections",
-"open": 8
-},
-{
-"venue": "kalshi",
 "slug": "kxfedmeet",
 "title": "Fed emergency meeting",
 "category": "Economics",
@@ -15520,13 +15485,6 @@
 },
 {
 "venue": "kalshi",
-"slug": "kxeiacrudew",
-"title": "U.S. crude oil inventories",
-"category": "Economics",
-"open": 13
-},
-{
-"venue": "kalshi",
 "slug": "kxtakeovernee",
 "title": "NextEra Energy acquisition",
 "category": "Financials",
@@ -15545,13 +15503,6 @@
 "title": "Next Prime Minister of the United Kingdom",
 "category": "Elections",
 "open": 29
-},
-{
-"venue": "kalshi",
-"slug": "kxddr5ms",
-"title": "Monthly DDR5 16Gb (2Gx8) 4800/5600",
-"category": "Financials",
-"open": 480
 },
 {
 "venue": "kalshi",
@@ -15737,10 +15688,24 @@
 },
 {
 "venue": "kalshi",
+"slug": "kxnbarookie1stteam",
+"title": "NBA All-Rookie 1st Team",
+"category": "Sports",
+"open": 30
+},
+{
+"venue": "kalshi",
 "slug": "kxcancuts",
 "title": "Number of BoC rate cuts in [year]?",
 "category": "Economics",
 "open": 6
+},
+{
+"venue": "kalshi",
+"slug": "kxeiacrudew",
+"title": "U.S. crude oil inventories",
+"category": "Economics",
+"open": 13
 },
 {
 "venue": "kalshi",
@@ -15797,6 +15762,13 @@
 "title": "EPL Leader",
 "category": "Sports",
 "open": 64
+},
+{
+"venue": "kalshi",
+"slug": "kxmmacompete",
+"title": "Fighters to comepete in MVP event",
+"category": "Sports",
+"open": 48
 },
 {
 "venue": "kalshi",
@@ -15989,13 +15961,6 @@
 },
 {
 "venue": "kalshi",
-"slug": "kxekstraklasatotal",
-"title": "Point Total",
-"category": "Sports",
-"open": 18
-},
-{
-"venue": "kalshi",
 "slug": "kxnbaseattle",
 "title": "Seattle NBA team",
 "category": "Sports",
@@ -16164,13 +16129,6 @@
 },
 {
 "venue": "kalshi",
-"slug": "kxmmacompete",
-"title": "Fighters to comepete in MVP event",
-"category": "Sports",
-"open": 48
-},
-{
-"venue": "kalshi",
 "slug": "kxnbaseedou",
 "title": "NBA Playoff Seed Over/Unders",
 "category": "Sports",
@@ -16245,13 +16203,6 @@
 "title": "Recognize Reza Pahlavi",
 "category": "Politics",
 "open": 1
-},
-{
-"venue": "kalshi",
-"slug": "kxnbarookie1stteam",
-"title": "NBA All-Rookie 1st Team",
-"category": "Sports",
-"open": 30
 },
 {
 "venue": "kalshi",
@@ -16388,13 +16339,6 @@
 },
 {
 "venue": "kalshi",
-"slug": "kxsocricketqual",
-"title": "Summer Olympics Cricket Qualifiers",
-"category": "Sports",
-"open": 27
-},
-{
-"venue": "kalshi",
 "slug": "kxuscornyield",
 "title": "U.S. corn yield",
 "category": "Economics",
@@ -16521,13 +16465,6 @@
 },
 {
 "venue": "kalshi",
-"slug": "kxeconstatu3",
-"title": "UNEMPLOYMENT RATE MONTHLY",
-"category": "Economics",
-"open": 23
-},
-{
-"venue": "kalshi",
 "slug": "kxtornado",
 "title": "Number of Tornadoes",
 "category": "Climate and Weather",
@@ -16574,13 +16511,6 @@
 "title": "Navajo Nation presidential election",
 "category": "Elections",
 "open": 2
-},
-{
-"venue": "kalshi",
-"slug": "kxearningsmentionyou",
-"title": "What will Clear say on their earnings call?",
-"category": "Mentions",
-"open": 12
 },
 {
 "venue": "kalshi",
@@ -16752,13 +16682,6 @@
 },
 {
 "venue": "kalshi",
-"slug": "kxhyped",
-"title": "Hype Directional",
-"category": "Crypto",
-"open": 390
-},
-{
-"venue": "kalshi",
 "slug": "kxtopartistrunnerupusa",
 "title": "TOP ARTIST RUNNER UP USA",
 "category": "Entertainment",
@@ -16885,6 +16808,13 @@
 },
 {
 "venue": "kalshi",
+"slug": "kxcopperw",
+"title": "Copper Weekly Price",
+"category": "Commodities",
+"open": 40
+},
+{
+"venue": "kalshi",
 "slug": "kxnetflixrankmovieglobal2",
 "title": "RUNNER UP SHOW NETFLIX MOVIE GLOBAL",
 "category": "Entertainment",
@@ -16976,13 +16906,6 @@
 },
 {
 "venue": "kalshi",
-"slug": "kxwbcwelterweighttitle",
-"title": "Boxing Welterweight Title",
-"category": "Sports",
-"open": 18
-},
-{
-"venue": "kalshi",
 "slug": "senateaz",
 "title": "Arizona Senate race",
 "category": "Elections",
@@ -17050,6 +16973,13 @@
 "title": "Loblaws KPI",
 "category": "Financials",
 "open": 17
+},
+{
+"venue": "kalshi",
+"slug": "kxuapfiles",
+"title": "UAP files",
+"category": "Politics",
+"open": 3
 },
 {
 "venue": "kalshi",
@@ -17172,6 +17102,13 @@
 },
 {
 "venue": "kalshi",
+"slug": "kxncaambsum",
+"title": "Summit League Conference Tournament",
+"category": "Sports",
+"open": 8
+},
+{
+"venue": "kalshi",
 "slug": "kxf1retire",
 "title": "F1 Retire",
 "category": "Sports",
@@ -17221,6 +17158,13 @@
 },
 {
 "venue": "kalshi",
+"slug": "kxnbaone3pt",
+"title": "NBA Players to Make One Three",
+"category": "Sports",
+"open": 6
+},
+{
+"venue": "kalshi",
 "slug": "kxsnowxmaschi",
 "title": "Chicago Christmas snowfall",
 "category": "Climate and Weather",
@@ -17256,17 +17200,17 @@
 },
 {
 "venue": "kalshi",
+"slug": "kxsocricketqual",
+"title": "Summer Olympics Cricket Qualifiers",
+"category": "Sports",
+"open": 27
+},
+{
+"venue": "kalshi",
 "slug": "kxncaafbowlgame",
 "title": "College Football Teams to Make a Bowl Game",
 "category": "Sports",
 "open": 120
-},
-{
-"venue": "kalshi",
-"slug": "kxettantotal",
-"title": "Point Total",
-"category": "Sports",
-"open": 48
 },
 {
 "venue": "kalshi",
@@ -17578,6 +17522,13 @@
 },
 {
 "venue": "kalshi",
+"slug": "kxtsnowfallbigskym",
+"title": "Big Sky monthly snowfall",
+"category": "Climate and Weather",
+"open": 10
+},
+{
+"venue": "kalshi",
 "slug": "kxligamx2h",
 "title": "2nd Half Winner",
 "category": "Sports",
@@ -17645,13 +17596,6 @@
 "title": "Will the U.S. release a federal definition of ultra-processed food?",
 "category": "Politics",
 "open": 1
-},
-{
-"venue": "kalshi",
-"slug": "kxearningsmentionrost",
-"title": "Ross Stores Earnings Call",
-"category": "Mentions",
-"open": 13
 },
 {
 "venue": "kalshi",
@@ -17792,6 +17736,13 @@
 "title": "La Liga Top Finishers",
 "category": "Sports",
 "open": 40
+},
+{
+"venue": "kalshi",
+"slug": "kxddr5ms",
+"title": "Monthly DDR5 16Gb (2Gx8) 4800/5600",
+"category": "Financials",
+"open": 480
 },
 {
 "venue": "kalshi",
@@ -17977,13 +17928,6 @@
 },
 {
 "venue": "kalshi",
-"slug": "kxtsnowfallbigskym",
-"title": "Big Sky monthly snowfall",
-"category": "Climate and Weather",
-"open": 10
-},
-{
-"venue": "kalshi",
 "slug": "kxearningsmentionnflx",
 "title": "What will netflix say on their next earnings call?",
 "category": "Mentions",
@@ -18040,13 +17984,6 @@
 },
 {
 "venue": "kalshi",
-"slug": "kxbundesligarelegation",
-"title": "Bundesliga Relegation",
-"category": "Sports",
-"open": 18
-},
-{
-"venue": "kalshi",
 "slug": "kxearningsmentioncost",
 "title": "What will Costco say on their next earnings call?",
 "category": "Mentions",
@@ -18072,6 +18009,13 @@
 "title": "Super Ballon d'Or",
 "category": "Sports",
 "open": 1
+},
+{
+"venue": "kalshi",
+"slug": "kxbundesligarelegation",
+"title": "Bundesliga Relegation",
+"category": "Sports",
+"open": 18
 },
 {
 "venue": "kalshi",
@@ -18229,13 +18173,6 @@
 },
 {
 "venue": "kalshi",
-"slug": "kxligue1relegation",
-"title": "Ligue 1 Relegation",
-"category": "Sports",
-"open": 18
-},
-{
-"venue": "kalshi",
 "slug": "kxmlbss",
 "title": "Pro Baseball Silver Slugger",
 "category": "Sports",
@@ -18334,6 +18271,13 @@
 },
 {
 "venue": "kalshi",
+"slug": "kxepl2h",
+"title": "2nd Half Winner",
+"category": "Sports",
+"open": 15
+},
+{
+"venue": "kalshi",
 "slug": "kxspeechai",
 "title": "Top text to speech AI",
 "category": "Science and Technology",
@@ -18366,13 +18310,6 @@
 "title": "NFL leader interceptions",
 "category": "Sports",
 "open": 34
-},
-{
-"venue": "kalshi",
-"slug": "kxtrumpstatesmon",
-"title": "Which states will Trump visit this month?",
-"category": "Politics",
-"open": 7
 },
 {
 "venue": "kalshi",
@@ -18453,6 +18390,13 @@
 },
 {
 "venue": "kalshi",
+"slug": "kxzaivspend",
+"title": "Z.AI Vercel spend share",
+"category": "Science and Technology",
+"open": 18
+},
+{
+"venue": "kalshi",
 "slug": "kxvenueperformancemsg",
 "title": "WHO WILL PERFORM AT MSG",
 "category": "Entertainment",
@@ -18464,13 +18408,6 @@
 "title": "Hsinchu County magistrate election winner",
 "category": "Elections",
 "open": 3
-},
-{
-"venue": "kalshi",
-"slug": "kxzaivspend",
-"title": "Z.AI Vercel spend share",
-"category": "Science and Technology",
-"open": 18
 },
 {
 "venue": "kalshi",
@@ -18712,6 +18649,13 @@
 },
 {
 "venue": "kalshi",
+"slug": "kxligue1relegation",
+"title": "Ligue 1 Relegation",
+"category": "Sports",
+"open": 18
+},
+{
+"venue": "kalshi",
 "slug": "kxdpreswincount",
 "title": "How many candidates will win a 2028 Democratic primary?",
 "category": "Elections",
@@ -18740,64 +18684,64 @@
 },
 {
 "venue": "kalshi",
-"slug": "kxcodmap",
-"title": "COD Map Winner",
-"category": "Sports",
-"open": 12
-},
-{
-"venue": "kalshi",
-"slug": "kxtemplaxhs",
-"title": "Hourly Directional Coastal LA Temperature",
-"category": "Climate and Weather",
-"open": 10
-},
-{
-"venue": "kalshi",
-"slug": "kxtempchihs",
-"title": "Hourly Directional Chicago Metro Temperature",
-"category": "Climate and Weather",
-"open": 10
-},
-{
-"venue": "kalshi",
-"slug": "kxtempnychs",
-"title": "Hourly Directional NYC Temperature",
-"category": "Climate and Weather",
-"open": 10
-},
-{
-"venue": "kalshi",
-"slug": "kxtempmiah",
-"title": "Hourly Directional Miami Temperature",
-"category": "Climate and Weather",
-"open": 10
-},
-{
-"venue": "kalshi",
 "slug": "kxnbapraprot",
 "title": "Pts + Reb + Ast Protected",
 "category": "Sports",
-"open": 82
+"open": 102
 },
 {
 "venue": "kalshi",
 "slug": "kxnbaastprot",
 "title": "NBA Player Assists Protected",
 "category": "Sports",
-"open": 102
+"open": 128
 },
 {
 "venue": "kalshi",
 "slug": "kxnbarebprot",
 "title": "NBA Player Rebounds Protected",
 "category": "Sports",
-"open": 117
+"open": 146
 },
 {
 "venue": "kalshi",
 "slug": "kxnbaptsleader",
 "title": "NBA Game Points Leader",
+"category": "Sports",
+"open": 19
+},
+{
+"venue": "kalshi",
+"slug": "kxpga3ball",
+"title": "PGA 3-Ball",
+"category": "Sports",
+"open": 75
+},
+{
+"venue": "kalshi",
+"slug": "kxsenatenyd",
+"title": "Democratic nominee for New York Senate",
+"category": "Elections",
+"open": 5
+},
+{
+"venue": "kalshi",
+"slug": "kxpresnoml",
+"title": "Libertarian Primary winner",
+"category": "Elections",
+"open": 12
+},
+{
+"venue": "kalshi",
+"slug": "kxnbastl",
+"title": "NBA Player Steals",
+"category": "Sports",
+"open": 41
+},
+{
+"venue": "kalshi",
+"slug": "kxcodmap",
+"title": "COD Map Winner",
 "category": "Sports",
 "open": 12
 },
@@ -18814,13 +18758,6 @@
 "title": "NBA Player Blocks",
 "category": "Sports",
 "open": 16
-},
-{
-"venue": "kalshi",
-"slug": "kxnbastl",
-"title": "NBA Player Steals",
-"category": "Sports",
-"open": 15
 },
 {
 "venue": "kalshi",
@@ -19160,13 +19097,6 @@
 },
 {
 "venue": "kalshi",
-"slug": "kxdpwth2h",
-"title": "golf tournament matchup",
-"category": "Sports",
-"open": 2
-},
-{
-"venue": "kalshi",
 "slug": "kxvenfutvebtts",
 "title": "BTTS",
 "category": "Sports",
@@ -19188,10 +19118,80 @@
 },
 {
 "venue": "kalshi",
+"slug": "kxnear15m",
+"title": "NEAR 15m",
+"category": "Crypto",
+"open": 1
+},
+{
+"venue": "kalshi",
+"slug": "kxzec15m",
+"title": "Zcash 15min",
+"category": "Crypto",
+"open": 1
+},
+{
+"venue": "kalshi",
+"slug": "kxhype15m",
+"title": "HYPE 15 min",
+"category": "Crypto",
+"open": 1
+},
+{
+"venue": "kalshi",
+"slug": "kxdoge15m",
+"title": "DOGE 15 min",
+"category": "Crypto",
+"open": 1
+},
+{
+"venue": "kalshi",
+"slug": "kxbnb15m",
+"title": "BNB 15 min",
+"category": "Crypto",
+"open": 1
+},
+{
+"venue": "kalshi",
+"slug": "kxxrp15m",
+"title": "XRP 15 min",
+"category": "Crypto",
+"open": 1
+},
+{
+"venue": "kalshi",
+"slug": "kxsol15m",
+"title": "SOL 15 min",
+"category": "Crypto",
+"open": 1
+},
+{
+"venue": "kalshi",
 "slug": "kxligaportugal1hbtts",
 "title": "1st Half BTTS",
 "category": "Sports",
 "open": 6
+},
+{
+"venue": "kalshi",
+"slug": "kxeth15m",
+"title": "ETH 15 min",
+"category": "Crypto",
+"open": 1
+},
+{
+"venue": "kalshi",
+"slug": "kxbtc15m",
+"title": "BTC 15 min",
+"category": "Crypto",
+"open": 1
+},
+{
+"venue": "kalshi",
+"slug": "kxcryptolead15m",
+"title": "Coin Race 15 minutes",
+"category": "Crypto",
+"open": 5
 },
 {
 "venue": "kalshi",
@@ -19356,13 +19356,6 @@
 },
 {
 "venue": "kalshi",
-"slug": "kxhnlbtts",
-"title": "BTTS",
-"category": "Sports",
-"open": 2
-},
-{
-"venue": "kalshi",
 "slug": "kxcoupedefrancebtts",
 "title": "BTTS",
 "category": "Sports",
@@ -19461,24 +19454,10 @@
 },
 {
 "venue": "kalshi",
-"slug": "kxhype",
-"title": "Hype ",
-"category": "Crypto",
-"open": 390
-},
-{
-"venue": "kalshi",
 "slug": "kxdoge",
 "title": "Dogecoin range",
 "category": "Crypto",
 "open": 122
-},
-{
-"venue": "kalshi",
-"slug": "kxxrp",
-"title": "XRP Range",
-"category": "Crypto",
-"open": 165
 },
 {
 "venue": "kalshi",
@@ -20070,13 +20049,6 @@
 },
 {
 "venue": "kalshi",
-"slug": "kxepl2h",
-"title": "2nd Half Winner",
-"category": "Sports",
-"open": 15
-},
-{
-"venue": "kalshi",
 "slug": "kxgovrace",
 "title": "Governor race winner?",
 "category": "Elections",
@@ -20242,13 +20214,6 @@
 "title": "Thomas Massie announces presidential run by...?",
 "category": "Elections",
 "open": 6
-},
-{
-"venue": "kalshi",
-"slug": "kxcruzrun",
-"title": "Ted Cruz announces presidential run by...?",
-"category": "Elections",
-"open": 9
 },
 {
 "venue": "kalshi",
@@ -20688,6 +20653,13 @@
 "venue": "kalshi",
 "slug": "kxearningsmentionnyt",
 "title": "New York Times",
+"category": "Mentions",
+"open": 12
+},
+{
+"venue": "kalshi",
+"slug": "kxearningsmentionyou",
+"title": "What will Clear say on their earnings call?",
 "category": "Mentions",
 "open": 12
 },
@@ -22009,6 +21981,13 @@
 },
 {
 "venue": "kalshi",
+"slug": "kxtrumpstatesmon",
+"title": "Which states will Trump visit this month?",
+"category": "Politics",
+"open": 7
+},
+{
+"venue": "kalshi",
 "slug": "kxcodeai",
 "title": "DeepSWE Coding Rank",
 "category": "Science and Technology",
@@ -22928,13 +22907,6 @@
 "venue": "kalshi",
 "slug": "kxstaffpardon",
 "title": "Trump blanket pardon for administration staff",
-"category": "Politics",
-"open": 3
-},
-{
-"venue": "kalshi",
-"slug": "kxuapfiles",
-"title": "UAP files",
 "category": "Politics",
 "open": 3
 },
@@ -23994,13 +23966,6 @@
 "title": "MoM core CPI above headline CPI in [month]",
 "category": "Economics",
 "open": 1
-},
-{
-"venue": "kalshi",
-"slug": "kxnbaone3pt",
-"title": "NBA Players to Make One Three",
-"category": "Sports",
-"open": 6
 },
 {
 "venue": "kalshi",
@@ -26143,6 +26108,13 @@
 "title": "Sweden snap election",
 "category": "Elections",
 "open": 1
+},
+{
+"venue": "kalshi",
+"slug": "kxspain2nd",
+"title": "Who will win the 2nd-most seats in Spain's Congress of Deputies?",
+"category": "Elections",
+"open": 3
 },
 {
 "venue": "kalshi",
@@ -29219,13 +29191,6 @@
 },
 {
 "venue": "kalshi",
-"slug": "kxncaambmaa",
-"title": "Metro Atlantic Conference Tournament",
-"category": "Sports",
-"open": 13
-},
-{
-"venue": "kalshi",
 "slug": "kxperformrolebpanther",
 "title": "next player black panther",
 "category": "Entertainment",
@@ -30486,13 +30451,6 @@
 },
 {
 "venue": "kalshi",
-"slug": "kxsenatenyd",
-"title": "Democratic nominee for New York Senate",
-"category": "Elections",
-"open": 3
-},
-{
-"venue": "kalshi",
 "slug": "kxintca",
 "title": "Intel KPI",
 "category": "Financials",
@@ -31277,13 +31235,6 @@
 },
 {
 "venue": "kalshi",
-"slug": "kxncaambsum",
-"title": "Summit League Conference Tournament",
-"category": "Sports",
-"open": 8
-},
-{
-"venue": "kalshi",
 "slug": "kxncaambnec",
 "title": "Northeast Conference Tournament",
 "category": "Sports",
@@ -31414,13 +31365,6 @@
 "title": "Green Primary winner",
 "category": "Elections",
 "open": 6
-},
-{
-"venue": "kalshi",
-"slug": "kxpresnoml",
-"title": "Libertarian Primary winner",
-"category": "Elections",
-"open": 11
 },
 {
 "venue": "kalshi",
@@ -32289,6 +32233,13 @@
 "title": "Will Tate McRae and Jack Hughes get engaged before 2027",
 "category": "Entertainment",
 "open": 1
+},
+{
+"venue": "kalshi",
+"slug": "kxeconstatu3",
+"title": "UNEMPLOYMENT RATE MONTHLY",
+"category": "Economics",
+"open": 23
 },
 {
 "venue": "kalshi",
@@ -33485,14 +33436,14 @@
 "slug": "astatc-nba-phi-chi",
 "title": "Will Jaylen Brown record at least 10 points in PHI 76ers vs. CHI Bulls",
 "category": "Sports",
-"open": 248
+"open": 251
 },
 {
 "venue": "pmus",
 "slug": "astatc-nba-bos-mil",
 "title": "Will Paul George record at least 10 points in BOS Celtics vs. MIL Bucks",
 "category": "Sports",
-"open": 240
+"open": 241
 },
 {
 "venue": "pmus",
@@ -33800,7 +33751,7 @@
 "slug": "astatc-nba-bkn-dal",
 "title": "Will Kyrie Irving record at least 10 points in BKN Nets vs. DAL Mavericks",
 "category": "Sports",
-"open": 135
+"open": 133
 },
 {
 "venue": "pmus",
@@ -34280,13 +34231,6 @@
 },
 {
 "venue": "pmus",
-"slug": "tsc-cfb-wash-mst",
-"title": "Will the total in Washington vs. Mich. State be more than 12.5",
-"category": "Sports",
-"open": 103
-},
-{
-"venue": "pmus",
 "slug": "tsc-cfb-missr-ga",
 "title": "Will the total in Missouri vs. Georgia be more than 19.5",
 "category": "Sports",
@@ -34359,6 +34303,13 @@
 "venue": "pmus",
 "slug": "tsc-cfb-boscol-nd",
 "title": "Will the total in Boston College vs. Notre Dame be more than 9.5",
+"category": "Sports",
+"open": 101
+},
+{
+"venue": "pmus",
+"slug": "tsc-cfb-wash-mst",
+"title": "Will the total in Washington vs. Mich. State be more than 12.5",
 "category": "Sports",
 "open": 101
 },
@@ -34639,6 +34590,13 @@
 "venue": "pmus",
 "slug": "asc-cfb-tx-lsu",
 "title": "Will the Texas cover -21.5 vs the LSU in Texas vs. LSU",
+"category": "Sports",
+"open": 77
+},
+{
+"venue": "pmus",
+"slug": "astatc-nba-uta-min",
+"title": "Will Keyonte George record at least 10 points in UTA Jazz vs. MIN Timberwolves",
 "category": "Sports",
 "open": 77
 },
@@ -46894,13 +46852,6 @@
 },
 {
 "venue": "pmus",
-"slug": "astatc-atp-omajas-dhasur",
-"title": "Jasika wins 2-0",
-"category": "Sports",
-"open": 6
-},
-{
-"venue": "pmus",
 "slug": "astatc-atp-alaaye-edwwin",
 "title": "Ayeni wins 2-0",
 "category": "Sports",
@@ -48122,6 +48073,13 @@
 "slug": "tac-tsa-irl",
 "title": "Streamer Awards Winner: Best IRL Streamer",
 "category": "Culture",
+"open": 5
+},
+{
+"venue": "pmus",
+"slug": "astatc-atp-omajas-dhasur",
+"title": "Jasika wins 2-0",
+"category": "Sports",
 "open": 5
 },
 {
@@ -51878,15 +51836,15 @@
 },
 {
 "venue": "pmus",
-"slug": "atc-ebfsa-nap-roma",
-"title": "Will Napoli (v1nn) defeat Roma (dor1an) in the eBattles: Serie A match scheduled for Nov 8, 2026",
+"slug": "atc-ebfsa-bol-roma",
+"title": "Will Bologna (RuBIX) defeat Roma (dor1an) in the eBattles: Serie A match scheduled for Nov 8, 2026",
 "category": "Sports",
 "open": 3
 },
 {
 "venue": "pmus",
-"slug": "atc-ebfsa-bol-roma",
-"title": "Will Bologna (RuBIX) defeat Roma (dor1an) in the eBattles: Serie A match scheduled for Nov 8, 2026",
+"slug": "atc-ebfsa-sas-bol",
+"title": "Will Sassuolo (cl1vlind) defeat Bologna (RuBIX) in the eBattles: Serie A match scheduled for Nov 8, 2026",
 "category": "Sports",
 "open": 3
 },
@@ -51901,13 +51859,6 @@
 "venue": "pmus",
 "slug": "atc-ebfsa-nap-bol",
 "title": "Will Napoli (v1nn) defeat Bologna (RuBIX) in the eBattles: Serie A match scheduled for Nov 8, 2026",
-"category": "Sports",
-"open": 3
-},
-{
-"venue": "pmus",
-"slug": "atc-ebfsa-juv-bol",
-"title": "Will Juventus (A1ose) defeat Bologna (RuBIX) in the eBattles: Serie A match scheduled for Nov 8, 2026",
 "category": "Sports",
 "open": 3
 },
@@ -51934,6 +51885,20 @@
 },
 {
 "venue": "pmus",
+"slug": "atc-ebfsa-juv-roma",
+"title": "Will Juventus (A1ose) defeat Roma (dor1an) in the eBattles: Serie A match scheduled for Nov 8, 2026",
+"category": "Sports",
+"open": 3
+},
+{
+"venue": "pmus",
+"slug": "atc-ebfsa-bol-juv",
+"title": "Will Bologna (RuBIX) defeat Juventus (A1ose) in the eBattles: Serie A match scheduled for Nov 8, 2026",
+"category": "Sports",
+"open": 3
+},
+{
+"venue": "pmus",
 "slug": "atc-ebfsa-bol-sas",
 "title": "Will Bologna (RuBIX) defeat Sassuolo (cl1vlind) in the eBattles: Serie A match scheduled for Nov 8, 2026",
 "category": "Sports",
@@ -51943,6 +51908,13 @@
 "venue": "pmus",
 "slug": "atc-ebfsa-juv-sas",
 "title": "Will Juventus (A1ose) defeat Sassuolo (cl1vlind) in the eBattles: Serie A match scheduled for Nov 8, 2026",
+"category": "Sports",
+"open": 3
+},
+{
+"venue": "pmus",
+"slug": "atc-ebfsa-roma-nap",
+"title": "Will Roma (dor1an) defeat Napoli (v1nn) in the eBattles: Serie A match scheduled for Nov 8, 2026",
 "category": "Sports",
 "open": 3
 },
@@ -52076,20 +52048,6 @@
 "venue": "pmus",
 "slug": "atc-uwcl-ohl-hkg",
 "title": "Will Oud-Heverlee Leuven Women win against HB Koge in the UWCL match scheduled for Nov 11, 2026",
-"category": "Sports",
-"open": 3
-},
-{
-"venue": "pmus",
-"slug": "astatc-setkameua-bonyur-bilvol",
-"title": "Will Bondarenko Yurii win set 1 against Bilobrov Volodymyr",
-"category": "Sports",
-"open": 3
-},
-{
-"venue": "pmus",
-"slug": "astatc-setkameua-tsokos-ponole",
-"title": "Will Tsoi Kostiantyn win set 1 against Ponomarenko Oleh",
 "category": "Sports",
 "open": 3
 },
@@ -52251,13 +52209,6 @@
 "venue": "pmus",
 "slug": "atc-uru1-mal-cer",
 "title": "Will Deportivo Maldonado win against CA Cerro in the Primera Uruguay match scheduled for Nov 14, 2026",
-"category": "Sports",
-"open": 3
-},
-{
-"venue": "pmus",
-"slug": "astatc-setkameua-osaole-solser",
-"title": "Will Osadchyi Oleksandr win set 1 against Solomko Serhii",
 "category": "Sports",
 "open": 3
 },
@@ -52734,27 +52685,6 @@
 "venue": "pmus",
 "slug": "astatc-setkameua-kotand-slomyk",
 "title": "Will Kotiash Andrii win set 1 against Slozka Mykola",
-"category": "Sports",
-"open": 3
-},
-{
-"venue": "pmus",
-"slug": "astatc-setkameua-klyvit-aldden",
-"title": "Will Klymenko Vitalii win set 1 against Aldayev Denis",
-"category": "Sports",
-"open": 3
-},
-{
-"venue": "pmus",
-"slug": "astatc-setkameua-tiuole-torole",
-"title": "Will Tiutiunnyk Oleksii win set 1 against Torianyk Oleh",
-"category": "Sports",
-"open": 3
-},
-{
-"venue": "pmus",
-"slug": "astatc-setkameua-plivol-napole",
-"title": "Will Plishylo Volodymyr win set 1 against Napirko Oleh",
 "category": "Sports",
 "open": 3
 },
@@ -53483,13 +53413,6 @@
 "venue": "pmus",
 "slug": "astatc-setkamecz-kantom-bridav",
 "title": "Will Kanka Tomas win set 1 against Brichacek David",
-"category": "Sports",
-"open": 3
-},
-{
-"venue": "pmus",
-"slug": "astatc-setkamecz-merrom-orlpet",
-"title": "Will Merkl Roman win set 1 against Orlowski Petr",
 "category": "Sports",
 "open": 3
 },
@@ -55763,6 +55686,13 @@
 },
 {
 "venue": "pmus",
+"slug": "astatc-setkameua-tsokos-ponole",
+"title": "Will Tsoi Kostiantyn win set 2 against Ponomarenko Oleh",
+"category": "Sports",
+"open": 2
+},
+{
+"venue": "pmus",
 "slug": "tsc-setkameua-bonyur-bilvol",
 "title": "Will the total in Bondarenko Yurii vs. Bilobrov Volodymyr be more than 3.5",
 "category": "Sports",
@@ -55891,13 +55821,6 @@
 "venue": "pmus",
 "slug": "tsc-setkameua-osiser-kundmy",
 "title": "Will the total in Osipov Sergey vs. Kunchurov Dmytro be more than 3.5",
-"category": "Sports",
-"open": 2
-},
-{
-"venue": "pmus",
-"slug": "astatc-setkamecz-tarmik-hlipet",
-"title": "Will Taranko Mikhail win set 2 against Hlina Petr",
 "category": "Sports",
 "open": 2
 },
@@ -56393,22 +56316,15 @@
 },
 {
 "venue": "pmus",
-"slug": "astatc-setkameua-gazole-giltar",
-"title": "Will Gazhula Oleksii win set 2 against Gil Taras",
-"category": "Sports",
-"open": 2
-},
-{
-"venue": "pmus",
-"slug": "tsc-setkameua-gazole-giltar",
-"title": "Will the total in Gazhula Oleksii vs. Gil Taras be more than 3.5",
-"category": "Sports",
-"open": 2
-},
-{
-"venue": "pmus",
 "slug": "tsc-setkameua-kotand-slomyk",
 "title": "Will the total in Kotiash Andrii vs. Slozka Mykola be more than 3.5",
+"category": "Sports",
+"open": 2
+},
+{
+"venue": "pmus",
+"slug": "astatc-setkameua-plivol-napole",
+"title": "Will Plishylo Volodymyr win set 2 against Napirko Oleh",
 "category": "Sports",
 "open": 2
 },
@@ -57151,6 +57067,13 @@
 "venue": "pmus",
 "slug": "tsc-setkamemd-yavole-scovla",
 "title": "Will the total in Yavorskiy Oleksandr vs. Scofari Vladimir be more than 3.5",
+"category": "Sports",
+"open": 2
+},
+{
+"venue": "pmus",
+"slug": "astatc-setkamecz-merrom-orlpet",
+"title": "Will Merkl Roman win set 3 against Orlowski Petr",
 "category": "Sports",
 "open": 2
 },
@@ -82461,13 +82384,6 @@
 },
 {
 "venue": "pmus",
-"slug": "aec-atp-yoswat-jankum",
-"title": "Who will win in the upcoming atp event Yosuke Watanuki vs Jan Kumstat scheduled for November 8, 2026 at 2:00 AM UTC",
-"category": "Sports",
-"open": 1
-},
-{
-"venue": "pmus",
 "slug": "aec-cs2-bbv-cwo",
 "title": "Who will win in the upcoming esports event Bad Beavers vs Copenhagen Wolves scheduled for November 10, 2026 at 9:00 AM UTC",
 "category": "Sports",
@@ -82666,34 +82582,6 @@
 "venue": "pmus",
 "slug": "aec-jpbl-mik-shi",
 "title": "Who will win in the upcoming basketball event SeaHorses Mikawa vs Shinshu Brave Warriors scheduled for November 10, 2026 at 10:05 AM UTC",
-"category": "Sports",
-"open": 1
-},
-{
-"venue": "pmus",
-"slug": "aec-czechligapro-id2503634976537072",
-"title": "Who will win in the upcoming table-tennis event Lubor Sulava vs Martin Tacinec scheduled for November 8, 2026 at 8:00 AM UTC",
-"category": "Sports",
-"open": 1
-},
-{
-"venue": "pmus",
-"slug": "aec-czechligapro-id2503634976537144",
-"title": "Who will win in the upcoming table-tennis event Dalimil Machander vs Samuel Byrtus scheduled for November 8, 2026 at 8:00 AM UTC",
-"category": "Sports",
-"open": 1
-},
-{
-"venue": "pmus",
-"slug": "aec-czechligapro-id2503634976537150",
-"title": "Who will win in the upcoming table-tennis event Tomas Prosa vs Martin Huk scheduled for November 8, 2026 at 8:00 AM UTC",
-"category": "Sports",
-"open": 1
-},
-{
-"venue": "pmus",
-"slug": "aec-czechligapro-id2503634976537228",
-"title": "Who will win in the upcoming table-tennis event Vojtech Stach vs Jaroslav Martinek scheduled for November 8, 2026 at 8:00 AM UTC",
 "category": "Sports",
 "open": 1
 },
@@ -83392,13 +83280,6 @@
 },
 {
 "venue": "pmus",
-"slug": "aec-itfme-natfek-vithor",
-"title": "Who will win in the upcoming tennis event Nathan Fekadu vs Vitek Horak scheduled for November 8, 2026 at 7:30 AM UTC",
-"category": "Sports",
-"open": 1
-},
-{
-"venue": "pmus",
 "slug": "aec-itfme-honfu-teekha",
 "title": "Who will win in the upcoming tennis event Hong-Lin Fu vs Teerapat Khantiweerawat scheduled for November 8, 2026 at 7:30 AM UTC",
 "category": "Sports",
@@ -83469,8 +83350,22 @@
 },
 {
 "venue": "pmus",
+"slug": "aec-ebb-phx-det",
+"title": "Who will win in the upcoming ebasketball event Phoenix Suns (OldJhin) vs Detroit Pistons (Lalkoff) scheduled for November 8, 2026 at 9:35 AM UTC",
+"category": "Sports",
+"open": 1
+},
+{
+"venue": "pmus",
 "slug": "aec-ebb-mia-det",
 "title": "Who will win in the upcoming ebasketball event Miami Heat (lucker) vs Detroit Pistons (Lalkoff) scheduled for November 8, 2026 at 8:25 AM UTC",
+"category": "Sports",
+"open": 1
+},
+{
+"venue": "pmus",
+"slug": "aec-ebb-nop-mia",
+"title": "Who will win in the upcoming ebasketball event New Orleans Pelicans (Barmaley) vs Miami Heat (lucker) scheduled for November 8, 2026 at 9:35 AM UTC",
 "category": "Sports",
 "open": 1
 },
@@ -83520,6 +83415,13 @@
 "venue": "pmus",
 "slug": "aec-ebbec-par-fen",
 "title": "Who will win in the upcoming ebasketball event Partizan (SnoopCat) vs Fenerbahce (Riodan) scheduled for November 8, 2026 at 8:55 AM UTC",
+"category": "Sports",
+"open": 1
+},
+{
+"venue": "pmus",
+"slug": "aec-ebbec-fen-pan",
+"title": "Who will win in the upcoming ebasketball event Fenerbahce (Riodan) vs Panathinaikos (Shustryak) scheduled for November 8, 2026 at 9:30 AM UTC",
 "category": "Sports",
 "open": 1
 },
@@ -84197,13 +84099,6 @@
 },
 {
 "venue": "pmus",
-"slug": "aec-itfme-artafa-ahmata",
-"title": "Who will win in the upcoming tennis event Artjoms Afanasjevs vs Ahmet Atabay scheduled for November 8, 2026 at 12:00 AM UTC",
-"category": "Sports",
-"open": 1
-},
-{
-"venue": "pmus",
 "slug": "aec-itfme-ilhbak-mirmor",
 "title": "Who will win in the upcoming tennis event Ilham Bakhshaliev vs Mircea Mortasifu scheduled for November 8, 2026 at 12:00 AM UTC",
 "category": "Sports",
@@ -84325,13 +84220,6 @@
 "venue": "pmus",
 "slug": "aec-itfme-heoshy-alisah",
 "title": "Who will win in the upcoming tennis event Heorhii Shylov vs Ali Cinar Sahinoglu scheduled for November 8, 2026 at 12:00 AM UTC",
-"category": "Sports",
-"open": 1
-},
-{
-"venue": "pmus",
-"slug": "aec-itfme-danaug-felrom",
-"title": "Who will win in the upcoming tennis event Daniele Augenti vs Felix Romeo scheduled for November 8, 2026 at 12:00 AM UTC",
 "category": "Sports",
 "open": 1
 },
@@ -85870,6 +85758,13 @@
 },
 {
 "venue": "pmus",
+"slug": "aec-ebbec-rma-par",
+"title": "Who will win in the upcoming ebasketball event Real Madrid (JoKeR) vs Partizan (SnoopCat) scheduled for November 8, 2026 at 9:30 AM UTC",
+"category": "Sports",
+"open": 1
+},
+{
+"venue": "pmus",
 "slug": "aec-wtt-fuyu-mistak",
 "title": "Who will win in the upcoming table-tennis event Fu Yu vs Misuzu Takeya scheduled for November 8, 2026 at 10:35 AM UTC",
 "category": "Sports",
@@ -85900,6 +85795,13 @@
 "venue": "pmus",
 "slug": "aec-setkameua-riaole-osiser",
 "title": "Who will win in the upcoming table-tennis event Riabuha Oleksandr vs Osipov Sergey scheduled for November 8, 2026 at 9:05 AM UTC",
+"category": "Sports",
+"open": 1
+},
+{
+"venue": "pmus",
+"slug": "astatc-setkameua-bonyur-bilvol",
+"title": "Will Bondarenko Yurii win set 3 against Bilobrov Volodymyr",
 "category": "Sports",
 "open": 1
 },
@@ -87452,13 +87354,6 @@
 },
 {
 "venue": "pmus",
-"slug": "btc-updown-15m",
-"title": "BTC Up or Down, 15 minutes",
-"category": "Crypto",
-"open": 1
-},
-{
-"venue": "pmus",
 "slug": "aec-cfb-del-nmxst",
 "title": "Who will win in the upcoming football event Delaware vs NM State scheduled for November 21, 2026 at 8:00 PM UTC",
 "category": "Sports",
@@ -87587,13 +87482,6 @@
 "venue": "pmus",
 "slug": "aec-ppa-annwat-katfah",
 "title": "Who will win in the upcoming pickleball event Anna Leigh Waters vs Kate Fahey scheduled for November 8, 2026 at 4:00 PM UTC",
-"category": "Sports",
-"open": 1
-},
-{
-"venue": "pmus",
-"slug": "aec-setkameua-gazole-giltar",
-"title": "Who will win in the upcoming table-tennis event Gazhula Oleksii vs Gil Taras scheduled for November 8, 2026 at 7:55 AM UTC",
 "category": "Sports",
 "open": 1
 },
@@ -88236,13 +88124,6 @@
 },
 {
 "venue": "pmus",
-"slug": "aec-setkamemd-filmih-impale",
-"title": "Who will win in the upcoming table-tennis event Filip Mihail vs Imparatel Alexandru scheduled for November 8, 2026 at 1:45 PM UTC",
-"category": "Sports",
-"open": 1
-},
-{
-"venue": "pmus",
 "slug": "aec-setkamemd-leviur-filmih",
 "title": "Who will win in the upcoming table-tennis event Levinta Iurie vs Filip Mihail scheduled for November 8, 2026 at 2:15 PM UTC",
 "category": "Sports",
@@ -88656,6 +88537,13 @@
 },
 {
 "venue": "pmus",
+"slug": "sol-updown-5m",
+"title": "SOL Up or Down, 5 minutes",
+"category": "Crypto",
+"open": 1
+},
+{
+"venue": "pmus",
 "slug": "sol-updown-15m",
 "title": "SOL Up or Down, 15 minutes",
 "category": "Crypto",
@@ -88663,8 +88551,8 @@
 },
 {
 "venue": "pmus",
-"slug": "sol-updown-5m",
-"title": "SOL Up or Down, 5 minutes",
+"slug": "btc-updown-15m",
+"title": "BTC Up or Down, 15 minutes",
 "category": "Crypto",
 "open": 1
 },
@@ -89890,13 +89778,6 @@
 "venue": "pmus",
 "slug": "aec-acw-bilvor-nitmor",
 "title": "Who will win in the upcoming beach-volleyball event Aleina Bilhen/Polina Vorobiova vs Viktoriia Nitsenko/Sofiia Morozova scheduled for November 8, 2026 at 8:45 AM UTC",
-"category": "Sports",
-"open": 1
-},
-{
-"venue": "pmus",
-"slug": "aec-acw-hrysvy-nitmor",
-"title": "Who will win in the upcoming beach-volleyball event Marharyta Hrytchyna/Elyzaveta Svyrydova vs Viktoriia Nitsenko/Sofiia Morozova scheduled for November 8, 2026 at 8:00 AM UTC",
 "category": "Sports",
 "open": 1
 },
@@ -92270,6 +92151,174 @@
 "venue": "pmus",
 "slug": "aec-itfwo-natkaw-boyjeo",
 "title": "Who will win in the upcoming tennis event Natsumi Kawaguchi vs BoYoung Jeong scheduled for November 9, 2026 at 2:00 AM UTC",
+"category": "Sports",
+"open": 1
+},
+{
+"venue": "pmus",
+"slug": "aec-boxing-diepac-darful",
+"title": "Who will win in the upcoming boxing event Diego Pacheco vs Darius Fulghum scheduled for November 15, 2026 at 6:00 AM UTC",
+"category": "Sports",
+"open": 1
+},
+{
+"venue": "pmus",
+"slug": "astatc-setkameua-osaole-solser",
+"title": "Will Osadchyi Oleksandr win set 4 against Solomko Serhii",
+"category": "Sports",
+"open": 1
+},
+{
+"venue": "pmus",
+"slug": "astatc-setkameua-tiuole-torole",
+"title": "Will Tiutiunnyk Oleksii win set 4 against Torianyk Oleh",
+"category": "Sports",
+"open": 1
+},
+{
+"venue": "pmus",
+"slug": "aec-czechligapro-id2503634976568852",
+"title": "Who will win in the upcoming table-tennis event Tomas Varnuska vs Kyryl Darin scheduled for November 9, 2026 at 7:00 AM UTC",
+"category": "Sports",
+"open": 1
+},
+{
+"venue": "pmus",
+"slug": "aec-czechligapro-id2503634976568968",
+"title": "Who will win in the upcoming table-tennis event Milan Vrabec vs Jan Potensky scheduled for November 9, 2026 at 7:00 AM UTC",
+"category": "Sports",
+"open": 1
+},
+{
+"venue": "pmus",
+"slug": "aec-czechligapro-id2503634976568970",
+"title": "Who will win in the upcoming table-tennis event Jiri Svec vs Jiri Grohsgott scheduled for November 9, 2026 at 7:00 AM UTC",
+"category": "Sports",
+"open": 1
+},
+{
+"venue": "pmus",
+"slug": "aec-czechligapro-id2503634976568996",
+"title": "Who will win in the upcoming table-tennis event Marcel Heczko vs Dalimil Machander scheduled for November 9, 2026 at 7:00 AM UTC",
+"category": "Sports",
+"open": 1
+},
+{
+"venue": "pmus",
+"slug": "aec-czechligapro-id2503634976569024",
+"title": "Who will win in the upcoming table-tennis event Pavel Wawrosz vs Libor Prikasky scheduled for November 9, 2026 at 7:00 AM UTC",
+"category": "Sports",
+"open": 1
+},
+{
+"venue": "pmus",
+"slug": "aec-czechligapro-id2503634976568826",
+"title": "Who will win in the upcoming table-tennis event Michal Vedmoch vs Adam Svoboda scheduled for November 9, 2026 at 7:30 AM UTC",
+"category": "Sports",
+"open": 1
+},
+{
+"venue": "pmus",
+"slug": "aec-czechligapro-id2503634976568844",
+"title": "Who will win in the upcoming table-tennis event Jindrich Vrba vs Jaromir Cernik scheduled for November 9, 2026 at 7:30 AM UTC",
+"category": "Sports",
+"open": 1
+},
+{
+"venue": "pmus",
+"slug": "aec-czechligapro-id2503634976568862",
+"title": "Who will win in the upcoming table-tennis event Ondrej Paril vs Jakub Pilch scheduled for November 9, 2026 at 7:30 AM UTC",
+"category": "Sports",
+"open": 1
+},
+{
+"venue": "pmus",
+"slug": "aec-czechligapro-id2503634976568898",
+"title": "Who will win in the upcoming table-tennis event Miroslav Vaclavik vs Alexander Hejduk scheduled for November 9, 2026 at 7:30 AM UTC",
+"category": "Sports",
+"open": 1
+},
+{
+"venue": "pmus",
+"slug": "aec-czechligapro-id2503634976568908",
+"title": "Who will win in the upcoming table-tennis event Samuel Byrtus vs Marek Blejchar scheduled for November 9, 2026 at 7:30 AM UTC",
+"category": "Sports",
+"open": 1
+},
+{
+"venue": "pmus",
+"slug": "aec-czechligapro-id2503634976568920",
+"title": "Who will win in the upcoming table-tennis event Jiri Grohsgott vs Miroslav Vaclavik scheduled for November 9, 2026 at 8:00 AM UTC",
+"category": "Sports",
+"open": 1
+},
+{
+"venue": "pmus",
+"slug": "aec-czechligapro-id2503634976568972",
+"title": "Who will win in the upcoming table-tennis event Kyryl Darin vs Michal Vedmoch scheduled for November 9, 2026 at 8:00 AM UTC",
+"category": "Sports",
+"open": 1
+},
+{
+"venue": "pmus",
+"slug": "aec-czechligapro-id2503634976568982",
+"title": "Who will win in the upcoming table-tennis event Dalimil Machander vs Samuel Byrtus scheduled for November 9, 2026 at 8:00 AM UTC",
+"category": "Sports",
+"open": 1
+},
+{
+"venue": "pmus",
+"slug": "aec-czechligapro-id2503634976568990",
+"title": "Who will win in the upcoming table-tennis event Jan Potensky vs Jindrich Vrba scheduled for November 9, 2026 at 8:00 AM UTC",
+"category": "Sports",
+"open": 1
+},
+{
+"venue": "pmus",
+"slug": "aec-czechligapro-id2503634976569006",
+"title": "Who will win in the upcoming table-tennis event Libor Prikasky vs Ondrej Paril scheduled for November 9, 2026 at 8:00 AM UTC",
+"category": "Sports",
+"open": 1
+},
+{
+"venue": "pmus",
+"slug": "aec-czechligapro-id2503634976568884",
+"title": "Who will win in the upcoming table-tennis event Marek Blejchar vs Marcel Heczko scheduled for November 9, 2026 at 8:30 AM UTC",
+"category": "Sports",
+"open": 1
+},
+{
+"venue": "pmus",
+"slug": "aec-czechligapro-id2503634976568902",
+"title": "Who will win in the upcoming table-tennis event Adam Svoboda vs Tomas Varnuska scheduled for November 9, 2026 at 8:30 AM UTC",
+"category": "Sports",
+"open": 1
+},
+{
+"venue": "pmus",
+"slug": "aec-czechligapro-id2503634976568936",
+"title": "Who will win in the upcoming table-tennis event Jakub Pilch vs Pavel Wawrosz scheduled for November 9, 2026 at 8:30 AM UTC",
+"category": "Sports",
+"open": 1
+},
+{
+"venue": "pmus",
+"slug": "aec-czechligapro-id2503634976568956",
+"title": "Who will win in the upcoming table-tennis event Alexander Hejduk vs Jiri Svec scheduled for November 9, 2026 at 8:30 AM UTC",
+"category": "Sports",
+"open": 1
+},
+{
+"venue": "pmus",
+"slug": "aec-czechligapro-id2503634976569020",
+"title": "Who will win in the upcoming table-tennis event Jaromir Cernik vs Milan Vrabec scheduled for November 9, 2026 at 8:30 AM UTC",
+"category": "Sports",
+"open": 1
+},
+{
+"venue": "pmus",
+"slug": "astatc-setkameua-klyvit-aldden",
+"title": "Will Klymenko Vitalii win set 4 against Aldayev Denis",
 "category": "Sports",
 "open": 1
 }
