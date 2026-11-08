@@ -1210,16 +1210,16 @@
   "KXEREDIVISIETOTAL-26NOV08AZAGRO-8": 1794159881.9644606,
   "KXEPLTOTAL-26NOV08MUNAVL-6": 1794159921.0451174,
   "KXBUNDESLIGATOTAL-26NOV08SCFUNI-1": 1794159921.2446275,
-  "KXEREDIVISIETOTAL-26NOV08CAMPSV-7": 1794159958.9553492
+  "KXEREDIVISIETOTAL-26NOV08CAMPSV-7": 1794159958.9553492,
+  "KXEREDIVISIETOTAL-26NOV08CAMPSV-9": 1794160121.4354947,
+  "KXEREDIVISIETOTAL-26NOV08CAMPSV-8": 1794160121.435513,
+  "KXSERIEA1HTOTAL-26NOV08INTCOM-3": 1794160294.1620815,
+  "KXSERIEA1H-26NOV08INTCOM-TIE": 1794160294.162146,
+  "KXSERIEA1H-26NOV08INTCOM-INT": 1794160294.1621706,
+  "KXSERIEA1H-26NOV08INTCOM-COM": 1794160294.1621933,
+  "KXSERIEA1HBTTS-26NOV08INTCOM-BTTS": 1794160294.1622107
  },
  "blocked": {
-  "KXAUTBUNDESTOTAL-26NOV08WSGFAK-1": "settling (86s)",
-  "KXLALIGA1HTOTAL-26NOV08ELCRBB-3": "no asks (already repriced)",
-  "KXLALIGA1HTOTAL-26NOV08ELCRBB-2": "no asks (already repriced)",
-  "KXLALIGA1HTOTAL-26NOV08ELCRBB-1": "no asks (already repriced)",
-  "KXLALIGA1H-26NOV08ELCRBB-TIE": "no asks (already repriced)",
-  "KXLALIGA1H-26NOV08ELCRBB-RBB": "no asks (already repriced)",
-  "KXLALIGA1H-26NOV08ELCRBB-ELC": "no asks (already repriced)",
   "KXLALIGA1HBTTS-26NOV08ELCRBB-BTTS": "no asks (already repriced)",
   "KXBELGIANPLTOTAL-26NOV08BRURSC-2": "no Polymarket twin",
   "KXBELGIANPLBTTS-26NOV08BRURSC-BTTS": "no asks (already repriced)",
@@ -1416,9 +1416,9 @@
   "KXLIGUE11HTOTAL-26NOV08HACFCL-1": "no asks (already repriced)",
   "KXLIGUE1TOTAL-26NOV08HACFCL-1": "no asks (already repriced)",
   "KXEPL1HTOTAL-26NOV08MUNAVL-1": "no asks (already repriced)",
-  "KXEPLTOTAL-26NOV08MUNAVL-1": "settling (72s)",
+  "KXEPLTOTAL-26NOV08MUNAVL-1": "no asks (already repriced)",
   "KXEPL1HTOTAL-26NOV08MUNAVL-2": "no asks (already repriced)",
-  "KXEPLTOTAL-26NOV08MUNAVL-2": "settling (72s)",
+  "KXEPLTOTAL-26NOV08MUNAVL-2": "no asks (already repriced)",
   "KXLIGUE11HTOTAL-26NOV08STBOL-1": "no Polymarket twin",
   "KXLIGUE1TOTAL-26NOV08STBOL-1": "no Polymarket twin",
   "KXEREDIVISIE1HBTTS-26NOV08CAMPSV-BTTS": "no asks (already repriced)",
@@ -1432,8 +1432,8 @@
   "KXLALIGATOTAL-26NOV08RSORVC-1": "no asks (already repriced)",
   "KXEPL1HTOTAL-26NOV08MUNAVL-3": "no asks (already repriced)",
   "KXEPL1HBTTS-26NOV08MUNAVL-BTTS": "no asks (already repriced)",
-  "KXEPLTOTAL-26NOV08MUNAVL-3": "settling (72s)",
-  "KXEPLBTTS-26NOV08MUNAVL-BTTS": "settling (72s)",
+  "KXEPLTOTAL-26NOV08MUNAVL-3": "no asks (already repriced)",
+  "KXEPLBTTS-26NOV08MUNAVL-BTTS": "no asks (already repriced)",
   "KXEREDIVISIETOTAL-26NOV08AZAGRO-3": "no Polymarket twin",
   "KXBELGIANPLTOTAL-26NOV08KAAKOR-6": "no Polymarket twin",
   "KXBELGIANPLTOTAL-26NOV08KAAKOR-5": "no Polymarket twin",
@@ -1476,7 +1476,7 @@
   "KXLALIGATOTAL-26NOV08RSORVC-3": "no asks (already repriced)",
   "KXLALIGATOTAL-26NOV08RSORVC-2": "no asks (already repriced)",
   "KXLALIGABTTS-26NOV08RSORVC-BTTS": "no asks (already repriced)",
-  "KXEPLTOTAL-26NOV08MUNAVL-4": "settling (72s)",
+  "KXEPLTOTAL-26NOV08MUNAVL-4": "no asks (already repriced)",
   "KXBUNDESLIGA1HTOTAL-26NOV08SCFUNI-3": "no asks (already repriced)",
   "KXBUNDESLIGA1HTOTAL-26NOV08SCFUNI-2": "no asks (already repriced)",
   "KXBUNDESLIGA1HTOTAL-26NOV08SCFUNI-1": "no asks (already repriced)",
@@ -1503,16 +1503,23 @@
   "KXEREDIVISIETOTAL-26NOV08CAMPSV-5": "no asks (already repriced)",
   "KXAUTBUNDESTOTAL-26NOV08STURBS-7": "no asks (already repriced)",
   "KXEREDIVISIETOTAL-26NOV08AZAGRO-7": "no Polymarket twin",
-  "KXEREDIVISIETOTAL-26NOV08CAMPSV-6": "Polymarket does not confirm",
+  "KXEREDIVISIETOTAL-26NOV08CAMPSV-6": "no Polymarket twin",
   "KXLIGUE1TOTAL-26NOV08HACFCL-2": "settling (14s)",
   "KXLIGUE1BTTS-26NOV08HACFCL-BTTS": "settling (14s)",
-  "KXEPLTOTAL-26NOV08MUNAVL-5": "settling (72s)",
+  "KXEPLTOTAL-26NOV08MUNAVL-5": "no asks (already repriced)",
   "KXEREDIVISIETOTAL-26NOV08AZAGRO-10": "no Polymarket twin",
   "KXEREDIVISIETOTAL-26NOV08AZAGRO-9": "no Polymarket twin",
   "KXEREDIVISIETOTAL-26NOV08AZAGRO-8": "no Polymarket twin",
-  "KXEPLTOTAL-26NOV08MUNAVL-6": "settling (72s)",
-  "KXBUNDESLIGATOTAL-26NOV08SCFUNI-1": "settling (72s)",
-  "KXEREDIVISIETOTAL-26NOV08CAMPSV-7": "Polymarket does not confirm"
+  "KXEPLTOTAL-26NOV08MUNAVL-6": "no asks (already repriced)",
+  "KXBUNDESLIGATOTAL-26NOV08SCFUNI-1": "no asks (already repriced)",
+  "KXEREDIVISIETOTAL-26NOV08CAMPSV-7": "no Polymarket twin",
+  "KXEREDIVISIETOTAL-26NOV08CAMPSV-9": "no Polymarket twin",
+  "KXEREDIVISIETOTAL-26NOV08CAMPSV-8": "no Polymarket twin",
+  "KXSERIEA1HTOTAL-26NOV08INTCOM-3": "Polymarket does not confirm",
+  "KXSERIEA1H-26NOV08INTCOM-TIE": "Polymarket does not confirm",
+  "KXSERIEA1H-26NOV08INTCOM-INT": "Polymarket does not confirm",
+  "KXSERIEA1H-26NOV08INTCOM-COM": "Polymarket does not confirm",
+  "KXSERIEA1HBTTS-26NOV08INTCOM-BTTS": "Polymarket does not confirm"
  },
  "started": 1793687692.6057825,
  "ht": {
@@ -1987,6 +1994,10 @@
   "401879240": [
    2,
    2
+  ],
+  "401874808": [
+   2,
+   0
   ]
  }
 }
