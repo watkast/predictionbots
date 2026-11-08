@@ -30,7 +30,8 @@ from datetime import datetime, timezone
 from pathlib import Path
 
 FEE_CHANGE_TS = int(datetime(2026, 11, 6, 18, 0, tzinfo=timezone.utc).timestamp())  # 13:00 ET = 18:00 UTC (EST)
-VENUE = {"name": "pmus"}   # set by run(); kalshi: 7% taker, rounded up to the cent per order (centicent in the schedule)
+VENUE = {"name": "pmus"}
+INDEX_LAG = {"s": 10}      # seconds between an index print's timestamp and when a bot could have it; conservative   # set by run(); kalshi: 7% taker, rounded up to the cent per order (centicent in the schedule)
 
 
 def theta(ts: int) -> float:
@@ -135,8 +136,9 @@ def rule_turbine_reference(w: dict, size: float):
     prints = {int(k): v for k, v in w["prints"].items()}
     strike = w["ptb"]
     spent, legs = 0.0, []
+    lag = INDEX_LAG["s"]
     for sec in range(T0, T - 60):
-        px_idx = prints.get(sec)
+        px_idx = prints.get(sec - lag)          # only prints old enough to have arrived by `sec` (no look-ahead)
         b = book_at(w, sec)
         if px_idx is None or not b or spent >= size * 5:
             continue
@@ -206,6 +208,28 @@ ASSUMPTIONS = {"turbine_reference": "The 'price action bot' in Turbine's turbine
                "coinflip_open": "Baseline, not a product."}
 
 
+def verdict(trades: list[dict]) -> dict:
+    """95% interval on net per dollar staked (per-trade returns, normal approximation) and a plain verdict.
+    'wins' or 'loses' only with at least 100 trades and an interval that excludes zero; otherwise 'inconclusive'.
+    Trades in one short period share a market regime, so even a clean interval is a statement about that period."""
+    n = len(trades)
+    if n < 2:
+        return {"ci95_per_dollar": None, "verdict": "inconclusive", "verdict_why": f"{n} trade{'s' if n != 1 else ''}; nothing to conclude"}
+    r = [t["pnl"] / t["cost"] for t in trades if t["cost"] > 0]
+    m, se = statistics.mean(r), statistics.stdev(r) / math.sqrt(len(r))
+    lo, hi = m - 1.96 * se, m + 1.96 * se
+    if n >= 100 and hi < 0:
+        v, why = "loses", f"{n} trades; the 95% interval is entirely below zero"
+    elif n >= 100 and lo > 0:
+        v, why = "wins in this period", f"{n} trades; the 95% interval is above zero for this period only; one regime is not a strategy"
+    else:
+        v, why = "inconclusive", f"{n} trades; the 95% interval ({lo*100:+.0f}% to {hi*100:+.0f}% per dollar) includes zero or the sample is under 100"
+    sides = {}
+    for t in trades:
+        sides[t["side"]] = sides.get(t["side"], 0) + 1
+    return {"ci95_per_dollar": [round(lo, 4), round(hi, 4)], "verdict": v, "verdict_why": why, "sides": sides}
+
+
 def run(windows: list[dict], size: float, min_cov: float = 0.5, venue: str = "pmus") -> dict:
     VENUE["name"] = venue
     usable = [w for w in windows if w.get("settle") is not None and w.get("ptb") is not None and coverage(w) >= min_cov]
@@ -226,6 +250,7 @@ def run(windows: list[dict], size: float, min_cov: float = 0.5, venue: str = "pm
             "net_per_dollar": round(sum(pnls) / sum(costs), 4) if costs and sum(costs) > 0 else None,
             "fees_total": round(sum(t["fees"] for t in trades), 2), "worst_losing_run": worst,
             "mean_coverage": round(statistics.mean(t["coverage"] for t in trades), 3) if trades else None,
+            **verdict(trades),
             "trades_detail": trades}
     return out
 
@@ -235,12 +260,14 @@ def report(res: dict) -> str:
     lines = [f"# Bot Benchmark — {vn} BTC 15-minute, recorded books\n",
              f"Generated {res['generated']}. Windows recorded: {res['windows_total']}; usable (settled, book coverage >= {res['min_coverage']:.0%}): {res['windows_usable']}. "
              f"Size per trade: {res['size_contracts']:g} contracts or the displayed quantity, whichever is smaller. Fees: {'Kalshi taker schedule (7%, rounded up)' if res.get('venue') == 'kalshi' else 'Polymarket US taker schedule in effect on the trade date'}. Paper fills at displayed depth; real fills can be worse.\n",
-             "| Rule | Trades | Win rate | Net per trade | Net per $ staked | Fees paid | Worst losing run | Book coverage |", "| --- | --- | --- | --- | --- | --- | --- | --- |"]
+             "| Rule | Trades | Win rate | Net per trade | Net per $ staked (95% interval) | Fees paid | Worst losing run | Book coverage | Verdict |", "| --- | --- | --- | --- | --- | --- | --- | --- | --- |"]
     for name, r in res["rules"].items():
         if r["trades"]:
-            lines.append(f"| {r['label']} | {r['trades']} | {r['win_rate']:.0%} | ${r['net_per_trade']:+.3f} | {r['net_per_dollar']:+.1%} | ${r['fees_total']:.2f} | {r['worst_losing_run']} | {r['mean_coverage']:.0%} |")
+            ci = r.get("ci95_per_dollar")
+            cis = f" ({ci[0]*100:+.0f}% to {ci[1]*100:+.0f}%)" if ci else ""
+            lines.append(f"| {r['label']} | {r['trades']} | {r['win_rate']:.0%} | ${r['net_per_trade']:+.3f} | {r['net_per_dollar']:+.1%}{cis} | ${r['fees_total']:.2f} | {r['worst_losing_run']} | {r['mean_coverage']:.0%} | {r['verdict']} |")
         else:
-            lines.append(f"| {r['label']} | 0 | — | — | — | — | — | — |")
+            lines.append(f"| {r['label']} | 0 | — | — | — | — | — | — | inconclusive |")
     lines.append("")
     for name, r in res["rules"].items():
         lines.append(f"- **{r['label']}**: {r['assumption']}")
@@ -288,12 +315,14 @@ def main() -> None:
     r.add_argument("--out", default="data/benchmark")
     r.add_argument("--size", type=float, default=10)
     r.add_argument("--min-coverage", type=float, default=0.5)
+    r.add_argument("--index-lag", type=int, default=10)
     r.add_argument("--venue", default=None, choices=["pmus", "kalshi"], help="defaults to the windows file's venue, else pmus")
     sub.add_parser("selftest")
     a = ap.parse_args()
     if a.cmd == "selftest":
         selftest()
         return
+    INDEX_LAG["s"] = a.index_lag
     blob = json.load(open(a.windows))
     windows = blob["windows"]
     res = run(windows, a.size, a.min_coverage, a.venue or blob.get("venue") or "pmus")

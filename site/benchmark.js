@@ -17,7 +17,8 @@
       if (!r || !cell) return;
       if (!r.trades) { cell.textContent = 'No qualifying trade in ' + j.windows_usable + ' recorded windows'; if (status) status.textContent = 'Measured ' + j.generated.slice(0, 10); return; }
       var net = r.net_per_dollar, cls = net < 0 ? 'loss' : 'win';
-      cell.innerHTML = '<span class="' + cls + '">' + (net >= 0 ? '+' : '−') + Math.abs(net * 100).toFixed(1) + '% per $ staked</span>, ' + Math.round(r.win_rate * 100) + '% winners, ' + r.trades + ' trades, worst run ' + r.worst_losing_run + '; coverage ' + Math.round(r.mean_coverage * 100) + '%';
+      var ci = r.ci95_per_dollar ? ' (95% interval ' + (r.ci95_per_dollar[0] * 100).toFixed(0) + '% to ' + (r.ci95_per_dollar[1] * 100).toFixed(0) + '%)' : '';
+      cell.innerHTML = '<b>' + (r.verdict || '') + '</b>: <span class="' + cls + '">' + (net >= 0 ? '+' : '−') + Math.abs(net * 100).toFixed(1) + '% per $ staked</span>' + ci + ', ' + Math.round(r.win_rate * 100) + '% winners, ' + r.trades + ' trades, worst run ' + r.worst_losing_run + '; coverage ' + Math.round(r.mean_coverage * 100) + '%';
       if (status) status.innerHTML = 'Measured ' + j.generated.slice(0, 10) + ' · <a href="' + DATA + '" rel="noopener">data</a>';
     });
   }).catch(function () {});
