@@ -155,3 +155,20 @@ stated on every row. The accounts at both venues stay open for API keys only; ba
   a badged affiliate, never carries referral codes; referral links live on the site under the disclosure. Category
   economics (iGB Affiliate, Nov 2025): ~$100 CPA or less per new trader, sometimes $5 per $1,000 traded; ask for CPA.
   Drafted both partner applications (marketing/partners.md).
+- 2026-11-08 — Fee schedules verified at the source: Polymarket US (effective 6 Nov 2026) tiers the taker coefficient by
+  30-day volume: 9.5% under $10k (most people), 8.5%, 7.5%, 6.95% above $250k; new accounts 6.95% for days 1–7. A 37%
+  increase for the ordinary account; first Prediction News item (post + thread). Kalshi (7 Jul 2026): taker 7%, maker
+  1.75% on most sports/econ series, crypto minute series maker-free, rounding up to the centicent. All calculators,
+  the simulator and the market pages use the real ladders with a tier selector.
+- 2026-11-08 — "Same money, elsewhere" (Noah's idea, adopted with one line drawn): under True Cost and the simulator, the
+  expected trading result next to the same bankroll in 4-week T-bills and I-bonds (official rates fetched at build
+  time and dated), then honest fast-cash options (no referral codes), then help (1-800-GAMBLER call/text/chat, NCPG
+  state lookup, GA, self-exclusion). No investment affiliate links for now: same conflict as venue referrals plus
+  financial-advertising rules; TreasuryDirect first. Revisit only with a clean partner contract and full disclosure.
+- 2026-11-08 — Learn pages shipped with sources and check dates: Polymarket US fees, Kalshi fees, how 5-minute crypto
+  markets settle, insider trading on prediction markets (2026 cases, pattern-level, names only where a filing exists),
+  what the research says (Hollenbeck/Larsen/Proserpio 2024; NCPG prevalence; wallet-loss analyses). "Is Kalshi safe"
+  and "Can I withdraw" wait for primary sources; no page is better than a wrong one.
+- 2026-11-08 — Deploy path: GitHub Actions builds and publishes to Cloudflare Pages hourly and on push once Noah adds the
+  CLOUDFLARE_API_TOKEN and CLOUDFLARE_ACCOUNT_ID secrets; the Dell is the recorder only (ops/dell runbook ready).
+  Accessibility is a standing check (site/a11y_check.js, 0 axe violations); theme switch System/Dark/Light everywhere.
