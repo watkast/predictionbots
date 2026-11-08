@@ -476,7 +476,7 @@ def build(out: Path, venue: str, max_series: int | None, cache_path: Path | None
                 LOG("nws load failed:", repr(e))
         if SX is not None:
             try:
-                SX.load(h)
+                SX.load(h, cache_path=str(cache_path.parent / "odds.json") if cache_path else None)
             except Exception as e:
                 LOG("odds load failed:", repr(e))
         for rec in kal.values():
@@ -491,6 +491,8 @@ def build(out: Path, venue: str, max_series: int | None, cache_path: Path | None
             except Exception as e:
                 LOG("pmus norm failed", rec.get("ticker"), repr(e))
     n = write(out, series)
+    if SX is not None and SX.GAMES:
+        (out / "odds.json").write_text(json.dumps({"t": SX.LAST_FETCH["t"], "games": SX.GAMES}))
     try:
         (out / "series_meta.json").write_text(json.dumps(SERIES_CACHE))
     except Exception as e:

@@ -31,13 +31,25 @@ def _tokens(team: str) -> set[str]:
     return {t for t in out if len(t) >= 3}
 
 
-def load(http, min_interval_s: int = 0) -> int:
+def load(http, cache_path=None, max_age_s: int = 6 * 3600) -> int:
+    """Use a cached snapshot (from the previous deploy) if it is younger than max_age_s; otherwise fetch and save.
+    Keeps the free tier's 500 requests a month: 8 leagues x 4 fetches a day x 30 days = 960 is the paid tier, so the
+    default leagues list is trimmed to what is in season at deploy time by the API's own empty responses."""
+    import json
+    from pathlib import Path
+    if cache_path and Path(cache_path).exists():
+        try:
+            c = json.loads(Path(cache_path).read_text())
+            if time.time() - float(c.get("t", 0)) < max_age_s and c.get("games"):
+                GAMES[:] = c["games"]; LAST_FETCH["t"] = float(c["t"])
+                LOG(f"odds: {len(GAMES)} games from cache ({(time.time() - LAST_FETCH['t']) / 3600:.1f} h old)")
+                return len(GAMES)
+        except Exception as e:
+            LOG("odds cache unreadable:", repr(e))
     key = os.environ.get("ODDS_API_KEY")
     if not key:
         LOG("odds: no ODDS_API_KEY; sports real-world odds off")
         return 0
-    if time.time() - LAST_FETCH["t"] < min_interval_s:
-        return len(GAMES)
     for sport, label in LEAGUES.items():
         j = http.get(f"https://api.the-odds-api.com/v4/sports/{sport}/odds", {"apiKey": key, "regions": "us", "markets": "h2h", "oddsFormat": "decimal"})
         for ev in (j or []):
@@ -58,7 +70,10 @@ def load(http, min_interval_s: int = 0) -> int:
                 GAMES.append({"league": label, "home": ev.get("home_team"), "away": ev.get("away_team"), "start": ev.get("commence_time"),
                               "probs": {k: sum(v) / len(v) for k, v in per_team.items()}, "books": books})
     LAST_FETCH["t"] = time.time()
-    LOG(f"odds: {len(GAMES)} games with consensus across {len(LEAGUES)} leagues")
+    LOG(f"odds: {len(GAMES)} games with consensus across {len(LEAGUES)} leagues (fresh fetch)")
+    if cache_path:
+        Path(cache_path).parent.mkdir(parents=True, exist_ok=True)
+        Path(cache_path).write_text(json.dumps({"t": LAST_FETCH["t"], "games": GAMES}))
     return len(GAMES)
 
 

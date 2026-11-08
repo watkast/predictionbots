@@ -48,6 +48,7 @@ jobs:
           curl -sSf -o cache/series_meta.json "https://predictionbots.io/markets/series_meta.json" \
             || curl -sSf -o cache/series_meta.json "https://raw.githubusercontent.com/${{ github.repository }}/mrp-data/site-preview/series_meta.json" \
             || echo "{}" > cache/series_meta.json
+          curl -sSf -o cache/odds.json "https://predictionbots.io/markets/odds.json" || true
           echo "cache entries: $(python -c 'import json;print(len(json.load(open("cache/series_meta.json"))))')"
       - name: Generate market pages
         env:
