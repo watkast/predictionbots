@@ -1,5 +1,5 @@
 
-Mr. P — gate report   records=9,701,741  windows=5430  lot=10  errors_logged=183
+Mr. P — gate report   records=9,701,742  windows=5430  lot=10  errors_logged=183
 data: mrp/data   index sources: {'vvv': 'kalshi', 'sui': 'kalshi', 'bnb': 'kalshi', 'xlm': 'kalshi', 'eth': 'kalshi', 'sol': 'kalshi', 'shib': 'kalshi', 'pepeusd_rti': 'kalshi', 'ltc': 'kalshi', 'bch': 'kalshi', 'wld': 'kalshi', 'hype': 'kalshi', 'hbar': 'kalshi', 'link': 'kalshi', 'ada': 'kalshi', 'doge': 'kalshi', 'dot': 'kalshi', 'near': 'kalshi', 'uniusd_rti': 'kalshi', 'aave': 'kalshi', 'xrp': 'kalshi', 'zec': 'kalshi', 'btc': 'kalshi'}
 
 === BTC 5-minute   windows=956   index=kalshi   settlement reproduced 954/954

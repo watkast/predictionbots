@@ -1,11 +1,11 @@
 # Mr. P — gate report
 
-Updated 2026-11-08T21:11:15Z by `run-20261108T1525-42489750389` (last 3 days of data). Read-only recorder — it never places orders.
+Updated 2026-11-08T21:20:22Z by `run-20261108T1525-42489750389` (last 3 days of data). Read-only recorder — it never places orders.
 Kit and docs: `mrp/README.md` on the `mrp` branch. Per-window detail: `mrp/windows.csv`.
 
 ```
 
-Mr. P — gate report   records=9,701,741  windows=5430  lot=10  errors_logged=183
+Mr. P — gate report   records=9,701,742  windows=5430  lot=10  errors_logged=183
 data: mrp/data   index sources: {'vvv': 'kalshi', 'sui': 'kalshi', 'bnb': 'kalshi', 'xlm': 'kalshi', 'eth': 'kalshi', 'sol': 'kalshi', 'shib': 'kalshi', 'pepeusd_rti': 'kalshi', 'ltc': 'kalshi', 'bch': 'kalshi', 'wld': 'kalshi', 'hype': 'kalshi', 'hbar': 'kalshi', 'link': 'kalshi', 'ada': 'kalshi', 'doge': 'kalshi', 'dot': 'kalshi', 'near': 'kalshi', 'uniusd_rti': 'kalshi', 'aave': 'kalshi', 'xrp': 'kalshi', 'zec': 'kalshi', 'btc': 'kalshi'}
 
 === BTC 5-minute   windows=956   index=kalshi   settlement reproduced 954/954
