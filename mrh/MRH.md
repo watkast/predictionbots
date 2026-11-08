@@ -1,6 +1,6 @@
 # Mr. H — Coinbase hopper, PAPER
 
-Updated 2026-11-08T19:40:31Z · scans 467 · universe 112 coins (USD pairs with ≥ $100k 24-h volume) · fees 0.9% taker each way · start $4.00
+Updated 2026-11-08T19:50:31Z · scans 469 · universe 112 coins (USD pairs with ≥ $100k 24-h volume) · fees 0.9% taker each way · start $4.00
 
 ## Books (one position at a time, all-in every hop)
 
@@ -8,7 +8,7 @@ Updated 2026-11-08T19:40:31Z · scans 467 · universe 112 coins (USD pairs with 
 |---|---|---|---|---|---|---|---|---|
 | aggressive | $2.99 | -25.3% | $4.00 | 7 | 29% | -3.74% | $0.469 | DRV-USD @ 0.32104 |
 | standard | $3.30 | -17.6% | $4.00 | 8 | 12% | -2.35% | $0.517 | — |
-| aggressive_swap | $3.54 | -11.6% | $4.02 | 12 | 33% | -0.71% | $0.820 | FORTH-USD @ 0.174 |
+| aggressive_swap | $3.51 | -12.2% | $4.02 | 12 | 33% | -0.71% | $0.820 | FORTH-USD @ 0.174 |
 
 ## Signal forward returns (every signal, whether or not a book took it)
 
