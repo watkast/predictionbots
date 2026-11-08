@@ -118,7 +118,7 @@ def gate(prints: dict[int, float], end: int, ptb: float, book: dict | None, t: f
         return out
     tot = sum(pts)
     proj = (tot + last * (60 - k)) / 60 if k < 60 else tot / 60
-    leader = "UP" if round(proj, 2) >= ptb else "DOWN"
+    leader = "UP" if proj >= ptb else "DOWN"          # no rounding: a 2-decimal round flips the leader on a $1.16 XRP
     if k < 60:
         need_rem_avg = (60 * ptb - tot) / (60 - k)
         margin_bps = abs(need_rem_avg - last) / last * 1e4
@@ -136,7 +136,8 @@ def gate(prints: dict[int, float], end: int, ptb: float, book: dict | None, t: f
     else:
         ask = (1 - book["up_bid"]) if book.get("up_bid") else None
         qty = book.get("up_bid_q", 0)
-    out.update(ask=ask, offered=qty)
+    out.update(ask=ask, offered=qty, book={k_: book.get(k_) for k_ in ("up_ask", "up_ask_q", "up_bid", "up_bid_q")},
+               book_age=round(t - book.get("at", 0), 2))
     if ask is None or ask <= 0:
         out["why"] = "no ask"
         return out
@@ -380,7 +381,8 @@ class Sniper:
                     offers, bids = lv(md.get("offers")), lv(md.get("bids"))
                     b = self.books.setdefault(slug, {})
                     b.update(up_ask=offers[0][0] if offers else None, up_ask_q=offers[0][1] if offers else 0,
-                             up_bid=bids[-1][0] if bids else None, up_bid_q=bids[-1][1] if bids else 0, at=now())
+                             up_bid=bids[-1][0] if bids else None, up_bid_q=bids[-1][1] if bids else 0, at=now(),
+                             raw={"offers": offers[:5], "bids": bids[-5:], "keys": sorted(md.keys())[:12]})
                 ws.on("market_data", on_md)
                 ws.on("market_data_lite", on_md)
                 ws.on("error", lambda e: event(self.out, "book_ws_error", err=str(e)[:200]))
@@ -423,8 +425,11 @@ class Sniper:
                     continue
                 g = gate(self.prints.get(m["sym"], {}), m["end"], m["ptb"], self.books.get(slug), t)
                 if t - self.log_gate_at.get(slug, 0) >= 1.0:          # a readable trace of every final second, fired or not
+                    first = slug not in self.log_gate_at
                     self.log_gate_at[slug] = t
                     event(self.out, "gate", slug=slug, **{k: v for k, v in g.items() if k != "ok"}, ok=g["ok"])
+                    if first and self.books.get(slug, {}).get("raw"):   # once per market: the raw top of book, both sides
+                        event(self.out, "book_raw", slug=slug, rem=g["rem"], **self.books[slug]["raw"])
                 if not g["ok"]:
                     continue
                 self.st["qualified"] += 1
