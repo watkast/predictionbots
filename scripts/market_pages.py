@@ -41,6 +41,10 @@ try:
     import weather_odds as WX
 except Exception:  # pragma: no cover
     WX = None
+try:
+    import sports_odds as SX
+except Exception:  # pragma: no cover
+    SX = None
 KALSHI_TAKER, PMUS_TAKER = 0.07, 0.095   # Polymarket US: Θ for accounts under $10k of 30-day taker volume (schedule of 6 Nov 2026)
 LOG = lambda *a: print(*a, file=sys.stderr)
 
@@ -239,6 +243,8 @@ def norm_kalshi(rec: dict) -> dict:
         real = None
         if WX is not None and rec["ticker"] in WX.STATIONS:
             real = WX.probability(rec["ticker"], m)
+        elif SX is not None and SX.GAMES and (s.get("category") or "").lower() == "sports":
+            real = SX.probability(f'{m.get("title") or ""} {m.get("rules_primary") or ""}', m.get("yes_sub_title") or "")
         rows.append({"title": m.get("title") or m.get("ticker"), "sub": m.get("yes_sub_title") or m.get("subtitle") or "",
                      "p": p, "volume": _num(m.get("volume_fp", m.get("volume")), 0) or 0,
                      "close": m.get("close_time") or m.get("expected_expiration_time") or "", "rules": m.get("rules_primary") or "",
@@ -351,7 +357,7 @@ def render_series(s: dict, built: str) -> str:
     if wx_rows:
         top = wx_rows[0]
         real = pct(top["real"])
-        real_text_wx = f'For the most traded contract ({top["sub"] or top["title"]}): market {pct(top["p"])}, forecast model {pct(top["real"])}. {top["real_why"]}. A gap smaller than the fee is not an edge.'
+        real_text_wx = f'For the most traded contract ({top["sub"] or top["title"]}): market {pct(top["p"])}, independent estimate {pct(top["real"])}. {top["real_why"]}. A gap smaller than the fee is not an edge.'
     real_text = real_text_wx if wx_rows else ("Five-minute and fifteen-minute moves have no measurable predictability; our own 30-day test of the most popular entry rule lost on 76% of trades."
                  if s["crypto_minutes"] else "No independent base rate yet. Until we connect one (sportsbook consensus, forecasts, the score), the market's own price is the best public forecast, and the fee sits on top of it.")
     title = f"{s['title']} on {s['venue_name']}: the odds, the fee, and how much luck you need"
@@ -468,6 +474,11 @@ def build(out: Path, venue: str, max_series: int | None, cache_path: Path | None
                 WX.load(h, [t for t in kal if t in WX.STATIONS])
             except Exception as e:
                 LOG("nws load failed:", repr(e))
+        if SX is not None:
+            try:
+                SX.load(h)
+            except Exception as e:
+                LOG("odds load failed:", repr(e))
         for rec in kal.values():
             try:
                 series.append(norm_kalshi(rec))

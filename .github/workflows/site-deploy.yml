@@ -50,6 +50,8 @@ jobs:
             || echo "{}" > cache/series_meta.json
           echo "cache entries: $(python -c 'import json;print(len(json.load(open("cache/series_meta.json"))))')"
       - name: Generate market pages
+        env:
+          ODDS_API_KEY: ${{ secrets.ODDS_API_KEY }}
         run: |
           MAX="${{ github.event.inputs.max_series || '0' }}"; ARG=""; [ "$MAX" != "0" ] && ARG="--max-series $MAX"
           python scripts/market_pages.py build --out site/dist/markets --venue "${{ github.event.inputs.venue || 'both' }}" --series-cache cache/series_meta.json $ARG 2> gen.log | tee -a "$GITHUB_STEP_SUMMARY"
