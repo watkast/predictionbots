@@ -3,126 +3,234 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>PredictionBots</title>
-<meta name="description" content="Live scanners for Polymarket US and Kalshi that find markets whose outcome is already decided — from a team that publishes every trade, including the losers.">
+<title>PredictionBots — what prediction markets really cost</title>
+<meta name="description" content="Polymarket US and Kalshi, measured: what the fees really cost you, which trading bots actually work, how a market settles, and what we lost finding out. Free, no account, every number linked to its data.">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@400;500;600&family=IBM+Plex+Mono:wght@400&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="/styles.css">
-<meta property="og:title" content="PredictionBots — the outcome is settled; the price isn't">
-<meta property="og:description" content="Scanners for decided markets, final-second candidates and cross-venue locks on Polymarket US and Kalshi. Every trade published.">
+<meta property="og:title" content="PredictionBots — see the odds before you throw">
+<meta property="og:description" content="Most people lose money on Polymarket and Kalshi. We measure exactly how: fees, bots, settlement, and our own losses. Free, no account.">
+<meta property="og:image" content="/posts/img/free-money-snapshot-vs-live.png">
+<script type="application/ld+json">
+{"@context":"https://schema.org","@type":"Organization","name":"PredictionBots","url":"https://predictionbots.io","description":"Independent measurement of prediction markets: fees, bot benchmarks, settlement mechanics and published research, for Polymarket US and Kalshi.","sameAs":["https://github.com/watkast/predictionbots"]}
+</script>
 </head>
 <body>
 <div class="wrap">
   <header class="top">
     <a class="brand" href="/">PredictionBots</a>
     <nav>
-      <a href="#ledger">Live ledger</a>
-      <a href="#terminal">Terminal</a>
+      <a href="#truecost">True Cost</a>
+      <a href="#benchmark">Bot benchmark</a>
       <a href="#research">Research</a>
-      <a href="https://github.com/watkast/predictionbots">GitHub</a>
+      <a href="#ledger">Our ledger</a>
+      <a href="#data">Data</a>
+      <a href="#honest">How we're paid</a>
     </nav>
   </header>
 
   <div class="hero">
-    <h1>The outcome is settled. The price isn't.</h1>
-    <p class="lede">Scanners for Polymarket US and Kalshi that find markets whose result is already decided by the rules — a game that ended, a settlement average that has locked — while the order book still says otherwise. Built by a team that publishes every trade, including the losing ones.</p>
-    <a class="cta" href="#waitlist">Join the waitlist</a>
+    <h1>See the odds before you throw.</h1>
+    <p class="lede">Most people lose money on Polymarket and Kalshi. We measure exactly how: what the fees really cost you, which trading bots actually work, how a market settles, and what we lost finding out. Free, no account, every number linked to its data.</p>
+    <div class="ctas"><a class="cta" href="#truecost">What will this cost me?</a><a class="cta ghost" href="#benchmark">Is this bot legit?</a></div>
+    <ul class="marks">
+      <li>We don't trade. We did, lost, and published it</li>
+      <li>No ad networks, no money from bot vendors</li>
+      <li>Every number links to its data and code</li>
+    </ul>
   </div>
 
-  <section id="ledger">
-    <h2>Every trade our bots make, as it settles</h2>
-    <p class="sub">Read straight from the bots' public logs on GitHub, refreshed every five minutes. Red rows are included on purpose: this is the record we make decisions from, not a highlight reel.</p>
-    <div class="ledger-sum" id="ledger-sum"></div>
-    <div class="ledger-wrap">
-      <table class="ledger" aria-describedby="ledger-note">
-        <thead><tr><th>Settled</th><th>Bot</th><th>Market</th><th>Side</th><th class="num">In</th><th class="num">Out</th><th class="num">Net</th><th>Why it closed</th></tr></thead>
-        <tbody id="ledger-body"><tr><td colspan="8">Loading the latest trades…</td></tr></tbody>
-      </table>
+  <section id="truecost">
+    <h2>True Cost: what the hoop really is</h2>
+    <p class="sub">Prediction markets are zero-sum before fees and negative-sum after. Pick a venue, a price and how often you trade. The fee comes from the venue's own formula; everything else is arithmetic you can check.</p>
+    <div class="calc">
+      <form class="calc-in" onsubmit="return false">
+        <label>Venue<select id="tc-venue"><option value="kalshi">Kalshi</option><option value="pmus">Polymarket US</option></select></label>
+        <label>Contract price (¢)<input id="tc-price" type="number" min="1" max="99" value="50" inputmode="numeric"></label>
+        <label>Size per trade ($)<input id="tc-size" type="number" min="1" value="50" inputmode="decimal"></label>
+        <label>Trades per week<input id="tc-week" type="number" min="0" value="20" inputmode="numeric"></label>
+        <label>Bankroll ($)<input id="tc-bank" type="number" min="1" value="500" inputmode="decimal"></label>
+        <label class="check"><input id="tc-hold" type="checkbox" checked> I hold to settlement (one fee, not two)</label>
+      </form>
+      <div class="calc-out">
+        <div class="kpis">
+          <div class="kpi"><div class="k">Fee per trade</div><div class="v" id="tc-fee">—</div><div class="s" id="tc-fee-sub"></div></div>
+          <div class="kpi"><div class="k">Expected result per month, no edge</div><div class="v loss" id="tc-month">—</div><div class="s" id="tc-month-sub"></div></div>
+          <div class="kpi"><div class="k">Bankroll gone in</div><div class="v" id="tc-ruin">—</div><div class="s" id="tc-ruin-sub"></div></div>
+          <div class="kpi"><div class="k">A 5-loss streak this month</div><div class="v" id="tc-streak">—</div><div class="s" id="tc-streak-sub"></div></div>
+        </div>
+        <p class="calc-note">To break even you need to be right <b id="tc-be">—</b>. On-chain studies put the share of wallets that lose money at about 84%.</p>
+        <div class="calc-actions"><button type="button" class="btn" id="tc-share">Copy this result</button><a href="/posts/2026-11-08-free-money-that-wasnt.html">How settlement really works →</a></div>
+      </div>
     </div>
-    <p class="ledger-note" id="ledger-note">Mr H hops between spiking coins on Coinbase with maker orders (a deliberately small lottery ticket — <a href="/posts/2026-11-08-we-bought-the-pump-candle.html">here is why</a>). Mr T buys the already-decided side of Polymarket US crypto markets in their final seconds. Source files: <code>mrh-live/live_trades.jsonl</code> and <code>mrt/trades.jsonl</code> in the repo's data branches.</p>
+    <p class="fine">Kalshi: 7% × contracts × price × (1 − price), rounded up to the cent, on most markets. Polymarket US: 6.95% × price × (1 − price) per share for orders that take liquidity; resting orders pay nothing. "No edge" means your win rate equals the price, which is what the market is telling you it is. Sources: the venues' published fee schedules, linked from our <a href="https://github.com/watkast/predictionbots">repo</a>.</p>
   </section>
 
-  <section id="terminal">
-    <h2>What the terminal watches</h2>
-    <p class="sub">Three kinds of moments where the rules have decided and the price has not caught up. Each one is small — tens to hundreds of contracts — which is why nobody with real size bothers, and why they exist.</p>
-    <div class="scan">
-      <div>
-        <h3>Decided games</h3>
-        <p>A first-half total already exceeded, a game already over, a market still quoting. Scores from the feeds, settlement rules from the venue, and a check that both venues agree before anything is flagged.</p>
-        <div class="ex">Kalshi MLS 1H total, 2 goals scored by the 40th minute, "over 1.5" still offered at 94¢.</div>
+  <section id="deal">
+    <h2>Here's the deal, if you still want to play</h2>
+    <p class="sub">Both venues run new-player bonuses, and both pay publishers when a new account signs up through their links. Below is exactly what happens, in order. If you're trading money you need this month, close this tab.</p>
+    <div class="deals">
+      <div class="deal">
+        <div class="deal-h"><h3>Kalshi</h3><span>Trade $25, get $25 in credit</span></div>
+        <ol>
+          <li>You open an account: name, address, date of birth, ID check. 18+, not in AZ, MN, NV or WA.</li>
+          <li>You deposit (no minimum) and trade $25 in contracts within 90 days.</li>
+          <li>Kalshi gives you $25 of trading credit. You cannot withdraw it; you have to trade it.</li>
+          <li>Trading the $50 as 50¢ contracts costs about <b>$1.75</b> in fees each way, before anyone wins or loses.</li>
+          <li><b>We are not paid for this link yet.</b> If Kalshi approves us as a partner, the rate appears here the day they tell us.</li>
+        </ol>
+        <a class="btn dark" href="https://kalshi.com" rel="nofollow noopener">Open Kalshi</a>
       </div>
-      <div>
-        <h3>The last seconds</h3>
-        <p>Crypto Up/Down markets settle on a 60-second index average. With three seconds left the average has locked, and the winning side is still offered below $1 in roughly 4% of windows. Our recorder measured 168 of them in four days.</p>
-        <div class="ex">BTC 5-minute, 3 s left, running average 2.1 bps above the strike, "Up" offered at 73¢ × 384.</div>
-      </div>
-      <div>
-        <h3>Cross-venue locks</h3>
-        <p>The same contract on Polymarket US and Kalshi, priced apart by more than both fees. They last seconds; the scanner records every one, how long it lasted and how deep it was.</p>
-        <div class="ex">ETH 15-minute, Kalshi bid 0.999 for the leader, Polymarket offer 0.95 — 4.6¢ after fees, 5 seconds.</div>
+      <div class="deal">
+        <div class="deal-h"><h3>Polymarket US</h3><span>Deposit $10, get a $25 bonus</span></div>
+        <ol>
+          <li>You open an account with a photo ID and a selfie. 18+, not in Nevada. A promo code cannot be added later.</li>
+          <li>You deposit at least $10 and place one real-money trade.</li>
+          <li>You get a $25 bonus. It has to be traded once before it can be withdrawn.</li>
+          <li>Taker fees are about <b>1.7¢ a share</b> at 50¢; resting orders are free.</li>
+          <li><b>We are not paid for this link yet.</b> If Polymarket approves us as a partner, the rate appears here the day they tell us.</li>
+        </ol>
+        <a class="btn dark" href="https://polymarket.us" rel="nofollow noopener">Open Polymarket US</a>
       </div>
     </div>
+    <p class="fine">Offer terms are the venues' and change without telling us; last checked 8 November 2026 against the venues' own promotion pages and the terms published by their partners. Problem gambling help: 1-800-GAMBLER.</p>
+  </section>
+
+  <section id="benchmark">
+    <h2>Bot benchmark: is this bot legit?</h2>
+    <p class="sub">About 115 trading bots are sold for Polymarket and Kalshi. Every review site we found is run by a vendor, and no one measures results. We run each bot's published rule on paper against recorded order books for 30 days and publish the number, the sample size and the data file. Vendors get an unedited reply under their row.</p>
+    <div class="ledger-wrap">
+      <table class="ledger cells">
+        <thead><tr><th>Bot</th><th>What it claims</th><th>Price</th><th>Custody</th><th>Our 30-day paper result</th><th>Status</th></tr></thead>
+        <tbody>
+          <tr><td>Our own Mr H (buy the spike)</td><td>Buy a 5-minute spike, trail a stop</td><td>Free, open source</td><td>Your machine</td><td class="loss">−1.86% a trade, 24% winners (1,172 signals)</td><td><a href="/posts/2026-11-08-we-bought-the-pump-candle.html">Published</a></td></tr>
+          <tr><td>Our own Mr T (final seconds)</td><td>Buy the decided side in the last 5 s</td><td>Free, open source</td><td>Your machine</td><td class="loss">0 fills possible in 368 windows</td><td><a href="/posts/2026-11-08-free-money-that-wasnt.html">Published</a></td></tr>
+          <tr><td>PolymTradeBot</td><td>Momentum on BTC/ETH 5- and 15-minute markets</td><td>$499 once</td><td>Non-custodial</td><td>—</td><td>Queued</td></tr>
+          <tr><td>Turbine (standard rule)</td><td>Buy at 45¢, sell at 70¢ on BTC 15-minute</td><td>$99 to $199 a month</td><td>Hosted, your key</td><td>—</td><td>Queued</td></tr>
+          <tr><td>AstroTick (open source)</td><td>Fee-aware Kalshi BTC 15-minute bot</td><td>Free</td><td>Your machine</td><td>—</td><td>Queued</td></tr>
+          <tr><td>Copy-trading bots (4 vendors)</td><td>Copy a named wallet</td><td>0.25% to 1% a trade</td><td>Varies</td><td>—</td><td>Method in design</td></tr>
+          <tr><td>Cross-venue arbitrage scanners</td><td>100+ arbs a day, 2 to 8% spreads</td><td>From $59 a month</td><td>Scanner only</td><td>—</td><td>Queued</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <p class="fine">A dash means not measured yet, never "zero". How we test: the vendor's published rule, our recorded books, fees at the venue's real rate, fills only where the book showed size, and the coverage of our recording stated on the row. We make nothing from any bot on this list. Vendors: publish your rule and write to benchmark@predictionbots.io; we never need your code or your keys.</p>
   </section>
 
   <section id="research">
-    <h2>Research</h2>
-    <p class="sub">Measured, with the code to check it. We publish what did not work as readily as what did.</p>
+    <h2>Research: measured, with the code to check it</h2>
+    <p class="sub">We publish what did not work as readily as what did.</p>
     <ul class="posts">
+      <li>
+        <div class="when">8 November 2026</div>
+        <h3><a href="/posts/2026-11-08-free-money-that-wasnt.html">We found free money in our own data. Then we tested it live.</a></h3>
+        <p>192 "cheap winners" in the final seconds of Polymarket US crypto markets. With a live order book, the winning side was bid at 99¢ by the thousand and never offered. Where the mirage came from, with the raw books and the bug that fooled us twice.</p>
+      </li>
       <li>
         <div class="when">8 November 2026</div>
         <h3><a href="/posts/2026-11-08-we-bought-the-pump-candle.html">We bought the pump candle 1,172 times. Here is what 30 days of Coinbase data says.</a></h3>
         <p>24% winners, −1.86% a trade, and a median path that goes down the moment you buy. The signal is a coin flip; fees decide the sign. Plus the one green cell in the grid.</p>
       </li>
       <li>
-        <div class="when">Coming next</div>
-        <h3>The last three seconds</h3>
-        <p>Four days of Polymarket US crypto markets recorded at one-second resolution: where the winning side is still cheap after the result is decided, and what happened when we tried to trade it.</p>
+        <div class="when">Next</div>
+        <h3>The bot market: 115 products, zero independent tests</h3>
+        <p>Who sells bots, how they charge, who got hacked, and why every review site is run by a vendor.</p>
+      </li>
+      <li>
+        <div class="when">Building</div>
+        <h3>A page for every market, and a floor to argue on</h3>
+        <p>One page per market on both venues with the premise in plain words, the market price next to the real-world odds, the fee at that price and a luck-needed meter. Under each one, a two-sided thread. Sign-in will be one tap; reading never needs an account.</p>
       </li>
     </ul>
   </section>
 
-  <section id="pricing">
-    <h2>Pricing</h2>
-    <p class="sub">Free while we are proving it in public. Paid tiers open to the waitlist first.</p>
-    <div class="offers">
-      <div class="offer">
-        <p class="price">$49 <small>a month — $29 for the first fifty, kept for life</small></p>
-        <p>The terminal: live scanners, alerts to Telegram or email, the cockpit for working a market by hand, and the research archive.</p>
+  <section id="ledger">
+    <h2>Our ledger: we played too</h2>
+    <p class="sub">From 2 to 8 November 2026 our bots traded real money at tiny size to test ideas. Every trade is below, read from the bots' public log files on GitHub. We stopped on 8 November when the last idea failed its live test. The record stays up because it is the point.</p>
+    <div class="ledger-sum" id="ledger-sum"></div>
+    <div class="ledger-wrap">
+      <table class="ledger" aria-describedby="ledger-note">
+        <thead><tr><th>Settled</th><th>Bot</th><th>Market</th><th>Side</th><th class="num">In</th><th class="num">Out</th><th class="num">Net</th><th>Why it closed</th></tr></thead>
+        <tbody id="ledger-body"><tr><td colspan="8">Loading the record…</td></tr></tbody>
+      </table>
+    </div>
+    <p class="ledger-note" id="ledger-note">Three ideas, three posts: buying the spike (lost), the final seconds (a mirage), decided games (shelved; it would only move money from slower players). Source files: <code>mrh-live/live_trades.jsonl</code> and <code>mrt/trades.jsonl</code> in the repo's data branches.</p>
+  </section>
+
+  <section id="data">
+    <h2>Data for people who check things</h2>
+    <p class="sub">Our recorder stores one-second order books and index prints for every short crypto market on Polymarket US and Kalshi, with the settlement for each. Journalists and academics: write to us. Builders and agents: the API answers per call in USDC, no account, no key.</p>
+    <div class="ledger-wrap">
+      <table class="ledger cells">
+        <thead><tr><th>Endpoint</th><th>What you get</th><th>Updates</th><th class="num">Price per call</th></tr></thead>
+        <tbody>
+          <tr><td><code>GET /v1/preview</code></td><td>The last 3 settlement windows with their final books, 10 minutes delayed</td><td>Every 5 minutes</td><td class="num">Free</td></tr>
+          <tr><td><code>GET /v1/final-seconds/recent</code></td><td>The last 200 settlement windows with every book reading</td><td>Every 5 minutes</td><td class="num">$0.002</td></tr>
+          <tr><td><code>GET /v1/final-seconds/stats</code></td><td>How efficient the book is in the final seconds, by coin, horizon and hour</td><td>Every 5 minutes</td><td class="num">$0.002</td></tr>
+          <tr><td>Dataset licence</td><td>Full recorder history with settlement records, for research or reporting</td><td>Daily</td><td class="num">Ask</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <p class="fine">The API goes live with the home server this week. We do not resell the venues' order books; we sell what we measure from them, cited to the venue. hello@predictionbots.io</p>
+  </section>
+
+  <section id="honest">
+    <h2>How we make money, and what we will not do</h2>
+    <div class="two">
+      <div>
+        <h3>We make money from</h3>
         <ul>
-          <li>Decided games, final seconds and cross-venue locks, as they appear</li>
-          <li>Every alert with the evidence that produced it</li>
-          <li>Export of anything you see</li>
+          <li>Referral payments from Kalshi and Polymarket US when you open an account through us, with the terms above the button. Current rate: not yet approved; posted here the day it is.</li>
+          <li>Members ($8 a month, opening soon): the data files early, the methods, a monthly measured report. Everything on the site stays free.</li>
+          <li>One sponsor slot, labeled. Never a bot vendor, never a venue we measure.</li>
+          <li>Data licences and per-call API fees.</li>
+          <li>Nothing else. If that changes, this list changes first.</li>
         </ul>
       </div>
-      <div class="offer">
-        <p class="price">From $0.002 <small>a call, paid per request</small></p>
-        <p>The same feeds as an API for your own bots, paid in USDC over x402 — no account, no key, your agent pays per call.</p>
+      <div>
+        <h3>We will not</h3>
         <ul>
-          <li>Final-second candidates, decided markets, lock history</li>
-          <li>Free preview endpoint for testing</li>
+          <li>Trade. We stopped on 8 November 2026 and the record is above</li>
+          <li>Hold your keys, your wallet or your money</li>
+          <li>Take a cut of your trades, or money from any bot vendor</li>
+          <li>Run ad networks, or sell your data or your email</li>
+          <li>Show a venue's offer without the fees and the odds next to it</li>
+          <li>Promise a return. Most prediction-market traders lose money; so did we</li>
         </ul>
       </div>
     </div>
   </section>
 
+  <section id="faq">
+    <h2>Plain answers</h2>
+    <div class="two faq">
+      <div><h3>Are you telling me not to trade?</h3><p>We're telling you what it costs and how often people win. Most lose. If you still want to, the deal section shows exactly what happens, including whether we get paid.</p></div>
+      <div><h3>You plan to take referral money. Why trust you?</h3><p>Because the fees and the odds sit above every button, the rate we're paid is published, and the block disappears before the warning ever would. Members and data buyers pay us to keep it that way.</p></div>
+      <div><h3>Did your own bots make money?</h3><p>No. The ledger is the real record: we lost a little, learned three things, published all three, and stopped.</p></div>
+      <div><h3>Which venues?</h3><p>Polymarket US and Kalshi, the two US-regulated exchanges. Not the international Polymarket book.</p></div>
+      <div><h3>Can I check your numbers?</h3><p>Yes. Every post links its data file and script, every ledger row comes from a public log line, every fee figure follows the venue's schedule, and the code is public on GitHub.</p></div>
+      <div><h3>Is this financial advice?</h3><p>No. It is a record of what rules say, what markets showed, and what fees cost. You make your own decisions.</p></div>
+    </div>
+  </section>
+
   <section id="waitlist">
-    <h2>Waitlist</h2>
-    <p class="sub">One email when the terminal opens, and the research posts as they publish. Nothing else.</p>
+    <h2>Get the measurements</h2>
+    <p class="sub">Research posts and new benchmark rows as they publish. Nothing else, and you can leave with one click.</p>
     <form class="wait" id="wait-form" action="/api/waitlist" method="post">
-      <label for="email" class="sr-only" style="position:absolute;left:-9999px">Email</label>
+      <label for="email" style="position:absolute;left:-9999px">Email</label>
       <input type="email" id="email" name="email" placeholder="you@example.com" required autocomplete="email">
-      <button type="submit">Join the waitlist</button>
+      <button type="submit">Send me the posts</button>
     </form>
     <div class="wait-msg" id="wait-msg"></div>
   </section>
 
   <footer>
-    <p>PredictionBots builds research tools and publishes its own trading records. Nothing on this site is investment advice; prediction markets and crypto involve risk of loss, and most participants lose money.</p>
-    <p>Code and data: <a href="https://github.com/watkast/predictionbots">github.com/watkast/predictionbots</a></p>
+    <p>PredictionBots measures prediction markets and publishes its own record. Nothing on this site is investment advice. Prediction markets and crypto involve risk of loss, and most participants lose money. If gambling is a problem for you or someone you know, call 1-800-GAMBLER.</p>
+    <p>Code and data: <a href="https://github.com/watkast/predictionbots">github.com/watkast/predictionbots</a> · hello@predictionbots.io</p>
   </footer>
 </div>
 <script src="/ledger.js" defer></script>
+<script src="/truecost.js" defer></script>
 <script>
 (function () {
   var f = document.getElementById('wait-form'), m = document.getElementById('wait-msg');

@@ -54,7 +54,7 @@ def build():
     if DIST.exists():
         shutil.rmtree(DIST)
     DIST.mkdir()
-    for f in ("index.html", "styles.css", "ledger.js"):
+    for f in ("index.html", "styles.css", "ledger.js", "truecost.js"):
         shutil.copy(ROOT / f, DIST / f)
     shutil.copytree(ROOT / "functions", DIST / "functions")
     (DIST / "posts").mkdir()
