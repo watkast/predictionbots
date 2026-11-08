@@ -50420,7 +50420,8 @@
 "slug": "cpc-btc-updown-15m-2026-11-08-0230z",
 "window_start": 1794105000,
 "checks": [],
-"entry": null
+"entry": null,
+"settled": "no_entry"
 },
 "cpc-btc-updown-15m-2026-11-08-0245z": {
 "slug": "cpc-btc-updown-15m-2026-11-08-0245z",
@@ -50430,6 +50431,13 @@
 "at": 120,
 "t": 160.29,
 "latency_s": 0.03,
+"ok": false,
+"tries": 9
+},
+{
+"at": 180,
+"t": 220.27,
+"latency_s": 0.037,
 "ok": false,
 "tries": 9
 }
