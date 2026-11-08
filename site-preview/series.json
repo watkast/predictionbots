@@ -190,13 +190,6 @@
 },
 {
 "venue": "kalshi",
-"slug": "kxbtc15m",
-"title": "BTC 15 min",
-"category": "Crypto",
-"open": 1
-},
-{
-"venue": "kalshi",
 "slug": "kxaaagasw",
 "title": "US gas price up",
 "category": "Economics",
@@ -659,13 +652,6 @@
 },
 {
 "venue": "kalshi",
-"slug": "kxwt20match",
-"title": "Women's T20 Match",
-"category": "Sports",
-"open": 58
-},
-{
-"venue": "kalshi",
 "slug": "kxatpchallengermatch",
 "title": "Challenger ATP ",
 "category": "Sports",
@@ -939,13 +925,6 @@
 },
 {
 "venue": "kalshi",
-"slug": "kxdoge15m",
-"title": "DOGE 15 min",
-"category": "Crypto",
-"open": 1
-},
-{
-"venue": "kalshi",
 "slug": "kxhormuznorm",
 "title": "When will traffic at the Strait of Hormuz return to normal?",
 "category": "Politics",
@@ -992,13 +971,6 @@
 "title": "NASCAR Auto Parts Series Champion",
 "category": "Sports",
 "open": 40
-},
-{
-"venue": "kalshi",
-"slug": "kxeth15m",
-"title": "ETH 15 min",
-"category": "Crypto",
-"open": 1
 },
 {
 "venue": "kalshi",
@@ -1152,13 +1124,6 @@
 "slug": "kxcawealthtax",
 "title": "Will the California billionaire wealth tax initiative pass?",
 "category": "Elections",
-"open": 1
-},
-{
-"venue": "kalshi",
-"slug": "kxxrp15m",
-"title": "XRP 15 min",
-"category": "Crypto",
 "open": 1
 },
 {
@@ -1597,13 +1562,6 @@
 },
 {
 "venue": "kalshi",
-"slug": "kxsol15m",
-"title": "SOL 15 min",
-"category": "Crypto",
-"open": 1
-},
-{
-"venue": "kalshi",
 "slug": "kxcpiyoy",
 "title": "Inflation",
 "category": "Economics",
@@ -1643,13 +1601,6 @@
 "title": "Number of rate cuts",
 "category": "Economics",
 "open": 21
-},
-{
-"venue": "kalshi",
-"slug": "kxhype15m",
-"title": "HYPE 15 min",
-"category": "Crypto",
-"open": 1
 },
 {
 "venue": "kalshi",
@@ -2619,13 +2570,6 @@
 },
 {
 "venue": "kalshi",
-"slug": "kxbnb15m",
-"title": "BNB 15 min",
-"category": "Crypto",
-"open": 1
-},
-{
-"venue": "kalshi",
 "slug": "kxsrbsltotal",
 "title": "Point Total",
 "category": "Sports",
@@ -3053,13 +2997,6 @@
 },
 {
 "venue": "kalshi",
-"slug": "kxzec15m",
-"title": "Zcash 15min",
-"category": "Crypto",
-"open": 1
-},
-{
-"venue": "kalshi",
 "slug": "kxhunnb1game",
 "title": "Hungarian NB I Game",
 "category": "Sports",
@@ -3309,6 +3246,13 @@
 "title": "Nevada Governor None of These Candidates vote share",
 "category": "Elections",
 "open": 9
+},
+{
+"venue": "kalshi",
+"slug": "kxwt20match",
+"title": "Women's T20 Match",
+"category": "Sports",
+"open": 56
 },
 {
 "venue": "kalshi",
@@ -3564,13 +3508,6 @@
 },
 {
 "venue": "kalshi",
-"slug": "kxnear15m",
-"title": "NEAR 15m",
-"category": "Crypto",
-"open": 1
-},
-{
-"venue": "kalshi",
 "slug": "kxsrbslgame",
 "title": "Serbian SuperLiga Game",
 "category": "Sports",
@@ -3641,13 +3578,6 @@
 },
 {
 "venue": "kalshi",
-"slug": "kxdpwt3ball",
-"title": "DPWT 3-Ball",
-"category": "Sports",
-"open": 48
-},
-{
-"venue": "kalshi",
 "slug": "kxncaaffcs",
 "title": "College Football FCS Champion",
 "category": "Sports",
@@ -3659,6 +3589,13 @@
 "title": "Senate HELP Committee ranking member",
 "category": "Politics",
 "open": 5
+},
+{
+"venue": "kalshi",
+"slug": "kxdpwt3ball",
+"title": "DPWT 3-Ball",
+"category": "Sports",
+"open": 45
 },
 {
 "venue": "kalshi",
@@ -8447,13 +8384,6 @@
 "title": "NBA Player Triple Double",
 "category": "Sports",
 "open": 23
-},
-{
-"venue": "kalshi",
-"slug": "kxcryptolead15m",
-"title": "Coin Race 15 minutes",
-"category": "Crypto",
-"open": 5
 },
 {
 "venue": "kalshi",
@@ -13248,7 +13178,7 @@
 "slug": "kxnba3ptprot",
 "title": "NBA Player Threes Protected",
 "category": "Sports",
-"open": 322
+"open": 323
 },
 {
 "venue": "kalshi",
@@ -18740,6 +18670,20 @@
 },
 {
 "venue": "kalshi",
+"slug": "kxnbaastprot",
+"title": "NBA Player Assists Protected",
+"category": "Sports",
+"open": 238
+},
+{
+"venue": "kalshi",
+"slug": "kxnbarebprot",
+"title": "NBA Player Rebounds Protected",
+"category": "Sports",
+"open": 292
+},
+{
+"venue": "kalshi",
 "slug": "kxnbaptsleader",
 "title": "NBA Game Points Leader",
 "category": "Sports",
@@ -18750,14 +18694,7 @@
 "slug": "kxnbapraprot",
 "title": "Pts + Reb + Ast Protected",
 "category": "Sports",
-"open": 145
-},
-{
-"venue": "kalshi",
-"slug": "kxnbaastprot",
-"title": "NBA Player Assists Protected",
-"category": "Sports",
-"open": 206
+"open": 160
 },
 {
 "venue": "kalshi",
@@ -18807,13 +18744,6 @@
 "title": "LNB Elite Total",
 "category": "Sports",
 "open": 11
-},
-{
-"venue": "kalshi",
-"slug": "kxnbarebprot",
-"title": "NBA Player Rebounds Protected",
-"category": "Sports",
-"open": 241
 },
 {
 "venue": "kalshi",
@@ -19230,10 +19160,80 @@
 },
 {
 "venue": "kalshi",
+"slug": "kxnear15m",
+"title": "NEAR 15m",
+"category": "Crypto",
+"open": 1
+},
+{
+"venue": "kalshi",
+"slug": "kxzec15m",
+"title": "Zcash 15min",
+"category": "Crypto",
+"open": 1
+},
+{
+"venue": "kalshi",
+"slug": "kxhype15m",
+"title": "HYPE 15 min",
+"category": "Crypto",
+"open": 1
+},
+{
+"venue": "kalshi",
+"slug": "kxdoge15m",
+"title": "DOGE 15 min",
+"category": "Crypto",
+"open": 1
+},
+{
+"venue": "kalshi",
+"slug": "kxbnb15m",
+"title": "BNB 15 min",
+"category": "Crypto",
+"open": 1
+},
+{
+"venue": "kalshi",
+"slug": "kxxrp15m",
+"title": "XRP 15 min",
+"category": "Crypto",
+"open": 1
+},
+{
+"venue": "kalshi",
+"slug": "kxsol15m",
+"title": "SOL 15 min",
+"category": "Crypto",
+"open": 1
+},
+{
+"venue": "kalshi",
 "slug": "kxligaportugal1hbtts",
 "title": "1st Half BTTS",
 "category": "Sports",
 "open": 6
+},
+{
+"venue": "kalshi",
+"slug": "kxeth15m",
+"title": "ETH 15 min",
+"category": "Crypto",
+"open": 1
+},
+{
+"venue": "kalshi",
+"slug": "kxbtc15m",
+"title": "BTC 15 min",
+"category": "Crypto",
+"open": 1
+},
+{
+"venue": "kalshi",
+"slug": "kxcryptolead15m",
+"title": "Coin Race 15 minutes",
+"category": "Crypto",
+"open": 5
 },
 {
 "venue": "kalshi",
@@ -33506,7 +33506,7 @@
 "slug": "astatc-nba-uta-min",
 "title": "Will Keyonte George record at least 10 points in UTA Jazz vs. MIN Timberwolves",
 "category": "Sports",
-"open": 218
+"open": 219
 },
 {
 "venue": "pmus",
@@ -34063,6 +34063,13 @@
 },
 {
 "venue": "pmus",
+"slug": "astatc-nhl-phi-cgy",
+"title": "Will the NHL hockey game between Flyers and Flames on 2026-11-08 go into Overtime",
+"category": "Sports",
+"open": 114
+},
+{
+"venue": "pmus",
 "slug": "astatc-nhl-fla-bos",
 "title": "Will the NHL hockey game between Panthers and Bruins on 2026-11-08 go into Overtime",
 "category": "Sports",
@@ -34081,13 +34088,6 @@
 "title": "Bijan Robinson Regular Season Rushing Yards",
 "category": "Sports",
 "open": 110
-},
-{
-"venue": "pmus",
-"slug": "astatc-nhl-phi-cgy",
-"title": "Will the NHL hockey game between Flyers and Flames on 2026-11-08 go into Overtime",
-"category": "Sports",
-"open": 106
 },
 {
 "venue": "pmus",
@@ -50660,20 +50660,6 @@
 },
 {
 "venue": "pmus",
-"slug": "atc-kl1-gwo-jeo",
-"title": "Will Gangwon FC win against Jeonbuk Hyundai Motors FC in the K League 1 match scheduled for Nov 8, 2026",
-"category": "Sports",
-"open": 3
-},
-{
-"venue": "pmus",
-"slug": "atc-csl-yun-wsz",
-"title": "Will Yunnan Yukun FC win against Wuhan San Zhen FC in the CSL match scheduled for Nov 8, 2026",
-"category": "Sports",
-"open": 3
-},
-{
-"venue": "pmus",
 "slug": "atc-rpl-kss-ore",
 "title": "Will PFK Krylia Sovetov Samara win against FK Orenburg in the RPL match scheduled for Nov 8, 2026",
 "category": "Sports",
@@ -52629,13 +52615,6 @@
 "venue": "pmus",
 "slug": "atc-uwcl-slb-fka",
 "title": "Will Sport Lisboa e Benfica win against FK Austria Wien in the UWCL match scheduled for Nov 11, 2026",
-"category": "Sports",
-"open": 3
-},
-{
-"venue": "pmus",
-"slug": "astatc-setkameua-gazole-paldmy",
-"title": "Will Gazhula Oleksii win set 1 against Palii Dmytro",
 "category": "Sports",
 "open": 3
 },
@@ -55693,13 +55672,6 @@
 },
 {
 "venue": "pmus",
-"slug": "astatc-setkameua-necvol-zaiboh",
-"title": "Will Nechai Volodymyr win set 2 against Zaika Bohdan",
-"category": "Sports",
-"open": 2
-},
-{
-"venue": "pmus",
 "slug": "tsc-setkameua-necvol-zaiboh",
 "title": "Will the total in Nechai Volodymyr vs. Zaika Bohdan be more than 3.5",
 "category": "Sports",
@@ -56150,6 +56122,13 @@
 "venue": "pmus",
 "slug": "astatc-cs2-yub-9ine",
 "title": "Will 6yuBoJlbl win Map 1 vs 9INE",
+"category": "Sports",
+"open": 2
+},
+{
+"venue": "pmus",
+"slug": "astatc-setkameua-gazole-paldmy",
+"title": "Will Gazhula Oleksii win set 2 against Palii Dmytro",
 "category": "Sports",
 "open": 2
 },
@@ -82314,27 +82293,6 @@
 },
 {
 "venue": "pmus",
-"slug": "aec-czechligapro-id2503634976537084",
-"title": "Who will win in the upcoming table-tennis event Richard Skacelik vs Samuel Byrtus scheduled for November 8, 2026 at 9:00 AM UTC",
-"category": "Sports",
-"open": 1
-},
-{
-"venue": "pmus",
-"slug": "aec-czechligapro-id2503634976537096",
-"title": "Who will win in the upcoming table-tennis event David Barton vs Martin Tacinec scheduled for November 8, 2026 at 9:00 AM UTC",
-"category": "Sports",
-"open": 1
-},
-{
-"venue": "pmus",
-"slug": "aec-czechligapro-id2503634976537098",
-"title": "Who will win in the upcoming table-tennis event Roman Guliak vs Filip Zurek scheduled for November 8, 2026 at 9:00 AM UTC",
-"category": "Sports",
-"open": 1
-},
-{
-"venue": "pmus",
 "slug": "aec-atp-jayfri-yuskus",
 "title": "Jay Friend vs Yusuke Kusuhara (atp), November 9",
 "category": "Sports",
@@ -82603,13 +82561,6 @@
 "venue": "pmus",
 "slug": "aec-utr-kovdav-hompat",
 "title": "David Kovarik vs Patrik Homola (tennis), November 8",
-"category": "Sports",
-"open": 1
-},
-{
-"venue": "pmus",
-"slug": "aec-utr-sabmat-saalee",
-"title": "Matej Sabanov vs Leevi Saatela (tennis), November 8",
 "category": "Sports",
 "open": 1
 },
@@ -83821,13 +83772,6 @@
 "venue": "pmus",
 "slug": "aec-itfme-evgtiu-egokho",
 "title": "Evgenii Tiurnev vs Egor Khotchenkov (tennis), November 8",
-"category": "Sports",
-"open": 1
-},
-{
-"venue": "pmus",
-"slug": "aec-itfme-rarpoi-utkbib",
-"title": "Rares Ioan Poiana vs Utku Kerem Biberli (tennis), November 8",
 "category": "Sports",
 "open": 1
 },
@@ -86241,6 +86185,13 @@
 },
 {
 "venue": "pmus",
+"slug": "astatc-setkameua-necvol-zaiboh",
+"title": "Will Nechai Volodymyr win set 3 against Zaika Bohdan",
+"category": "Sports",
+"open": 1
+},
+{
+"venue": "pmus",
 "slug": "aec-setkameua-necvol-popedu",
 "title": "Who will win in the upcoming table-tennis event Nechai Volodymyr vs Populovskyi Eduard scheduled for November 8, 2026 at 10:50 AM UTC",
 "category": "Sports",
@@ -88208,27 +88159,6 @@
 },
 {
 "venue": "pmus",
-"slug": "btc-updown-5m",
-"title": "BTC Up or Down, 5 minutes",
-"category": "Crypto",
-"open": 1
-},
-{
-"venue": "pmus",
-"slug": "xrp-updown-5m",
-"title": "XRP Up or Down, 5 minutes",
-"category": "Crypto",
-"open": 1
-},
-{
-"venue": "pmus",
-"slug": "eth-updown-5m",
-"title": "ETH Up or Down, 5 minutes",
-"category": "Crypto",
-"open": 1
-},
-{
-"venue": "pmus",
 "slug": "sol-updown-15m",
 "title": "SOL Up or Down, 15 minutes",
 "category": "Crypto",
@@ -88243,15 +88173,22 @@
 },
 {
 "venue": "pmus",
-"slug": "xrp-updown-15m",
-"title": "XRP Up or Down, 15 minutes",
+"slug": "eth-updown-15m",
+"title": "ETH Up or Down, 15 minutes",
 "category": "Crypto",
 "open": 1
 },
 {
 "venue": "pmus",
-"slug": "eth-updown-15m",
-"title": "ETH Up or Down, 15 minutes",
+"slug": "eth-updown-5m",
+"title": "ETH Up or Down, 5 minutes",
+"category": "Crypto",
+"open": 1
+},
+{
+"venue": "pmus",
+"slug": "btc-updown-5m",
+"title": "BTC Up or Down, 5 minutes",
 "category": "Crypto",
 "open": 1
 },
@@ -88351,6 +88288,20 @@
 "slug": "aec-atp-thiwil-camcar",
 "title": "Thiago Seyboth Wild vs Camilo Ugo Carabelli (atp), November 8",
 "category": "Sports",
+"open": 1
+},
+{
+"venue": "pmus",
+"slug": "xrp-updown-15m",
+"title": "XRP Up or Down, 15 minutes",
+"category": "Crypto",
+"open": 1
+},
+{
+"venue": "pmus",
+"slug": "xrp-updown-5m",
+"title": "XRP Up or Down, 5 minutes",
+"category": "Crypto",
 "open": 1
 },
 {
@@ -91689,6 +91640,27 @@
 "venue": "pmus",
 "slug": "aec-atp-samzie-chafer",
 "title": "Sam Ryan Ziegann vs Chase Ferguson (atp), November 9",
+"category": "Sports",
+"open": 1
+},
+{
+"venue": "pmus",
+"slug": "aec-cs2-goth-tlr",
+"title": "Gothic vs The Last Resort (esports), November 8",
+"category": "Sports",
+"open": 1
+},
+{
+"venue": "pmus",
+"slug": "aec-cs2-mouz-g2",
+"title": "MOUZ vs G2 (esports), November 11",
+"category": "Sports",
+"open": 1
+},
+{
+"venue": "pmus",
+"slug": "aec-atp-maxhou-tomgen",
+"title": "Max Houkes vs Tom Gentzsch (atp), November 9",
 "category": "Sports",
 "open": 1
 }
