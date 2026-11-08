@@ -172,3 +172,11 @@ stated on every row. The accounts at both venues stay open for API keys only; ba
 - 2026-11-08 — Deploy path: GitHub Actions builds and publishes to Cloudflare Pages hourly and on push once Noah adds the
   CLOUDFLARE_API_TOKEN and CLOUDFLARE_ACCOUNT_ID secrets; the Dell is the recorder only (ops/dell runbook ready).
   Accessibility is a standing check (site/a11y_check.js, 0 axe violations); theme switch System/Dark/Light everywhere.
+- 2026-11-08 — First Bot Benchmark row measured: the retail "buy ≤45¢, sell 70¢" rule on 689 recorded BTC 15m windows
+  lost 9.0% of stake (fees 73% of the loss); control −21% (BTC drift); AstroTick rule fired 4 times. Turbine turned out
+  to be a bot-builder platform, so the row carries no vendor name; its reference bot is queued. Post 3 written.
+- 2026-11-08 — Name: moving off "PredictionBots". Noah's pick PredictMeNot (homage to RetailMeNot, where he was the 30th
+  employee in 2009); fallbacks PredictNothing, LuckTax, PriceOfLuck. Rules: the homage lives in Noah's bio only, never in
+  marketing copy; stance line "We don't predict. We measure." Rename everything in one pass once the domain is bought.
+- 2026-11-08 — Prediction News v0 on the home page from site/data/news.json (5 sourced items); Endorsement Ledger page
+  rendered from site/data/ledger.json (6 sourced entries), noindex and unlinked until Noah switches it on.
