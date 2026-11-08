@@ -346,6 +346,31 @@ def switch_on() -> bool:
     return on
 
 
+PM_HT = ("HT", "HALFTIME", "HALF_TIME", "HALF TIME", "BREAK")
+
+
+def pm_fill_h1(pe: dict, mem: dict):
+    """Polymarket's feed often has no per-half scores for MLS: remember its score at half-time and add 1H/2H rows."""
+    ps = pe.get("periodScores") or []
+    if any(str(x.get("label", "")).upper() in ("1H", "H1", "FIRST_HALF", "1") for x in ps):
+        return
+    teams = pe.get("teams") or []
+    sc = re.match(r"^\s*(\d+)\s*-\s*(\d+)", str(pe.get("score") or ""))
+    if len(teams) < 2 or not sc:
+        return
+    tot = (int(sc.group(1)), int(sc.group(2)))
+    key = "pm:" + str(pe.get("slug"))
+    per = str(pe.get("period") or "").upper()
+    if per in PM_HT:
+        mem[key] = tot
+    h1 = mem.get(key)
+    if h1 is None or per in ("1H", "H1", "FIRST_HALF", "") or tot[0] < h1[0] or tot[1] < h1[1]:
+        return
+    ids = [str(teams[0]["id"]), str(teams[1]["id"])]
+    pe["periodScores"] = [{"label": "1H", "scores": [{"competitorId": ids[i], "score": h1[i]} for i in (0, 1)]}] + \
+        ([] if per in PM_HT else [{"label": "2H", "scores": [{"competitorId": ids[i], "score": tot[i] - h1[i]} for i in (0, 1)]}])
+
+
 def open_risk(st: dict) -> float:
     return sum(t["cost"] for t in st["trades"] if t["live"] and t.get("result") is None)
 
@@ -441,7 +466,7 @@ def report(st: dict, info: dict):
         done = [t for t in tr if t.get("pnl") is not None]
         pnl = sum(t["pnl"] for t in done)
         w = sum(1 for t in done if t["pnl"] > 0)
-        L += [f"## {'Real money' if live else 'Shadow (paper, other leagues)'}",
+        L += [f"## {'Real money' if live else 'Shadow (paper: other leagues, and MLS while the switch is off)'}",
               f"{len(tr)} buys · {len(done)} settled · {w} right / {len(done) - w} wrong · P&L **${pnl:+.2f}** · "
               f"open ${sum(t['cost'] for t in tr if t.get('result') is None):.2f}", ""]
         if tr:
@@ -559,6 +584,7 @@ def main():
                 if pe is not None:
                     info["pmatched"] += 1
                     p2 = dict(pe, sport="soccer")
+                    pm_fill_h1(p2, ht_mem)
                     gp = D.build_game(p2, ages_p.age(pe["slug"], (pe.get("score"),)))
                 # Kalshi markets for this game
                 kms = []
@@ -587,7 +613,14 @@ def main():
                         if dp is not None and dp.yes != de.yes and not str(st["blocked"].get(km["t"], "")).startswith("Polymarket"):
                             log("disagree", ticker=km["t"], espn=eg["score"], pm=pe and pe.get("score"), espn_dec=de.reason,
                                 pm_dec=dp.reason)
-                        st["blocked"][km["t"]] = "Polymarket does not confirm" if gp else "no Polymarket twin"
+                        if gp is None:
+                            msg = "no Polymarket twin"
+                        else:
+                            msg = (f"Polymarket does not confirm: PM {pe.get('score')} {gp.period} halves="
+                                   f"{[lab for lab, _ in gp.per]} totals={gp.totals} dec={dp.reason if dp else None}")
+                        if st["blocked"].get(km["t"]) != msg:
+                            log("pm_block", ticker=km["t"], msg=msg, espn=f"{eg['score']} {eg['period']} h1={eg['h1']}")
+                        st["blocked"][km["t"]] = msg
                         continue
                     need = SETTLE_H1_S if (kind.startswith("h1") and eg["period"] in ("HT", "2H", "FT", "ET")
                                            and str(gp.period).upper() in D.AFTER_FIRST_HALF) else SETTLE_S
@@ -595,16 +628,21 @@ def main():
                         st["blocked"][km["t"]] = f"settling ({int(min(ge.score_age_s, gp.score_age_s))}s)"
                         continue
                     info["agreed"] += 1
-                    if any(t["ticker"] == km["t"] and t["filled"] > 0 for t in st["trades"]):
+                    live = eg["league"] in LIVE_LEAGUES and not dry
+                    if any(t["ticker"] == km["t"] and t["filled"] > 0 and (t["live"] or not live) for t in st["trades"]):
                         continue
                     if any(t["ticker"] == km["t"] and now() - t["t"] < 60 for t in st["trades"]):
                         continue
-                    live = eg["league"] in LIVE_LEAGUES and not dry
+                    tag = ""
                     if live and (st["halted"] or not info.get("switch")):
-                        st["blocked"][km["t"]] = "halted" if st["halted"] else "switch off"
-                        continue
+                        # switch off / halted: no order, but still read the book and log the would-have trade as paper
+                        tag = "[halted] " if st["halted"] else "[switch off] "
+                        st["blocked"][km["t"]] = tag.strip("[] ")
+                        live = False
+                        if any(t["ticker"] == km["t"] and t["filled"] > 0 for t in st["trades"]):
+                            continue
                     buy(st, {"ticker": km["t"], "yes": de.yes, "game": eg["slug"], "league": eg["league"], "kind": kind,
-                             "why": f"{de.reason} | ESPN {eg['score']} {eg['period']} | PM {pe.get('score')} {pe.get('period')}"},
+                             "why": f"{tag}{de.reason} | ESPN {eg['score']} {eg['period']} | PM {pe.get('score')} {pe.get('period')}"},
                         live, dry)
             if now() - last["settle"] > 120:
                 settle(st)
