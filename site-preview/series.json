@@ -127,13 +127,6 @@
 },
 {
 "venue": "kalshi",
-"slug": "kxitfmatch",
-"title": "ITF Men's Match",
-"category": "Sports",
-"open": 72
-},
-{
-"venue": "kalshi",
 "slug": "kxsb",
 "title": "Super Bowl",
 "category": "Sports",
@@ -292,6 +285,13 @@
 "title": "Democratic Senate seats (higher strikes)",
 "category": "Elections",
 "open": 7
+},
+{
+"venue": "kalshi",
+"slug": "kxitfmatch",
+"title": "ITF Men's Match",
+"category": "Sports",
+"open": 70
 },
 {
 "venue": "kalshi",
@@ -4383,13 +4383,6 @@
 },
 {
 "venue": "kalshi",
-"slug": "kxesoccergame",
-"title": "eSoccer Game",
-"category": "Sports",
-"open": 156
-},
-{
-"venue": "kalshi",
 "slug": "kxallsvenskanspread",
 "title": "Spread",
 "category": "Sports",
@@ -4561,7 +4554,7 @@
 "slug": "kxnbaast",
 "title": "NBA Player Assists",
 "category": "Sports",
-"open": 149
+"open": 168
 },
 {
 "venue": "kalshi",
@@ -5226,7 +5219,7 @@
 "slug": "kxbslspread",
 "title": "Turkey BSL Spread",
 "category": "Sports",
-"open": 24
+"open": 36
 },
 {
 "venue": "kalshi",
@@ -5688,7 +5681,7 @@
 "slug": "kxacbtotal",
 "title": "Spain Liga ACB Total",
 "category": "Sports",
-"open": 33
+"open": 55
 },
 {
 "venue": "kalshi",
@@ -5842,7 +5835,7 @@
 "slug": "kxacbspread",
 "title": "Spain Liga ACB Spread",
 "category": "Sports",
-"open": 36
+"open": 60
 },
 {
 "venue": "kalshi",
@@ -6781,13 +6774,6 @@
 "title": "Kash Patel out as FBI Director?",
 "category": "Politics",
 "open": 8
-},
-{
-"venue": "kalshi",
-"slug": "kxk2leaguebtts",
-"title": "BTTS",
-"category": "Sports",
-"open": 1
 },
 {
 "venue": "kalshi",
@@ -7872,7 +7858,7 @@
 "slug": "kxbsltotal",
 "title": "Turkey BSL Total",
 "category": "Sports",
-"open": 22
+"open": 33
 },
 {
 "venue": "kalshi",
@@ -8292,7 +8278,7 @@
 "slug": "kxnba2d",
 "title": "NBA Player Double Double",
 "category": "Sports",
-"open": 26
+"open": 31
 },
 {
 "venue": "kalshi",
@@ -8390,7 +8376,7 @@
 "slug": "kxnba3d",
 "title": "NBA Player Triple Double",
 "category": "Sports",
-"open": 14
+"open": 17
 },
 {
 "venue": "kalshi",
@@ -8398,6 +8384,13 @@
 "title": "Men's College Basketball 1st Half Total",
 "category": "Sports",
 "open": 39
+},
+{
+"venue": "kalshi",
+"slug": "kxesoccergame",
+"title": "eSoccer Game",
+"category": "Sports",
+"open": 153
 },
 {
 "venue": "kalshi",
@@ -11834,7 +11827,7 @@
 "slug": "kxnbapra",
 "title": "NBA Player Points + Rebounds + Assists",
 "category": "Sports",
-"open": 121
+"open": 136
 },
 {
 "venue": "kalshi",
@@ -17455,7 +17448,7 @@
 "slug": "kxnbastl",
 "title": "NBA Player Steals",
 "category": "Sports",
-"open": 41
+"open": 52
 },
 {
 "venue": "kalshi",
@@ -18719,6 +18712,48 @@
 },
 {
 "venue": "kalshi",
+"slug": "kxslbtotal",
+"title": "England Super League Basketball Total",
+"category": "Sports",
+"open": 11
+},
+{
+"venue": "kalshi",
+"slug": "kxslbspread",
+"title": "England Super League Basketball Spread",
+"category": "Sports",
+"open": 12
+},
+{
+"venue": "kalshi",
+"slug": "kxbbltotal",
+"title": "Germany BBL Total",
+"category": "Sports",
+"open": 36
+},
+{
+"venue": "kalshi",
+"slug": "kxbblspread",
+"title": "Germany BBL Spread",
+"category": "Sports",
+"open": 36
+},
+{
+"venue": "kalshi",
+"slug": "kxnbastock",
+"title": "NBA Player Steals + Blocks",
+"category": "Sports",
+"open": 8
+},
+{
+"venue": "kalshi",
+"slug": "kxnbablk",
+"title": "NBA Player Blocks",
+"category": "Sports",
+"open": 24
+},
+{
+"venue": "kalshi",
 "slug": "kxnbapraprot",
 "title": "Pts + Reb + Ast Protected",
 "category": "Sports",
@@ -18842,20 +18877,6 @@
 "title": "COD Map Winner",
 "category": "Sports",
 "open": 12
-},
-{
-"venue": "kalshi",
-"slug": "kxnbastock",
-"title": "NBA Player Steals + Blocks",
-"category": "Sports",
-"open": 5
-},
-{
-"venue": "kalshi",
-"slug": "kxnbablk",
-"title": "NBA Player Blocks",
-"category": "Sports",
-"open": 16
 },
 {
 "venue": "kalshi",
@@ -52648,13 +52669,6 @@
 },
 {
 "venue": "pmus",
-"slug": "astatc-setkameua-giltar-kuzvol",
-"title": "Will Gil Taras win set 1 against Kuzmych Volodymyr",
-"category": "Sports",
-"open": 3
-},
-{
-"venue": "pmus",
 "slug": "astatc-setkameua-lazrus-shyant",
 "title": "Will Lazebnyi Ruslan win set 1 against Shypilov Anton",
 "category": "Sports",
@@ -53350,13 +53364,6 @@
 "venue": "pmus",
 "slug": "astatc-setkamemd-yavole-scovla",
 "title": "Will Yavorskiy Oleksandr win set 1 against Scofari Vladimir",
-"category": "Sports",
-"open": 3
-},
-{
-"venue": "pmus",
-"slug": "astatc-setkamecz-kantom-bridav",
-"title": "Will Kanka Tomas win set 1 against Brichacek David",
 "category": "Sports",
 "open": 3
 },
@@ -55763,13 +55770,6 @@
 },
 {
 "venue": "pmus",
-"slug": "astatc-setkamecz-hanjos-tumlad",
-"title": "Will Hanacek Josef win set 3 against Tuma Ladislav",
-"category": "Sports",
-"open": 2
-},
-{
-"venue": "pmus",
 "slug": "tsc-setkamecz-hanjos-tumlad",
 "title": "Will the total in Hanacek Josef vs. Tuma Ladislav be more than 3.5",
 "category": "Sports",
@@ -56241,6 +56241,13 @@
 "venue": "pmus",
 "slug": "astatc-cs2-yub-9ine",
 "title": "Will 6yuBoJlbl win Map 1 vs 9INE",
+"category": "Sports",
+"open": 2
+},
+{
+"venue": "pmus",
+"slug": "astatc-setkameua-giltar-kuzvol",
+"title": "Will Gil Taras win set 2 against Kuzmych Volodymyr",
 "category": "Sports",
 "open": 2
 },
@@ -56976,6 +56983,13 @@
 "venue": "pmus",
 "slug": "tsc-setkamemd-yavole-scovla",
 "title": "Will the total in Yavorskiy Oleksandr vs. Scofari Vladimir be more than 3.5",
+"category": "Sports",
+"open": 2
+},
+{
+"venue": "pmus",
+"slug": "astatc-setkamecz-kantom-bridav",
+"title": "Will Kanka Tomas win set 2 against Brichacek David",
 "category": "Sports",
 "open": 2
 },
@@ -92025,6 +92039,13 @@
 "venue": "pmus",
 "slug": "aec-atp-samzie-chafer",
 "title": "Who will win in the upcoming atp event Sam Ryan Ziegann vs Chase Ferguson scheduled for November 9, 2026 at 1:10 AM UTC",
+"category": "Sports",
+"open": 1
+},
+{
+"venue": "pmus",
+"slug": "astatc-setkamecz-hanjos-tumlad",
+"title": "Will Hanacek Josef win set 4 against Tuma Ladislav",
 "category": "Sports",
 "open": 1
 }
