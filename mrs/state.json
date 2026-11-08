@@ -1201,8 +1201,8 @@
   "KXLIGAMXTOTAL-26NOV07TIGCRA-7": "no asks (already repriced)",
   "KXLIGAMXTOTAL-26NOV07TIGCRA-6": "no asks (already repriced)",
   "KXSUPERLIGTOTAL-26NOV08RIZERZ-1": "settling (7s)",
-  "KXSUPERLIGTOTAL-26NOV08RIZERZ-2": "settling (182s)",
-  "KXSUPERLIGBTTS-26NOV08RIZERZ-BTTS": "settling (182s)"
+  "KXSUPERLIGTOTAL-26NOV08RIZERZ-2": "no asks (already repriced)",
+  "KXSUPERLIGBTTS-26NOV08RIZERZ-BTTS": "no asks (already repriced)"
  },
  "started": 1793687692.6057825,
  "ht": {
@@ -1563,6 +1563,10 @@
    1
   ],
   "401876904": [
+   1,
+   1
+  ],
+  "401888253": [
    1,
    1
   ]
