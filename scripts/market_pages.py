@@ -35,6 +35,7 @@ except Exception:  # selftest without httpx
 KALSHI = "https://external-api.kalshi.com/trade-api/v2"
 PMUS = "https://gateway.polymarket.us"
 SITE = "https://predictionbots.io"
+SERIES_CACHE: dict[str, dict] = {}
 KALSHI_TAKER, PMUS_TAKER = 0.07, 0.095   # Polymarket US: Θ for accounts under $10k of 30-day taker volume (schedule of 6 Nov 2026)
 LOG = lambda *a: print(*a, file=sys.stderr)
 
@@ -79,17 +80,23 @@ def cents(p: float) -> str:
 
 # ----------------------------------------------------------------------------- fetch
 class Http:
-    def __init__(self, pace: float = 0.25):
+    def __init__(self, pace: float = 0.15):
+        import threading
         self.c = httpx.Client(timeout=30, headers={"User-Agent": "predictionbots-market-pages/1.0 (+https://predictionbots.io)"})
         self.pace = pace
         self.last = 0.0
+        self.lock = threading.Lock()
 
-    def get(self, url: str, params=None, tries: int = 3):
-        for i in range(tries):
+    def _wait(self):
+        with self.lock:
             dt = time.time() - self.last
             if dt < self.pace:
                 time.sleep(self.pace - dt)
             self.last = time.time()
+
+    def get(self, url: str, params=None, tries: int = 3):
+        for i in range(tries):
+            self._wait()
             try:
                 r = self.c.get(url, params=params)
                 if r.status_code == 200:
@@ -150,16 +157,33 @@ def fetch_kalshi(h: Http, max_series: int | None) -> dict[str, dict]:
     tickers = sorted(by_series, key=lambda t: -sum(_num(x.get("volume_24h_fp", x.get("volume_24h")), 0) or 0 for x in by_series[t]["markets"]))
     if max_series:
         tickers = tickers[:max_series]
-    out = {}
-    for i, t in enumerate(tickers):
+    cache = dict(SERIES_CACHE)
+    todo = [t for t in tickers if t not in cache]
+    LOG(f"kalshi: {len(tickers)} series, {len(todo)} to fetch ({len(tickers) - len(todo)} cached)")
+    # parallel series lookups behind one shared pace (the Http client serialises on self.pace)
+    from concurrent.futures import ThreadPoolExecutor
+    import threading
+    lock = threading.Lock()
+    done = [0]
+
+    def one(t):
         s = h.get(f"{KALSHI}/series/{t}")
         s = (s or {}).get("series", s) or {}
+        with lock:
+            cache[t] = s
+            done[0] += 1
+            if done[0] % 200 == 0:
+                LOG(f"  kalshi series {done[0]}/{len(todo)}")
+    with ThreadPoolExecutor(max_workers=6) as ex:
+        list(ex.map(one, todo))
+    SERIES_CACHE.clear()
+    SERIES_CACHE.update(cache)
+    out = {}
+    for t in tickers:
         rec = by_series[t]
-        rec["series"] = s
+        rec["series"] = cache.get(t) or {}
         rec["ticker"] = t
         out[t] = rec
-        if i % 100 == 0:
-            LOG(f"  kalshi series {i}/{len(tickers)}")
     return out
 
 
@@ -394,9 +418,15 @@ def sitemap(urls: list[str], built_iso: str) -> str:
 
 
 # ----------------------------------------------------------------------------- main
-def build(out: Path, venue: str, max_series: int | None) -> int:
+def build(out: Path, venue: str, max_series: int | None, cache_path: Path | None = None) -> int:
     h = Http()
     series: list[dict] = []
+    if cache_path and cache_path.exists():
+        try:
+            SERIES_CACHE.update(json.loads(cache_path.read_text()))
+            LOG(f"series cache: {len(SERIES_CACHE)} entries from {cache_path}")
+        except Exception as e:
+            LOG("series cache unreadable:", repr(e))
     if venue in ("kalshi", "both"):
         for rec in fetch_kalshi(h, max_series).values():
             try:
@@ -409,7 +439,12 @@ def build(out: Path, venue: str, max_series: int | None) -> int:
                 series.append(norm_pmus(rec))
             except Exception as e:
                 LOG("pmus norm failed", rec.get("ticker"), repr(e))
-    return write(out, series)
+    n = write(out, series)
+    try:
+        (out / "series_meta.json").write_text(json.dumps(SERIES_CACHE))
+    except Exception as e:
+        LOG("series cache not written:", repr(e))
+    return n
 
 
 def write(out: Path, series: list[dict]) -> int:
@@ -464,12 +499,13 @@ def main() -> None:
     b.add_argument("--out", default="site/dist/markets")
     b.add_argument("--venue", default="both", choices=["kalshi", "pmus", "both"])
     b.add_argument("--max-series", type=int, default=None)
+    b.add_argument("--series-cache", default=None, help="JSON of {series_ticker: series} from a previous run")
     sub.add_parser("selftest")
     a = ap.parse_args()
     if a.cmd == "selftest":
         selftest()
     else:
-        n = build(Path(a.out), a.venue, a.max_series)
+        n = build(Path(a.out), a.venue, a.max_series, Path(a.series_cache) if a.series_cache else None)
         print(f"{n} series pages")
 
 

@@ -42,10 +42,17 @@ jobs:
         run: python scripts/rates.py || true
       - name: Build the site
         run: python site/build.py
+      - name: Series metadata cache from the last run
+        run: |
+          mkdir -p cache
+          curl -sSf -o cache/series_meta.json "https://predictionbots.io/markets/series_meta.json" \
+            || curl -sSf -o cache/series_meta.json "https://raw.githubusercontent.com/${{ github.repository }}/mrp-data/site-preview/series_meta.json" \
+            || echo "{}" > cache/series_meta.json
+          echo "cache entries: $(python -c 'import json;print(len(json.load(open("cache/series_meta.json"))))')"
       - name: Generate market pages
         run: |
           MAX="${{ github.event.inputs.max_series || '0' }}"; ARG=""; [ "$MAX" != "0" ] && ARG="--max-series $MAX"
-          python scripts/market_pages.py build --out site/dist/markets --venue "${{ github.event.inputs.venue || 'both' }}" $ARG 2> gen.log | tee -a "$GITHUB_STEP_SUMMARY"
+          python scripts/market_pages.py build --out site/dist/markets --venue "${{ github.event.inputs.venue || 'both' }}" --series-cache cache/series_meta.json $ARG 2> gen.log | tee -a "$GITHUB_STEP_SUMMARY"
           tail -40 gen.log
           echo "pages: $(find site/dist/markets -name index.html | wc -l)" | tee -a "$GITHUB_STEP_SUMMARY"
       - uses: actions/upload-artifact@v4
@@ -70,7 +77,7 @@ jobs:
             git fetch -q --filter=blob:none --depth 1 origin mrp-data && git checkout -q -B mrp-data FETCH_HEAD
             rm -rf site-preview && mkdir -p site-preview/samples
             cp "$GITHUB_WORKSPACE"/site/dist/markets/index.html "$GITHUB_WORKSPACE"/site/dist/markets/series.json "$GITHUB_WORKSPACE"/site/dist/sitemap.xml site-preview/ 2>/dev/null || true
-            cp "$GITHUB_WORKSPACE"/gen.log site-preview/gen.log; cp "$GITHUB_WORKSPACE"/site/data/rates.json site-preview/rates.json
+            cp "$GITHUB_WORKSPACE"/gen.log site-preview/gen.log; cp "$GITHUB_WORKSPACE"/site/data/rates.json site-preview/rates.json; cp "$GITHUB_WORKSPACE"/site/dist/markets/series_meta.json site-preview/series_meta.json 2>/dev/null || true
             find "$GITHUB_WORKSPACE"/site/dist/markets -mindepth 3 -name index.html | head -8 | while read f; do d=$(basename $(dirname "$f")); cp "$f" "site-preview/samples/$d.html"; done
             git add -A site-preview
             git commit -qm "site-preview $(date -u +%FT%TZ)" || { echo "nothing new"; exit 0; }
