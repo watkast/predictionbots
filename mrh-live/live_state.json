@@ -9,8 +9,8 @@
  "hops_by_day": {
   "2026-11-07": 6
  },
- "cycles": 295,
- "halted": null,
+ "cycles": 296,
+ "halted": "floor: $0.00 < $1.20",
  "universe": [
   {
    "id": "BTC-USD",
@@ -1394,14 +1394,14 @@
   }
  },
  "last": {
-  "t": "2026-11-08T01:20:15Z",
-  "usd": 7.2317,
-  "total": 7.2317,
+  "t": "2026-11-08T01:25:15Z",
+  "usd": 0.0017,
+  "total": 0.0017,
   "pos": null,
   "entry": null
  },
  "entry": null,
  "pending_sig": null,
- "flows": 0.0,
+ "flows": -7.23,
  "last_trade_t": null
 }
