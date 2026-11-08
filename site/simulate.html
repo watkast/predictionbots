@@ -1,0 +1,108 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>How long until your balance is $0 in this market? — PredictionBots</title>
+<meta name="description" content="Enter your balance, your stake and your pace. Watch a few hundred simulated careers play through a Polymarket US or Kalshi market at the market's own odds, with the venue's fees, and see when the money runs out.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@400;500;600&family=IBM+Plex+Mono:wght@400&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="/styles.css">
+<meta property="og:title" content="How long until your balance is $0 in this market?">
+<meta property="og:description" content="A few hundred simulated careers in one prediction market, at the market's own odds, with the venue's fees. Your balance, your stake, your pace.">
+<script type="application/ld+json">
+{"@context":"https://schema.org","@type":"FAQPage","mainEntity":[
+ {"@type":"Question","name":"How long until my balance is $0 in a prediction market?","acceptedAnswer":{"@type":"Answer","text":"With no edge, your win rate equals the market price, so each trade's expected result is minus the fee. Time to zero depends on your stake relative to your balance and the fee at the price you trade; this tool simulates it for Polymarket US and Kalshi using their published fee formulas."}},
+ {"@type":"Question","name":"What is the fee on Kalshi and Polymarket US?","acceptedAnswer":{"@type":"Answer","text":"Kalshi charges 7% × contracts × price × (1 − price), rounded up to the cent, on most markets. Polymarket US charges 6.95% × price × (1 − price) per share on orders that take liquidity; resting orders pay nothing."}},
+ {"@type":"Question","name":"Does doubling my stake after a loss help?","acceptedAnswer":{"@type":"Answer","text":"No. Doubling after a loss (a martingale) does not change the expected result of any trade; it concentrates the losses into fewer, larger ones and reaches $0 sooner. The tool lets you switch it on to see the difference."}}
+]}
+</script>
+<style>
+.sim { display: grid; grid-template-columns: minmax(230px, 0.8fr) minmax(0, 2fr); gap: 24px; }
+.sim-in { display: flex; flex-direction: column; gap: 12px; background: var(--paper-2); border: 1px solid var(--rule); border-radius: 8px; padding: 18px; align-self: start; }
+.sim-in label { display: flex; flex-direction: column; gap: 4px; font-size: 14px; color: var(--ink-2); }
+.sim-in label.check { flex-direction: row; align-items: center; gap: 8px; color: var(--ink); font-size: 15px; }
+.sim-in input, .sim-in select { font: inherit; padding: 9px 11px; border: 1px solid var(--rule); border-radius: 6px; background: var(--paper); color: var(--ink); width: 100%; }
+.sim-in input[type=checkbox], .sim-in input[type=range] { width: auto; padding: 0; border: 0; background: none; }
+.sim-in input[type=range] { width: 100%; }
+.sim-in .out { font-size: 14px; color: var(--ink); }
+.sim-out { display: flex; flex-direction: column; gap: 12px; min-width: 0; }
+.sim-head { font-size: clamp(22px, 3vw, 30px); font-weight: 600; letter-spacing: -0.02em; margin: 0; }
+.sim-sub { margin: 0; color: var(--ink-2); }
+.sim-chart { position: relative; background: var(--paper-2); border: 1px solid var(--rule); border-radius: 8px; padding: 8px; }
+.sim-tip { position: absolute; pointer-events: none; background: var(--ink); color: var(--paper); font-size: 13px; line-height: 1.45; padding: 8px 10px; border-radius: 6px; max-width: 280px; z-index: 2; }
+.sim-legend { display: flex; gap: 18px; flex-wrap: wrap; font-size: 13px; color: var(--ink-2); }
+.sim-legend i { display: inline-block; width: 18px; height: 3px; vertical-align: middle; margin-right: 6px; border-radius: 2px; }
+.sim-stats { display: flex; gap: 22px; flex-wrap: wrap; font-size: 15px; color: var(--ink-2); }
+.sim-stats b { color: var(--ink); }
+.sim-narr { display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 12px; }
+.sim-narr .ev { background: var(--paper-2); border: 1px solid var(--rule); border-left: 3px solid var(--loss); border-radius: 8px; padding: 12px 14px; font-size: 15px; }
+.sim-narr .ev b { display: block; margin-bottom: 4px; }
+.sim-narr .ev p { margin: 0; color: var(--ink-2); }
+.sim-actions { display: flex; gap: 12px; flex-wrap: wrap; align-items: center; }
+@media (max-width: 760px) { .sim { grid-template-columns: 1fr; } }
+</style>
+</head>
+<body>
+<div class="wrap">
+  <header class="top">
+    <a class="brand" href="/">PredictionBots</a>
+    <nav>
+      <a href="/#truecost">True Cost</a>
+      <a href="/#benchmark">Bot benchmark</a>
+      <a href="/#research">Research</a>
+      <a href="/#ledger">Our ledger</a>
+      <a href="/#honest">How we're paid</a>
+    </nav>
+  </header>
+
+  <div class="hero" style="padding-bottom: 12px">
+    <h1 style="max-width: 22ch">How long until your balance is $0 in this market?</h1>
+    <p class="lede">Enter what you'd start with, how much you'd put on each trade and how often you'd play. We run a few hundred careers through the market at its own odds, with the venue's fees charged on every trade, and play the typical one forward. The red line is one real simulated career; the blue band is where 80% of them landed.</p>
+  </div>
+
+  <section style="border-top: 0; padding-top: 10px">
+    <div class="sim">
+      <form class="sim-in" onsubmit="return false">
+        <label>Venue<select id="sm-venue"><option value="kalshi">Kalshi</option><option value="pmus">Polymarket US</option></select></label>
+        <label>Contract price (¢)<input id="sm-price" type="number" min="1" max="99" value="50" inputmode="numeric"></label>
+        <label>Stake per trade ($)<input id="sm-stake" type="number" min="1" value="20" inputmode="decimal"></label>
+        <label>Trades per week<input id="sm-week" type="number" min="1" value="20" inputmode="numeric"></label>
+        <label>Starting balance ($)<input id="sm-bank" type="number" min="1" value="500" inputmode="decimal"></label>
+        <label>Your real win rate <span class="out" id="sm-edge-out"></span><input id="sm-edge" type="range" min="-10" max="10" step="1" value="0"></label>
+        <label class="check"><input id="sm-martingale" type="checkbox"> Double my stake after a loss (don't)</label>
+        <label class="check"><input id="sm-chase" type="checkbox"> Raise my stake 50% after a loss (also don't)</label>
+        <div class="sim-actions"><button type="button" class="btn dark" id="sm-play">Play a typical career</button><button type="button" class="btn" id="sm-share">Copy this result</button></div>
+      </form>
+      <div class="sim-out">
+        <h2 class="sim-head" id="sm-head">Running…</h2>
+        <p class="sim-sub" id="sm-sub"></p>
+        <div class="sim-chart"><div id="sm-chart"></div><div class="sim-tip" id="sm-tip" hidden></div></div>
+        <div class="sim-legend"><span><i style="background:#c8402f"></i>one typical career</span><span><i style="background:#2448c9"></i>median of 300 careers</span><span><i style="background:#2448c9;opacity:.25;height:10px"></i>where 80% of careers landed</span><span>● moments the narration stops at</span></div>
+        <div class="sim-stats" id="sm-stats"></div>
+        <div class="sim-narr" id="sm-narr"></div>
+      </div>
+    </div>
+    <p class="fine">How it works: each trade buys <code>stake ÷ price</code> contracts and pays the venue's fee on the way in (Kalshi: 7% × contracts × price × (1 − price), rounded up to the cent; Polymarket US: 6.95% × price × (1 − price) per share, taker). You win with probability equal to your win rate, which is the price unless you move the slider; a win pays $1 per contract, a loss pays nothing, and you hold to settlement. 300 careers, the same every time for the same inputs, so a result you share can be reproduced. This is what the arithmetic does on average; it is not a forecast of anyone's results, and it is not investment advice. Problem gambling help: 1-800-GAMBLER.</p>
+  </section>
+
+  <section id="why">
+    <h2>Why the curve only goes one way</h2>
+    <div class="two">
+      <div><h3>The market is already the forecast</h3><p>A 50¢ contract is the crowd saying 50%. To beat it you need information the crowd doesn't have, every time, by more than the fee. Most people's "edge" is a feeling about a chart. Slide the win rate up a few points and see how much better than the market you would have to be, consistently, just to stand still.</p></div>
+      <div><h3>The fee is the only certainty</h3><p>Wins and losses average out. The fee doesn't; it leaves on every trade. That is why the median of hundreds of careers slopes down at the fee rate, and why "I'm up this week" and "I'll be down this year" are both usually true.</p></div>
+      <div><h3>Streaks are normal, and expensive</h3><p>At a 50% win rate, five losses in a row happens to most people every month. The streak isn't the problem; what people do after it is. Switch on "double after a loss" and watch the same market end a career three times faster.</p></div>
+      <div><h3>Nobody rides to zero in one go</h3><p>Real people stop, feel better, and deposit again. The chart is the same; it just has pauses in it. If you want to play anyway, <a href="/#deal">read the deal first</a>: what the account asks for, what the bonus really is, and whether we're paid.</p></div>
+    </div>
+  </section>
+
+  <footer>
+    <p>PredictionBots measures prediction markets and publishes its own record. Nothing on this site is investment advice. Prediction markets and crypto involve risk of loss, and most participants lose money. If gambling is a problem for you or someone you know, call 1-800-GAMBLER.</p>
+    <p>Code and data: <a href="https://github.com/watkast/predictionbots">github.com/watkast/predictionbots</a> · hello@predictionbots.io</p>
+  </footer>
+</div>
+<script src="/vendor/d3.v7.9.0.min.js"></script>
+<script src="/sim.js" defer></script>
+</body>
+</html>
