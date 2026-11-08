@@ -1,6 +1,6 @@
 # Mr. H — Coinbase hopper, PAPER
 
-Updated 2026-11-08T21:05:31Z · scans 483 · universe 111 coins (USD pairs with ≥ $100k 24-h volume) · fees 0.9% taker each way · start $4.00
+Updated 2026-11-08T21:15:31Z · scans 485 · universe 111 coins (USD pairs with ≥ $100k 24-h volume) · fees 0.9% taker each way · start $4.00
 
 ## Books (one position at a time, all-in every hop)
 
@@ -8,14 +8,14 @@ Updated 2026-11-08T21:05:31Z · scans 483 · universe 111 coins (USD pairs with 
 |---|---|---|---|---|---|---|---|---|
 | aggressive | $2.98 | -25.4% | $4.00 | 7 | 29% | -3.74% | $0.469 | DRV-USD @ 0.32104 |
 | standard | $3.12 | -21.9% | $4.00 | 9 | 11% | -2.67% | $0.575 | — |
-| aggressive_swap | $3.36 | -15.9% | $4.02 | 13 | 31% | -1.10% | $0.881 | ICNT-USD @ 0.3688 |
+| aggressive_swap | $3.37 | -15.8% | $4.02 | 13 | 31% | -1.10% | $0.881 | ICNT-USD @ 0.3688 |
 
 ## Signal forward returns (every signal, whether or not a book took it)
 
 | profile | signals | scored | median +15m | median +1h | median +4h | % beat 1.8% at +1h | median 4%-trail hop net | max run-up (med) | max drawdown (med) |
 |---|---|---|---|---|---|---|---|---|---|
 | aggressive | 72 | 54 | -0.43% | -2.53% | -2.22% | 19% | -4.92% | +7.41% | -10.03% |
-| standard | 60 | 45 | +0.00% | -1.38% | -1.57% | 20% | -3.08% | +5.66% | -6.36% |
+| standard | 60 | 46 | -0.07% | -1.59% | -2.31% | 20% | -3.20% | +5.34% | -6.30% |
 
 ## Aggressive signals by BTC regime (BTC's own move in the hour before the signal)
 
@@ -64,7 +64,7 @@ Updated 2026-11-08T21:05:31Z · scans 483 · universe 111 coins (USD pairs with 
 | 11-08T15:35 | standard | ICNT | +1.9% | 7.1 | y | 0.25% | in_position | -2.6% | -1.6% |
 | 11-08T15:50 | standard | CAP | +1.7% | 17.2 | y | 0.10% | in_position | -6.6% | -10.6% |
 | 11-08T17:05 | aggressive | BOBBOB | +2.0% | 4.6 | n | 0.49% | in_position | … | … |
-| 11-08T17:05 | standard | RSR | +1.7% | 9.3 | y | 0.68% | spread | … | … |
+| 11-08T17:05 | standard | RSR | +1.7% | 9.3 | y | 0.68% | spread | -3.2% | -3.3% |
 | 11-08T18:40 | aggressive | FORTH | +4.3% | 7.6 | n | 2.04% | spread | … | … |
 | 11-08T18:45 | aggressive | FORTH | +2.8% | 3.4 | n | 0.15% | in_position | … | … |
 | 11-08T18:45 | aggressive | CAP | +2.5% | 3.5 | n | 0.28% | in_position | … | … |
