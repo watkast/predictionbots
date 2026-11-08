@@ -70,14 +70,13 @@ jobs:
           CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
           CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
         run: bash deploy.sh
-      - name: Publish a preview to the mrp-data branch (no Cloudflare secrets yet)
-        if: env.CF_TOKEN == ''
+      - name: Publish the preview and the weather history to the mrp-data branch
         run: |
           git config --global user.name "predictionbots-site"
           git config --global user.email "bots@users.noreply.github.com"
           mkdir -p ../pv && cd ../pv
           git init -q && git remote add origin "https://x-access-token:${{ github.token }}@github.com/${{ github.repository }}.git"
-          git config core.sparseCheckout true && git sparse-checkout set --no-cone site-preview
+          git config core.sparseCheckout true && git sparse-checkout set --no-cone site-preview weather
           for i in 1 2 3 4 5; do
             git fetch -q --filter=blob:none --depth 1 origin mrp-data && git checkout -q -B mrp-data FETCH_HEAD
             rm -rf site-preview && mkdir -p site-preview/samples
@@ -85,6 +84,7 @@ jobs:
             cp "$GITHUB_WORKSPACE"/gen.log site-preview/gen.log; cp "$GITHUB_WORKSPACE"/site/data/rates.json site-preview/rates.json; cp "$GITHUB_WORKSPACE"/site/dist/markets/series_meta.json site-preview/series_meta.json 2>/dev/null || true
             cp "$GITHUB_WORKSPACE"/site/dist/markets/kalshi/kxhighden/index.html site-preview/samples/kalshi-kxhighden.html 2>/dev/null || true
             for v in kalshi pmus; do find "$GITHUB_WORKSPACE"/site/dist/markets/$v -mindepth 2 -name index.html | shuf -n 5 --random-source=<(yes) | while read f; do d=$(basename $(dirname "$f")); cp "$f" "site-preview/samples/$v-$d.html"; done; done
+            if [ -f "$GITHUB_WORKSPACE"/site/dist/markets/weather_snapshot.jsonl ]; then mkdir -p weather; cat "$GITHUB_WORKSPACE"/site/dist/markets/weather_snapshot.jsonl >> weather/snapshots.jsonl; git add weather; fi
             git add -A site-preview
             git commit -qm "site-preview $(date -u +%FT%TZ)" || { echo "nothing new"; exit 0; }
             git push -q origin HEAD:mrp-data && exit 0

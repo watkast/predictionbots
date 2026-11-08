@@ -36,6 +36,7 @@ KALSHI = "https://external-api.kalshi.com/trade-api/v2"
 PMUS = "https://gateway.polymarket.us"
 SITE = "https://predictionbots.io"
 SERIES_CACHE: dict[str, dict] = {}
+WX_SNAPSHOTS: list[dict] = []
 try:
     sys.path.insert(0, str(Path(__file__).resolve().parent))
     import weather_odds as WX
@@ -243,6 +244,11 @@ def norm_kalshi(rec: dict) -> dict:
         real = None
         if WX is not None and rec["ticker"] in WX.STATIONS:
             real = WX.probability(rec["ticker"], m)
+            if real and p is not None:
+                WX_SNAPSHOTS.append({"t": datetime.now(timezone.utc).strftime("%Y-%m-%dT%H:%MZ"), "series": rec["ticker"], "ticker": m.get("ticker"),
+                                     "date": WX.market_date(m), "sub": m.get("yes_sub_title") or "", "floor": m.get("floor_strike"), "cap": m.get("cap_strike"),
+                                     "kind": m.get("strike_type"), "p_market": round(p, 4), "p_nws": round(real[0], 4), "why": real[1],
+                                     "volume": _num(m.get("volume_fp", m.get("volume")), 0) or 0})
         elif SX is not None and SX.GAMES and (s.get("category") or "").lower() == "sports":
             real = SX.probability(f'{m.get("title") or ""} {m.get("rules_primary") or ""}', m.get("yes_sub_title") or "")
         rows.append({"title": m.get("title") or m.get("ticker"), "sub": m.get("yes_sub_title") or m.get("subtitle") or "",
@@ -491,6 +497,9 @@ def build(out: Path, venue: str, max_series: int | None, cache_path: Path | None
             except Exception as e:
                 LOG("pmus norm failed", rec.get("ticker"), repr(e))
     n = write(out, series)
+    if WX_SNAPSHOTS:
+        (out / "weather_snapshot.jsonl").write_text("\n".join(json.dumps(r) for r in WX_SNAPSHOTS) + "\n")
+        LOG(f"weather: {len(WX_SNAPSHOTS)} contracts with market and forecast probabilities")
     if SX is not None and SX.GAMES:
         (out / "odds.json").write_text(json.dumps({"t": SX.LAST_FETCH["t"], "games": SX.GAMES}))
     try:
