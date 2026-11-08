@@ -72,13 +72,14 @@ def fetch_ibond(client) -> tuple[float, str] | None:
     t = re.sub(r"\s+", " ", t)
     # TreasuryDirect phrasing varies: "Current Rate: 3.98%", "3.98% for I bonds issued November 1, 2025 to April 30, 2026"
     DATE = r"([A-Z][a-z]+ \d{1,2},? \d{4})"
-    m = re.search(r"([0-9]+\.[0-9]+)%[^%]{0,160}?issued\s+" + DATE + r"\s*(?:through|to|-|\u2013)\s*" + DATE, t)
-    if m:
-        return float(m.group(1)) / 100, f"{m.group(2)} to {m.group(3)}"
+    per = re.search(r"issued\s+" + DATE + r"\s*(?:through|to|-|\u2013)\s*" + DATE, t)
+    period = f"{per.group(1)} to {per.group(2)}" if per else "current"
     m2 = re.search(r"(?:current rate|composite rate)[^0-9%]{0,60}?([0-9]+\.[0-9]+)%", t, re.I)
     if m2:
-        per = re.search(r"issued\s+" + DATE + r"\s*(?:through|to|-|\u2013)\s*" + DATE, t)
-        return float(m2.group(1)) / 100, (f"{per.group(1)} to {per.group(2)}" if per else "current")
+        return float(m2.group(1)) / 100, period
+    m = re.search(r"(?<!fixed rate of )([0-9]+\.[0-9]+)%\s*(?:composite)?[^%]{0,160}?issued\s+" + DATE, t)
+    if m:
+        return float(m.group(1)) / 100, period
     i = t.find("%")
     print("ibond: no match; context:", t[max(0, i - 200): i + 120], file=sys.stderr)
     return None
