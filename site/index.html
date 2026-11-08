@@ -1,0 +1,145 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>PredictionBots</title>
+<meta name="description" content="Live scanners for Polymarket US and Kalshi that find markets whose outcome is already decided — from a team that publishes every trade, including the losers.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@400;500;600&family=IBM+Plex+Mono:wght@400&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="/styles.css">
+<meta property="og:title" content="PredictionBots — the outcome is settled; the price isn't">
+<meta property="og:description" content="Scanners for decided markets, final-second candidates and cross-venue locks on Polymarket US and Kalshi. Every trade published.">
+</head>
+<body>
+<div class="wrap">
+  <header class="top">
+    <a class="brand" href="/">PredictionBots</a>
+    <nav>
+      <a href="#ledger">Live ledger</a>
+      <a href="#terminal">Terminal</a>
+      <a href="#research">Research</a>
+      <a href="https://github.com/watkast/predictionbots">GitHub</a>
+    </nav>
+  </header>
+
+  <div class="hero">
+    <h1>The outcome is settled. The price isn't.</h1>
+    <p class="lede">Scanners for Polymarket US and Kalshi that find markets whose result is already decided by the rules — a game that ended, a settlement average that has locked — while the order book still says otherwise. Built by a team that publishes every trade, including the losing ones.</p>
+    <a class="cta" href="#waitlist">Join the waitlist</a>
+  </div>
+
+  <section id="ledger">
+    <h2>Every trade our bots make, as it settles</h2>
+    <p class="sub">Read straight from the bots' public logs on GitHub, refreshed every five minutes. Red rows are included on purpose: this is the record we make decisions from, not a highlight reel.</p>
+    <div class="ledger-sum" id="ledger-sum"></div>
+    <div class="ledger-wrap">
+      <table class="ledger" aria-describedby="ledger-note">
+        <thead><tr><th>Settled</th><th>Bot</th><th>Market</th><th>Side</th><th class="num">In</th><th class="num">Out</th><th class="num">Net</th><th>Why it closed</th></tr></thead>
+        <tbody id="ledger-body"><tr><td colspan="8">Loading the latest trades…</td></tr></tbody>
+      </table>
+    </div>
+    <p class="ledger-note" id="ledger-note">Mr H hops between spiking coins on Coinbase with maker orders (a deliberately small lottery ticket — <a href="/posts/2026-11-08-we-bought-the-pump-candle.html">here is why</a>). Mr T buys the already-decided side of Polymarket US crypto markets in their final seconds. Source files: <code>mrh-live/live_trades.jsonl</code> and <code>mrt/trades.jsonl</code> in the repo's data branches.</p>
+  </section>
+
+  <section id="terminal">
+    <h2>What the terminal watches</h2>
+    <p class="sub">Three kinds of moments where the rules have decided and the price has not caught up. Each one is small — tens to hundreds of contracts — which is why nobody with real size bothers, and why they exist.</p>
+    <div class="scan">
+      <div>
+        <h3>Decided games</h3>
+        <p>A first-half total already exceeded, a game already over, a market still quoting. Scores from the feeds, settlement rules from the venue, and a check that both venues agree before anything is flagged.</p>
+        <div class="ex">Kalshi MLS 1H total, 2 goals scored by the 40th minute, "over 1.5" still offered at 94¢.</div>
+      </div>
+      <div>
+        <h3>The last seconds</h3>
+        <p>Crypto Up/Down markets settle on a 60-second index average. With three seconds left the average has locked, and the winning side is still offered below $1 in roughly 4% of windows. Our recorder measured 168 of them in four days.</p>
+        <div class="ex">BTC 5-minute, 3 s left, running average 2.1 bps above the strike, "Up" offered at 73¢ × 384.</div>
+      </div>
+      <div>
+        <h3>Cross-venue locks</h3>
+        <p>The same contract on Polymarket US and Kalshi, priced apart by more than both fees. They last seconds; the scanner records every one, how long it lasted and how deep it was.</p>
+        <div class="ex">ETH 15-minute, Kalshi bid 0.999 for the leader, Polymarket offer 0.95 — 4.6¢ after fees, 5 seconds.</div>
+      </div>
+    </div>
+  </section>
+
+  <section id="research">
+    <h2>Research</h2>
+    <p class="sub">Measured, with the code to check it. We publish what did not work as readily as what did.</p>
+    <ul class="posts">
+      <li>
+        <div class="when">8 November 2026</div>
+        <h3><a href="/posts/2026-11-08-we-bought-the-pump-candle.html">We bought the pump candle 1,172 times. Here is what 30 days of Coinbase data says.</a></h3>
+        <p>24% winners, −1.86% a trade, and a median path that goes down the moment you buy. The signal is a coin flip; fees decide the sign. Plus the one green cell in the grid.</p>
+      </li>
+      <li>
+        <div class="when">Coming next</div>
+        <h3>The last three seconds</h3>
+        <p>Four days of Polymarket US crypto markets recorded at one-second resolution: where the winning side is still cheap after the result is decided, and what happened when we tried to trade it.</p>
+      </li>
+    </ul>
+  </section>
+
+  <section id="pricing">
+    <h2>Pricing</h2>
+    <p class="sub">Free while we are proving it in public. Paid tiers open to the waitlist first.</p>
+    <div class="offers">
+      <div class="offer">
+        <p class="price">$49 <small>a month — $29 for the first fifty, kept for life</small></p>
+        <p>The terminal: live scanners, alerts to Telegram or email, the cockpit for working a market by hand, and the research archive.</p>
+        <ul>
+          <li>Decided games, final seconds and cross-venue locks, as they appear</li>
+          <li>Every alert with the evidence that produced it</li>
+          <li>Export of anything you see</li>
+        </ul>
+      </div>
+      <div class="offer">
+        <p class="price">From $0.002 <small>a call, paid per request</small></p>
+        <p>The same feeds as an API for your own bots, paid in USDC over x402 — no account, no key, your agent pays per call.</p>
+        <ul>
+          <li>Final-second candidates, decided markets, lock history</li>
+          <li>Free preview endpoint for testing</li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <section id="waitlist">
+    <h2>Waitlist</h2>
+    <p class="sub">One email when the terminal opens, and the research posts as they publish. Nothing else.</p>
+    <form class="wait" id="wait-form" action="/api/waitlist" method="post">
+      <label for="email" class="sr-only" style="position:absolute;left:-9999px">Email</label>
+      <input type="email" id="email" name="email" placeholder="you@example.com" required autocomplete="email">
+      <button type="submit">Join the waitlist</button>
+    </form>
+    <div class="wait-msg" id="wait-msg"></div>
+  </section>
+
+  <footer>
+    <p>PredictionBots builds research tools and publishes its own trading records. Nothing on this site is investment advice; prediction markets and crypto involve risk of loss, and most participants lose money.</p>
+    <p>Code and data: <a href="https://github.com/watkast/predictionbots">github.com/watkast/predictionbots</a></p>
+  </footer>
+</div>
+<script src="/ledger.js" defer></script>
+<script>
+(function () {
+  var f = document.getElementById('wait-form'), m = document.getElementById('wait-msg');
+  if (!f) return;
+  f.addEventListener('submit', async function (e) {
+    e.preventDefault();
+    var btn = f.querySelector('button'), email = f.email.value.trim();
+    btn.disabled = true; m.className = 'wait-msg'; m.textContent = 'Adding you…';
+    try {
+      var r = await fetch('/api/waitlist', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ email: email, source: location.pathname }) });
+      var j = await r.json().catch(function () { return {}; });
+      if (r.ok) { m.className = 'wait-msg ok'; m.textContent = j.message || 'You are on the list.'; f.reset(); }
+      else { m.className = 'wait-msg err'; m.textContent = j.error || 'That did not go through. Check the address and try again.'; }
+    } catch (err) { m.className = 'wait-msg err'; m.textContent = 'No connection. Try again in a moment.'; }
+    btn.disabled = false;
+  });
+})();
+</script>
+</body>
+</html>
