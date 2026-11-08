@@ -1,21 +1,21 @@
 # Mr. H — Coinbase hopper, PAPER
 
-Updated 2026-11-08T15:20:31Z · scans 415 · universe 111 coins (USD pairs with ≥ $100k 24-h volume) · fees 0.9% taker each way · start $4.00
+Updated 2026-11-08T15:30:31Z · scans 417 · universe 112 coins (USD pairs with ≥ $100k 24-h volume) · fees 0.9% taker each way · start $4.00
 
 ## Books (one position at a time, all-in every hop)
 
 | profile | bankroll | vs start | peak | hops | win % | avg net/hop | fees paid | open |
 |---|---|---|---|---|---|---|---|---|
 | aggressive | $3.01 | -24.7% | $4.00 | 7 | 29% | -3.74% | $0.469 | DRV-USD @ 0.32104 |
-| standard | $3.25 | -18.7% | $4.00 | 7 | 14% | -2.48% | $0.487 | CAP-USD @ 0.10564 |
-| aggressive_swap | $3.71 | -7.2% | $4.02 | 9 | 33% | -0.28% | $0.627 | CAP-USD @ 0.10564 |
+| standard | $3.29 | -17.8% | $4.00 | 7 | 14% | -2.48% | $0.487 | CAP-USD @ 0.10564 |
+| aggressive_swap | $3.75 | -6.2% | $4.02 | 9 | 33% | -0.28% | $0.627 | CAP-USD @ 0.10564 |
 
 ## Signal forward returns (every signal, whether or not a book took it)
 
 | profile | signals | scored | median +15m | median +1h | median +4h | % beat 1.8% at +1h | median 4%-trail hop net | max run-up (med) | max drawdown (med) |
 |---|---|---|---|---|---|---|---|---|---|
 | aggressive | 65 | 46 | -0.43% | -2.66% | -0.70% | 15% | -5.52% | +6.77% | -10.03% |
-| standard | 55 | 34 | +0.12% | -1.32% | -0.23% | 21% | -2.92% | +5.86% | -5.99% |
+| standard | 55 | 36 | +0.00% | -1.32% | -0.23% | 19% | -2.92% | +5.34% | -5.36% |
 
 ## Aggressive signals by BTC regime (BTC's own move in the hour before the signal)
 
