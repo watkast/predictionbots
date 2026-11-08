@@ -1224,7 +1224,7 @@
   "KXBELGIANPLTOTAL-26NOV08BRURSC-2": "no Polymarket twin",
   "KXBELGIANPLBTTS-26NOV08BRURSC-BTTS": "no asks (already repriced)",
   "KXEPL1HTOTAL-26NOV08IPSBOU-1": "Polymarket does not confirm",
-  "KXEPLTOTAL-26NOV08IPSBOU-1": "settling (230s)",
+  "KXEPLTOTAL-26NOV08IPSBOU-1": "no asks (already repriced)",
   "KXAUTBUNDESTOTAL-26NOV08HTBALT-2": "settling (43s)",
   "KXAUTBUNDESTOTAL-26NOV08WSGFAK-2": "no Polymarket twin",
   "KXAUTBUNDESBTTS-26NOV08WSGFAK-BTTS": "no asks (already repriced)",
@@ -1313,7 +1313,7 @@
   "KXEREDIVISIETOTAL-26NOV08TWEAJA-2": "no asks (already repriced)",
   "KXEREDIVISIETOTAL-26NOV08TWEAJA-3": "no Polymarket twin",
   "KXEREDIVISIEBTTS-26NOV08TWEAJA-BTTS": "Polymarket does not confirm",
-  "KXEPLTOTAL-26NOV08IPSBOU-2": "settling (230s)",
+  "KXEPLTOTAL-26NOV08IPSBOU-2": "no asks (already repriced)",
   "KXAUTBUNDESTOTAL-26NOV08HTBALT-3": "no Polymarket twin",
   "KXSERIEATOTAL-26NOV08MONATA-1": "no asks (already repriced)",
   "KXEPLTOTAL-26NOV08CRYLFC-2": "no asks (already repriced)",
@@ -1332,9 +1332,9 @@
   "KXEREDIVISIETOTAL-26NOV08TWEAJA-7": "no Polymarket twin",
   "KXEREDIVISIETOTAL-26NOV08TWEAJA-6": "no Polymarket twin",
   "KXEREDIVISIETOTAL-26NOV08TWEAJA-5": "no Polymarket twin",
-  "KXEPLTOTAL-26NOV08IPSBOU-3": "settling (230s)",
-  "KXEPLBTTS-26NOV08IPSBOU-BTTS": "settling (230s)",
-  "KXBELGIANPLTOTAL-26NOV08KAAKOR-1": "settling (33s)"
+  "KXEPLTOTAL-26NOV08IPSBOU-3": "no asks (already repriced)",
+  "KXEPLBTTS-26NOV08IPSBOU-BTTS": "no asks (already repriced)",
+  "KXBELGIANPLTOTAL-26NOV08KAAKOR-1": "no asks (already repriced)"
  },
  "started": 1793687692.6057825,
  "ht": {
