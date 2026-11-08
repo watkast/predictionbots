@@ -33,12 +33,25 @@
   },
   "aggressive_swap": {
    "name": "aggressive_swap",
-   "bankroll": 3.6530296067780865,
+   "bankroll": 0.0,
    "peak": 4.01983237936772,
-   "pos": null,
+   "pos": {
+    "pid": "BOBBOB-USD",
+    "entry_px": 0.00406,
+    "qty": 891.663138009134,
+    "cost": 3.6530296067780865,
+    "hw": 0.00406,
+    "t_in": "2026-11-08T17:05:15Z",
+    "signal": {
+     "impulse": 0.0202,
+     "vol_mult": 4.57,
+     "above_2h_high": false
+    },
+    "hw_t": "2026-11-08T17:05:15Z"
+   },
    "hops": 10,
    "wins": 3,
-   "fees": 0.6600144852573903
+   "fees": 0.692891751718393
   }
  },
  "universe": [
@@ -599,7 +612,7 @@
   }
  ],
  "universe_t": "2026-11-08T16:30:15Z",
- "scans": 435,
+ "scans": 437,
  "started": "2026-11-06T22:20:22Z",
- "last_scan": "2026-11-08T17:00:15Z"
+ "last_scan": "2026-11-08T17:10:15Z"
 }

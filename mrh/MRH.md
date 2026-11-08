@@ -1,6 +1,6 @@
 # Mr. H — Coinbase hopper, PAPER
 
-Updated 2026-11-08T17:00:30Z · scans 435 · universe 111 coins (USD pairs with ≥ $100k 24-h volume) · fees 0.9% taker each way · start $4.00
+Updated 2026-11-08T17:10:30Z · scans 437 · universe 111 coins (USD pairs with ≥ $100k 24-h volume) · fees 0.9% taker each way · start $4.00
 
 ## Books (one position at a time, all-in every hop)
 
@@ -8,26 +8,26 @@ Updated 2026-11-08T17:00:30Z · scans 435 · universe 111 coins (USD pairs with 
 |---|---|---|---|---|---|---|---|---|
 | aggressive | $3.00 | -25.1% | $4.00 | 7 | 29% | -3.74% | $0.469 | DRV-USD @ 0.32104 |
 | standard | $3.30 | -17.6% | $4.00 | 8 | 12% | -2.35% | $0.517 | — |
-| aggressive_swap | $3.65 | -8.7% | $4.02 | 10 | 30% | -0.67% | $0.660 | — |
+| aggressive_swap | $3.52 | -11.9% | $4.02 | 10 | 30% | -0.67% | $0.693 | BOBBOB-USD @ 0.00406 |
 
 ## Signal forward returns (every signal, whether or not a book took it)
 
 | profile | signals | scored | median +15m | median +1h | median +4h | % beat 1.8% at +1h | median 4%-trail hop net | max run-up (med) | max drawdown (med) |
 |---|---|---|---|---|---|---|---|---|---|
-| aggressive | 65 | 51 | -0.36% | -2.63% | -1.13% | 20% | -4.70% | +7.60% | -9.80% |
-| standard | 57 | 40 | +0.12% | -1.32% | -0.58% | 22% | -2.20% | +6.08% | -5.92% |
+| aggressive | 66 | 52 | -0.36% | -2.66% | -1.25% | 19% | -4.92% | +7.52% | -10.03% |
+| standard | 58 | 41 | +0.00% | -1.38% | -0.69% | 22% | -2.25% | +6.06% | -6.23% |
 
 ## Aggressive signals by BTC regime (BTC's own move in the hour before the signal)
 
 | BTC 1h | signals | median +1h | median 4%-trail hop net | % beat 1.8% at +1h |
 |---|---|---|---|---|
 | ≤ −0.5% (downdraft) | 0 | — | — | — |
-| −0.5% … +0.5% (flat) | 39 | -2.77% | -4.70% | 18% |
+| −0.5% … +0.5% (flat) | 40 | -3.73% | -4.92% | 18% |
 | ≥ +0.5% (bid under the market) | 0 | — | — | — |
 
 ## Verdict
 
-**Not yet.** Needs 40 scored aggressive signals (51 so far) and 30 closed aggressive hops (7 so far) before this says anything. Until then every number above is noise.
+**Not yet.** Needs 40 scored aggressive signals (52 so far) and 30 closed aggressive hops (7 so far) before this says anything. Until then every number above is noise.
 
 ## Last 20 hops
 
@@ -58,14 +58,12 @@ Updated 2026-11-08T17:00:30Z · scans 435 · universe 111 coins (USD pairs with 
 
 | time (UTC) | profile | coin | impulse | vol× | >2h high | spread | taken | +1h | +4h |
 |---|---|---|---|---|---|---|---|---|---|
-| 11-08T12:45 | aggressive | MEZO | +2.5% | 3.2 | y | 0.41% | in_position | +4.3% | -5.1% |
-| 11-08T12:45 | standard | MEZO | +2.5% | 3.2 | y | 0.41% | in_position | +4.3% | -5.1% |
 | 11-08T12:50 | aggressive | MEZO | +6.7% | 16.2 | y | 0.73% | spread | -4.8% | -12.7% |
 | 11-08T12:50 | standard | MEZO | +6.7% | 16.2 | y | 0.73% | spread | -4.8% | -12.7% |
 | 11-08T12:55 | aggressive | MEZO | +5.0% | 3.7 | y | 0.37% | in_position | -9.8% | -17.0% |
 | 11-08T12:55 | standard | MEZO | +5.0% | 3.7 | y | 0.37% | in_position | -9.8% | -17.0% |
-| 11-08T13:00 | aggressive | MEZO | +8.2% | 22.6 | y | 0.57% | in_position | … | … |
-| 11-08T13:00 | standard | MEZO | +8.2% | 22.6 | y | 0.57% | in_position | … | … |
+| 11-08T13:00 | aggressive | MEZO | +8.2% | 22.6 | y | 0.57% | in_position | -16.6% | -24.3% |
+| 11-08T13:00 | standard | MEZO | +8.2% | 22.6 | y | 0.57% | in_position | -16.6% | -24.3% |
 | 11-08T14:05 | aggressive | RITUAL | +2.0% | 6.4 | n | 0.66% | spread | … | … |
 | 11-08T14:40 | standard | ALEO | +1.1% | 3.7 | y | 1.03% | spread | … | … |
 | 11-08T15:15 | aggressive | CAP | +3.6% | 15.1 | y | 0.38% | in_position | … | … |
@@ -73,3 +71,5 @@ Updated 2026-11-08T17:00:30Z · scans 435 · universe 111 coins (USD pairs with 
 | 11-08T15:20 | standard | CAP | +1.3% | 22.6 | y | 0.49% | in_position | … | … |
 | 11-08T15:35 | standard | ICNT | +1.9% | 7.1 | y | 0.25% | in_position | … | … |
 | 11-08T15:50 | standard | CAP | +1.7% | 17.2 | y | 0.10% | in_position | … | … |
+| 11-08T17:05 | aggressive | BOBBOB | +2.0% | 4.6 | n | 0.49% | in_position | … | … |
+| 11-08T17:05 | standard | RSR | +1.7% | 9.3 | y | 0.68% | spread | … | … |
