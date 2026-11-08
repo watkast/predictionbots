@@ -471,6 +471,10 @@ def write(out: Path, series: list[dict]) -> int:
     built = now.strftime("%d %b %Y %H:%M UTC")
     out.mkdir(parents=True, exist_ok=True)
     urls = [f"{SITE}/", f"{SITE}/simulate.html", f"{SITE}/markets/"]
+    for sub in ("posts", "learn"):
+        d = out.parent / sub
+        if d.exists():
+            urls += [f"{SITE}/{sub}/{f.name}" for f in sorted(d.glob("*.html"))]
     n = 0
     for s in series:
         if not s["rows"]:
