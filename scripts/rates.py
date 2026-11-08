@@ -28,17 +28,31 @@ def load() -> dict:
                             "ibond": "TreasuryDirect, Series I savings bonds, current composite rate"}}
 
 
+UA = {"User-Agent": "Mozilla/5.0 (X11; Linux x86_64) predictionbots-rates/1.0 (+https://predictionbots.io)", "Accept": "application/xml,text/xml,*/*"}
+
+
 def fetch_tbill(client) -> tuple[float, str] | None:
+    import datetime as _dt
     now = datetime.now(timezone.utc)
-    for ym in (now.strftime("%Y%m"), (now.replace(day=1) - __import__("datetime").timedelta(days=1)).strftime("%Y%m")):
-        r = client.get(TBILL_XML.format(ym=ym), timeout=30)
+    months = [now.strftime("%Y%m"), (now.replace(day=1) - _dt.timedelta(days=1)).strftime("%Y%m")]
+    for ym in months:
+        url = TBILL_XML.format(ym=ym)
+        r = client.get(url, timeout=30, headers=UA)
+        print(f"tbill {ym}: HTTP {r.status_code}, {len(r.text)} bytes", file=sys.stderr)
         if r.status_code != 200:
             continue
-        entries = re.findall(r"<entry>(.*?)</entry>", r.text, re.S)
+        entries = re.findall(r"<entry>(.*?)</entry>", r.text, re.S | re.I)
+        if not entries:
+            print("tbill: no <entry> elements; head:", r.text[:300].replace("\n", " "), file=sys.stderr)
+            continue
+        names = sorted(set(re.findall(r"<d:([A-Za-z0-9_]+)", entries[-1])))
+        print("tbill: fields:", ", ".join(names), file=sys.stderr)
         best = None
         for e in entries:
             d = re.search(r"<d:INDEX_DATE[^>]*>([^<]+)<", e)
-            y = re.search(r"<d:ROUND_B1_YIELD_4WK_COUPON_EQU[^>]*>([^<]+)<", e)
+            y = (re.search(r"<d:ROUND_B1_YIELD_4WK_COUPON_EQU[^>]*>([^<]+)<", e)
+                 or re.search(r"<d:[A-Z0-9_]*4WK[A-Z0-9_]*(?:COUPON|CE|YIELD)[A-Z0-9_]*[^>]*>([^<]+)<", e)
+                 or re.search(r"<d:[A-Z0-9_]*4WK[A-Z0-9_]*[^>]*>([^<]+)<", e))
             if d and y:
                 try:
                     best = (float(y.group(1)) / 100, d.group(1)[:10])
@@ -50,7 +64,8 @@ def fetch_tbill(client) -> tuple[float, str] | None:
 
 
 def fetch_ibond(client) -> tuple[float, str] | None:
-    r = client.get(IBOND_PAGE, timeout=30, headers={"User-Agent": "predictionbots-rates/1.0"})
+    r = client.get(IBOND_PAGE, timeout=30, headers=UA)
+    print(f"ibond: HTTP {r.status_code}, {len(r.text)} bytes", file=sys.stderr)
     if r.status_code != 200:
         return None
     t = re.sub(r"<[^>]+>", " ", r.text)
