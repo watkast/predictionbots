@@ -36,6 +36,11 @@ KALSHI = "https://external-api.kalshi.com/trade-api/v2"
 PMUS = "https://gateway.polymarket.us"
 SITE = "https://predictionbots.io"
 SERIES_CACHE: dict[str, dict] = {}
+try:
+    sys.path.insert(0, str(Path(__file__).resolve().parent))
+    import weather_odds as WX
+except Exception:  # pragma: no cover
+    WX = None
 KALSHI_TAKER, PMUS_TAKER = 0.07, 0.095   # Polymarket US: Θ for accounts under $10k of 30-day taker volume (schedule of 6 Nov 2026)
 LOG = lambda *a: print(*a, file=sys.stderr)
 
@@ -231,9 +236,13 @@ def norm_kalshi(rec: dict) -> dict:
     rows = []
     for m in ms:
         p = kalshi_price(m)
+        real = None
+        if WX is not None and rec["ticker"] in WX.STATIONS:
+            real = WX.probability(rec["ticker"], m)
         rows.append({"title": m.get("title") or m.get("ticker"), "sub": m.get("yes_sub_title") or m.get("subtitle") or "",
                      "p": p, "volume": _num(m.get("volume_fp", m.get("volume")), 0) or 0,
-                     "close": m.get("close_time") or m.get("expected_expiration_time") or "", "rules": m.get("rules_primary") or ""})
+                     "close": m.get("close_time") or m.get("expected_expiration_time") or "", "rules": m.get("rules_primary") or "",
+                     "real": real[0] if real else None, "real_why": real[1] if real else None})
     cat = (s.get("category") or ms[0].get("category") or "").strip()
     title = s.get("title") or (ms[0].get("title") or rec["ticker"])
     fee_type = s.get("fee_type") or ""
@@ -337,8 +346,13 @@ def render_series(s: dict, built: str) -> str:
     be = breakeven(v, p)
     l = 1.0 if s["crypto_minutes"] else (luck(p) if ps else 1.0)
     lpct, ltext = luck_words(l, s["crypto_minutes"])
+    wx_rows = [r for r in rows if r.get("real") is not None]
     real = "50%" if s["crypto_minutes"] else "—"
-    real_text = ("Five-minute and fifteen-minute moves have no measurable predictability; our own 30-day test of the most popular entry rule lost on 76% of trades."
+    if wx_rows:
+        top = wx_rows[0]
+        real = pct(top["real"])
+        real_text_wx = f'For the most traded contract ({top["sub"] or top["title"]}): market {pct(top["p"])}, forecast model {pct(top["real"])}. {top["real_why"]}. A gap smaller than the fee is not an edge.'
+    real_text = real_text_wx if wx_rows else ("Five-minute and fifteen-minute moves have no measurable predictability; our own 30-day test of the most popular entry rule lost on 76% of trades."
                  if s["crypto_minutes"] else "No independent base rate yet. Until we connect one (sportsbook consensus, forecasts, the score), the market's own price is the best public forecast, and the fee sits on top of it.")
     title = f"{s['title']} on {s['venue_name']}: the odds, the fee, and how much luck you need"
     desc = f"{s['venue_name']} {s['title']}: market price {pct(p)}, fee {cents(fee1)} a contract at that price, break-even win rate {pct(be)}, luck needed {lpct}. Plain words, no account."
@@ -369,11 +383,11 @@ def render_series(s: dict, built: str) -> str:
     out.append(f'<p class="fine">{esc(s["fee_note"])} Formula: {"7% × contracts × price × (1 − price), rounded up, on orders that take liquidity" if v == "kalshi" else "9.5% × price × (1 − price) per share on orders that take liquidity (accounts under $10,000 of 30-day volume; 6.95% in a new account's first week and above $250,000)"}. Break-even assumes you hold to settlement; trading out early pays the fee twice.</p>')
     out.append(f'<p><a class="btn dark" href="/simulate.html?venue={v}&price={round(p*100)}&stake=20&week=20&bank=500">How long until your balance is $0 in this market? →</a></p></section>')
     if rows:
-        out.append('<section><h2>Open contracts right now</h2><div class="ledger-wrap"><table class="ledger cells"><caption>Open contracts in this series with price, implied probability, volume and close time</caption><thead><tr><th scope="col">Contract</th><th scope="col" class="num">YES price</th><th scope="col" class="num">Implied</th><th scope="col" class="num">Fee at this price</th><th scope="col" class="num">Luck needed</th><th scope="col" class="num">Volume</th><th scope="col">Closes</th></tr></thead><tbody>')
+        out.append('<section><h2>Open contracts right now</h2><div class="ledger-wrap"><table class="ledger cells"><caption>Open contracts in this series with price, implied probability, volume and close time</caption><thead><tr><th scope="col">Contract</th><th scope="col" class="num">YES price</th><th scope="col" class="num">Implied</th><th scope="col" class="num">Fee at this price</th><th scope="col" class="num">Real-world odds</th><th scope="col" class="num">Luck needed</th><th scope="col" class="num">Volume</th><th scope="col">Closes</th></tr></thead><tbody>')
         for r in rows[:40]:
             q = r["p"]
             lk = "100%" if s["crypto_minutes"] else pct(luck(q))
-            out.append(f'<tr><td>{esc(r["title"])}{(" · " + esc(r["sub"])) if r["sub"] else ""}</td><td class="num">{cents(q)}</td><td class="num">{pct(q)}</td><td class="num">{fee_per_contract(v, q)*100:.1f}¢</td><td class="num">{lk}</td><td class="num">{int(r["volume"]):,}</td><td>{esc(fmt_close(r["close"]))}</td></tr>')
+            out.append(f'<tr><td>{esc(r["title"])}{(" · " + esc(r["sub"])) if r["sub"] else ""}</td><td class="num">{cents(q)}</td><td class="num">{pct(q)}</td><td class="num">{fee_per_contract(v, q)*100:.1f}¢</td><td class="num">{pct(r["real"]) if r.get("real") is not None else "—"}</td><td class="num">{lk}</td><td class="num">{int(r["volume"]):,}</td><td>{esc(fmt_close(r["close"]))}</td></tr>')
         out.append("</tbody></table></div>")
         if len(rows) > 40:
             out.append(f'<p class="fine">Showing the 40 most traded of {len(rows)} open contracts.</p>')
@@ -448,7 +462,13 @@ def build(out: Path, venue: str, max_series: int | None, cache_path: Path | None
         except Exception as e:
             LOG("series cache unreadable:", repr(e))
     if venue in ("kalshi", "both"):
-        for rec in fetch_kalshi(h, max_series).values():
+        kal = fetch_kalshi(h, max_series)
+        if WX is not None:
+            try:
+                WX.load(h, [t for t in kal if t in WX.STATIONS])
+            except Exception as e:
+                LOG("nws load failed:", repr(e))
+        for rec in kal.values():
             try:
                 series.append(norm_kalshi(rec))
             except Exception as e:
