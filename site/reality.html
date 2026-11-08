@@ -1,0 +1,67 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<script>try{var t=localStorage.getItem("pb-theme");if(t==="dark"||t==="light")document.documentElement.setAttribute("data-theme",t)}catch(e){}</script>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Reality Check: your prediction-market statement, computed in your browser — PredictionBots</title>
+<meta name="description" content="Drop your Kalshi or Polymarket US export and see what you put in, what you paid in fees, and where the money went. Computed in your browser; nothing is uploaded.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@400;500;600&family=IBM+Plex+Mono:wght@400&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="/styles.css">
+<meta property="og:title" content="Reality Check: your prediction-market statement">
+<meta property="og:description" content="Your fees, your stake, your net result, by week. Computed in your browser; nothing is uploaded.">
+<style>
+.drop { border: 2px dashed var(--rule); border-radius: 10px; padding: 28px; text-align: center; background: var(--paper-2); }
+.drop.over { border-color: var(--brand); }
+.rc-steps { display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 20px; }
+.rc-steps div { background: var(--paper-2); border: 1px solid var(--rule); border-radius: 8px; padding: 16px; }
+</style>
+</head>
+<body>
+<a class="skip" href="#main">Skip to content</a>
+<div class="wrap">
+  <header class="top">
+    <a class="brand" href="/">PredictionBots</a>
+    <nav>
+      <a href="/#truecost">True Cost</a>
+      <a href="/#benchmark">Bot benchmark</a>
+      <a href="/#research">Research</a>
+      <a href="/#ledger">Our ledger</a>
+      <a href="/#honest">How we're paid</a>
+    </nav>
+    <fieldset class="theme" id="theme"><legend>Theme</legend><label><input type="radio" name="theme" value="system" checked> System</label><label><input type="radio" name="theme" value="dark"> Dark</label><label><input type="radio" name="theme" value="light"> Light</label></fieldset>
+  </header>
+
+  <main id="main">
+  <div class="hero" style="padding-bottom: 12px">
+    <h1 style="max-width: 22ch">Reality Check: your statement, computed in your browser</h1>
+    <p class="lede">The apps show you a balance and a feed of wins. This shows you the rest: everything you put at risk, every fee, your net result, week by week. Drop your exports below. They are read by this page on your device and never uploaded; close the tab and they are gone.</p>
+  </div>
+  <section style="border-top: 0; padding-top: 10px">
+    <div class="rc-steps">
+      <div><h2 style="margin-top:0;font-size:19px">Kalshi</h2><p>In your account, find your history or documents and download your fills or transactions as CSV. The deposits and withdrawals file helps too.</p></div>
+      <div><h2 style="margin-top:0;font-size:19px">Polymarket US</h2><p>Download your activity or account statement. Add your deposits and withdrawals if they come as a separate file.</p></div>
+      <div><h2 style="margin-top:0;font-size:19px">Nothing leaves this page</h2><p>No account, no upload, no tracking of what you drop. The code is <a href="https://github.com/watkast/predictionbots/blob/main/site/reality.js">public</a>; read it before you trust it.</p></div>
+    </div>
+    <div class="drop" id="rc-drop" style="margin-top: 20px">
+      <p style="margin:0 0 10px"><b>Drop CSV or JSON exports here</b>, or</p>
+      <label class="btn dark" style="cursor:pointer">Choose files<input id="rc-file" type="file" accept=".csv,.json,text/csv,application/json" multiple style="position:absolute;left:-9999px"></label>
+      <p style="margin:14px 0 0"><label>Your balance today across both apps (optional, for the net result): $<input id="rc-balance" type="number" inputmode="decimal" style="width:9em;padding:6px 8px;border:1px solid var(--rule);border-radius:6px;background:var(--paper);color:var(--ink)"></label> <button type="button" class="linkish" id="rc-clear">clear</button></p>
+      <p class="q-where" id="rc-msg" aria-live="polite" style="margin:10px 0 0"></p>
+    </div>
+    <div id="rc-out" aria-live="polite" style="margin-top: 24px"></div>
+    <p class="fine">Column names differ between exports and change over time; if yours does not read, the message above says which column was missing. <a href="mailto:hello@predictionbots.io">Send us the column headers</a> (not the file) and we will add them.</p>
+  </section>
+  </main>
+  <footer>
+    <p>PredictionBots measures prediction markets and publishes its own record. Nothing on this site is investment advice. Prediction markets and crypto involve risk of loss, and most participants lose money. If gambling is a problem for you or someone you know, call 1-800-GAMBLER.</p>
+    <p>Code and data: <a href="https://github.com/watkast/predictionbots">github.com/watkast/predictionbots</a> · hello@predictionbots.io</p>
+  </footer>
+</div>
+<script src="/elsewhere.js" defer></script>
+<script src="/reality.js" defer></script>
+<script src="/theme.js" defer></script>
+</body>
+</html>

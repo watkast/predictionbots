@@ -54,7 +54,7 @@ def build():
     if DIST.exists():
         shutil.rmtree(DIST)
     DIST.mkdir()
-    for f in ("index.html", "styles.css", "ledger.js", "truecost.js", "simulate.html", "sim.js", "theme.js", "elsewhere.js", "benchmark.js", "floor.js"):
+    for f in ("index.html", "styles.css", "ledger.js", "truecost.js", "simulate.html", "sim.js", "theme.js", "elsewhere.js", "benchmark.js", "floor.js", "reality.html", "reality.js"):
         shutil.copy(ROOT / f, DIST / f)
     # Prediction News list on the home page, from site/data/news.json
     newsf = ROOT / "data" / "news.json"
