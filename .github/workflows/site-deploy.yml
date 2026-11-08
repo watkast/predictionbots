@@ -58,6 +58,8 @@ jobs:
           python scripts/market_pages.py build --out site/dist/markets --venue "${{ github.event.inputs.venue || 'both' }}" --series-cache cache/series_meta.json $ARG 2> gen.log | tee -a "$GITHUB_STEP_SUMMARY"
           tail -40 gen.log
           echo "pages: $(find site/dist/markets -name index.html | wc -l)" | tee -a "$GITHUB_STEP_SUMMARY"
+      - name: Internal link check
+        run: python site/link_check.py | head -60 | tee -a "$GITHUB_STEP_SUMMARY" || true
       - uses: actions/upload-artifact@v4
         with: { name: site-dist, path: site/dist, retention-days: 3 }
       - uses: actions/setup-node@v4
