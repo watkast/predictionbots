@@ -88,7 +88,7 @@
 "slug": "kxpresnomr",
 "title": "Republican Primary winner",
 "category": "Elections",
-"open": 50
+"open": 52
 },
 {
 "venue": "kalshi",
@@ -110,6 +110,13 @@
 "title": "La Liga Game",
 "category": "Sports",
 "open": 42
+},
+{
+"venue": "kalshi",
+"slug": "kxbtc15m",
+"title": "BTC 15 min",
+"category": "Crypto",
+"open": 1
 },
 {
 "venue": "kalshi",
@@ -186,7 +193,7 @@
 "slug": "kxitfwmatch",
 "title": "ITF Women's Match",
 "category": "Sports",
-"open": 60
+"open": 66
 },
 {
 "venue": "kalshi",
@@ -264,13 +271,6 @@
 "title": "F1 Race",
 "category": "Sports",
 "open": 23
-},
-{
-"venue": "kalshi",
-"slug": "kxbtc15m",
-"title": "BTC 15 min",
-"category": "Crypto",
-"open": 1
 },
 {
 "venue": "kalshi",
@@ -365,17 +365,17 @@
 },
 {
 "venue": "kalshi",
-"slug": "kxncaambgame",
-"title": "Men's College Basketball Game",
-"category": "Sports",
-"open": 334
-},
-{
-"venue": "kalshi",
 "slug": "kxchnsltotal",
 "title": "Point Total",
 "category": "Sports",
 "open": 47
+},
+{
+"venue": "kalshi",
+"slug": "kxncaambgame",
+"title": "Men's College Basketball Game",
+"category": "Sports",
+"open": 334
 },
 {
 "venue": "kalshi",
@@ -533,6 +533,13 @@
 },
 {
 "venue": "kalshi",
+"slug": "kxatpchallengermatch",
+"title": "Challenger ATP ",
+"category": "Sports",
+"open": 52
+},
+{
+"venue": "kalshi",
 "slug": "kxnflmatchup",
 "title": "Pro Football Matchups",
 "category": "Sports",
@@ -586,13 +593,6 @@
 "title": "Kansas Governor",
 "category": "Elections",
 "open": 2
-},
-{
-"venue": "kalshi",
-"slug": "kxatpchallengermatch",
-"title": "Challenger ATP ",
-"category": "Sports",
-"open": 52
 },
 {
 "venue": "kalshi",
@@ -715,10 +715,17 @@
 },
 {
 "venue": "kalshi",
+"slug": "kxeth15m",
+"title": "ETH 15 min",
+"category": "Crypto",
+"open": 1
+},
+{
+"venue": "kalshi",
 "slug": "kxchnslspread",
 "title": "Spread",
 "category": "Sports",
-"open": 44
+"open": 45
 },
 {
 "venue": "kalshi",
@@ -834,10 +841,24 @@
 },
 {
 "venue": "kalshi",
+"slug": "kxxrp15m",
+"title": "XRP 15 min",
+"category": "Crypto",
+"open": 1
+},
+{
+"venue": "kalshi",
 "slug": "kxkblgame",
 "title": "Korea KBL Game",
 "category": "Sports",
 "open": 6
+},
+{
+"venue": "kalshi",
+"slug": "kxsol15m",
+"title": "SOL 15 min",
+"category": "Crypto",
+"open": 1
 },
 {
 "venue": "kalshi",
@@ -1009,6 +1030,13 @@
 },
 {
 "venue": "kalshi",
+"slug": "kxnbaspread",
+"title": "NBA Spread",
+"category": "Sports",
+"open": 231
+},
+{
+"venue": "kalshi",
 "slug": "kxvpresnomd",
 "title": "Democratic VP nom",
 "category": "Elections",
@@ -1027,13 +1055,6 @@
 "title": "Will Player Qualify for ATP Finals?",
 "category": "Sports",
 "open": 26
-},
-{
-"venue": "kalshi",
-"slug": "kxnbaspread",
-"title": "NBA Spread",
-"category": "Sports",
-"open": 231
 },
 {
 "venue": "kalshi",
@@ -1268,6 +1289,13 @@
 },
 {
 "venue": "kalshi",
+"slug": "kxdoge15m",
+"title": "DOGE 15 min",
+"category": "Crypto",
+"open": 1
+},
+{
+"venue": "kalshi",
 "slug": "kxnasdaq100y",
 "title": "Nasdaq yearly range",
 "category": "Financials",
@@ -1401,6 +1429,13 @@
 },
 {
 "venue": "kalshi",
+"slug": "kxatpexactmatch",
+"title": "ATP Exact Match Score",
+"category": "Sports",
+"open": 28
+},
+{
+"venue": "kalshi",
 "slug": "kxnfltotalprecise",
 "title": "Total Precise",
 "category": "Sports",
@@ -1412,13 +1447,6 @@
 "title": "Pro Football Rush and Receiving Yards",
 "category": "Sports",
 "open": 123
-},
-{
-"venue": "kalshi",
-"slug": "kxatpexactmatch",
-"title": "ATP Exact Match Score",
-"category": "Sports",
-"open": 28
 },
 {
 "venue": "kalshi",
@@ -1541,6 +1569,13 @@
 },
 {
 "venue": "kalshi",
+"slug": "kxbnb15m",
+"title": "BNB 15 min",
+"category": "Crypto",
+"open": 1
+},
+{
+"venue": "kalshi",
 "slug": "kxnflfg",
 "title": "Pro Football Field Goals",
 "category": "Sports",
@@ -1601,6 +1636,13 @@
 "title": "Number of rate cuts",
 "category": "Economics",
 "open": 21
+},
+{
+"venue": "kalshi",
+"slug": "kxhype15m",
+"title": "HYPE 15 min",
+"category": "Crypto",
+"open": 1
 },
 {
 "venue": "kalshi",
@@ -1849,13 +1891,6 @@
 },
 {
 "venue": "kalshi",
-"slug": "kxeth15m",
-"title": "ETH 15 min",
-"category": "Crypto",
-"open": 1
-},
-{
-"venue": "kalshi",
 "slug": "kxpgatop20",
 "title": "PGA Top 20 Finisher",
 "category": "Sports",
@@ -1930,6 +1965,13 @@
 "title": "England Women's Super League Game",
 "category": "Sports",
 "open": 15
+},
+{
+"venue": "kalshi",
+"slug": "kxnear15m",
+"title": "NEAR 15m",
+"category": "Crypto",
+"open": 1
 },
 {
 "venue": "kalshi",
@@ -2052,6 +2094,20 @@
 },
 {
 "venue": "kalshi",
+"slug": "kxnbatotal",
+"title": "NBA Total",
+"category": "Sports",
+"open": 203
+},
+{
+"venue": "kalshi",
+"slug": "kxcs2map",
+"title": "Counter-Strike 2 Map Winner ",
+"category": "Sports",
+"open": 170
+},
+{
+"venue": "kalshi",
 "slug": "kxbtcminmon",
 "title": "BTC one touch minimum",
 "category": "Crypto",
@@ -2063,13 +2119,6 @@
 "title": "Will Mamdani sign an executive order?",
 "category": "Politics",
 "open": 1
-},
-{
-"venue": "kalshi",
-"slug": "kxnbatotal",
-"title": "NBA Total",
-"category": "Sports",
-"open": 203
 },
 {
 "venue": "kalshi",
@@ -2143,17 +2192,17 @@
 },
 {
 "venue": "kalshi",
-"slug": "kxchnslbtts",
-"title": "BTTS",
-"category": "Sports",
-"open": 6
-},
-{
-"venue": "kalshi",
 "slug": "kxhighmia",
 "title": "Highest temperature in Miami",
 "category": "Climate and Weather",
 "open": 6
+},
+{
+"venue": "kalshi",
+"slug": "kxzec15m",
+"title": "Zcash 15min",
+"category": "Crypto",
+"open": 1
 },
 {
 "venue": "kalshi",
@@ -2245,13 +2294,6 @@
 "title": "Broadline Retail Ad Spend",
 "category": "Financials",
 "open": 18
-},
-{
-"venue": "kalshi",
-"slug": "kxcs2map",
-"title": "Counter-Strike 2 Map Winner ",
-"category": "Sports",
-"open": 170
 },
 {
 "venue": "kalshi",
@@ -2451,17 +2493,17 @@
 },
 {
 "venue": "kalshi",
-"slug": "kxtrumpout27",
-"title": "Trump out as President?",
-"category": "Politics",
-"open": 3
-},
-{
-"venue": "kalshi",
 "slug": "kxwtachallengermatch",
 "title": "Challenger WTA",
 "category": "Sports",
 "open": 4
+},
+{
+"venue": "kalshi",
+"slug": "kxtrumpout27",
+"title": "Trump out as President?",
+"category": "Politics",
+"open": 3
 },
 {
 "venue": "kalshi",
@@ -2759,13 +2801,6 @@
 },
 {
 "venue": "kalshi",
-"slug": "kxsol15m",
-"title": "SOL 15 min",
-"category": "Crypto",
-"open": 1
-},
-{
-"venue": "kalshi",
 "slug": "controls",
 "title": "Senate winner",
 "category": "Elections",
@@ -2801,6 +2836,13 @@
 },
 {
 "venue": "kalshi",
+"slug": "kxchnslbtts",
+"title": "BTTS",
+"category": "Sports",
+"open": 4
+},
+{
+"venue": "kalshi",
 "slug": "kxbolpdivgame",
 "title": "Bolivia Premier Division Game",
 "category": "Sports",
@@ -2826,6 +2868,13 @@
 "title": "Amusement Parks & Attractions Ad Spend",
 "category": "Financials",
 "open": 15
+},
+{
+"venue": "kalshi",
+"slug": "kxligapromatch",
+"title": "Russia Liga Pro Match",
+"category": "Sports",
+"open": 172
 },
 {
 "venue": "kalshi",
@@ -3074,13 +3123,6 @@
 },
 {
 "venue": "kalshi",
-"slug": "kxxrp15m",
-"title": "XRP 15 min",
-"category": "Crypto",
-"open": 1
-},
-{
-"venue": "kalshi",
 "slug": "kxbrentmon",
 "title": "Brent Monthly",
 "category": "Commodities",
@@ -3120,6 +3162,13 @@
 "title": "1st Half BTTS",
 "category": "Sports",
 "open": 5
+},
+{
+"venue": "kalshi",
+"slug": "kxr6game",
+"title": "R6 Game",
+"category": "Sports",
+"open": 4
 },
 {
 "venue": "kalshi",
@@ -3725,13 +3774,6 @@
 },
 {
 "venue": "kalshi",
-"slug": "kxdoge15m",
-"title": "DOGE 15 min",
-"category": "Crypto",
-"open": 1
-},
-{
-"venue": "kalshi",
 "slug": "kxzynpos",
 "title": "Zyn Point of Sale Growth",
 "category": "Financials",
@@ -3841,13 +3883,6 @@
 "title": "House passage of a bill to codify Roe v. Wade",
 "category": "Politics",
 "open": 1
-},
-{
-"venue": "kalshi",
-"slug": "kxligapromatch",
-"title": "Russia Liga Pro Match",
-"category": "Sports",
-"open": 172
 },
 {
 "venue": "kalshi",
@@ -3963,13 +3998,6 @@
 },
 {
 "venue": "kalshi",
-"slug": "kxr6game",
-"title": "R6 Game",
-"category": "Sports",
-"open": 4
-},
-{
-"venue": "kalshi",
 "slug": "kxheismanfinalist",
 "title": "Heisman Finalists",
 "category": "Sports",
@@ -4033,6 +4061,13 @@
 },
 {
 "venue": "kalshi",
+"slug": "kxncaambtotal",
+"title": "Men's College Basketball Total Points",
+"category": "Sports",
+"open": 417
+},
+{
+"venue": "kalshi",
 "slug": "kxnfldsttd",
 "title": "Pro Football D/ST Touchdown",
 "category": "Sports",
@@ -4058,13 +4093,6 @@
 "title": "Eredivisie Spread",
 "category": "Sports",
 "open": 20
-},
-{
-"venue": "kalshi",
-"slug": "kxncaambtotal",
-"title": "Men's College Basketball Total Points",
-"category": "Sports",
-"open": 417
 },
 {
 "venue": "kalshi",
@@ -4114,6 +4142,13 @@
 "title": "To Advance",
 "category": "Sports",
 "open": 2
+},
+{
+"venue": "kalshi",
+"slug": "kxvalorantgame",
+"title": "Valorant game winner",
+"category": "Sports",
+"open": 20
 },
 {
 "venue": "kalshi",
@@ -4229,13 +4264,6 @@
 },
 {
 "venue": "kalshi",
-"slug": "kxbnb15m",
-"title": "BNB 15 min",
-"category": "Crypto",
-"open": 1
-},
-{
-"venue": "kalshi",
 "slug": "kxnfltie",
 "title": "NFL Game to Tie",
 "category": "Sports",
@@ -4261,13 +4289,6 @@
 "title": "Receiving Yards Ladder",
 "category": "Sports",
 "open": 67
-},
-{
-"venue": "kalshi",
-"slug": "kxvalorantgame",
-"title": "Valorant game winner",
-"category": "Sports",
-"open": 20
 },
 {
 "venue": "kalshi",
@@ -5013,6 +5034,13 @@
 },
 {
 "venue": "kalshi",
+"slug": "kxvalorantmap",
+"title": "Valorant Map Winner",
+"category": "Sports",
+"open": 42
+},
+{
+"venue": "kalshi",
 "slug": "kxnba1hspread",
 "title": "NBA 1st Half Spread",
 "category": "Sports",
@@ -5080,13 +5108,6 @@
 "title": "Point Total",
 "category": "Sports",
 "open": 18
-},
-{
-"venue": "kalshi",
-"slug": "kxvalorantmap",
-"title": "Valorant Map Winner",
-"category": "Sports",
-"open": 42
 },
 {
 "venue": "kalshi",
@@ -5587,6 +5608,13 @@
 },
 {
 "venue": "kalshi",
+"slug": "kxbiggestquake",
+"title": "Biggest earthquake",
+"category": "Climate and Weather",
+"open": 10
+},
+{
+"venue": "kalshi",
 "slug": "kxczefltotal",
 "title": "Point Total",
 "category": "Sports",
@@ -5643,24 +5671,10 @@
 },
 {
 "venue": "kalshi",
-"slug": "kxbiggestquake",
-"title": "Biggest earthquake",
-"category": "Climate and Weather",
-"open": 10
-},
-{
-"venue": "kalshi",
 "slug": "power",
 "title": "Party power",
 "category": "Elections",
 "open": 8
-},
-{
-"venue": "kalshi",
-"slug": "kxhype15m",
-"title": "HYPE 15 min",
-"category": "Crypto",
-"open": 1
 },
 {
 "venue": "kalshi",
@@ -5696,6 +5710,13 @@
 "title": "C4 Energy Point of Sale Growth",
 "category": "Financials",
 "open": 11
+},
+{
+"venue": "kalshi",
+"slug": "kxebasketballgame",
+"title": "eBasketball Game",
+"category": "Sports",
+"open": 16
 },
 {
 "venue": "kalshi",
@@ -5993,10 +6014,24 @@
 },
 {
 "venue": "kalshi",
+"slug": "kxesoccergame",
+"title": "eSoccer Game",
+"category": "Sports",
+"open": 159
+},
+{
+"venue": "kalshi",
 "slug": "kxqstarstotal",
 "title": "Total",
 "category": "Sports",
 "open": 12
+},
+{
+"venue": "kalshi",
+"slug": "kxnba3pt",
+"title": "NBA Player Threes",
+"category": "Sports",
+"open": 313
 },
 {
 "venue": "kalshi",
@@ -6329,6 +6364,20 @@
 },
 {
 "venue": "kalshi",
+"slug": "kxhunnb1total",
+"title": "Total",
+"category": "Sports",
+"open": 18
+},
+{
+"venue": "kalshi",
+"slug": "kxnhlgoal",
+"title": "NHL Goalscorer",
+"category": "Sports",
+"open": 123
+},
+{
+"venue": "kalshi",
 "slug": "kximpeachfirst",
 "title": "Who will the House impeach first?",
 "category": "Politics",
@@ -6375,13 +6424,6 @@
 "title": "Romanian Liga I Game",
 "category": "Sports",
 "open": 9
-},
-{
-"venue": "kalshi",
-"slug": "kxnba3pt",
-"title": "NBA Player Threes",
-"category": "Sports",
-"open": 313
 },
 {
 "venue": "kalshi",
@@ -6466,13 +6508,6 @@
 "title": "Correct Score",
 "category": "Sports",
 "open": 90
-},
-{
-"venue": "kalshi",
-"slug": "kxhunnb1total",
-"title": "Total",
-"category": "Sports",
-"open": 18
 },
 {
 "venue": "kalshi",
@@ -6567,24 +6602,10 @@
 },
 {
 "venue": "kalshi",
-"slug": "kxnear15m",
-"title": "NEAR 15m",
-"category": "Crypto",
-"open": 1
-},
-{
-"venue": "kalshi",
 "slug": "kxheismanspecial",
 "title": "Heisman Trophy Winner Specials",
 "category": "Sports",
 "open": 10
-},
-{
-"venue": "kalshi",
-"slug": "kxnhlgoal",
-"title": "NHL Goalscorer",
-"category": "Sports",
-"open": 123
 },
 {
 "venue": "kalshi",
@@ -7067,7 +7088,7 @@
 "slug": "kxbbserieatotal",
 "title": "Italy Serie A Total",
 "category": "Sports",
-"open": 22
+"open": 55
 },
 {
 "venue": "kalshi",
@@ -7645,6 +7666,13 @@
 },
 {
 "venue": "kalshi",
+"slug": "kxnba1qspread",
+"title": "NBA 1st Quarter Spread",
+"category": "Sports",
+"open": 78
+},
+{
+"venue": "kalshi",
 "slug": "kxligue12htotal",
 "title": "2nd Half Total",
 "category": "Sports",
@@ -7705,13 +7733,6 @@
 "title": "College Football Coach Out By",
 "category": "Sports",
 "open": 15
-},
-{
-"venue": "kalshi",
-"slug": "kxnba1qspread",
-"title": "NBA 1st Quarter Spread",
-"category": "Sports",
-"open": 78
 },
 {
 "venue": "kalshi",
@@ -7960,13 +7981,6 @@
 },
 {
 "venue": "kalshi",
-"slug": "kxzec15m",
-"title": "Zcash 15min",
-"category": "Crypto",
-"open": 1
-},
-{
-"venue": "kalshi",
 "slug": "kxcopperd",
 "title": "Daily Copper",
 "category": "Commodities",
@@ -8034,6 +8048,13 @@
 "title": "FA cup",
 "category": "Sports",
 "open": 24
+},
+{
+"venue": "kalshi",
+"slug": "kxcryptolead15m",
+"title": "Coin Race 15 minutes",
+"category": "Crypto",
+"open": 5
 },
 {
 "venue": "kalshi",
@@ -8237,6 +8258,13 @@
 "title": "Las Vegas Daily Low Temperature",
 "category": "Climate and Weather",
 "open": 6
+},
+{
+"venue": "kalshi",
+"slug": "kxtempchihs",
+"title": "Hourly Directional Chicago Metro Temperature",
+"category": "Climate and Weather",
+"open": 10
 },
 {
 "venue": "kalshi",
@@ -9962,6 +9990,13 @@
 },
 {
 "venue": "kalshi",
+"slug": "kxmlbbgame",
+"title": "Mobile Legends Bang Bang Game",
+"category": "Sports",
+"open": 18
+},
+{
+"venue": "kalshi",
 "slug": "kx30yrdirhm",
 "title": "30Y how high monthly",
 "category": "Financials",
@@ -10228,13 +10263,6 @@
 },
 {
 "venue": "kalshi",
-"slug": "kxmlbbgame",
-"title": "Mobile Legends Bang Bang Game",
-"category": "Sports",
-"open": 18
-},
-{
-"venue": "kalshi",
 "slug": "kxroganguest",
 "title": "Rogan guests",
 "category": "Entertainment",
@@ -10452,13 +10480,6 @@
 },
 {
 "venue": "kalshi",
-"slug": "kxcryptolead15m",
-"title": "Coin Race 15 minutes",
-"category": "Crypto",
-"open": 5
-},
-{
-"venue": "kalshi",
 "slug": "kxlowtsatx",
 "title": "Lowest Temperature SATX",
 "category": "Climate and Weather",
@@ -10624,6 +10645,13 @@
 "title": "Josh Shapiro announces presidential run by...?",
 "category": "Elections",
 "open": 7
+},
+{
+"venue": "kalshi",
+"slug": "kxtempmiah",
+"title": "Hourly Directional Miami Temperature",
+"category": "Climate and Weather",
+"open": 10
 },
 {
 "venue": "kalshi",
@@ -11044,13 +11072,6 @@
 "title": "Mid-American Conference Tournament",
 "category": "Sports",
 "open": 12
-},
-{
-"venue": "kalshi",
-"slug": "kxebasketballgame",
-"title": "eBasketball Game",
-"category": "Sports",
-"open": 16
 },
 {
 "venue": "kalshi",
@@ -12258,6 +12279,13 @@
 },
 {
 "venue": "kalshi",
+"slug": "kxtemplaxhs",
+"title": "Hourly Directional Coastal LA Temperature",
+"category": "Climate and Weather",
+"open": 10
+},
+{
+"venue": "kalshi",
 "slug": "kxncaambmw",
 "title": "Mountain West Conference Tournament",
 "category": "Sports",
@@ -13354,6 +13382,13 @@
 "title": "Will any independent or third party candidate win a House or Senate race?",
 "category": "Elections",
 "open": 1
+},
+{
+"venue": "kalshi",
+"slug": "kxtempnychs",
+"title": "Hourly Directional NYC Temperature",
+"category": "Climate and Weather",
+"open": 10
 },
 {
 "venue": "kalshi",
@@ -16906,13 +16941,6 @@
 },
 {
 "venue": "kalshi",
-"slug": "kxesoccergame",
-"title": "eSoccer Game",
-"category": "Sports",
-"open": 144
-},
-{
-"venue": "kalshi",
 "slug": "kxmetaa",
 "title": "Meta Annual KPI",
 "category": "Companies",
@@ -18292,6 +18320,13 @@
 },
 {
 "venue": "kalshi",
+"slug": "kxnhlast",
+"title": "Pro Hockey Assists",
+"category": "Sports",
+"open": 62
+},
+{
+"venue": "kalshi",
 "slug": "kxnba2htotal",
 "title": "NBA 2nd Half Total",
 "category": "Sports",
@@ -18715,7 +18750,7 @@
 "slug": "kxbbserieaspread",
 "title": "Italy Serie A Spread",
 "category": "Sports",
-"open": 24
+"open": 60
 },
 {
 "venue": "kalshi",
@@ -18810,34 +18845,6 @@
 },
 {
 "venue": "kalshi",
-"slug": "kxtemplaxhs",
-"title": "Hourly Directional Coastal LA Temperature",
-"category": "Climate and Weather",
-"open": 10
-},
-{
-"venue": "kalshi",
-"slug": "kxtempchihs",
-"title": "Hourly Directional Chicago Metro Temperature",
-"category": "Climate and Weather",
-"open": 10
-},
-{
-"venue": "kalshi",
-"slug": "kxtempnychs",
-"title": "Hourly Directional NYC Temperature",
-"category": "Climate and Weather",
-"open": 10
-},
-{
-"venue": "kalshi",
-"slug": "kxtempmiah",
-"title": "Hourly Directional Miami Temperature",
-"category": "Climate and Weather",
-"open": 10
-},
-{
-"venue": "kalshi",
 "slug": "kxnbaptsleader",
 "title": "NBA Game Points Leader",
 "category": "Sports",
@@ -18863,13 +18870,6 @@
 "title": "Senate winner",
 "category": "Elections",
 "open": 2
-},
-{
-"venue": "kalshi",
-"slug": "kxnhlast",
-"title": "Pro Hockey Assists",
-"category": "Sports",
-"open": 62
 },
 {
 "venue": "kalshi",
@@ -34581,13 +34581,6 @@
 },
 {
 "venue": "pmus",
-"slug": "asc-cfb-gtech-clmsn",
-"title": "Will the Georgia Tech cover 4.5 vs the Clemson in Georgia Tech vs. Clemson",
-"category": "Sports",
-"open": 77
-},
-{
-"venue": "pmus",
 "slug": "asc-cfb-cah-vir",
 "title": "Will the California cover 3.5 vs the Virginia in California vs. Virginia",
 "category": "Sports",
@@ -34648,6 +34641,13 @@
 "title": "Will the Texas cover -21.5 vs the LSU in Texas vs. LSU",
 "category": "Sports",
 "open": 77
+},
+{
+"venue": "pmus",
+"slug": "asc-cfb-gtech-clmsn",
+"title": "Will the Georgia Tech cover 4.5 vs the Clemson in Georgia Tech vs. Clemson",
+"category": "Sports",
+"open": 76
 },
 {
 "venue": "pmus",
@@ -44052,13 +44052,6 @@
 },
 {
 "venue": "pmus",
-"slug": "asc-atp-chrlan-stevuj",
-"title": "Will the Christian Langmo cover -1.5 vs the Stefan Vujic in Christian Langmo vs. Stefan Vujic",
-"category": "Sports",
-"open": 8
-},
-{
-"venue": "pmus",
 "slug": "asc-atp-kokiso-herhoe",
 "title": "Will the Kokoro Isomura cover -1.5 vs the Herman Hoeyeraal in Kokoro Isomura vs. Herman Hoeyeraal",
 "category": "Sports",
@@ -46474,13 +46467,6 @@
 },
 {
 "venue": "pmus",
-"slug": "astatc-atp-chrlan-stevuj",
-"title": "Langmo wins 2-0",
-"category": "Sports",
-"open": 6
-},
-{
-"venue": "pmus",
 "slug": "astatc-atp-kokiso-herhoe",
 "title": "Isomura wins 2-0",
 "category": "Sports",
@@ -48359,13 +48345,6 @@
 "venue": "pmus",
 "slug": "astatc-nhl-nyi-sj",
 "title": "Will the NHL hockey game between Islanders and Sharks on 2026-11-09 go into Overtime",
-"category": "Sports",
-"open": 4
-},
-{
-"venue": "pmus",
-"slug": "tsc-atp-chrlan-stevuj",
-"title": "Will the total in Christian Langmo vs. Stefan Vujic be more than 17.5",
 "category": "Sports",
 "open": 4
 },
@@ -51913,6 +51892,20 @@
 },
 {
 "venue": "pmus",
+"slug": "atc-ebfwcb-net-ger",
+"title": "Will Netherlands (cl1vlind) defeat Germany (dor1an) in the eBattles: World Cup B match scheduled for Nov 8, 2026",
+"category": "Sports",
+"open": 3
+},
+{
+"venue": "pmus",
+"slug": "atc-ebfwcb-mor-bel",
+"title": "Will Morocco (A1ose) defeat Belgium (v1nn) in the eBattles: World Cup B match scheduled for Nov 8, 2026",
+"category": "Sports",
+"open": 3
+},
+{
+"venue": "pmus",
 "slug": "atc-ebfsa-bol-roma",
 "title": "Will Bologna (RuBIX) defeat Roma (dor1an) in the eBattles: Serie A match scheduled for Nov 8, 2026",
 "category": "Sports",
@@ -52711,13 +52704,6 @@
 },
 {
 "venue": "pmus",
-"slug": "astatc-setkameua-lazrus-shyant",
-"title": "Will Lazebnyi Ruslan win set 2 against Shypilov Anton",
-"category": "Sports",
-"open": 3
-},
-{
-"venue": "pmus",
 "slug": "astatc-setkameua-kubser-bokrom",
 "title": "Will Kubrak Serhii win set 1 against Boklah Roman",
 "category": "Sports",
@@ -52734,13 +52720,6 @@
 "venue": "pmus",
 "slug": "astatc-setkameua-vlaval-kovnaz",
 "title": "Will Vlasenko Valerii win set 1 against Kovalchuk Nazarii",
-"category": "Sports",
-"open": 3
-},
-{
-"venue": "pmus",
-"slug": "astatc-setkameua-kotand-giltar",
-"title": "Will Kotiash Andrii win set 1 against Gil Taras",
 "category": "Sports",
 "open": 3
 },
@@ -52811,13 +52790,6 @@
 "venue": "pmus",
 "slug": "astatc-setkameua-shyant-kovnaz",
 "title": "Will Shypilov Anton win set 1 against Kovalchuk Nazarii",
-"category": "Sports",
-"open": 3
-},
-{
-"venue": "pmus",
-"slug": "astatc-setkameua-kotand-gazole",
-"title": "Will Kotiash Andrii win set 1 against Gazhula Oleksii",
 "category": "Sports",
 "open": 3
 },
@@ -55595,13 +55567,6 @@
 },
 {
 "venue": "pmus",
-"slug": "astatc-cs2-mglz-mouz",
-"title": "Will TheMongolz win Map 2 vs MOUZ",
-"category": "Sports",
-"open": 2
-},
-{
-"venue": "pmus",
 "slug": "tsc-cs2-mglz-mouz",
 "title": "Will the total in TheMongolz vs. MOUZ be more than 3.5",
 "category": "Sports",
@@ -55674,13 +55639,6 @@
 "venue": "pmus",
 "slug": "astatc-cs2-ksm-boyb",
 "title": "Will KUUSAMO.gg win Map 1 vs BoyBand",
-"category": "Sports",
-"open": 2
-},
-{
-"venue": "pmus",
-"slug": "astatc-setkameua-riaole-osiser",
-"title": "Will Riabuha Oleksandr win set 2 against Osipov Sergey",
 "category": "Sports",
 "open": 2
 },
@@ -55814,13 +55772,6 @@
 "venue": "pmus",
 "slug": "astatc-dota2-ch-pr",
 "title": "Will CyberHero win Game 1 vs Power Rangers",
-"category": "Sports",
-"open": 2
-},
-{
-"venue": "pmus",
-"slug": "tsc-setkameua-tymole-popedu",
-"title": "Will the total in Tymofeev Oleksandr vs. Populovskyi Eduard be more than 3.5",
 "category": "Sports",
 "open": 2
 },
@@ -56281,13 +56232,6 @@
 },
 {
 "venue": "pmus",
-"slug": "tsc-setkameua-giltar-kuzvol",
-"title": "Will the total in Gil Taras vs. Kuzmych Volodymyr be more than 3.5",
-"category": "Sports",
-"open": 2
-},
-{
-"venue": "pmus",
 "slug": "astatc-setkameua-fasand-koloole",
 "title": "Will Fastov Andrii win set 3 against Kolos Oleksandr",
 "category": "Sports",
@@ -56302,8 +56246,8 @@
 },
 {
 "venue": "pmus",
-"slug": "tsc-setkameua-bulser-kolpet",
-"title": "Will the total in Bului Serhii vs. Kolesnik Petro be more than 3.5",
+"slug": "astatc-setkameua-lazrus-shyant",
+"title": "Will Lazebnyi Ruslan win set 3 against Shypilov Anton",
 "category": "Sports",
 "open": 2
 },
@@ -56339,13 +56283,6 @@
 "venue": "pmus",
 "slug": "tsc-setkameua-vlaval-kovnaz",
 "title": "Will the total in Vlasenko Valerii vs. Kovalchuk Nazarii be more than 3.5",
-"category": "Sports",
-"open": 2
-},
-{
-"venue": "pmus",
-"slug": "tsc-setkameua-kotand-giltar",
-"title": "Will the total in Kotiash Andrii vs. Gil Taras be more than 3.5",
 "category": "Sports",
 "open": 2
 },
@@ -56416,13 +56353,6 @@
 "venue": "pmus",
 "slug": "tsc-setkameua-shyant-kovnaz",
 "title": "Will the total in Shypilov Anton vs. Kovalchuk Nazarii be more than 3.5",
-"category": "Sports",
-"open": 2
-},
-{
-"venue": "pmus",
-"slug": "tsc-setkameua-kotand-gazole",
-"title": "Will the total in Kotiash Andrii vs. Gazhula Oleksii be more than 3.5",
 "category": "Sports",
 "open": 2
 },
@@ -77008,13 +76938,6 @@
 },
 {
 "venue": "pmus",
-"slug": "aec-khl-amr-bar",
-"title": "Who will win in the upcoming hockey event Amur Khabarovsk vs Barys Astana scheduled for November 8, 2026 at 7:00 AM UTC",
-"category": "Sports",
-"open": 1
-},
-{
-"venue": "pmus",
 "slug": "aec-nbl-adl-mel",
 "title": "Who will win in the upcoming basketball event Adelaide 36ers vs Melbourne United scheduled for November 12, 2026 at 8:30 AM UTC",
 "category": "Sports",
@@ -82930,6 +82853,13 @@
 },
 {
 "venue": "pmus",
+"slug": "astatc-cs2-mglz-mouz",
+"title": "Will TheMongolz win Map 3 vs MOUZ",
+"category": "Sports",
+"open": 1
+},
+{
+"venue": "pmus",
 "slug": "asc-cs2-mglz-mouz",
 "title": "Will the TheMongolz cover 1.5 vs the MOUZ in TheMongolz vs. MOUZ",
 "category": "Sports",
@@ -83140,13 +83070,6 @@
 },
 {
 "venue": "pmus",
-"slug": "aec-itfme-vragoh-khokit",
-"title": "Who will win in the upcoming tennis event Vraj Gohil vs Khomtat Kitthachok scheduled for November 8, 2026 at 6:00 AM UTC",
-"category": "Sports",
-"open": 1
-},
-{
-"venue": "pmus",
 "slug": "aec-dota2-ch-pckcp",
 "title": "Who will win in the upcoming esports event CyberHero vs PuckChamp scheduled for November 10, 2026 at 1:00 PM UTC",
 "category": "Sports",
@@ -83170,13 +83093,6 @@
 "venue": "pmus",
 "slug": "aec-itfme-honfu-teekha",
 "title": "Who will win in the upcoming tennis event Hong-Lin Fu vs Teerapat Khantiweerawat scheduled for November 8, 2026 at 7:30 AM UTC",
-"category": "Sports",
-"open": 1
-},
-{
-"venue": "pmus",
-"slug": "aec-itfme-adikot-pitsop",
-"title": "Who will win in the upcoming tennis event Aditya Kothari vs Pitchayapong Soponpisut scheduled for November 8, 2026 at 7:30 AM UTC",
 "category": "Sports",
 "open": 1
 },
@@ -84757,13 +84673,6 @@
 },
 {
 "venue": "pmus",
-"slug": "aec-itfme-tymkar-maxhaf",
-"title": "Who will win in the upcoming tennis event Tymofii Karpaliuk vs Maximilian Mihai Hafner scheduled for November 8, 2026 at 7:00 AM UTC",
-"category": "Sports",
-"open": 1
-},
-{
-"venue": "pmus",
 "slug": "aec-atp-calhem-yandur",
 "title": "Who will win in the upcoming atp event Calvin Hemery vs Yanis Ghazouani Durand scheduled for November 8, 2026 at 9:00 AM UTC",
 "category": "Sports",
@@ -85585,6 +85494,13 @@
 "venue": "pmus",
 "slug": "astatc-setkameua-blaole-makyar",
 "title": "Will Blashkun Oleksandr win set 3 against Makovka Yaroslav",
+"category": "Sports",
+"open": 1
+},
+{
+"venue": "pmus",
+"slug": "astatc-setkameua-riaole-osiser",
+"title": "Will Riabuha Oleksandr win set 3 against Osipov Sergey",
 "category": "Sports",
 "open": 1
 },
@@ -86507,13 +86423,6 @@
 },
 {
 "venue": "pmus",
-"slug": "aec-setkameua-tymole-popedu",
-"title": "Who will win in the upcoming table-tennis event Tymofeev Oleksandr vs Populovskyi Eduard scheduled for November 8, 2026 at 8:50 AM UTC",
-"category": "Sports",
-"open": 1
-},
-{
-"venue": "pmus",
 "slug": "aec-setkameua-necvol-zaiboh",
 "title": "Who will win in the upcoming table-tennis event Nechai Volodymyr vs Zaika Bohdan scheduled for November 8, 2026 at 9:20 AM UTC",
 "category": "Sports",
@@ -86530,13 +86439,6 @@
 "venue": "pmus",
 "slug": "aec-setkameua-zaiboh-solser",
 "title": "Who will win in the upcoming table-tennis event Zaika Bohdan vs Solomko Serhii scheduled for November 8, 2026 at 10:20 AM UTC",
-"category": "Sports",
-"open": 1
-},
-{
-"venue": "pmus",
-"slug": "astatc-setkameua-tymole-popedu",
-"title": "Will Tymofeev Oleksandr win set 3 against Populovskyi Eduard",
 "category": "Sports",
 "open": 1
 },
@@ -87263,29 +87165,8 @@
 },
 {
 "venue": "pmus",
-"slug": "aec-setkameua-giltar-kuzvol",
-"title": "Who will win in the upcoming table-tennis event Gil Taras vs Kuzmych Volodymyr scheduled for November 8, 2026 at 8:55 AM UTC",
-"category": "Sports",
-"open": 1
-},
-{
-"venue": "pmus",
-"slug": "astatc-setkameua-giltar-kuzvol",
-"title": "Will Gil Taras win set 3 against Kuzmych Volodymyr",
-"category": "Sports",
-"open": 1
-},
-{
-"venue": "pmus",
 "slug": "aec-setkameua-fasand-koloole",
 "title": "Who will win in the upcoming table-tennis event Fastov Andrii vs Kolos Oleksandr scheduled for November 8, 2026 at 9:00 AM UTC",
-"category": "Sports",
-"open": 1
-},
-{
-"venue": "pmus",
-"slug": "aec-setkameua-bulser-kolpet",
-"title": "Who will win in the upcoming table-tennis event Bului Serhii vs Kolesnik Petro scheduled for November 8, 2026 at 9:00 AM UTC",
 "category": "Sports",
 "open": 1
 },
@@ -87300,13 +87181,6 @@
 "venue": "pmus",
 "slug": "aec-setkameua-gazole-paldmy",
 "title": "Who will win in the upcoming table-tennis event Gazhula Oleksii vs Palii Dmytro scheduled for November 8, 2026 at 9:25 AM UTC",
-"category": "Sports",
-"open": 1
-},
-{
-"venue": "pmus",
-"slug": "astatc-setkameua-bulser-kolpet",
-"title": "Will Bului Serhii win set 3 against Kolesnik Petro",
 "category": "Sports",
 "open": 1
 },
@@ -87328,13 +87202,6 @@
 "venue": "pmus",
 "slug": "aec-setkameua-vlaval-kovnaz",
 "title": "Who will win in the upcoming table-tennis event Vlasenko Valerii vs Kovalchuk Nazarii scheduled for November 8, 2026 at 9:35 AM UTC",
-"category": "Sports",
-"open": 1
-},
-{
-"venue": "pmus",
-"slug": "aec-setkameua-kotand-giltar",
-"title": "Who will win in the upcoming table-tennis event Kotiash Andrii vs Gil Taras scheduled for November 8, 2026 at 9:55 AM UTC",
 "category": "Sports",
 "open": 1
 },
@@ -87405,13 +87272,6 @@
 "venue": "pmus",
 "slug": "aec-setkameua-shyant-kovnaz",
 "title": "Who will win in the upcoming table-tennis event Shypilov Anton vs Kovalchuk Nazarii scheduled for November 8, 2026 at 11:05 AM UTC",
-"category": "Sports",
-"open": 1
-},
-{
-"venue": "pmus",
-"slug": "aec-setkameua-kotand-gazole",
-"title": "Who will win in the upcoming table-tennis event Kotiash Andrii vs Gazhula Oleksii scheduled for November 8, 2026 at 11:25 AM UTC",
 "category": "Sports",
 "open": 1
 },
@@ -88572,36 +88432,8 @@
 },
 {
 "venue": "pmus",
-"slug": "eth-updown-5m",
-"title": "ETH Up or Down, 5 minutes",
-"category": "Crypto",
-"open": 1
-},
-{
-"venue": "pmus",
-"slug": "btc-updown-5m",
-"title": "BTC Up or Down, 5 minutes",
-"category": "Crypto",
-"open": 1
-},
-{
-"venue": "pmus",
-"slug": "xrp-updown-15m",
-"title": "XRP Up or Down, 15 minutes",
-"category": "Crypto",
-"open": 1
-},
-{
-"venue": "pmus",
 "slug": "sol-updown-5m",
 "title": "SOL Up or Down, 5 minutes",
-"category": "Crypto",
-"open": 1
-},
-{
-"venue": "pmus",
-"slug": "sol-updown-15m",
-"title": "SOL Up or Down, 15 minutes",
 "category": "Crypto",
 "open": 1
 },
@@ -88614,8 +88446,36 @@
 },
 {
 "venue": "pmus",
+"slug": "sol-updown-15m",
+"title": "SOL Up or Down, 15 minutes",
+"category": "Crypto",
+"open": 1
+},
+{
+"venue": "pmus",
+"slug": "xrp-updown-15m",
+"title": "XRP Up or Down, 15 minutes",
+"category": "Crypto",
+"open": 1
+},
+{
+"venue": "pmus",
 "slug": "eth-updown-15m",
 "title": "ETH Up or Down, 15 minutes",
+"category": "Crypto",
+"open": 1
+},
+{
+"venue": "pmus",
+"slug": "btc-updown-5m",
+"title": "BTC Up or Down, 5 minutes",
+"category": "Crypto",
+"open": 1
+},
+{
+"venue": "pmus",
+"slug": "eth-updown-5m",
+"title": "ETH Up or Down, 5 minutes",
 "category": "Crypto",
 "open": 1
 },
@@ -91472,13 +91332,6 @@
 "venue": "pmus",
 "slug": "aec-wta-daljak-isacol",
 "title": "Who will win in the upcoming wta event Dalila Jakupovic vs Isabella Collazos scheduled for November 8, 2026 at 4:10 PM UTC",
-"category": "Sports",
-"open": 1
-},
-{
-"venue": "pmus",
-"slug": "aec-r6-edg-wbg",
-"title": "Who will win in the upcoming esports event EDward Gaming vs Weibo Gaming scheduled for November 8, 2026 at 8:45 AM UTC",
 "category": "Sports",
 "open": 1
 },
