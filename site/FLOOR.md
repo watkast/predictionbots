@@ -28,3 +28,14 @@ no referral links; one tap to report; three reports hide a post pending review; 
 3. Thread blocks embedded on: benchmark rows, posts, Learn pages, market pages (the generator emits the block).
 4. Moderation page for us (list reports, hide/unhide, badge, ban).
 5. Sitemap entries for threads with ≥ 3 posts.
+
+## Status 8 Nov 2026
+Built and tested locally (wrangler pages dev with a local D1 and `DEV_AUTH=1`): `site/functions/api/floor/[[path]].js`
+(threads, posts, votes, reports, rate limit, referral filter, dev-only `__init` that creates the tables),
+`site/functions/floor/[kind]/[[key]].js` (server-rendered thread page), `site/floor.js` (the widget on posts, Learn
+pages and market pages), `site/floor_lib.js` (auth: Clerk RS256 JWT verification via JWKS; dev header locally).
+To go live: create a D1 database `floor` and bind it as `FLOOR` in the Pages project; run `site/schema.sql` against it;
+create a Clerk app (Google, Apple, email link) and set `CLERK_JWKS_URL`, `CLERK_ISSUER` as Pages env vars and
+`window.PB_CLERK_PK` / `window.PB_CLERK_FAPI` in the site; never set `DEV_AUTH` in production.
+Local test: copy dist, functions, floor_lib.js to a scratch dir; `wrangler pages dev dist --d1=FLOOR=floor --binding DEV_AUTH=1`;
+`GET /api/floor/__init`; post with header `x-dev-user: name`.

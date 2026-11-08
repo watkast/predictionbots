@@ -16,10 +16,10 @@ TEMPLATE = """<!doctype html>
 <link rel="stylesheet" href="/styles.css"></head>
 <body><a class="skip" href="#main">Skip to content</a><div class="wrap">
 <header class="top"><a class="brand" href="/">PredictionBots</a><nav><a href="/#truecost">True Cost</a><a href="/simulate.html">Simulator</a><a href="/#benchmark">Bot benchmark</a><a href="/#research">Research</a><a href="/#honest">How we're paid</a></nav><fieldset class="theme" id="theme"><legend>Theme</legend><label><input type="radio" name="theme" value="system" checked> System</label><label><input type="radio" name="theme" value="dark"> Dark</label><label><input type="radio" name="theme" value="light"> Light</label></fieldset></header>
-<main id="main"><article class="post"><h1>{title}</h1><div class="meta">{date_h} · PredictionBots</div><div class="body">{body}</div></article>
+<main id="main"><article class="post"><h1>{title}</h1><div class="meta">{date_h} · PredictionBots</div><div class="body">{body}</div>{floor}</article>
 <section id="waitlist"><h2>Get the next one</h2><p class="sub">Research posts and new benchmark rows as they publish. Nothing else, and you can leave with one click.</p>
 <form class="wait" id="wait-form" action="/api/waitlist" method="post"><input type="email" id="email" name="email" placeholder="you@example.com" required autocomplete="email" aria-label="Email"><button type="submit">Send me the posts</button></form><div class="wait-msg" id="wait-msg"></div></section></main>
-<script src="/theme.js" defer></script><footer><p>PredictionBots measures prediction markets and publishes its own record. Nothing on this site is investment advice. Prediction markets and crypto involve risk of loss, and most participants lose money. If gambling is a problem for you or someone you know, call 1-800-GAMBLER.</p><p>Code and data: <a href="https://github.com/watkast/predictionbots">github.com/watkast/predictionbots</a></p></footer>
+<script src="/theme.js" defer></script><script src="/floor.js" defer></script><footer><p>PredictionBots measures prediction markets and publishes its own record. Nothing on this site is investment advice. Prediction markets and crypto involve risk of loss, and most participants lose money. If gambling is a problem for you or someone you know, call 1-800-GAMBLER.</p><p>Code and data: <a href="https://github.com/watkast/predictionbots">github.com/watkast/predictionbots</a></p></footer>
 </div>
 <script>(function(){{var f=document.getElementById('wait-form'),m=document.getElementById('wait-msg');if(!f)return;f.addEventListener('submit',async function(e){{e.preventDefault();var b=f.querySelector('button');b.disabled=true;m.className='wait-msg';m.textContent='Adding you…';try{{var r=await fetch('/api/waitlist',{{method:'POST',headers:{{'Content-Type':'application/json'}},body:JSON.stringify({{email:f.email.value.trim(),source:location.pathname}})}});var j=await r.json().catch(function(){{return{{}}}});if(r.ok){{m.className='wait-msg ok';m.textContent=j.message||'You are on the list.';f.reset();}}else{{m.className='wait-msg err';m.textContent=j.error||'That did not go through.';}}}}catch(err){{m.className='wait-msg err';m.textContent='No connection. Try again in a moment.';}}b.disabled=false;}});}})();</script>
 </body></html>"""
@@ -54,7 +54,7 @@ def build():
     if DIST.exists():
         shutil.rmtree(DIST)
     DIST.mkdir()
-    for f in ("index.html", "styles.css", "ledger.js", "truecost.js", "simulate.html", "sim.js", "theme.js", "elsewhere.js", "benchmark.js"):
+    for f in ("index.html", "styles.css", "ledger.js", "truecost.js", "simulate.html", "sim.js", "theme.js", "elsewhere.js", "benchmark.js", "floor.js"):
         shutil.copy(ROOT / f, DIST / f)
     # Prediction News list on the home page, from site/data/news.json
     newsf = ROOT / "data" / "news.json"
@@ -78,8 +78,10 @@ def build():
         html = markdown.markdown(body, extensions=["extra", "smarty"])
         imgs = meta.get("images") or []
         og = f'<meta property="og:image" content="/posts/{imgs[0]}">' if imgs else ""
+        import html as _hh
+        floor = f'<div class="wide" data-floor data-kind="post" data-key="{md.stem}" data-title="{_hh.escape(meta.get("title", md.stem))}"></div>'
         out = TEMPLATE.format(title=meta.get("title", md.stem), summary=meta.get("summary", ""), og_image=og,
-                              date_h=human_date(meta.get("date", "")), body=html)
+                              date_h=human_date(meta.get("date", "")), body=html, floor=floor)
         (DIST / "posts" / (md.stem + ".html")).write_text(out)
         print("built", md.stem)
     # /learn/: evergreen explainers, same template, "Updated <date>" instead of a dateline, FAQ structured data if given
@@ -94,8 +96,10 @@ def build():
                 qa = [q.split("|", 1) for q in meta["faq"] if "|" in q]
                 faq = '<script type="application/ld+json">' + json.dumps({"@context": "https://schema.org", "@type": "FAQPage", "mainEntity": [
                     {"@type": "Question", "name": q.strip(), "acceptedAnswer": {"@type": "Answer", "text": a.strip()}} for q, a in qa]}, ensure_ascii=False) + "</script>"
+            import html as _hh
+            floor = f'<div class="wide" data-floor data-kind="learn" data-key="{md.stem}" data-title="{_hh.escape(meta.get("title", md.stem))}"></div>'
             out = TEMPLATE.format(title=meta.get("title", md.stem), summary=meta.get("summary", ""), og_image=faq,
-                                  date_h="Updated " + human_date(meta.get("updated", meta.get("date", ""))), body=html)
+                                  date_h="Updated " + human_date(meta.get("updated", meta.get("date", ""))), body=html, floor=floor)
             (DIST / "learn" / (md.stem + ".html")).write_text(out)
             print("built learn/" + md.stem)
     # /ledger/: the Endorsement Ledger from site/data/ledger.json (noindex until it is switched on)
@@ -119,7 +123,7 @@ def build():
                 + "".join(rows) + "</tbody></table></div>"
                 f"<p class=\"fine\">Updated {human_date(L['updated'])}. Polymarket US had announced no named celebrity partners in the reporting we have found as of that date; its 2025 partnership with X is a platform deal, not a personal endorsement.</p>")
         out = TEMPLATE.format(title="The Endorsement Ledger: who is paid to tell you to bet", summary="Every public promoter of Kalshi and Polymarket US, with the source, the verbatim quote where one exists, disclosed pay or 'not disclosed', and the True Cost of what they promote.",
-                              og_image='<meta name="robots" content="noindex">', date_h="Updated " + human_date(L["updated"]), body=body)
+                              og_image='<meta name="robots" content="noindex">', date_h="Updated " + human_date(L["updated"]), body=body, floor="")
         out = out.replace('<div class="body">', '<div class="body wide-body">', 1)
         (DIST / "ledger").mkdir(exist_ok=True)
         (DIST / "ledger" / "index.html").write_text(out)

@@ -133,6 +133,20 @@ h3 { font-size: 19px; margin: 26px 0 6px; font-weight: 600; }
 .deal ol { margin: 0; padding-left: 20px; display: flex; flex-direction: column; gap: 6px; font-size: 15px; }
 .deal .btn { align-self: flex-start; }
 
+/* the Floor */
+.floor-head { display: flex; justify-content: space-between; align-items: baseline; gap: 12px; flex-wrap: wrap; }
+.floor { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 20px; }
+.floor-post { background: var(--paper-2); border: 1px solid var(--rule); border-left: 3px solid var(--rule); border-radius: 8px; padding: 12px 14px; margin: 0 0 12px; font-size: 15px; }
+.floor-post p { margin: 6px 0 0; }
+.badge { background: var(--rule); border-radius: 4px; padding: 1px 6px; font-size: 12px; }
+.bar { display: flex; height: 10px; border-radius: 5px; overflow: hidden; background: var(--rule); }
+.bar i { display: block; }
+.linkish { background: none; border: 0; padding: 0; font: inherit; color: var(--brand); cursor: pointer; text-decoration: underline; text-underline-offset: 3px; }
+.floor-form { margin-top: 16px; display: flex; flex-direction: column; gap: 10px; }
+.floor-form label { display: flex; flex-direction: column; gap: 4px; font-size: 14px; color: var(--ink-2); }
+.floor-form textarea, .floor-form input { font: inherit; padding: 10px 12px; border: 1px solid var(--rule); border-radius: 6px; background: var(--paper-2); color: var(--ink); width: 100%; }
+[data-floor] { margin-top: 36px; border-top: 1px solid var(--rule); padding-top: 24px; }
+
 /* two-column prose blocks */
 .two { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 22px 40px; }
 .two h3 { margin: 0 0 6px; }
