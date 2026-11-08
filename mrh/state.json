@@ -24,12 +24,25 @@
   },
   "standard": {
    "name": "standard",
-   "bankroll": 3.2950883073824215,
+   "bankroll": 0.0,
    "peak": 4.0,
-   "pos": null,
+   "pos": {
+    "pid": "RSR-USD",
+    "entry_px": 0.001783,
+    "qty": 1831.4259745462589,
+    "cost": 3.2950883073824215,
+    "hw": 0.001783,
+    "t_in": "2026-11-08T20:15:15Z",
+    "signal": {
+     "impulse": 0.0188,
+     "vol_mult": 3.05,
+     "above_2h_high": true
+    },
+    "hw_t": "2026-11-08T20:15:15Z"
+   },
    "hops": 8,
    "wins": 1,
-   "fees": 0.5173760886203483
+   "fees": 0.5470318833867901
   },
   "aggressive_swap": {
    "name": "aggressive_swap",
@@ -40,14 +53,14 @@
     "entry_px": 0.3688,
     "qty": 9.064135227105076,
     "cost": 3.373211979572505,
-    "hw": 0.3688,
+    "hw": 0.3719,
     "t_in": "2026-11-08T20:10:15Z",
     "signal": {
      "impulse": 0.0236,
      "vol_mult": 6.64,
      "above_2h_high": false
     },
-    "hw_t": "2026-11-08T20:10:15Z"
+    "hw_t": "2026-11-08T20:20:15Z"
    },
    "hops": 13,
    "wins": 4,
@@ -617,7 +630,7 @@
   }
  ],
  "universe_t": "2026-11-08T19:30:15Z",
- "scans": 473,
+ "scans": 475,
  "started": "2026-11-06T22:20:22Z",
- "last_scan": "2026-11-08T20:10:15Z"
+ "last_scan": "2026-11-08T20:20:15Z"
 }
