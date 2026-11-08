@@ -1,33 +1,33 @@
 # Mr. H — Coinbase hopper, PAPER
 
-Updated 2026-11-08T11:15:32Z · scans 367 · universe 112 coins (USD pairs with ≥ $100k 24-h volume) · fees 0.9% taker each way · start $4.00
+Updated 2026-11-08T11:25:33Z · scans 369 · universe 112 coins (USD pairs with ≥ $100k 24-h volume) · fees 0.9% taker each way · start $4.00
 
 ## Books (one position at a time, all-in every hop)
 
 | profile | bankroll | vs start | peak | hops | win % | avg net/hop | fees paid | open |
 |---|---|---|---|---|---|---|---|---|
-| aggressive | $3.06 | -23.6% | $4.00 | 7 | 29% | -3.74% | $0.469 | DRV-USD @ 0.32104 |
-| standard | $3.38 | -15.4% | $4.00 | 6 | 17% | -2.51% | $0.427 | VVV-USD @ 20.767 |
+| aggressive | $3.05 | -23.7% | $4.00 | 7 | 29% | -3.74% | $0.469 | DRV-USD @ 0.32104 |
+| standard | $3.48 | -13.0% | $4.00 | 6 | 17% | -2.51% | $0.427 | VVV-USD @ 20.767 |
 | aggressive_swap | $3.28 | -18.1% | $4.02 | 8 | 25% | -2.37% | $0.528 | — |
 
 ## Signal forward returns (every signal, whether or not a book took it)
 
 | profile | signals | scored | median +15m | median +1h | median +4h | % beat 1.8% at +1h | median 4%-trail hop net | max run-up (med) | max drawdown (med) |
 |---|---|---|---|---|---|---|---|---|---|
-| aggressive | 57 | 32 | -0.36% | -3.60% | -0.70% | 12% | -5.71% | +5.72% | -10.03% |
-| standard | 45 | 23 | +0.00% | -1.38% | +1.72% | 22% | -2.25% | +6.09% | -5.10% |
+| aggressive | 57 | 34 | -0.31% | -2.60% | -0.66% | 18% | -5.52% | +6.77% | -8.81% |
+| standard | 47 | 24 | +0.12% | -1.32% | +1.95% | 25% | -1.93% | +6.12% | -5.01% |
 
 ## Aggressive signals by BTC regime (BTC's own move in the hour before the signal)
 
 | BTC 1h | signals | median +1h | median 4%-trail hop net | % beat 1.8% at +1h |
 |---|---|---|---|---|
 | ≤ −0.5% (downdraft) | 0 | — | — | — |
-| −0.5% … +0.5% (flat) | 20 | -4.99% | -5.71% | 5% |
+| −0.5% … +0.5% (flat) | 22 | -4.71% | -5.52% | 14% |
 | ≥ +0.5% (bid under the market) | 0 | — | — | — |
 
 ## Verdict
 
-**Not yet.** Needs 40 scored aggressive signals (32 so far) and 30 closed aggressive hops (7 so far) before this says anything. Until then every number above is noise.
+**Not yet.** Needs 40 scored aggressive signals (34 so far) and 30 closed aggressive hops (7 so far) before this says anything. Until then every number above is noise.
 
 ## Last 20 hops
 
@@ -58,8 +58,6 @@ Updated 2026-11-08T11:15:32Z · scans 367 · universe 112 coins (USD pairs with 
 
 | time (UTC) | profile | coin | impulse | vol× | >2h high | spread | taken | +1h | +4h |
 |---|---|---|---|---|---|---|---|---|---|
-| 11-08T08:00 | aggressive | MEZO | +2.5% | 13.6 | n | 0.58% | in_position | … | … |
-| 11-08T09:15 | aggressive | ICNT | +7.4% | 4.9 | y | 0.10% | in_position | … | … |
 | 11-08T09:15 | standard | ICNT | +7.4% | 4.9 | y | 0.10% | in_position | … | … |
 | 11-08T09:18 | aggressive | ICNT | +7.4% | 4.9 | y | 0.68% | spread | … | … |
 | 11-08T09:18 | standard | ICNT | +7.4% | 4.9 | y | 0.68% | spread | … | … |
@@ -73,3 +71,5 @@ Updated 2026-11-08T11:15:32Z · scans 367 · universe 112 coins (USD pairs with 
 | 11-08T10:20 | aggressive | MEZO | +3.8% | 13.6 | n | 0.71% | spread | … | … |
 | 11-08T11:10 | aggressive | MEZO | +2.8% | 13.0 | n | 0.68% | spread | … | … |
 | 11-08T11:15 | standard | VVV | +1.9% | 29.6 | y | 0.26% | y | … | … |
+| 11-08T11:25 | standard | VVV | +1.8% | 30.5 | y | 0.22% | in_position | … | … |
+| 11-08T11:25 | standard | PEPE | +1.0% | 6.8 | y | 0.20% | in_position | … | … |
