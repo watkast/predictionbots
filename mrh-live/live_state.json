@@ -17,7 +17,7 @@
    "t": "2026-11-08T01:35:16Z"
   },
   "exit": null,
-  "last_bid": 0.10007,
+  "last_bid": 0.10064,
   "trail_hits": 0
  },
  "start_usd": 3.4418,
@@ -28,7 +28,7 @@
  "hops_by_day": {
   "2026-11-07": 6
  },
- "cycles": 314,
+ "cycles": 315,
  "halted": "floor: $0.00 < $1.20",
  "universe": [
   {
@@ -1418,9 +1418,9 @@
   }
  },
  "last": {
-  "t": "2026-11-08T02:55:15Z",
+  "t": "2026-11-08T03:00:15Z",
   "usd": 0.0017,
-  "total": 6.9065,
+  "total": 6.9458,
   "pos": "CAP-USD",
   "entry": null
  },
