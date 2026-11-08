@@ -13,7 +13,7 @@ export async function onRequestPost({ request, env }) {
   if (existing) return json({ message: "You are already on the list." });
   await env.WAITLIST.put(email, JSON.stringify({ email, source: String(body.source || "").slice(0, 120), ua: (request.headers.get("User-Agent") || "").slice(0, 160),
                                                country: request.cf && request.cf.country, t: new Date().toISOString() }));
-  return json({ message: "You are on the list. One email when the terminal opens." });
+  return json({ message: "You are on the list. Research posts and new benchmark rows as they publish; nothing else." });
 }
 
 export async function onRequestGet({ request, env }) {
