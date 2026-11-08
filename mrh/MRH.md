@@ -1,6 +1,6 @@
 # Mr. H — Coinbase hopper, PAPER
 
-Updated 2026-11-08T05:40:31Z · scans 299 · universe 113 coins (USD pairs with ≥ $100k 24-h volume) · fees 0.9% taker each way · start $4.00
+Updated 2026-11-08T05:50:30Z · scans 301 · universe 113 coins (USD pairs with ≥ $100k 24-h volume) · fees 0.9% taker each way · start $4.00
 
 ## Books (one position at a time, all-in every hop)
 
@@ -8,7 +8,7 @@ Updated 2026-11-08T05:40:31Z · scans 299 · universe 113 coins (USD pairs with 
 |---|---|---|---|---|---|---|---|---|
 | aggressive | $3.00 | -25.1% | $4.00 | 7 | 29% | -3.74% | $0.469 | DRV-USD @ 0.32104 |
 | standard | $3.48 | -13.0% | $4.00 | 5 | 20% | -2.33% | $0.365 | CRO-USD @ 0.04914 |
-| aggressive_swap | $3.71 | -7.1% | $4.02 | 4 | 25% | -2.51% | $0.309 | MEZO-USD @ 0.00406 |
+| aggressive_swap | $3.56 | -11.1% | $4.02 | 5 | 20% | -2.29% | $0.341 | — |
 
 ## Signal forward returns (every signal, whether or not a book took it)
 
@@ -49,6 +49,7 @@ Updated 2026-11-08T05:40:31Z · scans 299 · universe 113 coins (USD pairs with 
 | 11-07T22:20 | aggressive | A8 | 0.004262 | 0.004255 | 30 m | -1.95% | trail | $3.05 |
 | 11-07T22:20 | aggressive_swap | A8 | 0.004262 | 0.004255 | 30 m | -1.95% | trail | $3.70 |
 | 11-08T04:50 | aggressive_swap | DRV | 0.32104 | 0.3189 | 280 m | -2.45% | swap | $3.61 |
+| 11-08T05:50 | aggressive_swap | MEZO | 0.00406 | 0.004075 | 60 m | -1.43% | trail | $3.56 |
 
 ## Last 15 signals
 
