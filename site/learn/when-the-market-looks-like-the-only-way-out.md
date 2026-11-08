@@ -47,6 +47,25 @@ If you still want to play after that, [here is the deal](/#deal) with everything
 
 Money pressure narrows thinking. Researchers who measured it found that being preoccupied with scarcity costs about as much cognitive bandwidth as losing a night's sleep (Mullainathan and Shafir, *Scarcity*, 2013). That is why the bet looks smart at 11 p.m. and why long plans fail under pressure. The fix is not willpower; it is fewer decisions. One rung a day. Write the next one down. Tell one person.
 
+## Words that have carried people through worse
+
+> "Make the best use of what is in your power, and take the rest as it happens."
+> — Epictetus, *Enchiridion* (Elizabeth Carter's translation, 1758)
+
+> "If thou art pained by any external thing, it is not this that disturbs thee, but thy own judgment about it. And it is in thy power to wipe out this judgment now."
+> — Marcus Aurelius, *Meditations*, Book VIII (George Long's translation)
+
+> "If there is no struggle, there is no progress."
+> — Frederick Douglass, speech at Canandaigua, New York, 1857
+
+> "Success is to be measured not so much by the position that one has reached in life as by the obstacles which he has overcome."
+> — Booker T. Washington, *Up from Slavery*, 1901
+
+> "Do what you can, with what you have, where you are."
+> — a saying Theodore Roosevelt credited to Squire Bill Widener and repeated for the rest of his life
+
+None of them had a rent payment due on an app. All of them were talking about exactly this: the part you control is the next action, and the next action is on the list above.
+
 If the app has become part of the problem, **1-800-GAMBLER** (call or text, free, confidential, 24 hours) has heard every version of this and will not judge you; [help in your state](https://www.ncpgambling.org/help-treatment/help-by-state/) is often free. If things feel darker than money, call or text **988**.
 
 *We make nothing from any link on this page. Nothing here is legal, medical or financial advice; the people at 211, legal aid and the NFCC can give you the advice that fits your situation.*
