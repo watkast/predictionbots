@@ -150,3 +150,8 @@ stated on every row. The accounts at both venues stay open for API keys only; ba
 - 2026-11-08 — Endorsement Ledger (Noah): adopted as part of Prediction News, with guardrails: verbatim quotes with
   sources, disclosed pay or "not disclosed", no causal claims about losses, pro-market voices included, lawyer's read
   before launch.
+- 2026-11-08 — X policy risk found: X's paid-partnership policy (Feb 2026) bars affiliate accounts from posting gambling
+  content; Kalshi removed its X affiliate badges on 23 Feb 2026. The Prediction News X account is editorial only, never
+  a badged affiliate, never carries referral codes; referral links live on the site under the disclosure. Category
+  economics (iGB Affiliate, Nov 2025): ~$100 CPA or less per new trader, sometimes $5 per $1,000 traded; ask for CPA.
+  Drafted both partner applications (marketing/partners.md).
