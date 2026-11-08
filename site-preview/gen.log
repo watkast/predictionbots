@@ -1,9 +1,53 @@
-  https://external-api.kalshi.com/trade-api/v2/markets -> 429; retry
-  https://external-api.kalshi.com/trade-api/v2/markets -> 429; retry
-  https://external-api.kalshi.com/trade-api/v2/markets -> 429; retry
-kalshi: 61000 open markets in 61 pages
-  kalshi series 0/4
-pmus /v1/markets keys: ['markets']
-pmus market keys: ['active', 'archived', 'assetPriceTerms', 'category', 'closed', 'comboEnabled', 'createdAt', 'description', 'endDate', 'ep3Status', 'ep3SyncedAt', 'feeCoefficient', 'gameStartTime', 'hidden', 'id', 'manualActivation', 'marketSides', 'marketType', 'minimumTradeQty', 'orderPriceMinTickSize', 'outcomePrices', 'outcomes', 'politics', 'question', 'slug', 'sportsMarketType', 'sportsMarketTypeV2', 'startDate', 'status', 'tags', 'updatedAt']
-pmus: 200 markets in 1 pages
-wrote 200 series pages + index + sitemap to site/dist/markets
+kalshi: 185916 open markets in 186 pages
+  kalshi series 0/4763
+  kalshi series 100/4763
+  kalshi series 200/4763
+  kalshi series 300/4763
+  kalshi series 400/4763
+  kalshi series 500/4763
+  kalshi series 600/4763
+  kalshi series 700/4763
+  kalshi series 800/4763
+  kalshi series 900/4763
+  kalshi series 1000/4763
+  https://external-api.kalshi.com/trade-api/v2/series/KXNEWOUTBREAK None -> 404 {"error":{"code":"not_found","message":"not found"}}
+  kalshi series 1100/4763
+  kalshi series 1200/4763
+  kalshi series 1300/4763
+  kalshi series 1400/4763
+  kalshi series 1500/4763
+  kalshi series 1600/4763
+  kalshi series 1700/4763
+  kalshi series 1800/4763
+  kalshi series 1900/4763
+  kalshi series 2000/4763
+  kalshi series 2100/4763
+  kalshi series 2200/4763
+  kalshi series 2300/4763
+  kalshi series 2400/4763
+  kalshi series 2500/4763
+  kalshi series 2600/4763
+  kalshi series 2700/4763
+  kalshi series 2800/4763
+  kalshi series 2900/4763
+  kalshi series 3000/4763
+  kalshi series 3100/4763
+  kalshi series 3200/4763
+  kalshi series 3300/4763
+  kalshi series 3400/4763
+  kalshi series 3500/4763
+  kalshi series 3600/4763
+  kalshi series 3700/4763
+  kalshi series 3800/4763
+  kalshi series 3900/4763
+  kalshi series 4000/4763
+  kalshi series 4100/4763
+  kalshi series 4200/4763
+  kalshi series 4300/4763
+  kalshi series 4400/4763
+  kalshi series 4500/4763
+  kalshi series 4600/4763
+  kalshi series 4700/4763
+pmus market keys: ['active', 'archived', 'assetPriceTerms', 'bestAskQuote', 'bestBidQuote', 'category', 'closed', 'color', 'comboEnabled', 'createdAt', 'description', 'endDate', 'ep3Status', 'ep3SyncedAt', 'eventSubcategory', 'feeCoefficient', 'gameStartTime', 'hidden', 'id', 'image', 'manualActivation', 'marketSides', 'marketType', 'minimumTradeQty', 'orderPriceMinTickSize', 'outcomePrices', 'outcomes', 'politics', 'question', 'slug', 'sportsMarketType', 'sportsMarketTypeV2', 'startDate', 'status', 'subtitle', 'tags', 'title', 'titleShort', 'updatedAt']
+pmus: 66737 markets in 135 pages
+wrote 13182 series pages + index + sitemap to site/dist/markets
