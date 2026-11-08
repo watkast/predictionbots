@@ -50413,6 +50413,27 @@
 "up_ask": 0.45
 }
 ],
+"entry": null,
+"settled": "no_entry"
+},
+"cpc-btc-updown-15m-2026-11-08-0230z": {
+"slug": "cpc-btc-updown-15m-2026-11-08-0230z",
+"window_start": 1794105000,
+"checks": [],
+"entry": null
+},
+"cpc-btc-updown-15m-2026-11-08-0245z": {
+"slug": "cpc-btc-updown-15m-2026-11-08-0245z",
+"window_start": 1794105900,
+"checks": [
+{
+"at": 120,
+"t": 160.29,
+"latency_s": 0.03,
+"ok": false,
+"tries": 9
+}
+],
 "entry": null
 }
 }
