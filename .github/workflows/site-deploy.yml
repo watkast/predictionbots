@@ -83,6 +83,7 @@ jobs:
             rm -rf site-preview && mkdir -p site-preview/samples
             cp "$GITHUB_WORKSPACE"/site/dist/markets/index.html "$GITHUB_WORKSPACE"/site/dist/markets/series.json "$GITHUB_WORKSPACE"/site/dist/sitemap.xml site-preview/ 2>/dev/null || true
             cp "$GITHUB_WORKSPACE"/gen.log site-preview/gen.log; cp "$GITHUB_WORKSPACE"/site/data/rates.json site-preview/rates.json; cp "$GITHUB_WORKSPACE"/site/dist/markets/series_meta.json site-preview/series_meta.json 2>/dev/null || true
+            cp "$GITHUB_WORKSPACE"/site/dist/markets/kalshi/kxhighden/index.html site-preview/samples/kalshi-kxhighden.html 2>/dev/null || true
             for v in kalshi pmus; do find "$GITHUB_WORKSPACE"/site/dist/markets/$v -mindepth 2 -name index.html | shuf -n 5 --random-source=<(yes) | while read f; do d=$(basename $(dirname "$f")); cp "$f" "site-preview/samples/$v-$d.html"; done; done
             git add -A site-preview
             git commit -qm "site-preview $(date -u +%FT%TZ)" || { echo "nothing new"; exit 0; }

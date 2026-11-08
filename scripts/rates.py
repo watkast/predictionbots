@@ -68,7 +68,8 @@ def fetch_ibond(client) -> tuple[float, str] | None:
     print(f"ibond: HTTP {r.status_code}, {len(r.text)} bytes", file=sys.stderr)
     if r.status_code != 200:
         return None
-    t = re.sub(r"<[^>]+>", " ", r.text)
+    t = re.sub(r"<(script|style)[^>]*>.*?</\1>", " ", r.text, flags=re.S | re.I)
+    t = re.sub(r"<[^>]+>", " ", t)
     t = re.sub(r"\s+", " ", t)
     # TreasuryDirect phrasing varies: "Current Rate: 3.98%", "3.98% for I bonds issued November 1, 2025 to April 30, 2026"
     DATE = r"([A-Z][a-z]+ \d{1,2},? \d{4})"
@@ -80,8 +81,8 @@ def fetch_ibond(client) -> tuple[float, str] | None:
     m = re.search(r"(?<!fixed rate of )([0-9]+\.[0-9]+)%\s*(?:composite)?[^%]{0,160}?issued\s+" + DATE, t)
     if m:
         return float(m.group(1)) / 100, period
-    i = t.find("%")
-    print("ibond: no match; context:", t[max(0, i - 200): i + 120], file=sys.stderr)
+    for mm in list(re.finditer(r"[0-9]+\.[0-9]+%", t))[:6]:
+        print("ibond: no match; context:", t[max(0, mm.start() - 160): mm.end() + 80], file=sys.stderr)
     return None
 
 
