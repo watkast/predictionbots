@@ -30,14 +30,18 @@ from datetime import datetime, timezone
 from pathlib import Path
 
 FEE_CHANGE_TS = int(datetime(2026, 11, 6, 18, 0, tzinfo=timezone.utc).timestamp())  # 13:00 ET = 18:00 UTC (EST)
+VENUE = {"name": "pmus"}   # set by run(); kalshi: 7% taker, rounded up to the cent per order (centicent in the schedule)
 
 
 def theta(ts: int) -> float:
+    if VENUE["name"] == "kalshi":
+        return 0.07
     return 0.095 if ts >= FEE_CHANGE_TS else 0.0695
 
 
 def fee(ts: int, contracts: float, p: float) -> float:
-    return round(theta(ts) * contracts * p * (1 - p) + 1e-12, 2)
+    raw = theta(ts) * contracts * p * (1 - p)
+    return math.ceil(raw * 100 - 1e-9) / 100 if VENUE["name"] == "kalshi" else round(raw + 1e-12, 2)
 
 
 def book_at(w: dict, sec: int):
@@ -121,6 +125,50 @@ def rule_astrotick(w: dict, size: float):
     return None
 
 
+def rule_turbine_reference(w: dict, size: float):
+    """Turbine's published reference bot (turbine-py-client 'price action bot'), as documented: compare the live index
+    to the strike; if price > strike by more than 10 bps buy YES, if below buy NO; confidence scales with distance
+    from 0.6 to 0.9 and sets the limit price; $1 per order up to $10 per market by default (we use `size` dollars per
+    order, 5× size max); stop trading with < 60 s left; hold to settlement. Documented on Pyth prices; we replay on the
+    CF Benchmarks prints the market settles on."""
+    T0, T = w["T0"], w["T"]
+    prints = {int(k): v for k, v in w["prints"].items()}
+    strike = w["ptb"]
+    spent, legs = 0.0, []
+    for sec in range(T0, T - 60):
+        px_idx = prints.get(sec)
+        b = book_at(w, sec)
+        if px_idx is None or not b or spent >= size * 5:
+            continue
+        bps = (px_idx - strike) / strike * 1e4
+        if abs(bps) < 10:
+            continue
+        conf = min(0.9, max(0.6, 0.6 + (abs(bps) - 10) / 100 * 0.3))     # 10 bps -> 0.6, 110 bps -> 0.9
+        side = "UP" if bps > 0 else "DOWN"
+        ask, q = (b[0], b[1]) if side == "UP" else ((None if b[2] is None else round(1 - b[2], 4)), b[3])
+        if ask is None or q <= 0 or ask > conf:
+            continue
+        remaining = size * 5 - spent
+        if remaining < ask:
+            break
+        qty = min(q, max(1.0, math.floor(min(size, remaining) / ask)))
+        legs.append((side, ask, qty, sec))
+        spent += ask * qty
+    if not legs:
+        return None
+    res = settle_side(w)
+    if res is None:
+        return None
+    pnl, fees, cost = 0.0, 0.0, 0.0
+    for side, px, qty, sec in legs:
+        f_in = fee(sec, qty, px); fees += f_in; cost += px * qty
+        pnl += ((1 - px) * qty if res == side else -px * qty) - f_in
+    first = legs[0]
+    return {"slug": w["slug"], "side": "+".join(sorted({l[0] for l in legs})), "px": round(cost / sum(l[2] for l in legs), 4), "qty": round(sum(l[2] for l in legs), 2),
+            "t_in": first[3], "t_out": None, "exit": "settlement", "exit_px": None, "fees": round(fees, 4), "pnl": round(pnl, 4), "won": pnl > 0,
+            "cost": round(cost, 4), "coverage": round(coverage(w), 3), "legs": len(legs)}
+
+
 def rule_coinflip(w: dict, size: float):
     for sec in range(w["T0"], w["T0"] + 60):
         b = book_at(w, sec)
@@ -149,17 +197,19 @@ def finish(w, side, px, qty, t_in, exit_px, t_out, how):
             "cost": round(px * qty, 4), "coverage": round(coverage(w), 3)}
 
 
-RULES = {"turbine_standard": rule_turbine, "astrotick_feeaware": rule_astrotick, "coinflip_open": rule_coinflip}
-LABELS = {"turbine_standard": "Retail rule: buy a side at 45¢ or less, sell at 70¢ (hold to settlement otherwise)", "astrotick_feeaware": "AstroTick, fee-aware favorite (last 120 s)",
+RULES = {"turbine_standard": rule_turbine, "turbine_reference": rule_turbine_reference, "astrotick_feeaware": rule_astrotick, "coinflip_open": rule_coinflip}
+LABELS = {"turbine_standard": "Retail rule: buy a side at 45¢ or less, sell at 70¢ (hold to settlement otherwise)", "turbine_reference": "Turbine reference bot: buy the side the live price favours vs. the strike (10 bps threshold, confidence-priced limits)", "astrotick_feeaware": "AstroTick, fee-aware favorite (last 120 s)",
           "coinflip_open": "Control: buy Up at the open, hold"}
-ASSUMPTIONS = {"turbine_standard": "A rule circulated in bot tutorials and vendor marketing for BTC 15-minute markets; it is not any one vendor's product (Turbine, where we first saw it quoted, is a bot-builder platform, not a fixed-rule bot). If 70¢ is never bid, the position is held to settlement.",
+ASSUMPTIONS = {"turbine_reference": "The 'price action bot' in Turbine's turbine-py-client docs, as documented there: 10 bps threshold, confidence 0.6 to 0.9 scaled with distance from the strike and used as the limit price, buy repeatedly up to a per-market maximum, stop with 60 s left, hold to settlement. Documented on Pyth prices; replayed on the CF Benchmarks prints the market settles on. A reference implementation, not a product the vendor sells as a strategy.",
+               "turbine_standard": "A rule circulated in bot tutorials and vendor marketing for BTC 15-minute markets; it is not any one vendor's product (Turbine, where we first saw it quoted, is a bot-builder platform, not a fixed-rule bot). If 70¢ is never bid, the position is held to settlement.",
                "astrotick_feeaware": "Rule as summarised on the project README: favoured side by the running settlement average, offered at or below 90¢, margin >= 5 bps, positive fee-adjusted edge.",
                "coinflip_open": "Baseline, not a product."}
 
 
-def run(windows: list[dict], size: float, min_cov: float = 0.5) -> dict:
+def run(windows: list[dict], size: float, min_cov: float = 0.5, venue: str = "pmus") -> dict:
+    VENUE["name"] = venue
     usable = [w for w in windows if w.get("settle") is not None and w.get("ptb") is not None and coverage(w) >= min_cov]
-    out = {"generated": datetime.now(timezone.utc).strftime("%Y-%m-%d %H:%M UTC"), "windows_total": len(windows), "windows_usable": len(usable),
+    out = {"generated": datetime.now(timezone.utc).strftime("%Y-%m-%d %H:%M UTC"), "venue": venue, "windows_total": len(windows), "windows_usable": len(usable),
            "min_coverage": min_cov, "size_contracts": size, "rules": {}}
     for name, fn in RULES.items():
         trades = [t for t in (fn(w, size) for w in usable) if t]
@@ -181,9 +231,10 @@ def run(windows: list[dict], size: float, min_cov: float = 0.5) -> dict:
 
 
 def report(res: dict) -> str:
-    lines = [f"# Bot Benchmark — Polymarket US BTC 15-minute, recorded books\n",
+    vn = "Kalshi" if res.get("venue") == "kalshi" else "Polymarket US"
+    lines = [f"# Bot Benchmark — {vn} BTC 15-minute, recorded books\n",
              f"Generated {res['generated']}. Windows recorded: {res['windows_total']}; usable (settled, book coverage >= {res['min_coverage']:.0%}): {res['windows_usable']}. "
-             f"Size per trade: {res['size_contracts']:g} contracts or the displayed quantity, whichever is smaller. Fees: Polymarket US taker schedule in effect on the trade date. Paper fills at displayed depth; real fills can be worse.\n",
+             f"Size per trade: {res['size_contracts']:g} contracts or the displayed quantity, whichever is smaller. Fees: {'Kalshi taker schedule (7%, rounded up)' if res.get('venue') == 'kalshi' else 'Polymarket US taker schedule in effect on the trade date'}. Paper fills at displayed depth; real fills can be worse.\n",
              "| Rule | Trades | Win rate | Net per trade | Net per $ staked | Fees paid | Worst losing run | Book coverage |", "| --- | --- | --- | --- | --- | --- | --- | --- |"]
     for name, r in res["rules"].items():
         if r["trades"]:
@@ -217,7 +268,15 @@ def selftest() -> None:
     t3 = rule_coinflip(w3, 10)
     assert t3 and not t3["won"] and t3["pnl"] < -5
     res = run([w1, w2, w3], 10, min_cov=0.0)
-    assert res["rules"]["turbine_standard"]["trades"] == 2 and "Turbine" in report(res)
+    assert res["rules"]["turbine_standard"]["trades"] == 2 and "45¢" in report(res)
+    # reference bot: index 30 bps above the strike from the open, Up offered at 0.55 (<= confidence 0.66) -> buys, settles UP
+    w4 = win("d", 100.0, 100.5, {s: [0.55, 50, 0.53, 50, "OPEN"] for s in range(0, 900, 15)}, prints={str(T0 + s): 100.3 for s in range(0, 900)})
+    t4 = rule_turbine_reference(w4, 10)
+    assert t4 and t4["won"] and t4["legs"] >= 1 and t4["cost"] <= 10 * 5 + 1, t4
+    # kalshi fee path
+    resk = run([w4], 10, min_cov=0.0, venue="kalshi")
+    assert resk["venue"] == "kalshi" and "Kalshi" in report(resk)
+    VENUE["name"] = "pmus"
     print("selftest ok")
 
 
@@ -229,13 +288,15 @@ def main() -> None:
     r.add_argument("--out", default="data/benchmark")
     r.add_argument("--size", type=float, default=10)
     r.add_argument("--min-coverage", type=float, default=0.5)
+    r.add_argument("--venue", default=None, choices=["pmus", "kalshi"], help="defaults to the windows file's venue, else pmus")
     sub.add_parser("selftest")
     a = ap.parse_args()
     if a.cmd == "selftest":
         selftest()
         return
-    windows = json.load(open(a.windows))["windows"]
-    res = run(windows, a.size, a.min_coverage)
+    blob = json.load(open(a.windows))
+    windows = blob["windows"]
+    res = run(windows, a.size, a.min_coverage, a.venue or blob.get("venue") or "pmus")
     out = Path(a.out)
     out.mkdir(parents=True, exist_ok=True)
     (out / "benchmark.json").write_text(json.dumps(res, separators=(",", ":")))

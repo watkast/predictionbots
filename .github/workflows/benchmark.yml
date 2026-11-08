@@ -39,9 +39,13 @@ jobs:
         run: |
           python mrp/mrp_extract_btc15.py ../rec/mrp/data btc15.json | tee -a "$GITHUB_STEP_SUMMARY"
           ls -la btc15.json
+      - name: Extract Kalshi BTC 15-minute windows
+        run: |
+          python mrp/mrp_extract_kalshi15.py ../rec/mrp/data kbtc15.json --sym btc | tee -a "$GITHUB_STEP_SUMMARY"
       - name: Replay the rules
         run: |
           python scripts/benchmark_rules.py run --windows btc15.json --out out/benchmark --size "${{ github.event.inputs.size || '10' }}" | tee -a "$GITHUB_STEP_SUMMARY"
+          python scripts/benchmark_rules.py run --windows kbtc15.json --out out/benchmark_kalshi --size "${{ github.event.inputs.size || '10' }}" --venue kalshi | tee -a "$GITHUB_STEP_SUMMARY" || echo "kalshi replay skipped"
       - name: Publish to mrp-data/benchmark
         run: |
           git config --global user.name "predictionbots-benchmark"
@@ -54,6 +58,7 @@ jobs:
             mkdir -p benchmark
             cp "$GITHUB_WORKSPACE"/out/benchmark/benchmark.json "$GITHUB_WORKSPACE"/out/benchmark/BENCHMARK.md benchmark/
             gzip -c "$GITHUB_WORKSPACE"/btc15.json > benchmark/btc15_windows.json.gz
+            if [ -f "$GITHUB_WORKSPACE"/out/benchmark_kalshi/benchmark.json ]; then cp "$GITHUB_WORKSPACE"/out/benchmark_kalshi/benchmark.json benchmark/benchmark_kalshi.json; cp "$GITHUB_WORKSPACE"/out/benchmark_kalshi/BENCHMARK.md benchmark/BENCHMARK_KALSHI.md; gzip -c "$GITHUB_WORKSPACE"/kbtc15.json > benchmark/kbtc15_windows.json.gz; fi
             git add -A benchmark
             git commit -qm "benchmark $(date -u +%FT%TZ)" || { echo "nothing new"; exit 0; }
             git push -q origin HEAD:mrp-data && exit 0
