@@ -17,6 +17,7 @@
 </script>
 </head>
 <body>
+<a class="skip" href="#main">Skip to content</a>
 <div class="wrap">
   <header class="top">
     <a class="brand" href="/">PredictionBots</a>
@@ -31,6 +32,7 @@
     </nav>
   </header>
 
+  <main id="main">
   <div class="hero">
     <h1>See the odds before you throw.</h1>
     <p class="lede">Most people lose money on Polymarket and Kalshi. We measure exactly how: what the fees really cost you, which trading bots actually work, how a market settles, and what we lost finding out. Free, no account, every number linked to its data.</p>
@@ -54,7 +56,7 @@
         <label>Bankroll ($)<input id="tc-bank" type="number" min="1" value="500" inputmode="decimal"></label>
         <label class="check"><input id="tc-hold" type="checkbox" checked> I hold to settlement (one fee, not two)</label>
       </form>
-      <div class="calc-out">
+      <div class="calc-out" aria-live="polite">
         <div class="kpis">
           <div class="kpi"><div class="k">Fee per trade</div><div class="v" id="tc-fee">—</div><div class="s" id="tc-fee-sub"></div></div>
           <div class="kpi"><div class="k">Expected result per month, no edge</div><div class="v loss" id="tc-month">—</div><div class="s" id="tc-month-sub"></div></div>
@@ -103,6 +105,7 @@
     <p class="sub">About 115 trading bots are sold for Polymarket and Kalshi. Every review site we found is run by a vendor, and no one measures results. We run each bot's published rule on paper against recorded order books for 30 days and publish the number, the sample size and the data file. Vendors get an unedited reply under their row.</p>
     <div class="ledger-wrap">
       <table class="ledger cells">
+        <caption>Bot benchmark: claims, prices and our measured 30-day paper results</caption>
         <thead><tr><th>Bot</th><th>What it claims</th><th>Price</th><th>Custody</th><th>Our 30-day paper result</th><th>Status</th></tr></thead>
         <tbody>
           <tr><td>Our own Mr H (buy the spike)</td><td>Buy a 5-minute spike, trail a stop</td><td>Free, open source</td><td>Your machine</td><td class="loss">−1.86% a trade, 24% winners (1,172 signals)</td><td><a href="/posts/2026-11-08-we-bought-the-pump-candle.html">Published</a></td></tr>
@@ -151,6 +154,7 @@
     <div class="ledger-sum" id="ledger-sum"></div>
     <div class="ledger-wrap">
       <table class="ledger" aria-describedby="ledger-note">
+        <caption>Every trade our bots made, newest first</caption>
         <thead><tr><th>Settled</th><th>Bot</th><th>Market</th><th>Side</th><th class="num">In</th><th class="num">Out</th><th class="num">Net</th><th>Why it closed</th></tr></thead>
         <tbody id="ledger-body"><tr><td colspan="8">Loading the record…</td></tr></tbody>
       </table>
@@ -163,6 +167,7 @@
     <p class="sub">Our recorder stores one-second order books and index prints for every short crypto market on Polymarket US and Kalshi, with the settlement for each. Journalists and academics: write to us. Builders and agents: the API answers per call in USDC, no account, no key.</p>
     <div class="ledger-wrap">
       <table class="ledger cells">
+        <caption>Data endpoints and prices</caption>
         <thead><tr><th>Endpoint</th><th>What you get</th><th>Updates</th><th class="num">Price per call</th></tr></thead>
         <tbody>
           <tr><td><code>GET /v1/preview</code></td><td>The last 3 settlement windows with their final books, 10 minutes delayed</td><td>Every 5 minutes</td><td class="num">Free</td></tr>
@@ -225,6 +230,7 @@
     <div class="wait-msg" id="wait-msg"></div>
   </section>
 
+  </main>
   <footer>
     <p>PredictionBots measures prediction markets and publishes its own record. Nothing on this site is investment advice. Prediction markets and crypto involve risk of loss, and most participants lose money. If gambling is a problem for you or someone you know, call 1-800-GAMBLER.</p>
     <p>Code and data: <a href="https://github.com/watkast/predictionbots">github.com/watkast/predictionbots</a> · hello@predictionbots.io</p>

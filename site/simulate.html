@@ -45,6 +45,7 @@
 </style>
 </head>
 <body>
+<a class="skip" href="#main">Skip to content</a>
 <div class="wrap">
   <header class="top">
     <a class="brand" href="/">PredictionBots</a>
@@ -57,6 +58,7 @@
     </nav>
   </header>
 
+  <main id="main">
   <div class="hero" style="padding-bottom: 12px">
     <h1 style="max-width: 22ch">How long until your balance is $0 in this market?</h1>
     <p class="lede">Enter what you'd start with, how much you'd put on each trade and how often you'd play. We run a few hundred careers through the market at its own odds, with the venue's fees charged on every trade, and play the typical one forward. The red line is one real simulated career; the blue band is where 80% of them landed.</p>
@@ -73,15 +75,16 @@
         <label>Your real win rate <span class="out" id="sm-edge-out"></span><input id="sm-edge" type="range" min="-10" max="10" step="1" value="0"></label>
         <label class="check"><input id="sm-martingale" type="checkbox"> Double my stake after a loss (don't)</label>
         <label class="check"><input id="sm-chase" type="checkbox"> Raise my stake 50% after a loss (also don't)</label>
-        <div class="sim-actions"><button type="button" class="btn dark" id="sm-play">Play a typical career</button><button type="button" class="btn" id="sm-share">Copy this result</button></div>
+        <div class="sim-actions"><button type="button" class="btn dark" id="sm-play">Play a typical career</button><button type="button" class="btn" id="sm-share">Copy this result</button><button type="button" class="btn" id="sm-table" aria-expanded="false" aria-controls="sm-table-wrap">Show as a table</button></div>
       </form>
       <div class="sim-out">
-        <h2 class="sim-head" id="sm-head">Running…</h2>
-        <p class="sim-sub" id="sm-sub"></p>
+        <div aria-live="polite"><h2 class="sim-head" id="sm-head">Running…</h2>
+        <p class="sim-sub" id="sm-sub"></p></div>
         <div class="sim-chart"><div id="sm-chart"></div><div class="sim-tip" id="sm-tip" hidden></div></div>
         <div class="sim-legend"><span><i style="background:#c8402f"></i>one typical career</span><span><i style="background:#2448c9"></i>median of 300 careers</span><span><i style="background:#2448c9;opacity:.25;height:10px"></i>where 80% of careers landed</span><span>● moments the narration stops at</span></div>
         <div class="sim-stats" id="sm-stats"></div>
         <div class="sim-narr" id="sm-narr"></div>
+        <div id="sm-table-wrap" class="ledger-wrap" hidden></div>
       </div>
     </div>
     <p class="fine">How it works: each trade buys <code>stake ÷ price</code> contracts and pays the venue's fee on the way in (Kalshi: 7% × contracts × price × (1 − price), rounded up to the cent; Polymarket US: 6.95% × price × (1 − price) per share, taker). You win with probability equal to your win rate, which is the price unless you move the slider; a win pays $1 per contract, a loss pays nothing, and you hold to settlement. 300 careers, the same every time for the same inputs, so a result you share can be reproduced. This is what the arithmetic does on average; it is not a forecast of anyone's results, and it is not investment advice. Problem gambling help: 1-800-GAMBLER.</p>
@@ -97,6 +100,7 @@
     </div>
   </section>
 
+  </main>
   <footer>
     <p>PredictionBots measures prediction markets and publishes its own record. Nothing on this site is investment advice. Prediction markets and crypto involve risk of loss, and most participants lose money. If gambling is a problem for you or someone you know, call 1-800-GAMBLER.</p>
     <p>Code and data: <a href="https://github.com/watkast/predictionbots">github.com/watkast/predictionbots</a> · hello@predictionbots.io</p>

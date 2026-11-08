@@ -122,6 +122,7 @@
 
   function render(cfg, res, upto) {
     draw(cfg, res, upto);
+    var tw = $('sm-table-wrap'); if (tw && !tw.hidden && upto >= res.plotEnd) tableView(cfg, res);
     var ruinPct = 1 - res.survivors / N, medText = res.medRuin > MAX_T ? 'not within ' + MAX_T.toLocaleString() + ' trades' : res.medRuin + ' trades, ' + weeks(res.medRuin, cfg.week);
     el.head.textContent = res.medRuin > MAX_T ? 'Most careers survive this market at that edge' : 'Median time to $0: ' + medText;
     el.sub.textContent = pct(ruinPct) + ' of ' + N + ' simulated careers hit $0' + (res.medRuin > MAX_T ? '' : '; a quarter were gone by trade ' + res.q25Ruin + ' (' + weeks(res.q25Ruin, cfg.week) + ')') + '. Win rate used: ' + pct(cfg.win) + (Math.abs(cfg.win - cfg.p) < 1e-9 ? ' (the market\'s own price: no edge)' : ' (the price is ' + pct(cfg.p) + ')') + '.';
@@ -131,8 +132,28 @@
     el.share.dataset.text = 'How long until my balance is $0 in this market? ' + (cfg.venue === 'kalshi' ? 'Kalshi' : 'Polymarket US') + ' at ' + Math.round(cfg.p * 100) + '¢, $' + cfg.stake + ' a trade, ' + cfg.week + ' trades a week, starting with ' + money(cfg.bank) + ': median ' + medText + '; ' + pct(ruinPct) + ' of ' + N + ' simulated careers hit $0. predictionbots.io/simulate';
   }
 
+  var reduceMotion = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  function tableView(cfg, res) {
+    var wrap = $('sm-table-wrap'); if (!wrap) return;
+    var T = res.plotEnd, step = Math.max(1, Math.round(T / 12)), rows = [];
+    for (var i = 0; i <= T; i += step) rows.push(i);
+    if (rows[rows.length - 1] !== T) rows.push(T);
+    var rep = res.rep.path;
+    var html = '<table class="ledger cells"><caption>Simulated balance by trade: one typical career, the median of ' + N + ' careers, and the 10th to 90th percentile band</caption>' +
+      '<thead><tr><th scope="col">Trade</th><th scope="col">Time at your pace</th><th scope="col" class="num">Typical career</th><th scope="col" class="num">Median of ' + N + '</th><th scope="col" class="num">10th percentile</th><th scope="col" class="num">90th percentile</th></tr></thead><tbody>' +
+      rows.map(function (i) { return '<tr><th scope="row">' + i + '</th><td>' + weeks(i, cfg.week) + '</td><td class="num">' + money(i < rep.length ? rep[i] : 0) + '</td><td class="num">' + money(res.q50[i] || 0) + '</td><td class="num">' + money(res.q10[i] || 0) + '</td><td class="num">' + money(res.q90[i] || 0) + '</td></tr>'; }).join('') +
+      '</tbody></table>';
+    wrap.innerHTML = html;
+  }
+  var tableBtn = $('sm-table');
+  if (tableBtn) tableBtn.addEventListener('click', function () {
+    var wrap = $('sm-table-wrap'); var open = wrap.hidden; wrap.hidden = !open; tableBtn.setAttribute('aria-expanded', String(open)); tableBtn.textContent = open ? 'Hide the table' : 'Show as a table';
+    if (open && state) tableView(state.cfg, state.res);
+  });
+
   function run(animate) {
     if (timer) { clearInterval(timer); timer = null; }
+    if (reduceMotion) animate = false;
     var cfg = cfgFromInputs(); var res = simulate(cfg); res.events = narrate(cfg, res); state = { cfg: cfg, res: res };
     var T = res.plotEnd;
     if (!animate) { render(cfg, res, T); return; }
@@ -148,6 +169,7 @@
   function syncEdge() { var p = Math.round((parseFloat(el.price.value) || 50)); var e = parseFloat(el.edge.value) || 0; el.edgeOut.textContent = (p + e) + '% (market says ' + p + '%' + (e ? ', you say you are ' + (e > 0 ? '+' : '') + e + ' points better' : ', no edge') + ')'; }
   ['input', 'change'].forEach(function (evn) { [el.venue, el.price, el.stake, el.week, el.bank, el.edge].forEach(function (x) { x.addEventListener(evn, function () { syncEdge(); run(false); }); });
     [el.martingale, el.chase].forEach(function (x) { x.addEventListener(evn, function () { if (x === el.martingale && x.checked) el.chase.checked = false; if (x === el.chase && x.checked) el.martingale.checked = false; run(false); }); }); });
+  if (reduceMotion) el.play.textContent = 'Run again (animation off: reduced motion)';
   el.play.addEventListener('click', function () { run(true); });
   el.share.addEventListener('click', function () { var t = el.share.dataset.text || ''; (navigator.clipboard ? navigator.clipboard.writeText(t) : Promise.reject()).then(function () { el.share.textContent = 'Copied'; setTimeout(function () { el.share.textContent = 'Copy this result'; }, 1600); }, function () { prompt('Copy:', t); }); });
   window.addEventListener('resize', function () { if (state) render(state.cfg, state.res, state.res.plotEnd); });

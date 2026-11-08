@@ -6,7 +6,7 @@
   --ink: #14181f;
   --ink-2: #4b5563;
   --rule: #cfd5de;
-  --win: #1f8a5b;
+  --win: #17744a;
   --loss: #c8402f;
   --brand: #2448c9;
   --brand-ink: #ffffff;
@@ -30,8 +30,13 @@ body {
   font-family: "IBM Plex Sans", system-ui, -apple-system, "Segoe UI", sans-serif;
   font-size: 17px; line-height: 1.55;
 }
-a { color: var(--brand); text-decoration: none; }
-a:hover, a:focus-visible { text-decoration: underline; text-underline-offset: 3px; }
+a { color: var(--brand); text-decoration: underline; text-underline-offset: 3px; text-decoration-thickness: 1px; }
+a:hover, a:focus-visible { text-decoration-thickness: 2px; }
+header.top a, .cta, .btn, .posts h3 a, nav a { text-decoration: none; }
+header.top a:hover, .posts h3 a:hover, nav a:hover { text-decoration: underline; }
+.skip { position: absolute; left: -9999px; top: 8px; background: var(--ink); color: var(--paper); padding: 8px 12px; border-radius: 6px; z-index: 10; }
+.skip:focus { left: 8px; }
+caption, .sr-only { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; }
 :focus-visible { outline: 2px solid var(--brand); outline-offset: 3px; }
 .wrap { max-width: var(--max); margin: 0 auto; padding: 0 20px; }
 .text { max-width: var(--text); }
@@ -39,7 +44,7 @@ a:hover, a:focus-visible { text-decoration: underline; text-underline-offset: 3p
 header.top { display: flex; align-items: baseline; justify-content: space-between; gap: 16px; padding: 22px 0 8px; }
 header.top .brand { font-weight: 600; font-size: 19px; letter-spacing: -0.01em; color: var(--ink); }
 header.top nav { display: flex; gap: 22px; flex-wrap: wrap; font-size: 15px; }
-header.top nav a { color: var(--ink-2); }
+header.top nav a { color: var(--ink-2); display: inline-block; padding: 6px 0; }
 
 .hero { padding: 56px 0 28px; }
 .hero h1 { font-size: clamp(34px, 5.6vw, 60px); line-height: 1.04; letter-spacing: -0.025em; font-weight: 600; margin: 0 0 20px; max-width: 18ch; }
@@ -148,6 +153,7 @@ article.post .body blockquote { margin: 18px 0; padding: 4px 16px; border-left: 
 article.post .body code { font-family: "IBM Plex Mono", ui-monospace, SFMono-Regular, Menlo, monospace; font-size: 0.92em; background: var(--paper-2); padding: 1px 5px; border-radius: 4px; }
 article.post .wide { max-width: var(--max); }
 
+@media (prefers-reduced-motion: reduce) { * { animation: none !important; transition: none !important; } }
 @media (prefers-reduced-motion: no-preference) {
   .ledger tbody tr { animation: rowin 320ms ease-out both; }
   @keyframes rowin { from { opacity: 0; transform: translateY(3px); } to { opacity: 1; transform: none; } }
