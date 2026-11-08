@@ -2,13 +2,16 @@
    (mrp-data branch, benchmark/benchmark.json). Rows in the table carry data-rule="<rule key>"; this fills their
    result cell with net per trade, win rate, trades, worst losing run and book coverage, and links the data file. */
 (function () {
-  var URL = 'https://raw.githubusercontent.com/watkast/predictionbots/mrp-data/benchmark/benchmark.json';
-  var DATA = 'https://github.com/watkast/predictionbots/blob/mrp-data/benchmark/benchmark.json';
+  var BASE = 'https://raw.githubusercontent.com/watkast/predictionbots/mrp-data/benchmark/';
+  var VIEW = 'https://github.com/watkast/predictionbots/blob/mrp-data/benchmark/';
   var rows = document.querySelectorAll('[data-rule]');
   if (!rows.length) return;
-  fetch(URL, { cache: 'no-store' }).then(function (r) { return r.ok ? r.json() : null; }).then(function (j) {
-    if (!j) return;
+  var files = { pmus: 'benchmark.json', kalshi: 'benchmark_kalshi.json' };
+  Promise.all(Object.keys(files).map(function (k) { return fetch(BASE + files[k], { cache: 'no-store' }).then(function (r) { return r.ok ? r.json() : null; }).catch(function () { return null; }).then(function (j) { return [k, j]; }); })).then(function (pairs) {
+    var data = {}; pairs.forEach(function (p) { data[p[0]] = p[1]; });
     rows.forEach(function (tr) {
+      var src = tr.getAttribute('data-src') || 'pmus', j = data[src]; if (!j) return;
+      var DATA = VIEW + files[src];
       var r = j.rules && j.rules[tr.getAttribute('data-rule')];
       var cell = tr.querySelector('[data-result]'), status = tr.querySelector('[data-status]');
       if (!r || !cell) return;
