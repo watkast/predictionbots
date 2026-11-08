@@ -1,6 +1,25 @@
 {
  "started": "2026-11-07T00:42:01Z",
- "pos": null,
+ "pos": {
+  "pid": "CAP-USD",
+  "qty": 69.0,
+  "entry_px": 0.10315,
+  "cost": 7.11735,
+  "hw": 0.10315,
+  "t_in": "2026-11-08T01:30:16Z",
+  "hw_t": "2026-11-08T01:30:16Z",
+  "signal": {
+   "adopted": true
+  },
+  "stop": {
+   "order_id": "30ca1f54-d55b-4df8-b541-5ddcf2eb7907",
+   "stop_px": 0.08870900000000001,
+   "t": "2026-11-08T01:30:16Z"
+  },
+  "exit": null,
+  "last_bid": 0.10315,
+  "trail_hits": 0
+ },
  "start_usd": 3.4418,
  "hops": 6,
  "wins": 3,
@@ -9,7 +28,7 @@
  "hops_by_day": {
   "2026-11-07": 6
  },
- "cycles": 296,
+ "cycles": 297,
  "halted": "floor: $0.00 < $1.20",
  "universe": [
   {
@@ -1394,10 +1413,10 @@
   }
  },
  "last": {
-  "t": "2026-11-08T01:25:15Z",
+  "t": "2026-11-08T01:30:16Z",
   "usd": 0.0017,
-  "total": 0.0017,
-  "pos": null,
+  "total": 7.119,
+  "pos": "CAP-USD",
   "entry": null
  },
  "entry": null,

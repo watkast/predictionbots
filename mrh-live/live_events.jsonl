@@ -63,3 +63,5 @@
 {"t": "2026-11-07T23:30:02Z", "ev": "start", "mode": "live", "key": "1957dba3ea6c", "alg": "EdDSA", "max_usd": 200.0, "floor": 1.2, "max_hops_day": 4, "maker": true, "fast_s": 20.0, "entry_ttl_min": 15.0, "entry_chase": 0.02, "disaster_gap": 0.06, "panic_gap": 0.03, "impulse": 0.05, "vol_mult": 3.0, "trail": 0.08}
 {"t": "2026-11-08T01:25:15Z", "ev": "cash_flow", "amount": -7.23, "usd": 0.0017, "total_flows": -7.23}
 {"t": "2026-11-08T01:25:15Z", "ev": "halted", "reason": "floor: $0.00 < $1.20"}
+{"t": "2026-11-08T01:30:16Z", "ev": "adopted", "pid": "CAP-USD", "qty": 69.0, "entry_px": 0.10315, "value": 7.12, "stop": false, "exit": false}
+{"t": "2026-11-08T01:30:16Z", "ev": "order_sent", "label": "park_stop", "pid": "CAP-USD", "side": "SELL", "cfg": {"stop_limit_stop_limit_gtc": {"base_size": "69", "limit_price": "0.08737", "stop_price": "0.0887", "stop_direction": "STOP_DIRECTION_STOP_DOWN"}}, "order_id": "30ca1f54-d55b-4df8-b541-5ddcf2eb7907"}

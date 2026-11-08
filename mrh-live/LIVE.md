@@ -1,6 +1,6 @@
 # Mr. H — Coinbase hopper, LIVE (real money, maker on every order)
 
-Updated 2026-11-08T01:25:15Z · cycles 296 · universe 113 coins · profile aggressive (+5% impulse, 3× volume, 8% trail) · post-only limit orders at the touch (maker 0.5%) · entry TTL 15 min, chase cap +2% · disaster stop 6% under the trail · panic sell 3% under it · caps $200.00/entry, 4 hops/day, floor $1.20, swap after 2 h
+Updated 2026-11-08T01:30:16Z · cycles 297 · universe 113 coins · profile aggressive (+5% impulse, 3× volume, 8% trail) · post-only limit orders at the touch (maker 0.5%) · entry TTL 15 min, chase cap +2% · disaster stop 6% under the trail · panic sell 3% under it · caps $200.00/entry, 4 hops/day, floor $1.20, swap after 2 h
 
 **HALTED: floor: $0.00 < $1.20** — remove mrh/LIVE_ON, fix, delete `halted` in live_state.json on the data branch, restore.
 
@@ -8,7 +8,7 @@ Updated 2026-11-08T01:25:15Z · cycles 296 · universe 113 coins · profile aggr
 
 | now | start | deposits | P&L | peak | USD free | hops | win % | fees paid | position / order |
 |---|---|---|---|---|---|---|---|---|---|
-| $0.00 | $3.44 | $-7.23 | $+3.79 (+110.1%) | $17.73 | $0.00 | 6 | 50% | $0.609 | — |
+| $7.12 | $3.44 | $-7.23 | $+10.91 (+316.9%) | $17.73 | $0.00 | 6 | 50% | $0.609 | CAP 69 @ 0.10315 · hw 0.10315 · stop 0.094898 · disaster 0.088709 parked |
 
 ## Hops
 
@@ -23,8 +23,6 @@ Updated 2026-11-08T01:25:15Z · cycles 296 · universe 113 coins · profile aggr
 
 ## Last 25 events
 
-- `11-07T12:05:15` **signal_skipped** reason="spread", pid="ICNT-USD", candle_start=1794052800, impulse=0.0375, vol_mult=3.11, above_2h_high=false, close=0.3179, bid=0.3165, ask=0.3189, spread=0.0075
-- `11-07T13:20:15` **signal** pid="ALIGN-USD", candle_start=1794057300, impulse=0.0238, vol_mult=6.84, above_2h_high=false, close=0.0043, bid=0.00429, ask=0.0043, spread=0.0023
 - `11-07T13:20:29` **order_sent** label="buy", pid="ALIGN-USD", side="BUY", cfg={"market_market_ioc": {"quote_size": "8.135"}}, order_id="c19027aa-026f-4ae7-b55a-c904cedaa37d"
 - `11-07T13:20:30` **bought** pid="ALIGN-USD", px=0.0043, qty=1874.0, cost=8.1307
 - `11-07T13:20:31` **order_sent** label="park_stop", pid="ALIGN-USD", side="SELL", cfg={"stop_limit_stop_limit_gtc": {"base_size": "1874", "limit_p, order_id="e85804f1-c1d7-4f26-be17-0e4a92904787"
@@ -48,6 +46,8 @@ Updated 2026-11-08T01:25:15Z · cycles 296 · universe 113 coins · profile aggr
 - `11-07T23:30:02` **start** mode="live", key="1957dba3ea6c", alg="EdDSA", max_usd=200.0, floor=1.2, max_hops_day=4, maker=true, fast_s=20.0, entry_ttl_min=15.0, entry_chase=0.02, disaster_gap=0.06, panic_gap=0.03, impulse=0.05, vol_mult=3.0, trail=0.08
 - `11-08T01:25:15` **cash_flow** amount=-7.23, usd=0.0017, total_flows=-7.23
 - `11-08T01:25:15` **halted** reason="floor: $0.00 < $1.20"
+- `11-08T01:30:16` **adopted** pid="CAP-USD", qty=69.0, entry_px=0.10315, value=7.12, stop=false, exit=false
+- `11-08T01:30:16` **order_sent** label="park_stop", pid="CAP-USD", side="SELL", cfg={"stop_limit_stop_limit_gtc": {"base_size": "69", "limit_pri, order_id="30ca1f54-d55b-4df8-b541-5ddcf2eb7907"
 
 Paper twin: mrh/MRH.md · the 30-day replay (the real verdict): mrh-backtest/BACKTEST.md on this branch.
 
