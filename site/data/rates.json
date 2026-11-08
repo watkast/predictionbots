@@ -1,7 +1,7 @@
 {
- "asof": null,
- "tbill_4w": null,
- "tbill_4w_date": null,
+ "asof": "2026-11-08",
+ "tbill_4w": 0.0395,
+ "tbill_4w_date": "2026-11-06",
  "ibond": null,
  "ibond_period": null,
  "sources": {
