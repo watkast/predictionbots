@@ -1,6 +1,6 @@
 # Mr. H — Coinbase hopper, PAPER
 
-Updated 2026-11-08T20:00:30Z · scans 471 · universe 112 coins (USD pairs with ≥ $100k 24-h volume) · fees 0.9% taker each way · start $4.00
+Updated 2026-11-08T20:10:31Z · scans 473 · universe 112 coins (USD pairs with ≥ $100k 24-h volume) · fees 0.9% taker each way · start $4.00
 
 ## Books (one position at a time, all-in every hop)
 
@@ -8,13 +8,13 @@ Updated 2026-11-08T20:00:30Z · scans 471 · universe 112 coins (USD pairs with 
 |---|---|---|---|---|---|---|---|---|
 | aggressive | $2.98 | -25.4% | $4.00 | 7 | 29% | -3.74% | $0.469 | DRV-USD @ 0.32104 |
 | standard | $3.30 | -17.6% | $4.00 | 8 | 12% | -2.35% | $0.517 | — |
-| aggressive_swap | $3.37 | -15.7% | $4.02 | 13 | 31% | -1.10% | $0.850 | — |
+| aggressive_swap | $3.33 | -16.8% | $4.02 | 13 | 31% | -1.10% | $0.881 | ICNT-USD @ 0.3688 |
 
 ## Signal forward returns (every signal, whether or not a book took it)
 
 | profile | signals | scored | median +15m | median +1h | median +4h | % beat 1.8% at +1h | median 4%-trail hop net | max run-up (med) | max drawdown (med) |
 |---|---|---|---|---|---|---|---|---|---|
-| aggressive | 71 | 54 | -0.43% | -2.53% | -2.22% | 19% | -4.92% | +7.41% | -10.03% |
+| aggressive | 72 | 54 | -0.43% | -2.53% | -2.22% | 19% | -4.92% | +7.41% | -10.03% |
 | standard | 59 | 45 | +0.00% | -1.38% | -1.57% | 20% | -3.08% | +5.66% | -6.36% |
 
 ## Aggressive signals by BTC regime (BTC's own move in the hour before the signal)
@@ -58,7 +58,6 @@ Updated 2026-11-08T20:00:30Z · scans 471 · universe 112 coins (USD pairs with 
 
 | time (UTC) | profile | coin | impulse | vol× | >2h high | spread | taken | +1h | +4h |
 |---|---|---|---|---|---|---|---|---|---|
-| 11-08T14:05 | aggressive | RITUAL | +2.0% | 6.4 | n | 0.66% | spread | -0.8% | -14.1% |
 | 11-08T14:40 | standard | ALEO | +1.1% | 3.7 | y | 1.03% | spread | … | … |
 | 11-08T15:15 | aggressive | CAP | +3.6% | 15.1 | y | 0.38% | in_position | +0.9% | -7.1% |
 | 11-08T15:15 | standard | CAP | +3.6% | 15.1 | y | 0.38% | y | +0.9% | -7.1% |
@@ -73,3 +72,4 @@ Updated 2026-11-08T20:00:30Z · scans 471 · universe 112 coins (USD pairs with 
 | 11-08T19:25 | aggressive | FORTH | +11.2% | 4.9 | y | 0.85% | spread | … | … |
 | 11-08T19:25 | standard | FORTH | +11.2% | 4.9 | y | 0.85% | spread | … | … |
 | 11-08T19:40 | aggressive | FORTH | +3.9% | 3.1 | n | 0.28% | in_position | … | … |
+| 11-08T20:10 | aggressive | ICNT | +2.4% | 6.6 | n | 0.49% | in_position | … | … |
