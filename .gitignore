@@ -7,3 +7,7 @@ data/raw/
 .env
 data/ledger/
 data/
+
+# the site ships its small data files (rates, news, ledger)
+!site/data/
+!site/data/**

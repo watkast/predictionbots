@@ -7,8 +7,9 @@ up to the displayed quantity. Fees from the venue's schedule in effect on the tr
 Every row reports its coverage: the share of 15-second buckets in the window for which we had a book.
 
 Rules (as published by the vendors; where a rule is silent we state the assumption in the output):
-  turbine_standard   "Buy at 45¢, sell at 70¢" on BTC 15-minute. Buy the first side offered at <= 45¢ (Up at its ask,
-                     or Down = 1 - Up bid), sell when that side is bid >= 70¢; otherwise hold to settlement (assumption).
+  turbine_standard   The retail "buy at 45¢, sell at 70¢" rule on BTC 15-minute (seen in tutorials and vendor marketing; not a
+                     specific vendor's product). Buy the first side offered at <= 45¢ (Up at its ask, or Down = 1 - Up bid),
+                     sell when that side is bid >= 70¢; otherwise hold to settlement (assumption).
   astrotick_feeaware Fee-aware favorite: in the last 120 s, buy the side the running settlement average favours when it
                      is offered at <= 90¢ and the fee-adjusted edge (margin vs. price) is positive; hold to settlement.
                      (AstroTick is open source; this is the rule as summarised on its README. Assumption noted.)
@@ -149,9 +150,9 @@ def finish(w, side, px, qty, t_in, exit_px, t_out, how):
 
 
 RULES = {"turbine_standard": rule_turbine, "astrotick_feeaware": rule_astrotick, "coinflip_open": rule_coinflip}
-LABELS = {"turbine_standard": "Turbine, standard rule (buy 45¢, sell 70¢)", "astrotick_feeaware": "AstroTick, fee-aware favorite (last 120 s)",
+LABELS = {"turbine_standard": "Retail rule: buy a side at 45¢ or less, sell at 70¢ (hold to settlement otherwise)", "astrotick_feeaware": "AstroTick, fee-aware favorite (last 120 s)",
           "coinflip_open": "Control: buy Up at the open, hold"}
-ASSUMPTIONS = {"turbine_standard": "If 70¢ is never bid, the position is held to settlement (the vendor's page does not say).",
+ASSUMPTIONS = {"turbine_standard": "A rule circulated in bot tutorials and vendor marketing for BTC 15-minute markets; it is not any one vendor's product (Turbine, where we first saw it quoted, is a bot-builder platform, not a fixed-rule bot). If 70¢ is never bid, the position is held to settlement.",
                "astrotick_feeaware": "Rule as summarised on the project README: favoured side by the running settlement average, offered at or below 90¢, margin >= 5 bps, positive fee-adjusted edge.",
                "coinflip_open": "Baseline, not a product."}
 

@@ -56,6 +56,17 @@ def build():
     DIST.mkdir()
     for f in ("index.html", "styles.css", "ledger.js", "truecost.js", "simulate.html", "sim.js", "theme.js", "elsewhere.js", "benchmark.js"):
         shutil.copy(ROOT / f, DIST / f)
+    # Prediction News list on the home page, from site/data/news.json
+    newsf = ROOT / "data" / "news.json"
+    if newsf.exists():
+        import json, html as _h
+        items = json.loads(newsf.read_text())["items"]
+        li = []
+        for it in sorted(items, key=lambda x: x["date"], reverse=True):
+            li.append(f'<li><div class="when">{human_date(it["date"])} · <a href="{_h.escape(it["source"])}" rel="noopener nofollow">{_h.escape(it["source_name"])}</a></div>'
+                      f'<h3>{_h.escape(it["headline"])}</h3><p><b>Our number:</b> {_h.escape(it["number"])} <a href="{_h.escape(it["ours"])}">More →</a></p></li>')
+        idx = (DIST / "index.html").read_text().replace("<!--NEWS-->", "".join(li))
+        (DIST / "index.html").write_text(idx)
     shutil.copytree(ROOT / "functions", DIST / "functions")
     shutil.copytree(ROOT / "vendor", DIST / "vendor")
     shutil.copytree(ROOT / "data", DIST / "data")

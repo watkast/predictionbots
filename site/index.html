@@ -27,6 +27,7 @@
       <a href="/simulate.html">Simulator</a>
       <a href="/markets/">Markets</a>
       <a href="#benchmark">Bot benchmark</a>
+      <a href="#news">News</a>
       <a href="#research">Research</a>
       <a href="#ledger">Our ledger</a>
       <a href="#data">Data</a>
@@ -116,7 +117,8 @@
           <tr><td>Our own Mr H (buy the spike)</td><td>Buy a 5-minute spike, trail a stop</td><td>Free, open source</td><td>Your machine</td><td class="loss">−1.86% a trade, 24% winners (1,172 signals)</td><td><a href="/posts/2026-11-08-we-bought-the-pump-candle.html">Published</a></td></tr>
           <tr><td>Our own Mr T (final seconds)</td><td>Buy the decided side in the last 5 s</td><td>Free, open source</td><td>Your machine</td><td class="loss">0 fills possible in 368 windows</td><td><a href="/posts/2026-11-08-free-money-that-wasnt.html">Published</a></td></tr>
           <tr><td>PolymTradeBot</td><td>Momentum on BTC/ETH 5- and 15-minute markets</td><td>$499 once</td><td>Non-custodial</td><td>—</td><td>Queued</td></tr>
-          <tr data-rule="turbine_standard"><td>Turbine (standard rule)</td><td>Buy at 45¢, sell at 70¢ on BTC 15-minute</td><td>$99 to $199 a month</td><td>Hosted, your key</td><td data-result>—</td><td data-status>Replaying on recorded books</td></tr>
+          <tr data-rule="turbine_standard"><td>The "buy 45¢, sell 70¢" retail rule</td><td>Buy a side at 45¢ or less, sell it at 70¢, hold otherwise; BTC 15-minute. Circulated in tutorials and vendor marketing; not one vendor's product</td><td>Free to copy</td><td>—</td><td data-result>—</td><td data-status>Replaying on recorded books</td></tr>
+          <tr><td>Turbine (bot-builder platform)</td><td>Plain-English strategies run as hosted bots; a published reference bot buys the side the live price favours vs. the strike (10 bps threshold)</td><td>$9 to $199 a month plus compute</td><td>Hosted, your key</td><td>—</td><td>Reference bot queued</td></tr>
           <tr data-rule="astrotick_feeaware"><td>AstroTick (open source)</td><td>Fee-aware favorite in the final two minutes, BTC 15-minute</td><td>Free</td><td>Your machine</td><td data-result>—</td><td data-status>Replaying on recorded books</td></tr>
           <tr data-rule="coinflip_open"><td>Control: buy Up at the open</td><td>Not a product; the baseline every bot has to beat</td><td>—</td><td>—</td><td data-result>—</td><td data-status>Replaying on recorded books</td></tr>
           <tr><td>Copy-trading bots (4 vendors)</td><td>Copy a named wallet</td><td>0.25% to 1% a trade</td><td>Varies</td><td>—</td><td>Method in design</td></tr>
@@ -157,6 +159,13 @@
         <p>One page per market series on both venues, rebuilt hourly from the venues' public data. Real-world odds (sportsbook consensus, forecasts, the score) and the debate floor under each page are next.</p>
       </li>
     </ul>
+  </section>
+
+  <section id="news">
+    <h2>Prediction News: the story, told by its sources, with the number attached</h2>
+    <p class="sub">What is being reported about prediction markets, linked to the people reporting it, with one measurement of ours under each headline. We add the number; we don't add adjectives.</p>
+    <ul class="posts" id="news-list"><!--NEWS--></ul>
+    <p class="fine">The Endorsement Ledger (who is paid to tell you to bet, with sources) is in review and will appear here.</p>
   </section>
 
   <section id="ledger">
