@@ -2,25 +2,12 @@
  "books": {
   "aggressive": {
    "name": "aggressive",
-   "bankroll": 0.0,
+   "bankroll": 2.810149112837383,
    "peak": 4.0,
-   "pos": {
-    "pid": "ICNT-USD",
-    "entry_px": 0.3329,
-    "qty": 8.228874475143918,
-    "cost": 2.7642707495211,
-    "hw": 0.3595,
-    "t_in": "2026-11-09T10:25:15Z",
-    "signal": {
-     "impulse": 0.0465,
-     "vol_mult": 19.5,
-     "above_2h_high": true
-    },
-    "hw_t": "2026-11-09T11:45:15Z"
-   },
-   "hops": 10,
-   "wins": 2,
-   "fees": 0.6211578528124567
+   "pos": null,
+   "hops": 11,
+   "wins": 3,
+   "fees": 0.6466788841096681
   },
   "standard": {
    "name": "standard",
@@ -46,25 +33,12 @@
   },
   "aggressive_swap": {
    "name": "aggressive_swap",
-   "bankroll": 0.0,
+   "bankroll": 3.364403957589916,
    "peak": 4.01983237936772,
-   "pos": {
-    "pid": "ICNT-USD",
-    "entry_px": 0.3329,
-    "qty": 9.851882138286705,
-    "cost": 3.309476855535463,
-    "hw": 0.3595,
-    "t_in": "2026-11-09T10:25:15Z",
-    "signal": {
-     "impulse": 0.0465,
-     "vol_mult": 19.5,
-     "above_2h_high": true
-    },
-    "hw_t": "2026-11-09T11:45:15Z"
-   },
-   "hops": 16,
-   "wins": 5,
-   "fees": 1.0584319871836307
+   "pos": null,
+   "hops": 17,
+   "wins": 6,
+   "fees": 1.088986614447313
   }
  },
  "universe": [
@@ -615,7 +589,7 @@
   }
  ],
  "universe_t": "2026-11-09T11:35:15Z",
- "scans": 659,
+ "scans": 661,
  "started": "2026-11-06T22:20:22Z",
- "last_scan": "2026-11-09T11:55:15Z"
+ "last_scan": "2026-11-09T12:05:15Z"
 }
