@@ -53908,22 +53908,51 @@
 "shares": 58.1395,
 "spent": 50.0,
 "vwap": 0.86,
-"fill_frac": 1.0
+"fill_frac": 1.0,
+"pnl": 7.4745
 },
 "100": {
 "shares": 116.0345,
 "spent": 100.0,
 "vwap": 0.8618,
-"fill_frac": 1.0
+"fill_frac": 1.0,
+"pnl": 14.7231
 },
 "250": {
 "shares": 288.4483,
 "spent": 250.0,
 "vwap": 0.8667,
-"fill_frac": 1.0
+"fill_frac": 1.0,
+"pnl": 35.2843
 }
 },
 "check": 180
+},
+"settled": "2026-11-09T05:18:40Z",
+"price_to_beat": 74717.47,
+"settlement": 74563.41,
+"won": true,
+"fee_coef": 0.095
+},
+"cpc-btc-updown-15m-2026-11-09-0515z": {
+"slug": "cpc-btc-updown-15m-2026-11-09-0515z",
+"window_start": 1794201300,
+"checks": [
+{
+"at": 120,
+"t": 160.41,
+"latency_s": 0.051,
+"ok": false,
+"tries": 9
+},
+{
+"at": 180,
+"t": 220.36,
+"latency_s": 0.042,
+"ok": false,
+"tries": 9
 }
+],
+"entry": null
 }
 }
