@@ -1,6 +1,6 @@
 # Mr. S — live
 
-Updated 2026-11-09 12:34 UTC · mode **live** · switch **OFF** · live leagues: usa.1
+Updated 2026-11-09 22:43 UTC · mode **live** · switch **OFF** · live leagues: usa.1
 
 ## ⚠️ Kalshi balance below the $50 risk cap — fund the account (orders still try, capped by cash)
 
@@ -13,7 +13,7 @@ Updated 2026-11-09 12:34 UTC · mode **live** · switch **OFF** · live leagues:
 ## Right now
 games in play/just ended: 1 · matched to Kalshi: 0 · to Polymarket: 0 · decided markets agreed by both: 0 · disagreements: 0
 
-Kalshi series with open markets: KXLIGAMXBTTS, KXLIGAMXTOTAL, KXLIGAPORTUGAL1H, KXLIGAPORTUGAL1HBTTS, KXLIGAPORTUGAL1HTOTAL, KXLIGAPORTUGALBTTS, KXLIGAPORTUGALTOTAL
+Kalshi series with open markets: KXLIGAPORTUGAL1H, KXLIGAPORTUGAL1HBTTS, KXLIGAPORTUGAL1HTOTAL, KXLIGAPORTUGALBTTS, KXLIGAPORTUGALTOTAL
 
 ### Last blocks
 - KXLIGAPORTUGALTOTAL-26NOV08RAVBRA-2: no Polymarket twin
