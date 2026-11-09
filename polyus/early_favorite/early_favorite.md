@@ -1,23 +1,23 @@
 # Early Favorite v2 - forward test
 
 Rule (frozen): at 2:00 elapsed (13:00 left), else 3:00, buy the leading side if its ask is 0.80-0.95; $100 per round; hold to settlement; taker fee 0.0695*p*(1-p). Paper only.
-Forward test started 2026-10-23T00:00:00Z. Updated 2026-11-09T06:13:37Z.
+Forward test started 2026-10-23T00:00:00Z. Updated 2026-11-09T17:27:36Z.
 
 **Losing: forward win rate is below break-even at the prices paid.**
 
 | | Forward | Backtest (Oct 6-22) |
 |---|---|---|
-| Rounds | 270 | 272 |
-| Win rate | 83.0% | 89.3% |
+| Rounds | 279 | 272 |
+| Win rate | 83.2% | 89.3% |
 | Break-even win rate at prices paid | 84.8% | - |
 | Average ask | 0.838 | 0.838 |
-| Net at $100/round | $-614.38 | $+1,486 |
-| Per round | -2.28% | +5.46% |
+| Net at $100/round | $-571.25 | $+1,486 |
+| Per round | -2.05% | +5.46% |
 | Max drawdown | $-947.43 | $-403 |
 | Longest losing streak | 5 | 2 |
 | Entry timing | 13:00 / 12:00 left | same |
 
-Rounds where the rule did not trigger: 1360. Pending (not settled or not fetched yet): 19.
+Rounds where the rule did not trigger: 1396. Pending (not settled or not fetched yet): 19.
 
 ## By day (UTC)
 
@@ -40,7 +40,7 @@ Rounds where the rule did not trigger: 1360. Pending (not settled or not fetched
 | 2026-11-06 | $-82.11 |
 | 2026-11-07 | $+0.54 |
 | 2026-11-08 | $+83.79 |
-| 2026-11-09 | $+71.15 |
+| 2026-11-09 | $+114.28 |
 
 ## Chart pull at the check (parallel column - not part of the rule)
 
@@ -48,9 +48,9 @@ Pull = EMA 9/21 and Supertrend on BRTI 1-minute candles, as drawn by research/ma
 
 | Pull at the check | Rounds | Win rate | Net |
 |---|---|---|---|
-| with the favorite 3/3 | 207 | 84.5% | $-166.29 |
-| with the favorite 1/3 | 52 | 80.8% | $-184.90 |
-| against the favorite | 11 | 63.6% | $-263.19 |
+| with the favorite 3/3 | 214 | 84.6% | $-156.66 |
+| with the favorite 1/3 | 53 | 81.1% | $-172.10 |
+| against the favorite | 12 | 66.7% | $-242.49 |
 
 ## Cut at 5:00 left (parallel column - not part of the rule)
 
@@ -58,23 +58,14 @@ What if the position were sold at 5:00 left whenever the favorite's bid is under
 
 | | Hold (the rule) | Cut under 45c at 5:00 left |
 |---|---|---|
-| Rounds with a 5:00-left price | 270 | same |
+| Rounds with a 5:00-left price | 279 | same |
 | Positions cut | - | 28 (23 would have lost, 5 would have won) |
-| Net at $100/round | $-614.38 | $-573.42 (+40.96) |
+| Net at $100/round | $-571.25 | $-530.29 (+40.96) |
 
 ## Last 20 rounds
 
 | Window (UTC) | Min | Side | Ask | Pull | Result | P&L | Running |
 |---|---|---|---|---|---|---|---|
-| 11-08 03:00 | 3 | Up | 0.81 | +3 | won | $+22.14 | $-725.04 |
-| 11-08 03:45 | 2 | Up | 0.80 | +3 | won | $+23.61 | $-701.43 |
-| 11-08 04:45 | 2 | Down | 0.80 | +3 | won | $+23.61 | $-677.82 |
-| 11-08 07:45 | 2 | Up | 0.93 | +3 | won | $+7.04 | $-670.78 |
-| 11-08 08:15 | 3 | Down | 0.82 | +3 | won | $+20.70 | $-650.08 |
-| 11-08 09:00 | 2 | Down | 0.81 | +1 | won | $+22.14 | $-627.94 |
-| 11-08 10:30 | 2 | Down | 0.82 | +3 | LOST | $-101.25 | $-729.19 |
-| 11-08 13:15 | 2 | Up | 0.81 | +3 | LOST | $-101.32 | $-830.51 |
-| 11-08 14:30 | 2 | Up | 0.81 | +3 | won | $+22.14 | $-808.37 |
 | 11-08 16:30 | 2 | Down | 0.81 | +3 | won | $+22.14 | $-786.23 |
 | 11-08 18:15 | 2 | Up | 0.80 | +3 | won | $+23.61 | $-762.62 |
 | 11-08 19:30 | 2 | Up | 0.86 | +3 | won | $+15.31 | $-747.31 |
@@ -86,3 +77,12 @@ What if the position were sold at 5:00 left whenever the favorite's bid is under
 | 11-09 03:45 | 2 | Down | 0.80 | +1 | won | $+23.61 | $-649.12 |
 | 11-09 05:00 | 3 | Down | 0.82 | +3 | won | $+20.70 | $-628.42 |
 | 11-09 05:45 | 3 | Up | 0.87 | +1 | won | $+14.04 | $-614.38 |
+| 11-09 06:15 | 2 | Down | 0.82 | +3 | won | $+20.70 | $-593.68 |
+| 11-09 08:15 | 3 | Up | 0.82 | +3 | won | $+20.70 | $-572.98 |
+| 11-09 09:00 | 3 | Up | 0.84 | +3 | LOST | $-101.11 | $-674.09 |
+| 11-09 10:30 | 3 | Down | 0.88 | +1 | won | $+12.80 | $-661.29 |
+| 11-09 11:15 | 2 | Up | 0.88 | +3 | won | $+12.80 | $-648.49 |
+| 11-09 12:30 | 3 | Up | 0.83 | +3 | won | $+19.30 | $-629.19 |
+| 11-09 14:00 | 2 | Down | 0.84 | +3 | won | $+17.94 | $-611.25 |
+| 11-09 14:30 | 3 | Down | 0.83 | +3 | won | $+19.30 | $-591.95 |
+| 11-09 16:30 | 2 | Up | 0.82 | -3 | won | $+20.70 | $-571.25 |
