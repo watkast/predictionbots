@@ -1,33 +1,33 @@
 # Mr. H — Coinbase hopper, PAPER
 
-Updated 2026-11-09T11:15:31Z · scans 651 · universe 110 coins (USD pairs with ≥ $100k 24-h volume) · fees 0.9% taker each way · start $4.00
+Updated 2026-11-09T11:25:31Z · scans 653 · universe 110 coins (USD pairs with ≥ $100k 24-h volume) · fees 0.9% taker each way · start $4.00
 
 ## Books (one position at a time, all-in every hop)
 
 | profile | bankroll | vs start | peak | hops | win % | avg net/hop | fees paid | open |
 |---|---|---|---|---|---|---|---|---|
-| aggressive | $2.89 | -27.7% | $4.00 | 10 | 20% | -3.57% | $0.621 | ICNT-USD @ 0.3329 |
-| standard | $2.87 | -28.2% | $4.00 | 12 | 8% | -2.47% | $0.765 | RENDER-USD @ 1.6167 |
+| aggressive | $2.89 | -27.6% | $4.00 | 10 | 20% | -3.57% | $0.621 | ICNT-USD @ 0.3329 |
+| standard | $2.90 | -27.6% | $4.00 | 12 | 8% | -2.47% | $0.765 | RENDER-USD @ 1.6167 |
 | aggressive_swap | $3.46 | -13.4% | $4.02 | 16 | 31% | -1.00% | $1.058 | ICNT-USD @ 0.3329 |
 
 ## Signal forward returns (every signal, whether or not a book took it)
 
 | profile | signals | scored | median +15m | median +1h | median +4h | % beat 1.8% at +1h | median 4%-trail hop net | max run-up (med) | max drawdown (med) |
 |---|---|---|---|---|---|---|---|---|---|
-| aggressive | 97 | 74 | -0.31% | -1.43% | -3.20% | 30% | -3.62% | +7.52% | -8.11% |
-| standard | 78 | 56 | -0.20% | -1.22% | -3.16% | 25% | -3.00% | +5.85% | -6.30% |
+| aggressive | 99 | 75 | -0.26% | -0.99% | -3.07% | 31% | -3.60% | +7.60% | -8.39% |
+| standard | 105 | 56 | -0.20% | -1.22% | -3.16% | 25% | -3.00% | +5.85% | -6.30% |
 
 ## Aggressive signals by BTC regime (BTC's own move in the hour before the signal)
 
 | BTC 1h | signals | median +1h | median 4%-trail hop net | % beat 1.8% at +1h |
 |---|---|---|---|---|
-| ≤ −0.5% (downdraft) | 3 | +4.04% | -1.09% | 67% |
+| ≤ −0.5% (downdraft) | 4 | +7.31% | +4.79% | 75% |
 | −0.5% … +0.5% (flat) | 55 | -2.42% | -4.48% | 25% |
 | ≥ +0.5% (bid under the market) | 4 | +3.00% | +0.55% | 75% |
 
 ## Verdict
 
-**Not yet.** Needs 40 scored aggressive signals (74 so far) and 30 closed aggressive hops (10 so far) before this says anything. Until then every number above is noise.
+**Not yet.** Needs 40 scored aggressive signals (75 so far) and 30 closed aggressive hops (10 so far) before this says anything. Until then every number above is noise.
 
 ## Last 20 hops
 
@@ -58,18 +58,18 @@ Updated 2026-11-09T11:15:31Z · scans 651 · universe 110 coins (USD pairs with 
 
 | time (UTC) | profile | coin | impulse | vol× | >2h high | spread | taken | +1h | +4h |
 |---|---|---|---|---|---|---|---|---|---|
-| 11-09T08:05 | aggressive | RITUAL | +2.2% | 5.8 | y | 0.40% | y | … | … |
-| 11-09T08:05 | standard | RITUAL | +2.2% | 5.8 | y | 0.40% | y | … | … |
-| 11-09T08:15 | aggressive | RITUAL | +9.2% | 6.2 | y | 2.78% | spread | … | … |
-| 11-09T08:15 | standard | RITUAL | +9.2% | 6.2 | y | 2.78% | spread | … | … |
-| 11-09T08:25 | standard | CLANKER | +1.2% | 4.6 | y | 0.20% | y | … | … |
-| 11-09T08:35 | aggressive | RITUAL | +5.5% | 3.1 | y | 1.31% | spread | … | … |
-| 11-09T08:35 | standard | RITUAL | +5.5% | 3.1 | y | 1.31% | spread | … | … |
-| 11-09T08:40 | standard | CLANKER | +1.9% | 4.9 | y | 0.13% | in_position | … | … |
-| 11-09T08:45 | aggressive | RITUAL | +6.1% | 9.8 | n | 2.25% | spread | … | … |
-| 11-09T09:05 | standard | USELESS | +1.5% | 7.7 | y | 0.18% | in_position | … | … |
-| 11-09T09:10 | standard | RENDER | +2.0% | 5.2 | y | 0.10% | y | … | … |
-| 11-09T10:15 | standard | RSR | +1.5% | 13.1 | y | 0.16% | in_position | … | … |
-| 11-09T10:25 | aggressive | ICNT | +4.7% | 19.5 | y | 0.15% | y | … | … |
-| 11-09T10:25 | standard | ICNT | +4.7% | 19.5 | y | 0.15% | in_position | … | … |
-| 11-09T11:00 | aggressive | RITUAL | +7.4% | 3.5 | n | 1.36% | spread | … | … |
+| 11-09T11:20 | standard | TAO | +1.5% | 6.1 | y | 0.02% | in_position | … | … |
+| 11-09T11:20 | standard | PYTH | +1.4% | 3.5 | y | 0.14% | in_position | … | … |
+| 11-09T11:20 | standard | MON | +1.4% | 4.0 | y | 0.16% | in_position | … | … |
+| 11-09T11:20 | standard | SEI | +1.4% | 17.4 | y | 0.09% | in_position | … | … |
+| 11-09T11:20 | standard | ONDO | +1.4% | 3.6 | y | 0.09% | in_position | … | … |
+| 11-09T11:20 | standard | SYRUP | +1.3% | 5.5 | y | 0.15% | in_position | … | … |
+| 11-09T11:20 | standard | LINK | +1.3% | 7.7 | y | 0.05% | in_position | … | … |
+| 11-09T11:20 | standard | BCH | +1.3% | 3.9 | y | 0.04% | in_position | … | … |
+| 11-09T11:20 | standard | QNT | +1.2% | 4.7 | y | 0.06% | in_position | … | … |
+| 11-09T11:20 | standard | POL | +1.2% | 5.8 | y | 0.10% | in_position | … | … |
+| 11-09T11:20 | standard | PENGU | +1.2% | 22.1 | y | 0.05% | in_position | … | … |
+| 11-09T11:20 | standard | ADA | +1.1% | 7.6 | y | 0.05% | in_position | … | … |
+| 11-09T11:20 | standard | FIL | +1.1% | 8.9 | y | 0.10% | in_position | … | … |
+| 11-09T11:20 | standard | ETH | +1.1% | 4.5 | y | 0.01% | in_position | … | … |
+| 11-09T11:20 | standard | TIA | +1.0% | 8.8 | y | 0.05% | in_position | … | … |
