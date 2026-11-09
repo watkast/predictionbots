@@ -1,6 +1,6 @@
 # Mr. H — Coinbase hopper, PAPER
 
-Updated 2026-11-09T07:20:31Z · scans 605 · universe 110 coins (USD pairs with ≥ $100k 24-h volume) · fees 0.9% taker each way · start $4.00
+Updated 2026-11-09T07:30:31Z · scans 607 · universe 110 coins (USD pairs with ≥ $100k 24-h volume) · fees 0.9% taker each way · start $4.00
 
 ## Books (one position at a time, all-in every hop)
 
