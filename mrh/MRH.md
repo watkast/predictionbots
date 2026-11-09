@@ -1,6 +1,6 @@
 # Mr. H — Coinbase hopper, PAPER
 
-Updated 2026-11-09T07:30:31Z · scans 607 · universe 110 coins (USD pairs with ≥ $100k 24-h volume) · fees 0.9% taker each way · start $4.00
+Updated 2026-11-09T07:40:30Z · scans 609 · universe 110 coins (USD pairs with ≥ $100k 24-h volume) · fees 0.9% taker each way · start $4.00
 
 ## Books (one position at a time, all-in every hop)
 
@@ -14,8 +14,8 @@ Updated 2026-11-09T07:30:31Z · scans 607 · universe 110 coins (USD pairs with 
 
 | profile | signals | scored | median +15m | median +1h | median +4h | % beat 1.8% at +1h | median 4%-trail hop net | max run-up (med) | max drawdown (med) |
 |---|---|---|---|---|---|---|---|---|---|
-| aggressive | 90 | 69 | -0.36% | -1.88% | -3.67% | 26% | -3.63% | +7.38% | -9.51% |
-| standard | 68 | 54 | -0.20% | -1.32% | -3.31% | 22% | -3.20% | +5.56% | -6.68% |
+| aggressive | 91 | 69 | -0.36% | -1.88% | -3.67% | 26% | -3.63% | +7.38% | -9.51% |
+| standard | 69 | 54 | -0.20% | -1.32% | -3.31% | 22% | -3.20% | +5.56% | -6.68% |
 
 ## Aggressive signals by BTC regime (BTC's own move in the hour before the signal)
 
@@ -58,8 +58,6 @@ Updated 2026-11-09T07:30:31Z · scans 607 · universe 110 coins (USD pairs with 
 
 | time (UTC) | profile | coin | impulse | vol× | >2h high | spread | taken | +1h | +4h |
 |---|---|---|---|---|---|---|---|---|---|
-| 11-09T00:50 | aggressive | RITUAL | +6.8% | 7.7 | y | 1.86% | spread | +2.2% | -4.6% |
-| 11-09T00:50 | standard | RITUAL | +6.8% | 7.7 | y | 1.86% | spread | +2.2% | -4.6% |
 | 11-09T00:55 | aggressive | RITUAL | +3.3% | 6.7 | y | 1.64% | spread | -3.2% | -9.9% |
 | 11-09T00:55 | standard | RITUAL | +3.3% | 6.7 | y | 1.64% | spread | -3.2% | -9.9% |
 | 11-09T01:10 | aggressive | MEZO | +4.8% | 23.1 | n | 1.11% | spread | +2.5% | -1.6% |
@@ -73,3 +71,5 @@ Updated 2026-11-09T07:30:31Z · scans 607 · universe 110 coins (USD pairs with 
 | 11-09T06:30 | aggressive | RITUAL | +3.5% | 10.1 | y | 0.76% | spread | … | … |
 | 11-09T06:30 | standard | RITUAL | +3.5% | 10.1 | y | 0.76% | spread | … | … |
 | 11-09T07:20 | aggressive | RITUAL | +2.2% | 11.6 | n | 0.74% | spread | … | … |
+| 11-09T07:35 | aggressive | RITUAL | +6.6% | 5.2 | y | 0.98% | spread | … | … |
+| 11-09T07:35 | standard | RITUAL | +6.6% | 5.2 | y | 0.98% | spread | … | … |
