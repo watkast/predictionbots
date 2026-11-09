@@ -9,14 +9,14 @@
     "entry_px": 0.3329,
     "qty": 8.228874475143918,
     "cost": 2.7642707495211,
-    "hw": 0.3329,
+    "hw": 0.3442,
     "t_in": "2026-11-09T10:25:15Z",
     "signal": {
      "impulse": 0.0465,
      "vol_mult": 19.5,
      "above_2h_high": true
     },
-    "hw_t": "2026-11-09T10:25:15Z"
+    "hw_t": "2026-11-09T10:35:15Z"
    },
    "hops": 10,
    "wins": 2,
@@ -53,14 +53,14 @@
     "entry_px": 0.3329,
     "qty": 9.851882138286705,
     "cost": 3.309476855535463,
-    "hw": 0.3329,
+    "hw": 0.3442,
     "t_in": "2026-11-09T10:25:15Z",
     "signal": {
      "impulse": 0.0465,
      "vol_mult": 19.5,
      "above_2h_high": true
     },
-    "hw_t": "2026-11-09T10:25:15Z"
+    "hw_t": "2026-11-09T10:35:15Z"
    },
    "hops": 16,
    "wins": 5,
@@ -70,557 +70,557 @@
  "universe": [
   {
    "id": "BTC-USD",
-   "usd_vol_24h": 494042678,
+   "usd_vol_24h": 500983506,
    "quote_min": 1.0
   },
   {
    "id": "ETH-USD",
-   "usd_vol_24h": 258668122,
+   "usd_vol_24h": 264246308,
    "quote_min": 1.0
   },
   {
    "id": "XRP-USD",
-   "usd_vol_24h": 105708183,
+   "usd_vol_24h": 107233827,
    "quote_min": 1.0
   },
   {
    "id": "ZEC-USD",
-   "usd_vol_24h": 86872939,
+   "usd_vol_24h": 85887273,
    "quote_min": 1.0
   },
   {
    "id": "SOL-USD",
-   "usd_vol_24h": 77115235,
+   "usd_vol_24h": 78233526,
    "quote_min": 1.0
   },
   {
    "id": "HYPE-USD",
-   "usd_vol_24h": 30402439,
+   "usd_vol_24h": 30315386,
    "quote_min": 1.0
   },
   {
    "id": "NEAR-USD",
-   "usd_vol_24h": 25228330,
+   "usd_vol_24h": 24775396,
    "quote_min": 1.0
   },
   {
    "id": "DOGE-USD",
-   "usd_vol_24h": 8560850,
+   "usd_vol_24h": 8571581,
    "quote_min": 1.0
   },
   {
    "id": "UNI-USD",
-   "usd_vol_24h": 8428480,
+   "usd_vol_24h": 8424493,
    "quote_min": 1.0
   },
   {
    "id": "XLM-USD",
-   "usd_vol_24h": 7941336,
+   "usd_vol_24h": 8163190,
    "quote_min": 1.0
   },
   {
    "id": "SUI-USD",
-   "usd_vol_24h": 7632288,
+   "usd_vol_24h": 7705267,
    "quote_min": 1.0
   },
   {
    "id": "LTC-USD",
-   "usd_vol_24h": 7303221,
+   "usd_vol_24h": 7429720,
    "quote_min": 1.0
   },
   {
    "id": "LINK-USD",
-   "usd_vol_24h": 7184123,
+   "usd_vol_24h": 7279672,
    "quote_min": 1.0
   },
   {
    "id": "AERO-USD",
-   "usd_vol_24h": 7167986,
+   "usd_vol_24h": 7159878,
    "quote_min": 1.0
   },
   {
    "id": "PEPE-USD",
-   "usd_vol_24h": 6948717,
+   "usd_vol_24h": 7111087,
    "quote_min": 1.0
   },
   {
    "id": "QNT-USD",
-   "usd_vol_24h": 6907009,
-   "quote_min": 1.0
-  },
-  {
-   "id": "PUMP-USD",
-   "usd_vol_24h": 6445070,
+   "usd_vol_24h": 6939533,
    "quote_min": 1.0
   },
   {
    "id": "ADA-USD",
-   "usd_vol_24h": 6187403,
+   "usd_vol_24h": 6409834,
+   "quote_min": 1.0
+  },
+  {
+   "id": "PUMP-USD",
+   "usd_vol_24h": 6381317,
    "quote_min": 1.0
   },
   {
    "id": "TAO-USD",
-   "usd_vol_24h": 5977835,
+   "usd_vol_24h": 6016393,
    "quote_min": 1.0
   },
   {
    "id": "LIGHTER-USD",
-   "usd_vol_24h": 5196986,
+   "usd_vol_24h": 5301869,
    "quote_min": 1.0
   },
   {
    "id": "ENA-USD",
-   "usd_vol_24h": 5183365,
-   "quote_min": 1.0
-  },
-  {
-   "id": "HBAR-USD",
-   "usd_vol_24h": 3516717,
+   "usd_vol_24h": 5151017,
    "quote_min": 1.0
   },
   {
    "id": "AAVE-USD",
-   "usd_vol_24h": 3380576,
+   "usd_vol_24h": 3530362,
    "quote_min": 1.0
   },
   {
-   "id": "VVV-USD",
-   "usd_vol_24h": 3234655,
+   "id": "HBAR-USD",
+   "usd_vol_24h": 3515796,
    "quote_min": 1.0
   },
   {
    "id": "INJ-USD",
-   "usd_vol_24h": 3228985,
+   "usd_vol_24h": 3413845,
+   "quote_min": 1.0
+  },
+  {
+   "id": "VVV-USD",
+   "usd_vol_24h": 3338206,
    "quote_min": 1.0
   },
   {
    "id": "AVAX-USD",
-   "usd_vol_24h": 3195024,
+   "usd_vol_24h": 3284103,
    "quote_min": 1.0
   },
   {
    "id": "ONDO-USD",
-   "usd_vol_24h": 3127117,
+   "usd_vol_24h": 3223100,
    "quote_min": 1.0
   },
   {
    "id": "RENDER-USD",
-   "usd_vol_24h": 2291902,
+   "usd_vol_24h": 2417634,
    "quote_min": 1.0
   },
   {
    "id": "USELESS-USD",
-   "usd_vol_24h": 2226101,
-   "quote_min": 1.0
-  },
-  {
-   "id": "ZRO-USD",
-   "usd_vol_24h": 2185910,
+   "usd_vol_24h": 2210230,
    "quote_min": 1.0
   },
   {
    "id": "BCH-USD",
-   "usd_vol_24h": 2153942,
+   "usd_vol_24h": 2193819,
    "quote_min": 1.0
   },
   {
-   "id": "RITUAL-USD",
-   "usd_vol_24h": 2094118,
+   "id": "ZRO-USD",
+   "usd_vol_24h": 2181709,
    "quote_min": 1.0
   },
   {
    "id": "FET-USD",
-   "usd_vol_24h": 2030067,
-   "quote_min": 1.0
-  },
-  {
-   "id": "ARB-USD",
-   "usd_vol_24h": 1806523,
+   "usd_vol_24h": 2043138,
    "quote_min": 1.0
   },
   {
    "id": "ICNT-USD",
-   "usd_vol_24h": 1763988,
+   "usd_vol_24h": 1934399,
+   "quote_min": 1.0
+  },
+  {
+   "id": "RITUAL-USD",
+   "usd_vol_24h": 1860553,
+   "quote_min": 1.0
+  },
+  {
+   "id": "ARB-USD",
+   "usd_vol_24h": 1839998,
    "quote_min": 1.0
   },
   {
    "id": "MON-USD",
-   "usd_vol_24h": 1687499,
+   "usd_vol_24h": 1669343,
    "quote_min": 1.0
   },
   {
    "id": "TRUMP-USD",
-   "usd_vol_24h": 1569397,
+   "usd_vol_24h": 1560485,
    "quote_min": 1.0
   },
   {
    "id": "ICP-USD",
-   "usd_vol_24h": 1468405,
-   "quote_min": 1.0
-  },
-  {
-   "id": "WLD-USD",
-   "usd_vol_24h": 1453007,
+   "usd_vol_24h": 1483535,
    "quote_min": 1.0
   },
   {
    "id": "RSR-USD",
-   "usd_vol_24h": 1349782,
+   "usd_vol_24h": 1474933,
+   "quote_min": 1.0
+  },
+  {
+   "id": "WLD-USD",
+   "usd_vol_24h": 1455009,
    "quote_min": 1.0
   },
   {
    "id": "DOT-USD",
-   "usd_vol_24h": 1276828,
-   "quote_min": 1.0
-  },
-  {
-   "id": "GEOD-USD",
-   "usd_vol_24h": 1131689,
-   "quote_min": 1.0
-  },
-  {
-   "id": "PENGU-USD",
-   "usd_vol_24h": 1055193,
-   "quote_min": 1.0
-  },
-  {
-   "id": "PONS-USD",
-   "usd_vol_24h": 1006489,
+   "usd_vol_24h": 1285711,
    "quote_min": 1.0
   },
   {
    "id": "STRK-USD",
-   "usd_vol_24h": 967015,
+   "usd_vol_24h": 1141363,
+   "quote_min": 1.0
+  },
+  {
+   "id": "GEOD-USD",
+   "usd_vol_24h": 1127367,
+   "quote_min": 1.0
+  },
+  {
+   "id": "PENGU-USD",
+   "usd_vol_24h": 1052135,
+   "quote_min": 1.0
+  },
+  {
+   "id": "PONS-USD",
+   "usd_vol_24h": 999248,
    "quote_min": 1.0
   },
   {
    "id": "ATOM-USD",
-   "usd_vol_24h": 953805,
+   "usd_vol_24h": 960540,
    "quote_min": 1.0
   },
   {
    "id": "DASH-USD",
-   "usd_vol_24h": 943949,
+   "usd_vol_24h": 931239,
    "quote_min": 1.0
   },
   {
    "id": "BNB-USD",
-   "usd_vol_24h": 902558,
-   "quote_min": 1.0
-  },
-  {
-   "id": "SEI-USD",
-   "usd_vol_24h": 898869,
+   "usd_vol_24h": 917639,
    "quote_min": 1.0
   },
   {
    "id": "FIL-USD",
-   "usd_vol_24h": 893217,
+   "usd_vol_24h": 902576,
+   "quote_min": 1.0
+  },
+  {
+   "id": "SEI-USD",
+   "usd_vol_24h": 899290,
    "quote_min": 1.0
   },
   {
    "id": "ALEO-USD",
-   "usd_vol_24h": 871823,
-   "quote_min": 1.0
-  },
-  {
-   "id": "DRV-USD",
-   "usd_vol_24h": 862841,
-   "quote_min": 1.0
-  },
-  {
-   "id": "CHIP-USD",
-   "usd_vol_24h": 834133,
+   "usd_vol_24h": 841384,
    "quote_min": 1.0
   },
   {
    "id": "FARTCOIN-USD",
-   "usd_vol_24h": 820720,
+   "usd_vol_24h": 839282,
    "quote_min": 1.0
   },
   {
-   "id": "ALGO-USD",
-   "usd_vol_24h": 806760,
+   "id": "CHIP-USD",
+   "usd_vol_24h": 826781,
    "quote_min": 1.0
   },
   {
    "id": "JASMY-USD",
-   "usd_vol_24h": 757787,
+   "usd_vol_24h": 808407,
+   "quote_min": 1.0
+  },
+  {
+   "id": "ALGO-USD",
+   "usd_vol_24h": 802792,
    "quote_min": 1.0
   },
   {
    "id": "TON-USD",
-   "usd_vol_24h": 744857,
+   "usd_vol_24h": 802076,
+   "quote_min": 1.0
+  },
+  {
+   "id": "DRV-USD",
+   "usd_vol_24h": 781412,
    "quote_min": 1.0
   },
   {
    "id": "CLANKER-USD",
-   "usd_vol_24h": 714837,
-   "quote_min": 1.0
-  },
-  {
-   "id": "HNT-USD",
-   "usd_vol_24h": 668716,
+   "usd_vol_24h": 713679,
    "quote_min": 1.0
   },
   {
    "id": "CRV-USD",
-   "usd_vol_24h": 663031,
+   "usd_vol_24h": 670813,
+   "quote_min": 1.0
+  },
+  {
+   "id": "HNT-USD",
+   "usd_vol_24h": 669545,
    "quote_min": 1.0
   },
   {
    "id": "CVX-USD",
-   "usd_vol_24h": 629418,
+   "usd_vol_24h": 632005,
    "quote_min": 1.0
   },
   {
    "id": "ASTER-USD",
-   "usd_vol_24h": 581423,
+   "usd_vol_24h": 585807,
    "quote_min": 1.0
   },
   {
    "id": "BONK-USD",
-   "usd_vol_24h": 556969,
+   "usd_vol_24h": 555820,
    "quote_min": 1.0
   },
   {
    "id": "GRT-USD",
-   "usd_vol_24h": 527353,
+   "usd_vol_24h": 524244,
    "quote_min": 1.0
   },
   {
    "id": "MORPHO-USD",
-   "usd_vol_24h": 519870,
+   "usd_vol_24h": 518974,
    "quote_min": 1.0
   },
   {
    "id": "IRYS-USD",
-   "usd_vol_24h": 510127,
+   "usd_vol_24h": 518587,
    "quote_min": 1.0
   },
   {
    "id": "PYTH-USD",
-   "usd_vol_24h": 503204,
+   "usd_vol_24h": 515870,
    "quote_min": 1.0
   },
   {
    "id": "XPL-USD",
-   "usd_vol_24h": 489709,
+   "usd_vol_24h": 500110,
    "quote_min": 1.0
   },
   {
    "id": "OP-USD",
-   "usd_vol_24h": 489540,
-   "quote_min": 1.0
-  },
-  {
-   "id": "MEGA-USD",
-   "usd_vol_24h": 482453,
+   "usd_vol_24h": 486169,
    "quote_min": 1.0
   },
   {
    "id": "SYRUP-USD",
-   "usd_vol_24h": 460416,
+   "usd_vol_24h": 470028,
    "quote_min": 1.0
   },
   {
    "id": "CAP-USD",
-   "usd_vol_24h": 456889,
+   "usd_vol_24h": 464863,
+   "quote_min": 1.0
+  },
+  {
+   "id": "MEGA-USD",
+   "usd_vol_24h": 464401,
    "quote_min": 1.0
   },
   {
    "id": "AKT-USD",
-   "usd_vol_24h": 454432,
+   "usd_vol_24h": 463492,
    "quote_min": 1.0
   },
   {
    "id": "GTC-USD",
-   "usd_vol_24h": 437130,
-   "quote_min": 1.0
-  },
-  {
-   "id": "AVNT-USD",
-   "usd_vol_24h": 436244,
+   "usd_vol_24h": 444860,
    "quote_min": 1.0
   },
   {
    "id": "TIA-USD",
-   "usd_vol_24h": 433604,
+   "usd_vol_24h": 434974,
    "quote_min": 1.0
   },
   {
    "id": "PROMPT-USD",
-   "usd_vol_24h": 425560,
-   "quote_min": 1.0
-  },
-  {
-   "id": "BIRB-USD",
-   "usd_vol_24h": 415478,
+   "usd_vol_24h": 432089,
    "quote_min": 1.0
   },
   {
    "id": "CT-USD",
-   "usd_vol_24h": 405820,
+   "usd_vol_24h": 423369,
    "quote_min": 1.0
   },
   {
-   "id": "APT-USD",
-   "usd_vol_24h": 399702,
+   "id": "AVNT-USD",
+   "usd_vol_24h": 416293,
    "quote_min": 1.0
   },
   {
-   "id": "JUPITER-USD",
-   "usd_vol_24h": 394428,
+   "id": "BIRB-USD",
+   "usd_vol_24h": 412518,
    "quote_min": 1.0
   },
   {
    "id": "TOSHI-USD",
-   "usd_vol_24h": 387326,
+   "usd_vol_24h": 410218,
+   "quote_min": 1.0
+  },
+  {
+   "id": "APT-USD",
+   "usd_vol_24h": 402128,
    "quote_min": 1.0
   },
   {
    "id": "WLFI-USD",
-   "usd_vol_24h": 375530,
+   "usd_vol_24h": 399837,
    "quote_min": 1.0
   },
   {
-   "id": "DEGEN-USD",
-   "usd_vol_24h": 371408,
-   "quote_min": 1.0
-  },
-  {
-   "id": "RAY-USD",
-   "usd_vol_24h": 367084,
+   "id": "JUPITER-USD",
+   "usd_vol_24h": 394886,
    "quote_min": 1.0
   },
   {
    "id": "COTI-USD",
-   "usd_vol_24h": 362658,
+   "usd_vol_24h": 370927,
+   "quote_min": 1.0
+  },
+  {
+   "id": "RAY-USD",
+   "usd_vol_24h": 368573,
    "quote_min": 1.0
   },
   {
    "id": "ELA-USD",
-   "usd_vol_24h": 362597,
-   "quote_min": 1.0
-  },
-  {
-   "id": "FORTH-USD",
-   "usd_vol_24h": 361879,
+   "usd_vol_24h": 363558,
    "quote_min": 1.0
   },
   {
    "id": "AIOZ-USD",
-   "usd_vol_24h": 358836,
+   "usd_vol_24h": 362684,
+   "quote_min": 1.0
+  },
+  {
+   "id": "FORTH-USD",
+   "usd_vol_24h": 361569,
    "quote_min": 1.0
   },
   {
    "id": "POL-USD",
-   "usd_vol_24h": 358817,
-   "quote_min": 1.0
-  },
-  {
-   "id": "MANTLE-USD",
-   "usd_vol_24h": 343902,
+   "usd_vol_24h": 356301,
    "quote_min": 1.0
   },
   {
    "id": "ZORA-USD",
-   "usd_vol_24h": 340239,
-   "quote_min": 1.0
-  },
-  {
-   "id": "EDGE-USD",
-   "usd_vol_24h": 336497,
-   "quote_min": 1.0
-  },
-  {
-   "id": "BOBBOB-USD",
-   "usd_vol_24h": 328304,
+   "usd_vol_24h": 340812,
    "quote_min": 1.0
   },
   {
    "id": "FLR-USD",
-   "usd_vol_24h": 323816,
+   "usd_vol_24h": 338969,
    "quote_min": 1.0
   },
   {
-   "id": "SKR-USD",
-   "usd_vol_24h": 323229,
+   "id": "MANTLE-USD",
+   "usd_vol_24h": 336629,
    "quote_min": 1.0
   },
   {
-   "id": "BILL-USD",
-   "usd_vol_24h": 319688,
+   "id": "DEGEN-USD",
+   "usd_vol_24h": 335970,
    "quote_min": 1.0
   },
   {
-   "id": "VET-USD",
-   "usd_vol_24h": 309887,
+   "id": "EDGE-USD",
+   "usd_vol_24h": 332915,
    "quote_min": 1.0
   },
   {
-   "id": "SHIB-USD",
-   "usd_vol_24h": 306045,
-   "quote_min": 1.0
-  },
-  {
-   "id": "ATH-USD",
-   "usd_vol_24h": 304604,
-   "quote_min": 1.0
-  },
-  {
-   "id": "SUSHI-USD",
-   "usd_vol_24h": 302946,
+   "id": "BOBBOB-USD",
+   "usd_vol_24h": 332327,
    "quote_min": 1.0
   },
   {
    "id": "PLUME-USD",
-   "usd_vol_24h": 301313,
+   "usd_vol_24h": 332011,
+   "quote_min": 1.0
+  },
+  {
+   "id": "SKR-USD",
+   "usd_vol_24h": 329971,
+   "quote_min": 1.0
+  },
+  {
+   "id": "XCN-USD",
+   "usd_vol_24h": 318994,
+   "quote_min": 1.0
+  },
+  {
+   "id": "BILL-USD",
+   "usd_vol_24h": 317249,
+   "quote_min": 1.0
+  },
+  {
+   "id": "VET-USD",
+   "usd_vol_24h": 309586,
+   "quote_min": 1.0
+  },
+  {
+   "id": "ATH-USD",
+   "usd_vol_24h": 306156,
+   "quote_min": 1.0
+  },
+  {
+   "id": "SUSHI-USD",
+   "usd_vol_24h": 304629,
    "quote_min": 1.0
   },
   {
    "id": "TRAC-USD",
-   "usd_vol_24h": 299461,
-   "quote_min": 1.0
-  },
-  {
-   "id": "PYR-USD",
-   "usd_vol_24h": 297966,
+   "usd_vol_24h": 298810,
    "quote_min": 1.0
   },
   {
    "id": "SPX-USD",
-   "usd_vol_24h": 295761,
+   "usd_vol_24h": 296818,
    "quote_min": 1.0
   },
   {
-   "id": "APR-USD",
-   "usd_vol_24h": 267236,
+   "id": "SHIB-USD",
+   "usd_vol_24h": 295094,
+   "quote_min": 1.0
+  },
+  {
+   "id": "PYR-USD",
+   "usd_vol_24h": 286543,
    "quote_min": 1.0
   },
   {
    "id": "GRASS-USD",
-   "usd_vol_24h": 264484,
+   "usd_vol_24h": 269656,
+   "quote_min": 1.0
+  },
+  {
+   "id": "ZAMA-USD",
+   "usd_vol_24h": 269392,
+   "quote_min": 1.0
+  },
+  {
+   "id": "APR-USD",
+   "usd_vol_24h": 267067,
    "quote_min": 1.0
   },
   {
    "id": "CRO-USD",
-   "usd_vol_24h": 262774,
-   "quote_min": 1.0
-  },
-  {
-   "id": "WIF-USD",
-   "usd_vol_24h": 255378,
-   "quote_min": 1.0
-  },
-  {
-   "id": "PENDLE-USD",
-   "usd_vol_24h": 250877,
+   "usd_vol_24h": 265558,
    "quote_min": 1.0
   }
  ],
- "universe_t": "2026-11-09T09:35:15Z",
- "scans": 641,
+ "universe_t": "2026-11-09T10:35:15Z",
+ "scans": 643,
  "started": "2026-11-06T22:20:22Z",
- "last_scan": "2026-11-09T10:25:15Z"
+ "last_scan": "2026-11-09T10:35:15Z"
 }
