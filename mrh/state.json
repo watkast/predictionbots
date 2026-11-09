@@ -9,14 +9,14 @@
     "entry_px": 0.01717,
     "qty": 165.71041719999909,
     "cost": 2.871087652193728,
-    "hw": 0.01757,
+    "hw": 0.01758,
     "t_in": "2026-11-08T22:05:15Z",
     "signal": {
      "impulse": 0.0233,
      "vol_mult": 10.05,
      "above_2h_high": false
     },
-    "hw_t": "2026-11-08T23:25:15Z"
+    "hw_t": "2026-11-09T00:45:15Z"
    },
    "hops": 8,
    "wins": 2,
@@ -46,25 +46,12 @@
   },
   "aggressive_swap": {
    "name": "aggressive_swap",
-   "bankroll": 0.0,
+   "bankroll": 3.32661540177479,
    "peak": 4.01983237936772,
-   "pos": {
-    "pid": "RITUAL-USD",
-    "entry_px": 0.04055,
-    "qty": 77.97507185517017,
-    "cost": 3.190604605173714,
-    "hw": 0.04507,
-    "t_in": "2026-11-08T23:35:15Z",
-    "signal": {
-     "impulse": 0.0482,
-     "vol_mult": 9.0,
-     "above_2h_high": false
-    },
-    "hw_t": "2026-11-09T00:30:15Z"
-   },
-   "hops": 14,
-   "wins": 4,
-   "fees": 0.9384399214331338
+   "pos": null,
+   "hops": 15,
+   "wins": 5,
+   "fees": 0.9686513630234195
   }
  },
  "universe": [
@@ -625,7 +612,7 @@
   }
  ],
  "universe_t": "2026-11-09T00:30:15Z",
- "scans": 525,
+ "scans": 527,
  "started": "2026-11-06T22:20:22Z",
- "last_scan": "2026-11-09T00:35:15Z"
+ "last_scan": "2026-11-09T00:45:15Z"
 }
