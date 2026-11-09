@@ -1,6 +1,6 @@
 # Mr. S — live
 
-Updated 2026-11-09 00:12 UTC · mode **live** · switch **OFF** · live leagues: usa.1
+Updated 2026-11-09 00:18 UTC · mode **live** · switch **OFF** · live leagues: usa.1
 
 ## ⚠️ Kalshi balance below the $50 risk cap — fund the account (orders still try, capped by cash)
 
@@ -27,7 +27,7 @@ Kalshi series with open markets: KXLIGAMX1H, KXLIGAMX1HBTTS, KXLIGAMX1HTOTAL, KX
 - KXLIGAPORTUGALTOTAL-26NOV08RAVBRA-2: no Polymarket twin
 - KXLIGAPORTUGALBTTS-26NOV08RAVBRA-BTTS: no Polymarket twin
 - KXLIGAMX1HTOTAL-26NOV08QUEPUE-1: Polymarket does not confirm
-- KXLIGAMXTOTAL-26NOV08QUEPUE-1: Polymarket does not confirm
+- KXLIGAMXTOTAL-26NOV08QUEPUE-1: settling (230s)
 
 ---
 caps: $10/order · $20/game · $40/day · $50 open risk · ask 0.6–0.97 · score stable ≥ 240s (60s for a finished 1H) in ESPN and Polymarket
