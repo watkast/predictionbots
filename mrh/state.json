@@ -2,69 +2,43 @@
  "books": {
   "aggressive": {
    "name": "aggressive",
-   "bankroll": 0.0,
+   "bankroll": 2.7642707495211,
    "peak": 4.0,
-   "pos": {
-    "pid": "RITUAL-USD",
-    "entry_px": 0.06,
-    "qty": 45.89297673004224,
-    "cost": 2.778585876692769,
-    "hw": 0.06,
-    "t_in": "2026-11-09T08:05:15Z",
-    "signal": {
-     "impulse": 0.0216,
-     "vol_mult": 5.82,
-     "above_2h_high": true
-    },
-    "hw_t": "2026-11-09T08:05:15Z"
-   },
-   "hops": 9,
+   "pos": null,
+   "hops": 10,
    "wins": 2,
-   "fees": 0.5711750399358991
+   "fees": 0.5962794160667668
   },
   "standard": {
    "name": "standard",
    "bankroll": 0.0,
    "peak": 4.0,
    "pos": {
-    "pid": "RITUAL-USD",
-    "entry_px": 0.06,
-    "qty": 49.59638589683976,
-    "cost": 3.002808429677483,
-    "hw": 0.06,
-    "t_in": "2026-11-09T08:05:15Z",
+    "pid": "CLANKER-USD",
+    "entry_px": 14.92,
+    "qty": 0.19842172095968244,
+    "cost": 2.9873381197966316,
+    "hw": 14.92,
+    "t_in": "2026-11-09T08:25:15Z",
     "signal": {
-     "impulse": 0.0216,
-     "vol_mult": 5.82,
+     "impulse": 0.0122,
+     "vol_mult": 4.64,
      "above_2h_high": true
     },
-    "hw_t": "2026-11-09T08:05:15Z"
+    "hw_t": "2026-11-09T08:25:15Z"
    },
-   "hops": 10,
+   "hops": 11,
    "wins": 1,
-   "fees": 0.6578064827586995
+   "fees": 0.7118227408501584
   },
   "aggressive_swap": {
    "name": "aggressive_swap",
-   "bankroll": 0.0,
+   "bankroll": 3.309476855535463,
    "peak": 4.01983237936772,
-   "pos": {
-    "pid": "RITUAL-USD",
-    "entry_px": 0.06,
-    "qty": 54.94459771931362,
-    "cost": 3.32661540177479,
-    "hw": 0.06,
-    "t_in": "2026-11-09T08:05:15Z",
-    "signal": {
-     "impulse": 0.0216,
-     "vol_mult": 5.82,
-     "above_2h_high": true
-    },
-    "hw_t": "2026-11-09T08:05:15Z"
-   },
-   "hops": 15,
+   "pos": null,
+   "hops": 16,
    "wins": 5,
-   "fees": 0.9985909016393926
+   "fees": 1.0286466954838116
   }
  },
  "universe": [
@@ -620,7 +594,7 @@
   }
  ],
  "universe_t": "2026-11-09T07:35:15Z",
- "scans": 614,
+ "scans": 617,
  "started": "2026-11-06T22:20:22Z",
- "last_scan": "2026-11-09T08:05:15Z"
+ "last_scan": "2026-11-09T08:25:15Z"
 }
