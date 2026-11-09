@@ -1,21 +1,21 @@
 # Mr. H — Coinbase hopper, PAPER
 
-Updated 2026-11-09T08:25:31Z · scans 617 · universe 110 coins (USD pairs with ≥ $100k 24-h volume) · fees 0.9% taker each way · start $4.00
+Updated 2026-11-09T08:35:31Z · scans 619 · universe 110 coins (USD pairs with ≥ $100k 24-h volume) · fees 0.9% taker each way · start $4.00
 
 ## Books (one position at a time, all-in every hop)
 
 | profile | bankroll | vs start | peak | hops | win % | avg net/hop | fees paid | open |
 |---|---|---|---|---|---|---|---|---|
 | aggressive | $2.76 | -30.9% | $4.00 | 10 | 20% | -3.57% | $0.596 | — |
-| standard | $2.95 | -26.1% | $4.00 | 11 | 9% | -2.58% | $0.712 | CLANKER-USD @ 14.92 |
+| standard | $2.97 | -25.6% | $4.00 | 11 | 9% | -2.58% | $0.712 | CLANKER-USD @ 14.92 |
 | aggressive_swap | $3.31 | -17.3% | $4.02 | 16 | 31% | -1.00% | $1.029 | — |
 
 ## Signal forward returns (every signal, whether or not a book took it)
 
 | profile | signals | scored | median +15m | median +1h | median +4h | % beat 1.8% at +1h | median 4%-trail hop net | max run-up (med) | max drawdown (med) |
 |---|---|---|---|---|---|---|---|---|---|
-| aggressive | 93 | 69 | -0.36% | -1.88% | -3.67% | 26% | -3.63% | +7.38% | -9.51% |
-| standard | 72 | 54 | -0.20% | -1.32% | -3.31% | 22% | -3.20% | +5.56% | -6.68% |
+| aggressive | 94 | 69 | -0.36% | -1.88% | -3.67% | 26% | -3.63% | +7.38% | -9.51% |
+| standard | 73 | 54 | -0.20% | -1.32% | -3.31% | 22% | -3.20% | +5.56% | -6.68% |
 
 ## Aggressive signals by BTC regime (BTC's own move in the hour before the signal)
 
@@ -58,8 +58,6 @@ Updated 2026-11-09T08:25:31Z · scans 617 · universe 110 coins (USD pairs with 
 
 | time (UTC) | profile | coin | impulse | vol× | >2h high | spread | taken | +1h | +4h |
 |---|---|---|---|---|---|---|---|---|---|
-| 11-09T04:50 | aggressive | MEZO | +3.5% | 15.5 | n | 0.94% | spread | … | … |
-| 11-09T04:50 | aggressive | RITUAL | +3.4% | 3.3 | n | 1.62% | spread | … | … |
 | 11-09T05:45 | aggressive | RITUAL | +3.7% | 6.7 | n | 2.10% | spread | … | … |
 | 11-09T06:25 | aggressive | RITUAL | +2.5% | 5.3 | y | 1.20% | spread | … | … |
 | 11-09T06:25 | standard | RITUAL | +2.5% | 5.3 | y | 1.20% | spread | … | … |
@@ -73,3 +71,5 @@ Updated 2026-11-09T08:25:31Z · scans 617 · universe 110 coins (USD pairs with 
 | 11-09T08:15 | aggressive | RITUAL | +9.2% | 6.2 | y | 2.78% | spread | … | … |
 | 11-09T08:15 | standard | RITUAL | +9.2% | 6.2 | y | 2.78% | spread | … | … |
 | 11-09T08:25 | standard | CLANKER | +1.2% | 4.6 | y | 0.20% | y | … | … |
+| 11-09T08:35 | aggressive | RITUAL | +5.5% | 3.1 | y | 1.31% | spread | … | … |
+| 11-09T08:35 | standard | RITUAL | +5.5% | 3.1 | y | 1.31% | spread | … | … |
