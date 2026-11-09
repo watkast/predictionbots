@@ -1,17 +1,17 @@
 # Early Favorite auto-buyer v1 (paper)
 
 Paper only. Reads the live Polymarket US book at 13:00 left, else 12:00 left; buys the favorite if its ask is 80-95c with a limit at ask+1c, filled only against size actually resting on the book.
-Updated 2026-11-09T00:11:52Z.
+Updated 2026-11-09T00:21:55Z.
 
-Rounds watched: 1432. Entries: 159. Settled: 158.
+Rounds watched: 1433. Entries: 160. Settled: 159.
 
-Win rate: 128/158 = 81.0%
+Win rate: 129/159 = 81.1%
 
 | Stake | Full fill rate | Avg fill | Avg price | Net P&L | Per $ staked |
 |---|---|---|---|---|---|
-| $50 | 99% | 100% | 0.842 | $-402.08 | -5.11% |
-| $100 | 97% | 99% | 0.842 | $-802.36 | -5.13% |
-| $250 | 89% | 96% | 0.844 | $-2,010.44 | -5.33% |
+| $50 | 99% | 100% | 0.842 | $-390.53 | -4.93% |
+| $100 | 97% | 99% | 0.842 | $-779.26 | -4.95% |
+| $250 | 89% | 96% | 0.843 | $-1,952.69 | -5.14% |
 
 Live $100 fill price minus the backtest's display price: +0.88c average over 156 entries (the backtest edge was about +4.2c, so this gap is what it must survive).
 
@@ -19,7 +19,6 @@ Live $100 fill price minus the backtest's display price: +0.88c average over 156
 
 | Window (UTC) | Left | Side | Ask | Depth at ask | $100 fill | Result | P&L $100 |
 |---|---|---|---|---|---|---|---|
-| 11-05T07:30 | 13:00 | Down | 0.87 | 1089 | 100% @ 0.870 | WIN | +14.04 |
 | 11-05T09:00 | 13:00 | Down | 0.80 | 553 | 100% @ 0.800 | WIN | +23.61 |
 | 11-05T13:45 | 12:00 | Up | 0.81 | 643 | 100% @ 0.810 | LOSS | -101.32 |
 | 11-05T15:00 | 12:00 | Down | 0.82 | 68 | 100% @ 0.824 | WIN | +20.08 |
@@ -38,7 +37,8 @@ Live $100 fill price minus the backtest's display price: +0.88c average over 156
 | 11-08T04:45 | 12:00 | Down | 0.83 | 168 | 100% @ 0.830 | WIN | +18.87 |
 | 11-08T10:30 | 13:00 | Down | 0.80 | 61 | 100% @ 0.805 | LOSS | -101.85 |
 | 11-08T22:00 | 13:00 | Up | 0.83 | 44 | 100% @ 0.836 | WIN | +18.02 |
-| 11-09T00:00 | 12:00 | Down | 0.80 | 1196 | 100% @ 0.800 | - | +0.00 |
+| 11-09T00:00 | 12:00 | Down | 0.80 | 1196 | 100% @ 0.800 | WIN | +23.10 |
+| 11-09T00:15 | 13:00 | Up | 0.90 | 307 | 100% @ 0.900 | - | +0.00 |
 
-Book reads: 2807, failed: 857, re-tried: 904, median latency 0.04s.
-Entries read more than 20 s after their target second: 19 of 159 (avg 32 s late).
+Book reads: 2808, failed: 857, re-tried: 904, median latency 0.04s.
+Entries read more than 20 s after their target second: 19 of 160 (avg 32 s late).
