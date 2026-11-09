@@ -1,39 +1,38 @@
 # Mr. H — Coinbase hopper, PAPER
 
-Updated 2026-11-09T13:50:31Z · scans 682 · universe 110 coins (USD pairs with ≥ $100k 24-h volume) · fees 0.9% taker each way · start $4.00
+Updated 2026-11-09T17:35:33Z · scans 685 · universe 111 coins (USD pairs with ≥ $100k 24-h volume) · fees 0.9% taker each way · start $4.00
 
 ## Books (one position at a time, all-in every hop)
 
 | profile | bankroll | vs start | peak | hops | win % | avg net/hop | fees paid | open |
 |---|---|---|---|---|---|---|---|---|
-| aggressive | $2.84 | -28.9% | $4.00 | 11 | 27% | -3.10% | $0.672 | AVAX-USD @ 8.51 |
-| standard | $2.89 | -27.8% | $4.00 | 12 | 8% | -2.47% | $0.765 | RENDER-USD @ 1.6167 |
-| aggressive_swap | $3.40 | -14.9% | $4.02 | 17 | 35% | -0.84% | $1.119 | AVAX-USD @ 8.51 |
+| aggressive | $2.84 | -29.1% | $4.00 | 11 | 27% | -3.10% | $0.672 | AVAX-USD @ 8.51 |
+| standard | $2.88 | -28.0% | $4.00 | 12 | 8% | -2.47% | $0.765 | RENDER-USD @ 1.6167 |
+| aggressive_swap | $3.33 | -16.8% | $4.02 | 18 | 33% | -0.79% | $1.180 | RITUAL-USD @ 0.05818 |
 
 ## Signal forward returns (every signal, whether or not a book took it)
 
 | profile | signals | scored | median +15m | median +1h | median +4h | % beat 1.8% at +1h | median 4%-trail hop net | max run-up (med) | max drawdown (med) |
 |---|---|---|---|---|---|---|---|---|---|
-| aggressive | 104 | 80 | -0.31% | -1.43% | -3.91% | 31% | -3.62% | +7.52% | -9.65% |
-| standard | 116 | 62 | -0.29% | -1.12% | -3.31% | 26% | -2.81% | +6.05% | -6.68% |
+| aggressive | 105 | 88 | -0.26% | -0.68% | -1.72% | 34% | -2.77% | +6.98% | -8.11% |
+| standard | 117 | 96 | -0.36% | -0.02% | +0.06% | 21% | -1.33% | +3.45% | -3.08% |
 
 ## Aggressive signals by BTC regime (BTC's own move in the hour before the signal)
 
 | BTC 1h | signals | median +1h | median 4%-trail hop net | % beat 1.8% at +1h |
 |---|---|---|---|---|
 | ≤ −0.5% (downdraft) | 5 | +9.98% | +1.23% | 80% |
-| −0.5% … +0.5% (flat) | 59 | -2.63% | -4.70% | 25% |
-| ≥ +0.5% (bid under the market) | 4 | +3.00% | +0.55% | 75% |
+| −0.5% … +0.5% (flat) | 63 | -2.16% | -4.24% | 30% |
+| ≥ +0.5% (bid under the market) | 8 | +2.08% | +0.25% | 50% |
 
 ## Verdict
 
-**Not yet.** Needs 40 scored aggressive signals (80 so far) and 30 closed aggressive hops (11 so far) before this says anything. Until then every number above is noise.
+**Not yet.** Needs 40 scored aggressive signals (88 so far) and 30 closed aggressive hops (11 so far) before this says anything. Until then every number above is noise.
 
 ## Last 20 hops
 
 | time (UTC) | book | coin | in | out | held | net | reason | bankroll |
 |---|---|---|---|---|---|---|---|---|
-| 11-08T10:30 | standard | CRO | 0.04914 | 0.04833 | 1010 m | -3.41% | delisted | $3.42 |
 | 11-08T13:05 | aggressive_swap | MEZO | 0.00408 | 0.004839 | 40 m | +16.48% | trail | $3.81 |
 | 11-08T13:55 | standard | VVV | 20.767 | 20.6601 | 160 m | -2.30% | trail | $3.34 |
 | 11-08T16:10 | standard | CAP | 0.10564 | 0.106 | 55 m | -1.46% | trail | $3.30 |
@@ -53,23 +52,24 @@ Updated 2026-11-09T13:50:31Z · scans 682 · universe 110 coins (USD pairs with 
 | 11-09T09:10 | standard | CLANKER | 14.92 | 15 | 45 m | -1.27% | trail | $2.95 |
 | 11-09T12:05 | aggressive | ICNT | 0.3329 | 0.3446 | 100 m | +1.66% | trail | $2.81 |
 | 11-09T12:05 | aggressive_swap | ICNT | 0.3329 | 0.3446 | 100 m | +1.66% | trail | $3.36 |
+| 11-09T17:35 | aggressive_swap | AVAX | 8.51 | 8.664 | 300 m | -0.01% | swap | $3.36 |
 
 ## Last 15 signals
 
 | time (UTC) | profile | coin | impulse | vol× | >2h high | spread | taken | +1h | +4h |
 |---|---|---|---|---|---|---|---|---|---|
-| 11-09T11:35 | standard | USELESS | +2.5% | 8.9 | y | 0.11% | in_position | … | … |
-| 11-09T12:20 | standard | ARB | +1.3% | 9.3 | y | 0.09% | in_position | … | … |
-| 11-09T12:20 | standard | VVV | +1.1% | 4.6 | y | 0.09% | in_position | … | … |
-| 11-09T12:35 | aggressive | AVAX | +4.4% | 455.3 | y | 0.04% | y | … | … |
-| 11-09T12:35 | standard | AVAX | +4.4% | 455.3 | y | 0.04% | in_position | … | … |
-| 11-09T12:50 | aggressive | AVAX | +2.4% | 51.5 | n | 0.01% | in_position | … | … |
-| 11-09T12:50 | standard | VVV | +1.1% | 21.1 | y | 0.07% | in_position | … | … |
+| 11-09T12:20 | standard | VVV | +1.1% | 4.6 | y | 0.09% | in_position | +0.7% | +1.7% |
+| 11-09T12:35 | aggressive | AVAX | +4.4% | 455.3 | y | 0.04% | y | +4.2% | +3.7% |
+| 11-09T12:35 | standard | AVAX | +4.4% | 455.3 | y | 0.04% | in_position | +4.2% | +3.7% |
+| 11-09T12:50 | aggressive | AVAX | +2.4% | 51.5 | n | 0.01% | in_position | +1.5% | +2.2% |
+| 11-09T12:50 | standard | VVV | +1.1% | 21.1 | y | 0.07% | in_position | -0.8% | +0.2% |
 | 11-09T12:55 | aggressive | ZORA | +2.6% | 152.8 | y | 0.18% | in_position | … | … |
 | 11-09T12:55 | standard | ZORA | +2.6% | 152.8 | y | 0.18% | in_position | … | … |
-| 11-09T12:55 | standard | USELESS | +1.5% | 6.0 | y | 0.13% | in_position | … | … |
-| 11-09T13:05 | standard | TON | +1.5% | 30.1 | y | 0.10% | in_position | … | … |
-| 11-09T13:10 | aggressive | AVAX | +2.1% | 13.3 | n | 0.05% | in_position | … | … |
-| 11-09T13:25 | standard | AVAX | +1.7% | 19.9 | y | 0.03% | in_position | … | … |
-| 11-09T13:30 | standard | AVAX | +1.0% | 56.8 | y | 0.05% | in_position | … | … |
+| 11-09T12:55 | standard | USELESS | +1.5% | 6.0 | y | 0.13% | in_position | -0.3% | -3.2% |
+| 11-09T13:05 | standard | TON | +1.5% | 30.1 | y | 0.10% | in_position | -1.8% | -2.9% |
+| 11-09T13:10 | aggressive | AVAX | +2.1% | 13.3 | n | 0.05% | in_position | +3.7% | +1.7% |
+| 11-09T13:25 | standard | AVAX | +1.7% | 19.9 | y | 0.03% | in_position | +1.3% | +0.4% |
+| 11-09T13:30 | standard | AVAX | +1.0% | 56.8 | y | 0.05% | in_position | +0.4% | -0.3% |
 | 11-09T13:35 | standard | AVAX | +1.5% | 8.2 | y | 0.07% | in_position | … | … |
+| 11-09T17:35 | aggressive | RITUAL | +4.8% | 7.6 | y | 0.14% | in_position | … | … |
+| 11-09T17:35 | standard | RITUAL | +4.8% | 7.6 | y | 0.14% | in_position | … | … |
