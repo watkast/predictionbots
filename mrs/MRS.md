@@ -1,6 +1,6 @@
 # Mr. S — live
 
-Updated 2026-11-09 00:07 UTC · mode **live** · switch **OFF** · live leagues: usa.1
+Updated 2026-11-09 00:12 UTC · mode **live** · switch **OFF** · live leagues: usa.1
 
 ## ⚠️ Kalshi balance below the $50 risk cap — fund the account (orders still try, capped by cash)
 
@@ -16,8 +16,6 @@ games in play/just ended: 10 · matched to Kalshi: 1 · to Polymarket: 1 · deci
 Kalshi series with open markets: KXLIGAMX1H, KXLIGAMX1HBTTS, KXLIGAMX1HTOTAL, KXLIGAMXBTTS, KXLIGAMXTOTAL, KXLIGAPORTUGAL1H, KXLIGAPORTUGAL1HBTTS, KXLIGAPORTUGAL1HTOTAL, KXLIGAPORTUGALBTTS, KXLIGAPORTUGALTOTAL
 
 ### Last blocks
-- KXBUNDESLIGA1HBTTS-26NOV08TSGSCH-BTTS: no asks (already repriced)
-- KXLIGAPORTUGALTOTAL-26NOV08ESABEN-4: no Polymarket twin
 - KXLIGAPORTUGALTOTAL-26NOV08RAVBRA-1: no Polymarket twin
 - KXLIGAPORTUGALTOTAL-26NOV08ESABEN-5: no Polymarket twin
 - KXLIGAPORTUGALTOTAL-26NOV08ESABEN-7: no Polymarket twin
@@ -28,6 +26,8 @@ Kalshi series with open markets: KXLIGAMX1H, KXLIGAMX1HBTTS, KXLIGAMX1HTOTAL, KX
 - KXLIGAPORTUGALTOTAL-26NOV08RAVBRA-3: no Polymarket twin
 - KXLIGAPORTUGALTOTAL-26NOV08RAVBRA-2: no Polymarket twin
 - KXLIGAPORTUGALBTTS-26NOV08RAVBRA-BTTS: no Polymarket twin
+- KXLIGAMX1HTOTAL-26NOV08QUEPUE-1: Polymarket does not confirm
+- KXLIGAMXTOTAL-26NOV08QUEPUE-1: Polymarket does not confirm
 
 ---
 caps: $10/order · $20/game · $40/day · $50 open risk · ask 0.6–0.97 · score stable ≥ 240s (60s for a finished 1H) in ESPN and Polymarket
