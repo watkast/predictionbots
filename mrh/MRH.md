@@ -1,14 +1,14 @@
 # Mr. H — Coinbase hopper, PAPER
 
-Updated 2026-11-09T17:45:33Z · scans 687 · universe 111 coins (USD pairs with ≥ $100k 24-h volume) · fees 0.9% taker each way · start $4.00
+Updated 2026-11-09T17:55:33Z · scans 689 · universe 111 coins (USD pairs with ≥ $100k 24-h volume) · fees 0.9% taker each way · start $4.00
 
 ## Books (one position at a time, all-in every hop)
 
 | profile | bankroll | vs start | peak | hops | win % | avg net/hop | fees paid | open |
 |---|---|---|---|---|---|---|---|---|
 | aggressive | $2.83 | -29.3% | $4.00 | 11 | 27% | -3.10% | $0.672 | AVAX-USD @ 8.51 |
-| standard | $2.88 | -28.0% | $4.00 | 12 | 8% | -2.47% | $0.765 | RENDER-USD @ 1.6167 |
-| aggressive_swap | $3.21 | -19.8% | $4.02 | 18 | 33% | -0.79% | $1.180 | RITUAL-USD @ 0.05818 |
+| standard | $2.89 | -27.8% | $4.00 | 12 | 8% | -2.47% | $0.765 | RENDER-USD @ 1.6167 |
+| aggressive_swap | $3.13 | -21.6% | $4.02 | 19 | 32% | -1.11% | $1.209 | — |
 
 ## Signal forward returns (every signal, whether or not a book took it)
 
@@ -33,7 +33,6 @@ Updated 2026-11-09T17:45:33Z · scans 687 · universe 111 coins (USD pairs with 
 
 | time (UTC) | book | coin | in | out | held | net | reason | bankroll |
 |---|---|---|---|---|---|---|---|---|
-| 11-08T13:05 | aggressive_swap | MEZO | 0.00408 | 0.004839 | 40 m | +16.48% | trail | $3.81 |
 | 11-08T13:55 | standard | VVV | 20.767 | 20.6601 | 160 m | -2.30% | trail | $3.34 |
 | 11-08T16:10 | standard | CAP | 0.10564 | 0.106 | 55 m | -1.46% | trail | $3.30 |
 | 11-08T16:20 | aggressive_swap | CAP | 0.10564 | 0.10301 | 65 m | -4.24% | trail | $3.65 |
@@ -53,6 +52,7 @@ Updated 2026-11-09T17:45:33Z · scans 687 · universe 111 coins (USD pairs with 
 | 11-09T12:05 | aggressive | ICNT | 0.3329 | 0.3446 | 100 m | +1.66% | trail | $2.81 |
 | 11-09T12:05 | aggressive_swap | ICNT | 0.3329 | 0.3446 | 100 m | +1.66% | trail | $3.36 |
 | 11-09T17:35 | aggressive_swap | AVAX | 8.51 | 8.664 | 300 m | -0.01% | swap | $3.36 |
+| 11-09T17:50 | aggressive_swap | RITUAL | 0.05818 | 0.0552 | 15 m | -6.82% | trail | $3.13 |
 
 ## Last 15 signals
 
