@@ -24,25 +24,12 @@
   },
   "standard": {
    "name": "standard",
-   "bankroll": 0.0,
+   "bankroll": 2.8253753342920485,
    "peak": 4.0,
-   "pos": {
-    "pid": "RENDER-USD",
-    "entry_px": 1.6167,
-    "qty": 1.8079996487456476,
-    "cost": 2.9495388820656796,
-    "hw": 1.6258,
-    "t_in": "2026-11-09T09:10:15Z",
-    "signal": {
-     "impulse": 0.0196,
-     "vol_mult": 5.21,
-     "above_2h_high": true
-    },
-    "hw_t": "2026-11-09T20:15:15Z"
-   },
-   "hops": 12,
+   "pos": null,
+   "hops": 13,
    "wins": 1,
-   "fees": 0.7651555231183066
+   "fees": 0.7908148349332697
   },
   "aggressive_swap": {
    "name": "aggressive_swap",
@@ -607,7 +594,7 @@
   }
  ],
  "universe_t": "2026-11-10T01:32:43Z",
- "scans": 755,
+ "scans": 757,
  "started": "2026-11-06T22:20:22Z",
- "last_scan": "2026-11-10T01:50:15Z"
+ "last_scan": "2026-11-10T02:00:15Z"
 }

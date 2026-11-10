@@ -1,13 +1,13 @@
 # Mr. H — Coinbase hopper, PAPER
 
-Updated 2026-11-10T01:50:37Z · scans 755 · universe 110 coins (USD pairs with ≥ $100k 24-h volume) · fees 0.9% taker each way · start $4.00
+Updated 2026-11-10T02:00:36Z · scans 757 · universe 110 coins (USD pairs with ≥ $100k 24-h volume) · fees 0.9% taker each way · start $4.00
 
 ## Books (one position at a time, all-in every hop)
 
 | profile | bankroll | vs start | peak | hops | win % | avg net/hop | fees paid | open |
 |---|---|---|---|---|---|---|---|---|
-| aggressive | $2.84 | -29.0% | $4.00 | 11 | 27% | -3.10% | $0.672 | AVAX-USD @ 8.51 |
-| standard | $2.86 | -28.4% | $4.00 | 12 | 8% | -2.47% | $0.765 | RENDER-USD @ 1.6167 |
+| aggressive | $2.83 | -29.2% | $4.00 | 11 | 27% | -3.10% | $0.672 | AVAX-USD @ 8.51 |
+| standard | $2.83 | -29.4% | $4.00 | 13 | 8% | -2.61% | $0.791 | — |
 | aggressive_swap | $3.13 | -21.6% | $4.02 | 19 | 32% | -1.11% | $1.209 | — |
 
 ## Signal forward returns (every signal, whether or not a book took it)
@@ -33,7 +33,6 @@ Updated 2026-11-10T01:50:37Z · scans 755 · universe 110 coins (USD pairs with 
 
 | time (UTC) | book | coin | in | out | held | net | reason | bankroll |
 |---|---|---|---|---|---|---|---|---|
-| 11-08T13:55 | standard | VVV | 20.767 | 20.6601 | 160 m | -2.30% | trail | $3.34 |
 | 11-08T16:10 | standard | CAP | 0.10564 | 0.106 | 55 m | -1.46% | trail | $3.30 |
 | 11-08T16:20 | aggressive_swap | CAP | 0.10564 | 0.10301 | 65 m | -4.24% | trail | $3.65 |
 | 11-08T17:20 | aggressive_swap | BOBBOB | 0.00406 | 0.00389 | 15 m | -5.90% | trail | $3.44 |
@@ -53,6 +52,7 @@ Updated 2026-11-10T01:50:37Z · scans 755 · universe 110 coins (USD pairs with 
 | 11-09T12:05 | aggressive_swap | ICNT | 0.3329 | 0.3446 | 100 m | +1.66% | trail | $3.36 |
 | 11-09T17:35 | aggressive_swap | AVAX | 8.51 | 8.664 | 300 m | -0.01% | swap | $3.36 |
 | 11-09T17:50 | aggressive_swap | RITUAL | 0.05818 | 0.0552 | 15 m | -6.82% | trail | $3.13 |
+| 11-10T01:55 | standard | RENDER | 1.6167 | 1.5769 | 1005 m | -4.21% | trail | $2.83 |
 
 ## Last 15 signals
 
