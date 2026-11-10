@@ -1,14 +1,14 @@
 # Mr. H — Coinbase hopper, PAPER
 
-Updated 2026-11-10T06:50:33Z · scans 815 · universe 110 coins (USD pairs with ≥ $100k 24-h volume) · fees 0.9% taker each way · start $4.00
+Updated 2026-11-10T07:00:34Z · scans 817 · universe 110 coins (USD pairs with ≥ $100k 24-h volume) · fees 0.9% taker each way · start $4.00
 
 ## Books (one position at a time, all-in every hop)
 
 | profile | bankroll | vs start | peak | hops | win % | avg net/hop | fees paid | open |
 |---|---|---|---|---|---|---|---|---|
-| aggressive | $2.78 | -30.5% | $4.00 | 11 | 27% | -3.10% | $0.672 | AVAX-USD @ 8.51 |
-| standard | $2.76 | -31.0% | $4.00 | 13 | 8% | -2.61% | $0.816 | TON-USD @ 1.1051 |
-| aggressive_swap | $2.89 | -27.8% | $4.02 | 20 | 30% | -1.22% | $1.292 | ICNT-USD @ 0.3006 |
+| aggressive | $2.75 | -31.2% | $4.00 | 12 | 25% | -3.02% | $0.697 | — |
+| standard | $2.75 | -31.2% | $4.00 | 13 | 8% | -2.61% | $0.816 | TON-USD @ 1.1051 |
+| aggressive_swap | $2.90 | -27.5% | $4.02 | 20 | 30% | -1.22% | $1.292 | ICNT-USD @ 0.3006 |
 
 ## Signal forward returns (every signal, whether or not a book took it)
 
@@ -27,13 +27,12 @@ Updated 2026-11-10T06:50:33Z · scans 815 · universe 110 coins (USD pairs with 
 
 ## Verdict
 
-**Not yet.** Needs 40 scored aggressive signals (92 so far) and 30 closed aggressive hops (11 so far) before this says anything. Until then every number above is noise.
+**Not yet.** Needs 40 scored aggressive signals (92 so far) and 30 closed aggressive hops (12 so far) before this says anything. Until then every number above is noise.
 
 ## Last 20 hops
 
 | time (UTC) | book | coin | in | out | held | net | reason | bankroll |
 |---|---|---|---|---|---|---|---|---|
-| 11-08T16:20 | aggressive_swap | CAP | 0.10564 | 0.10301 | 65 m | -4.24% | trail | $3.65 |
 | 11-08T17:20 | aggressive_swap | BOBBOB | 0.00406 | 0.00389 | 15 m | -5.90% | trail | $3.44 |
 | 11-08T19:35 | aggressive_swap | FORTH | 0.158 | 0.1675 | 50 m | +4.11% | trail | $3.58 |
 | 11-08T19:55 | aggressive_swap | FORTH | 0.174 | 0.167 | 15 m | -5.74% | trail | $3.37 |
@@ -53,6 +52,7 @@ Updated 2026-11-10T06:50:33Z · scans 815 · universe 110 coins (USD pairs with 
 | 11-09T17:50 | aggressive_swap | RITUAL | 0.05818 | 0.0552 | 15 m | -6.82% | trail | $3.13 |
 | 11-10T01:55 | standard | RENDER | 1.6167 | 1.5769 | 1005 m | -4.21% | trail | $2.83 |
 | 11-10T05:10 | aggressive_swap | TON | 1.1051 | 1.0876 | 150 m | -3.35% | swap | $3.03 |
+| 11-10T06:55 | aggressive | AVAX | 8.51 | 8.482 | 1100 m | -2.12% | trail | $2.75 |
 
 ## Last 15 signals
 

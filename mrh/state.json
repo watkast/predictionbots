@@ -2,25 +2,12 @@
  "books": {
   "aggressive": {
    "name": "aggressive",
-   "bankroll": 0.0,
+   "bankroll": 2.7507136474267804,
    "peak": 4.0,
-   "pos": {
-    "pid": "AVAX-USD",
-    "entry_px": 8.51,
-    "qty": 0.3272453314714273,
-    "cost": 2.810149112837383,
-    "hw": 8.838,
-    "t_in": "2026-11-09T12:35:15Z",
-    "signal": {
-     "impulse": 0.0437,
-     "vol_mult": 455.32,
-     "above_2h_high": true
-    },
-    "hw_t": "2026-11-09T13:35:15Z"
-   },
-   "hops": 11,
+   "pos": null,
+   "hops": 12,
    "wins": 3,
-   "fees": 0.6719702261252045
+   "fees": 0.6969514802390704
   },
   "standard": {
    "name": "standard",
@@ -620,7 +607,7 @@
   }
  ],
  "universe_t": "2026-11-10T06:35:15Z",
- "scans": 815,
+ "scans": 817,
  "started": "2026-11-06T22:20:22Z",
- "last_scan": "2026-11-10T06:50:15Z"
+ "last_scan": "2026-11-10T07:00:15Z"
 }
