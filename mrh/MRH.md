@@ -1,33 +1,33 @@
 # Mr. H — Coinbase hopper, PAPER
 
-Updated 2026-11-10T14:35:32Z · scans 877 · universe 112 coins (USD pairs with ≥ $100k 24-h volume) · fees 0.9% taker each way · start $4.00
+Updated 2026-11-10T14:45:33Z · scans 879 · universe 112 coins (USD pairs with ≥ $100k 24-h volume) · fees 0.9% taker each way · start $4.00
 
 ## Books (one position at a time, all-in every hop)
 
 | profile | bankroll | vs start | peak | hops | win % | avg net/hop | fees paid | open |
 |---|---|---|---|---|---|---|---|---|
-| aggressive | $2.26 | -43.6% | $4.00 | 16 | 19% | -3.46% | $0.876 | — |
-| standard | $2.57 | -35.6% | $4.00 | 16 | 12% | -2.68% | $0.934 | — |
-| aggressive_swap | $2.34 | -41.5% | $4.02 | 25 | 24% | -1.98% | $1.503 | — |
+| aggressive | $2.23 | -44.1% | $4.00 | 16 | 19% | -3.46% | $0.897 | LIGHTER-USD @ 3.391 |
+| standard | $2.55 | -36.3% | $4.00 | 16 | 12% | -2.68% | $0.958 | LIGHTER-USD @ 3.391 |
+| aggressive_swap | $2.32 | -42.1% | $4.02 | 25 | 24% | -1.98% | $1.524 | LIGHTER-USD @ 3.391 |
 
 ## Signal forward returns (every signal, whether or not a book took it)
 
 | profile | signals | scored | median +15m | median +1h | median +4h | % beat 1.8% at +1h | median 4%-trail hop net | max run-up (med) | max drawdown (med) |
 |---|---|---|---|---|---|---|---|---|---|
-| aggressive | 132 | 100 | -0.43% | -0.79% | -2.86% | 31% | -3.59% | +6.39% | -7.75% |
-| standard | 140 | 109 | -0.45% | -0.07% | -0.47% | 18% | -1.68% | +2.81% | -3.07% |
+| aggressive | 134 | 101 | -0.49% | -0.79% | -3.07% | 31% | -3.60% | +6.37% | -7.82% |
+| standard | 145 | 109 | -0.45% | -0.07% | -0.47% | 18% | -1.68% | +2.81% | -3.07% |
 
 ## Aggressive signals by BTC regime (BTC's own move in the hour before the signal)
 
 | BTC 1h | signals | median +1h | median 4%-trail hop net | % beat 1.8% at +1h |
 |---|---|---|---|---|
 | ≤ −0.5% (downdraft) | 5 | +9.98% | +1.23% | 80% |
-| −0.5% … +0.5% (flat) | 75 | -1.88% | -4.90% | 27% |
+| −0.5% … +0.5% (flat) | 76 | -2.02% | -4.96% | 26% |
 | ≥ +0.5% (bid under the market) | 8 | +2.08% | +0.25% | 50% |
 
 ## Verdict
 
-**Not yet.** Needs 40 scored aggressive signals (100 so far) and 30 closed aggressive hops (16 so far) before this says anything. Until then every number above is noise.
+**Not yet.** Needs 40 scored aggressive signals (101 so far) and 30 closed aggressive hops (16 so far) before this says anything. Until then every number above is noise.
 
 ## Last 20 hops
 
@@ -58,13 +58,6 @@ Updated 2026-11-10T14:35:32Z · scans 877 · universe 112 coins (USD pairs with 
 
 | time (UTC) | profile | coin | impulse | vol× | >2h high | spread | taken | +1h | +4h |
 |---|---|---|---|---|---|---|---|---|---|
-| 11-10T13:15 | aggressive | MEZO | +2.1% | 61.8 | y | 0.65% | spread | … | … |
-| 11-10T13:15 | standard | RITUAL | +2.9% | 6.3 | y | 0.10% | in_position | … | … |
-| 11-10T13:15 | standard | MEZO | +2.1% | 61.8 | y | 0.65% | spread | … | … |
-| 11-10T13:15 | standard | CAP | +1.6% | 3.9 | y | 0.18% | in_position | … | … |
-| 11-10T13:40 | aggressive | MEZO | +3.9% | 8.7 | n | 0.02% | y | … | … |
-| 11-10T13:45 | standard | CAP | +1.6% | 4.4 | y | 0.16% | y | … | … |
-| 11-10T13:50 | aggressive | MEZO | +2.2% | 17.1 | n | 0.82% | spread | … | … |
 | 11-10T13:50 | standard | ZEC | +1.6% | 7.3 | y | 0.05% | in_position | … | … |
 | 11-10T13:50 | standard | CAP | +1.4% | 12.5 | y | 0.27% | in_position | … | … |
 | 11-10T14:10 | standard | CAP | +1.4% | 5.6 | y | 0.07% | in_position | … | … |
@@ -73,3 +66,10 @@ Updated 2026-11-10T14:35:32Z · scans 877 · universe 112 coins (USD pairs with 
 | 11-10T14:25 | aggressive | QI | +3.1% | 6.1 | n | 0.87% | spread | … | … |
 | 11-10T14:30 | aggressive | QI | +3.1% | 6.1 | n | 0.73% | spread | … | … |
 | 11-10T14:30 | aggressive | MEZO | +2.3% | 4.0 | n | 0.87% | spread | … | … |
+| 11-10T14:40 | aggressive | LIGHTER | +2.1% | 10.9 | y | 0.12% | y | … | … |
+| 11-10T14:40 | standard | LIGHTER | +2.1% | 10.9 | y | 0.12% | y | … | … |
+| 11-10T14:40 | standard | NEAR | +1.6% | 12.1 | y | 0.04% | in_position | … | … |
+| 11-10T14:40 | standard | ONDO | +1.3% | 3.5 | y | 0.07% | in_position | … | … |
+| 11-10T14:40 | standard | ENA | +1.2% | 6.0 | y | 0.17% | in_position | … | … |
+| 11-10T14:40 | standard | PEPE | +1.1% | 9.6 | y | 0.18% | in_position | … | … |
+| 11-10T14:45 | aggressive | RSC | +6.1% | 9.2 | n | 0.83% | spread | … | … |

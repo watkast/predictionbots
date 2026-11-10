@@ -2,30 +2,69 @@
  "books": {
   "aggressive": {
    "name": "aggressive",
-   "bankroll": 2.2576092237178003,
+   "bankroll": 0.0,
    "peak": 4.0,
-   "pos": null,
+   "pos": {
+    "pid": "LIGHTER-USD",
+    "entry_px": 3.391,
+    "qty": 0.6597731467721438,
+    "cost": 2.2576092237178003,
+    "hw": 3.391,
+    "t_in": "2026-11-10T14:40:15Z",
+    "signal": {
+     "impulse": 0.0214,
+     "vol_mult": 10.93,
+     "above_2h_high": true
+    },
+    "hw_t": "2026-11-10T14:40:15Z"
+   },
    "hops": 16,
    "wins": 3,
-   "fees": 0.8762023512837386
+   "fees": 0.8965208342971988
   },
   "standard": {
    "name": "standard",
-   "bankroll": 2.5743064547473065,
+   "bankroll": 0.0,
    "peak": 4.0,
-   "pos": null,
+   "pos": {
+    "pid": "LIGHTER-USD",
+    "entry_px": 3.391,
+    "qty": 0.7523260680196346,
+    "cost": 2.5743064547473065,
+    "hw": 3.391,
+    "t_in": "2026-11-10T14:40:15Z",
+    "signal": {
+     "impulse": 0.0214,
+     "vol_mult": 10.93,
+     "above_2h_high": true
+    },
+    "hw_t": "2026-11-10T14:40:15Z"
+   },
    "hops": 16,
    "wins": 2,
-   "fees": 0.934465921667061
+   "fees": 0.9576346797597868
   },
   "aggressive_swap": {
    "name": "aggressive_swap",
-   "bankroll": 2.339516623981082,
+   "bankroll": 0.0,
    "peak": 4.01983237936772,
-   "pos": null,
+   "pos": {
+    "pid": "LIGHTER-USD",
+    "entry_px": 3.391,
+    "qty": 0.683710107450679,
+    "cost": 2.339516623981082,
+    "hw": 3.391,
+    "t_in": "2026-11-10T14:40:15Z",
+    "signal": {
+     "impulse": 0.0214,
+     "vol_mult": 10.93,
+     "above_2h_high": true
+    },
+    "hw_t": "2026-11-10T14:40:15Z"
+   },
    "hops": 25,
    "wins": 6,
-   "fees": 1.5031878323932228
+   "fees": 1.5242434820090527
   }
  },
  "universe": [
@@ -591,7 +630,7 @@
   }
  ],
  "universe_t": "2026-11-10T13:50:15Z",
- "scans": 877,
+ "scans": 879,
  "started": "2026-11-06T22:20:22Z",
- "last_scan": "2026-11-10T14:35:15Z"
+ "last_scan": "2026-11-10T14:45:15Z"
 }
