@@ -1,21 +1,21 @@
 # Mr. H — Coinbase hopper, PAPER
 
-Updated 2026-11-10T19:05:33Z · scans 902 · universe 110 coins (USD pairs with ≥ $100k 24-h volume) · fees 0.9% taker each way · start $4.00
+Updated 2026-11-10T19:15:33Z · scans 904 · universe 110 coins (USD pairs with ≥ $100k 24-h volume) · fees 0.9% taker each way · start $4.00
 
 ## Books (one position at a time, all-in every hop)
 
 | profile | bankroll | vs start | peak | hops | win % | avg net/hop | fees paid | open |
 |---|---|---|---|---|---|---|---|---|
-| aggressive | $2.22 | -44.5% | $4.00 | 16 | 19% | -3.46% | $0.897 | LIGHTER-USD @ 3.391 |
-| standard | $2.47 | -38.2% | $4.00 | 17 | 12% | -2.72% | $1.003 | USELESS-USD @ 0.13553 |
-| aggressive_swap | $2.13 | -46.6% | $4.02 | 27 | 22% | -1.99% | $1.606 | MEZO-USD @ 0.004292 |
+| aggressive | $2.20 | -45.0% | $4.00 | 16 | 19% | -3.46% | $0.897 | LIGHTER-USD @ 3.391 |
+| standard | $2.46 | -38.4% | $4.00 | 17 | 12% | -2.72% | $1.003 | USELESS-USD @ 0.13553 |
+| aggressive_swap | $2.09 | -47.7% | $4.02 | 28 | 21% | -2.16% | $1.625 | — |
 
 ## Signal forward returns (every signal, whether or not a book took it)
 
 | profile | signals | scored | median +15m | median +1h | median +4h | % beat 1.8% at +1h | median 4%-trail hop net | max run-up (med) | max drawdown (med) |
 |---|---|---|---|---|---|---|---|---|---|
-| aggressive | 141 | 114 | -0.53% | -1.25% | -3.71% | 27% | -4.41% | +6.16% | -8.61% |
-| standard | 154 | 127 | -0.37% | -0.25% | -1.13% | 17% | -2.25% | +2.81% | -4.19% |
+| aggressive | 142 | 115 | -0.50% | -1.06% | -3.67% | 27% | -4.33% | +6.16% | -8.45% |
+| standard | 154 | 130 | -0.40% | -0.28% | -1.40% | 17% | -2.29% | +2.75% | -4.41% |
 
 ## Aggressive signals by BTC regime (BTC's own move in the hour before the signal)
 
@@ -23,17 +23,16 @@ Updated 2026-11-10T19:05:33Z · scans 902 · universe 110 coins (USD pairs with 
 |---|---|---|---|---|
 | ≤ −0.5% (downdraft) | 7 | +4.04% | -1.09% | 57% |
 | −0.5% … +0.5% (flat) | 85 | -2.17% | -5.01% | 24% |
-| ≥ +0.5% (bid under the market) | 10 | +1.61% | -0.16% | 40% |
+| ≥ +0.5% (bid under the market) | 11 | +1.51% | -0.47% | 36% |
 
 ## Verdict
 
-**Not yet.** Needs 40 scored aggressive signals (114 so far) and 30 closed aggressive hops (16 so far) before this says anything. Until then every number above is noise.
+**Not yet.** Needs 40 scored aggressive signals (115 so far) and 30 closed aggressive hops (16 so far) before this says anything. Until then every number above is noise.
 
 ## Last 20 hops
 
 | time (UTC) | book | coin | in | out | held | net | reason | bankroll |
 |---|---|---|---|---|---|---|---|---|
-| 11-09T17:35 | aggressive_swap | AVAX | 8.51 | 8.664 | 300 m | -0.01% | swap | $3.36 |
 | 11-09T17:50 | aggressive_swap | RITUAL | 0.05818 | 0.0552 | 15 m | -6.82% | trail | $3.13 |
 | 11-10T01:55 | standard | RENDER | 1.6167 | 1.5769 | 1005 m | -4.21% | trail | $2.83 |
 | 11-10T05:10 | aggressive_swap | TON | 1.1051 | 1.0876 | 150 m | -3.35% | swap | $3.03 |
@@ -53,19 +52,19 @@ Updated 2026-11-10T19:05:33Z · scans 902 · universe 110 coins (USD pairs with 
 | 11-10T17:47 | aggressive_swap | LIGHTER | 3.391 | 3.372 | 188 m | -2.34% | swap | $2.28 |
 | 11-10T18:05 | aggressive_swap | RSC | 0.04827 | 0.0482 | 17 m | -1.93% | trail | $2.24 |
 | 11-10T18:10 | standard | LIGHTER | 3.391 | 3.335 | 210 m | -3.41% | trail | $2.49 |
+| 11-10T19:10 | aggressive_swap | MEZO | 0.004292 | 0.00408 | 40 m | -6.64% | trail | $2.09 |
 
 ## Last 15 signals
 
 | time (UTC) | profile | coin | impulse | vol× | >2h high | spread | taken | +1h | +4h |
 |---|---|---|---|---|---|---|---|---|---|
-| 11-10T14:55 | aggressive | PEPE | +2.2% | 7.5 | y | 0.18% | in_position | -6.4% | -4.1% |
 | 11-10T14:55 | standard | PEPE | +2.2% | 7.5 | y | 0.18% | in_position | -6.4% | -4.1% |
 | 11-10T14:55 | standard | ONDO | +1.1% | 3.6 | y | 0.03% | in_position | -4.1% | -4.0% |
 | 11-10T15:00 | standard | CHIP | +1.4% | 55.2 | y | 0.15% | in_position | -3.1% | -3.2% |
-| 11-10T15:05 | standard | MON | +1.3% | 15.1 | y | 0.01% | in_position | … | … |
-| 11-10T15:05 | standard | DASH | +1.2% | 3.9 | y | 0.15% | in_position | … | … |
-| 11-10T15:10 | aggressive | NCT | +2.2% | 21.0 | n | 0.10% | in_position | … | … |
-| 11-10T15:10 | standard | VVV | +1.9% | 3.1 | y | 0.10% | in_position | … | … |
+| 11-10T15:05 | standard | MON | +1.3% | 15.1 | y | 0.01% | in_position | -3.7% | -5.1% |
+| 11-10T15:05 | standard | DASH | +1.2% | 3.9 | y | 0.15% | in_position | -4.3% | -8.0% |
+| 11-10T15:10 | aggressive | NCT | +2.2% | 21.0 | n | 0.10% | in_position | -0.9% | +1.4% |
+| 11-10T15:10 | standard | VVV | +1.9% | 3.1 | y | 0.10% | in_position | -5.2% | -5.3% |
 | 11-10T17:47 | aggressive | RSC | +11.6% | 15.9 | y | 0.02% | in_position | … | … |
 | 11-10T17:47 | standard | RSC | +11.6% | 15.9 | y | 0.02% | in_position | … | … |
 | 11-10T17:55 | aggressive | RSC | +8.3% | 9.0 | n | 0.57% | in_position | … | … |
@@ -73,3 +72,4 @@ Updated 2026-11-10T19:05:33Z · scans 902 · universe 110 coins (USD pairs with 
 | 11-10T18:30 | aggressive | MEZO | +3.0% | 5.8 | n | 0.44% | in_position | … | … |
 | 11-10T18:35 | standard | USELESS | +1.6% | 9.4 | y | 0.24% | y | … | … |
 | 11-10T18:40 | standard | USELESS | +1.2% | 11.0 | y | 0.09% | in_position | … | … |
+| 11-10T19:10 | aggressive | RSC | +3.8% | 4.0 | n | 0.73% | spread | … | … |
