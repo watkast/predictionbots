@@ -1,21 +1,21 @@
 # Mr. H — Coinbase hopper, PAPER
 
-Updated 2026-11-10T18:35:33Z · scans 896 · universe 111 coins (USD pairs with ≥ $100k 24-h volume) · fees 0.9% taker each way · start $4.00
+Updated 2026-11-10T18:45:33Z · scans 898 · universe 111 coins (USD pairs with ≥ $100k 24-h volume) · fees 0.9% taker each way · start $4.00
 
 ## Books (one position at a time, all-in every hop)
 
 | profile | bankroll | vs start | peak | hops | win % | avg net/hop | fees paid | open |
 |---|---|---|---|---|---|---|---|---|
-| aggressive | $2.21 | -44.8% | $4.00 | 16 | 19% | -3.46% | $0.897 | LIGHTER-USD @ 3.391 |
-| standard | $2.46 | -38.5% | $4.00 | 17 | 12% | -2.72% | $1.003 | USELESS-USD @ 0.13553 |
-| aggressive_swap | $2.16 | -46.0% | $4.02 | 27 | 22% | -1.99% | $1.606 | MEZO-USD @ 0.004292 |
+| aggressive | $2.21 | -44.6% | $4.00 | 16 | 19% | -3.46% | $0.897 | LIGHTER-USD @ 3.391 |
+| standard | $2.51 | -37.3% | $4.00 | 17 | 12% | -2.72% | $1.003 | USELESS-USD @ 0.13553 |
+| aggressive_swap | $2.16 | -46.1% | $4.02 | 27 | 22% | -1.99% | $1.606 | MEZO-USD @ 0.004292 |
 
 ## Signal forward returns (every signal, whether or not a book took it)
 
 | profile | signals | scored | median +15m | median +1h | median +4h | % beat 1.8% at +1h | median 4%-trail hop net | max run-up (med) | max drawdown (med) |
 |---|---|---|---|---|---|---|---|---|---|
-| aggressive | 141 | 112 | -0.53% | -1.03% | -3.71% | 28% | -4.29% | +6.27% | -8.98% |
-| standard | 153 | 119 | -0.45% | -0.07% | -0.73% | 18% | -1.99% | +3.17% | -3.55% |
+| aggressive | 141 | 113 | -0.50% | -1.06% | -3.67% | 27% | -4.33% | +6.16% | -8.45% |
+| standard | 154 | 124 | -0.40% | -0.23% | -0.85% | 18% | -2.13% | +2.97% | -4.05% |
 
 ## Aggressive signals by BTC regime (BTC's own move in the hour before the signal)
 
@@ -23,11 +23,11 @@ Updated 2026-11-10T18:35:33Z · scans 896 · universe 111 coins (USD pairs with 
 |---|---|---|---|---|
 | ≤ −0.5% (downdraft) | 7 | +4.04% | -1.09% | 57% |
 | −0.5% … +0.5% (flat) | 85 | -2.17% | -5.01% | 24% |
-| ≥ +0.5% (bid under the market) | 8 | +2.08% | +0.25% | 50% |
+| ≥ +0.5% (bid under the market) | 9 | +1.70% | +0.15% | 44% |
 
 ## Verdict
 
-**Not yet.** Needs 40 scored aggressive signals (112 so far) and 30 closed aggressive hops (16 so far) before this says anything. Until then every number above is noise.
+**Not yet.** Needs 40 scored aggressive signals (113 so far) and 30 closed aggressive hops (16 so far) before this says anything. Until then every number above is noise.
 
 ## Last 20 hops
 
@@ -58,7 +58,6 @@ Updated 2026-11-10T18:35:33Z · scans 896 · universe 111 coins (USD pairs with 
 
 | time (UTC) | profile | coin | impulse | vol× | >2h high | spread | taken | +1h | +4h |
 |---|---|---|---|---|---|---|---|---|---|
-| 11-10T14:55 | aggressive | USELESS | +2.8% | 4.8 | n | 0.26% | in_position | … | … |
 | 11-10T14:55 | aggressive | PEPE | +2.2% | 7.5 | y | 0.18% | in_position | … | … |
 | 11-10T14:55 | standard | PEPE | +2.2% | 7.5 | y | 0.18% | in_position | … | … |
 | 11-10T14:55 | standard | ONDO | +1.1% | 3.6 | y | 0.03% | in_position | … | … |
@@ -73,3 +72,4 @@ Updated 2026-11-10T18:35:33Z · scans 896 · universe 111 coins (USD pairs with 
 | 11-10T18:20 | aggressive | RSC | +5.6% | 4.0 | n | 1.20% | spread | … | … |
 | 11-10T18:30 | aggressive | MEZO | +3.0% | 5.8 | n | 0.44% | in_position | … | … |
 | 11-10T18:35 | standard | USELESS | +1.6% | 9.4 | y | 0.24% | y | … | … |
+| 11-10T18:40 | standard | USELESS | +1.2% | 11.0 | y | 0.09% | in_position | … | … |
