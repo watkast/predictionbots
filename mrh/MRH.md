@@ -1,21 +1,21 @@
 # Mr. H — Coinbase hopper, PAPER
 
-Updated 2026-11-10T13:05:32Z · scans 859 · universe 111 coins (USD pairs with ≥ $100k 24-h volume) · fees 0.9% taker each way · start $4.00
+Updated 2026-11-10T13:15:33Z · scans 861 · universe 111 coins (USD pairs with ≥ $100k 24-h volume) · fees 0.9% taker each way · start $4.00
 
 ## Books (one position at a time, all-in every hop)
 
 | profile | bankroll | vs start | peak | hops | win % | avg net/hop | fees paid | open |
 |---|---|---|---|---|---|---|---|---|
-| aggressive | $2.50 | -37.4% | $4.00 | 14 | 21% | -3.23% | $0.790 | — |
-| standard | $2.70 | -32.6% | $4.00 | 14 | 7% | -2.74% | $0.841 | — |
-| aggressive_swap | $2.59 | -35.1% | $4.02 | 23 | 26% | -1.71% | $1.414 | — |
+| aggressive | $2.51 | -37.2% | $4.00 | 14 | 21% | -3.23% | $0.813 | MEZO-USD @ 0.004355 |
+| standard | $2.71 | -32.3% | $4.00 | 14 | 7% | -2.74% | $0.865 | MEZO-USD @ 0.004355 |
+| aggressive_swap | $2.60 | -34.9% | $4.02 | 23 | 26% | -1.71% | $1.438 | MEZO-USD @ 0.004355 |
 
 ## Signal forward returns (every signal, whether or not a book took it)
 
 | profile | signals | scored | median +15m | median +1h | median +4h | % beat 1.8% at +1h | median 4%-trail hop net | max run-up (med) | max drawdown (med) |
 |---|---|---|---|---|---|---|---|---|---|
-| aggressive | 121 | 100 | -0.43% | -0.79% | -2.86% | 31% | -3.59% | +6.39% | -7.75% |
-| standard | 131 | 109 | -0.45% | -0.07% | -0.47% | 18% | -1.68% | +2.81% | -3.07% |
+| aggressive | 126 | 100 | -0.43% | -0.79% | -2.86% | 31% | -3.59% | +6.39% | -7.75% |
+| standard | 135 | 109 | -0.45% | -0.07% | -0.47% | 18% | -1.68% | +2.81% | -3.07% |
 
 ## Aggressive signals by BTC regime (BTC's own move in the hour before the signal)
 
@@ -58,18 +58,18 @@ Updated 2026-11-10T13:05:32Z · scans 859 · universe 111 coins (USD pairs with 
 
 | time (UTC) | profile | coin | impulse | vol× | >2h high | spread | taken | +1h | +4h |
 |---|---|---|---|---|---|---|---|---|---|
-| 11-10T04:40 | aggressive | RITUAL | +6.0% | 4.9 | y | 1.35% | spread | -4.7% | -19.5% |
-| 11-10T04:40 | standard | RITUAL | +6.0% | 4.9 | y | 1.35% | spread | -4.7% | -19.5% |
-| 11-10T04:50 | standard | HYPE | +1.3% | 26.1 | y | 0.04% | in_position | +0.7% | -0.5% |
-| 11-10T04:55 | aggressive | MEZO | +2.7% | 4.8 | n | 1.06% | spread | -0.2% | -2.3% |
-| 11-10T05:10 | aggressive | ICNT | +2.2% | 17.7 | n | 0.17% | in_position | -2.8% | +1.9% |
-| 11-10T05:20 | aggressive | MEZO | +4.0% | 13.8 | n | 1.08% | spread | -1.1% | -5.3% |
-| 11-10T05:50 | standard | INJ | +1.0% | 8.6 | y | 0.06% | in_position | -0.3% | -2.5% |
-| 11-10T06:15 | aggressive | NCT | +7.0% | 17.7 | y | 0.19% | in_position | +0.0% | +0.3% |
-| 11-10T06:15 | standard | NCT | +7.0% | 17.7 | y | 0.19% | in_position | +0.0% | +0.3% |
 | 11-10T10:35 | aggressive | NCT | +3.4% | 7.6 | n | 0.09% | y | … | … |
 | 11-10T10:35 | aggressive | DEGEN | +3.4% | 3.5 | n | 0.11% | in_position | … | … |
 | 11-10T11:10 | aggressive | RITUAL | +2.9% | 5.4 | n | 0.08% | y | … | … |
 | 11-10T11:15 | aggressive | RITUAL | +4.8% | 7.8 | y | 0.10% | in_position | … | … |
 | 11-10T11:15 | standard | RITUAL | +4.8% | 7.8 | y | 0.10% | in_position | … | … |
 | 11-10T12:05 | aggressive | NCT | +4.1% | 3.1 | n | 0.70% | spread | … | … |
+| 11-10T13:10 | aggressive | MEZO | +10.9% | 75.0 | y | 0.44% | y | … | … |
+| 11-10T13:10 | aggressive | RITUAL | +3.3% | 3.2 | n | 0.10% | in_position | … | … |
+| 11-10T13:10 | aggressive | DEGEN | +2.3% | 3.6 | n | 0.84% | spread | … | … |
+| 11-10T13:10 | standard | MEZO | +10.9% | 75.0 | y | 0.44% | y | … | … |
+| 11-10T13:15 | aggressive | RITUAL | +2.9% | 6.3 | y | 0.10% | in_position | … | … |
+| 11-10T13:15 | aggressive | MEZO | +2.1% | 61.8 | y | 0.65% | spread | … | … |
+| 11-10T13:15 | standard | RITUAL | +2.9% | 6.3 | y | 0.10% | in_position | … | … |
+| 11-10T13:15 | standard | MEZO | +2.1% | 61.8 | y | 0.65% | spread | … | … |
+| 11-10T13:15 | standard | CAP | +1.6% | 3.9 | y | 0.18% | in_position | … | … |
