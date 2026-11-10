@@ -1,14 +1,14 @@
 # Mr. H — Coinbase hopper, PAPER
 
-Updated 2026-11-10T05:20:35Z · scans 797 · universe 110 coins (USD pairs with ≥ $100k 24-h volume) · fees 0.9% taker each way · start $4.00
+Updated 2026-11-10T05:30:34Z · scans 799 · universe 110 coins (USD pairs with ≥ $100k 24-h volume) · fees 0.9% taker each way · start $4.00
 
 ## Books (one position at a time, all-in every hop)
 
 | profile | bankroll | vs start | peak | hops | win % | avg net/hop | fees paid | open |
 |---|---|---|---|---|---|---|---|---|
 | aggressive | $2.80 | -30.0% | $4.00 | 11 | 27% | -3.10% | $0.672 | AVAX-USD @ 8.51 |
-| standard | $2.76 | -31.1% | $4.00 | 13 | 8% | -2.61% | $0.816 | TON-USD @ 1.1051 |
-| aggressive_swap | $2.96 | -26.0% | $4.02 | 20 | 30% | -1.22% | $1.292 | ICNT-USD @ 0.3006 |
+| standard | $2.76 | -30.9% | $4.00 | 13 | 8% | -2.61% | $0.816 | TON-USD @ 1.1051 |
+| aggressive_swap | $2.94 | -26.6% | $4.02 | 20 | 30% | -1.22% | $1.292 | ICNT-USD @ 0.3006 |
 
 ## Signal forward returns (every signal, whether or not a book took it)
 
