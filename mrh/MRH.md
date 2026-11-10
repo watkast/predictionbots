@@ -1,14 +1,14 @@
 # Mr. H — Coinbase hopper, PAPER
 
-Updated 2026-11-10T17:55:33Z · scans 888 · universe 111 coins (USD pairs with ≥ $100k 24-h volume) · fees 0.9% taker each way · start $4.00
+Updated 2026-11-10T18:05:32Z · scans 890 · universe 111 coins (USD pairs with ≥ $100k 24-h volume) · fees 0.9% taker each way · start $4.00
 
 ## Books (one position at a time, all-in every hop)
 
 | profile | bankroll | vs start | peak | hops | win % | avg net/hop | fees paid | open |
 |---|---|---|---|---|---|---|---|---|
-| aggressive | $2.24 | -44.0% | $4.00 | 16 | 19% | -3.46% | $0.897 | LIGHTER-USD @ 3.391 |
-| standard | $2.55 | -36.2% | $4.00 | 16 | 12% | -2.68% | $0.958 | LIGHTER-USD @ 3.391 |
-| aggressive_swap | $2.45 | -38.6% | $4.02 | 26 | 23% | -1.99% | $1.566 | RSC-USD @ 0.04827 |
+| aggressive | $2.21 | -44.9% | $4.00 | 16 | 19% | -3.46% | $0.897 | LIGHTER-USD @ 3.391 |
+| standard | $2.51 | -37.1% | $4.00 | 16 | 12% | -2.68% | $0.958 | LIGHTER-USD @ 3.391 |
+| aggressive_swap | $2.24 | -44.0% | $4.02 | 27 | 22% | -1.99% | $1.586 | — |
 
 ## Signal forward returns (every signal, whether or not a book took it)
 
@@ -33,7 +33,6 @@ Updated 2026-11-10T17:55:33Z · scans 888 · universe 111 coins (USD pairs with 
 
 | time (UTC) | book | coin | in | out | held | net | reason | bankroll |
 |---|---|---|---|---|---|---|---|---|
-| 11-09T12:05 | aggressive | ICNT | 0.3329 | 0.3446 | 100 m | +1.66% | trail | $2.81 |
 | 11-09T12:05 | aggressive_swap | ICNT | 0.3329 | 0.3446 | 100 m | +1.66% | trail | $3.36 |
 | 11-09T17:35 | aggressive_swap | AVAX | 8.51 | 8.664 | 300 m | -0.01% | swap | $3.36 |
 | 11-09T17:50 | aggressive_swap | RITUAL | 0.05818 | 0.0552 | 15 m | -6.82% | trail | $3.13 |
@@ -53,6 +52,7 @@ Updated 2026-11-10T17:55:33Z · scans 888 · universe 111 coins (USD pairs with 
 | 11-10T14:35 | aggressive | MEZO | 0.004251 | 0.00413 | 55 m | -4.59% | trail | $2.26 |
 | 11-10T14:35 | aggressive_swap | MEZO | 0.004251 | 0.00413 | 55 m | -4.59% | trail | $2.34 |
 | 11-10T17:47 | aggressive_swap | LIGHTER | 3.391 | 3.372 | 188 m | -2.34% | swap | $2.28 |
+| 11-10T18:05 | aggressive_swap | RSC | 0.04827 | 0.0482 | 17 m | -1.93% | trail | $2.24 |
 
 ## Last 15 signals
 
