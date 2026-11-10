@@ -2,69 +2,30 @@
  "books": {
   "aggressive": {
    "name": "aggressive",
-   "bankroll": 0.0,
+   "bankroll": 2.366151319741639,
    "peak": 4.0,
-   "pos": {
-    "pid": "MEZO-USD",
-    "entry_px": 0.004355,
-    "qty": 569.7065331581559,
-    "cost": 2.5036043914266086,
-    "hw": 0.004411,
-    "t_in": "2026-11-10T13:10:15Z",
-    "signal": {
-     "impulse": 0.1086,
-     "vol_mult": 74.96,
-     "above_2h_high": true
-    },
-    "hw_t": "2026-11-10T13:15:15Z"
-   },
-   "hops": 14,
+   "pos": null,
+   "hops": 15,
    "wins": 3,
-   "fees": 0.8129152185774715
+   "fees": 0.834403979301664
   },
   "standard": {
    "name": "standard",
-   "bankroll": 0.0,
+   "bankroll": 2.5486075850966907,
    "peak": 4.0,
-   "pos": {
-    "pid": "MEZO-USD",
-    "entry_px": 0.004355,
-    "qty": 613.6371666392644,
-    "cost": 2.6966597989041334,
-    "hw": 0.004411,
-    "t_in": "2026-11-10T13:10:15Z",
-    "signal": {
-     "impulse": 0.1086,
-     "vol_mult": 74.96,
-     "above_2h_high": true
-    },
-    "hw_t": "2026-11-10T13:15:15Z"
-   },
-   "hops": 14,
+   "pos": null,
+   "hops": 15,
    "wins": 1,
-   "fees": 0.8650035024843432
+   "fees": 0.8881492827728096
   },
   "aggressive_swap": {
    "name": "aggressive_swap",
-   "bankroll": 0.0,
+   "bankroll": 2.451996691559537,
    "peak": 4.01983237936772,
-   "pos": {
-    "pid": "MEZO-USD",
-    "entry_px": 0.004355,
-    "qty": 590.3758237305727,
-    "cost": 2.5944366421257765,
-    "hw": 0.004411,
-    "t_in": "2026-11-10T13:10:15Z",
-    "signal": {
-     "impulse": 0.1086,
-     "vol_mult": 74.96,
-     "above_2h_high": true
-    },
-    "hw_t": "2026-11-10T13:15:15Z"
-   },
-   "hops": 23,
+   "pos": null,
+   "hops": 24,
    "wins": 6,
-   "fees": 1.4376046050149331
+   "fees": 1.4598729907102266
   }
  },
  "universe": [
@@ -625,7 +586,7 @@
   }
  ],
  "universe_t": "2026-11-10T12:50:15Z",
- "scans": 861,
+ "scans": 863,
  "started": "2026-11-06T22:20:22Z",
- "last_scan": "2026-11-10T13:15:15Z"
+ "last_scan": "2026-11-10T13:25:15Z"
 }
