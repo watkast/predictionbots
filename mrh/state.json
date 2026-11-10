@@ -24,25 +24,12 @@
   },
   "standard": {
    "name": "standard",
-   "bankroll": 0.0,
+   "bankroll": 2.4864263699138722,
    "peak": 4.0,
-   "pos": {
-    "pid": "LIGHTER-USD",
-    "entry_px": 3.391,
-    "qty": 0.7523260680196346,
-    "cost": 2.5743064547473065,
-    "hw": 3.439,
-    "t_in": "2026-11-10T14:40:15Z",
-    "signal": {
-     "impulse": 0.0214,
-     "vol_mult": 10.93,
-     "above_2h_high": true
-    },
-    "hw_t": "2026-11-10T15:15:15Z"
-   },
-   "hops": 16,
+   "pos": null,
+   "hops": 17,
    "wins": 2,
-   "fees": 0.9576346797597868
+   "fees": 0.9802157466913961
   },
   "aggressive_swap": {
    "name": "aggressive_swap",
@@ -612,7 +599,7 @@
   }
  ],
  "universe_t": "2026-11-10T17:47:55Z",
- "scans": 890,
+ "scans": 892,
  "started": "2026-11-06T22:20:22Z",
- "last_scan": "2026-11-10T18:05:15Z"
+ "last_scan": "2026-11-10T18:15:15Z"
 }
