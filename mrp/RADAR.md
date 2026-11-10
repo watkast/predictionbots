@@ -1,11 +1,11 @@
 # Mr. P — sports radar
 
-Updated 2026-11-10T06:00:14Z by `run-20261110T0434-42755176558` (last 7 days). Read-only scanner of every sports market on Polymarket US and Kalshi — it never places orders.
+Updated 2026-11-10T06:13:28Z by `run-20261110T0434-42755176558` (last 7 days). Read-only scanner of every sports market on Polymarket US and Kalshi — it never places orders.
 Kit: `mrp/mrp_sports_radar.py` on the `mrp` branch. Raw tape: `mrp/radar/<run>/`.
 
 # Sports radar report
 
-records 4,619,337 | 2026-11-07 05:57Z → 05:56Z | runs 15 | pairs matched 1619 | errors {'radar': 4, 'sp.stream': 8}
+records 4,627,942 | 2026-11-07 06:13Z → 06:10Z | runs 15 | pairs matched 1620 | errors {'radar': 4, 'sp.stream': 8}
 
 ## Catalogue (latest inventory, 04:44Z)
 
@@ -85,8 +85,8 @@ Polymarket US sports events 4527 of 5515 active events; Kalshi near-term sports 
 | dutch_k_sell | 2 | 4 | 0.0571 | 0 min | 0/0 |
 | dutch_pm | 53 | 2854 | 0.3987 | 50 min | 0/0 |
 | implication_k | 29 | 429 | 0.7784 | 33 min | 0/0 |
-| lag_k_settled | 203 | 30641 | 0.9945 | 321 min | 24262/28384 |
-| lag_k_settled_closed | 165 | 2786 | 0.9973 | 202 min | 0/2786 |
+| lag_k_settled | 203 | 31071 | 0.9945 | 321 min | 24650/28774 |
+| lag_k_settled_closed | 165 | 2806 | 0.9973 | 202 min | 0/2806 |
 
 Top by persistence × hits:
 
@@ -370,12 +370,12 @@ Kalshi: settlement_ts − close_time per series (negative = settled before the s
 | series | n | median | p90 |
 |---|---|---|---|
 | KXNFLPASSYDSPRECISE Pass Yards Precise | 12588 | 4.1 min | 4.1 min |
-| KXESOCCERGAME eSoccer Game | 3758 | 4.0 min | 4.1 min |
+| KXESOCCERGAME eSoccer Game | 3767 | 4.0 min | 4.1 min |
 | KXNCAAFSPREAD College Football Spread | 2285 | 4.0 min | 4.1 min |
 | KXNCAAMBTOTAL Men's College Basketball Total | 1818 | 4.0 min | 4.1 min |
 | KXNCAAFTOTAL College Football Total Points | 1661 | 4.0 min | 4.1 min |
 | KXNCAAMBSPREAD Men's College Basketball Sprea | 1446 | 1.8 min | 1.8 min |
-| KXNBA3PT NBA Player Threes | 1393 | 2.0 min | 2.1 min |
+| KXNBA3PT NBA Player Threes | 1365 | 2.0 min | 2.1 min |
 | KXNFLRECYDS Pro Football Receiving Yards | 1334 | 2.0 min | 2.1 min |
 | KXNCAAWBTOTAL Women's College Basketball Tot | 1310 | 2.5 min | 2.6 min |
 | KXNCAAFTEAMTOTAL College Football Team Total Po | 1255 | 4.0 min | 4.1 min |
@@ -383,20 +383,20 @@ Kalshi: settlement_ts − close_time per series (negative = settled before the s
 | KXNFLRECYDSPROT Receiving Yards Protected | 1228 | 6.0 min | 6.1 min |
 | KXNBAREB NBA Player Rebounds | 1221 | 2.0 min | 2.1 min |
 | KXNBAREBPROT NBA Player Rebounds Protected | 1207 | 2.6 min | 2.6 min |
-| KXNBA3PTPROT NBA Player Threes Protected | 1191 | 2.6 min | 2.6 min |
+| KXNBA3PTPROT NBA Player Threes Protected | 1201 | 2.6 min | 2.6 min |
 | KXNBAPTS NBA Player Points | 1152 | 2.0 min | 2.1 min |
-| KXNBAPTSPROT NBA Player Points Protected | 1109 | 2.6 min | 2.6 min |
+| KXNBAPTSPROT NBA Player Points Protected | 1107 | 2.6 min | 2.6 min |
 | KXNFLTOTALPRECISE Total Precise | 1096 | 4.0 min | 4.1 min |
 | KXNCAAF1HSPREAD College Football 1st Half Spre | 1036 | 4.0 min | 4.1 min |
 | KXNFLREC Pro Football Player Receptions | 1029 | 2.0 min | 2.1 min |
 | KXNFLRECPROT Receptions Protected | 958 | 6.0 min | 6.1 min |
-| KXNBAAST NBA Player Assists | 947 | 2.0 min | 2.1 min |
+| KXNBAAST NBA Player Assists | 939 | 2.0 min | 2.1 min |
+| KXLIGAPROMATCH Russia Liga Pro Match | 888 | 4.0 min | 4.1 min |
 | KXNBATEAMTOTAL NBA Team Total | 888 | 2.5 min | 2.6 min |
-| KXLIGAPROMATCH Russia Liga Pro Match | 876 | 4.0 min | 4.1 min |
 | KXNHLPTS Pro Hockey Points | 856 | 3.0 min | 3.1 min |
-| KXNBAPRA NBA Player Points + Rebounds + | 844 | 2.5 min | 2.6 min |
-| KXNBAASTPROT NBA Player Assists Protected | 818 | 2.6 min | 2.6 min |
-| KXNBAPRAPROT Pts + Reb + Ast Protected | 788 | 2.6 min | 2.6 min |
+| KXNBAASTPROT NBA Player Assists Protected | 846 | 2.6 min | 2.6 min |
+| KXNBAPRA NBA Player Points + Rebounds + | 834 | 2.5 min | 2.6 min |
+| KXNBAPRAPROT Pts + Reb + Ast Protected | 815 | 2.6 min | 2.6 min |
 | KXNCAAF1HTOTAL College Football 1st Half Tota | 716 | 4.0 min | 4.1 min |
 | KXNBASPREAD NBA Spread | 713 | 1.8 min | 1.8 min |
 | KXNHLFIRSTGOAL NHL First Goal | 711 | 6.0 min | 6.0 min |
@@ -408,7 +408,7 @@ Kalshi: settlement_ts − close_time per series (negative = settled before the s
 | KXNFLRSHYDSPROT Rushing Yards Protected | 574 | 6.0 min | 6.1 min |
 | KXNCAAWBSPREAD Women's College Basketball Spr | 558 | 1.8 min | 1.8 min |
 | KXNFLTDPROT Pro Football Touchdowns Protec | 488 | 6.0 min | 6.1 min |
-| KXNBASTL NBA Player Steals | 484 | 2.0 min | 2.1 min |
+| KXNBASTL NBA Player Steals | 473 | 2.0 min | 2.1 min |
 
 ## Participant fingerprint (per sport; 60 s snapshots)
 
@@ -416,64 +416,64 @@ change% = share of scan cycles (60 s) where the best quote moved; react = median
 
 | venue | sport | markets | snapshots | two-sided | med spread | change% | react (min) | round sizes | med size |
 |---|---|---|---|---|---|---|---|---|---|
-| pm | soccer | 1443 | 233676 | 84% | 0.020 | 19% | 0.7 (n=3568) | - | - |
-| pm | tennis | 1850 | 116697 | 92% | 0.010 | 23% | 0.6 (n=58731) | - | - |
-| pm | esports | 3316 | 83967 | 80% | 0.020 | 18% | 0.6 (n=16691) | - | - |
-| pm | basketball | 714 | 62956 | 74% | 0.030 | 20% | 0.6 (n=13546) | - | - |
-| pm | table-tennis | 1600 | 47596 | 94% | 0.010 | 27% | 0.5 (n=26514) | - | - |
-| pm | football | 127 | 22169 | 91% | 0.005 | 20% | 1.4 (n=1109) | - | - |
-| pm | climate | 216 | 10884 | 66% | 0.050 | 30% | - (n=0) | - | - |
-| pm | motorsports | 166 | 9270 | 44% | 0.050 | 16% | - (n=0) | - | - |
-| pm | cricket | 20 | 5570 | 85% | 0.040 | 7% | 0.7 (n=1109) | - | - |
-| pm | ice-hockey | 53 | 5070 | 84% | 0.040 | 14% | 0.7 (n=254) | - | - |
-| pm | beach-volleyball | 68 | 2856 | 91% | 0.010 | 20% | 0.6 (n=1320) | - | - |
-| pm | macro | 241 | 2385 | 47% | 0.030 | 14% | - (n=0) | - | - |
-| pm | boxing | 38 | 1115 | 82% | 0.060 | 26% | 7.2 (n=5) | - | - |
-| pm | mma | 18 | 1113 | 34% | 0.010 | 2% | - (n=0) | - | - |
-| pm | darts | 30 | 382 | 99% | 0.070 | 19% | 0.5 (n=30) | - | - |
-| pm | baseball | 6 | 351 | 87% | 0.040 | 19% | 0.6 (n=18) | - | - |
-| pm | pickleball | 15 | 288 | 81% | 0.200 | 25% | - (n=0) | - | - |
+| pm | soccer | 1440 | 233436 | 84% | 0.020 | 19% | 0.7 (n=3568) | - | - |
+| pm | tennis | 1870 | 117104 | 92% | 0.010 | 23% | 0.6 (n=58972) | - | - |
+| pm | esports | 3322 | 84065 | 80% | 0.020 | 18% | 0.6 (n=16706) | - | - |
+| pm | basketball | 713 | 62924 | 74% | 0.030 | 20% | 0.6 (n=13545) | - | - |
+| pm | table-tennis | 1600 | 47632 | 94% | 0.010 | 27% | 0.5 (n=26560) | - | - |
+| pm | football | 126 | 22141 | 91% | 0.005 | 20% | 1.4 (n=1108) | - | - |
+| pm | climate | 216 | 10872 | 66% | 0.050 | 30% | - (n=0) | - | - |
+| pm | motorsports | 166 | 9248 | 44% | 0.050 | 16% | - (n=0) | - | - |
+| pm | cricket | 20 | 5571 | 85% | 0.040 | 7% | 0.7 (n=1110) | - | - |
+| pm | ice-hockey | 53 | 5077 | 84% | 0.040 | 14% | 0.7 (n=255) | - | - |
+| pm | beach-volleyball | 69 | 2855 | 91% | 0.010 | 20% | 0.6 (n=1320) | - | - |
+| pm | macro | 241 | 2393 | 47% | 0.030 | 14% | - (n=0) | - | - |
+| pm | mma | 18 | 1114 | 34% | 0.010 | 2% | - (n=0) | - | - |
+| pm | boxing | 38 | 1110 | 82% | 0.060 | 26% | 7.2 (n=5) | - | - |
+| pm | darts | 30 | 384 | 99% | 0.070 | 19% | 0.5 (n=30) | - | - |
+| pm | baseball | 6 | 346 | 86% | 0.040 | 19% | 0.6 (n=18) | - | - |
+| pm | pickleball | 15 | 286 | 81% | 0.200 | 25% | - (n=0) | - | - |
 | pm | technology | 48 | 146 | 30% | 0.155 | 66% | - (n=0) | - | - |
-| k | KXNCAAFGAME College Football Game | 742 | 871738 | 99% | 0.200 | 6% | - | 6% | 10 |
-| k | KXNFLPASSYDSPRECISE Pass Yards Precise | 16856 | 182125 | 0% | 0.390 | 12% | - | 42% | 1 |
-| k | KXNBA3PT NBA Player Threes | 1559 | 161865 | 79% | 0.050 | 18% | - | 35% | 30 |
-| k | KXNFLGAME NFL Game | 82 | 128054 | 99% | 0.010 | 2% | - | 2% | 112734 |
+| k | KXNCAAFGAME College Football Game | 740 | 874094 | 99% | 0.200 | 6% | - | 6% | 10 |
+| k | KXNFLPASSYDSPRECISE Pass Yards Precise | 16856 | 183971 | 0% | 0.390 | 12% | - | 42% | 1 |
+| k | KXNBA3PT NBA Player Threes | 1559 | 161651 | 79% | 0.050 | 18% | - | 35% | 30 |
+| k | KXNFLGAME NFL Game | 82 | 128412 | 99% | 0.010 | 2% | - | 2% | 111860 |
 | k | KXCS2MAP Counter-Strike 2 Map Win | 522 | 118988 | 96% | 0.450 | 6% | - | 24% | 102 |
-| k | KXNBAAST NBA Player Assists | 1131 | 102234 | 82% | 0.060 | 19% | - | 32% | 32 |
-| k | KXNBAPTS NBA Player Points | 1398 | 88497 | 80% | 0.040 | 23% | - | 30% | 45 |
+| k | KXNBAAST NBA Player Assists | 1130 | 102194 | 82% | 0.060 | 19% | - | 32% | 32 |
+| k | KXNBAPTS NBA Player Points | 1394 | 88474 | 80% | 0.040 | 23% | - | 30% | 45 |
 | k | KXDOTA2MAP Dota 2 Map Winner | 372 | 85867 | 96% | 0.410 | 6% | - | 15% | 21 |
-| k | KXNBAREB NBA Player Rebounds | 1578 | 72872 | 74% | 0.060 | 21% | - | 31% | 33 |
-| k | KXNBA3PTPROT NBA Player Threes Protec | 1526 | 69695 | 45% | 0.130 | 4% | - | 19% | 35 |
-| k | KXNBAPRA NBA Player Points + Rebo | 984 | 64443 | 82% | 0.080 | 24% | - | 23% | 20 |
-| k | KXESOCCERGAME eSoccer Game | 4068 | 55353 | 24% | 0.880 | 5% | - | 23% | 36 |
-| k | KXNCAAFTEAMTOTAL College Football Team To | 1329 | 47260 | 71% | 0.020 | 4% | - | 45% | 254 |
-| k | KXNCAAFSPREAD College Football Spread | 2950 | 45777 | 44% | 0.050 | 3% | - | 16% | 245 |
-| k | KXNCAAF1HSPREAD College Football 1st Hal | 1100 | 44971 | 75% | 0.030 | 16% | - | 33% | 221 |
-| k | KXNBAASTPROT NBA Player Assists Prote | 1102 | 39597 | 44% | 0.140 | 4% | - | 16% | 33 |
+| k | KXNBAREB NBA Player Rebounds | 1574 | 72944 | 74% | 0.060 | 21% | - | 31% | 33 |
+| k | KXNBA3PTPROT NBA Player Threes Protec | 1526 | 69656 | 45% | 0.130 | 4% | - | 19% | 35 |
+| k | KXNBAPRA NBA Player Points + Rebo | 984 | 64485 | 82% | 0.080 | 24% | - | 23% | 20 |
+| k | KXESOCCERGAME eSoccer Game | 4056 | 55834 | 25% | 0.880 | 5% | - | 23% | 36 |
+| k | KXNCAAFTEAMTOTAL College Football Team To | 1317 | 47246 | 71% | 0.020 | 4% | - | 45% | 254 |
+| k | KXNCAAFSPREAD College Football Spread | 2916 | 45743 | 44% | 0.050 | 3% | - | 16% | 245 |
+| k | KXNCAAF1HSPREAD College Football 1st Hal | 1078 | 44949 | 75% | 0.030 | 16% | - | 33% | 221 |
+| k | KXNBAASTPROT NBA Player Assists Prote | 1092 | 39630 | 44% | 0.140 | 4% | - | 16% | 33 |
 | k | KXNBA1HTEAMTOTAL NBA 1st Half Team Total | 506 | 39355 | 70% | 0.220 | 17% | - | 33% | 195 |
-| k | KXNBAPTSPROT NBA Player Points Protec | 1297 | 36234 | 47% | 0.070 | 6% | - | 14% | 59 |
-| k | KXNCAAMBTOTAL Men's College Basketball | 2431 | 34401 | 38% | 0.070 | 9% | - | 37% | 100 |
-| k | KXNCAAF1H College Football 1st Hal | 1104 | 33282 | 85% | 0.960 | 2% | - | 65% | 500 |
-| k | KXNBAREBPROT NBA Player Rebounds Prot | 1436 | 32193 | 39% | 0.130 | 5% | - | 18% | 56 |
+| k | KXNBAPTSPROT NBA Player Points Protec | 1286 | 36280 | 47% | 0.070 | 6% | - | 14% | 60 |
+| k | KXNCAAMBTOTAL Men's College Basketball | 2417 | 34385 | 38% | 0.070 | 9% | - | 37% | 100 |
+| k | KXNCAAF1H College Football 1st Hal | 1101 | 32878 | 84% | 0.960 | 2% | - | 65% | 500 |
+| k | KXNBAREBPROT NBA Player Rebounds Prot | 1432 | 32287 | 39% | 0.130 | 5% | - | 18% | 58 |
 | k | KXNBA1HSPREAD NBA 1st Half Spread | 437 | 31236 | 68% | 0.030 | 12% | - | 15% | 276 |
-| k | KXNCAAFTOTAL College Football Total P | 2108 | 30996 | 43% | 0.060 | 2% | - | 21% | 301 |
-| k | KXNBA1HTOTAL NBA 1st Half Total | 437 | 30735 | 68% | 0.030 | 12% | - | 29% | 150 |
-| k | KXNCAAMBSPREAD Men's College Basketball | 1943 | 28454 | 41% | 0.080 | 8% | - | 36% | 122 |
-| k | KXNBA2HSPREAD NBA 2nd Half Spread | 475 | 26037 | 63% | 0.090 | 18% | - | 36% | 126 |
-| k | KXNFLRECYDS Pro Football Receiving Y | 2047 | 25813 | 16% | 0.040 | 28% | - | 21% | 100 |
-| k | KXNBA2HTOTAL NBA 2nd Half Total | 475 | 25684 | 70% | 0.120 | 18% | - | 43% | 125 |
-| k | KXATPCHALLENGERMATCH Challenger ATP  | 370 | 25336 | 90% | 0.010 | 7% | - | 3% | 659 |
-| k | KXNCAAF1HTOTAL College Football 1st Hal | 730 | 25148 | 65% | 0.030 | 14% | - | 44% | 382 |
+| k | KXNCAAFTOTAL College Football Total P | 2089 | 30977 | 43% | 0.060 | 2% | - | 21% | 301 |
+| k | KXNBA1HTOTAL NBA 1st Half Total | 437 | 30674 | 68% | 0.030 | 12% | - | 29% | 150 |
+| k | KXNCAAMBSPREAD Men's College Basketball | 1931 | 28437 | 41% | 0.080 | 8% | - | 36% | 122 |
+| k | KXATPCHALLENGERMATCH Challenger ATP  | 370 | 25963 | 90% | 0.010 | 7% | - | 3% | 650 |
+| k | KXNBA2HSPREAD NBA 2nd Half Spread | 475 | 25900 | 63% | 0.090 | 18% | - | 37% | 128 |
+| k | KXNFLRECYDS Pro Football Receiving Y | 2047 | 25825 | 16% | 0.040 | 28% | - | 21% | 100 |
+| k | KXNBA2HTOTAL NBA 2nd Half Total | 475 | 25501 | 70% | 0.120 | 18% | - | 43% | 123 |
+| k | KXNCAAF1HTOTAL College Football 1st Hal | 716 | 25134 | 65% | 0.030 | 14% | - | 44% | 382 |
+| k | KXNFLRECYDSPROT Receiving Yards Protecte | 1917 | 23368 | 10% | 0.785 | 16% | - | 15% | 9 |
 | k | KXMLSSCORE Correct Score | 450 | 23344 | 42% | 0.020 | 11% | - | 19% | 2000 |
-| k | KXNFLRECYDSPROT Receiving Yards Protecte | 1917 | 23320 | 10% | 0.785 | 16% | - | 15% | 9 |
-| k | KXNBAPRAPROT Pts + Reb + Ast Protecte | 991 | 23284 | 24% | 0.670 | 3% | - | 43% | 80 |
-| k | KXNCAAWBTOTAL Women's College Basketba | 1707 | 21512 | 19% | 0.470 | 12% | - | 19% | 6 |
-| k | KXLIGAMXSCORE Correct Score | 204 | 21491 | 57% | 0.020 | 5% | - | 16% | 1000 |
-| k | KXNBASTL NBA Player Steals | 501 | 20609 | 73% | 0.080 | 17% | - | 27% | 20 |
-| k | KXNFLTOTALPRECISE Total Precise | 2128 | 20520 | 0% | - | 0% | - | 0% | - |
+| k | KXNBAPRAPROT Pts + Reb + Ast Protecte | 985 | 23343 | 24% | 0.670 | 3% | - | 43% | 81 |
+| k | KXNCAAWBTOTAL Women's College Basketba | 1707 | 21538 | 19% | 0.470 | 12% | - | 19% | 6 |
+| k | KXLIGAMXSCORE Correct Score | 180 | 21467 | 57% | 0.020 | 5% | - | 16% | 1000 |
+| k | KXNFLTOTALPRECISE Total Precise | 2128 | 20976 | 0% | - | 0% | - | 0% | - |
+| k | KXNBASTL NBA Player Steals | 501 | 20650 | 73% | 0.080 | 17% | - | 27% | 20 |
 | k | KXNCAAF2HSPREAD College Football 2nd Hal | 675 | 20214 | 58% | 0.110 | 12% | - | 36% | 60 |
 | k | KXNFLFFWEEKLEAD Weekly Fantasy Football  | 252 | 19391 | 1% | 0.800 | 1% | - | 11% | 126 |
-| k | KXNBA3QSPREAD NBA 3rd Quarter Spread | 325 | 19372 | 70% | 0.020 | 15% | - | 48% | 202 |
+| k | KXNBA3QSPREAD NBA 3rd Quarter Spread | 325 | 19321 | 70% | 0.020 | 15% | - | 48% | 208 |
 
 ## Schema notes (raw keys seen)
 
