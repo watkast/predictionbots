@@ -1,21 +1,21 @@
 # Mr. H — Coinbase hopper, PAPER
 
-Updated 2026-11-10T05:40:33Z · scans 801 · universe 110 coins (USD pairs with ≥ $100k 24-h volume) · fees 0.9% taker each way · start $4.00
+Updated 2026-11-10T05:50:33Z · scans 803 · universe 110 coins (USD pairs with ≥ $100k 24-h volume) · fees 0.9% taker each way · start $4.00
 
 ## Books (one position at a time, all-in every hop)
 
 | profile | bankroll | vs start | peak | hops | win % | avg net/hop | fees paid | open |
 |---|---|---|---|---|---|---|---|---|
-| aggressive | $2.81 | -29.6% | $4.00 | 11 | 27% | -3.10% | $0.672 | AVAX-USD @ 8.51 |
-| standard | $2.77 | -30.7% | $4.00 | 13 | 8% | -2.61% | $0.816 | TON-USD @ 1.1051 |
-| aggressive_swap | $2.94 | -26.4% | $4.02 | 20 | 30% | -1.22% | $1.292 | ICNT-USD @ 0.3006 |
+| aggressive | $2.82 | -29.6% | $4.00 | 11 | 27% | -3.10% | $0.672 | AVAX-USD @ 8.51 |
+| standard | $2.81 | -29.8% | $4.00 | 13 | 8% | -2.61% | $0.816 | TON-USD @ 1.1051 |
+| aggressive_swap | $2.95 | -26.4% | $4.02 | 20 | 30% | -1.22% | $1.292 | ICNT-USD @ 0.3006 |
 
 ## Signal forward returns (every signal, whether or not a book took it)
 
 | profile | signals | scored | median +15m | median +1h | median +4h | % beat 1.8% at +1h | median 4%-trail hop net | max run-up (med) | max drawdown (med) |
 |---|---|---|---|---|---|---|---|---|---|
 | aggressive | 115 | 91 | -0.36% | -0.79% | -3.07% | 33% | -3.56% | +6.40% | -8.45% |
-| standard | 128 | 103 | -0.42% | -0.07% | -0.33% | 19% | -1.56% | +2.93% | -2.96% |
+| standard | 129 | 103 | -0.42% | -0.07% | -0.33% | 19% | -1.56% | +2.93% | -2.96% |
 
 ## Aggressive signals by BTC regime (BTC's own move in the hour before the signal)
 
@@ -58,7 +58,6 @@ Updated 2026-11-10T05:40:33Z · scans 801 · universe 110 coins (USD pairs with 
 
 | time (UTC) | profile | coin | impulse | vol× | >2h high | spread | taken | +1h | +4h |
 |---|---|---|---|---|---|---|---|---|---|
-| 11-09T19:40 | standard | XRP | +1.0% | 4.5 | y | 0.02% | in_position | -0.4% | +0.1% |
 | 11-09T20:50 | standard | WLFI | +1.2% | 12.8 | y | 0.10% | in_position | … | … |
 | 11-10T02:40 | aggressive | TON | +2.5% | 27.6 | y | 0.28% | in_position | … | … |
 | 11-10T02:40 | standard | TON | +2.5% | 27.6 | y | 0.28% | y | … | … |
@@ -73,3 +72,4 @@ Updated 2026-11-10T05:40:33Z · scans 801 · universe 110 coins (USD pairs with 
 | 11-10T04:55 | aggressive | MEZO | +2.7% | 4.8 | n | 1.06% | spread | … | … |
 | 11-10T05:10 | aggressive | ICNT | +2.2% | 17.7 | n | 0.17% | in_position | … | … |
 | 11-10T05:20 | aggressive | MEZO | +4.0% | 13.8 | n | 1.08% | spread | … | … |
+| 11-10T05:50 | standard | INJ | +1.0% | 8.6 | y | 0.06% | in_position | … | … |
