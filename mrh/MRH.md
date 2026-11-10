@@ -1,20 +1,20 @@
 # Mr. H — Coinbase hopper, PAPER
 
-Updated 2026-11-10T14:25:33Z · scans 875 · universe 112 coins (USD pairs with ≥ $100k 24-h volume) · fees 0.9% taker each way · start $4.00
+Updated 2026-11-10T14:35:32Z · scans 877 · universe 112 coins (USD pairs with ≥ $100k 24-h volume) · fees 0.9% taker each way · start $4.00
 
 ## Books (one position at a time, all-in every hop)
 
 | profile | bankroll | vs start | peak | hops | win % | avg net/hop | fees paid | open |
 |---|---|---|---|---|---|---|---|---|
-| aggressive | $2.43 | -39.3% | $4.00 | 15 | 20% | -3.38% | $0.856 | MEZO-USD @ 0.004251 |
-| standard | $2.69 | -32.8% | $4.00 | 15 | 7% | -2.93% | $0.911 | CAP-USD @ 0.10837 |
-| aggressive_swap | $2.51 | -37.1% | $4.02 | 24 | 25% | -1.87% | $1.482 | MEZO-USD @ 0.004251 |
+| aggressive | $2.26 | -43.6% | $4.00 | 16 | 19% | -3.46% | $0.876 | — |
+| standard | $2.57 | -35.6% | $4.00 | 16 | 12% | -2.68% | $0.934 | — |
+| aggressive_swap | $2.34 | -41.5% | $4.02 | 25 | 24% | -1.98% | $1.503 | — |
 
 ## Signal forward returns (every signal, whether or not a book took it)
 
 | profile | signals | scored | median +15m | median +1h | median +4h | % beat 1.8% at +1h | median 4%-trail hop net | max run-up (med) | max drawdown (med) |
 |---|---|---|---|---|---|---|---|---|---|
-| aggressive | 130 | 100 | -0.43% | -0.79% | -2.86% | 31% | -3.59% | +6.39% | -7.75% |
+| aggressive | 132 | 100 | -0.43% | -0.79% | -2.86% | 31% | -3.59% | +6.39% | -7.75% |
 | standard | 140 | 109 | -0.45% | -0.07% | -0.47% | 18% | -1.68% | +2.81% | -3.07% |
 
 ## Aggressive signals by BTC regime (BTC's own move in the hour before the signal)
@@ -27,15 +27,12 @@ Updated 2026-11-10T14:25:33Z · scans 875 · universe 112 coins (USD pairs with 
 
 ## Verdict
 
-**Not yet.** Needs 40 scored aggressive signals (100 so far) and 30 closed aggressive hops (15 so far) before this says anything. Until then every number above is noise.
+**Not yet.** Needs 40 scored aggressive signals (100 so far) and 30 closed aggressive hops (16 so far) before this says anything. Until then every number above is noise.
 
 ## Last 20 hops
 
 | time (UTC) | book | coin | in | out | held | net | reason | bankroll |
 |---|---|---|---|---|---|---|---|---|
-| 11-09T08:25 | aggressive | RITUAL | 0.06 | 0.06078 | 20 m | -0.52% | trail | $2.76 |
-| 11-09T08:25 | standard | RITUAL | 0.06 | 0.06078 | 20 m | -0.52% | trail | $2.99 |
-| 11-09T08:25 | aggressive_swap | RITUAL | 0.06 | 0.06078 | 20 m | -0.52% | trail | $3.31 |
 | 11-09T09:10 | standard | CLANKER | 14.92 | 15 | 45 m | -1.27% | trail | $2.95 |
 | 11-09T12:05 | aggressive | ICNT | 0.3329 | 0.3446 | 100 m | +1.66% | trail | $2.81 |
 | 11-09T12:05 | aggressive_swap | ICNT | 0.3329 | 0.3446 | 100 m | +1.66% | trail | $3.36 |
@@ -53,13 +50,14 @@ Updated 2026-11-10T14:25:33Z · scans 875 · universe 112 coins (USD pairs with 
 | 11-10T13:20 | aggressive | MEZO | 0.004355 | 0.004191 | 10 m | -5.49% | trail | $2.37 |
 | 11-10T13:20 | standard | MEZO | 0.004355 | 0.004191 | 10 m | -5.49% | trail | $2.55 |
 | 11-10T13:20 | aggressive_swap | MEZO | 0.004355 | 0.004191 | 10 m | -5.49% | trail | $2.45 |
+| 11-10T14:30 | standard | CAP | 0.10837 | 0.11146 | 45 m | +1.01% | trail | $2.57 |
+| 11-10T14:35 | aggressive | MEZO | 0.004251 | 0.00413 | 55 m | -4.59% | trail | $2.26 |
+| 11-10T14:35 | aggressive_swap | MEZO | 0.004251 | 0.00413 | 55 m | -4.59% | trail | $2.34 |
 
 ## Last 15 signals
 
 | time (UTC) | profile | coin | impulse | vol× | >2h high | spread | taken | +1h | +4h |
 |---|---|---|---|---|---|---|---|---|---|
-| 11-10T13:10 | standard | MEZO | +10.9% | 75.0 | y | 0.44% | y | … | … |
-| 11-10T13:15 | aggressive | RITUAL | +2.9% | 6.3 | y | 0.10% | in_position | … | … |
 | 11-10T13:15 | aggressive | MEZO | +2.1% | 61.8 | y | 0.65% | spread | … | … |
 | 11-10T13:15 | standard | RITUAL | +2.9% | 6.3 | y | 0.10% | in_position | … | … |
 | 11-10T13:15 | standard | MEZO | +2.1% | 61.8 | y | 0.65% | spread | … | … |
@@ -73,3 +71,5 @@ Updated 2026-11-10T14:25:33Z · scans 875 · universe 112 coins (USD pairs with 
 | 11-10T14:15 | aggressive | CAP | +2.7% | 5.6 | y | 0.28% | in_position | … | … |
 | 11-10T14:15 | standard | CAP | +2.7% | 5.6 | y | 0.28% | in_position | … | … |
 | 11-10T14:25 | aggressive | QI | +3.1% | 6.1 | n | 0.87% | spread | … | … |
+| 11-10T14:30 | aggressive | QI | +3.1% | 6.1 | n | 0.73% | spread | … | … |
+| 11-10T14:30 | aggressive | MEZO | +2.3% | 4.0 | n | 0.87% | spread | … | … |
