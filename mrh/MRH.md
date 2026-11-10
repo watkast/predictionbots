@@ -1,33 +1,33 @@
 # Mr. H — Coinbase hopper, PAPER
 
-Updated 2026-11-10T07:05:33Z · scans 818 · universe 110 coins (USD pairs with ≥ $100k 24-h volume) · fees 0.9% taker each way · start $4.00
+Updated 2026-11-10T09:55:32Z · scans 821 · universe 110 coins (USD pairs with ≥ $100k 24-h volume) · fees 0.9% taker each way · start $4.00
 
 ## Books (one position at a time, all-in every hop)
 
 | profile | bankroll | vs start | peak | hops | win % | avg net/hop | fees paid | open |
 |---|---|---|---|---|---|---|---|---|
 | aggressive | $2.75 | -31.2% | $4.00 | 12 | 25% | -3.02% | $0.697 | — |
-| standard | $2.76 | -31.0% | $4.00 | 13 | 8% | -2.61% | $0.816 | TON-USD @ 1.1051 |
+| standard | $2.74 | -31.4% | $4.00 | 13 | 8% | -2.61% | $0.816 | TON-USD @ 1.1051 |
 | aggressive_swap | $2.85 | -28.7% | $4.02 | 21 | 29% | -1.45% | $1.317 | — |
 
 ## Signal forward returns (every signal, whether or not a book took it)
 
 | profile | signals | scored | median +15m | median +1h | median +4h | % beat 1.8% at +1h | median 4%-trail hop net | max run-up (med) | max drawdown (med) |
 |---|---|---|---|---|---|---|---|---|---|
-| aggressive | 116 | 92 | -0.36% | -0.85% | -2.48% | 33% | -3.32% | +6.40% | -8.42% |
-| standard | 130 | 104 | -0.43% | -0.15% | -0.35% | 19% | -1.56% | +2.87% | -3.00% |
+| aggressive | 116 | 99 | -0.37% | -0.79% | -3.07% | 31% | -3.58% | +6.37% | -7.82% |
+| standard | 130 | 108 | -0.45% | -0.15% | -0.49% | 19% | -1.65% | +2.78% | -3.06% |
 
 ## Aggressive signals by BTC regime (BTC's own move in the hour before the signal)
 
 | BTC 1h | signals | median +1h | median 4%-trail hop net | % beat 1.8% at +1h |
 |---|---|---|---|---|
 | ≤ −0.5% (downdraft) | 5 | +9.98% | +1.23% | 80% |
-| −0.5% … +0.5% (flat) | 67 | -2.17% | -4.48% | 28% |
+| −0.5% … +0.5% (flat) | 74 | -2.02% | -4.80% | 27% |
 | ≥ +0.5% (bid under the market) | 8 | +2.08% | +0.25% | 50% |
 
 ## Verdict
 
-**Not yet.** Needs 40 scored aggressive signals (92 so far) and 30 closed aggressive hops (12 so far) before this says anything. Until then every number above is noise.
+**Not yet.** Needs 40 scored aggressive signals (99 so far) and 30 closed aggressive hops (12 so far) before this says anything. Until then every number above is noise.
 
 ## Last 20 hops
 
@@ -60,16 +60,16 @@ Updated 2026-11-10T07:05:33Z · scans 818 · universe 110 coins (USD pairs with 
 |---|---|---|---|---|---|---|---|---|---|
 | 11-10T02:40 | standard | TON | +2.5% | 27.6 | y | 0.28% | y | -2.2% | -1.2% |
 | 11-10T03:35 | standard | EDGEX | +1.3% | 5.1 | y | 0.41% | in_position | … | … |
-| 11-10T03:40 | aggressive | RITUAL | +3.9% | 4.5 | n | 0.05% | in_position | … | … |
-| 11-10T04:20 | aggressive | MEZO | +2.0% | 4.7 | n | 1.18% | spread | … | … |
-| 11-10T04:35 | aggressive | RITUAL | +7.3% | 5.5 | y | 0.05% | in_position | … | … |
-| 11-10T04:35 | standard | RITUAL | +7.3% | 5.5 | y | 0.05% | in_position | … | … |
-| 11-10T04:40 | aggressive | RITUAL | +6.0% | 4.9 | y | 1.35% | spread | … | … |
-| 11-10T04:40 | standard | RITUAL | +6.0% | 4.9 | y | 1.35% | spread | … | … |
-| 11-10T04:50 | standard | HYPE | +1.3% | 26.1 | y | 0.04% | in_position | … | … |
-| 11-10T04:55 | aggressive | MEZO | +2.7% | 4.8 | n | 1.06% | spread | … | … |
-| 11-10T05:10 | aggressive | ICNT | +2.2% | 17.7 | n | 0.17% | in_position | … | … |
-| 11-10T05:20 | aggressive | MEZO | +4.0% | 13.8 | n | 1.08% | spread | … | … |
-| 11-10T05:50 | standard | INJ | +1.0% | 8.6 | y | 0.06% | in_position | … | … |
+| 11-10T03:40 | aggressive | RITUAL | +3.9% | 4.5 | n | 0.05% | in_position | +11.2% | -2.6% |
+| 11-10T04:20 | aggressive | MEZO | +2.0% | 4.7 | n | 1.18% | spread | -0.2% | -4.1% |
+| 11-10T04:35 | aggressive | RITUAL | +7.3% | 5.5 | y | 0.05% | in_position | +1.6% | -16.6% |
+| 11-10T04:35 | standard | RITUAL | +7.3% | 5.5 | y | 0.05% | in_position | +1.6% | -16.6% |
+| 11-10T04:40 | aggressive | RITUAL | +6.0% | 4.9 | y | 1.35% | spread | -4.7% | -19.5% |
+| 11-10T04:40 | standard | RITUAL | +6.0% | 4.9 | y | 1.35% | spread | -4.7% | -19.5% |
+| 11-10T04:50 | standard | HYPE | +1.3% | 26.1 | y | 0.04% | in_position | +0.7% | -0.5% |
+| 11-10T04:55 | aggressive | MEZO | +2.7% | 4.8 | n | 1.06% | spread | -0.2% | -2.3% |
+| 11-10T05:10 | aggressive | ICNT | +2.2% | 17.7 | n | 0.17% | in_position | -2.8% | +1.9% |
+| 11-10T05:20 | aggressive | MEZO | +4.0% | 13.8 | n | 1.08% | spread | -1.1% | -5.3% |
+| 11-10T05:50 | standard | INJ | +1.0% | 8.6 | y | 0.06% | in_position | -0.3% | -2.5% |
 | 11-10T06:15 | aggressive | NCT | +7.0% | 17.7 | y | 0.19% | in_position | … | … |
 | 11-10T06:15 | standard | NCT | +7.0% | 17.7 | y | 0.19% | in_position | … | … |
