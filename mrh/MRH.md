@@ -1,21 +1,21 @@
 # Mr. H — Coinbase hopper, PAPER
 
-Updated 2026-11-10T02:30:36Z · scans 763 · universe 110 coins (USD pairs with ≥ $100k 24-h volume) · fees 0.9% taker each way · start $4.00
+Updated 2026-11-10T02:40:34Z · scans 765 · universe 110 coins (USD pairs with ≥ $100k 24-h volume) · fees 0.9% taker each way · start $4.00
 
 ## Books (one position at a time, all-in every hop)
 
 | profile | bankroll | vs start | peak | hops | win % | avg net/hop | fees paid | open |
 |---|---|---|---|---|---|---|---|---|
-| aggressive | $2.81 | -29.7% | $4.00 | 11 | 27% | -3.10% | $0.672 | AVAX-USD @ 8.51 |
-| standard | $2.83 | -29.4% | $4.00 | 13 | 8% | -2.61% | $0.791 | — |
-| aggressive_swap | $3.13 | -21.6% | $4.02 | 19 | 32% | -1.11% | $1.209 | — |
+| aggressive | $2.82 | -29.5% | $4.00 | 11 | 27% | -3.10% | $0.672 | AVAX-USD @ 8.51 |
+| standard | $2.79 | -30.2% | $4.00 | 13 | 8% | -2.61% | $0.816 | TON-USD @ 1.1051 |
+| aggressive_swap | $3.10 | -22.6% | $4.02 | 19 | 32% | -1.11% | $1.237 | TON-USD @ 1.1051 |
 
 ## Signal forward returns (every signal, whether or not a book took it)
 
 | profile | signals | scored | median +15m | median +1h | median +4h | % beat 1.8% at +1h | median 4%-trail hop net | max run-up (med) | max drawdown (med) |
 |---|---|---|---|---|---|---|---|---|---|
-| aggressive | 107 | 91 | -0.36% | -0.79% | -3.07% | 33% | -3.56% | +6.40% | -8.45% |
-| standard | 123 | 103 | -0.42% | -0.07% | -0.33% | 19% | -1.56% | +2.93% | -2.96% |
+| aggressive | 108 | 91 | -0.36% | -0.79% | -3.07% | 33% | -3.56% | +6.40% | -8.45% |
+| standard | 124 | 103 | -0.42% | -0.07% | -0.33% | 19% | -1.56% | +2.93% | -2.96% |
 
 ## Aggressive signals by BTC regime (BTC's own move in the hour before the signal)
 
@@ -58,8 +58,6 @@ Updated 2026-11-10T02:30:36Z · scans 763 · universe 110 coins (USD pairs with 
 
 | time (UTC) | profile | coin | impulse | vol× | >2h high | spread | taken | +1h | +4h |
 |---|---|---|---|---|---|---|---|---|---|
-| 11-09T13:05 | standard | TON | +1.5% | 30.1 | y | 0.10% | in_position | -1.8% | -2.9% |
-| 11-09T13:10 | aggressive | AVAX | +2.1% | 13.3 | n | 0.05% | in_position | +3.7% | +1.7% |
 | 11-09T13:25 | standard | AVAX | +1.7% | 19.9 | y | 0.03% | in_position | +1.3% | +0.4% |
 | 11-09T13:30 | standard | AVAX | +1.0% | 56.8 | y | 0.05% | in_position | +0.4% | -0.3% |
 | 11-09T13:35 | standard | AVAX | +1.5% | 8.2 | y | 0.07% | in_position | -0.4% | -2.0% |
@@ -73,3 +71,5 @@ Updated 2026-11-10T02:30:36Z · scans 763 · universe 110 coins (USD pairs with 
 | 11-09T19:40 | standard | VVV | +1.2% | 4.1 | y | 0.10% | in_position | -0.1% | -0.8% |
 | 11-09T19:40 | standard | XRP | +1.0% | 4.5 | y | 0.02% | in_position | -0.4% | +0.1% |
 | 11-09T20:50 | standard | WLFI | +1.2% | 12.8 | y | 0.10% | in_position | … | … |
+| 11-10T02:40 | aggressive | TON | +2.5% | 27.6 | y | 0.28% | in_position | … | … |
+| 11-10T02:40 | standard | TON | +2.5% | 27.6 | y | 0.28% | y | … | … |
