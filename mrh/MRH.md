@@ -1,14 +1,14 @@
 # Mr. H — Coinbase hopper, PAPER
 
-Updated 2026-11-10T11:25:32Z · scans 839 · universe 110 coins (USD pairs with ≥ $100k 24-h volume) · fees 0.9% taker each way · start $4.00
+Updated 2026-11-10T11:35:32Z · scans 841 · universe 110 coins (USD pairs with ≥ $100k 24-h volume) · fees 0.9% taker each way · start $4.00
 
 ## Books (one position at a time, all-in every hop)
 
 | profile | bankroll | vs start | peak | hops | win % | avg net/hop | fees paid | open |
 |---|---|---|---|---|---|---|---|---|
-| aggressive | $2.57 | -35.7% | $4.00 | 13 | 23% | -3.37% | $0.768 | RITUAL-USD @ 0.03787 |
+| aggressive | $2.50 | -37.4% | $4.00 | 14 | 21% | -3.23% | $0.790 | — |
 | standard | $2.75 | -31.3% | $4.00 | 13 | 8% | -2.61% | $0.816 | TON-USD @ 1.1051 |
-| aggressive_swap | $2.66 | -33.4% | $4.02 | 22 | 27% | -1.73% | $1.391 | RITUAL-USD @ 0.03787 |
+| aggressive_swap | $2.59 | -35.1% | $4.02 | 23 | 26% | -1.71% | $1.414 | — |
 
 ## Signal forward returns (every signal, whether or not a book took it)
 
@@ -27,14 +27,12 @@ Updated 2026-11-10T11:25:32Z · scans 839 · universe 110 coins (USD pairs with 
 
 ## Verdict
 
-**Not yet.** Needs 40 scored aggressive signals (100 so far) and 30 closed aggressive hops (13 so far) before this says anything. Until then every number above is noise.
+**Not yet.** Needs 40 scored aggressive signals (100 so far) and 30 closed aggressive hops (14 so far) before this says anything. Until then every number above is noise.
 
 ## Last 20 hops
 
 | time (UTC) | book | coin | in | out | held | net | reason | bankroll |
 |---|---|---|---|---|---|---|---|---|
-| 11-08T20:47 | standard | RSR | 0.001783 | 0.001721 | 32 m | -5.21% | trail | $3.12 |
-| 11-08T22:00 | aggressive | DRV | 0.32104 | 0.30804 | 1310 m | -5.77% | trail | $2.87 |
 | 11-08T22:55 | aggressive_swap | ICNT | 0.3688 | 0.3552 | 165 m | -5.41% | trail | $3.19 |
 | 11-09T00:40 | aggressive_swap | RITUAL | 0.04055 | 0.04305 | 65 m | +4.26% | trail | $3.33 |
 | 11-09T07:15 | aggressive | IRYS | 0.01717 | 0.01692 | 550 m | -3.22% | trail | $2.78 |
@@ -53,6 +51,8 @@ Updated 2026-11-10T11:25:32Z · scans 839 · universe 110 coins (USD pairs with 
 | 11-10T07:05 | aggressive_swap | ICNT | 0.3006 | 0.288 | 115 m | -5.91% | trail | $2.85 |
 | 11-10T11:10 | aggressive | NCT | 0.01058 | 0.00995 | 35 m | -7.64% | trail | $2.54 |
 | 11-10T11:10 | aggressive_swap | NCT | 0.01058 | 0.00995 | 35 m | -7.64% | trail | $2.63 |
+| 11-10T11:35 | aggressive | RITUAL | 0.03787 | 0.038 | 25 m | -1.45% | trail | $2.50 |
+| 11-10T11:35 | aggressive_swap | RITUAL | 0.03787 | 0.038 | 25 m | -1.45% | trail | $2.59 |
 
 ## Last 15 signals
 
