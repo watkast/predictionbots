@@ -1,13 +1,13 @@
 # Mr. H — Coinbase hopper, PAPER
 
-Updated 2026-11-09T23:00:32Z · scans 750 · universe 110 coins (USD pairs with ≥ $100k 24-h volume) · fees 0.9% taker each way · start $4.00
+Updated 2026-11-10T01:40:36Z · scans 753 · universe 110 coins (USD pairs with ≥ $100k 24-h volume) · fees 0.9% taker each way · start $4.00
 
 ## Books (one position at a time, all-in every hop)
 
 | profile | bankroll | vs start | peak | hops | win % | avg net/hop | fees paid | open |
 |---|---|---|---|---|---|---|---|---|
-| aggressive | $2.82 | -29.4% | $4.00 | 11 | 27% | -3.10% | $0.672 | AVAX-USD @ 8.51 |
-| standard | $2.87 | -28.4% | $4.00 | 12 | 8% | -2.47% | $0.765 | RENDER-USD @ 1.6167 |
+| aggressive | $2.86 | -28.6% | $4.00 | 11 | 27% | -3.10% | $0.672 | AVAX-USD @ 8.51 |
+| standard | $2.87 | -28.3% | $4.00 | 12 | 8% | -2.47% | $0.765 | RENDER-USD @ 1.6167 |
 | aggressive_swap | $3.13 | -21.6% | $4.02 | 19 | 32% | -1.11% | $1.209 | — |
 
 ## Signal forward returns (every signal, whether or not a book took it)
@@ -15,7 +15,7 @@ Updated 2026-11-09T23:00:32Z · scans 750 · universe 110 coins (USD pairs with 
 | profile | signals | scored | median +15m | median +1h | median +4h | % beat 1.8% at +1h | median 4%-trail hop net | max run-up (med) | max drawdown (med) |
 |---|---|---|---|---|---|---|---|---|---|
 | aggressive | 107 | 91 | -0.36% | -0.79% | -3.07% | 33% | -3.56% | +6.40% | -8.45% |
-| standard | 123 | 99 | -0.37% | -0.07% | -0.28% | 20% | -1.43% | +3.17% | -3.09% |
+| standard | 123 | 103 | -0.42% | -0.07% | -0.33% | 19% | -1.56% | +2.93% | -2.96% |
 
 ## Aggressive signals by BTC regime (BTC's own move in the hour before the signal)
 
@@ -68,8 +68,8 @@ Updated 2026-11-09T23:00:32Z · scans 750 · universe 110 coins (USD pairs with 
 | 11-09T17:40 | aggressive | RITUAL | +2.2% | 5.6 | y | 2.35% | spread | -1.4% | -11.3% |
 | 11-09T17:40 | standard | RITUAL | +2.2% | 5.6 | y | 2.35% | spread | -1.4% | -11.3% |
 | 11-09T18:05 | aggressive | RITUAL | +2.1% | 3.1 | n | 3.01% | spread | -7.6% | -13.7% |
-| 11-09T19:40 | standard | NEAR | +1.5% | 8.4 | y | 0.03% | in_position | … | … |
-| 11-09T19:40 | standard | ENA | +1.2% | 5.2 | y | 0.06% | in_position | … | … |
-| 11-09T19:40 | standard | VVV | +1.2% | 4.1 | y | 0.10% | in_position | … | … |
-| 11-09T19:40 | standard | XRP | +1.0% | 4.5 | y | 0.02% | in_position | … | … |
+| 11-09T19:40 | standard | NEAR | +1.5% | 8.4 | y | 0.03% | in_position | -0.0% | -0.5% |
+| 11-09T19:40 | standard | ENA | +1.2% | 5.2 | y | 0.06% | in_position | -0.5% | -2.5% |
+| 11-09T19:40 | standard | VVV | +1.2% | 4.1 | y | 0.10% | in_position | -0.1% | -0.8% |
+| 11-09T19:40 | standard | XRP | +1.0% | 4.5 | y | 0.02% | in_position | -0.4% | +0.1% |
 | 11-09T20:50 | standard | WLFI | +1.2% | 12.8 | y | 0.10% | in_position | … | … |
