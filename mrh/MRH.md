@@ -1,14 +1,14 @@
 # Mr. H — Coinbase hopper, PAPER
 
-Updated 2026-11-10T22:45:33Z · scans 946 · universe 110 coins (USD pairs with ≥ $100k 24-h volume) · fees 0.9% taker each way · start $4.00
+Updated 2026-11-10T22:55:33Z · scans 948 · universe 110 coins (USD pairs with ≥ $100k 24-h volume) · fees 0.9% taker each way · start $4.00
 
 ## Books (one position at a time, all-in every hop)
 
 | profile | bankroll | vs start | peak | hops | win % | avg net/hop | fees paid | open |
 |---|---|---|---|---|---|---|---|---|
-| aggressive | $2.28 | -42.9% | $4.00 | 16 | 19% | -3.46% | $0.897 | LIGHTER-USD @ 3.391 |
-| standard | $2.57 | -35.8% | $4.00 | 17 | 12% | -2.72% | $1.003 | USELESS-USD @ 0.13553 |
-| aggressive_swap | $1.95 | -51.2% | $4.02 | 29 | 21% | -2.18% | $1.681 | RITUAL-USD @ 0.03559 |
+| aggressive | $2.28 | -43.0% | $4.00 | 16 | 19% | -3.46% | $0.897 | LIGHTER-USD @ 3.391 |
+| standard | $2.55 | -36.2% | $4.00 | 17 | 12% | -2.72% | $1.003 | USELESS-USD @ 0.13553 |
+| aggressive_swap | $1.91 | -52.2% | $4.02 | 30 | 20% | -2.30% | $1.698 | — |
 
 ## Signal forward returns (every signal, whether or not a book took it)
 
@@ -33,7 +33,6 @@ Updated 2026-11-10T22:45:33Z · scans 946 · universe 110 coins (USD pairs with 
 
 | time (UTC) | book | coin | in | out | held | net | reason | bankroll |
 |---|---|---|---|---|---|---|---|---|
-| 11-10T01:55 | standard | RENDER | 1.6167 | 1.5769 | 1005 m | -4.21% | trail | $2.83 |
 | 11-10T05:10 | aggressive_swap | TON | 1.1051 | 1.0876 | 150 m | -3.35% | swap | $3.03 |
 | 11-10T06:55 | aggressive | AVAX | 8.51 | 8.482 | 1100 m | -2.12% | trail | $2.75 |
 | 11-10T07:05 | aggressive_swap | ICNT | 0.3006 | 0.288 | 115 m | -5.91% | trail | $2.85 |
@@ -53,6 +52,7 @@ Updated 2026-11-10T22:45:33Z · scans 946 · universe 110 coins (USD pairs with 
 | 11-10T18:10 | standard | LIGHTER | 3.391 | 3.335 | 210 m | -3.41% | trail | $2.49 |
 | 11-10T19:10 | aggressive_swap | MEZO | 0.004292 | 0.00408 | 40 m | -6.64% | trail | $2.09 |
 | 11-10T22:20 | aggressive_swap | XCN | 0.003297 | 0.003264 | 150 m | -2.77% | swap | $2.03 |
+| 11-10T22:50 | aggressive_swap | RITUAL | 0.03559 | 0.03409 | 30 m | -5.93% | trail | $1.91 |
 
 ## Last 15 signals
 
