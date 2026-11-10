@@ -1,4 +1,4 @@
-series cache: 5036 entries from cache/series_meta.json
+series cache: 5107 entries from cache/series_meta.json
   https://external-api.kalshi.com/trade-api/v2/markets -> 429; retry
   https://external-api.kalshi.com/trade-api/v2/markets -> 429; retry
   https://external-api.kalshi.com/trade-api/v2/markets -> 429; retry
@@ -8,11 +8,12 @@ series cache: 5036 entries from cache/series_meta.json
   https://external-api.kalshi.com/trade-api/v2/markets -> 429; retry
   https://external-api.kalshi.com/trade-api/v2/markets -> 429; retry
   https://external-api.kalshi.com/trade-api/v2/markets -> 429; retry
-kalshi: 163778 open markets in 164 pages
-kalshi: 4608 series, 71 to fetch (4537 cached)
+  https://external-api.kalshi.com/trade-api/v2/markets -> 429; retry
+kalshi: 169781 open markets in 170 pages
+kalshi: 4596 series, 37 to fetch (4559 cached)
 nws: forecasts for 23 of 23 stations
 odds: no ODDS_API_KEY; sports real-world odds off
-pmus market keys: ['active', 'archived', 'assetPriceTerms', 'bestAskQuote', 'bestBidQuote', 'category', 'closed', 'color', 'comboEnabled', 'createdAt', 'description', 'endDate', 'ep3Status', 'ep3SyncedAt', 'eventSubcategory', 'feeCoefficient', 'gameStartTime', 'hidden', 'id', 'image', 'manualActivation', 'marketSides', 'marketType', 'minimumTradeQty', 'orderPriceMinTickSize', 'outcomePrices', 'outcomes', 'politics', 'question', 'slug', 'sportsMarketType', 'sportsMarketTypeV2', 'startDate', 'status', 'subtitle', 'tags', 'title', 'titleShort', 'updatedAt']
-pmus: 67998 markets in 137 pages
-wrote 12266 series pages + index + sitemap to site/dist/markets
-weather: 276 contracts with market and forecast probabilities
+pmus market keys: ['active', 'archived', 'assetPriceTerms', 'bestAskQuote', 'bestBidQuote', 'category', 'closed', 'color', 'comboEnabled', 'createdAt', 'description', 'endDate', 'ep3Status', 'ep3SyncedAt', 'eventSubcategory', 'feeCoefficient', 'gameStartTime', 'hidden', 'id', 'image', 'manualActivation', 'marketSides', 'marketType', 'minimumTradeQty', 'orderPriceMinTickSize', 'outcomePrices', 'outcomes', 'politics', 'question', 'singlesRfqConfig', 'slug', 'sportsMarketType', 'sportsMarketTypeV2', 'startDate', 'status', 'subtitle', 'tags', 'title', 'titleShort', 'updatedAt']
+pmus: 76667 markets in 155 pages
+wrote 12897 series pages + index + sitemap to site/dist/markets
+weather: 270 contracts with market and forecast probabilities
