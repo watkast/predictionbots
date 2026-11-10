@@ -8,11 +8,11 @@ series cache: 5017 entries from cache/series_meta.json
   https://external-api.kalshi.com/trade-api/v2/markets -> 429; retry
   https://external-api.kalshi.com/trade-api/v2/markets -> 429; retry
   https://external-api.kalshi.com/trade-api/v2/markets -> 429; retry
-kalshi: 162292 open markets in 163 pages
-kalshi: 4542 series, 0 to fetch (4542 cached)
+kalshi: 160622 open markets in 161 pages
+kalshi: 4505 series, 19 to fetch (4486 cached)
 nws: forecasts for 23 of 23 stations
 odds: no ODDS_API_KEY; sports real-world odds off
 pmus market keys: ['active', 'archived', 'assetPriceTerms', 'bestAskQuote', 'bestBidQuote', 'category', 'closed', 'color', 'comboEnabled', 'createdAt', 'description', 'endDate', 'ep3Status', 'ep3SyncedAt', 'eventSubcategory', 'feeCoefficient', 'gameStartTime', 'hidden', 'id', 'image', 'manualActivation', 'marketSides', 'marketType', 'minimumTradeQty', 'orderPriceMinTickSize', 'outcomePrices', 'outcomes', 'politics', 'question', 'slug', 'sportsMarketType', 'sportsMarketTypeV2', 'startDate', 'status', 'subtitle', 'tags', 'title', 'titleShort', 'updatedAt']
-pmus: 65506 markets in 133 pages
-wrote 12790 series pages + index + sitemap to site/dist/markets
+pmus: 65915 markets in 133 pages
+wrote 12688 series pages + index + sitemap to site/dist/markets
 weather: 138 contracts with market and forecast probabilities
