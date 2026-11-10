@@ -1,21 +1,21 @@
 # Mr. H — Coinbase hopper, PAPER
 
-Updated 2026-11-10T14:45:33Z · scans 879 · universe 112 coins (USD pairs with ≥ $100k 24-h volume) · fees 0.9% taker each way · start $4.00
+Updated 2026-11-10T14:55:33Z · scans 881 · universe 112 coins (USD pairs with ≥ $100k 24-h volume) · fees 0.9% taker each way · start $4.00
 
 ## Books (one position at a time, all-in every hop)
 
 | profile | bankroll | vs start | peak | hops | win % | avg net/hop | fees paid | open |
 |---|---|---|---|---|---|---|---|---|
-| aggressive | $2.23 | -44.1% | $4.00 | 16 | 19% | -3.46% | $0.897 | LIGHTER-USD @ 3.391 |
-| standard | $2.55 | -36.3% | $4.00 | 16 | 12% | -2.68% | $0.958 | LIGHTER-USD @ 3.391 |
-| aggressive_swap | $2.32 | -42.1% | $4.02 | 25 | 24% | -1.98% | $1.524 | LIGHTER-USD @ 3.391 |
+| aggressive | $2.24 | -44.0% | $4.00 | 16 | 19% | -3.46% | $0.897 | LIGHTER-USD @ 3.391 |
+| standard | $2.56 | -36.1% | $4.00 | 16 | 12% | -2.68% | $0.958 | LIGHTER-USD @ 3.391 |
+| aggressive_swap | $2.32 | -41.9% | $4.02 | 25 | 24% | -1.98% | $1.524 | LIGHTER-USD @ 3.391 |
 
 ## Signal forward returns (every signal, whether or not a book took it)
 
 | profile | signals | scored | median +15m | median +1h | median +4h | % beat 1.8% at +1h | median 4%-trail hop net | max run-up (med) | max drawdown (med) |
 |---|---|---|---|---|---|---|---|---|---|
-| aggressive | 134 | 101 | -0.49% | -0.79% | -3.07% | 31% | -3.60% | +6.37% | -7.82% |
-| standard | 145 | 109 | -0.45% | -0.07% | -0.47% | 18% | -1.68% | +2.81% | -3.07% |
+| aggressive | 136 | 101 | -0.49% | -0.79% | -3.07% | 31% | -3.60% | +6.37% | -7.82% |
+| standard | 147 | 109 | -0.45% | -0.07% | -0.47% | 18% | -1.68% | +2.81% | -3.07% |
 
 ## Aggressive signals by BTC regime (BTC's own move in the hour before the signal)
 
@@ -58,10 +58,6 @@ Updated 2026-11-10T14:45:33Z · scans 879 · universe 112 coins (USD pairs with 
 
 | time (UTC) | profile | coin | impulse | vol× | >2h high | spread | taken | +1h | +4h |
 |---|---|---|---|---|---|---|---|---|---|
-| 11-10T13:50 | standard | ZEC | +1.6% | 7.3 | y | 0.05% | in_position | … | … |
-| 11-10T13:50 | standard | CAP | +1.4% | 12.5 | y | 0.27% | in_position | … | … |
-| 11-10T14:10 | standard | CAP | +1.4% | 5.6 | y | 0.07% | in_position | … | … |
-| 11-10T14:15 | aggressive | CAP | +2.7% | 5.6 | y | 0.28% | in_position | … | … |
 | 11-10T14:15 | standard | CAP | +2.7% | 5.6 | y | 0.28% | in_position | … | … |
 | 11-10T14:25 | aggressive | QI | +3.1% | 6.1 | n | 0.87% | spread | … | … |
 | 11-10T14:30 | aggressive | QI | +3.1% | 6.1 | n | 0.73% | spread | … | … |
@@ -73,3 +69,7 @@ Updated 2026-11-10T14:45:33Z · scans 879 · universe 112 coins (USD pairs with 
 | 11-10T14:40 | standard | ENA | +1.2% | 6.0 | y | 0.17% | in_position | … | … |
 | 11-10T14:40 | standard | PEPE | +1.1% | 9.6 | y | 0.18% | in_position | … | … |
 | 11-10T14:45 | aggressive | RSC | +6.1% | 9.2 | n | 0.83% | spread | … | … |
+| 11-10T14:55 | aggressive | USELESS | +2.8% | 4.8 | n | 0.26% | in_position | … | … |
+| 11-10T14:55 | aggressive | PEPE | +2.2% | 7.5 | y | 0.18% | in_position | … | … |
+| 11-10T14:55 | standard | PEPE | +2.2% | 7.5 | y | 0.18% | in_position | … | … |
+| 11-10T14:55 | standard | ONDO | +1.1% | 3.6 | y | 0.03% | in_position | … | … |
