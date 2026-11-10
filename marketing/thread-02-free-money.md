@@ -58,7 +58,7 @@ What this means:
 **9/**
 We retired Mr T as a strategy. The code stays as a measurement tool.
 
-Full post, raw books, the CSV, the commit with the bug: predictionbots.io/posts/2026-11-08-free-money-that-wasnt
+Full post, raw books, the CSV, the commit with the bug: predictmenot.com/posts/2026-11-08-free-money-that-wasnt
 
 If you have a live-book window where the winner was really offered below 90¢, open an issue with the timestamp. We'll publish it.
 

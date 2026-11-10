@@ -31,11 +31,11 @@ creative rules before signing; if the terms conflict with the message, we drop t
 
 ## Application: Kalshi (email to the affiliate / partnerships desk, or the network's publisher form)
 
-Subject: Publisher application — PredictionBots.io (independent prediction-market measurement)
+Subject: Publisher application — PredictMeNot.io (independent prediction-market measurement)
 
 Hello,
 
-PredictionBots.io is an independent measurement site for prediction markets, covering Kalshi and Polymarket US. We
+PredictMeNot.io is an independent measurement site for prediction markets, covering Kalshi and Polymarket US. We
 publish fee calculators built from each venue's published schedule, independent 30-day benchmarks of the trading bots
 sold to retail traders, settlement explainers, and research posts with the code and data to check them. We do not
 trade, we do not take money from bot vendors, and we do not run ad networks.
@@ -51,15 +51,15 @@ What we need from you: a CPA rate we can publish, permission to use Kalshi's own
 factual content about fees and settlement is compatible with your terms. We will geo-gate the offer to permitted
 states and carry responsible-gambling messaging on every page that shows it.
 
-Site: predictionbots.io · Code and data: github.com/watkast/predictionbots · Contact: Noah Watson, hello@predictionbots.io
+Site: predictmenot.com · Code and data: github.com/watkast/predictionbots · Contact: Noah Watson, inquire@predictmenot.com
 
 ## Application: Polymarket US (partnerships / affiliate contact)
 
-Subject: Publisher application — PredictionBots.io
+Subject: Publisher application — PredictMeNot.io
 
 Hello,
 
-PredictionBots.io is an independent measurement site for prediction markets covering Polymarket US and Kalshi: fee
+PredictMeNot.io is an independent measurement site for prediction markets covering Polymarket US and Kalshi: fee
 calculators from the published schedules, independent benchmarks of retail trading bots, settlement explainers (our
 first research post uses Polymarket US's 5-minute crypto markets and one-second order-book recordings), and open data.
 We do not trade and take no money from bot vendors.
@@ -71,4 +71,4 @@ for the sign-up. We geo-gate to permitted states and carry responsible-gambling 
 We need a publishable CPA rate, permission to use Polymarket's own creative, and confirmation that factual content
 about fees, settlement and market efficiency is compatible with your terms.
 
-Site: predictionbots.io · Code and data: github.com/watkast/predictionbots · Contact: Noah Watson, hello@predictionbots.io
+Site: predictmenot.com · Code and data: github.com/watkast/predictionbots · Contact: Noah Watson, inquire@predictmenot.com

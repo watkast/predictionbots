@@ -40,6 +40,6 @@ Control in the same windows (buy Up at the open, hold): −21%. Bitcoin fell; Up
 Method: the rule as published, our recorder's books, fills only where the book showed size, the fee schedule in force on each trade's date (6.95% → 9.5% on Nov 6). Paper fills aren't real fills; real can be worse.
 
 **8/**
-Full post, every trade, the extracted windows and the replay code: predictionbots.io/posts/2026-11-08-the-45-70-rule-on-689-markets
+Full post, every trade, the extracted windows and the replay code: predictmenot.com/posts/2026-11-08-the-45-70-rule-on-689-markets
 
 Vendors: publish your rule and we test it. We never need your code or your keys.

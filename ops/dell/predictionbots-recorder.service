@@ -1,5 +1,5 @@
 [Unit]
-Description=PredictionBots recorder (read-only market data; publishes to the mrp-data branch)
+Description=PredictMeNot recorder (read-only market data; publishes to the mrp-data branch)
 After=network-online.target
 Wants=network-online.target
 

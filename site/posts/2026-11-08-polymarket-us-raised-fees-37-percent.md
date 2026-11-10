@@ -1,7 +1,7 @@
 ---
 title: "Polymarket US raised the small trader's fee 37% on 6 November. The welcome rate hides it for a week."
 date: 2026-11-08
-author: PredictionBots
+author: PredictMeNot
 summary: "Effective 1:00 PM ET on 6 November 2026, Polymarket US tiers its taker fee by 30-day volume: 9.5% × price × (1 − price) for anyone under $10,000, down to 6.95% above $250,000. Everyone paid 6.95% before. New accounts get the old rate for seven days. What it costs, in dollars, at the sizes people actually trade."
 tags: [news, polymarket, fees]
 ---

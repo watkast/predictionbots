@@ -29,8 +29,8 @@ Your first week is not your fee.
 What didn't change: resting orders still pay nothing. That is the only lever a small account controls: post a limit order and wait, and accept it may not fill. Taking the displayed price is where the fee lives.
 
 **5/**
-The full schedule, worked at every price, with the source and the date we checked it: predictionbots.io/learn/polymarket-us-fees
+The full schedule, worked at every price, with the source and the date we checked it: predictmenot.com/learn/polymarket-us-fees
 
-Your own numbers: predictionbots.io/#truecost
+Your own numbers: predictmenot.com/#truecost
 
 We take no money from any venue for saying this. If that changes, our money page changes first.

@@ -32,7 +32,7 @@ def _wrap(draw, text: str, font, width: int) -> list[str]:
     return lines
 
 
-def card(title: str, kicker: str, out: Path, brand: str = "PredictionBots") -> bool:
+def card(title: str, kicker: str, out: Path, brand: str = "PredictMeNot") -> bool:
     try:
         from PIL import Image, ImageDraw
     except Exception:

@@ -1,4 +1,4 @@
-# PredictionBots — the business (living document)
+# PredictMeNot — the business (living document)
 
 Started 7 Nov 2026. Owner: Noah Watson. PM: Claude. This file is the plan of record; it changes as we learn. Decisions
 are appended at the bottom with the date and the reason, so the reasoning survives.
@@ -101,7 +101,7 @@ stated on every row. The accounts at both venues stay open for API keys only; ba
 
 ## Decisions log
 
-- 2026-11-07 — Name: PredictionBots.io. Stack as above. Hotfixes go straight to main; strategy/cap/switch changes via PR.
+- 2026-11-07 — Name: PredictMeNot.io. Stack as above. Hotfixes go straight to main; strategy/cap/switch changes via PR.
 - 2026-11-07 — Mr H (Coinbase hopper) demoted to a lottery ticket (≥5% impulse, 8% trail, maker-only, 4 hops/day) after
   the replay; not a strategy, a published experiment.
 - 2026-11-07 — Mr T (terminal sniper) is the headline hypothesis; dry run first, live only on Noah's word.
@@ -129,7 +129,7 @@ stated on every row. The accounts at both venues stay open for API keys only; ba
   The recorder's 168 "cheap winners" were stale book snapshots. Retired as a trade; the sniper code stays as the
   final-seconds measurement feed and the post-2 story. Consequence: Mr. P's cross-venue "locks" are unproven until
   rebuilt on a live book with age checks.
-- 2026-11-08 — Pivot (Noah): we are not trading any more. PredictionBots becomes the sane resource for people the markets
+- 2026-11-08 — Pivot (Noah): we are not trading any more. PredictMeNot becomes the sane resource for people the markets
   lead into near-certain losses. All live trading switched off (mrh/LIVE_ON removed; Mr. S and Mr. T off). The recorder
   keeps running: the data is the product. Decided-games scanner shelved.
 - 2026-11-08 — Referrals: yes, with the truth above the button (Noah). Verified offers: Kalshi trade $25 → $25 credit (not
@@ -175,7 +175,7 @@ stated on every row. The accounts at both venues stay open for API keys only; ba
 - 2026-11-08 — First Bot Benchmark row measured: the retail "buy ≤45¢, sell 70¢" rule on 689 recorded BTC 15m windows
   lost 9.0% of stake (fees 73% of the loss); control −21% (BTC drift); AstroTick rule fired 4 times. Turbine turned out
   to be a bot-builder platform, so the row carries no vendor name; its reference bot is queued. Post 3 written.
-- 2026-11-08 — Name: moving off "PredictionBots". Noah's pick PredictMeNot (homage to RetailMeNot, where he was the 30th
+- 2026-11-08 — Name: moving off "PredictMeNot". Noah's pick PredictMeNot (homage to RetailMeNot, where he was the 30th
   employee in 2009); fallbacks PredictNothing, LuckTax, PriceOfLuck. Rules: the homage lives in Noah's bio only, never in
   marketing copy; stance line "We don't predict. We measure." Rename everything in one pass once the domain is bought.
 - 2026-11-08 — Prediction News v0 on the home page from site/data/news.json (5 sourced items); Endorsement Ledger page

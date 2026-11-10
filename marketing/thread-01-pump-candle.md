@@ -29,7 +29,7 @@ The spike candle is, on median, the local top. You are buying the moment everyon
 Next post: what 4 days of recording Polymarket at 1-second resolution found in the final 3 seconds before settlement.
 
 9/ All of it is public — code, every signal with its forward returns, and our live bots' trades, including the losers:
-predictionbots.io
+predictmenot.com
 github.com/watkast/predictionbots
 
 We're building the terminal we wished we had this week. Waitlist on the site.

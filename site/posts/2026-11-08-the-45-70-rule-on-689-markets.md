@@ -1,7 +1,7 @@
 ---
 title: "We ran the \"buy at 45¢, sell at 70¢\" rule on 689 recorded Bitcoin markets. It lost 9 cents on the dollar, and fees were three-quarters of the loss."
 date: 2026-11-08
-author: PredictionBots
+author: PredictMeNot
 summary: "The most-quoted retail rule for 15-minute crypto markets, replayed against our recorded Polymarket US order books from 29 October to 8 November with fills only at displayed depth and the fee schedule in force on each trade date: 689 trades, 48% winners, −$219 on $2,416 staked. Before fees it was a coin flip minus a little; after fees it was a slope. The first row of the Bot Benchmark, with the data."
 tags: [research, benchmark, polymarket, fees]
 images: [img/retail-rule-45-70.png]

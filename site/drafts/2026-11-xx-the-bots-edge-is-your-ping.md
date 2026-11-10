@@ -1,7 +1,7 @@
 ---
 title: "A bot that wins 26¢ on the dollar, until its price is 10 seconds old"
 date: 2026-11-xx
-author: PredictionBots
+author: PredictMeNot
 summary: "We replayed a bot-builder's documented reference strategy on 10 days of recorded Bitcoin 15-minute markets. With an instant price feed it made 26% per dollar staked. With the price 10 seconds old the result was inside the noise; at 20 seconds it lost 20%. The edge was never the rule. It was being first."
 tags: [research, benchmark, latency]
 images: [img/latency-curve.png]

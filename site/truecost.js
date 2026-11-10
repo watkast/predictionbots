@@ -59,7 +59,7 @@
     if (window.PB && window.PB.elsewhere) window.PB.elsewhere('tc-elsewhere', { bank: bankroll, monthlyLoss: feesMonth });
     var share = $('tc-share'); if (share) share.dataset.text =
       'True Cost (' + (v === 'kalshi' ? 'Kalshi' : 'Polymarket US') + '): ' + money(dollars) + ' at ' + Math.round(p * 100) + '¢ costs ' + money(fee) + ' in fees per trade. ' +
-      n + ' trades a month = ' + money(feesMonth) + ' in fees, ' + pct(feesMonth / bankroll) + ' of a ' + money(bankroll) + ' bankroll. Break-even win rate ' + pct(beHold) + '. predictionbots.io/#truecost';
+      n + ' trades a month = ' + money(feesMonth) + ' in fees, ' + pct(feesMonth / bankroll) + ' of a ' + money(bankroll) + ' bankroll. Break-even win rate ' + pct(beHold) + '. predictmenot.com/#truecost';
   }
   [venue, price, size, perWeek, bank, hold, tier].forEach(function (el) { if (!el) return; el.addEventListener('input', function () { showTier(); update(); }); el.addEventListener('change', function () { showTier(); update(); }); });
   showTier();

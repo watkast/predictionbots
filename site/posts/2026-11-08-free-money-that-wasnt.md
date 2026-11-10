@@ -1,7 +1,7 @@
 ---
 title: "We found free money in our own data. Then we tested it live."
 date: 2026-11-08
-author: PredictionBots
+author: PredictMeNot
 summary: "Four days of one-second recordings said the winning side of Polymarket US crypto markets was still offered below 90¢ in the final seconds, 192 times. A seven-hour live test said: never. The raw order books, the bug that fooled us twice, and why the 'last three seconds' trade going around is a mirage."
 tags: [research, polymarket, kalshi, settlement, market-structure]
 images: [img/free-money-snapshot-vs-live.png]

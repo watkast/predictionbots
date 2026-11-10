@@ -1,7 +1,7 @@
 ---
 title: "We bought the pump candle 1,172 times. Here is what 30 days of Coinbase data says."
 date: 2026-11-08
-author: PredictionBots
+author: PredictMeNot
 summary: "A bot that chases 5-minute spikes on 112 coins, replayed over a month: 24% winners, −1.86% a trade, and a median path that goes down the moment you buy. The signal is a coin flip; fees decide the sign. Plus the one cell in the grid that is green, and why it is."
 tags: [research, coinbase, momentum, fees]
 images: [img/pump-candle-path.png, img/pump-candle-heatmap.png]

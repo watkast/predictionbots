@@ -34,7 +34,7 @@ except Exception:  # selftest without httpx
 
 KALSHI = "https://external-api.kalshi.com/trade-api/v2"
 PMUS = "https://gateway.polymarket.us"
-SITE = "https://predictionbots.io"
+SITE = "https://predictmenot.com"
 SERIES_CACHE: dict[str, dict] = {}
 WX_SNAPSHOTS: list[dict] = []
 try:
@@ -92,7 +92,7 @@ def cents(p: float) -> str:
 class Http:
     def __init__(self, pace: float = 0.15):
         import threading
-        self.c = httpx.Client(timeout=30, headers={"User-Agent": "predictionbots-market-pages/1.0 (+https://predictionbots.io)"})
+        self.c = httpx.Client(timeout=30, headers={"User-Agent": "predictionbots-market-pages/1.0 (+https://predictmenot.com)"})
         self.pace = pace
         self.last = 0.0
         self.lock = threading.Lock()
@@ -329,11 +329,11 @@ HEAD = """<!doctype html><html lang="en"><head><meta charset="utf-8"><script>try
 <script type="application/ld+json">{ld}</script>
 <style>.meter{{display:flex;height:10px;border-radius:5px;overflow:hidden;background:var(--rule)}}.meter i{{display:block;background:var(--loss)}}.kpis3{{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:12px}}.kpi .big{{font-size:28px;font-weight:600;letter-spacing:-.015em}}.crumbs{{font-size:14px;color:var(--ink-2);margin:18px 0 0}}</style></head>
 <body><a class="skip" href="#main">Skip to content</a><div class="wrap">
-<header class="top"><a class="brand" href="/">PredictionBots</a><nav><a href="/#truecost">True Cost</a><a href="/simulate.html">Simulator</a><a href="/#benchmark">Bot benchmark</a><a href="/markets/">Markets</a><a href="/#honest">How we're paid</a></nav><fieldset class="theme" id="theme"><legend>Theme</legend><label><input type="radio" name="theme" value="system" checked> System</label><label><input type="radio" name="theme" value="dark"> Dark</label><label><input type="radio" name="theme" value="light"> Light</label></fieldset></header>
+<header class="top"><a class="brand" href="/">PredictMeNot</a><nav><a href="/#truecost">True Cost</a><a href="/simulate.html">Simulator</a><a href="/#benchmark">Bot benchmark</a><a href="/markets/">Markets</a><a href="/#honest">How we're paid</a></nav><fieldset class="theme" id="theme"><legend>Theme</legend><label><input type="radio" name="theme" value="system" checked> System</label><label><input type="radio" name="theme" value="dark"> Dark</label><label><input type="radio" name="theme" value="light"> Light</label></fieldset></header>
 <main id="main">"""
 FOOT = """</main>
 <footer><p>Prices come from the venue's public market data and change constantly; fees follow the venue's published schedule; the arithmetic is ours and you can check it. Nothing on this page is investment advice. Most participants in prediction markets lose money. Problem gambling help: 1-800-GAMBLER.</p>
-<p>Code and data: <a href="https://github.com/watkast/predictionbots">github.com/watkast/predictionbots</a> · hello@predictionbots.io</p></footer></div><script src="/theme.js" defer></script><script src="/floor.js" defer></script></body></html>"""
+<p>Code and data: <a href="https://github.com/watkast/predictionbots">github.com/watkast/predictionbots</a> · inquire@predictmenot.com</p></footer></div><script src="/theme.js" defer></script><script src="/floor.js" defer></script></body></html>"""
 
 
 def esc(x) -> str:
