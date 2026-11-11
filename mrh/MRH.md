@@ -1,33 +1,33 @@
 # Mr. H — Coinbase hopper, PAPER
 
-Updated 2026-11-11T07:05:37Z · scans 1044 · universe 110 coins (USD pairs with ≥ $100k 24-h volume) · fees 0.9% taker each way · start $4.00
+Updated 2026-11-11T07:15:37Z · scans 1046 · universe 110 coins (USD pairs with ≥ $100k 24-h volume) · fees 0.9% taker each way · start $4.00
 
 ## Books (one position at a time, all-in every hop)
 
 | profile | bankroll | vs start | peak | hops | win % | avg net/hop | fees paid | open |
 |---|---|---|---|---|---|---|---|---|
-| aggressive | $2.25 | -43.7% | $4.00 | 16 | 19% | -3.46% | $0.897 | LIGHTER-USD @ 3.391 |
+| aggressive | $2.25 | -43.8% | $4.00 | 16 | 19% | -3.46% | $0.897 | LIGHTER-USD @ 3.391 |
 | standard | $2.29 | -42.6% | $4.00 | 20 | 15% | -2.71% | $1.112 | — |
-| aggressive_swap | $1.44 | -63.9% | $4.02 | 36 | 19% | -2.66% | $1.899 | RITUAL-USD @ 0.03382 |
+| aggressive_swap | $1.48 | -63.0% | $4.02 | 36 | 19% | -2.66% | $1.899 | RITUAL-USD @ 0.03382 |
 
 ## Signal forward returns (every signal, whether or not a book took it)
 
 | profile | signals | scored | median +15m | median +1h | median +4h | % beat 1.8% at +1h | median 4%-trail hop net | max run-up (med) | max drawdown (med) |
 |---|---|---|---|---|---|---|---|---|---|
-| aggressive | 172 | 135 | -0.59% | -1.06% | -3.33% | 27% | -4.33% | +6.40% | -8.15% |
-| standard | 178 | 144 | -0.37% | -0.40% | -1.28% | 16% | -2.48% | +2.97% | -4.56% |
+| aggressive | 172 | 137 | -0.65% | -1.06% | -3.33% | 26% | -4.33% | +6.40% | -8.39% |
+| standard | 178 | 146 | -0.40% | -0.40% | -1.28% | 16% | -2.51% | +2.97% | -4.78% |
 
 ## Aggressive signals by BTC regime (BTC's own move in the hour before the signal)
 
 | BTC 1h | signals | median +1h | median 4%-trail hop net | % beat 1.8% at +1h |
 |---|---|---|---|---|
 | ≤ −0.5% (downdraft) | 7 | +4.04% | -1.09% | 57% |
-| −0.5% … +0.5% (flat) | 105 | -2.17% | -5.01% | 24% |
+| −0.5% … +0.5% (flat) | 107 | -2.17% | -5.01% | 23% |
 | ≥ +0.5% (bid under the market) | 11 | +1.51% | -0.47% | 36% |
 
 ## Verdict
 
-**Not yet.** Needs 40 scored aggressive signals (135 so far) and 30 closed aggressive hops (16 so far) before this says anything. Until then every number above is noise.
+**Not yet.** Needs 40 scored aggressive signals (137 so far) and 30 closed aggressive hops (16 so far) before this says anything. Until then every number above is noise.
 
 ## Last 20 hops
 
@@ -60,10 +60,10 @@ Updated 2026-11-11T07:05:37Z · scans 1044 · universe 110 coins (USD pairs with
 |---|---|---|---|---|---|---|---|---|---|
 | 11-11T02:35 | standard | RSR | +1.5% | 4.0 | y | 0.06% | in_position | … | … |
 | 11-11T02:45 | aggressive | MEZO | +3.0% | 7.8 | n | 0.74% | spread | -3.6% | -7.4% |
-| 11-11T03:05 | aggressive | FORTH | +8.9% | 14.4 | y | 0.03% | in_position | … | … |
-| 11-11T03:05 | standard | FORTH | +8.9% | 14.4 | y | 0.03% | in_position | … | … |
-| 11-11T03:10 | aggressive | FORTH | +10.5% | 21.2 | y | 1.22% | spread | … | … |
-| 11-11T03:10 | standard | FORTH | +10.5% | 21.2 | y | 1.22% | spread | … | … |
+| 11-11T03:05 | aggressive | FORTH | +8.9% | 14.4 | y | 0.03% | in_position | +1.4% | +1.4% |
+| 11-11T03:05 | standard | FORTH | +8.9% | 14.4 | y | 0.03% | in_position | +1.4% | +1.4% |
+| 11-11T03:10 | aggressive | FORTH | +10.5% | 21.2 | y | 1.22% | spread | -8.4% | -13.2% |
+| 11-11T03:10 | standard | FORTH | +10.5% | 21.2 | y | 1.22% | spread | -8.4% | -13.2% |
 | 11-11T03:35 | aggressive | FORTH | +6.3% | 6.0 | n | 0.34% | in_position | … | … |
 | 11-11T03:55 | aggressive | FORTH | +4.5% | 3.8 | n | 0.60% | in_position | … | … |
 | 11-11T04:15 | aggressive | RITUAL | +4.7% | 5.4 | y | 0.10% | in_position | … | … |
