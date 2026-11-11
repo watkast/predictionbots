@@ -24,12 +24,25 @@
   },
   "standard": {
    "name": "standard",
-   "bankroll": 2.570461806855407,
+   "bankroll": 0.0,
    "peak": 4.0,
-   "pos": null,
+   "pos": {
+    "pid": "USELESS-USD",
+    "entry_px": 0.13922,
+    "qty": 18.297138705600545,
+    "cost": 2.570461806855407,
+    "hw": 0.13922,
+    "t_in": "2026-11-11T08:00:15Z",
+    "signal": {
+     "impulse": 0.0127,
+     "vol_mult": 7.57,
+     "above_2h_high": true
+    },
+    "hw_t": "2026-11-11T08:00:15Z"
+   },
    "hops": 21,
    "wins": 4,
-   "fees": 1.1564504484331422
+   "fees": 1.1795846046948408
   },
   "aggressive_swap": {
    "name": "aggressive_swap",
@@ -599,7 +612,7 @@
   }
  ],
  "universe_t": "2026-11-11T07:50:15Z",
- "scans": 1054,
+ "scans": 1056,
  "started": "2026-11-06T22:20:22Z",
- "last_scan": "2026-11-11T07:55:15Z"
+ "last_scan": "2026-11-11T08:05:15Z"
 }
