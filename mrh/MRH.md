@@ -1,12 +1,12 @@
 # Mr. H — Coinbase hopper, PAPER
 
-Updated 2026-11-11T05:45:38Z · scans 1028 · universe 110 coins (USD pairs with ≥ $100k 24-h volume) · fees 0.9% taker each way · start $4.00
+Updated 2026-11-11T05:55:37Z · scans 1030 · universe 110 coins (USD pairs with ≥ $100k 24-h volume) · fees 0.9% taker each way · start $4.00
 
 ## Books (one position at a time, all-in every hop)
 
 | profile | bankroll | vs start | peak | hops | win % | avg net/hop | fees paid | open |
 |---|---|---|---|---|---|---|---|---|
-| aggressive | $2.28 | -42.9% | $4.00 | 16 | 19% | -3.46% | $0.897 | LIGHTER-USD @ 3.391 |
+| aggressive | $2.29 | -42.6% | $4.00 | 16 | 19% | -3.46% | $0.897 | LIGHTER-USD @ 3.391 |
 | standard | $2.29 | -42.6% | $4.00 | 20 | 15% | -2.71% | $1.112 | — |
 | aggressive_swap | $1.45 | -63.7% | $4.02 | 36 | 19% | -2.66% | $1.886 | — |
 
@@ -14,20 +14,20 @@ Updated 2026-11-11T05:45:38Z · scans 1028 · universe 110 coins (USD pairs with
 
 | profile | signals | scored | median +15m | median +1h | median +4h | % beat 1.8% at +1h | median 4%-trail hop net | max run-up (med) | max drawdown (med) |
 |---|---|---|---|---|---|---|---|---|---|
-| aggressive | 170 | 132 | -0.53% | -0.97% | -2.88% | 27% | -4.17% | +6.49% | -8.15% |
-| standard | 177 | 142 | -0.37% | -0.35% | -1.18% | 16% | -2.38% | +3.08% | -4.56% |
+| aggressive | 170 | 133 | -0.56% | -0.99% | -3.07% | 27% | -4.24% | +6.40% | -8.15% |
+| standard | 177 | 143 | -0.37% | -0.38% | -1.23% | 16% | -2.47% | +3.01% | -4.63% |
 
 ## Aggressive signals by BTC regime (BTC's own move in the hour before the signal)
 
 | BTC 1h | signals | median +1h | median 4%-trail hop net | % beat 1.8% at +1h |
 |---|---|---|---|---|
 | ≤ −0.5% (downdraft) | 7 | +4.04% | -1.09% | 57% |
-| −0.5% … +0.5% (flat) | 102 | -2.12% | -4.80% | 25% |
+| −0.5% … +0.5% (flat) | 103 | -2.16% | -4.90% | 24% |
 | ≥ +0.5% (bid under the market) | 11 | +1.51% | -0.47% | 36% |
 
 ## Verdict
 
-**Not yet.** Needs 40 scored aggressive signals (132 so far) and 30 closed aggressive hops (16 so far) before this says anything. Until then every number above is noise.
+**Not yet.** Needs 40 scored aggressive signals (133 so far) and 30 closed aggressive hops (16 so far) before this says anything. Until then every number above is noise.
 
 ## Last 20 hops
 
