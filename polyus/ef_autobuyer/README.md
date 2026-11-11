@@ -1,9 +1,9 @@
 # Early Favorite auto-buyer v1 (paper)
 
 Paper only. Reads the live Polymarket US book at 13:00 left, else 12:00 left; buys the favorite if its ask is 80-95c with a limit at ask+1c, filled only against size actually resting on the book.
-Updated 2026-11-11T08:08:22Z.
+Updated 2026-11-11T08:18:24Z.
 
-Rounds watched: 1601. Entries: 184. Settled: 184.
+Rounds watched: 1602. Entries: 185. Settled: 184.
 
 Win rate: 149/184 = 81.0%
 
@@ -19,7 +19,6 @@ Live $100 fill price minus the backtest's display price: +0.62c average over 181
 
 | Window (UTC) | Left | Side | Ask | Depth at ask | $100 fill | Result | P&L $100 |
 |---|---|---|---|---|---|---|---|
-| 11-09T14:00 | 12:00 | Down | 0.84 | 719 | 100% @ 0.840 | WIN | +17.53 |
 | 11-09T20:30 | 12:00 | Down | 0.85 | 836 | 100% @ 0.850 | WIN | +16.22 |
 | 11-09T22:30 | 12:00 | Up | 0.80 | 100 | 100% @ 0.802 | WIN | +22.81 |
 | 11-09T23:15 | 12:00 | Up | 0.83 | 5 | 4% @ 0.830 | WIN | +0.78 |
@@ -39,6 +38,7 @@ Live $100 fill price minus the backtest's display price: +0.62c average over 181
 | 11-11T01:30 | 12:00 | Up | 0.81 | 80 | 100% @ 0.814 | WIN | +21.15 |
 | 11-11T05:30 | 12:00 | Up | 0.80 | 180 | 100% @ 0.800 | WIN | +23.10 |
 | 11-11T07:15 | 12:00 | Up | 0.85 | 1449 | 100% @ 0.850 | WIN | +16.22 |
+| 11-11T08:15 | 12:00 | Down | 0.85 | 745 | 100% @ 0.850 | - | +0.00 |
 
-Book reads: 3138, failed: 932, re-tried: 1005, median latency 0.04s.
-Entries read more than 20 s after their target second: 21 of 184 (avg 32 s late).
+Book reads: 3140, failed: 932, re-tried: 1005, median latency 0.04s.
+Entries read more than 20 s after their target second: 21 of 185 (avg 32 s late).
