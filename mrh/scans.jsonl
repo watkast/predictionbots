@@ -990,3 +990,5 @@
 {"t": "2026-11-11T02:30:15Z", "universe": 111, "signals": 0, "calls": 5634, "bankroll": {"aggressive": 2.2723, "standard": 2.4865, "aggressive_swap": 1.7606}}
 {"t": "2026-11-11T02:35:15Z", "universe": 111, "signals": 1, "calls": 5793, "bankroll": {"aggressive": 2.2802, "standard": 2.5269, "aggressive_swap": 1.7851}}
 {"t": "2026-11-11T02:40:15Z", "universe": 111, "signals": 0, "calls": 5950, "bankroll": {"aggressive": 2.2901, "standard": 2.5314, "aggressive_swap": 1.7816}}
+{"t": "2026-11-11T02:45:15Z", "universe": 111, "signals": 1, "calls": 6110, "bankroll": {"aggressive": 2.3052, "standard": 2.5329, "aggressive_swap": 1.7875}}
+{"t": "2026-11-11T02:50:15Z", "universe": 111, "signals": 0, "calls": 6268, "bankroll": {"aggressive": 2.3052, "standard": 2.5269, "aggressive_swap": 1.7851}}
