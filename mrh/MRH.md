@@ -1,14 +1,14 @@
 # Mr. H — Coinbase hopper, PAPER
 
-Updated 2026-11-11T21:00:36Z · scans 1186 · universe 110 coins (USD pairs with ≥ $100k 24-h volume) · fees 0.9% taker each way · start $4.00
+Updated 2026-11-11T21:10:36Z · scans 1188 · universe 110 coins (USD pairs with ≥ $100k 24-h volume) · fees 0.9% taker each way · start $4.00
 
 ## Books (one position at a time, all-in every hop)
 
 | profile | bankroll | vs start | peak | hops | win % | avg net/hop | fees paid | open |
 |---|---|---|---|---|---|---|---|---|
-| aggressive | $2.23 | -44.2% | $4.00 | 18 | 22% | -3.14% | $0.977 | MEZO-USD @ 0.004304 |
+| aggressive | $2.11 | -47.3% | $4.00 | 19 | 21% | -3.26% | $0.996 | — |
 | standard | $2.40 | -40.0% | $4.00 | 23 | 22% | -2.03% | $1.268 | FLR-USD @ 0.005467 |
-| aggressive_swap | $1.15 | -71.2% | $4.02 | 41 | 20% | -2.88% | $2.012 | MEZO-USD @ 0.004304 |
+| aggressive_swap | $1.09 | -72.8% | $4.02 | 42 | 19% | -2.94% | $2.022 | — |
 
 ## Signal forward returns (every signal, whether or not a book took it)
 
@@ -27,14 +27,12 @@ Updated 2026-11-11T21:00:36Z · scans 1186 · universe 110 coins (USD pairs with
 
 ## Verdict
 
-**Not yet.** Needs 40 scored aggressive signals (154 so far) and 30 closed aggressive hops (18 so far) before this says anything. Until then every number above is noise.
+**Not yet.** Needs 40 scored aggressive signals (154 so far) and 30 closed aggressive hops (19 so far) before this says anything. Until then every number above is noise.
 
 ## Last 20 hops
 
 | time (UTC) | book | coin | in | out | held | net | reason | bankroll |
 |---|---|---|---|---|---|---|---|---|
-| 11-10T22:50 | aggressive_swap | RITUAL | 0.03559 | 0.03409 | 30 m | -5.93% | trail | $1.91 |
-| 11-11T00:30 | aggressive_swap | RITUAL | 0.03657 | 0.03812 | 85 m | +2.37% | trail | $1.96 |
 | 11-11T01:05 | standard | USELESS | 0.13553 | 0.13817 | 390 m | +0.12% | trail | $2.49 |
 | 11-11T01:15 | aggressive_swap | NCT | 0.00971 | 0.00913 | 15 m | -7.66% | trail | $1.81 |
 | 11-11T03:55 | aggressive_swap | PONS | 0.1535 | 0.1516 | 130 m | -3.01% | swap | $1.75 |
@@ -53,6 +51,8 @@ Updated 2026-11-11T21:00:36Z · scans 1186 · universe 110 coins (USD pairs with
 | 11-11T14:20 | standard | TON | 1.1858 | 1.2097 | 265 m | +0.19% | trail | $2.45 |
 | 11-11T15:10 | aggressive | TON | 1.1634 | 1.2009 | 385 m | +1.37% | trail | $2.23 |
 | 11-11T15:10 | aggressive_swap | TON | 1.2182 | 1.2009 | 160 m | -3.19% | trail | $1.15 |
+| 11-11T21:10 | aggressive | MEZO | 0.004304 | 0.00414 | 25 m | -5.53% | trail | $2.11 |
+| 11-11T21:10 | aggressive_swap | MEZO | 0.004304 | 0.00414 | 25 m | -5.53% | trail | $1.09 |
 
 ## Last 15 signals
 
