@@ -1,6 +1,6 @@
 # Mr. H — Coinbase hopper, PAPER
 
-Updated 2026-11-11T19:40:36Z · scans 1170 · universe 110 coins (USD pairs with ≥ $100k 24-h volume) · fees 0.9% taker each way · start $4.00
+Updated 2026-11-11T19:50:36Z · scans 1172 · universe 110 coins (USD pairs with ≥ $100k 24-h volume) · fees 0.9% taker each way · start $4.00
 
 ## Books (one position at a time, all-in every hop)
 
@@ -14,8 +14,8 @@ Updated 2026-11-11T19:40:36Z · scans 1170 · universe 110 coins (USD pairs with
 
 | profile | signals | scored | median +15m | median +1h | median +4h | % beat 1.8% at +1h | median 4%-trail hop net | max run-up (med) | max drawdown (med) |
 |---|---|---|---|---|---|---|---|---|---|
-| aggressive | 190 | 154 | -0.79% | -1.25% | -3.71% | 25% | -4.59% | +6.27% | -8.44% |
-| standard | 204 | 162 | -0.37% | -0.55% | -1.18% | 15% | -2.53% | +2.87% | -4.41% |
+| aggressive | 191 | 154 | -0.79% | -1.25% | -3.71% | 25% | -4.59% | +6.27% | -8.44% |
+| standard | 205 | 163 | -0.37% | -0.55% | -1.13% | 15% | -2.55% | +2.93% | -4.32% |
 
 ## Aggressive signals by BTC regime (BTC's own move in the hour before the signal)
 
@@ -58,8 +58,6 @@ Updated 2026-11-11T19:40:36Z · scans 1170 · universe 110 coins (USD pairs with
 
 | time (UTC) | profile | coin | impulse | vol× | >2h high | spread | taken | +1h | +4h |
 |---|---|---|---|---|---|---|---|---|---|
-| 11-11T12:40 | standard | TON | +1.6% | 13.7 | y | 0.26% | in_position | +0.3% | -4.3% |
-| 11-11T13:30 | aggressive | FORTH | +4.8% | 3.9 | y | 0.56% | in_position | … | … |
 | 11-11T13:30 | standard | FORTH | +4.8% | 3.9 | y | 0.56% | in_position | … | … |
 | 11-11T13:35 | standard | BILL | +1.6% | 6.0 | y | 0.45% | in_position | … | … |
 | 11-11T13:40 | aggressive | FORTH | +3.9% | 3.4 | n | 1.30% | spread | … | … |
@@ -69,7 +67,9 @@ Updated 2026-11-11T19:40:36Z · scans 1170 · universe 110 coins (USD pairs with
 | 11-11T14:40 | aggressive | FLR | +2.7% | 227.7 | y | 0.49% | in_position | +0.2% | -0.9% |
 | 11-11T14:40 | standard | FLR | +2.7% | 227.7 | y | 0.49% | y | +0.2% | -0.9% |
 | 11-11T15:10 | standard | BILL | +1.1% | 7.9 | y | 0.22% | in_position | … | … |
-| 11-11T15:45 | standard | MEZO | +1.7% | 7.8 | y | 0.47% | in_position | … | … |
+| 11-11T15:45 | standard | MEZO | +1.7% | 7.8 | y | 0.47% | in_position | -0.1% | +0.5% |
 | 11-11T19:15 | aggressive | FORTH | +3.6% | 11.5 | y | 1.45% | spread | … | … |
 | 11-11T19:15 | standard | FORTH | +3.6% | 11.5 | y | 1.45% | spread | … | … |
 | 11-11T19:30 | standard | FORTH | +1.4% | 3.2 | y | 1.86% | spread | … | … |
+| 11-11T19:50 | aggressive | FORTH | +3.1% | 13.3 | y | 1.87% | spread | … | … |
+| 11-11T19:50 | standard | FORTH | +3.1% | 13.3 | y | 1.87% | spread | … | … |
