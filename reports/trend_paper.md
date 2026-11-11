@@ -1,10 +1,10 @@
 # Trend paper book (signals only, no orders)
 
-generated 2026-11-10T04:14:57.299812+00:00
+generated 2026-11-11T02:04:39.908661+00:00
 
 | strategy | ticks | rebalances | NAV $ | pnl $ | costs $ | max DD | drift | price date | stale days | since |
 |---|---|---|---|---|---|---|---|---|---|---|
-| ensemble | 17 | 2 | 9937.23 | -62.77 | 4.49 | -0.0337 | 0.010 | 2026-11-09 | 1 | 2026-10-16 |
+| ensemble | 18 | 2 | 9886.21 | -113.79 | 4.49 | -0.0337 | 0.009 | 2026-11-10 | 1 | 2026-10-16 |
 
 ## ensemble: current vs target weights
 
@@ -13,7 +13,7 @@ generated 2026-11-10T04:14:57.299812+00:00
 | DBC | 0.063 | 0.067 |
 | EEM | 0.033 | 0.033 |
 | EFA | 0.403 | 0.400 |
-| GLD | 0.035 | 0.033 |
+| GLD | 0.034 | 0.033 |
 | IWM | 0.067 | 0.067 |
 | QQQ | 0.066 | 0.067 |
 | SPY | 0.066 | 0.067 |
