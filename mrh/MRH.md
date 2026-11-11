@@ -1,21 +1,21 @@
 # Mr. H — Coinbase hopper, PAPER
 
-Updated 2026-11-11T15:00:37Z · scans 1138 · universe 110 coins (USD pairs with ≥ $100k 24-h volume) · fees 0.9% taker each way · start $4.00
+Updated 2026-11-11T15:10:37Z · scans 1140 · universe 110 coins (USD pairs with ≥ $100k 24-h volume) · fees 0.9% taker each way · start $4.00
 
 ## Books (one position at a time, all-in every hop)
 
 | profile | bankroll | vs start | peak | hops | win % | avg net/hop | fees paid | open |
 |---|---|---|---|---|---|---|---|---|
-| aggressive | $2.25 | -43.6% | $4.00 | 17 | 18% | -3.40% | $0.936 | TON-USD @ 1.1634 |
-| standard | $2.41 | -39.9% | $4.00 | 23 | 22% | -2.03% | $1.268 | FLR-USD @ 0.005467 |
-| aggressive_swap | $1.16 | -70.9% | $4.02 | 40 | 20% | -2.87% | $1.991 | TON-USD @ 1.2182 |
+| aggressive | $2.23 | -44.2% | $4.00 | 18 | 22% | -3.14% | $0.957 | — |
+| standard | $2.40 | -39.9% | $4.00 | 23 | 22% | -2.03% | $1.268 | FLR-USD @ 0.005467 |
+| aggressive_swap | $1.15 | -71.2% | $4.02 | 41 | 20% | -2.88% | $2.001 | — |
 
 ## Signal forward returns (every signal, whether or not a book took it)
 
 | profile | signals | scored | median +15m | median +1h | median +4h | % beat 1.8% at +1h | median 4%-trail hop net | max run-up (med) | max drawdown (med) |
 |---|---|---|---|---|---|---|---|---|---|
 | aggressive | 189 | 152 | -0.79% | -1.66% | -3.92% | 25% | -4.80% | +6.39% | -8.61% |
-| standard | 200 | 156 | -0.37% | -0.55% | -1.45% | 16% | -2.53% | +3.08% | -4.78% |
+| standard | 201 | 156 | -0.37% | -0.55% | -1.45% | 16% | -2.53% | +3.08% | -4.78% |
 
 ## Aggressive signals by BTC regime (BTC's own move in the hour before the signal)
 
@@ -27,14 +27,12 @@ Updated 2026-11-11T15:00:37Z · scans 1138 · universe 110 coins (USD pairs with
 
 ## Verdict
 
-**Not yet.** Needs 40 scored aggressive signals (152 so far) and 30 closed aggressive hops (17 so far) before this says anything. Until then every number above is noise.
+**Not yet.** Needs 40 scored aggressive signals (152 so far) and 30 closed aggressive hops (18 so far) before this says anything. Until then every number above is noise.
 
 ## Last 20 hops
 
 | time (UTC) | book | coin | in | out | held | net | reason | bankroll |
 |---|---|---|---|---|---|---|---|---|
-| 11-10T19:10 | aggressive_swap | MEZO | 0.004292 | 0.00408 | 40 m | -6.64% | trail | $2.09 |
-| 11-10T22:20 | aggressive_swap | XCN | 0.003297 | 0.003264 | 150 m | -2.77% | swap | $2.03 |
 | 11-10T22:50 | aggressive_swap | RITUAL | 0.03559 | 0.03409 | 30 m | -5.93% | trail | $1.91 |
 | 11-11T00:30 | aggressive_swap | RITUAL | 0.03657 | 0.03812 | 85 m | +2.37% | trail | $1.96 |
 | 11-11T01:05 | standard | USELESS | 0.13553 | 0.13817 | 390 m | +0.12% | trail | $2.49 |
@@ -53,12 +51,13 @@ Updated 2026-11-11T15:00:37Z · scans 1138 · universe 110 coins (USD pairs with
 | 11-11T12:25 | aggressive_swap | TON | 1.1634 | 1.1919 | 220 m | +0.61% | swap | $1.27 |
 | 11-11T12:30 | aggressive_swap | FORTH | 0.13809 | 0.13164 | 5 m | -6.38% | trail | $1.19 |
 | 11-11T14:20 | standard | TON | 1.1858 | 1.2097 | 265 m | +0.19% | trail | $2.45 |
+| 11-11T15:10 | aggressive | TON | 1.1634 | 1.2009 | 385 m | +1.37% | trail | $2.23 |
+| 11-11T15:10 | aggressive_swap | TON | 1.2182 | 1.2009 | 160 m | -3.19% | trail | $1.15 |
 
 ## Last 15 signals
 
 | time (UTC) | profile | coin | impulse | vol× | >2h high | spread | taken | +1h | +4h |
 |---|---|---|---|---|---|---|---|---|---|
-| 11-11T11:40 | standard | ARB | +1.0% | 17.3 | y | 0.09% | in_position | … | … |
 | 11-11T11:55 | standard | NEAR | +1.7% | 27.1 | y | 0.02% | in_position | … | … |
 | 11-11T12:00 | standard | NEAR | +1.4% | 21.6 | y | 0.04% | in_position | … | … |
 | 11-11T12:25 | aggressive | FORTH | +2.3% | 3.5 | n | 0.50% | in_position | … | … |
@@ -73,3 +72,4 @@ Updated 2026-11-11T15:00:37Z · scans 1138 · universe 110 coins (USD pairs with
 | 11-11T14:00 | standard | MEZO | +1.8% | 24.5 | y | 0.55% | in_position | … | … |
 | 11-11T14:40 | aggressive | FLR | +2.7% | 227.7 | y | 0.49% | in_position | … | … |
 | 11-11T14:40 | standard | FLR | +2.7% | 227.7 | y | 0.49% | y | … | … |
+| 11-11T15:10 | standard | BILL | +1.1% | 7.9 | y | 0.22% | in_position | … | … |
