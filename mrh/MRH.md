@@ -1,33 +1,33 @@
 # Mr. H — Coinbase hopper, PAPER
 
-Updated 2026-11-11T02:00:34Z · scans 984 · universe 111 coins (USD pairs with ≥ $100k 24-h volume) · fees 0.9% taker each way · start $4.00
+Updated 2026-11-11T02:10:35Z · scans 986 · universe 111 coins (USD pairs with ≥ $100k 24-h volume) · fees 0.9% taker each way · start $4.00
 
 ## Books (one position at a time, all-in every hop)
 
 | profile | bankroll | vs start | peak | hops | win % | avg net/hop | fees paid | open |
 |---|---|---|---|---|---|---|---|---|
-| aggressive | $2.31 | -42.2% | $4.00 | 16 | 19% | -3.46% | $0.897 | LIGHTER-USD @ 3.391 |
-| standard | $2.48 | -37.9% | $4.00 | 18 | 17% | -2.57% | $1.048 | RSR-USD @ 0.001647 |
-| aggressive_swap | $1.79 | -55.3% | $4.02 | 32 | 22% | -2.33% | $1.783 | PONS-USD @ 0.1535 |
+| aggressive | $2.29 | -42.7% | $4.00 | 16 | 19% | -3.46% | $0.897 | LIGHTER-USD @ 3.391 |
+| standard | $2.47 | -38.2% | $4.00 | 18 | 17% | -2.57% | $1.048 | RSR-USD @ 0.001647 |
+| aggressive_swap | $1.76 | -56.0% | $4.02 | 32 | 22% | -2.33% | $1.783 | PONS-USD @ 0.1535 |
 
 ## Signal forward returns (every signal, whether or not a book took it)
 
 | profile | signals | scored | median +15m | median +1h | median +4h | % beat 1.8% at +1h | median 4%-trail hop net | max run-up (med) | max drawdown (med) |
 |---|---|---|---|---|---|---|---|---|---|
-| aggressive | 161 | 124 | -0.53% | -1.25% | -2.88% | 27% | -4.07% | +6.39% | -8.42% |
-| standard | 172 | 137 | -0.37% | -0.29% | -1.13% | 17% | -2.28% | +3.01% | -4.50% |
+| aggressive | 161 | 125 | -0.50% | -1.06% | -2.68% | 26% | -4.10% | +6.37% | -8.39% |
+| standard | 172 | 138 | -0.40% | -0.30% | -1.18% | 17% | -2.29% | +3.08% | -4.56% |
 
 ## Aggressive signals by BTC regime (BTC's own move in the hour before the signal)
 
 | BTC 1h | signals | median +1h | median 4%-trail hop net | % beat 1.8% at +1h |
 |---|---|---|---|---|
 | ≤ −0.5% (downdraft) | 7 | +4.04% | -1.09% | 57% |
-| −0.5% … +0.5% (flat) | 94 | -2.29% | -4.80% | 23% |
+| −0.5% … +0.5% (flat) | 95 | -2.17% | -4.70% | 23% |
 | ≥ +0.5% (bid under the market) | 11 | +1.51% | -0.47% | 36% |
 
 ## Verdict
 
-**Not yet.** Needs 40 scored aggressive signals (124 so far) and 30 closed aggressive hops (16 so far) before this says anything. Until then every number above is noise.
+**Not yet.** Needs 40 scored aggressive signals (125 so far) and 30 closed aggressive hops (16 so far) before this says anything. Until then every number above is noise.
 
 ## Last 20 hops
 
