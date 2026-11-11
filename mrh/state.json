@@ -2,12 +2,25 @@
  "books": {
   "aggressive": {
    "name": "aggressive",
-   "bankroll": 2.108826520231425,
+   "bankroll": 0.0,
    "peak": 4.0,
-   "pos": null,
+   "pos": {
+    "pid": "MEZO-USD",
+    "entry_px": 0.004167,
+    "qty": 501.5231777176248,
+    "cost": 2.108826520231425,
+    "hw": 0.004167,
+    "t_in": "2026-11-11T21:30:15Z",
+    "signal": {
+     "impulse": 0.0259,
+     "vol_mult": 3.16,
+     "above_2h_high": false
+    },
+    "hw_t": "2026-11-11T21:30:15Z"
+   },
    "hops": 19,
    "wins": 4,
-   "fees": 0.9958557931976407
+   "fees": 1.0148352318797236
   },
   "standard": {
    "name": "standard",
@@ -33,12 +46,25 @@
   },
   "aggressive_swap": {
    "name": "aggressive_swap",
-   "bankroll": 1.0892494887343582,
+   "bankroll": 0.0,
    "peak": 4.01983237936772,
-   "pos": null,
+   "pos": {
+    "pid": "MEZO-USD",
+    "entry_px": 0.004167,
+    "qty": 259.0463746906045,
+    "cost": 1.0892494887343582,
+    "hw": 0.004167,
+    "t_in": "2026-11-11T21:30:15Z",
+    "signal": {
+     "impulse": 0.0259,
+     "vol_mult": 3.16,
+     "above_2h_high": false
+    },
+    "hw_t": "2026-11-11T21:30:15Z"
+   },
    "hops": 42,
    "wins": 8,
-   "fees": 2.021694514250175
+   "fees": 2.031497759648784
   }
  },
  "universe": [
@@ -594,7 +620,7 @@
   }
  ],
  "universe_t": "2026-11-11T20:45:15Z",
- "scans": 1190,
+ "scans": 1192,
  "started": "2026-11-06T22:20:22Z",
- "last_scan": "2026-11-11T21:20:15Z"
+ "last_scan": "2026-11-11T21:30:15Z"
 }
