@@ -33,25 +33,12 @@
   },
   "aggressive_swap": {
    "name": "aggressive_swap",
-   "bankroll": 0.0,
+   "bankroll": 1.8084102466231642,
    "peak": 4.01983237936772,
-   "pos": {
-    "pid": "NCT-USD",
-    "entry_px": 0.00971,
-    "qty": 199.87226181561374,
-    "cost": 1.9583851283850753,
-    "hw": 0.00971,
-    "t_in": "2026-11-11T01:00:15Z",
-    "signal": {
-     "impulse": 0.0284,
-     "vol_mult": 3.69,
-     "above_2h_high": false
-    },
-    "hw_t": "2026-11-11T01:00:15Z"
-   },
-   "hops": 31,
+   "pos": null,
+   "hops": 32,
    "wins": 7,
-   "fees": 1.750663220218105
+   "fees": 1.767086723971494
   }
  },
  "universe": [
@@ -607,7 +594,7 @@
   }
  ],
  "universe_t": "2026-11-11T00:50:15Z",
- "scans": 974,
+ "scans": 976,
  "started": "2026-11-06T22:20:22Z",
- "last_scan": "2026-11-11T01:10:15Z"
+ "last_scan": "2026-11-11T01:20:15Z"
 }
