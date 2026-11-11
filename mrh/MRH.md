@@ -1,14 +1,14 @@
 # Mr. H — Coinbase hopper, PAPER
 
-Updated 2026-11-11T09:05:37Z · scans 1068 · universe 111 coins (USD pairs with ≥ $100k 24-h volume) · fees 0.9% taker each way · start $4.00
+Updated 2026-11-11T09:15:37Z · scans 1070 · universe 111 coins (USD pairs with ≥ $100k 24-h volume) · fees 0.9% taker each way · start $4.00
 
 ## Books (one position at a time, all-in every hop)
 
 | profile | bankroll | vs start | peak | hops | win % | avg net/hop | fees paid | open |
 |---|---|---|---|---|---|---|---|---|
-| aggressive | $2.16 | -45.9% | $4.00 | 17 | 18% | -3.40% | $0.936 | TON-USD @ 1.1634 |
-| standard | $2.48 | -37.9% | $4.00 | 21 | 19% | -2.01% | $1.180 | USELESS-USD @ 0.13922 |
-| aggressive_swap | $1.24 | -68.9% | $4.02 | 38 | 18% | -2.87% | $1.946 | TON-USD @ 1.1634 |
+| aggressive | $2.16 | -46.0% | $4.00 | 17 | 18% | -3.40% | $0.936 | TON-USD @ 1.1634 |
+| standard | $2.45 | -38.8% | $4.00 | 22 | 18% | -2.13% | $1.202 | — |
+| aggressive_swap | $1.24 | -69.0% | $4.02 | 38 | 18% | -2.87% | $1.946 | TON-USD @ 1.1634 |
 
 ## Signal forward returns (every signal, whether or not a book took it)
 
@@ -33,7 +33,6 @@ Updated 2026-11-11T09:05:37Z · scans 1068 · universe 111 coins (USD pairs with
 
 | time (UTC) | book | coin | in | out | held | net | reason | bankroll |
 |---|---|---|---|---|---|---|---|---|
-| 11-10T14:35 | aggressive_swap | MEZO | 0.004251 | 0.00413 | 55 m | -4.59% | trail | $2.34 |
 | 11-10T17:47 | aggressive_swap | LIGHTER | 3.391 | 3.372 | 188 m | -2.34% | swap | $2.28 |
 | 11-10T18:05 | aggressive_swap | RSC | 0.04827 | 0.0482 | 17 m | -1.93% | trail | $2.24 |
 | 11-10T18:10 | standard | LIGHTER | 3.391 | 3.335 | 210 m | -3.41% | trail | $2.49 |
@@ -53,6 +52,7 @@ Updated 2026-11-11T09:05:37Z · scans 1068 · universe 111 coins (USD pairs with
 | 11-11T07:55 | aggressive_swap | RITUAL | 0.03382 | 0.03261 | 75 m | -5.31% | trail | $1.37 |
 | 11-11T08:15 | aggressive_swap | XCN | 0.004219 | 0.003955 | 5 m | -7.94% | trail | $1.26 |
 | 11-11T08:40 | aggressive | LIGHTER | 3.391 | 3.368 | 1080 m | -2.46% | trail | $2.20 |
+| 11-11T09:15 | standard | USELESS | 0.13922 | 0.13507 | 75 m | -4.72% | trail | $2.45 |
 
 ## Last 15 signals
 
