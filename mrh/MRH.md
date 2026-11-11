@@ -1,14 +1,14 @@
 # Mr. H — Coinbase hopper, PAPER
 
-Updated 2026-11-11T14:10:36Z · scans 1128 · universe 110 coins (USD pairs with ≥ $100k 24-h volume) · fees 0.9% taker each way · start $4.00
+Updated 2026-11-11T14:20:36Z · scans 1130 · universe 110 coins (USD pairs with ≥ $100k 24-h volume) · fees 0.9% taker each way · start $4.00
 
 ## Books (one position at a time, all-in every hop)
 
 | profile | bankroll | vs start | peak | hops | win % | avg net/hop | fees paid | open |
 |---|---|---|---|---|---|---|---|---|
-| aggressive | $2.30 | -42.6% | $4.00 | 17 | 18% | -3.40% | $0.936 | TON-USD @ 1.1634 |
-| standard | $2.50 | -37.4% | $4.00 | 22 | 18% | -2.13% | $1.224 | TON-USD @ 1.1858 |
-| aggressive_swap | $1.19 | -70.4% | $4.02 | 40 | 20% | -2.87% | $1.991 | TON-USD @ 1.2182 |
+| aggressive | $2.27 | -43.3% | $4.00 | 17 | 18% | -3.40% | $0.936 | TON-USD @ 1.1634 |
+| standard | $2.45 | -38.7% | $4.00 | 23 | 22% | -2.03% | $1.246 | — |
+| aggressive_swap | $1.17 | -70.7% | $4.02 | 40 | 20% | -2.87% | $1.991 | TON-USD @ 1.2182 |
 
 ## Signal forward returns (every signal, whether or not a book took it)
 
@@ -33,7 +33,6 @@ Updated 2026-11-11T14:10:36Z · scans 1128 · universe 110 coins (USD pairs with
 
 | time (UTC) | book | coin | in | out | held | net | reason | bankroll |
 |---|---|---|---|---|---|---|---|---|
-| 11-10T18:10 | standard | LIGHTER | 3.391 | 3.335 | 210 m | -3.41% | trail | $2.49 |
 | 11-10T19:10 | aggressive_swap | MEZO | 0.004292 | 0.00408 | 40 m | -6.64% | trail | $2.09 |
 | 11-10T22:20 | aggressive_swap | XCN | 0.003297 | 0.003264 | 150 m | -2.77% | swap | $2.03 |
 | 11-10T22:50 | aggressive_swap | RITUAL | 0.03559 | 0.03409 | 30 m | -5.93% | trail | $1.91 |
@@ -53,6 +52,7 @@ Updated 2026-11-11T14:10:36Z · scans 1128 · universe 110 coins (USD pairs with
 | 11-11T09:15 | standard | USELESS | 0.13922 | 0.13507 | 75 m | -4.72% | trail | $2.45 |
 | 11-11T12:25 | aggressive_swap | TON | 1.1634 | 1.1919 | 220 m | +0.61% | swap | $1.27 |
 | 11-11T12:30 | aggressive_swap | FORTH | 0.13809 | 0.13164 | 5 m | -6.38% | trail | $1.19 |
+| 11-11T14:20 | standard | TON | 1.1858 | 1.2097 | 265 m | +0.19% | trail | $2.45 |
 
 ## Last 15 signals
 

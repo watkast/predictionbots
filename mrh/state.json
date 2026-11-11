@@ -24,25 +24,12 @@
   },
   "standard": {
    "name": "standard",
-   "bankroll": 0.0,
+   "bankroll": 2.4537441562922635,
    "peak": 4.0,
-   "pos": {
-    "pid": "TON-USD",
-    "entry_px": 1.1858,
-    "qty": 2.04681194676388,
-    "cost": 2.449151974240776,
-    "hw": 1.2514,
-    "t_in": "2026-11-11T09:55:15Z",
-    "signal": {
-     "impulse": 0.0119,
-     "vol_mult": 7.21,
-     "above_2h_high": true
-    },
-    "hw_t": "2026-11-11T13:50:15Z"
-   },
-   "hops": 22,
-   "wins": 4,
-   "fees": 1.223869523187697
+   "pos": null,
+   "hops": 23,
+   "wins": 5,
+   "fees": 1.2461537788956993
   },
   "aggressive_swap": {
    "name": "aggressive_swap",
@@ -620,7 +607,7 @@
   }
  ],
  "universe_t": "2026-11-11T13:50:15Z",
- "scans": 1128,
+ "scans": 1130,
  "started": "2026-11-06T22:20:22Z",
- "last_scan": "2026-11-11T14:10:15Z"
+ "last_scan": "2026-11-11T14:20:15Z"
 }
