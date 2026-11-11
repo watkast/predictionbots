@@ -24,12 +24,25 @@
   },
   "standard": {
    "name": "standard",
-   "bankroll": 2.4537441562922635,
+   "bankroll": 0.0,
    "peak": 4.0,
-   "pos": null,
+   "pos": {
+    "pid": "FLR-USD",
+    "entry_px": 0.005467,
+    "qty": 444.78881633174194,
+    "cost": 2.4537441562922635,
+    "hw": 0.005467,
+    "t_in": "2026-11-11T14:40:15Z",
+    "signal": {
+     "impulse": 0.0274,
+     "vol_mult": 227.74,
+     "above_2h_high": true
+    },
+    "hw_t": "2026-11-11T14:40:15Z"
+   },
    "hops": 23,
    "wins": 5,
-   "fees": 1.2461537788956993
+   "fees": 1.2682374763023296
   },
   "aggressive_swap": {
    "name": "aggressive_swap",
@@ -607,7 +620,7 @@
   }
  ],
  "universe_t": "2026-11-11T13:50:15Z",
- "scans": 1132,
+ "scans": 1134,
  "started": "2026-11-06T22:20:22Z",
- "last_scan": "2026-11-11T14:30:15Z"
+ "last_scan": "2026-11-11T14:40:15Z"
 }
