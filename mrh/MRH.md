@@ -1,6 +1,6 @@
 # Mr. H — Coinbase hopper, PAPER
 
-Updated 2026-11-11T16:30:37Z · scans 1156 · universe 110 coins (USD pairs with ≥ $100k 24-h volume) · fees 0.9% taker each way · start $4.00
+Updated 2026-11-11T16:35:36Z · scans 1157 · universe 110 coins (USD pairs with ≥ $100k 24-h volume) · fees 0.9% taker each way · start $4.00
 
 ## Books (one position at a time, all-in every hop)
 
@@ -14,7 +14,7 @@ Updated 2026-11-11T16:30:37Z · scans 1156 · universe 110 coins (USD pairs with
 
 | profile | signals | scored | median +15m | median +1h | median +4h | % beat 1.8% at +1h | median 4%-trail hop net | max run-up (med) | max drawdown (med) |
 |---|---|---|---|---|---|---|---|---|---|
-| aggressive | 189 | 152 | -0.79% | -1.66% | -3.92% | 25% | -4.80% | +6.39% | -8.61% |
+| aggressive | 189 | 153 | -0.65% | -1.44% | -3.74% | 25% | -4.70% | +6.37% | -8.45% |
 | standard | 202 | 159 | -0.37% | -0.56% | -1.23% | 16% | -2.51% | +2.93% | -4.50% |
 
 ## Aggressive signals by BTC regime (BTC's own move in the hour before the signal)
@@ -22,12 +22,12 @@ Updated 2026-11-11T16:30:37Z · scans 1156 · universe 110 coins (USD pairs with
 | BTC 1h | signals | median +1h | median 4%-trail hop net | % beat 1.8% at +1h |
 |---|---|---|---|---|
 | ≤ −0.5% (downdraft) | 7 | +4.04% | -1.09% | 57% |
-| −0.5% … +0.5% (flat) | 120 | -2.17% | -5.03% | 22% |
+| −0.5% … +0.5% (flat) | 121 | -2.16% | -5.01% | 23% |
 | ≥ +0.5% (bid under the market) | 13 | +0.74% | -1.68% | 31% |
 
 ## Verdict
 
-**Not yet.** Needs 40 scored aggressive signals (152 so far) and 30 closed aggressive hops (18 so far) before this says anything. Until then every number above is noise.
+**Not yet.** Needs 40 scored aggressive signals (153 so far) and 30 closed aggressive hops (18 so far) before this says anything. Until then every number above is noise.
 
 ## Last 20 hops
 
@@ -60,7 +60,7 @@ Updated 2026-11-11T16:30:37Z · scans 1156 · universe 110 coins (USD pairs with
 |---|---|---|---|---|---|---|---|---|---|
 | 11-11T12:00 | standard | NEAR | +1.4% | 21.6 | y | 0.04% | in_position | -1.1% | -1.0% |
 | 11-11T12:25 | aggressive | FORTH | +2.3% | 3.5 | n | 0.50% | in_position | … | … |
-| 11-11T12:30 | aggressive | TON | +2.3% | 14.0 | n | 0.08% | in_position | … | … |
+| 11-11T12:30 | aggressive | TON | +2.3% | 14.0 | n | 0.08% | in_position | +2.8% | -1.1% |
 | 11-11T12:40 | standard | TON | +1.6% | 13.7 | y | 0.26% | in_position | … | … |
 | 11-11T13:30 | aggressive | FORTH | +4.8% | 3.9 | y | 0.56% | in_position | … | … |
 | 11-11T13:30 | standard | FORTH | +4.8% | 3.9 | y | 0.56% | in_position | … | … |
