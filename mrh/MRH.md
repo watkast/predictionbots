@@ -1,20 +1,20 @@
 # Mr. H — Coinbase hopper, PAPER
 
-Updated 2026-11-11T08:55:37Z · scans 1066 · universe 111 coins (USD pairs with ≥ $100k 24-h volume) · fees 0.9% taker each way · start $4.00
+Updated 2026-11-11T09:05:37Z · scans 1068 · universe 111 coins (USD pairs with ≥ $100k 24-h volume) · fees 0.9% taker each way · start $4.00
 
 ## Books (one position at a time, all-in every hop)
 
 | profile | bankroll | vs start | peak | hops | win % | avg net/hop | fees paid | open |
 |---|---|---|---|---|---|---|---|---|
-| aggressive | $2.20 | -45.0% | $4.00 | 17 | 18% | -3.40% | $0.936 | TON-USD @ 1.1634 |
-| standard | $2.49 | -37.7% | $4.00 | 21 | 19% | -2.01% | $1.180 | USELESS-USD @ 0.13922 |
-| aggressive_swap | $1.26 | -68.4% | $4.02 | 38 | 18% | -2.87% | $1.946 | TON-USD @ 1.1634 |
+| aggressive | $2.16 | -45.9% | $4.00 | 17 | 18% | -3.40% | $0.936 | TON-USD @ 1.1634 |
+| standard | $2.48 | -37.9% | $4.00 | 21 | 19% | -2.01% | $1.180 | USELESS-USD @ 0.13922 |
+| aggressive_swap | $1.24 | -68.9% | $4.02 | 38 | 18% | -2.87% | $1.946 | TON-USD @ 1.1634 |
 
 ## Signal forward returns (every signal, whether or not a book took it)
 
 | profile | signals | scored | median +15m | median +1h | median +4h | % beat 1.8% at +1h | median 4%-trail hop net | max run-up (med) | max drawdown (med) |
 |---|---|---|---|---|---|---|---|---|---|
-| aggressive | 180 | 140 | -0.94% | -1.25% | -3.63% | 26% | -4.59% | +6.39% | -8.61% |
+| aggressive | 181 | 141 | -0.95% | -1.44% | -3.67% | 26% | -4.70% | +6.40% | -8.45% |
 | standard | 185 | 147 | -0.42% | -0.43% | -1.33% | 16% | -2.51% | +2.93% | -4.92% |
 
 ## Aggressive signals by BTC regime (BTC's own move in the hour before the signal)
@@ -22,12 +22,12 @@ Updated 2026-11-11T08:55:37Z · scans 1066 · universe 111 coins (USD pairs with
 | BTC 1h | signals | median +1h | median 4%-trail hop net | % beat 1.8% at +1h |
 |---|---|---|---|---|
 | ≤ −0.5% (downdraft) | 7 | +4.04% | -1.09% | 57% |
-| −0.5% … +0.5% (flat) | 110 | -2.17% | -5.05% | 23% |
+| −0.5% … +0.5% (flat) | 111 | -2.17% | -5.10% | 23% |
 | ≥ +0.5% (bid under the market) | 11 | +1.51% | -0.47% | 36% |
 
 ## Verdict
 
-**Not yet.** Needs 40 scored aggressive signals (140 so far) and 30 closed aggressive hops (17 so far) before this says anything. Until then every number above is noise.
+**Not yet.** Needs 40 scored aggressive signals (141 so far) and 30 closed aggressive hops (17 so far) before this says anything. Until then every number above is noise.
 
 ## Last 20 hops
 
@@ -58,7 +58,6 @@ Updated 2026-11-11T08:55:37Z · scans 1066 · universe 111 coins (USD pairs with
 
 | time (UTC) | profile | coin | impulse | vol× | >2h high | spread | taken | +1h | +4h |
 |---|---|---|---|---|---|---|---|---|---|
-| 11-11T07:30 | aggressive | XCN | +2.1% | 35.3 | y | 0.20% | in_position | … | … |
 | 11-11T07:30 | standard | XCN | +2.1% | 35.3 | y | 0.20% | y | … | … |
 | 11-11T07:35 | aggressive | XCN | +4.7% | 485.3 | y | 1.29% | spread | … | … |
 | 11-11T07:35 | standard | XCN | +4.7% | 485.3 | y | 1.29% | spread | … | … |
@@ -73,3 +72,4 @@ Updated 2026-11-11T08:55:37Z · scans 1066 · universe 111 coins (USD pairs with
 | 11-11T08:00 | standard | USELESS | +1.3% | 7.6 | y | 0.19% | y | … | … |
 | 11-11T08:10 | aggressive | XCN | +3.7% | 101.1 | n | 0.31% | in_position | … | … |
 | 11-11T08:45 | aggressive | TON | +2.1% | 52.1 | n | 0.15% | y | … | … |
+| 11-11T09:00 | aggressive | ERA | +2.1% | 4.0 | n | 0.60% | spread | … | … |
