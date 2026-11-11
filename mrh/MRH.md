@@ -1,6 +1,6 @@
 # Mr. H — Coinbase hopper, PAPER
 
-Updated 2026-11-11T23:30:36Z · scans 1216 · universe 111 coins (USD pairs with ≥ $100k 24-h volume) · fees 0.9% taker each way · start $4.00
+Updated 2026-11-11T23:40:36Z · scans 1218 · universe 111 coins (USD pairs with ≥ $100k 24-h volume) · fees 0.9% taker each way · start $4.00
 
 ## Books (one position at a time, all-in every hop)
 
@@ -15,7 +15,7 @@ Updated 2026-11-11T23:30:36Z · scans 1216 · universe 111 coins (USD pairs with
 | profile | signals | scored | median +15m | median +1h | median +4h | % beat 1.8% at +1h | median 4%-trail hop net | max run-up (med) | max drawdown (med) |
 |---|---|---|---|---|---|---|---|---|---|
 | aggressive | 198 | 155 | -0.65% | -1.06% | -3.67% | 26% | -4.48% | +6.37% | -8.42% |
-| standard | 209 | 164 | -0.37% | -0.49% | -1.10% | 16% | -2.53% | +2.97% | -4.29% |
+| standard | 209 | 165 | -0.37% | -0.43% | -1.07% | 16% | -2.51% | +3.01% | -4.32% |
 
 ## Aggressive signals by BTC regime (BTC's own move in the hour before the signal)
 
@@ -59,7 +59,7 @@ Updated 2026-11-11T23:30:36Z · scans 1216 · universe 111 coins (USD pairs with
 | time (UTC) | profile | coin | impulse | vol× | >2h high | spread | taken | +1h | +4h |
 |---|---|---|---|---|---|---|---|---|---|
 | 11-11T19:15 | standard | FORTH | +3.6% | 11.5 | y | 1.45% | spread | +4.8% | -0.4% |
-| 11-11T19:30 | standard | FORTH | +1.4% | 3.2 | y | 1.86% | spread | … | … |
+| 11-11T19:30 | standard | FORTH | +1.4% | 3.2 | y | 1.86% | spread | +3.7% | -0.7% |
 | 11-11T19:50 | aggressive | FORTH | +3.1% | 13.3 | y | 1.87% | spread | … | … |
 | 11-11T19:50 | standard | FORTH | +3.1% | 13.3 | y | 1.87% | spread | … | … |
 | 11-11T19:55 | standard | FORTH | +1.4% | 4.8 | y | 0.01% | in_position | … | … |
