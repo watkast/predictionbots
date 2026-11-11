@@ -1,12 +1,12 @@
 # Mr. H — Coinbase hopper, PAPER
 
-Updated 2026-11-11T06:15:37Z · scans 1034 · universe 110 coins (USD pairs with ≥ $100k 24-h volume) · fees 0.9% taker each way · start $4.00
+Updated 2026-11-11T06:25:37Z · scans 1036 · universe 110 coins (USD pairs with ≥ $100k 24-h volume) · fees 0.9% taker each way · start $4.00
 
 ## Books (one position at a time, all-in every hop)
 
 | profile | bankroll | vs start | peak | hops | win % | avg net/hop | fees paid | open |
 |---|---|---|---|---|---|---|---|---|
-| aggressive | $2.27 | -43.2% | $4.00 | 16 | 19% | -3.46% | $0.897 | LIGHTER-USD @ 3.391 |
+| aggressive | $2.26 | -43.6% | $4.00 | 16 | 19% | -3.46% | $0.897 | LIGHTER-USD @ 3.391 |
 | standard | $2.29 | -42.6% | $4.00 | 20 | 15% | -2.71% | $1.112 | — |
 | aggressive_swap | $1.45 | -63.7% | $4.02 | 36 | 19% | -2.66% | $1.886 | — |
 
@@ -15,7 +15,7 @@ Updated 2026-11-11T06:15:37Z · scans 1034 · universe 110 coins (USD pairs with
 | profile | signals | scored | median +15m | median +1h | median +4h | % beat 1.8% at +1h | median 4%-trail hop net | max run-up (med) | max drawdown (med) |
 |---|---|---|---|---|---|---|---|---|---|
 | aggressive | 170 | 133 | -0.56% | -0.99% | -3.07% | 27% | -4.24% | +6.40% | -8.15% |
-| standard | 177 | 143 | -0.37% | -0.38% | -1.23% | 16% | -2.47% | +3.01% | -4.63% |
+| standard | 177 | 144 | -0.37% | -0.40% | -1.28% | 16% | -2.48% | +2.97% | -4.56% |
 
 ## Aggressive signals by BTC regime (BTC's own move in the hour before the signal)
 
@@ -59,7 +59,7 @@ Updated 2026-11-11T06:15:37Z · scans 1034 · universe 110 coins (USD pairs with
 | time (UTC) | profile | coin | impulse | vol× | >2h high | spread | taken | +1h | +4h |
 |---|---|---|---|---|---|---|---|---|---|
 | 11-11T01:45 | standard | PONS | +2.1% | 25.3 | y | 0.20% | in_position | … | … |
-| 11-11T02:20 | standard | CAP | +1.5% | 4.1 | y | 0.28% | in_position | … | … |
+| 11-11T02:20 | standard | CAP | +1.5% | 4.1 | y | 0.28% | in_position | -2.1% | -2.7% |
 | 11-11T02:25 | aggressive | RITUAL | +3.1% | 13.9 | n | 0.86% | spread | … | … |
 | 11-11T02:35 | standard | RSR | +1.5% | 4.0 | y | 0.06% | in_position | … | … |
 | 11-11T02:45 | aggressive | MEZO | +3.0% | 7.8 | n | 0.74% | spread | … | … |
