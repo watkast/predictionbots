@@ -1,13 +1,13 @@
 # Mr. H — Coinbase hopper, PAPER
 
-Updated 2026-11-12T14:35:37Z · scans 1352 · universe 110 coins (USD pairs with ≥ $100k 24-h volume) · fees 0.9% taker each way · start $4.00
+Updated 2026-11-12T14:45:37Z · scans 1354 · universe 110 coins (USD pairs with ≥ $100k 24-h volume) · fees 0.9% taker each way · start $4.00
 
 ## Books (one position at a time, all-in every hop)
 
 | profile | bankroll | vs start | peak | hops | win % | avg net/hop | fees paid | open |
 |---|---|---|---|---|---|---|---|---|
-| aggressive | $1.83 | -54.4% | $4.00 | 28 | 29% | -2.65% | $1.327 | MEZO-USD @ 0.004288 |
-| standard | $2.06 | -48.4% | $4.00 | 28 | 21% | -2.21% | $1.468 | ENA-USD @ 0.14094 |
+| aggressive | $1.73 | -56.7% | $4.00 | 29 | 28% | -2.77% | $1.343 | — |
+| standard | $2.06 | -48.6% | $4.00 | 28 | 21% | -2.21% | $1.468 | ENA-USD @ 0.14094 |
 | aggressive_swap | $0.99 | -75.3% | $4.02 | 44 | 18% | -3.02% | $2.059 | — |
 
 ## Signal forward returns (every signal, whether or not a book took it)
@@ -15,7 +15,7 @@ Updated 2026-11-12T14:35:37Z · scans 1352 · universe 110 coins (USD pairs with
 | profile | signals | scored | median +15m | median +1h | median +4h | % beat 1.8% at +1h | median 4%-trail hop net | max run-up (med) | max drawdown (med) |
 |---|---|---|---|---|---|---|---|---|---|
 | aggressive | 220 | 173 | -0.59% | -1.44% | -3.37% | 27% | -4.33% | +6.40% | -8.45% |
-| standard | 227 | 173 | -0.36% | -0.38% | -1.07% | 18% | -2.50% | +3.30% | -4.65% |
+| standard | 229 | 173 | -0.36% | -0.38% | -1.07% | 18% | -2.50% | +3.30% | -4.65% |
 
 ## Aggressive signals by BTC regime (BTC's own move in the hour before the signal)
 
@@ -27,13 +27,12 @@ Updated 2026-11-12T14:35:37Z · scans 1352 · universe 110 coins (USD pairs with
 
 ## Verdict
 
-**Not yet.** Needs 40 scored aggressive signals (173 so far) and 30 closed aggressive hops (28 so far) before this says anything. Until then every number above is noise.
+**Not yet.** Needs 40 scored aggressive signals (173 so far) and 30 closed aggressive hops (29 so far) before this says anything. Until then every number above is noise.
 
 ## Last 20 hops
 
 | time (UTC) | book | coin | in | out | held | net | reason | bankroll |
 |---|---|---|---|---|---|---|---|---|
-| 11-11T15:10 | aggressive | TON | 1.1634 | 1.2009 | 385 m | +1.37% | trail | $2.23 |
 | 11-11T15:10 | aggressive_swap | TON | 1.2182 | 1.2009 | 160 m | -3.19% | trail | $1.15 |
 | 11-11T21:10 | aggressive | MEZO | 0.004304 | 0.00414 | 25 m | -5.53% | trail | $2.11 |
 | 11-11T21:10 | aggressive_swap | MEZO | 0.004304 | 0.00414 | 25 m | -5.53% | trail | $1.09 |
@@ -53,13 +52,12 @@ Updated 2026-11-12T14:35:37Z · scans 1352 · universe 110 coins (USD pairs with
 | 11-12T13:05 | aggressive | RITUAL | 0.0465 | 0.04807 | 35 m | +1.52% | trail | $1.90 |
 | 11-12T13:50 | standard | TON | 1.2604 | 1.2409 | 75 m | -3.31% | trail | $2.10 |
 | 11-12T14:15 | aggressive | MEZO | 0.00431 | 0.00425 | 50 m | -3.16% | trail | $1.84 |
+| 11-12T14:45 | aggressive | MEZO | 0.004288 | 0.004101 | 10 m | -6.07% | trail | $1.73 |
 
 ## Last 15 signals
 
 | time (UTC) | profile | coin | impulse | vol× | >2h high | spread | taken | +1h | +4h |
 |---|---|---|---|---|---|---|---|---|---|
-| 11-12T12:30 | aggressive | RITUAL | +4.9% | 5.4 | n | 0.24% | y | … | … |
-| 11-12T12:35 | aggressive | RITUAL | +6.2% | 13.9 | y | 2.85% | spread | … | … |
 | 11-12T12:35 | standard | RITUAL | +6.2% | 13.9 | y | 2.85% | spread | … | … |
 | 11-12T12:35 | standard | TON | +1.2% | 3.9 | y | 0.10% | y | … | … |
 | 11-12T13:25 | aggressive | MEZO | +3.3% | 3.6 | y | 0.58% | y | … | … |
@@ -73,3 +71,5 @@ Updated 2026-11-12T14:35:37Z · scans 1352 · universe 110 coins (USD pairs with
 | 11-12T14:20 | standard | A8 | +7.8% | 3.4 | y | 1.60% | spread | … | … |
 | 11-12T14:35 | aggressive | MEZO | +3.6% | 24.1 | n | 0.02% | y | … | … |
 | 11-12T14:35 | standard | ZEC | +1.7% | 4.7 | y | 0.07% | in_position | … | … |
+| 11-12T14:40 | standard | USELESS | +1.4% | 5.2 | y | 0.14% | in_position | … | … |
+| 11-12T14:40 | standard | HYPE | +1.1% | 5.4 | y | 0.03% | in_position | … | … |
