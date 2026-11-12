@@ -1,21 +1,21 @@
 # Mr. H — Coinbase hopper, PAPER
 
-Updated 2026-11-12T11:55:36Z · scans 1320 · universe 110 coins (USD pairs with ≥ $100k 24-h volume) · fees 0.9% taker each way · start $4.00
+Updated 2026-11-12T12:05:36Z · scans 1322 · universe 110 coins (USD pairs with ≥ $100k 24-h volume) · fees 0.9% taker each way · start $4.00
 
 ## Books (one position at a time, all-in every hop)
 
 | profile | bankroll | vs start | peak | hops | win % | avg net/hop | fees paid | open |
 |---|---|---|---|---|---|---|---|---|
-| aggressive | $1.85 | -53.7% | $4.00 | 25 | 24% | -2.91% | $1.225 | RITUAL-USD @ 0.04345 |
-| standard | $2.12 | -46.9% | $4.00 | 26 | 19% | -2.30% | $1.391 | RITUAL-USD @ 0.04345 |
+| aggressive | $1.97 | -50.7% | $4.00 | 25 | 24% | -2.91% | $1.225 | RITUAL-USD @ 0.04345 |
+| standard | $2.26 | -43.5% | $4.00 | 26 | 19% | -2.30% | $1.391 | RITUAL-USD @ 0.04345 |
 | aggressive_swap | $0.99 | -75.3% | $4.02 | 44 | 18% | -3.02% | $2.059 | — |
 
 ## Signal forward returns (every signal, whether or not a book took it)
 
 | profile | signals | scored | median +15m | median +1h | median +4h | % beat 1.8% at +1h | median 4%-trail hop net | max run-up (med) | max drawdown (med) |
 |---|---|---|---|---|---|---|---|---|---|
-| aggressive | 212 | 173 | -0.59% | -1.44% | -3.37% | 27% | -4.33% | +6.40% | -8.45% |
-| standard | 217 | 173 | -0.36% | -0.38% | -1.07% | 18% | -2.50% | +3.30% | -4.65% |
+| aggressive | 213 | 173 | -0.59% | -1.44% | -3.37% | 27% | -4.33% | +6.40% | -8.45% |
+| standard | 218 | 173 | -0.36% | -0.38% | -1.07% | 18% | -2.50% | +3.30% | -4.65% |
 
 ## Aggressive signals by BTC regime (BTC's own move in the hour before the signal)
 
@@ -58,8 +58,6 @@ Updated 2026-11-12T11:55:36Z · scans 1320 · universe 110 coins (USD pairs with
 
 | time (UTC) | profile | coin | impulse | vol× | >2h high | spread | taken | +1h | +4h |
 |---|---|---|---|---|---|---|---|---|---|
-| 11-12T04:05 | standard | RITUAL | +3.6% | 8.5 | y | 0.02% | in_position | +8.3% | -1.6% |
-| 11-12T04:10 | aggressive | RITUAL | +2.7% | 6.6 | n | 0.09% | in_position | +6.8% | -7.8% |
 | 11-12T04:50 | aggressive | RITUAL | +5.7% | 4.7 | y | 0.39% | in_position | -7.6% | -13.3% |
 | 11-12T04:50 | standard | RITUAL | +5.7% | 4.7 | y | 0.39% | y | -7.6% | -13.3% |
 | 11-12T05:20 | aggressive | MEZO | +2.7% | 15.1 | n | 0.08% | y | +11.9% | +17.8% |
@@ -73,3 +71,5 @@ Updated 2026-11-12T11:55:36Z · scans 1320 · universe 110 coins (USD pairs with
 | 11-12T10:00 | standard | ERA | +2.6% | 3.4 | y | 0.59% | y | … | … |
 | 11-12T11:55 | aggressive | RITUAL | +2.3% | 4.3 | y | 0.09% | y | … | … |
 | 11-12T11:55 | standard | RITUAL | +2.3% | 4.3 | y | 0.09% | y | … | … |
+| 11-12T12:00 | aggressive | RITUAL | +7.4% | 18.7 | y | 0.11% | in_position | … | … |
+| 11-12T12:00 | standard | RITUAL | +7.4% | 18.7 | y | 0.11% | in_position | … | … |
