@@ -1,13 +1,13 @@
 # Mr. H — Coinbase hopper, PAPER
 
-Updated 2026-11-12T13:45:39Z · scans 1342 · universe 109 coins (USD pairs with ≥ $100k 24-h volume) · fees 0.9% taker each way · start $4.00
+Updated 2026-11-12T13:55:36Z · scans 1344 · universe 110 coins (USD pairs with ≥ $100k 24-h volume) · fees 0.9% taker each way · start $4.00
 
 ## Books (one position at a time, all-in every hop)
 
 | profile | bankroll | vs start | peak | hops | win % | avg net/hop | fees paid | open |
 |---|---|---|---|---|---|---|---|---|
-| aggressive | $1.87 | -53.2% | $4.00 | 27 | 30% | -2.63% | $1.294 | MEZO-USD @ 0.00431 |
-| standard | $2.13 | -46.7% | $4.00 | 27 | 22% | -2.17% | $1.430 | TON-USD @ 1.2604 |
+| aggressive | $1.88 | -53.0% | $4.00 | 27 | 30% | -2.63% | $1.294 | MEZO-USD @ 0.00431 |
+| standard | $2.10 | -47.5% | $4.00 | 28 | 21% | -2.21% | $1.449 | — |
 | aggressive_swap | $0.99 | -75.3% | $4.02 | 44 | 18% | -3.02% | $2.059 | — |
 
 ## Signal forward returns (every signal, whether or not a book took it)
@@ -33,7 +33,6 @@ Updated 2026-11-12T13:45:39Z · scans 1342 · universe 109 coins (USD pairs with
 
 | time (UTC) | book | coin | in | out | held | net | reason | bankroll |
 |---|---|---|---|---|---|---|---|---|
-| 11-11T12:30 | aggressive_swap | FORTH | 0.13809 | 0.13164 | 5 m | -6.38% | trail | $1.19 |
 | 11-11T14:20 | standard | TON | 1.1858 | 1.2097 | 265 m | +0.19% | trail | $2.45 |
 | 11-11T15:10 | aggressive | TON | 1.1634 | 1.2009 | 385 m | +1.37% | trail | $2.23 |
 | 11-11T15:10 | aggressive_swap | TON | 1.2182 | 1.2009 | 160 m | -3.19% | trail | $1.15 |
@@ -53,6 +52,7 @@ Updated 2026-11-12T13:45:39Z · scans 1342 · universe 109 coins (USD pairs with
 | 11-12T12:15 | standard | RITUAL | 0.04345 | 0.04477 | 20 m | +1.19% | trail | $2.17 |
 | 11-12T12:20 | aggressive | RITUAL | 0.04345 | 0.04431 | 25 m | +0.15% | trail | $1.87 |
 | 11-12T13:05 | aggressive | RITUAL | 0.0465 | 0.04807 | 35 m | +1.52% | trail | $1.90 |
+| 11-12T13:50 | standard | TON | 1.2604 | 1.2409 | 75 m | -3.31% | trail | $2.10 |
 
 ## Last 15 signals
 
