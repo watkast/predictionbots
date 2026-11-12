@@ -1,6 +1,6 @@
 # Mr. H — Coinbase hopper, PAPER
 
-Updated 2026-11-12T23:05:36Z · scans 1420 · universe 108 coins (USD pairs with ≥ $100k 24-h volume) · fees 0.9% taker each way · start $4.00
+Updated 2026-11-12T23:15:36Z · scans 1422 · universe 108 coins (USD pairs with ≥ $100k 24-h volume) · fees 0.9% taker each way · start $4.00
 
 ## Books (one position at a time, all-in every hop)
 
@@ -15,7 +15,7 @@ Updated 2026-11-12T23:05:36Z · scans 1420 · universe 108 coins (USD pairs with
 | profile | signals | scored | median +15m | median +1h | median +4h | % beat 1.8% at +1h | median 4%-trail hop net | max run-up (med) | max drawdown (med) |
 |---|---|---|---|---|---|---|---|---|---|
 | aggressive | 223 | 184 | -0.71% | -1.66% | -3.71% | 28% | -4.35% | +6.40% | -8.52% |
-| standard | 229 | 185 | -0.39% | -0.43% | -1.10% | 18% | -2.50% | +3.14% | -4.65% |
+| standard | 230 | 185 | -0.39% | -0.43% | -1.10% | 18% | -2.50% | +3.14% | -4.65% |
 
 ## Aggressive signals by BTC regime (BTC's own move in the hour before the signal)
 
@@ -58,7 +58,6 @@ Median 4%-trail hop nets -4.35% after fees across 184 signals; the aggressive bo
 
 | time (UTC) | profile | coin | impulse | vol× | >2h high | spread | taken | +1h | +4h |
 |---|---|---|---|---|---|---|---|---|---|
-| 11-12T13:25 | standard | MEZO | +3.3% | 3.6 | y | 0.58% | in_position | -3.8% | -9.8% |
 | 11-12T13:25 | standard | TON | +1.0% | 4.5 | y | 0.12% | in_position | -5.0% | -3.3% |
 | 11-12T14:00 | standard | ENA | +1.5% | 6.3 | y | 0.05% | y | -0.9% | -1.6% |
 | 11-12T14:05 | aggressive | MEZO | +3.6% | 16.2 | y | 0.27% | in_position | -9.5% | -11.9% |
@@ -73,3 +72,4 @@ Median 4%-trail hop nets -4.35% after fees across 184 signals; the aggressive bo
 | 11-12T14:50 | aggressive | RITUAL | +3.5% | 3.9 | n | 1.11% | spread | -9.8% | -9.1% |
 | 11-12T14:55 | aggressive | MEZO | +4.1% | 7.4 | n | 0.02% | y | -5.0% | -4.9% |
 | 11-12T18:20 | aggressive | RITUAL | +4.8% | 4.8 | n | 0.08% | y | -7.3% | -11.1% |
+| 11-12T23:15 | standard | RITUAL | +1.6% | 8.8 | y | 0.09% | in_position | … | … |
