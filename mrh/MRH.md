@@ -1,12 +1,12 @@
 # Mr. H — Coinbase hopper, PAPER
 
-Updated 2026-11-12T12:15:36Z · scans 1324 · universe 110 coins (USD pairs with ≥ $100k 24-h volume) · fees 0.9% taker each way · start $4.00
+Updated 2026-11-12T12:25:36Z · scans 1326 · universe 110 coins (USD pairs with ≥ $100k 24-h volume) · fees 0.9% taker each way · start $4.00
 
 ## Books (one position at a time, all-in every hop)
 
 | profile | bankroll | vs start | peak | hops | win % | avg net/hop | fees paid | open |
 |---|---|---|---|---|---|---|---|---|
-| aggressive | $1.91 | -52.2% | $4.00 | 25 | 24% | -2.91% | $1.225 | RITUAL-USD @ 0.04345 |
+| aggressive | $1.87 | -53.1% | $4.00 | 26 | 27% | -2.79% | $1.243 | — |
 | standard | $2.17 | -45.7% | $4.00 | 27 | 22% | -2.17% | $1.410 | — |
 | aggressive_swap | $0.99 | -75.3% | $4.02 | 44 | 18% | -3.02% | $2.059 | — |
 
@@ -27,13 +27,12 @@ Updated 2026-11-12T12:15:36Z · scans 1324 · universe 110 coins (USD pairs with
 
 ## Verdict
 
-**Not yet.** Needs 40 scored aggressive signals (173 so far) and 30 closed aggressive hops (25 so far) before this says anything. Until then every number above is noise.
+**Not yet.** Needs 40 scored aggressive signals (173 so far) and 30 closed aggressive hops (26 so far) before this says anything. Until then every number above is noise.
 
 ## Last 20 hops
 
 | time (UTC) | book | coin | in | out | held | net | reason | bankroll |
 |---|---|---|---|---|---|---|---|---|
-| 11-11T09:15 | standard | USELESS | 0.13922 | 0.13507 | 75 m | -4.72% | trail | $2.45 |
 | 11-11T12:25 | aggressive_swap | TON | 1.1634 | 1.1919 | 220 m | +0.61% | swap | $1.27 |
 | 11-11T12:30 | aggressive_swap | FORTH | 0.13809 | 0.13164 | 5 m | -6.38% | trail | $1.19 |
 | 11-11T14:20 | standard | TON | 1.1858 | 1.2097 | 265 m | +0.19% | trail | $2.45 |
@@ -53,6 +52,7 @@ Updated 2026-11-12T12:15:36Z · scans 1324 · universe 110 coins (USD pairs with
 | 11-12T10:10 | standard | ERA | 0.1013 | 0.0978 | 10 m | -5.19% | trail | $2.15 |
 | 11-12T10:15 | aggressive | ERA | 0.1013 | 0.0955 | 15 m | -7.41% | trail | $1.87 |
 | 11-12T12:15 | standard | RITUAL | 0.04345 | 0.04477 | 20 m | +1.19% | trail | $2.17 |
+| 11-12T12:20 | aggressive | RITUAL | 0.04345 | 0.04431 | 25 m | +0.15% | trail | $1.87 |
 
 ## Last 15 signals
 
