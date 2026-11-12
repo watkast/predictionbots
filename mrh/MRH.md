@@ -1,6 +1,6 @@
 # Mr. H — Coinbase hopper, PAPER
 
-Updated 2026-11-12T07:05:36Z · scans 1293 · universe 110 coins (USD pairs with ≥ $100k 24-h volume) · fees 0.9% taker each way · start $4.00
+Updated 2026-11-12T09:55:39Z · scans 1296 · universe 110 coins (USD pairs with ≥ $100k 24-h volume) · fees 0.9% taker each way · start $4.00
 
 ## Books (one position at a time, all-in every hop)
 
@@ -14,20 +14,20 @@ Updated 2026-11-12T07:05:36Z · scans 1293 · universe 110 coins (USD pairs with
 
 | profile | signals | scored | median +15m | median +1h | median +4h | % beat 1.8% at +1h | median 4%-trail hop net | max run-up (med) | max drawdown (med) |
 |---|---|---|---|---|---|---|---|---|---|
-| aggressive | 210 | 163 | -0.93% | -1.87% | -3.74% | 25% | -4.70% | +6.16% | -8.45% |
-| standard | 215 | 168 | -0.37% | -0.49% | -1.03% | 16% | -2.53% | +3.08% | -4.41% |
+| aggressive | 210 | 169 | -0.65% | -1.44% | -3.67% | 27% | -4.37% | +6.40% | -8.60% |
+| standard | 215 | 172 | -0.36% | -0.40% | -1.08% | 17% | -2.51% | +3.24% | -4.64% |
 
 ## Aggressive signals by BTC regime (BTC's own move in the hour before the signal)
 
 | BTC 1h | signals | median +1h | median 4%-trail hop net | % beat 1.8% at +1h |
 |---|---|---|---|---|
 | ≤ −0.5% (downdraft) | 8 | +2.05% | -2.73% | 50% |
-| −0.5% … +0.5% (flat) | 130 | -2.29% | -5.03% | 22% |
+| −0.5% … +0.5% (flat) | 136 | -2.12% | -4.96% | 25% |
 | ≥ +0.5% (bid under the market) | 13 | +0.74% | -1.68% | 31% |
 
 ## Verdict
 
-**Not yet.** Needs 40 scored aggressive signals (163 so far) and 30 closed aggressive hops (24 so far) before this says anything. Until then every number above is noise.
+**Not yet.** Needs 40 scored aggressive signals (169 so far) and 30 closed aggressive hops (24 so far) before this says anything. Until then every number above is noise.
 
 ## Last 20 hops
 
@@ -58,16 +58,16 @@ Updated 2026-11-12T07:05:36Z · scans 1293 · universe 110 coins (USD pairs with
 
 | time (UTC) | profile | coin | impulse | vol× | >2h high | spread | taken | +1h | +4h |
 |---|---|---|---|---|---|---|---|---|---|
-| 11-12T03:50 | aggressive | RITUAL | +4.4% | 7.4 | y | 1.57% | spread | … | … |
-| 11-12T03:50 | standard | RITUAL | +4.4% | 7.4 | y | 1.57% | spread | … | … |
-| 11-12T03:55 | standard | RITUAL | +1.2% | 7.7 | y | 0.05% | in_position | … | … |
-| 11-12T04:05 | aggressive | RITUAL | +3.6% | 8.5 | y | 0.02% | y | … | … |
-| 11-12T04:05 | standard | RITUAL | +3.6% | 8.5 | y | 0.02% | in_position | … | … |
-| 11-12T04:10 | aggressive | RITUAL | +2.7% | 6.6 | n | 0.09% | in_position | … | … |
-| 11-12T04:50 | aggressive | RITUAL | +5.7% | 4.7 | y | 0.39% | in_position | … | … |
-| 11-12T04:50 | standard | RITUAL | +5.7% | 4.7 | y | 0.39% | y | … | … |
-| 11-12T05:20 | aggressive | MEZO | +2.7% | 15.1 | n | 0.08% | y | … | … |
-| 11-12T05:50 | aggressive | MEZO | +6.3% | 17.7 | n | 0.13% | y | … | … |
+| 11-12T03:50 | aggressive | RITUAL | +4.4% | 7.4 | y | 1.57% | spread | +8.3% | -1.1% |
+| 11-12T03:50 | standard | RITUAL | +4.4% | 7.4 | y | 1.57% | spread | +8.3% | -1.1% |
+| 11-12T03:55 | standard | RITUAL | +1.2% | 7.7 | y | 0.05% | in_position | +8.2% | -0.7% |
+| 11-12T04:05 | aggressive | RITUAL | +3.6% | 8.5 | y | 0.02% | y | +8.3% | -1.6% |
+| 11-12T04:05 | standard | RITUAL | +3.6% | 8.5 | y | 0.02% | in_position | +8.3% | -1.6% |
+| 11-12T04:10 | aggressive | RITUAL | +2.7% | 6.6 | n | 0.09% | in_position | +6.8% | -7.8% |
+| 11-12T04:50 | aggressive | RITUAL | +5.7% | 4.7 | y | 0.39% | in_position | -7.6% | -13.3% |
+| 11-12T04:50 | standard | RITUAL | +5.7% | 4.7 | y | 0.39% | y | -7.6% | -13.3% |
+| 11-12T05:20 | aggressive | MEZO | +2.7% | 15.1 | n | 0.08% | y | +11.9% | +17.8% |
+| 11-12T05:50 | aggressive | MEZO | +6.3% | 17.7 | n | 0.13% | y | +17.4% | +14.9% |
 | 11-12T05:55 | aggressive | MEZO | +10.1% | 68.2 | y | 1.05% | spread | … | … |
 | 11-12T05:55 | standard | MEZO | +10.1% | 68.2 | y | 1.05% | spread | … | … |
 | 11-12T06:10 | aggressive | MEZO | +4.3% | 14.0 | n | 0.23% | in_position | … | … |
