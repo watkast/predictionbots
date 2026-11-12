@@ -1,13 +1,13 @@
 # Mr. H — Coinbase hopper, PAPER
 
-Updated 2026-11-12T12:55:36Z · scans 1332 · universe 109 coins (USD pairs with ≥ $100k 24-h volume) · fees 0.9% taker each way · start $4.00
+Updated 2026-11-12T13:05:36Z · scans 1334 · universe 109 coins (USD pairs with ≥ $100k 24-h volume) · fees 0.9% taker each way · start $4.00
 
 ## Books (one position at a time, all-in every hop)
 
 | profile | bankroll | vs start | peak | hops | win % | avg net/hop | fees paid | open |
 |---|---|---|---|---|---|---|---|---|
-| aggressive | $2.07 | -48.2% | $4.00 | 26 | 27% | -2.79% | $1.259 | RITUAL-USD @ 0.0465 |
-| standard | $2.15 | -46.3% | $4.00 | 27 | 22% | -2.17% | $1.430 | TON-USD @ 1.2604 |
+| aggressive | $1.90 | -52.4% | $4.00 | 27 | 30% | -2.63% | $1.277 | — |
+| standard | $2.16 | -46.1% | $4.00 | 27 | 22% | -2.17% | $1.430 | TON-USD @ 1.2604 |
 | aggressive_swap | $0.99 | -75.3% | $4.02 | 44 | 18% | -3.02% | $2.059 | — |
 
 ## Signal forward returns (every signal, whether or not a book took it)
@@ -27,13 +27,12 @@ Updated 2026-11-12T12:55:36Z · scans 1332 · universe 109 coins (USD pairs with
 
 ## Verdict
 
-**Not yet.** Needs 40 scored aggressive signals (173 so far) and 30 closed aggressive hops (26 so far) before this says anything. Until then every number above is noise.
+**Not yet.** Needs 40 scored aggressive signals (173 so far) and 30 closed aggressive hops (27 so far) before this says anything. Until then every number above is noise.
 
 ## Last 20 hops
 
 | time (UTC) | book | coin | in | out | held | net | reason | bankroll |
 |---|---|---|---|---|---|---|---|---|
-| 11-11T12:25 | aggressive_swap | TON | 1.1634 | 1.1919 | 220 m | +0.61% | swap | $1.27 |
 | 11-11T12:30 | aggressive_swap | FORTH | 0.13809 | 0.13164 | 5 m | -6.38% | trail | $1.19 |
 | 11-11T14:20 | standard | TON | 1.1858 | 1.2097 | 265 m | +0.19% | trail | $2.45 |
 | 11-11T15:10 | aggressive | TON | 1.1634 | 1.2009 | 385 m | +1.37% | trail | $2.23 |
@@ -53,6 +52,7 @@ Updated 2026-11-12T12:55:36Z · scans 1332 · universe 109 coins (USD pairs with
 | 11-12T10:15 | aggressive | ERA | 0.1013 | 0.0955 | 15 m | -7.41% | trail | $1.87 |
 | 11-12T12:15 | standard | RITUAL | 0.04345 | 0.04477 | 20 m | +1.19% | trail | $2.17 |
 | 11-12T12:20 | aggressive | RITUAL | 0.04345 | 0.04431 | 25 m | +0.15% | trail | $1.87 |
+| 11-12T13:05 | aggressive | RITUAL | 0.0465 | 0.04807 | 35 m | +1.52% | trail | $1.90 |
 
 ## Last 15 signals
 
