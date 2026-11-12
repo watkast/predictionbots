@@ -1,33 +1,33 @@
 # Mr. H — Coinbase hopper, PAPER
 
-Updated 2026-11-12T18:55:37Z · scans 1370 · universe 109 coins (USD pairs with ≥ $100k 24-h volume) · fees 0.9% taker each way · start $4.00
+Updated 2026-11-12T19:05:37Z · scans 1372 · universe 109 coins (USD pairs with ≥ $100k 24-h volume) · fees 0.9% taker each way · start $4.00
 
 ## Books (one position at a time, all-in every hop)
 
 | profile | bankroll | vs start | peak | hops | win % | avg net/hop | fees paid | open |
 |---|---|---|---|---|---|---|---|---|
 | aggressive | $1.52 | -61.9% | $4.00 | 31 | 26% | -2.99% | $1.402 | — |
-| standard | $2.06 | -48.5% | $4.00 | 28 | 21% | -2.21% | $1.468 | ENA-USD @ 0.14094 |
+| standard | $2.05 | -48.7% | $4.00 | 28 | 21% | -2.21% | $1.468 | ENA-USD @ 0.14094 |
 | aggressive_swap | $0.99 | -75.3% | $4.02 | 44 | 18% | -3.02% | $2.059 | — |
 
 ## Signal forward returns (every signal, whether or not a book took it)
 
 | profile | signals | scored | median +15m | median +1h | median +4h | % beat 1.8% at +1h | median 4%-trail hop net | max run-up (med) | max drawdown (med) |
 |---|---|---|---|---|---|---|---|---|---|
-| aggressive | 223 | 182 | -0.62% | -1.29% | -3.63% | 28% | -4.29% | +6.49% | -8.52% |
+| aggressive | 223 | 183 | -0.65% | -1.44% | -3.67% | 28% | -4.33% | +6.40% | -8.45% |
 | standard | 229 | 185 | -0.39% | -0.43% | -1.10% | 18% | -2.50% | +3.14% | -4.65% |
 
 ## Aggressive signals by BTC regime (BTC's own move in the hour before the signal)
 
 | BTC 1h | signals | median +1h | median 4%-trail hop net | % beat 1.8% at +1h |
 |---|---|---|---|---|
-| ≤ −0.5% (downdraft) | 14 | +2.05% | -4.78% | 50% |
+| ≤ −0.5% (downdraft) | 15 | +0.06% | -5.18% | 47% |
 | −0.5% … +0.5% (flat) | 143 | -2.09% | -4.48% | 26% |
 | ≥ +0.5% (bid under the market) | 13 | +0.74% | -1.68% | 31% |
 
 ## Verdict
 
-Median 4%-trail hop nets -4.29% after fees across 182 signals; the aggressive book is -61.9% after 31 hops. **No edge after fees. Do not fund.**
+Median 4%-trail hop nets -4.33% after fees across 183 signals; the aggressive book is -61.9% after 31 hops. **No edge after fees. Do not fund.**
 
 ## Last 20 hops
 
@@ -71,5 +71,5 @@ Median 4%-trail hop nets -4.29% after fees across 182 signals; the aggressive bo
 | 11-12T14:40 | standard | USELESS | +1.4% | 5.2 | y | 0.14% | in_position | -2.5% | -0.1% |
 | 11-12T14:40 | standard | HYPE | +1.1% | 5.4 | y | 0.03% | in_position | -0.3% | +0.4% |
 | 11-12T14:50 | aggressive | RITUAL | +3.5% | 3.9 | n | 1.11% | spread | -9.8% | -9.1% |
-| 11-12T14:55 | aggressive | MEZO | +4.1% | 7.4 | n | 0.02% | y | … | … |
+| 11-12T14:55 | aggressive | MEZO | +4.1% | 7.4 | n | 0.02% | y | -5.0% | -4.9% |
 | 11-12T18:20 | aggressive | RITUAL | +4.8% | 4.8 | n | 0.08% | y | … | … |
