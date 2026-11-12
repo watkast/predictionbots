@@ -1,9 +1,9 @@
 # Early Favorite auto-buyer v1 (paper)
 
 Paper only. Reads the live Polymarket US book at 13:00 left, else 12:00 left; buys the favorite if its ask is 80-95c with a limit at ask+1c, filled only against size actually resting on the book.
-Updated 2026-11-12T21:38:54Z.
+Updated 2026-11-12T21:48:56Z.
 
-Rounds watched: 1714. Entries: 199. Settled: 199.
+Rounds watched: 1715. Entries: 199. Settled: 199.
 
 Win rate: 162/199 = 81.4%
 
@@ -40,5 +40,5 @@ Live $100 fill price minus the backtest's display price: +0.79c average over 195
 | 11-12T20:45 | 12:00 | Up | 0.80 | 1670 | 100% @ 0.800 | LOSS | -101.90 |
 | 11-12T21:15 | 12:00 | Up | 0.80 | 771 | 100% @ 0.800 | WIN | +23.10 |
 
-Book reads: 3359, failed: 960, re-tried: 1046, median latency 0.04s.
+Book reads: 3361, failed: 960, re-tried: 1046, median latency 0.04s.
 Entries read more than 20 s after their target second: 22 of 199 (avg 32 s late).
