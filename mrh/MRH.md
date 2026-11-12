@@ -1,20 +1,20 @@
 # Mr. H — Coinbase hopper, PAPER
 
-Updated 2026-11-12T01:50:36Z · scans 1230 · universe 110 coins (USD pairs with ≥ $100k 24-h volume) · fees 0.9% taker each way · start $4.00
+Updated 2026-11-12T02:00:37Z · scans 1232 · universe 110 coins (USD pairs with ≥ $100k 24-h volume) · fees 0.9% taker each way · start $4.00
 
 ## Books (one position at a time, all-in every hop)
 
 | profile | bankroll | vs start | peak | hops | win % | avg net/hop | fees paid | open |
 |---|---|---|---|---|---|---|---|---|
-| aggressive | $1.99 | -50.1% | $4.00 | 20 | 20% | -3.30% | $1.051 | RITUAL-USD @ 0.03951 |
+| aggressive | $2.01 | -49.9% | $4.00 | 20 | 20% | -3.30% | $1.051 | RITUAL-USD @ 0.03951 |
 | standard | $2.40 | -40.0% | $4.00 | 23 | 22% | -2.03% | $1.268 | FLR-USD @ 0.005467 |
-| aggressive_swap | $1.03 | -74.2% | $4.02 | 43 | 19% | -2.97% | $2.050 | RITUAL-USD @ 0.03951 |
+| aggressive_swap | $1.04 | -74.1% | $4.02 | 43 | 19% | -2.97% | $2.050 | RITUAL-USD @ 0.03951 |
 
 ## Signal forward returns (every signal, whether or not a book took it)
 
 | profile | signals | scored | median +15m | median +1h | median +4h | % beat 1.8% at +1h | median 4%-trail hop net | max run-up (med) | max drawdown (med) |
 |---|---|---|---|---|---|---|---|---|---|
-| aggressive | 199 | 161 | -0.93% | -1.87% | -4.11% | 25% | -4.70% | +6.16% | -8.77% |
+| aggressive | 200 | 161 | -0.93% | -1.87% | -4.11% | 25% | -4.70% | +6.16% | -8.77% |
 | standard | 210 | 167 | -0.37% | -0.43% | -1.07% | 16% | -2.51% | +3.01% | -4.50% |
 
 ## Aggressive signals by BTC regime (BTC's own move in the hour before the signal)
@@ -58,7 +58,6 @@ Updated 2026-11-12T01:50:36Z · scans 1230 · universe 110 coins (USD pairs with
 
 | time (UTC) | profile | coin | impulse | vol× | >2h high | spread | taken | +1h | +4h |
 |---|---|---|---|---|---|---|---|---|---|
-| 11-11T19:50 | aggressive | FORTH | +3.1% | 13.3 | y | 1.87% | spread | -0.1% | +0.4% |
 | 11-11T19:50 | standard | FORTH | +3.1% | 13.3 | y | 1.87% | spread | -0.1% | +0.4% |
 | 11-11T19:55 | standard | FORTH | +1.4% | 4.8 | y | 0.01% | in_position | … | … |
 | 11-11T20:00 | aggressive | FORTH | +3.0% | 10.6 | y | 2.06% | spread | … | … |
@@ -73,3 +72,4 @@ Updated 2026-11-12T01:50:36Z · scans 1230 · universe 110 coins (USD pairs with
 | 11-11T23:05 | aggressive | FORTH | +6.1% | 7.6 | n | 2.55% | spread | … | … |
 | 11-12T01:32 | aggressive | RITUAL | +6.6% | 16.8 | y | 0.10% | y | … | … |
 | 11-12T01:32 | standard | RITUAL | +6.6% | 16.8 | y | 0.10% | in_position | … | … |
+| 11-12T01:55 | aggressive | MEZO | +2.1% | 6.2 | n | 0.82% | spread | … | … |
