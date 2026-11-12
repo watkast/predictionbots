@@ -1,13 +1,13 @@
 # Mr. H — Coinbase hopper, PAPER
 
-Updated 2026-11-12T04:20:36Z · scans 1260 · universe 110 coins (USD pairs with ≥ $100k 24-h volume) · fees 0.9% taker each way · start $4.00
+Updated 2026-11-12T04:30:36Z · scans 1262 · universe 110 coins (USD pairs with ≥ $100k 24-h volume) · fees 0.9% taker each way · start $4.00
 
 ## Books (one position at a time, all-in every hop)
 
 | profile | bankroll | vs start | peak | hops | win % | avg net/hop | fees paid | open |
 |---|---|---|---|---|---|---|---|---|
-| aggressive | $1.89 | -52.7% | $4.00 | 21 | 19% | -3.40% | $1.086 | RITUAL-USD @ 0.043 |
-| standard | $2.38 | -40.4% | $4.00 | 23 | 22% | -2.03% | $1.268 | FLR-USD @ 0.005467 |
+| aggressive | $1.95 | -51.2% | $4.00 | 21 | 19% | -3.40% | $1.086 | RITUAL-USD @ 0.043 |
+| standard | $2.36 | -40.9% | $4.00 | 24 | 21% | -2.10% | $1.290 | — |
 | aggressive_swap | $0.99 | -75.3% | $4.02 | 44 | 18% | -3.02% | $2.059 | — |
 
 ## Signal forward returns (every signal, whether or not a book took it)
@@ -33,7 +33,6 @@ Updated 2026-11-12T04:20:36Z · scans 1260 · universe 110 coins (USD pairs with
 
 | time (UTC) | book | coin | in | out | held | net | reason | bankroll |
 |---|---|---|---|---|---|---|---|---|
-| 11-11T04:05 | standard | RSR | 0.001647 | 0.00164 | 155 m | -2.21% | trail | $2.43 |
 | 11-11T05:30 | standard | RITUAL | 0.03879 | 0.03722 | 75 m | -5.77% | trail | $2.29 |
 | 11-11T05:30 | aggressive_swap | RITUAL | 0.03879 | 0.03722 | 75 m | -5.77% | trail | $1.54 |
 | 11-11T05:45 | aggressive_swap | FORTH | 0.14901 | 0.14285 | 15 m | -5.85% | trail | $1.45 |
@@ -53,6 +52,7 @@ Updated 2026-11-12T04:20:36Z · scans 1260 · universe 110 coins (USD pairs with
 | 11-11T21:45 | aggressive_swap | MEZO | 0.004167 | 0.004073 | 15 m | -4.01% | trail | $1.05 |
 | 11-12T02:40 | aggressive | RITUAL | 0.03951 | 0.03807 | 68 m | -5.37% | trail | $1.92 |
 | 11-12T02:40 | aggressive_swap | RITUAL | 0.03951 | 0.03807 | 68 m | -5.37% | trail | $0.99 |
+| 11-12T04:25 | standard | FLR | 0.005467 | 0.00536 | 825 m | -3.71% | trail | $2.36 |
 
 ## Last 15 signals
 
