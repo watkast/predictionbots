@@ -1,13 +1,13 @@
 # Mr. H — Coinbase hopper, PAPER
 
-Updated 2026-11-12T18:25:45Z · scans 1364 · universe 109 coins (USD pairs with ≥ $100k 24-h volume) · fees 0.9% taker each way · start $4.00
+Updated 2026-11-12T18:35:37Z · scans 1366 · universe 109 coins (USD pairs with ≥ $100k 24-h volume) · fees 0.9% taker each way · start $4.00
 
 ## Books (one position at a time, all-in every hop)
 
 | profile | bankroll | vs start | peak | hops | win % | avg net/hop | fees paid | open |
 |---|---|---|---|---|---|---|---|---|
-| aggressive | $1.56 | -61.0% | $4.00 | 30 | 27% | -2.89% | $1.388 | RITUAL-USD @ 0.04762 |
-| standard | $2.06 | -48.5% | $4.00 | 28 | 21% | -2.21% | $1.468 | ENA-USD @ 0.14094 |
+| aggressive | $1.52 | -61.9% | $4.00 | 31 | 26% | -2.99% | $1.402 | — |
+| standard | $2.07 | -48.3% | $4.00 | 28 | 21% | -2.21% | $1.468 | ENA-USD @ 0.14094 |
 | aggressive_swap | $0.99 | -75.3% | $4.02 | 44 | 18% | -3.02% | $2.059 | — |
 
 ## Signal forward returns (every signal, whether or not a book took it)
@@ -27,13 +27,12 @@ Updated 2026-11-12T18:25:45Z · scans 1364 · universe 109 coins (USD pairs with
 
 ## Verdict
 
-Median 4%-trail hop nets -4.17% after fees across 180 signals; the aggressive book is -100.0% after 30 hops. **No edge after fees. Do not fund.**
+Median 4%-trail hop nets -4.17% after fees across 180 signals; the aggressive book is -61.9% after 31 hops. **No edge after fees. Do not fund.**
 
 ## Last 20 hops
 
 | time (UTC) | book | coin | in | out | held | net | reason | bankroll |
 |---|---|---|---|---|---|---|---|---|
-| 11-11T21:10 | aggressive | MEZO | 0.004304 | 0.00414 | 25 m | -5.53% | trail | $2.11 |
 | 11-11T21:10 | aggressive_swap | MEZO | 0.004304 | 0.00414 | 25 m | -5.53% | trail | $1.09 |
 | 11-11T21:45 | aggressive | MEZO | 0.004167 | 0.004073 | 15 m | -4.01% | trail | $2.02 |
 | 11-11T21:45 | aggressive_swap | MEZO | 0.004167 | 0.004073 | 15 m | -4.01% | trail | $1.05 |
@@ -53,6 +52,7 @@ Median 4%-trail hop nets -4.17% after fees across 180 signals; the aggressive bo
 | 11-12T14:15 | aggressive | MEZO | 0.00431 | 0.00425 | 50 m | -3.16% | trail | $1.84 |
 | 11-12T14:45 | aggressive | MEZO | 0.004288 | 0.004101 | 10 m | -6.07% | trail | $1.73 |
 | 11-12T18:17 | aggressive | MEZO | 0.00413 | 0.003941 | 203 m | -6.29% | trail | $1.62 |
+| 11-12T18:30 | aggressive | RITUAL | 0.04762 | 0.04553 | 10 m | -6.10% | trail | $1.52 |
 
 ## Last 15 signals
 
