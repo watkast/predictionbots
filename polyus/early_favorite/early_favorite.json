@@ -13,16 +13,16 @@
   "hold": "settlement"
  },
  "forward_start": "2026-10-23T00:00:00Z",
- "generated": "2026-11-12T02:57:08Z",
- "rounds_scored": 325,
- "rounds_skipped_rule_not_met": 1580,
- "rounds_pending": 19,
- "wins": 271,
- "win_rate": 0.8338,
+ "generated": "2026-11-12T11:00:11Z",
+ "rounds_scored": 333,
+ "rounds_skipped_rule_not_met": 1603,
+ "rounds_pending": 20,
+ "wins": 279,
+ "win_rate": 0.8378,
  "avg_ask": 0.8388,
  "breakeven_win_rate": 0.8482,
- "net_usd": -597.92,
- "per_round_pct": -1.84,
+ "net_usd": -451.35,
+ "per_round_pct": -1.36,
  "max_drawdown_usd": -947.43,
  "longest_losing_streak": 5,
  "days": [
@@ -108,10 +108,10 @@
   },
   {
    "day": "2026-11-12",
-   "net_usd": 59.34
+   "net_usd": 205.91
   }
  ],
- "z_vs_backtest_win_rate": -3.45,
+ "z_vs_backtest_win_rate": -3.26,
  "backtest": {
   "period": "2026-10-06 to 2026-10-22",
   "rounds": 272,
@@ -124,15 +124,15 @@
  "pull": [
   {
    "pull": "with the favorite 3/3",
-   "rounds": 250,
-   "win_rate": 0.848,
-   "net_usd": -125.64
+   "rounds": 256,
+   "win_rate": 0.8516,
+   "net_usd": -10.98
   },
   {
    "pull": "with the favorite 1/3",
-   "rounds": 60,
-   "win_rate": 0.8167,
-   "net_usd": -165.7
+   "rounds": 62,
+   "win_rate": 0.8226,
+   "net_usd": -133.79
   },
   {
    "pull": "against the favorite",
@@ -147,12 +147,12 @@
    "bid_below": 0.45,
    "slippage": 0.02
   },
-  "rounds_with_price": 325,
+  "rounds_with_price": 333,
   "cuts": 29,
   "cuts_that_would_have_lost": 24,
   "cuts_that_would_have_won": 5,
-  "net_usd_hold": -597.92,
-  "net_usd_cut": -520.23,
+  "net_usd_hold": -451.35,
+  "net_usd_cut": -373.66,
   "cut_minus_hold_usd": 77.69
  },
  "verdict": "Losing: forward win rate is below break-even at the prices paid.",
@@ -250,6 +250,11 @@
   {
    "slug": "cpc-btc-updown-15m-2026-11-05-1015z",
    "window_start": "2026-11-05T10:15:00Z",
+   "reason": "minute 2-3 prices not stored yet"
+  },
+  {
+   "slug": "cpc-btc-updown-15m-2026-11-12-1030z",
+   "window_start": "2026-11-12T10:30:00Z",
    "reason": "minute 2-3 prices not stored yet"
   }
  ]
