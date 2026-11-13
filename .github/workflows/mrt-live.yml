@@ -1,3 +1,5 @@
+# RETIRED 13 Nov 2026 (we stopped trading on 8 Nov; see BUSINESS.md): no schedule and no push trigger. It runs only if
+# someone starts it by hand, and then in dry mode unless they type `live` and the switch file exists.
 # Mr. T — the terminal sniper (REAL MONEY, tiny, hard-capped): Polymarket US crypto Up/Down markets, the final seconds.
 # Settlement is the 60-second average of the CF Benchmarks index; with a few seconds left the outcome is decided, yet the
 # winning side is still offered below $1 in ~4% of windows (Mr. P's recorder, Nov 4–7). One immediate-or-cancel buy of up to
@@ -8,8 +10,6 @@
 # Report: mrt/MRT.md on the `mrp-data` branch every 5 minutes. Mode "dry" runs feeds + gate and logs would_fire only.
 name: mrt-live
 on:
-  schedule:
-    - cron: "29 */6 * * *"
   workflow_dispatch:
     inputs:
       minutes:
@@ -17,10 +17,7 @@ on:
         default: "335"
       mode:
         description: "live (orders) or dry (feeds + gate, no orders)"
-        default: "live"
-  push:
-    branches: [main]
-    paths: ["mrt/LIVE_ON", ".github/workflows/mrt-live.yml", "scripts/mrt_sniper.py", "scripts/gha_mrt_live.sh"]
+        default: "dry"
 
 permissions:
   contents: write
@@ -65,4 +62,4 @@ jobs:
         run: python scripts/mrt_sniper.py selftest
       - name: Snipe (publishing every 5 minutes)
         if: steps.sw.outputs.on == 'true'
-        run: bash scripts/gha_mrt_live.sh "${{ github.event.inputs.minutes || '335' }}" "${{ github.event.inputs.mode || 'live' }}"
+        run: bash scripts/gha_mrt_live.sh "${{ github.event.inputs.minutes || '335' }}" "${{ github.event.inputs.mode || 'dry' }}"

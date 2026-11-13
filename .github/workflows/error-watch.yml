@@ -1,10 +1,12 @@
-# Error watch: when any bot workflow finishes red, open (or bump) a P0 Error ticket for its bot.
+# Error watch: when a watched workflow finishes red, open (or bump) a P0 Error ticket for it.
 # Cancelled runs are skipped (concurrency and manual cancels are normal). Tickets are deduped by
 # fingerprint wf:<workflow>, so a workflow that fails every hour has ONE ticket with a comment per failure.
 name: error-watch
 on:
   workflow_run:
-    workflows: [backtest, bounty-scan, carry, ci, ef-autobuyer, paper, polyus, record, trend, health]
+    # the jobs the business runs on (13 Nov 2026: site-deploy, benchmark and the recorder were not on this list, so a
+    # failed deploy opened no ticket; the trading-era jobs that were are retired)
+    workflows: [ci, site-deploy, benchmark, mrp-record, trend, health]
     types: [completed]
 
 permissions:

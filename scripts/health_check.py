@@ -1,11 +1,16 @@
-"""Health watchdog: catches bots that are stale or that run "successfully" while producing nothing.
+"""Health watchdog: catches jobs that are stale or that run "successfully" while producing nothing.
 
 Saturday 2026-10-25: ef-autobuyer crashed on its first check every run for 30 h and every run showed green,
 because the wrapper swallowed the exit code and nothing looked at the output. This looks at the output.
 
-Checks (each with an owner bot, a fingerprint and a max age):
+13 Nov 2026: it now watches what the business runs on (the site deploy, the live site, the recorder, the benchmark).
+Until then it watched only the trading-era bots, most of them retired, so the board was red with stale alarms while
+nothing looked at the site at all.
+
+Checks (each with an owner job, a fingerprint and a max age):
   freshness   last commit that touched a watched path (GitHub API, no deep clone needed)
-  content     ef-autobuyer: newest book check in the ledger; early_favorite: `generated`; polyus: newest fetch log
+  content     the live site: the build time printed on predictmenot.com/markets/ (so a deploy that never reached
+              the domain, or a domain that stopped answering, shows up here and not only in a green workflow run)
   errors      new records in any errors.jsonl written by pb.errlog since the last health run
 
 Outputs <state>/status.json (what the board shows) and, with --open-tickets, an Error ticket per failing check
@@ -25,6 +30,7 @@ import os
 import re
 import subprocess
 import sys
+import urllib.request
 from datetime import datetime, timezone
 from pathlib import Path
 
@@ -34,20 +40,16 @@ from pb import errlog  # noqa: E402
 REPO = os.environ.get("TRACKER_REPO", "watkast/predictionbots")
 TRACKER = Path(__file__).resolve().parent / "tracker.py"
 
-# (check id, bot, branch, path, max age in hours, what it means)
-# Limits are loose on purpose: GitHub runs these "hourly" crons every 3-6 h under load (seen Oct 25-26).
+SITE = os.environ.get("SITE_URL", "https://predictmenot.com")
+
+# (check id, job, branch, path, max age in hours, what it means)
+# Limits are loose on purpose: GitHub runs this repo's "hourly" schedules every 6 to 9 h (measured 10-13 Nov).
 WATCH = [
-    ("polyus-fetch", "polyus", "data", "polyus/markets.json", 8, "hourly Polymarket US market/price fetch"),
-    ("ef-tracker", "ef-tracker", "data", "polyus/early_favorite/early_favorite.json", 8, "hourly Early Favorite forward scoring"),
-    ("ef-autobuyer-ledger", "ef-autobuyer", "data", "polyus/ef_autobuyer/ledger.json", 8, "auto-buyer ledger (published every 10 min while watching)"),
-    ("carry-tick", "carry", "data", "carry/paper-state.json", 8, "hourly funding-carry paper tick"),
-    ("paper-matrix", "paper", "data", "ledger", 20, "6-hourly paper matrix run"),
-    ("recorder", "record", "data", "recorded", 20, "6-hourly order-book recorder"),
-    ("carry-report", "carry", "main", "reports/carry_paper.json", 8, "carry report on main"),
+    ("site-deploy", "site-deploy", "mrp-data", "site-preview/sitemap.xml", 14,
+     "site build and deploy (the preview is published only after a deploy succeeds)"),
+    ("recorder", "mrp-record", "mrp-data", "mrp/data", 3, "order-book recorder (publishes about every 20 min; the data is the product)"),
+    ("benchmark", "benchmark", "mrp-data", "benchmark/benchmark.json", 40, "daily bot-benchmark replay"),
     ("trend-report", "trend", "main", "reports/trend_paper.json", 80, "weekday trend paper tick (22:23 UTC)"),
-    ("bounty-scan", "bounty-scan", "data", "bounty/index.json", 192, "weekly bounty scan"),
-    ("mrh-state", "mrh-paper", "data", "mrh/state.json", 8, "Mr. H Coinbase paper hopper state (published every 10 min while scanning)"),
-    ("mrh-live-state", "mrh-live", "data", "mrh-live/live_state.json", 8, "Mr. H LIVE state (published every 5 min while mrh/LIVE_ON exists)"),
 ]
 ERROR_LOGS = ["polyus/*/errors.jsonl", "*/errors.jsonl", "errors.jsonl"]     # under the data worktree
 
@@ -85,40 +87,31 @@ def hours_since(d: datetime | None) -> float | None:
     return None if d is None else (now() - d).total_seconds() / 3600
 
 
-# ---------- content checks (read the data worktree) ----------
+# ---------- content checks ----------
 
-def ef_autobuyer_last_check(data: Path) -> datetime | None:
-    f = data / "polyus/ef_autobuyer/ledger.json"
-    if not f.exists():
+def site_built(_data: Path | None = None, fetch=None) -> datetime | None:
+    """When the live site says its market pages were built ("rebuilt 13 Nov 2026 08:04 UTC" on /markets/).
+    None if the domain does not answer, answers with something else, or the stamp is missing: all are failures."""
+    try:
+        if fetch is None:
+            req = urllib.request.Request(f"{SITE}/markets/", headers={"User-Agent": "predictmenot-health/1.0 (+https://predictmenot.com)"})
+            with urllib.request.urlopen(req, timeout=30) as r:
+                html = r.read(400_000).decode("utf-8", "replace")
+        else:
+            html = fetch(f"{SITE}/markets/")
+    except Exception:  # noqa: BLE001
         return None
-    best = None
-    for r in json.loads(f.read_text()).values():
-        for c in r.get("checks") or []:
-            t = r["window_start"] + float(c.get("t", c.get("at", 0)))
-            best = t if best is None or t > best else best
-    return datetime.fromtimestamp(best, timezone.utc) if best else None
-
-
-def ef_tracker_generated(data: Path) -> datetime | None:
-    f = data / "polyus/early_favorite/early_favorite.json"
-    if not f.exists():
+    m = re.search(r"rebuilt (\d{1,2} [A-Z][a-z]{2} \d{4} \d{2}:\d{2}) UTC", html or "")
+    if not m:
         return None
-    g = json.loads(f.read_text()).get("generated")
-    return parse_iso(g) if g else None
-
-
-def polyus_last_fetch_log(data: Path) -> datetime | None:
-    logs = sorted(glob.glob(str(data / "polyus/fetch-*.log")))
-    if not logs:
+    try:
+        return datetime.strptime(m.group(1), "%d %b %Y %H:%M").replace(tzinfo=timezone.utc)
+    except ValueError:
         return None
-    m = re.search(r"fetch-(\d{8}T\d{4})\.log$", logs[-1])
-    return datetime.strptime(m.group(1), "%Y%m%dT%H%M").replace(tzinfo=timezone.utc) if m else None
 
 
 CONTENT = [
-    ("ef-autobuyer-checks", "ef-autobuyer", ef_autobuyer_last_check, 8, "newest live-book check recorded by the auto-buyer"),
-    ("ef-tracker-generated", "ef-tracker", ef_tracker_generated, 8, "`generated` stamp of the Early Favorite report"),
-    ("polyus-fetch-log", "polyus", polyus_last_fetch_log, 8, "newest polyus fetch log"),
+    ("site-live", "site-deploy", site_built, 14, "build time shown on the live site (predictmenot.com/markets/)"),
 ]
 
 
@@ -132,16 +125,6 @@ def run_checks(data: Path) -> list[dict]:
         ok = age is not None and age <= max_h
         out.append(dict(id=cid, bot=bot, kind="freshness", ok=ok, age_h=None if age is None else round(age, 1), max_h=max_h,
                         last=None if t is None else iso(t), what=f"{branch}:{path}", meaning=meaning))
-    # Saturday-2025-10-25 signature: the auto-buyer publishes its ledger (so the run looks alive) but records no checks
-    led_t = last_commit_time("data", "polyus/ef_autobuyer/ledger.json")
-    chk_t = ef_autobuyer_last_check(data)
-    led_age, chk_age = hours_since(led_t), hours_since(chk_t)
-    silent = led_age is not None and led_age <= 3 and (chk_age is None or chk_age > 1.5)
-    out.append(dict(id="ef-autobuyer-silent", bot="ef-autobuyer", kind="content", ok=not silent,
-                    age_h=None if chk_age is None else round(chk_age, 1), max_h=1.5,
-                    last=None if chk_t is None else iso(chk_t),
-                    what="ledger published in the last 3 h but no book check recorded for over 1.5 h",
-                    meaning="the watcher is running but crashing or idling before its first check (the Saturday failure)"))
     for cid, bot, fn, max_h, meaning in CONTENT:
         try:
             t = fn(data)

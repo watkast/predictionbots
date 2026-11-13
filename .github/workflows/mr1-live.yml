@@ -1,3 +1,5 @@
+# RETIRED 13 Nov 2026 (we stopped trading on 8 Nov; see BUSINESS.md). Manual start only, and in dry mode unless someone
+# types `live` and the switch file exists.
 # Mr. One (EXPERIMENTAL — replay says it trails Mr. P; see research/replay/mr1_2026-11-02.md): Mr. P's brain with resting limit orders — scripts/mr1_live.js (= pm15_live.js --maker):
 # one resting bid on the favorite at (chance − 8¢) while flat and inside the entry window, one resting ask at (chance + 5¢)
 # while holding, the page's risk exits at the bid; at most $MRP_LIVE_CAPITAL at risk. Switch: the file mr1/LIVE_ON on main
@@ -12,14 +14,14 @@ on:
         default: "335"
       mode:
         description: "live (orders) or dry (feeds + decisions only)"
-        default: "live"
+        default: "dry"
 
 permissions:
   contents: write
   actions: write
 
 concurrency:
-  group: mr1-live-${{ github.event.inputs.mode || 'live' }}   # a dry run may overlap the live one; two live runs never do
+  group: mr1-live-${{ github.event.inputs.mode || 'dry' }}   # a dry run may overlap the live one; two live runs never do
   cancel-in-progress: false
 
 jobs:
@@ -47,4 +49,4 @@ jobs:
           node-version: "22"
       - run: npm install --no-save --no-audit --no-fund ws@8
       - name: Trade (publishing every 10 minutes)
-        run: bash mrp/gha_live.sh "${{ github.event.inputs.minutes || '335' }}" "${{ github.event.inputs.mode || 'live' }}"
+        run: bash mrp/gha_live.sh "${{ github.event.inputs.minutes || '335' }}" "${{ github.event.inputs.mode || 'dry' }}"

@@ -1,3 +1,4 @@
+# RETIRED 13 Nov 2026 (see BUSINESS.md): no schedule. Final results are in the data branches. Start by hand if needed.
 # Early Favorite auto-buyer, PAPER mode: reads the live Polymarket US book at 13:00 / 12:00 left
 # of every 15-min BTC round, records what a real limit order would fill, scores it at settlement.
 # No orders, no key. Each run watches ~5.6 h and publishes every 10 min, so results show up
@@ -5,8 +6,6 @@
 # polyus/ef_autobuyer/README.md.
 name: ef-autobuyer
 on:
-  schedule:
-    - cron: "41 * * * *"
   workflow_dispatch:
     inputs:
       minutes:

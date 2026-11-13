@@ -1,3 +1,5 @@
+# RETIRED 13 Nov 2026 (we stopped trading on 8 Nov; see BUSINESS.md). Manual start only, and in dry mode unless someone
+# types `live` and the switch file exists.
 # Mr. E live (REAL MONEY, 25¢ a round): rests a 1-share limit buy at 25¢ on both sides of the ETH 15-minute Up/Down market,
 # cancels the other side when one fills, rests a sell at 30¢, and lets what is still held settle at the bell. Nothing else.
 # Switch: the file mre/LIVE_ON on main (delete it to stop after the current run; cancel the running job to stop at once).
@@ -11,14 +13,14 @@ on:
         default: "335"
       mode:
         description: "live (orders) or dry"
-        default: "live"
+        default: "dry"
 
 permissions:
   contents: write
   actions: write
 
 concurrency:
-  group: mre-live-${{ github.event.inputs.mode || 'live' }}
+  group: mre-live-${{ github.event.inputs.mode || 'dry' }}
   cancel-in-progress: false
 
 jobs:
@@ -37,4 +39,4 @@ jobs:
           node-version: "22"
       - run: npm install --no-save --no-audit --no-fund ws@8
       - name: Trade (publishing every 10 minutes)
-        run: bash mrp/gha_mre.sh "${{ github.event.inputs.minutes || '335' }}" "${{ github.event.inputs.mode || 'live' }}"
+        run: bash mrp/gha_mre.sh "${{ github.event.inputs.minutes || '335' }}" "${{ github.event.inputs.mode || 'dry' }}"

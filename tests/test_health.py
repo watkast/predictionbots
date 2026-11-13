@@ -12,24 +12,26 @@ hc = importlib.util.module_from_spec(spec)
 spec.loader.exec_module(hc)
 
 
-def test_ef_autobuyer_last_check_uses_actual_read_time(tmp_path):
-    d = tmp_path / "polyus" / "ef_autobuyer"; d.mkdir(parents=True)
-    led = {"a": {"window_start": 1000, "checks": [{"at": 120, "t": 155.4}]},
-           "b": {"window_start": 1900, "checks": []},                       # the Saturday shape: round, no checks
-           "c": {"window_start": 100, "checks": [{"at": 180}]}}
-    d.joinpath("ledger.json").write_text(json.dumps(led))
-    assert hc.ef_autobuyer_last_check(tmp_path) == datetime.fromtimestamp(1155.4, timezone.utc)
-    d.joinpath("ledger.json").write_text(json.dumps({"b": led["b"]}))
-    assert hc.ef_autobuyer_last_check(tmp_path) is None
+def test_watchdog_watches_what_the_business_runs_on():
+    ids = {w[0] for w in hc.WATCH} | {c[0] for c in hc.CONTENT}
+    assert {"site-deploy", "site-live", "recorder", "benchmark"} <= ids
+    watched = " ".join(f"{w[1]} {w[3]}" for w in hc.WATCH)
+    for retired in ("ef-", "polyus/", "carry", "mrh", "bounty", "paper-matrix"):     # trading-era jobs, retired 13 Nov 2026
+        assert retired not in watched
+    assert all(len(w) == 6 and w[2] in ("main", "data", "mrp-data") and w[4] > 0 for w in hc.WATCH)
 
 
-def test_polyus_log_and_tracker_generated(tmp_path):
-    (tmp_path / "polyus" / "early_favorite").mkdir(parents=True)
-    (tmp_path / "polyus" / "fetch-20261026T0604.log").write_text("x")
-    (tmp_path / "polyus" / "fetch-20261025T2142.log").write_text("x")
-    assert hc.polyus_last_fetch_log(tmp_path) == datetime(2026, 10, 26, 6, 4, tzinfo=timezone.utc)
-    (tmp_path / "polyus" / "early_favorite" / "early_favorite.json").write_text(json.dumps({"generated": "2026-10-26T06:08:04Z"}))
-    assert hc.ef_tracker_generated(tmp_path) == datetime(2026, 10, 26, 6, 8, 4, tzinfo=timezone.utc)
+def test_site_built_reads_the_live_stamp_and_fails_closed():
+    page = '<p class="lede">One page per series. 12,080 series across both venues, rebuilt 13 Nov 2026 08:04 UTC. Crypto minutes read</p>'
+    assert hc.site_built(fetch=lambda url: page) == datetime(2026, 11, 13, 8, 4, tzinfo=timezone.utc)
+    assert hc.site_built(fetch=lambda url: page.replace("13 Nov", "5 Nov")) == datetime(2026, 11, 5, 8, 4, tzinfo=timezone.utc)
+    assert hc.site_built(fetch=lambda url: "<html><title>PredictMeNot</title>the home page, served for an unknown path</html>") is None
+    assert hc.site_built(fetch=lambda url: page.replace("13 Nov 2026", "99 Xyz 2026")) is None
+
+    def down(url):
+        raise OSError("connection refused")
+    assert hc.site_built(fetch=down) is None                  # a domain that does not answer is a failed check, not a crash
+    assert hc.site_built(fetch=lambda url: None) is None
 
 
 def test_errlog_guard_records_and_reraises(tmp_path):

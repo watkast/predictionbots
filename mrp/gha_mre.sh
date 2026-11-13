@@ -22,6 +22,12 @@ fi
 git fetch -q --depth 1 origin "$TAIL_BRANCH" 2>/dev/null && git show "origin/$TAIL_BRANCH:tail.jsonl" > "$MRE_DIR/prev_tail.jsonl" 2>/dev/null && export MRE_PREV_TAIL="$MRE_DIR/prev_tail.jsonl"
 if [ "$MODE" = "cleanup" ]; then [ -s "$SUB/cleanup.jsonl" ] && export MRE_PREV_TAIL="$GITHUB_WORKSPACE/$SUB/cleanup.jsonl"; node scripts/mre_live.js --cleanup; exit 0; fi   # cancel what the previous run left resting, then stop
 if [ "$MODE" = "audit" ]; then   # read-only reconciliation of the account against both Mr. E logs; places nothing
+  # The audit prints the account's balances and every trade on it. This repository is public and so are its Actions
+  # logs (the audits of 3 Nov 2026 are why this guard exists), so it does not run here: run it on your own machine.
+  if [ -n "${GITHUB_ACTIONS:-}" ]; then
+    echo "::error title=audit not run::scripts/mre_audit.js prints account balances and trades; Actions logs on this repo are public. Run it locally: AUDIT_LOGS=mre.jsonl,mre-btc.jsonl node scripts/mre_audit.js"
+    exit 1
+  fi
   git fetch -q --depth 1 origin "$DATA_BRANCH" && git show "origin/$DATA_BRANCH:mre/live.jsonl" > /tmp/mre_eth.jsonl 2>/dev/null; git show "origin/$DATA_BRANCH:mre-btc/live.jsonl" > /tmp/mre_btc.jsonl 2>/dev/null
   AUDIT_SKIP_ORDERS=1 AUDIT_LOGS=/tmp/mre_eth.jsonl,/tmp/mre_btc.jsonl node scripts/mre_audit.js; exit 0
 fi
