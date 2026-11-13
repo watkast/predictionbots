@@ -76,6 +76,16 @@ h3 { font-size: 19px; margin: 26px 0 6px; font-weight: 600; }
 .ledger-note { color: var(--ink-2); font-size: 14px; margin-top: 10px; }
 .ledger-sum { display: flex; gap: 28px; flex-wrap: wrap; margin: 0 0 14px; font-size: 15px; color: var(--ink-2); }
 .ledger-sum b { color: var(--ink); font-weight: 600; font-variant-numeric: tabular-nums; }
+.ledger-wrap + .ledger-wrap { margin-top: 16px; }
+.ledger tbody th[scope=row] { color: var(--ink); font-weight: 600; font-size: 15px; white-space: nowrap; }
+.ledger tr:last-child th { border-bottom: 0; }
+.ledger-more { margin: 12px 0 0; }
+.ledger-bots td:nth-child(5) { min-width: 27ch; }
+.ledger-bots td:nth-child(6) { min-width: 58ch; }
+details.ledger-note summary { cursor: pointer; color: var(--ink); font-weight: 500; }
+details.ledger-note ul { margin: 8px 0 0; padding-left: 20px; }
+details.ledger-note li { margin: 6px 0; max-width: 84ch; }
+details.ledger-note p { margin: 8px 0 0; max-width: 84ch; }
 
 /* scanners: three plain blocks, each with a real example line */
 .scan { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 28px 40px; }
@@ -199,5 +209,10 @@ article.post .body .ledger.cells th[scope=row] { font-weight: 600; color: var(--
 @media (max-width: 640px) {
   .hero { padding-top: 36px; }
   section { padding: 32px 0; }
-  header.top nav { gap: 14px; }
+  /* phone header: brand and theme switch on one line, the links on full-width lines under them. Before this the links
+     were squeezed into a narrow middle column (ten rows tall) and the theme switch pushed the page 29px sideways. */
+  header.top { flex-wrap: wrap; align-items: center; row-gap: 4px; }
+  header.top nav { order: 3; flex: 0 0 100%; gap: 0 16px; }
+  .ledger th, .ledger td { padding: 9px 9px; }
+  .theme label { padding: 4px 7px; }
 }

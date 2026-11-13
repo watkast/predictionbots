@@ -161,8 +161,8 @@
       </li>
       <li>
         <div class="when">Every market</div>
-        <h3><a href="/markets/">13,000 market pages: the premise in plain words, what the market says, the fee at that price, and how much luck it needs</a></h3>
-        <p>One page per market series on both venues, rebuilt hourly from the venues' public data. Real-world odds (sportsbook consensus, forecasts, the score) and the debate floor under each page are next.</p>
+        <h3><a href="/markets/">About 12,000 market pages: the premise in plain words, what the market says, the fee at that price, and how much luck it needs</a></h3>
+        <p>One page per market series on both venues, rebuilt several times a day from the venues' public data; each page states the time of its prices. Real-world odds (sportsbook consensus, forecasts, the score) and the debate floor under each page are next.</p>
       </li>
     </ul>
   </section>
@@ -176,24 +176,38 @@
 
   <section id="ledger">
     <h2>Our ledger: we played too</h2>
-    <p class="sub">From 2 to 8 November 2026 our bots traded real money at tiny size to test ideas. Every trade is below, read from the bots' public log files on GitHub. We stopped on 8 November when the last idea failed its live test. The record stays up because it is the point.</p>
+    <p class="sub">From 2 to 8 November 2026 our bots traded real money at tiny size to test ideas. Every round trip they made is below, built from the bots' public log files on GitHub. We stopped on 8 November when the last idea failed its live test. The record stays up because it is the point.</p>
     <div class="ledger-sum" id="ledger-sum"></div>
-    <div class="ledger-wrap">
+    <div class="ledger-wrap" tabindex="0" role="region" aria-label="The record, bot by bot (scrolls sideways on a small screen)">
+      <table class="ledger cells ledger-bots">
+        <caption>The record, bot by bot</caption>
+        <thead><tr><th scope="col">Bot</th><th scope="col" class="num">Trips</th><th scope="col" class="num">Won</th><th scope="col" class="num">Net</th><th scope="col">Where and when</th><th scope="col">The idea, and what happened</th></tr></thead>
+        <tbody id="ledger-bots"><tr><td colspan="6">Loading the record…</td></tr></tbody>
+      </table>
+    </div>
+    <div class="ledger-wrap" tabindex="0" role="region" aria-label="Every round trip our bots made (scrolls sideways on a small screen)">
       <table class="ledger" aria-describedby="ledger-note">
-        <caption>Every trade our bots made, newest first</caption>
-        <thead><tr><th>Settled</th><th>Bot</th><th>Market</th><th>Side</th><th class="num">In</th><th class="num">Out</th><th class="num">Net</th><th>Why it closed</th></tr></thead>
+        <caption>Every round trip our bots made, newest first</caption>
+        <thead><tr><th scope="col">Settled</th><th scope="col">Bot</th><th scope="col">Market</th><th scope="col">Side</th><th scope="col" class="num">In</th><th scope="col" class="num">Out</th><th scope="col" class="num">Net</th><th scope="col">Why it closed</th></tr></thead>
         <tbody id="ledger-body"><tr><td colspan="8">Loading the record…</td></tr></tbody>
       </table>
     </div>
-    <p class="ledger-note" id="ledger-note">Three ideas, three posts: buying the spike (lost), the final seconds (a mirage), decided games (shelved; it would only move money from slower players). Source files: <code>mrh-live/live_trades.jsonl</code> and <code>mrt/trades.jsonl</code> in the repo's data branches.</p>
+    <p class="ledger-more"><button type="button" class="btn" id="ledger-more" aria-controls="ledger-body" aria-expanded="false" hidden>Show all round trips</button></p>
+    <p class="ledger-note" id="ledger-note">One row is one round trip: a position opened and closed, net of the venue's fees. Five ideas: resting buys on both sides (Mr E, lost), a fair-value model (Mr P, lost), buying the spike (Mr H, lost), the final seconds (Mr T, a mirage: nothing filled), decided games (Mr S, shelved; it would only move money from slower players). The file behind this table is <a href="/data/bot_trades.json">bot_trades.json</a>, built by <code>scripts/ledger_build.py</code> from the bots' logs on the repo's data branches (<code>mre/</code>, <code>mre-btc/</code>, <code>mrp/live/</code>, <code>mrh-live/</code>).</p>
+    <details class="ledger-note">
+      <summary>† Nine rounds the bot did not finish writing</summary>
+      <p>In nine Mr E rounds the bot bought and was then restarted before it wrote the result. They are in the table and in the totals. The position comes from the bot's own log; the result comes from the venue's settlement record, and where a sell was still resting, from the order books our recorder stored for that round.</p>
+      <ul id="ledger-unlogged"></ul>
+    </details>
+    <p class="ledger-note"><b>Correction, 13 November 2026.</b> Until today this table listed only Mr H's six trades, a net of −$0.53. It left out Mr E and Mr P, which traded on Polymarket US from 2 to 4 November. The full record is above.</p>
   </section>
 
   <section id="data">
     <h2>Data for people who check things</h2>
-    <p class="sub">Our recorder stores one-second order books and index prints for every short crypto market on Polymarket US and Kalshi, with the settlement for each. Journalists and academics: write to us. Builders and agents: the API answers per call in USDC, no account, no key.</p>
-    <div class="ledger-wrap">
+    <p class="sub">Our recorder stores one-second order books and index prints for every short crypto market on Polymarket US and Kalshi, with the settlement for each. Journalists and academics: write to us. Builders and agents: a per-call API, paid in USDC with no account and no key, is built and not switched on yet; the endpoints and prices below are what it will open with.</p>
+    <div class="ledger-wrap" tabindex="0" role="region" aria-label="Planned data endpoints and prices (scrolls sideways on a small screen)">
       <table class="ledger cells">
-        <caption>Data endpoints and prices</caption>
+        <caption>Planned data endpoints and prices</caption>
         <thead><tr><th>Endpoint</th><th>What you get</th><th>Updates</th><th class="num">Price per call</th></tr></thead>
         <tbody>
           <tr><td><code>GET /v1/preview</code></td><td>The last 3 settlement windows with their final books, 10 minutes delayed</td><td>Every 5 minutes</td><td class="num">Free</td></tr>
@@ -203,7 +217,7 @@
         </tbody>
       </table>
     </div>
-    <p class="fine">The API goes live with the home server this week. We do not resell the venues' order books; we sell what we measure from them, cited to the venue. inquire@predictmenot.com</p>
+    <p class="fine">The API is not live yet; this line will say so, with the address, the day it is. We do not resell the venues' order books; we sell what we measure from them, cited to the venue. inquire@predictmenot.com</p>
   </section>
 
   <section id="honest">
@@ -238,9 +252,9 @@
     <div class="two faq">
       <div><h3>Are you telling me not to trade?</h3><p>We're telling you what it costs and how often people win. Most lose. If you still want to, the deal section shows exactly what happens, including whether we get paid.</p></div>
       <div><h3>You plan to take referral money. Why trust you?</h3><p>Because the fees and the odds sit above every button, the rate we're paid is published, and the block disappears before the warning ever would. Members and data buyers pay us to keep it that way.</p></div>
-      <div><h3>Did your own bots make money?</h3><p>No. The ledger is the real record: we lost a little, learned three things, published all three, and stopped.</p></div>
+      <div><h3>Did your own bots make money?</h3><p>No. The ledger is the full record: 269 round trips, two out of three of them winners, and a net loss of $32.31, about 8 cents on every dollar staked. We published it and stopped.</p></div>
       <div><h3>Which venues?</h3><p>Polymarket US and Kalshi, the two US-regulated exchanges. Not the international Polymarket book.</p></div>
-      <div><h3>Can I check your numbers?</h3><p>Yes. Every post links its data file and script, every ledger row comes from a public log line, every fee figure follows the venue's schedule, and the code is public on GitHub.</p></div>
+      <div><h3>Can I check your numbers?</h3><p>Yes. Every post links its data file and script, every ledger row is built from the bots' public log files, every fee figure follows the venue's schedule, and the code is public on GitHub.</p></div>
       <div><h3>Is this financial advice?</h3><p>No. It is a record of what rules say, what markets showed, and what fees cost. You make your own decisions.</p></div>
     </div>
   </section>
