@@ -6,7 +6,7 @@ on:
   workflow_run:
     # the jobs the business runs on (13 Nov 2026: site-deploy, benchmark and the recorder were not on this list, so a
     # failed deploy opened no ticket; the trading-era jobs that were are retired)
-    workflows: [ci, site-deploy, benchmark, mrp-record, trend, health]
+    workflows: [ci, site-deploy, site-check, benchmark, mrp-record, trend, health, archive]
     types: [completed]
 
 permissions:

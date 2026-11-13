@@ -181,7 +181,7 @@ footer p { margin: 6px 0; max-width: 80ch; }
 article.post { padding: 40px 0 20px; }
 article.post h1 { font-size: clamp(30px, 4.6vw, 46px); line-height: 1.08; letter-spacing: -0.022em; margin: 0 0 12px; max-width: 24ch; }
 article.post .meta { color: var(--ink-2); margin-bottom: 28px; }
-article.post .body { max-width: var(--text); }
+article.post .body { max-width: var(--text); overflow-wrap: break-word; }   /* a long link wraps instead of widening the page */
 article.post .body h2 { font-size: 24px; margin: 36px 0 10px; letter-spacing: -0.012em; }
 article.post .body p, article.post .body li { font-size: 17.5px; line-height: 1.6; }
 article.post .body img { max-width: 100%; height: auto; display: block; margin: 22px 0; border: 1px solid var(--rule); border-radius: 6px; }
@@ -209,10 +209,24 @@ article.post .body .ledger.cells th[scope=row] { font-weight: 600; color: var(--
 @media (max-width: 640px) {
   .hero { padding-top: 36px; }
   section { padding: 32px 0; }
-  /* phone header: brand and theme switch on one line, the links on full-width lines under them. Before this the links
-     were squeezed into a narrow middle column (ten rows tall) and the theme switch pushed the page 29px sideways. */
-  header.top { flex-wrap: wrap; align-items: center; row-gap: 4px; }
-  header.top nav { order: 3; flex: 0 0 100%; gap: 0 16px; }
+  /* phone header: brand and theme switch on one line; the links on ONE line under them that scrolls sideways, with a
+     fade on its right edge to say there is more. History: the links were first squeezed into a narrow middle column
+     (ten rows tall) with the theme switch pushing the page 29px sideways, then wrapped onto three rows that pushed the
+     page down. site/phone_check.js fails the deploy check if either comes back. */
+  header.top { flex-wrap: wrap; align-items: center; row-gap: 0; padding: 14px 0 2px; }
+  header.top nav { order: 3; flex: 0 0 100%; min-width: 0; flex-wrap: nowrap; gap: 20px; white-space: nowrap;
+                   overflow-x: auto; overscroll-behavior-x: contain; scrollbar-width: none; padding-right: 32px;
+                   -webkit-mask-image: linear-gradient(to right, #000 calc(100% - 40px), transparent);
+                   mask-image: linear-gradient(to right, #000 calc(100% - 40px), transparent); }
+  header.top nav::-webkit-scrollbar { display: none; }
+  header.top nav a { flex: 0 0 auto; padding: 10px 0; }
   .ledger th, .ledger td { padding: 9px 9px; }
   .theme label { padding: 4px 7px; }
+}
+@media (max-width: 360px) {
+  /* the narrowest phones (320 to 360px): brand and theme switch still share the first line */
+  header.top { column-gap: 10px; }
+  header.top .brand { font-size: 18px; }
+  .theme { font-size: 12px; }
+  .theme label { padding: 4px 5px; }
 }

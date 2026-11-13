@@ -1,0 +1,44 @@
+# After every deploy, look at the live site the way a phone does: WebKit with an iPhone profile (the engine Safari
+# runs) and Chromium with an Android one, at 320 to 412px (site/phone_check.js). Red when a page is wider than its
+# screen, the header takes more than two rows, or a header control is too small to tap; error-watch then opens a
+# ticket. It also prints the cache headers visitors are given. Screenshots are kept as an artifact for a week.
+# Why it exists: on 13 Nov 2026 the phone header was "fixed" and checked in a desktop browser squeezed narrow, and
+# the owner's iPhone still showed the broken one.
+name: site-check
+on:
+  workflow_run:
+    workflows: [site-deploy]
+    types: [completed]
+  workflow_dispatch:
+    inputs:
+      url:
+        description: "Site to check"
+        default: "https://predictmenot.com"
+
+permissions:
+  contents: read
+
+concurrency:
+  group: site-check
+  cancel-in-progress: true
+
+jobs:
+  phone:
+    if: github.event_name == 'workflow_dispatch' || github.event.workflow_run.conclusion == 'success'
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with: { node-version: "22" }
+      - name: Playwright with WebKit and Chromium
+        run: |
+          npm install --no-save --no-audit --no-fund playwright@1
+          npx playwright install --with-deps webkit chromium
+      - name: Phone layout on the live site
+        run: |
+          set -o pipefail
+          node site/phone_check.js "${{ github.event.inputs.url || 'https://predictmenot.com' }}" shots | tee -a "$GITHUB_STEP_SUMMARY"
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with: { name: phone-shots, path: shots, retention-days: 7 }

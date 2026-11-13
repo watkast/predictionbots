@@ -85,6 +85,13 @@ jobs:
         with:
           path: cache/odds.json
           key: odds-state-${{ github.run_id }}-${{ github.run_attempt }}
+      # last step that touches the pages: every link to our own CSS or JS gets the file's hash, so a page can never be
+      # shown with an older stylesheet that a browser or a cache still holds (13 Nov 2026: a fixed phone header that
+      # a phone did not get)
+      - name: Stamp CSS and JS links with the files' hashes
+        run: |
+          set -o pipefail
+          python site/stamp_assets.py site/dist | tee -a "$GITHUB_STEP_SUMMARY"
       - name: Internal link check
         run: python site/link_check.py | head -60 | tee -a "$GITHUB_STEP_SUMMARY" || true
       - uses: actions/upload-artifact@v4

@@ -25,6 +25,14 @@ TEMPLATE = """<!doctype html>
 </body></html>"""
 
 
+def wrap_tables(html: str) -> str:
+    """Markdown tables get the wrapper the hand-written ones have: a wide table scrolls inside itself on a phone
+    instead of widening the page, and the scrolling box can be reached from the keyboard."""
+    n = iter(range(1, 1000))        # a page's regions need different names
+    html = re.sub("<table>", lambda m: f'<div class="ledger-wrap" tabindex="0" role="region" aria-label="Table {next(n)} (scrolls sideways on a small screen)"><table>', html)
+    return html.replace("</table>", "</table></div>")
+
+
 def front_matter(txt: str):
     m = re.match(r"^---\n(.*?)\n---\n(.*)$", txt, re.S)
     if not m:
@@ -74,7 +82,7 @@ def build():
         shutil.copytree(ROOT / "posts" / "img", DIST / "posts" / "img")
     for md in sorted((ROOT / "posts").glob("*.md")):
         meta, body = front_matter(md.read_text())
-        html = markdown.markdown(body, extensions=["extra", "smarty"])
+        html = wrap_tables(markdown.markdown(body, extensions=["extra", "smarty"]))
         imgs = meta.get("images") or []
         og = f'<meta property="og:image" content="/posts/{imgs[0]}"><meta name="twitter:card" content="summary_large_image">' if imgs else ""
         import html as _hh
@@ -88,7 +96,7 @@ def build():
         (DIST / "learn").mkdir()
         for md in sorted((ROOT / "learn").glob("*.md")):
             meta, body = front_matter(md.read_text())
-            html = markdown.markdown(body, extensions=["extra", "smarty", "toc"])
+            html = wrap_tables(markdown.markdown(body, extensions=["extra", "smarty", "toc"]))
             faq = ""
             if meta.get("faq"):
                 import json

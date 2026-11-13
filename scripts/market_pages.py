@@ -421,7 +421,7 @@ def render_series(s: dict, built: str) -> str:
     out.append(f'<div class="kpi" style="background:var(--ink);color:var(--paper)"><div class="k" style="color:#aab2bf">Luck needed meter</div><div class="big">{lpct} 😈</div><div class="meter" aria-hidden="true"><i style="width:{round(l*100)}%"></i></div><div class="s" style="color:#aab2bf">{esc(ltext)}</div></div>')
     out.append("</div></section>")
     out.append('<section><h2>The cover charge</h2>')
-    out.append('<div class="ledger-wrap"><table class="ledger cells"><caption>Fee and break-even by purchase price</caption><thead><tr><th scope="col">If you buy at</th><th scope="col" class="num">Fee per contract</th><th scope="col" class="num">On $50</th><th scope="col" class="num">Win rate to break even</th></tr></thead><tbody>')
+    out.append('<div class="ledger-wrap" tabindex="0" role="region" aria-label="Fee and break-even by purchase price (scrolls sideways on a small screen)"><table class="ledger cells"><caption>Fee and break-even by purchase price</caption><thead><tr><th scope="col">If you buy at</th><th scope="col" class="num">Fee per contract</th><th scope="col" class="num">On $50</th><th scope="col" class="num">Win rate to break even</th></tr></thead><tbody>')
     for q in sorted({0.3, 0.5, 0.7, 0.9, round(p, 2)}):
         if 0 < q < 1:
             mark = " <b>(now)</b>" if abs(q - round(p, 2)) < 1e-9 else ""
@@ -430,7 +430,7 @@ def render_series(s: dict, built: str) -> str:
     out.append(f'<p class="fine">{esc(s["fee_note"])} Formula: {"7% × contracts × price × (1 − price), rounded up, on orders that take liquidity" if v == "kalshi" else "9.5% × price × (1 − price) per share on orders that take liquidity (accounts under $10,000 of 30-day volume; 6.95% in a new account's first week and above $250,000)"}. Break-even assumes you hold to settlement; trading out early pays the fee twice.</p>')
     out.append(f'<p><a class="btn dark" href="/simulate.html?venue={v}&price={round(p*100)}&stake=20&week=20&bank=500">How long until your balance is $0 in this market? →</a></p></section>')
     if rows:
-        out.append('<section><h2>Open contracts right now</h2><div class="ledger-wrap"><table class="ledger cells"><caption>Open contracts in this series with price, implied probability, volume and close time</caption><thead><tr><th scope="col">Contract</th><th scope="col" class="num">YES price</th><th scope="col" class="num">Implied</th><th scope="col" class="num">Fee at this price</th><th scope="col" class="num">Real-world odds</th><th scope="col" class="num">Luck needed</th><th scope="col" class="num">Volume</th><th scope="col">Closes</th></tr></thead><tbody>')
+        out.append('<section><h2>Open contracts right now</h2><div class="ledger-wrap" tabindex="0" role="region" aria-label="Open contracts in this series (scrolls sideways on a small screen)"><table class="ledger cells"><caption>Open contracts in this series with price, implied probability, volume and close time</caption><thead><tr><th scope="col">Contract</th><th scope="col" class="num">YES price</th><th scope="col" class="num">Implied</th><th scope="col" class="num">Fee at this price</th><th scope="col" class="num">Real-world odds</th><th scope="col" class="num">Luck needed</th><th scope="col" class="num">Volume</th><th scope="col">Closes</th></tr></thead><tbody>')
         for r in rows[:40]:
             q = r["p"]
             lk = "100%" if s["crypto_minutes"] else pct(luck(q))
@@ -457,7 +457,7 @@ def render_category(venue_name: str, venue: str, cat: str, rows: list[dict], bui
     out = [HEAD.format(title=esc(title), desc=esc(desc), canon=f"{SITE}/markets/{venue}/{cat_slug(cat)}/", css=CSS, ld=ld)]
     out.append(f'<p class="crumbs"><a href="/markets/">Markets</a> › {esc(venue_name)} › {esc(cat)}</p>')
     out.append(f'<div class="hero" style="padding-top:18px"><h1 style="max-width:24ch">{esc(cat)} <span style="color:var(--ink-2);font-weight:500">on {esc(venue_name)}</span></h1><p class="lede">{esc(desc)} Rebuilt {built}.</p></div>')
-    out.append(f'<section><div class="ledger-wrap"><table class="ledger cells"><caption>{esc(venue_name)} {esc(cat)} series</caption><thead><tr><th scope="col">Series</th><th scope="col" class="num">Open</th><th scope="col" class="num">Typical price</th><th scope="col" class="num">Fee</th><th scope="col" class="num">Luck needed</th></tr></thead><tbody>')
+    out.append(f'<section><div class="ledger-wrap" tabindex="0" role="region" aria-label="{esc(venue_name)} {esc(cat)} series (scrolls sideways on a small screen)"><table class="ledger cells"><caption>{esc(venue_name)} {esc(cat)} series</caption><thead><tr><th scope="col">Series</th><th scope="col" class="num">Open</th><th scope="col" class="num">Typical price</th><th scope="col" class="num">Fee</th><th scope="col" class="num">Luck needed</th></tr></thead><tbody>')
     for s_ in sorted(rows, key=lambda x: -sum(r["volume"] for r in x["rows"])):
         ps = sorted(r["p"] for r in s_["rows"] if r["p"] is not None)
         p = ps[len(ps) // 2] if ps else None
@@ -484,7 +484,7 @@ def render_index(series: list[dict], built: str) -> str:
         bycat = defaultdict(list)
         for s_ in rows:
             bycat[s_["category"] or "Other"].append(s_)
-        out.append(f'<section><h2>{venue_name} <span style="color:var(--ink-2);font-weight:500">· {len(rows):,} series</span></h2><div class="ledger-wrap"><table class="ledger cells"><caption>{venue_name} categories</caption><thead><tr><th scope="col">Category</th><th scope="col" class="num">Series</th><th scope="col" class="num">Open contracts</th><th scope="col">Most traded right now</th></tr></thead><tbody>')
+        out.append(f'<section><h2>{venue_name} <span style="color:var(--ink-2);font-weight:500">· {len(rows):,} series</span></h2><div class="ledger-wrap" tabindex="0" role="region" aria-label="{venue_name} categories (scrolls sideways on a small screen)"><table class="ledger cells"><caption>{venue_name} categories</caption><thead><tr><th scope="col">Category</th><th scope="col" class="num">Series</th><th scope="col" class="num">Open contracts</th><th scope="col">Most traded right now</th></tr></thead><tbody>')
         for cat in sorted(bycat, key=lambda c: -len(bycat[c])):
             top = sorted(bycat[cat], key=lambda x: -sum(r["volume"] for r in x["rows"]))[:3]
             out.append(f'<tr><td><a href="/markets/{venue}/{cat_slug(cat)}/">{esc(cat)}</a></td><td class="num">{len(bycat[cat]):,}</td><td class="num">{sum(len(x["rows"]) for x in bycat[cat]):,}</td><td>' + " · ".join(f'<a href="/markets/{x["venue"]}/{x["slug"]}/">{esc(x["title"][:60])}</a>' for x in top) + "</td></tr>")
