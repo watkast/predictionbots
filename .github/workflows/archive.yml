@@ -42,7 +42,6 @@ jobs:
     timeout-minutes: 150
     env:
       GH_TOKEN: ${{ github.token }}
-      ARCHIVE_WORK: ${{ runner.temp }}/archive
       RETIRED_TITLE: "Retired experiments, October to November 2026"
       RETIRED_NOTES: >-
         Data from experiments we stopped, moved out of this repository's data branches on 13 Nov 2026 so the
@@ -62,6 +61,7 @@ jobs:
       - name: Pack (copy, upload, download back, compare; removes nothing)
         if: inputs.pack != 'none'
         run: |
+          export ARCHIVE_WORK="$RUNNER_TEMP/archive"
           case "${{ inputs.pack }}" in
             books)
               python scripts/archive_release.py books --keep-days "${{ inputs.keep_days }}" ;;
@@ -74,6 +74,7 @@ jobs:
       - name: Prune (rebuild the branch without what the manifests cover)
         if: inputs.prune_branch != 'none'
         run: |
+          export ARCHIVE_WORK="$RUNNER_TEMP/archive"
           args=()
           if [ "${{ inputs.apply }}" = "true" ]; then args+=(--apply); fi
           if [ -n "${{ inputs.backup }}" ]; then args+=(--backup "backup/${{ inputs.prune_branch }}-${{ inputs.backup }}"); fi
