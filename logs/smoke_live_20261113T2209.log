@@ -1,0 +1,18 @@
+ok   kalshi /markets parse
+ok   kalshi close_ts sane (KXMVECROSSCATEGORY-S2026AMFIY7AKAUDWK5DO-F3BRBKCYT)
+ok   kalshi series fee schedule KXMVECROSSCATEGORY: FeeSchedule(taker_rate=0.07, maker_rate=0.0175, maker_rebate_frac=0.0, round_up_cents=True)
+ok   kalshi orderbook parse
+ok   kalshi trades parse (0)
+ok   kalshi candlesticks parse (0)
+     historical cutoff: {"market_positions_last_updated_ts": "2026-09-13T00:00:00Z", "market_settled_ts": "2026-09-13T00:00:00Z", "orders_updated_ts": "2026-10-29T00:00:00Z", "trades_created_ts": "2026-09-13T00:00:00Z"}
+ok   kalshi auth balance call answered (fields: balance, balance_breakdown, balance_dollars, portfolio_value, updated_ts)
+ok   kalshi WS snapshot (1 events)
+ok   gamma /markets parse
+ok   clobTokenIds parsed (Louisiana-Lafayette Ragin' Cajuns vs. UN)
+ok   clob /book parse
+ok   clob midpoint 0.495
+ok   clob prices-history (25)
+ok   data-api trades parse (20)
+ok   polymarket WS book (1 events)
+
+ALL OK
