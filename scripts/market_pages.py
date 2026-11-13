@@ -104,6 +104,13 @@ class Http:
                 time.sleep(self.pace - dt)
             self.last = time.time()
 
+    @staticmethod
+    def _safe(params):
+        """Query parameters for a log line, without credentials: gen.log is published on a public branch."""
+        if not isinstance(params, dict):
+            return params
+        return {k: ("***" if any(w in k.lower() for w in ("key", "token", "secret")) else v) for k, v in params.items()}
+
     def get(self, url: str, params=None, tries: int = 3):
         for i in range(tries):
             self._wait()
@@ -112,7 +119,7 @@ class Http:
                 if r.status_code == 200:
                     return r.json()
                 if r.status_code in (400, 404):
-                    LOG(f"  {url} {params} -> {r.status_code} {r.text[:160]}")
+                    LOG(f"  {url} {self._safe(params)} -> {r.status_code} {r.text[:160]}")
                     return None
                 LOG(f"  {url} -> {r.status_code}; retry")
                 time.sleep(1.5 * (i + 1) + (float(r.headers.get("Retry-After", 0)) if r.status_code == 429 else 0))
@@ -120,6 +127,27 @@ class Http:
                 LOG(f"  {url} -> {e!r}; retry")
                 time.sleep(1.5 * (i + 1))
         return None
+
+    def get_full(self, url: str, params=None, tries: int = 2):
+        """get() for a metered API: returns (json or None, response headers, status) so the caller can read its quota
+        headers. 401/403/429 are not retried (they mean the key or the quota; a retry fixes neither) and the query
+        parameters are never logged."""
+        for i in range(tries):
+            self._wait()
+            try:
+                r = self.c.get(url, params=params)
+                hdr = {k.lower(): v for k, v in r.headers.items()}
+                if r.status_code == 200:
+                    return r.json(), hdr, 200
+                if r.status_code in (400, 401, 403, 404, 422, 429):
+                    LOG(f"  {url} -> {r.status_code}")
+                    return None, hdr, r.status_code
+                LOG(f"  {url} -> {r.status_code}; retry")
+                time.sleep(1.5 * (i + 1))
+            except Exception as e:
+                LOG(f"  {url} -> {type(e).__name__}; retry")
+                time.sleep(1.5 * (i + 1))
+        return None, {}, 0
 
 
 def _num(x, default=None):
@@ -489,7 +517,8 @@ def build(out: Path, venue: str, max_series: int | None, cache_path: Path | None
                 LOG("nws load failed:", repr(e))
         if SX is not None:
             try:
-                SX.load(h, cache_path=str(cache_path.parent / "odds.json") if cache_path else None)
+                SX.load(h, cache_path=str(cache_path.parent / "odds.json") if cache_path else None,
+                        extra_caches=[str(cache_path.parent / "odds.remote.json")] if cache_path else None)
             except Exception as e:
                 LOG("odds load failed:", repr(e))
         for rec in kal.values():
@@ -507,8 +536,8 @@ def build(out: Path, venue: str, max_series: int | None, cache_path: Path | None
     if WX_SNAPSHOTS:
         (out / "weather_snapshot.jsonl").write_text("\n".join(json.dumps(r) for r in WX_SNAPSHOTS) + "\n")
         LOG(f"weather: {len(WX_SNAPSHOTS)} contracts with market and forecast probabilities")
-    if SX is not None and SX.GAMES:
-        (out / "odds.json").write_text(json.dumps({"t": SX.LAST_FETCH["t"], "games": SX.GAMES}))
+    if SX is not None and SX.STATE.get("t"):   # the quota state travels with the snapshot, games or not (see sports_odds.load)
+        (out / "odds.json").write_text(json.dumps(SX.snapshot()))
     try:
         (out / "series_meta.json").write_text(json.dumps(SERIES_CACHE))
     except Exception as e:

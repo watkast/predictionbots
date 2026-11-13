@@ -200,8 +200,8 @@ def report(s: dict, tbill: float | None = None) -> str:
     if s["deposits"] and tbill:
         L.append(f"\n## Same money, elsewhere\n\nThe ${s['deposits']:,.2f} you deposited, in 4-week Treasury bills at {tbill*100:.2f}% a year, would have paid about **${s['deposits']*tbill/12:,.2f} a month**, guaranteed, instead of costing ${s['fee_per_week']*4.33:,.2f} a month in fees before any outcome.")
     if s["fee_per_week"] and s["balance"]:
-        L.append(f"\n## At this pace\n\nFees alone take **${s['fee_per_week']:,.2f} a week**. With no edge, the balance of ${s['balance']:,.2f} lasts about **{s['balance']/s['fee_per_week']:.0f} weeks** on fees alone, before variance. The simulator at predictionbots.io/simulate shows what that looks like with your numbers.")
-    L.append("\n## If any of this is hard to read\n\nYou are not an outlier; you are in a group the size of a large city. **1-800-GAMBLER** (call or text, free, 24 hours) will not judge you, and neither do we. If money is the emergency, predictionbots.io/learn/when-the-market-looks-like-the-only-way-out has the ladder for tonight, this week and this month.\n")
+        L.append(f"\n## At this pace\n\nFees alone take **${s['fee_per_week']:,.2f} a week**. With no edge, the balance of ${s['balance']:,.2f} lasts about **{s['balance']/s['fee_per_week']:.0f} weeks** on fees alone, before variance. The simulator at predictmenot.com/simulate.html shows what that looks like with your numbers.")
+    L.append("\n## If any of this is hard to read\n\nYou are not an outlier; you are in a group the size of a large city. **1-800-GAMBLER** (call or text, free, 24 hours) will not judge you, and neither do we. If money is the emergency, predictmenot.com/learn/when-the-market-looks-like-the-only-way-out.html has the ladder for tonight, this week and this month.\n")
     return "\n".join(L)
 
 

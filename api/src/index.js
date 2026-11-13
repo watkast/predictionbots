@@ -1,4 +1,4 @@
-// PredictionBots paid data API — x402 per-call endpoints on Cloudflare Workers (Hono).
+// PredictMeNot paid data API — x402 per-call endpoints on Cloudflare Workers (Hono).
 //
 //   GET /                                 what this is, prices, how to pay (free)
 //   GET /v1/preview                        last 3 final-second moments, 10+ minutes delayed (free)
@@ -40,13 +40,13 @@ function routes(env) {
   const pay = (price) => [{ scheme: "exact", price, network: env.NETWORK || "eip155:8453", payTo: env.PAY_TO }];
   return {
     "GET /v1/final-seconds/recent": { accepts: pay(env.PRICE_RECENT || "$0.002"),
-      description: "Polymarket US crypto Up/Down markets: the last 200 final-second moments where the already-decided side was still offered below $1 (gate readings from PredictionBots' sniper).",
+      description: "Polymarket US crypto Up/Down markets: the last 200 final-second moments where the already-decided side was still offered below $1 (gate readings from PredictMeNot's sniper).",
       mimeType: "application/json", extensions: discovery({ count: 1, moments: [EXAMPLE_MOMENT] }) },
     "GET /v1/final-seconds/stats": { accepts: pay(env.PRICE_STATS || "$0.002"),
       description: "How often the decided side of Polymarket US crypto markets is still cheap in the final seconds, by coin, horizon and UTC hour, with median ask and size.",
       mimeType: "application/json", extensions: discovery({ window_days: 4, by_coin: { btc: { moments: 56, median_ask: 0.78 } } }) },
     "GET /v1/final-seconds/live": { accepts: pay(env.PRICE_LIVE || "$0.01"),
-      description: "Final-second candidates seen in the last 15 seconds by PredictionBots' always-on sniper (Polymarket US BTC/ETH/SOL/XRP 5m and 15m).",
+      description: "Final-second candidates seen in the last 15 seconds by PredictMeNot's always-on sniper (Polymarket US BTC/ETH/SOL/XRP 5m and 15m).",
       mimeType: "application/json", extensions: discovery({ as_of: "2026-11-08T00:04:57Z", candidates: [EXAMPLE_MOMENT] }) },
   };
 }
@@ -63,7 +63,7 @@ app.use("/v1/final-seconds/*", async (c, next) => {
 async function kv(env, key, fallback) { try { const v = await env.DATA.get(key, "json"); return v ?? fallback; } catch (e) { return fallback; } }
 
 app.get("/", (c) => c.json({
-  name: "PredictionBots data API", docs: "https://predictionbots.io/#pricing", protocol: "x402 v2 (exact, USDC on Base)",
+  name: "PredictMeNot data API", docs: "https://predictmenot.com/#data", protocol: "x402 v2 (exact, USDC on Base)",
   endpoints: {
     "GET /v1/preview": "free — last 3 final-second moments, delayed",
     "GET /v1/final-seconds/recent": `${c.env.PRICE_RECENT || "$0.002"} per call`,

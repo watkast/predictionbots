@@ -3,7 +3,7 @@
   "private": true,
   "type": "module",
   "version": "0.1.0",
-  "description": "PredictionBots paid data API: x402 (USDC on Base) per-call endpoints on Cloudflare Workers",
+  "description": "PredictMeNot paid data API: x402 (USDC on Base) per-call endpoints on Cloudflare Workers",
   "scripts": {
     "dev": "wrangler dev",
     "deploy": "wrangler deploy",

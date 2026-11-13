@@ -1,4 +1,4 @@
-# PredictionBots data API (Cloudflare Worker, x402)
+# PredictMeNot data API (Cloudflare Worker, x402)
 
 Paid per call in USDC on Base via the x402 protocol — no accounts, no API keys. A client without a payment header gets
 `402` with the terms; x402 clients (`@x402/fetch`, Coinbase's agent tools) pay and retry. The facilitator verifies and
@@ -17,4 +17,4 @@ cron, and — for `/live` — from the always-on sniper POSTing to `/ingest`.
     curl https://predictionbots-api.<account>.workers.dev/v1/final-seconds/recent   # -> 402 with payment terms
 
 Test on Base Sepolia first: NETWORK = "eip155:84532", test USDC from Circle's faucet, facilitator unchanged.
-Custom domain: route `api.predictionbots.io/*` to the worker in the Cloudflare dashboard.
+Custom domain: route `api.predictmenot.com/*` to the worker in the Cloudflare dashboard.

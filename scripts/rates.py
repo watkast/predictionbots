@@ -28,7 +28,7 @@ def load() -> dict:
                             "ibond": "TreasuryDirect, Series I savings bonds, current composite rate"}}
 
 
-UA = {"User-Agent": "Mozilla/5.0 (X11; Linux x86_64) predictionbots-rates/1.0 (+https://predictionbots.io)", "Accept": "application/xml,text/xml,*/*"}
+UA = {"User-Agent": "Mozilla/5.0 (X11; Linux x86_64) predictmenot-rates/1.0 (+https://predictmenot.com)", "Accept": "application/xml,text/xml,*/*"}
 
 
 def fetch_tbill(client) -> tuple[float, str] | None:

@@ -23,7 +23,7 @@ from pathlib import Path
 ROOT = Path(__file__).resolve().parents[1]
 NEWS = ROOT / "site" / "data" / "news.json"
 STATE = ROOT / "site" / "data" / "news_posted.json"
-SITE = os.environ.get("SITE_URL", "https://predictionbots.io")
+SITE = os.environ.get("SITE_URL", "https://predictmenot.com")
 
 
 def compose(it: dict) -> str:
