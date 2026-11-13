@@ -11,7 +11,7 @@ on:
       pack:
         description: "What to copy to release assets"
         type: choice
-        options: [none, books, retired-data, retired-mrp]
+        options: [none, books, retired-data, retired-mrp, recorder-v1]
         default: none
       keep_days:
         description: "books: recorder days that stay in git, today included"
@@ -52,6 +52,14 @@ jobs:
         `research-nfl-comeback`: the NFL comeback study and its cache (was `mrp/research/` on `mrp-data`).
         `archive/<name>.tsv` on the branch a set came from lists every file with its git blob id and sha256;
         the paths inside each tar are the paths the files had in git.
+      V1_TITLE: "First recorder's books, 16 to 26 October 2026"
+      V1_NOTES: >-
+        Order books and trades recorded on Kalshi and Polymarket by this project's first recorder (the `record`
+        workflow), 16 to 26 Oct 2026, as parquet files, and that recorder's console logs. Moved out of the `data`
+        branch (`recorded/`) on 13 Nov 2026; the newer recorder's books are in the `books-YYYY-MM` releases.
+        `recorder-v1-polymarket` is one tar in parts: `cat recorder-v1-polymarket.tar.part* > recorder-v1-polymarket.tar`.
+        `archive/<name>.tsv` on the `data` branch lists every file with its git blob id and sha256; the paths
+        inside each tar are the paths the files had in git.
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-python@v5
@@ -70,6 +78,10 @@ jobs:
             retired-mrp)
               python scripts/archive_release.py pack mrp-data sports-radar retired-2026-11 mrp/radar --title "$RETIRED_TITLE" --notes "$RETIRED_NOTES"
               python scripts/archive_release.py pack mrp-data research-nfl-comeback retired-2026-11 mrp/research --title "$RETIRED_TITLE" --notes "$RETIRED_NOTES" ;;
+            recorder-v1)
+              python scripts/archive_release.py pack data recorder-v1-logs recorder-v1-2026-10 recorded/logs --title "$V1_TITLE" --notes "$V1_NOTES"
+              python scripts/archive_release.py pack data recorder-v1-kalshi recorder-v1-2026-10 recorded/kalshi --title "$V1_TITLE" --notes "$V1_NOTES"
+              python scripts/archive_release.py pack data recorder-v1-polymarket recorder-v1-2026-10 recorded/polymarket --title "$V1_TITLE" --notes "$V1_NOTES" ;;
           esac
       - name: Prune (rebuild the branch without what the manifests cover)
         if: inputs.prune_branch != 'none'
