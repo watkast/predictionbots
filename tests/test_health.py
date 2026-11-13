@@ -34,6 +34,26 @@ def test_site_built_reads_the_live_stamp_and_fails_closed():
     assert hc.site_built(fetch=lambda url: None) is None
 
 
+def test_no_freshness_check_reads_commit_dates_on_a_branch_that_gets_rebuilt():
+    assert all(w[2] == "main" for w in hc.WATCH)                     # data and mrp-data are rebuilt without history
+
+
+def test_jobs_on_the_data_branches_are_dated_by_their_own_output():
+    files = {("mrp-data", "mrp/REPORT.md"): "# Mr. P\n\nUpdated 2026-11-13T21:38:53Z by `run-20261113T2122-43477877316` (last 3 days)",
+             ("mrp-data", "benchmark/benchmark.json"): '{"generated":"2026-11-13 17:35 UTC","venue":"pmus"}',
+             ("mrp-data", "site-preview/index.html"): "<p>12,080 series, rebuilt 13 Nov 2026 22:05 UTC.</p>"}
+    read = lambda b, p: files.get((b, p))
+    assert hc.recorder_updated(read=read) == datetime(2026, 11, 13, 21, 38, 53, tzinfo=timezone.utc)
+    assert hc.benchmark_generated(read=read) == datetime(2026, 11, 13, 17, 35, tzinfo=timezone.utc)
+    assert hc.preview_built(read=read) == datetime(2026, 11, 13, 22, 5, tzinfo=timezone.utc)
+    gone = lambda b, p: None                                          # unreadable is a failed check, not a crash
+    assert hc.recorder_updated(read=gone) is None and hc.benchmark_generated(read=gone) is None and hc.preview_built(read=gone) is None
+    assert hc.benchmark_generated(read=lambda b, p: "not json") is None
+    assert hc.recorder_updated(read=lambda b, p: "Updated sometime by someone") is None
+    ids = {c[0]: c[3] for c in hc.CONTENT}
+    assert ids["recorder"] == 3 and ids["benchmark"] == 40 and ids["site-deploy"] == 14
+
+
 def test_the_www_address_is_watched_too():
     seen = []
     hc.site_built(fetch=lambda url: seen.append(url) or "", base="https://www.predictmenot.com")

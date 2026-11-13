@@ -255,7 +255,10 @@ stated on every row. The accounts at both venues stay open for API keys only; ba
   recorder-v1-2026-10, books-2026-10, books-2026-11. archive/*.tsv on each branch lists every file that moved with its
   git blob id and sha256; scripts/archive_release.py moves data and rebuilds a branch only for files those manifests
   prove are in a release. Daily from now (archive.yml): recorder days older than a week move out and mrp-data is
-  rebuilt, its last two days of commits kept with their dates because the watchdog reads them. Found while doing it:
+  rebuilt as one commit. Rebuilt branches have no dates worth reading, so the watchdog now dates the recorder, the
+  benchmark and the deploy by the timestamp each writes into its own output (REPORT.md, benchmark.json, the preview's
+  build stamp), not by commits; keeping two days of history was tried and cannot be pushed from a clone without the
+  files' contents. Found while doing it:
   every job that wrote to the data branch would, after a rebuild, have replayed the whole old history and pushed the
   archived files back (`git rebase origin/data`); they now replay only their own commit (scripts/push_data.sh, with a
   test that shows the old way putting the files back). The benchmark used to re-extract every window from every book

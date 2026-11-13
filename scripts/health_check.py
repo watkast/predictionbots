@@ -42,13 +42,12 @@ TRACKER = Path(__file__).resolve().parent / "tracker.py"
 
 SITE = os.environ.get("SITE_URL", "https://predictmenot.com")
 
-# (check id, job, branch, path, max age in hours, what it means)
+# (check id, job, branch, path, max age in hours, what it means): freshness by the date of the last commit to a path.
+# Only for main. The data branches are rebuilt without their history (scripts/archive_release.py, daily for mrp-data),
+# and a rebuilt branch makes every path look freshly written: a dead job would hide behind it. The jobs on those
+# branches are checked by the timestamp they write into their own output instead (CONTENT below).
 # Limits are loose on purpose: GitHub runs this repo's "hourly" schedules every 6 to 9 h (measured 10-13 Nov).
 WATCH = [
-    ("site-deploy", "site-deploy", "mrp-data", "site-preview/sitemap.xml", 14,
-     "site build and deploy (the preview is published only after a deploy succeeds)"),
-    ("recorder", "mrp-record", "mrp-data", "mrp/data", 3, "order-book recorder (publishes about every 20 min; the data is the product)"),
-    ("benchmark", "benchmark", "mrp-data", "benchmark/benchmark.json", 40, "daily bot-benchmark replay"),
     ("trend-report", "trend", "main", "reports/trend_paper.json", 80, "weekday trend paper tick (22:23 UTC)"),
 ]
 ERROR_LOGS = ["polyus/*/errors.jsonl", "*/errors.jsonl", "errors.jsonl"]     # under the data worktree
@@ -87,7 +86,18 @@ def hours_since(d: datetime | None) -> float | None:
     return None if d is None else (now() - d).total_seconds() / 3600
 
 
-# ---------- content checks ----------
+# ---------- content checks: each job's own timestamp, read from what it published ----------
+
+def build_stamp(html: str | None) -> datetime | None:
+    """The "rebuilt 13 Nov 2026 08:04 UTC" stamp the market index carries; None when it is missing or garbled."""
+    m = re.search(r"rebuilt (\d{1,2} [A-Z][a-z]{2} \d{4} \d{2}:\d{2}) UTC", html or "")
+    if not m:
+        return None
+    try:
+        return datetime.strptime(m.group(1), "%d %b %Y %H:%M").replace(tzinfo=timezone.utc)
+    except ValueError:
+        return None
+
 
 def site_built(_data: Path | None = None, fetch=None, base: str | None = None) -> datetime | None:
     """When the live site says its market pages were built ("rebuilt 13 Nov 2026 08:04 UTC" on /markets/).
@@ -102,17 +112,44 @@ def site_built(_data: Path | None = None, fetch=None, base: str | None = None) -
             html = fetch(f"{base}/markets/")
     except Exception:  # noqa: BLE001
         return None
-    m = re.search(r"rebuilt (\d{1,2} [A-Z][a-z]{2} \d{4} \d{2}:\d{2}) UTC", html or "")
-    if not m:
+    return build_stamp(html)
+
+
+def branch_file(branch: str, path: str) -> str | None:
+    """A file as it is now on a branch (contents API, raw); None if it cannot be read."""
+    r = subprocess.run(["gh", "api", "-H", "Accept: application/vnd.github.raw", f"repos/{REPO}/contents/{path}?ref={branch}"],
+                       capture_output=True)
+    if r.returncode != 0:
         return None
+    return r.stdout.decode("utf-8", "replace")
+
+
+def recorder_updated(_data: Path | None = None, read=branch_file) -> datetime | None:
+    """mrp/REPORT.md: "Updated 2026-11-13T21:38:53Z by `run-...`", rewritten at every full publish (about every 14
+    minutes) only while the recorder runs: the publish loop stops when the recorder does."""
+    m = re.search(r"Updated (\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}Z) by `run-", read("mrp-data", "mrp/REPORT.md") or "")
+    return parse_iso(m.group(1)) if m else None
+
+
+def benchmark_generated(_data: Path | None = None, read=branch_file) -> datetime | None:
+    """benchmark/benchmark.json: "generated": "2026-11-13 17:35 UTC"."""
     try:
-        return datetime.strptime(m.group(1), "%d %b %Y %H:%M").replace(tzinfo=timezone.utc)
-    except ValueError:
+        g = json.loads(read("mrp-data", "benchmark/benchmark.json") or "")["generated"]
+        return datetime.strptime(g, "%Y-%m-%d %H:%M UTC").replace(tzinfo=timezone.utc)
+    except (ValueError, KeyError, TypeError):
         return None
+
+
+def preview_built(_data: Path | None = None, read=branch_file) -> datetime | None:
+    """site-preview/index.html, published only after a deploy succeeds: the build stamp of the deployed market index."""
+    return build_stamp(read("mrp-data", "site-preview/index.html"))
 
 
 WWW = os.environ.get("SITE_WWW_URL", "https://www.predictmenot.com")
 CONTENT = [
+    ("recorder", "mrp-record", recorder_updated, 3, "order-book recorder (rewrites mrp/REPORT.md about every 14 min; the data is the product)"),
+    ("benchmark", "benchmark", benchmark_generated, 40, "daily bot-benchmark replay (generated time in benchmark.json)"),
+    ("site-deploy", "site-deploy", preview_built, 14, "site build and deploy (the preview on mrp-data is published only after a deploy succeeds)"),
     ("site-live", "site-deploy", site_built, 14, "build time shown on the live site (predictmenot.com/markets/)"),
     # people type www; on 13 Nov 2026 the owner's phone could not reach it (a Cloudflare blip, it answered minutes later)
     ("site-live-www", "site-deploy", lambda d: site_built(d, base=WWW), 14, "the same build time, reached at www.predictmenot.com"),

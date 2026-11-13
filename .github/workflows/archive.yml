@@ -6,8 +6,8 @@
 # A file can leave git only when (path, blob id) is in a manifest and the release still holds the asset as recorded.
 name: archive
 on:
-  # Daily roll: recorder days older than a week go to release assets, then mrp-data is rebuilt without them. The
-  # last two days of commits are replayed with their dates (the watchdog reads them); older history is one commit.
+  # Daily roll: recorder days older than a week go to release assets, then mrp-data is rebuilt as one commit without
+  # them. Nothing reads commit dates on mrp-data (scripts/health_check.py reads each job's own timestamp).
   schedule:
     - cron: "41 10 * * *"
   workflow_dispatch:
@@ -32,9 +32,6 @@ on:
       backup:
         description: "With apply: keep the old tip as backup/<branch>-<this> (empty = no backup)"
         default: ""
-      history_days:
-        description: "Prune: replay the commits of the last N days with their dates (0: one commit)"
-        default: "0"
 
 permissions:
   contents: write
@@ -78,7 +75,7 @@ jobs:
         run: |
           export ARCHIVE_WORK="$RUNNER_TEMP/archive"
           python scripts/archive_release.py books --keep-days 7
-          python scripts/archive_release.py prune mrp-data --apply --history-days 2
+          python scripts/archive_release.py prune mrp-data --apply
       - name: Pack (copy, upload, download back, compare; removes nothing)
         if: github.event_name == 'workflow_dispatch' && inputs.pack != 'none'
         run: |
@@ -100,7 +97,7 @@ jobs:
         if: github.event_name == 'workflow_dispatch' && inputs.prune_branch != 'none'
         run: |
           export ARCHIVE_WORK="$RUNNER_TEMP/archive"
-          args=(--history-days "${{ inputs.history_days || '0' }}")
+          args=()
           if [ "${{ inputs.apply }}" = "true" ]; then args+=(--apply); fi
           if [ -n "${{ inputs.backup }}" ]; then args+=(--backup "backup/${{ inputs.prune_branch }}-${{ inputs.backup }}"); fi
           python scripts/archive_release.py prune "${{ inputs.prune_branch }}" "${args[@]}"
