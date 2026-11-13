@@ -1,7 +1,9 @@
 # BOT BENCHMARK: replay vendors' published rules against our recorded Polymarket US BTC 15-minute books.
-# Pulls the recorder data (mrp-data branch, mrp/data) in the runner, extracts per-window books and prints with
-# mrp/mrp_extract_btc15.py, runs scripts/benchmark_rules.py, and publishes benchmark/ (JSON + BENCHMARK.md + the
-# extracted windows) to the mrp-data branch. Dispatch by hand; daily at 09:40 UTC.
+# Pulls the recorder data still in git (mrp-data branch, mrp/data: the last week), extracts per-window books and
+# prints with mrp/mrp_extract_btc15.py, merges them with the windows published by earlier runs (so the sample keeps
+# every window ever extracted, also once its raw books have moved to release assets), runs
+# scripts/benchmark_rules.py, and publishes benchmark/ (JSON + BENCHMARK.md + the windows) to the mrp-data branch.
+# Dispatch by hand; daily at 09:40 UTC.
 name: benchmark
 on:
   workflow_dispatch:
@@ -33,16 +35,24 @@ jobs:
         run: |
           mkdir -p ../rec && cd ../rec
           git init -q && git remote add origin "https://x-access-token:${{ github.token }}@github.com/${{ github.repository }}.git"
-          git config core.sparseCheckout true && git sparse-checkout set --no-cone mrp/data
-          git fetch -q --depth 1 origin mrp-data && git checkout -q FETCH_HEAD
+          # blobless and sparse: the raw books still in git (the last week; older days live in release assets, see
+          # scripts/archive_release.py) and the windows this job published before
+          git config core.sparseCheckout true && git sparse-checkout set --no-cone mrp/data benchmark
+          git fetch -q --depth 1 --filter=blob:none origin mrp-data && git checkout -q FETCH_HEAD
           du -sh mrp/data && find mrp/data -name "*.jsonl*" | wc -l
-      - name: Extract BTC 15-minute windows
+      # A fresh extraction only sees the books still in git. The windows already published are the memory:
+      # scripts/windows_merge.py keeps every one of them and takes the fuller record where both have a window.
+      - name: Extract BTC 15-minute windows, merged with the ones already published
         run: |
-          python mrp/mrp_extract_btc15.py ../rec/mrp/data btc15.json | tee -a "$GITHUB_STEP_SUMMARY"
+          set -o pipefail
+          python mrp/mrp_extract_btc15.py ../rec/mrp/data btc15.fresh.json | tee -a "$GITHUB_STEP_SUMMARY"
+          python scripts/windows_merge.py ../rec/benchmark/btc15_windows.json.gz btc15.fresh.json btc15.json | tee -a "$GITHUB_STEP_SUMMARY"
           ls -la btc15.json
-      - name: Extract Kalshi BTC 15-minute windows
+      - name: Extract Kalshi BTC 15-minute windows, merged the same way
         run: |
-          python mrp/mrp_extract_kalshi15.py ../rec/mrp/data kbtc15.json --sym btc | tee -a "$GITHUB_STEP_SUMMARY"
+          set -o pipefail
+          python mrp/mrp_extract_kalshi15.py ../rec/mrp/data kbtc15.fresh.json --sym btc | tee -a "$GITHUB_STEP_SUMMARY"
+          python scripts/windows_merge.py ../rec/benchmark/kbtc15_windows.json.gz kbtc15.fresh.json kbtc15.json | tee -a "$GITHUB_STEP_SUMMARY"
       - name: Replay the rules
         run: |
           python scripts/benchmark_rules.py run --windows btc15.json --out out/benchmark --size "${{ github.event.inputs.size || '10' }}" | tee -a "$GITHUB_STEP_SUMMARY"
