@@ -2,12 +2,25 @@
  "books": {
   "aggressive": {
    "name": "aggressive",
-   "bankroll": 1.453674139636978,
+   "bankroll": 0.0,
    "peak": 4.0,
-   "pos": null,
+   "pos": {
+    "pid": "RITUAL-USD",
+    "entry_px": 0.04506,
+    "qty": 31.970507598318797,
+    "cost": 1.453674139636978,
+    "hw": 0.04506,
+    "t_in": "2026-11-13T04:05:15Z",
+    "signal": {
+     "impulse": 0.0299,
+     "vol_mult": 8.11,
+     "above_2h_high": false
+    },
+    "hw_t": "2026-11-13T04:05:15Z"
+   },
    "hops": 32,
    "wins": 8,
-   "fees": 1.4284669832460144
+   "fees": 1.4415500505027472
   },
   "standard": {
    "name": "standard",
@@ -581,7 +594,7 @@
   }
  ],
  "universe_t": "2026-11-13T03:20:15Z",
- "scans": 1478,
+ "scans": 1480,
  "started": "2026-11-06T22:20:22Z",
- "last_scan": "2026-11-13T04:00:15Z"
+ "last_scan": "2026-11-13T04:10:15Z"
 }
