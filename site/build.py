@@ -33,6 +33,26 @@ def wrap_tables(html: str) -> str:
     return html.replace("</table>", "</table></div>")
 
 
+CANONICAL = "https://predictmenot.com"
+
+
+def add_canonical(dist: Path) -> int:
+    """<link rel="canonical"> on every page the build writes (the market pages carry their own), so a page reached
+    at www.predictmenot.com tells search engines its address is predictmenot.com."""
+    n = 0
+    for page in dist.rglob("*.html"):
+        rel = page.relative_to(dist).as_posix()
+        if rel.startswith("markets/"):
+            continue
+        t = page.read_text(encoding="utf-8")
+        if 'rel="canonical"' in t or "</head>" not in t:
+            continue
+        url = CANONICAL + "/" + (rel[: -len("index.html")] if rel.endswith("index.html") else rel)
+        page.write_text(t.replace("</head>", f'<link rel="canonical" href="{url}"></head>', 1), encoding="utf-8")
+        n += 1
+    return n
+
+
 def front_matter(txt: str):
     m = re.match(r"^---\n(.*?)\n---\n(.*)$", txt, re.S)
     if not m:
@@ -158,6 +178,7 @@ def build():
             f.write_text(t)
     except Exception as e:
         print("og cards skipped:", e)
+    print("canonical links:", add_canonical(DIST))
     print("site ->", DIST)
 
 

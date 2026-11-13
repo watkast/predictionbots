@@ -157,7 +157,7 @@ def test_bounty_workflow_scans_only_targets_and_never_submits():
     wf = yaml.safe_load((ROOT / ".github/workflows/bounty-scan.yml").read_text())
     steps = wf["jobs"]["scan"]["steps"]
     runs = " ".join(s.get("run", "") for s in steps)
-    assert "ventures/bounty/pipeline/scan.py" in runs and "--dry-run" in runs and "HEAD:data" in runs
+    assert "ventures/bounty/pipeline/scan.py" in runs and "--dry-run" in runs and ("HEAD:data" in runs or 'push_data.sh" data' in runs)
     assert "HEAD:main" not in runs
     for bad in ("hackerone.com", "bugcrowd.com", "api.hackerone", "report_intents", "curl ", "POST"):
         assert bad not in runs, bad

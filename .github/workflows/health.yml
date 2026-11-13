@@ -39,9 +39,7 @@ jobs:
           git config user.name "predictionbots-health"
           git config user.email "bots@users.noreply.github.com"
           git add -A health
+          base=$(git rev-parse HEAD)
           git commit -qm "health $(date -u +%FT%TZ)" || exit 0
-          for i in 1 2 3 4 5; do
-            git push -q origin HEAD:data && break
-            git fetch -q origin data && git rebase -q origin/data || git rebase --abort
-            sleep $((RANDOM % 20 + 5))
-          done
+          # replays only this commit onto a moved branch (never `git rebase origin/data`: see the script)
+          bash "$GITHUB_WORKSPACE/scripts/push_data.sh" data "$base" 5 || echo "status.json not published this time"

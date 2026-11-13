@@ -10,10 +10,13 @@ nothing and has no total size limit (2 GiB a file).
                                   archive/NAME.tsv to BRANCH: one row per file (git blob id, sha256, size, path).
   books [--keep-days 7]           `pack` each finished recorder day older than that: one asset a day
                                   (books-DAY.tar under release books-YYYY-MM).
-  prune BRANCH [--apply]          Rebuild BRANCH as one commit without every file that a manifest on it covers
-                                  with the same blob id, after checking that the assets are still there with the
-                                  recorded size and sha256. What no manifest covers stays. Without --apply it
-                                  prints the plan and changes nothing.
+  prune BRANCH [--apply]          Rebuild BRANCH without every file that a manifest on it covers with the same
+        [--history-days N]        blob id, after checking that the assets are still there with the recorded size
+                                  and sha256. What no manifest covers stays. History older than N days (default 0:
+                                  all of it) becomes one root commit; the commits of the last N days are replayed
+                                  with their own messages and dates, minus the archived files, so anything that
+                                  reads commit dates (scripts/health_check.py does) still sees when each path last
+                                  changed. Without --apply it prints the plan and changes nothing.
 
 What makes `prune` safe: a file leaves git only if (path, blob id) is in a manifest; a manifest is written only
 after the upload was downloaded back and every file in it compared; and the assets are checked again before the
@@ -85,12 +88,22 @@ class Repo:
         self.git("config", "user.name", os.environ.get("ARCHIVE_GIT_NAME", "predictionbots-archive"))
         self.git("config", "user.email", os.environ.get("ARCHIVE_GIT_EMAIL", "bots@users.noreply.github.com"))
 
-    def git(self, *args, check=True, data=None, env=None) -> str:
+    def git(self, *args, check=True, data=None, env=None) -> str | None:
+        """stdout of a git command; with check=False, None when it failed."""
         e = dict(os.environ, **(env or {}))
-        return run("git", *args, cwd=self.dir, check=check, data=data, env=e).stdout.decode("utf-8", "replace")
+        r = run("git", *args, cwd=self.dir, check=check, data=data, env=e)
+        if r.returncode != 0:
+            return None
+        return r.stdout.decode("utf-8", "replace")
 
-    def fetch(self, branch: str) -> str:
-        self.git("fetch", "-q", "--depth", "1", "--filter=blob:none", "origin", f"+refs/heads/{branch}:refs/remotes/origin/{branch}")
+    def fetch(self, branch: str, since: str | None = None) -> str:
+        """The branch tip, blobless. With since (an ISO time): every commit after it plus one before, so the oldest
+        commit fetched predates the window."""
+        ref = f"+refs/heads/{branch}:refs/remotes/origin/{branch}"
+        if since is None or self.git("fetch", "-q", f"--shallow-since={since}", "--filter=blob:none", "origin", ref, check=False) is None:
+            self.git("fetch", "-q", "--depth", "1", "--filter=blob:none", "origin", ref)
+        if since is not None:
+            self.git("fetch", "-q", "--deepen=1", "--filter=blob:none", "origin", ref, check=False)
         return self.git("rev-parse", f"refs/remotes/origin/{branch}").strip()
 
     def ls(self, treeish: str, paths: list[str] | None = None) -> dict[str, tuple[str, str]]:
@@ -398,7 +411,7 @@ def books(keep_days: int, work: Path, today: str | None = None, limit: int | Non
         if len(parts) >= 5 and DAY_RE.match(parts[3]):
             by_day.setdefault(parts[3], {})[path] = blob
     covered = set()
-    for name in scan.git("ls-tree", "--name-only", tip, "archive/", check=False).split():
+    for name in (scan.git("ls-tree", "--name-only", tip, "archive/", check=False) or "").split():
         if name.endswith(".tsv") and Path(name).name.startswith("books-"):
             covered |= {(p, r[0]) for p, r in parse_manifest(scan.show(tip, name).decode()).get("rows", {}).items()}
     d0 = datetime.strptime(today, "%Y-%m-%d").date() if today else datetime.now(timezone.utc).date()
@@ -428,10 +441,10 @@ def books(keep_days: int, work: Path, today: str | None = None, limit: int | Non
 
 # ---------- prune: rebuild the branch without what the manifests cover
 
-def plan_prune(repo: Repo, branch: str, rel) -> dict:
-    tip = repo.fetch(branch)
+def plan_prune(repo: Repo, branch: str, rel, since: str | None = None) -> dict:
+    tip = repo.fetch(branch, since)
     cur = repo.ls(tip)
-    names = [n for n in repo.git("ls-tree", "--name-only", tip, "archive/", check=False).split() if n.endswith(".tsv")]
+    names = [n for n in (repo.git("ls-tree", "--name-only", tip, "archive/", check=False) or "").split() if n.endswith(".tsv")]
     removable, report, by_tag = {}, [], {}
     for n in sorted(names):
         m = parse_manifest(repo.show(tip, n).decode())
@@ -456,42 +469,90 @@ def plan_prune(repo: Repo, branch: str, rel) -> dict:
     return {"tip": tip, "cur": cur, "removable": removable, "report": report}
 
 
-def build_commit(repo: Repo, plan: dict, branch: str, squash: bool) -> str:
+def build_commit(repo: Repo, plan: dict, branch: str, squash: bool, history: bool = False) -> str:
+    """The new tip: the old tree minus the archived files. squash: as one root commit, or (history) as a root commit
+    for everything up to the oldest fetched commit plus every later commit replayed on it, minus the archived files,
+    with its own message, author and dates. Without squash: one ordinary commit on top of the old tip."""
     idx = dict(GIT_INDEX_FILE=str(repo.dir / ".git" / "prune.index"), GIT_NO_LAZY_FETCH="1")
-    repo.git("read-tree", plan["tip"], env=idx)
-    repo.git("update-index", "--force-remove", "-z", "--stdin", data=b"".join(p.encode() + b"\0" for p in sorted(plan["removable"])), env=idx)
-    tree = repo.git("write-tree", "--missing-ok", env=idx).strip()
-    after = repo.ls(tree)
-    want = {p: v for p, v in plan["cur"].items() if p not in plan["removable"]}
-    if after != want:
-        raise Stop("the rebuilt tree is not exactly the old tree minus the archived files; nothing was pushed")
+    gone = b"".join(p.encode() + b"\0" for p in sorted(plan["removable"]))
+
+    def filtered(commit: str) -> str:
+        repo.git("read-tree", commit, env=idx)
+        repo.git("update-index", "--force-remove", "-z", "--stdin", data=gone, env=idx)
+        return repo.git("write-tree", "--missing-ok", env=idx).strip()
+
     n, size = len(plan["removable"]), sum(r[2] for r in plan["removable"].values())
-    msg = (f"{branch}: {len(after)} files; {n} files ({size:,} bytes) now live in release assets\n\n"
-           f"Rebuilt from {plan['tip']} without the files listed in archive/*.tsv. Each of them was downloaded back from\n"
-           f"its release and compared with git before it left. See archive/README.md.\n")
-    parents = [] if squash else ["-p", plan["tip"]]
-    return repo.git("commit-tree", tree, *parents, "-m", msg, env=dict(GIT_NO_LAZY_FETCH="1")).strip()
+    want = {p: v for p, v in plan["cur"].items() if p not in plan["removable"]}
+    nolazy = dict(GIT_NO_LAZY_FETCH="1")
+    if not (squash and history):
+        tree = filtered(plan["tip"])
+        if repo.ls(tree) != want:
+            raise Stop("the rebuilt tree is not exactly the old tree minus the archived files; nothing was pushed")
+        msg = (f"{branch}: {len(want)} files; {n} files ({size:,} bytes) now live in release assets\n\n"
+               f"Rebuilt from {plan['tip']} without the files listed in archive/*.tsv. Each of them was downloaded back from\n"
+               f"its release and compared with git before it left. See archive/README.md.\n")
+        parents = [] if squash else ["-p", plan["tip"]]
+        return repo.git("commit-tree", tree, *parents, "-m", msg, env=nolazy).strip()
+
+    lines = repo.git("rev-list", "--first-parent", "--parents", "--reverse", plan["tip"], env=nolazy).split("\n")
+    chain = [ln.split() for ln in lines if ln.strip()]
+    if any(len(c) > 2 for c in chain):
+        raise Stop("the branch has merge commits in the window; this tool replays a straight line only")
+    log = repo.git("log", "--first-parent", "--reverse", "--format=%H%x1f%an%x1f%ae%x1f%aI%x1f%cn%x1f%ce%x1f%cI%x1f%B%x1e", plan["tip"], env=nolazy)
+    meta = {}
+    for rec in log.split("\x1e"):
+        rec = rec.lstrip("\n")
+        if rec:
+            h, an, ae, ad, cn, ce, cd, body = rec.split("\x1f", 7)
+            meta[h] = dict(GIT_AUTHOR_NAME=an, GIT_AUTHOR_EMAIL=ae, GIT_AUTHOR_DATE=ad, GIT_COMMITTER_NAME=cn,
+                           GIT_COMMITTER_EMAIL=ce, GIT_COMMITTER_DATE=cd, body=body)
+    first = chain[0][0]
+    tree = filtered(first)
+    when = meta[first]["GIT_COMMITTER_DATE"]
+    msg = (f"{branch}: history up to {when} squashed; {n} files ({size:,} bytes) now live in release assets\n\n"
+           f"Rebuilt from {plan['tip']}: everything up to {first[:9]} is this one commit, dated as that commit; the\n"
+           f"commits after it are replayed with their own messages and dates, without the files listed in archive/*.tsv.\n"
+           f"Each of those was downloaded back from its release and compared with git before it left. See archive/README.md.\n")
+    head = repo.git("commit-tree", tree, data=msg.encode(), env=dict(nolazy, GIT_AUTHOR_DATE=when, GIT_COMMITTER_DATE=when)).strip()
+    kept = 0
+    for c, _parent in chain[1:]:
+        t = filtered(c)
+        if t == tree:
+            continue                      # it only touched archived files
+        env = {k: v for k, v in meta[c].items() if k != "body"}
+        head = repo.git("commit-tree", t, "-p", head, data=meta[c]["body"].encode(), env=dict(nolazy, **env)).strip()
+        tree, kept = t, kept + 1
+    if repo.ls(tree) != want:
+        raise Stop("the rebuilt tip is not exactly the old tip minus the archived files; nothing was pushed")
+    plan["replayed"], plan["window_start"] = kept, when
+    return head
 
 
-def prune(branch: str, work: Path, apply: bool = False, squash: bool = True, backup: str | None = None, before_push=None) -> dict:
+def prune(branch: str, work: Path, apply: bool = False, squash: bool = True, backup: str | None = None, before_push=None,
+          history_days: float = 0, now: datetime | None = None) -> dict:
     rel = releases()
+    since = None
+    if history_days > 0:
+        since = ((now or datetime.now(timezone.utc)) - timedelta(days=history_days)).strftime("%Y-%m-%dT%H:%M:%SZ")
     for attempt in range(1, 6):
         repo = Repo(work / "prune")
-        plan = plan_prune(repo, branch, rel)
+        plan = plan_prune(repo, branch, rel, since)
         for name, what, _n, _b in plan["report"]:
             print(f"[prune] {branch}: {name}: {what}")
         n, size = len(plan["removable"]), sum(r[2] for r in plan["removable"].values())
         print(f"[prune] {branch}: {len(plan['cur'])} files at {plan['tip'][:9]}; {n} files, {size:,} bytes would leave; {len(plan['cur']) - n} stay")
         if not n:
             return {"removed": 0, "tip": plan["tip"]}
-        commit = build_commit(repo, plan, branch, squash)
+        commit = build_commit(repo, plan, branch, squash, history=since is not None)
+        if "replayed" in plan:
+            print(f"[prune] {branch}: history up to {plan['window_start']} becomes one commit; {plan['replayed']} later commits replayed")
         if not apply:
             print(f"[prune] {branch}: plan only (run with --apply to move the branch to {commit[:9]})")
             return {"removed": n, "bytes": size, "tip": plan["tip"], "commit": commit, "applied": False}
         if backup:
             r = run("git", "push", "-q", "origin", f"{plan['tip']}:refs/heads/{backup}", cwd=repo.dir, check=False)
             if r.returncode != 0:
-                have = repo.git("ls-remote", "origin", f"refs/heads/{backup}").split()
+                have = (repo.git("ls-remote", "origin", f"refs/heads/{backup}") or "").split()
                 if not have:
                     raise Stop(redact(f"could not create the backup branch {backup}: {r.stderr.decode()[-300:]}"))
                 print(f"[prune] {branch}: backup branch {backup} already exists at {have[0][:9]}; left as it is")
@@ -502,7 +563,7 @@ def prune(branch: str, work: Path, apply: bool = False, squash: bool = True, bac
         r = run("git", "push", "-q", f"--force-with-lease=refs/heads/{branch}:{plan['tip']}", "origin", f"{commit}:refs/heads/{branch}",
                 cwd=repo.dir, check=False, env=dict(os.environ, GIT_NO_LAZY_FETCH="1"))
         if r.returncode == 0:
-            print(f"[prune] {branch}: now {commit[:9]}: {len(plan['cur']) - n} files" + (", one commit" if squash else ""))
+            print(f"[prune] {branch}: now {commit[:9]}: {len(plan['cur']) - n} files" + (", one commit" if squash and since is None else ""))
             return {"removed": n, "bytes": size, "tip": plan["tip"], "commit": commit, "applied": True}
         print(f"[prune] {branch}: the branch moved while the plan was built (try {attempt}); planning again on the new tip")
         time.sleep(2 * attempt)
@@ -523,6 +584,7 @@ def main(argv: list[str] | None = None) -> int:
     q = sub.add_parser("prune")
     q.add_argument("branch"); q.add_argument("--apply", action="store_true"); q.add_argument("--keep-history", action="store_true")
     q.add_argument("--backup", default=None, help="keep the old tip as this branch before moving the branch")
+    q.add_argument("--history-days", type=float, default=0, help="keep the commits of the last N days (replayed)")
     a = ap.parse_args(argv)
     work = Path(a.work) if a.work else Path(tempfile.mkdtemp(prefix="archive-"))
     try:
@@ -534,7 +596,7 @@ def main(argv: list[str] | None = None) -> int:
                 raise Stop("the recorder's report reads the last four days from git: keep at least 5")
             books(a.keep_days, work, limit=a.limit)
         else:
-            prune(a.branch, work, apply=a.apply, squash=not a.keep_history, backup=a.backup)
+            prune(a.branch, work, apply=a.apply, squash=not a.keep_history, backup=a.backup, history_days=a.history_days)
     except Stop as e:
         print(f"STOPPED: {e}")
         return 1

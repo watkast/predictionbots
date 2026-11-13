@@ -39,6 +39,14 @@ jobs:
         run: |
           set -o pipefail
           node site/phone_check.js "${{ github.event.inputs.url || 'https://predictmenot.com' }}" shots | tee -a "$GITHUB_STEP_SUMMARY"
+      - name: The www address answers too
+        if: always()
+        run: |
+          for host in https://www.predictmenot.com https://predictmenot.com; do
+            code=$(curl -sS -o /dev/null -w '%{http_code}' --max-time 30 --retry 2 --retry-delay 10 "$host/") || code=000
+            echo "$host/ -> HTTP $code" | tee -a "$GITHUB_STEP_SUMMARY"
+            case "$code" in 200|301|302|307|308) ;; *) echo "::error title=site unreachable::$host/ answered $code"; exit 1 ;; esac
+          done
       - uses: actions/upload-artifact@v4
         if: always()
         with: { name: phone-shots, path: shots, retention-days: 7 }

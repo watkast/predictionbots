@@ -54,3 +54,19 @@ def test_markdown_tables_get_a_scrolling_wrapper_with_a_name_of_their_own():
     out = B.wrap_tables("<p>a</p><table><tr><td>1</td></tr></table><p>b</p><table><tr><td>2</td></tr></table>")
     assert out.count('<div class="ledger-wrap" tabindex="0" role="region"') == 2 and out.count("</table></div>") == 2
     assert 'aria-label="Table 1 (' in out and 'aria-label="Table 2 (' in out
+
+
+def test_every_built_page_names_its_one_address(tmp_path):
+    B = load("build")
+    (tmp_path / "posts").mkdir(); (tmp_path / "markets" / "kalshi" / "x").mkdir(parents=True); (tmp_path / "ledger").mkdir()
+    head = "<html><head><title>t</title></head><body></body></html>"
+    for rel in ("index.html", "simulate.html", "posts/a.html", "ledger/index.html"):
+        (tmp_path / rel).write_text(head)
+    (tmp_path / "markets" / "kalshi" / "x" / "index.html").write_text('<head><link rel="canonical" href="https://predictmenot.com/markets/kalshi/x/"></head>')
+    (tmp_path / "markets" / "index.html").write_text(head)          # the market pages are written by their own generator
+    assert B.add_canonical(tmp_path) == 4
+    assert '<link rel="canonical" href="https://predictmenot.com/"></head>' in (tmp_path / "index.html").read_text()
+    assert 'href="https://predictmenot.com/posts/a.html"' in (tmp_path / "posts" / "a.html").read_text()
+    assert 'href="https://predictmenot.com/ledger/"' in (tmp_path / "ledger" / "index.html").read_text()
+    assert "canonical" not in (tmp_path / "markets" / "index.html").read_text()
+    assert B.add_canonical(tmp_path) == 0                             # a second run adds nothing

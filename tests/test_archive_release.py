@@ -272,3 +272,95 @@ def test_merge_command_reads_gz_and_survives_a_missing_published_file(tmp_path, 
     assert WM.main(["x", str(tmp_path / "none.json.gz"), str(fresh), str(out)]) == 0
     assert "no published windows" in capsys.readouterr().out
     assert [w["slug"] for w in json.loads(out.read_text())["windows"]] == ["b"]
+
+
+# ---------- prune with a history window: the watchdog reads commit dates
+
+def dated(seed, when, msg, files=None, remove=()):
+    env = {"GIT_AUTHOR_DATE": when, "GIT_COMMITTER_DATE": when}
+    for rel, blob in (files or {}).items():
+        p = seed / rel
+        p.parent.mkdir(parents=True, exist_ok=True); p.write_bytes(blob)
+    for rel in remove:
+        (seed / rel).unlink()
+    subprocess.run(["git", "add", "-A"], cwd=seed, check=True)
+    subprocess.run(["git", "commit", "-qm", msg], cwd=seed, check=True, env={**__import__("os").environ, **env})
+
+
+def test_prune_keeps_the_last_days_of_commits_with_their_dates_and_drops_the_rest(world):
+    from datetime import datetime, timedelta, timezone
+    seed, origin = world["seed"], world["origin"]
+    now = datetime.now(timezone.utc).replace(microsecond=0)
+    iso = lambda d: d.strftime("%Y-%m-%dT%H:%M:%S+00:00")
+    git("fetch", "-q", str(origin), "mrp-data", cwd=seed); git("checkout", "-q", "-B", "mrp-data", "FETCH_HEAD", cwd=seed)
+    # rewrite the fixture's two commits as ten days old, then a dated history
+    subprocess.run(["git", "filter-branch", "-f", "--env-filter",
+                    f"export GIT_AUTHOR_DATE='{iso(now - timedelta(days=10))}' GIT_COMMITTER_DATE='{iso(now - timedelta(days=10))}'", "HEAD"],
+                   cwd=seed, check=True, capture_output=True, env={**__import__("os").environ, "FILTER_BRANCH_SQUELCH_WARNING": "1"})
+    t1, t2, t1b = now - timedelta(days=5), now - timedelta(days=1), now - timedelta(hours=12)
+    dated(seed, iso(t1), "benchmark 5 days ago", {"benchmark/benchmark.json": b'{"old": 1}\n'})
+    dated(seed, iso(t2), "mrp-record a day ago", {"mrp/data/run-C/2026-11-12/06.jsonl.gz": gz("c-06\n" * 50)})
+    dated(seed, iso(t1b), "mrp-radar 12 h ago", {"mrp/radar/paper_state.json": b'{"open": [2]}\n'})
+    git("push", "-q", "--force", str(origin), "mrp-data", cwd=seed)
+    AR.pack("mrp-data", "sports-radar", "retired-2026-11", ["mrp/radar"], "t", "n", world["work"])      # a manifest commit, now
+    git("fetch", "-q", str(origin), "mrp-data", cwd=seed); git("checkout", "-q", "-B", "mrp-data", "FETCH_HEAD", cwd=seed)
+    dated(seed, iso(datetime.now(timezone.utc)), "site-preview now", {"site-preview/sitemap.xml": b"<urlset/>\n"})
+    git("push", "-q", str(origin), "mrp-data", cwd=seed)
+    old_tip_tree = tree(world, "mrp-data")
+
+    done = AR.prune("mrp-data", world["work"], apply=True, history_days=2)
+    assert done["applied"] and done["removed"] == 3
+    log = git("log", "--format=%cI|%s", "mrp-data", cwd=origin).strip().split("\n")
+    subjects = [line.split("|", 1)[1] for line in log]
+    assert subjects[:3] == ["site-preview now", "archive: sports-radar moved to release assets (manifest)", "mrp-record a day ago"]
+    assert subjects[3].startswith("mrp-data: history up to") and len(subjects) == 4   # "mrp-radar 12 h ago" only touched archived files
+    root_date = datetime.fromisoformat(log[-1].split("|")[0])
+    assert abs((root_date - t1).total_seconds()) < 2                               # the root is dated as the last commit before the window
+    rec = git("log", "-1", "--format=%cI", "mrp-data", "--", "mrp/data/run-C/2026-11-12/06.jsonl.gz", cwd=origin).strip()
+    assert abs((datetime.fromisoformat(rec) - t2).total_seconds()) < 2           # a recent path keeps its real date
+    bench = git("log", "-1", "--format=%cI", "mrp-data", "--", "benchmark/benchmark.json", cwd=origin).strip()
+    assert datetime.fromisoformat(bench) <= now - timedelta(days=2)               # an older path never looks fresher than the window
+    for c in git("rev-list", "mrp-data", cwd=origin).split():
+        assert not any(p.startswith("mrp/radar/") for p in git("ls-tree", "-r", "--name-only", c, cwd=origin).split())
+    assert tree(world, "mrp-data") == {p: v for p, v in old_tip_tree.items() if not p.startswith("mrp/radar/")}
+
+
+# ---------- push_data.sh: a job that pushes after the branch was rebuilt
+
+def test_a_late_job_never_puts_archived_files_back(tmp_path):
+    if not shutil.which("git") or not shutil.which("bash"):
+        pytest.skip("needs git and bash")
+    env = {**__import__("os").environ, "HOME": str(tmp_path)}
+    sh = lambda *a, cwd: subprocess.run(list(a), cwd=cwd, check=True, capture_output=True, text=True, env=env).stdout
+    origin, seed, job = tmp_path / "o.git", tmp_path / "seed", tmp_path / "job"
+    sh("git", "init", "-q", "--bare", "-b", "data", str(origin), cwd=tmp_path)
+    sh("git", "init", "-q", "-b", "data", str(seed), cwd=tmp_path)
+    for d in (seed,):
+        sh("git", "config", "user.name", "t", cwd=d); sh("git", "config", "user.email", "t@example.invalid", cwd=d)
+    (seed / "big").mkdir(); (seed / "big" / "old.txt").write_text("archived\n"); (seed / "keep.txt").write_text("k\n")
+    sh("git", "add", "-A", cwd=seed); sh("git", "commit", "-qm", "a", cwd=seed)
+    (seed / "keep.txt").write_text("k2\n"); sh("git", "commit", "-qam", "b", cwd=seed)
+    sh("git", "push", "-q", str(origin), "data", cwd=seed)
+    # a job checks out the branch and commits its log
+    sh("git", "clone", "-q", "-b", "data", str(origin), str(job), cwd=tmp_path)
+    sh("git", "config", "user.name", "j", cwd=job); sh("git", "config", "user.email", "j@example.invalid", cwd=job)
+    base = sh("git", "rev-parse", "HEAD", cwd=job).strip()
+    (job / "logs").mkdir(); (job / "logs" / "run.txt").write_text("log\n")
+    sh("git", "add", "-A", cwd=job); sh("git", "commit", "-qm", "job log", cwd=job)
+    # meanwhile the branch is rebuilt without big/ and without its history
+    sh("git", "rm", "-rq", "big", cwd=seed); sh("git", "commit", "-qm", "drop big", cwd=seed)
+    t = sh("git", "rev-parse", "HEAD^{tree}", cwd=seed).strip()
+    root = sh("git", "commit-tree", t, "-m", "rebuilt", cwd=seed).strip()
+    sh("git", "push", "-q", "--force", str(origin), f"{root}:refs/heads/data", cwd=seed)
+
+    contrast = tmp_path / "contrast"
+    shutil.copytree(job, contrast)
+    sh("git", "fetch", "-q", "origin", "data", cwd=contrast)
+    subprocess.run(["git", "rebase", "origin/data"], cwd=contrast, capture_output=True, env=env)
+    assert (contrast / "big" / "old.txt").exists()          # the old way: the archived file is back
+
+    subprocess.run(["bash", str(ROOT / "scripts" / "push_data.sh"), "data", base, "3"], cwd=job, check=True, capture_output=True, env=env)
+    files = sh("git", "ls-tree", "-r", "--name-only", "data", cwd=origin).split()
+    assert sorted(files) == ["keep.txt", "logs/run.txt"]
+    assert sh("git", "rev-list", "--count", "data", cwd=origin).strip() == "2"
+    assert sh("git", "log", "--format=%s", "data", cwd=origin).split("\n")[:2] == ["job log", "rebuilt"]

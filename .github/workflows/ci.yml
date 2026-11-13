@@ -42,5 +42,5 @@ jobs:
           if git rev-parse --verify origin/data >/dev/null 2>&1; then git worktree add ../datawt origin/data; else git worktree add --orphan -b data ../datawt; fi
           mkdir -p ../datawt/logs && cp smoke_live.log "../datawt/logs/smoke_live_$(date -u +%Y%m%dT%H%M).log"
           cp reports/ci_smoke.md ../datawt/logs/ 2>/dev/null || true
-          cd ../datawt && git add -A && (git commit -qm "ci log $(date -u +%FT%TZ)" || exit 0)
-          for i in 1 2 3; do git push origin HEAD:data && break; git fetch origin data && git rebase origin/data || git rebase --abort; sleep 7; done
+          cd ../datawt && base=$(git rev-parse HEAD) && git add -A && (git commit -qm "ci log $(date -u +%FT%TZ)" || exit 0)
+          bash "$GITHUB_WORKSPACE/scripts/push_data.sh" data "$base" 3 || echo "smoke log not published this time"   # replays only this commit; see the script

@@ -54,9 +54,6 @@ jobs:
           cp -r data/polyus/. ../datawt/polyus/
           cd ../datawt
           git add -A
+          base=$(git rev-parse HEAD)
           git commit -qm "polyus $(date -u +%FT%TZ)" || exit 0
-          for i in 1 2 3 4 5; do
-            git push origin HEAD:data && break
-            git fetch origin data && git rebase origin/data || git rebase --abort
-            sleep $((RANDOM % 20 + 5))
-          done
+          bash "$GITHUB_WORKSPACE/scripts/push_data.sh" data "$base" 5   # replays only this commit; see the script

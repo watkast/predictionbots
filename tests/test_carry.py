@@ -342,6 +342,6 @@ def test_config_and_workflow_shape():
         assert e["source"] in cfg["paper"]["sources"]
     wf = yaml.safe_load(open(ROOT / ".github/workflows/carry.yml"))
     steps = " ".join(s.get("run", "") for s in wf["jobs"]["carry"]["steps"])
-    assert "carry_paper.py" in steps and "carry_backtest.py --download" in steps and "HEAD:data" in steps
+    assert "carry_paper.py" in steps and "carry_backtest.py --download" in steps and ("HEAD:data" in steps or 'push_data.sh" data' in steps)
     v = yaml.safe_load(open(ROOT / "configs/ventures.yaml"))["ventures"]
     assert any(x["id"] == "crypto_funding_carry" and x["verdict"] == "unproven" for x in v)

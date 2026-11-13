@@ -89,16 +89,17 @@ def hours_since(d: datetime | None) -> float | None:
 
 # ---------- content checks ----------
 
-def site_built(_data: Path | None = None, fetch=None) -> datetime | None:
+def site_built(_data: Path | None = None, fetch=None, base: str | None = None) -> datetime | None:
     """When the live site says its market pages were built ("rebuilt 13 Nov 2026 08:04 UTC" on /markets/).
     None if the domain does not answer, answers with something else, or the stamp is missing: all are failures."""
+    base = base or SITE
     try:
         if fetch is None:
-            req = urllib.request.Request(f"{SITE}/markets/", headers={"User-Agent": "predictmenot-health/1.0 (+https://predictmenot.com)"})
+            req = urllib.request.Request(f"{base}/markets/", headers={"User-Agent": "predictmenot-health/1.0 (+https://predictmenot.com)"})
             with urllib.request.urlopen(req, timeout=30) as r:
                 html = r.read(400_000).decode("utf-8", "replace")
         else:
-            html = fetch(f"{SITE}/markets/")
+            html = fetch(f"{base}/markets/")
     except Exception:  # noqa: BLE001
         return None
     m = re.search(r"rebuilt (\d{1,2} [A-Z][a-z]{2} \d{4} \d{2}:\d{2}) UTC", html or "")
@@ -110,8 +111,11 @@ def site_built(_data: Path | None = None, fetch=None) -> datetime | None:
         return None
 
 
+WWW = os.environ.get("SITE_WWW_URL", "https://www.predictmenot.com")
 CONTENT = [
     ("site-live", "site-deploy", site_built, 14, "build time shown on the live site (predictmenot.com/markets/)"),
+    # people type www; on 13 Nov 2026 the owner's phone could not reach it (a Cloudflare blip, it answered minutes later)
+    ("site-live-www", "site-deploy", lambda d: site_built(d, base=WWW), 14, "the same build time, reached at www.predictmenot.com"),
 ]
 
 

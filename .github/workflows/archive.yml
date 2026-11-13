@@ -6,6 +6,10 @@
 # A file can leave git only when (path, blob id) is in a manifest and the release still holds the asset as recorded.
 name: archive
 on:
+  # Daily roll: recorder days older than a week go to release assets, then mrp-data is rebuilt without them. The
+  # last two days of commits are replayed with their dates (the watchdog reads them); older history is one commit.
+  schedule:
+    - cron: "41 10 * * *"
   workflow_dispatch:
     inputs:
       pack:
@@ -28,6 +32,9 @@ on:
       backup:
         description: "With apply: keep the old tip as backup/<branch>-<this> (empty = no backup)"
         default: ""
+      history_days:
+        description: "Prune: replay the commits of the last N days with their dates (0: one commit)"
+        default: "0"
 
 permissions:
   contents: write
@@ -66,8 +73,14 @@ jobs:
         with: { python-version: "3.13" }
       - name: Disk
         run: df -h "$RUNNER_TEMP" | tail -1
+      - name: Daily roll (books older than a week to releases, then rebuild mrp-data)
+        if: github.event_name == 'schedule'
+        run: |
+          export ARCHIVE_WORK="$RUNNER_TEMP/archive"
+          python scripts/archive_release.py books --keep-days 7
+          python scripts/archive_release.py prune mrp-data --apply --history-days 2
       - name: Pack (copy, upload, download back, compare; removes nothing)
-        if: inputs.pack != 'none'
+        if: github.event_name == 'workflow_dispatch' && inputs.pack != 'none'
         run: |
           export ARCHIVE_WORK="$RUNNER_TEMP/archive"
           case "${{ inputs.pack }}" in
@@ -84,10 +97,10 @@ jobs:
               python scripts/archive_release.py pack data recorder-v1-polymarket recorder-v1-2026-10 recorded/polymarket --title "$V1_TITLE" --notes "$V1_NOTES" ;;
           esac
       - name: Prune (rebuild the branch without what the manifests cover)
-        if: inputs.prune_branch != 'none'
+        if: github.event_name == 'workflow_dispatch' && inputs.prune_branch != 'none'
         run: |
           export ARCHIVE_WORK="$RUNNER_TEMP/archive"
-          args=()
+          args=(--history-days "${{ inputs.history_days || '0' }}")
           if [ "${{ inputs.apply }}" = "true" ]; then args+=(--apply); fi
           if [ -n "${{ inputs.backup }}" ]; then args+=(--backup "backup/${{ inputs.prune_branch }}-${{ inputs.backup }}"); fi
           python scripts/archive_release.py prune "${{ inputs.prune_branch }}" "${args[@]}"

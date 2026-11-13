@@ -57,12 +57,8 @@ jobs:
         run: |
           set -e
           cp -r data/trend/. ../datawt/trend/
-          cd ../datawt && git add -A && (git commit -qm "trend data $(date -u +%FT%TZ)" || true)
-          for i in 1 2 3 4 5; do
-            git push origin HEAD:data && break
-            git fetch origin data && git rebase origin/data || git rebase --abort
-            sleep $((RANDOM % 20 + 5))
-          done
+          cd ../datawt && base=$(git rev-parse HEAD) && git add -A && (git commit -qm "trend data $(date -u +%FT%TZ)" || true)
+          bash "$GITHUB_WORKSPACE/scripts/push_data.sh" data "$base" 5   # replays only this commit; see the script
       - name: Commit reports on main
         run: |
           git add reports

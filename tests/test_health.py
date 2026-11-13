@@ -34,6 +34,22 @@ def test_site_built_reads_the_live_stamp_and_fails_closed():
     assert hc.site_built(fetch=lambda url: None) is None
 
 
+def test_the_www_address_is_watched_too():
+    seen = []
+    hc.site_built(fetch=lambda url: seen.append(url) or "", base="https://www.predictmenot.com")
+    assert seen == ["https://www.predictmenot.com/markets/"]
+    checks = {c[0]: c for c in hc.CONTENT}
+    assert {"site-live", "site-live-www"} <= set(checks)
+    calls = []
+    real = hc.site_built
+    try:
+        hc.site_built = lambda d=None, fetch=None, base=None: calls.append(base)
+        checks["site-live-www"][2](None)
+    finally:
+        hc.site_built = real
+    assert calls == [hc.WWW]
+
+
 def test_errlog_guard_records_and_reraises(tmp_path):
     with pytest.raises(NameError):
         with errlog.guard("demo", out=tmp_path, step="check"):
