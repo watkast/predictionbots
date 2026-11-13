@@ -251,7 +251,7 @@ stated on every row. The accounts at both venues stay open for API keys only; ba
   10 GB recommendation, and the recorder adds about 8 GB a month. Moved to release assets, each one downloaded back and
   compared file by file with git before anything left: the paper-trading matrix's logs (4.9 GB, data:ledger/), the
   first recorder's October books and logs (6.1 GB, data:recorded/), the sports radar (1.5 GB) and the NFL study
-  (0.3 GB, mrp-data), and the current recorder's days up to 6 Nov (2.1 GB). Releases: retired-2026-11,
+  (0.3 GB, mrp-data), and the current recorder's days up to 6 Nov (1.6 GB): 14.3 GB in all. Releases: retired-2026-11,
   recorder-v1-2026-10, books-2026-10, books-2026-11. archive/*.tsv on each branch lists every file that moved with its
   git blob id and sha256; scripts/archive_release.py moves data and rebuilds a branch only for files those manifests
   prove are in a release. Daily from now (archive.yml): recorder days older than a week move out and mrp-data is
@@ -262,4 +262,6 @@ stated on every row. The accounts at both venues stay open for API keys only; ba
   every job that wrote to the data branch would, after a rebuild, have replayed the whole old history and pushed the
   archived files back (`git rebase origin/data`); they now replay only their own commit (scripts/push_data.sh, with a
   test that shows the old way putting the files back). The benchmark used to re-extract every window from every book
-  in git; it now merges what it extracts with what it published, so its sample does not shrink.
+  in git; it now merges what it extracts with what it published, so its sample does not shrink (first run on the
+  rebuilt branch: 583 windows extracted, 1,198 in the sample). Old tips kept as backup/data-20261113 and
+  backup/mrp-data-20261113 until the history they alone hold has been checked; then deleted.
