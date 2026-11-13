@@ -1,10 +1,9 @@
+# RETIRED 13 Nov 2026 (see BUSINESS.md): no schedule. Final results are in the data branches. Start by hand if needed.
 # Polymarket US public data (15-min BTC up/down markets, 1-min Yes/No price history, BRTI
 # index candles) -> `data` branch under polyus/. Public endpoints, no key. Hourly so the
 # 1-second BRTI window (last hour only) is never lost.
 name: polyus
 on:
-  schedule:
-    - cron: "7 * * * *"
   workflow_dispatch:
     inputs:
       days:

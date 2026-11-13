@@ -214,3 +214,16 @@ stated on every row. The accounts at both venues stay open for API keys only; ba
 - 2026-11-13 — Home page says what is true today: market pages rebuild several times a day (GitHub fires the hourly
   schedule 2 to 3 times a day), and the data API is built but not live (no wallet address or deployment yet). The
   pump-candle post no longer pitches the shelved terminal. Phone header fixed (it pushed every page 29px sideways).
+- 2026-11-13 — Trading-era jobs retired (PR, Noah's merge): ef-autobuyer, mrh-paper, polyus and the sports radar lose
+  their schedules; every live-trading workflow (Mr H, P, S, T, E, One) loses its schedule and push trigger and starts
+  only by hand, in dry mode unless someone types `live` and the switch file exists. Until now four of them woke up on a
+  timer with real exchange keys loaded and the switch off; safe, and pointless. Verdicts on the way out: Early Favorite
+  forward test, 350 rounds, 84.3% winners against an 84.8% break-even, net −$245 on $100 stakes (the backtest promised
+  +5.5% a round); its paper auto-buyer on live books, 208 entries, 81.2% winners, −4.9¢ per dollar. Both are benchmark
+  rows waiting to be written. The watchdog and the failure watcher now cover the site deploy, the live site, the
+  recorder and the benchmark; before, they covered only the retired jobs, and a failed deploy opened no ticket.
+  The account audit no longer runs on Actions: it printed balances and trades into public logs.
+- 2026-11-13 — Measured, not fixed yet: the recorder (Actions only) published nothing for more than 30 minutes 12 times
+  in 55 hours, about a fifth of the time, mostly after GitHub killed a run at its 6-hour limit and the next one waited
+  for the schedule. That is the coverage the benchmark rows report (84 to 94%). The Dell is the fix and is now the
+  first infrastructure task: the data is the product.

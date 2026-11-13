@@ -1,3 +1,5 @@
+# RETIRED 13 Nov 2026 (we stopped trading on 8 Nov; see BUSINESS.md): no schedule and no push trigger. It runs only if
+# someone starts it by hand, and then in dry mode unless they type `live` and the switch file exists.
 # Mr. S live (REAL MONEY, hard-capped): buys Kalshi soccer contracts the score has already decided (1H totals / 1H winner /
 # 1H BTTS / full-game totals & BTTS) when ESPN and Polymarket agree and someone still sells below the cap; holds to settlement.
 # Caps: $10/order, $20/game, $40/day, $50 open risk. Any losing trade halts new orders until a human resets it.
@@ -6,8 +8,6 @@
 # Report: mrs/MRS.md on the `mrp-data` branch every 5 minutes.
 name: mrs-live
 on:
-  schedule:
-    - cron: "23 */6 * * *"
   workflow_dispatch:
     inputs:
       minutes:
@@ -15,17 +15,14 @@ on:
         default: "335"
       mode:
         description: "live (orders) or dry"
-        default: "live"
-  push:
-    branches: [main]
-    paths: ["mrs/LIVE_ON", ".github/workflows/mrs-live.yml", "mrp/mrs_live.py"]
+        default: "dry"
 
 permissions:
   contents: write
   actions: write
 
 concurrency:
-  group: mrs-live-${{ github.event.inputs.mode || 'live' }}
+  group: mrs-live-${{ github.event.inputs.mode || 'dry' }}
   cancel-in-progress: false
 
 jobs:
@@ -46,4 +43,4 @@ jobs:
           cache-dependency-path: mrp/requirements.txt
       - run: pip install -r mrp/requirements.txt
       - name: Trade (publishing every 5 minutes)
-        run: bash mrp/gha_mrs.sh "${{ github.event.inputs.minutes || '335' }}" "${{ github.event.inputs.mode || 'live' }}"
+        run: bash mrp/gha_mrs.sh "${{ github.event.inputs.minutes || '335' }}" "${{ github.event.inputs.mode || 'dry' }}"

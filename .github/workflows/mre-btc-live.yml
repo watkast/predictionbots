@@ -1,3 +1,5 @@
+# RETIRED 13 Nov 2026 (we stopped trading on 8 Nov; see BUSINESS.md). Manual start only, and in dry mode unless someone
+# types `live` and the switch file exists.
 # Mr. E on BTC (REAL MONEY): the same rule as Mr. E on ETH (scripts/mre_live.js — a 25–30¢ 1-share ladder on both sides, sell
 # at 45¢, no buys inside the last 9:00, the rest settles) on the BTC 15-minute Up/Down market. Own switch (mre-btc/LIVE_ON),
 # own log (mre-btc/ on `mrp-data`), own tail branch (mre-btc-live-tail); it cancels only its own orders.
@@ -10,14 +12,14 @@ on:
         default: "335"
       mode:
         description: "live (orders) or dry"
-        default: "live"
+        default: "dry"
 
 permissions:
   contents: write
   actions: write
 
 concurrency:
-  group: mre-btc-live-${{ github.event.inputs.mode || 'live' }}
+  group: mre-btc-live-${{ github.event.inputs.mode || 'dry' }}
   cancel-in-progress: false
 
 jobs:
@@ -40,4 +42,4 @@ jobs:
           node-version: "22"
       - run: npm install --no-save --no-audit --no-fund ws@8
       - name: Trade (publishing every 10 minutes)
-        run: bash mrp/gha_mre.sh "${{ github.event.inputs.minutes || '335' }}" "${{ github.event.inputs.mode || 'live' }}"
+        run: bash mrp/gha_mre.sh "${{ github.event.inputs.minutes || '335' }}" "${{ github.event.inputs.mode || 'dry' }}"

@@ -1,3 +1,4 @@
+# RETIRED 13 Nov 2026 (see BUSINESS.md): no schedule. Final results are in the data branches. Start by hand if needed.
 # Mr. P sports radar (read-only; never places orders; public REST endpoints + read-only Kalshi WebSocket).
 # Scans every sports market on Polymarket US and Kalshi for outcome-already-known contracts,
 # dutch books, cross-venue gaps and settlement lag, and records 60 s snapshots to fingerprint
@@ -5,16 +6,11 @@
 # group = back-to-back runs, publishing every 10 min to the `mrp-data` branch (mrp/RADAR.md).
 name: mrp-radar
 on:
-  schedule:
-    - cron: "44 * * * *"
   workflow_dispatch:
     inputs:
       minutes:
         description: "Minutes to scan"
         default: "335"
-  push:
-    branches: [main]
-    paths: [".github/workflows/mrp-radar.yml"]
 
 permissions:
   contents: write

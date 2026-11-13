@@ -1,11 +1,10 @@
+# RETIRED 13 Nov 2026 (see BUSINESS.md): no schedule. Final results are in the data branches. Start by hand if needed.
 # Mr. H — Coinbase "hopper", PAPER ONLY (scripts/mrh_paper.py). No key, no orders: public candles + ticker.
 # Scans every USD pair with >= $100k 24-h volume every 5 minutes; two paper books (aggressive / standard) hop a
 # compounding $4 between pumping coins with real taker fees; every signal is scored with its forward return.
 # Each run watches ~5.6 h and publishes mrh/ to the `data` branch every 10 min. Pause: commit mrh/PAUSED on main.
 name: mrh-paper
 on:
-  schedule:
-    - cron: "17 * * * *"
   workflow_dispatch:
     inputs:
       minutes:

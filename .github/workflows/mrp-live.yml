@@ -1,3 +1,5 @@
+# RETIRED 13 Nov 2026 (we stopped trading on 8 Nov; see BUSINESS.md): no schedule and no push trigger. It runs only if
+# someone starts it by hand, and then in dry mode unless they type `live` and the switch file exists.
 # Mr. P live (REAL MONEY, capped): runs the PM15 cockpit's brain in Node and executes only its STRICT ACTION commands on
 # Polymarket US — one discounted-favorite buy per round, one sell per position — with at most $MRP_LIVE_CAPITAL at risk.
 # Switch: the file mrp/LIVE_ON on main. While it exists each run re-dispatches the next one at its end (back-to-back ~5.6 h
@@ -6,8 +8,6 @@
 # LIVE.md are published to the `mrp-data` branch under mrp/live/ every 10 minutes.
 name: mrp-live
 on:
-  schedule:
-    - cron: "7 * * * *"
   workflow_dispatch:
     inputs:
       minutes:
@@ -15,14 +15,14 @@ on:
         default: "335"
       mode:
         description: "live (orders) or dry (feeds + decisions only)"
-        default: "live"
+        default: "dry"
 
 permissions:
   contents: write
   actions: write
 
 concurrency:
-  group: mrp-live-${{ github.event.inputs.mode || 'live' }}   # a dry run may overlap the live one; two live runs never do
+  group: mrp-live-${{ github.event.inputs.mode || 'dry' }}   # a dry run may overlap the live one; two live runs never do
   cancel-in-progress: false
 
 jobs:
@@ -46,4 +46,4 @@ jobs:
           node-version: "22"
       - run: npm install --no-save --no-audit --no-fund ws@8
       - name: Trade (publishing every 10 minutes)
-        run: bash mrp/gha_live.sh "${{ github.event.inputs.minutes || '335' }}" "${{ github.event.inputs.mode || 'live' }}"
+        run: bash mrp/gha_live.sh "${{ github.event.inputs.minutes || '335' }}" "${{ github.event.inputs.mode || 'dry' }}"

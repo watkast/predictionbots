@@ -1,3 +1,5 @@
+# RETIRED 13 Nov 2026 (we stopped trading on 8 Nov; see BUSINESS.md): no schedule and no push trigger. It runs only if
+# someone starts it by hand, and then in dry mode unless they type `live` and the switch file exists.
 # Mr. H LIVE (REAL MONEY, hard-capped, MAKER ON EVERY ORDER): the Coinbase hopper's aggressive profile with a real key
 # (scripts/mrh_live.py). Enter on a 5-min impulse candle (>= +2% on >= 3x volume, spread <= 0.6%) with a POST-ONLY limit
 # buy at the bid (chased up to the bid within +2% of the signal close, cancelled after 15 min unfilled); exit on a 4%
@@ -12,8 +14,6 @@
 # Report: mrh-live/LIVE.md on the `data` branch every 5 minutes (the paper twin's report is mrh/MRH.md).
 name: mrh-live
 on:
-  schedule:
-    - cron: "41 */6 * * *"
   workflow_dispatch:
     inputs:
       minutes:
@@ -21,10 +21,7 @@ on:
         default: "335"
       mode:
         description: "live (orders) or dry (everything but orders)"
-        default: "live"
-  push:
-    branches: [main]
-    paths: ["mrh/LIVE_ON", ".github/workflows/mrh-live.yml", "scripts/mrh_live.py", "scripts/gha_mrh_live.sh"]
+        default: "dry"
 
 permissions:
   contents: write
@@ -69,4 +66,4 @@ jobs:
         run: python scripts/mrh_paper.py selftest && python scripts/mrh_live.py selftest
       - name: Trade (publishing every 5 minutes)
         if: steps.sw.outputs.on == 'true'
-        run: bash scripts/gha_mrh_live.sh "${{ github.event.inputs.minutes || '335' }}" "${{ github.event.inputs.mode || 'live' }}"
+        run: bash scripts/gha_mrh_live.sh "${{ github.event.inputs.minutes || '335' }}" "${{ github.event.inputs.mode || 'dry' }}"
