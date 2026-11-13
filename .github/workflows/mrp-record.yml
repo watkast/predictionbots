@@ -1,8 +1,13 @@
 # Mr. P recorder (read-only; it never places orders). Captures the exact settlement series the
 # Polymarket US 15-min BTC Up/Down market resolves on (CF Benchmarks BRTI, 1-second), plus that
-# market's order book and state in each window's final minutes. Same shape as ef-autobuyer.yml:
-# ~5.6 h per run, hourly cron + a concurrency group = back-to-back runs, publishing every 10 min
-# to the small `mrp-data` branch (not the 4.6 GB `data` branch), where mrp/REPORT.md is regenerated.
+# market's order book and state in each window's final minutes. ~5.6 h per run, publishing every 10 min
+# to the `mrp-data` branch, where mrp/REPORT.md is regenerated.
+#
+# Back-to-back runs: each run asks for its successor when its recorder stops (mrp/gha_record.sh), and the
+# concurrency group starts that one the moment this job ends. The hourly cron is only the restart after a
+# broken chain: GitHub fires it every 6 to 9 hours on this repo, and relying on it (until 13 Nov 2026) left
+# the recorder off for about a fifth of every day.
+# To stop the recorder: cancel the running job (a cancelled run starts no successor) and disable this workflow.
 # Kit, docs and analyzer live in mrp/ (merged from the `mrp` branch). v0.2: public calls use the gateway host.
 name: mrp-record
 on:
@@ -19,6 +24,7 @@ on:
 
 permissions:
   contents: write
+  actions: write     # the run dispatches its successor
 
 concurrency:
   group: mrp-record
@@ -44,5 +50,7 @@ jobs:
           cache: pip
           cache-dependency-path: mrp/requirements.txt
       - run: pip install -r mrp/requirements.txt
-      - name: Record, publishing every 10 minutes
+      - name: Record, publishing every 10 minutes, then start the next run
+        env:
+          GH_TOKEN: ${{ github.token }}
         run: bash mrp/gha_record.sh "${{ github.event.inputs.minutes || '335' }}"

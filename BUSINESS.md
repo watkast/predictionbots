@@ -104,6 +104,10 @@ stated on every row. The accounts at both venues stay open for API keys only; ba
   failure, and the site says "several times a day", not "hourly".
 - We overstate our own honesty: the ledger said "every trade" over 6 of 269 rows for five days (see 13 Nov). Any claim
   of completeness ships with a script that fails when it is not complete.
+- The archive lives in git: the repository is 10.2 GB (the data branch 4.6, mrp-data 5.0) and the recorder adds about
+  0.3 GB a day. GitHub recommends at most 10 GB on disk and says generated files belong in object storage; past that,
+  Support may write and ask for a fix. The benchmark job still downloads all of it every day. The recorded books need
+  a home outside git (object storage, or the Dell) before GitHub asks; nothing is decided yet.
 
 ## Decisions log
 
@@ -228,8 +232,17 @@ stated on every row. The accounts at both venues stay open for API keys only; ba
   for the schedule. That is the coverage the benchmark rows report (84 to 94%). The Dell is the fix and is now the
   first infrastructure task: the data is the product.
 - 2026-11-13 — Account data in public logs, closed out. The logs of the five 3 Nov audit runs are deleted (Noah's
-  word; the run records stay, their logs answer 404). A sweep of all 1,656 runs then found one more path: CI's live
+  word; the run records stay, their logs answer 404). A sweep of every finished run's log (1,654) found one more path: CI's live
   smoke test printed the whole answer of Kalshi's signed balance call on every push since 29 Oct, into the Actions
   log, an artifact and logs/ on the data branch. Every copy shows an empty account, so they stay; the test now prints
   the field names and never an amount (tests/test_smoke_redaction.py). Public on purpose and unchanged: the bots' own
   trade logs and the account balance their reports print on mrp-data; the ledger is built from them.
+- 2026-11-13 — Recorder gaps closed in software; the Dell is the second home, not the fix. Measured 11 to 13 Nov, the
+  recorder captured about 82% of the time, and all three causes sat in mrp/gha_record.sh: every run checked out the
+  whole 5 GB branch for 9 minutes before recording a line; about half the runs were killed by the job's time limit in
+  the middle of their closing publish and lost their last 10 minutes; and the next run waited for GitHub's "hourly"
+  cron, 1 to 5 hours at most handoffs. Now the recorder starts first, the branch is fetched blobless and checked out
+  sparse (the report's few days, about 1.5 GB, and no longer growing with the archive), the run requests its successor
+  the moment its recorder stops, and the closing publish skips the report so it lands. Expected loss: about two
+  minutes per 5.6 hours. Finished hour files now gzip to the same bytes each time (gzip -n) and are pushed once.
+  tests/test_recorder_run.py runs the script end to end against a local remote, a stub recorder and a stub API.
