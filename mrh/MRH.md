@@ -1,12 +1,12 @@
 # Mr. H — Coinbase hopper, PAPER
 
-Updated 2026-11-13T04:20:36Z · scans 1482 · universe 110 coins (USD pairs with ≥ $100k 24-h volume) · fees 0.9% taker each way · start $4.00
+Updated 2026-11-13T04:30:36Z · scans 1484 · universe 110 coins (USD pairs with ≥ $100k 24-h volume) · fees 0.9% taker each way · start $4.00
 
 ## Books (one position at a time, all-in every hop)
 
 | profile | bankroll | vs start | peak | hops | win % | avg net/hop | fees paid | open |
 |---|---|---|---|---|---|---|---|---|
-| aggressive | $1.40 | -65.0% | $4.00 | 32 | 25% | -3.04% | $1.442 | RITUAL-USD @ 0.04506 |
+| aggressive | $1.37 | -65.8% | $4.00 | 33 | 24% | -3.13% | $1.454 | — |
 | standard | $2.01 | -49.8% | $4.00 | 29 | 21% | -2.28% | $1.486 | — |
 | aggressive_swap | $0.99 | -75.3% | $4.02 | 44 | 18% | -3.02% | $2.059 | — |
 
@@ -27,13 +27,12 @@ Updated 2026-11-13T04:20:36Z · scans 1482 · universe 110 coins (USD pairs with
 
 ## Verdict
 
-Median 4%-trail hop nets -4.35% after fees across 186 signals; the aggressive book is -100.0% after 32 hops. **No edge after fees. Do not fund.**
+Median 4%-trail hop nets -4.35% after fees across 186 signals; the aggressive book is -65.8% after 33 hops. **No edge after fees. Do not fund.**
 
 ## Last 20 hops
 
 | time (UTC) | book | coin | in | out | held | net | reason | bankroll |
 |---|---|---|---|---|---|---|---|---|
-| 11-11T21:45 | aggressive_swap | MEZO | 0.004167 | 0.004073 | 15 m | -4.01% | trail | $1.05 |
 | 11-12T02:40 | aggressive | RITUAL | 0.03951 | 0.03807 | 68 m | -5.37% | trail | $1.92 |
 | 11-12T02:40 | aggressive_swap | RITUAL | 0.03951 | 0.03807 | 68 m | -5.37% | trail | $0.99 |
 | 11-12T04:25 | standard | FLR | 0.005467 | 0.00536 | 825 m | -3.71% | trail | $2.36 |
@@ -53,6 +52,7 @@ Median 4%-trail hop nets -4.35% after fees across 186 signals; the aggressive bo
 | 11-12T18:30 | aggressive | RITUAL | 0.04762 | 0.04553 | 10 m | -6.10% | trail | $1.52 |
 | 11-13T03:05 | aggressive | RITUAL | 0.04416 | 0.04292 | 180 m | -4.55% | trail | $1.45 |
 | 11-13T03:15 | standard | ENA | 0.14094 | 0.13728 | 795 m | -4.34% | trail | $2.01 |
+| 11-13T04:25 | aggressive | RITUAL | 0.04506 | 0.04317 | 20 m | -5.91% | trail | $1.37 |
 
 ## Last 15 signals
 
