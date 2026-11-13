@@ -7,4 +7,5 @@ download the asset from the release and `tar -xf` it; the paths inside are the p
 | Archive | From | Release | Files | Bytes | Moved |
 | --- | --- | --- | --- | --- | --- |
 | [paper-matrix-logs](paper-matrix-logs.tsv) | `data` | `retired-2026-11` | 658 | 4897323993 | 2026-11-13 |
+| [recorder-v1-kalshi](recorder-v1-kalshi.tsv) | `data` | `recorder-v1-2026-10` | 120769 | 742709451 | 2026-11-13 |
 | [recorder-v1-logs](recorder-v1-logs.tsv) | `data` | `recorder-v1-2026-10` | 73 | 1726156745 | 2026-11-13 |
