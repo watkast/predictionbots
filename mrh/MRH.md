@@ -1,21 +1,21 @@
 # Mr. H — Coinbase hopper, PAPER
 
-Updated 2026-11-13T08:20:36Z · scans 1518 · universe 110 coins (USD pairs with ≥ $100k 24-h volume) · fees 0.9% taker each way · start $4.00
+Updated 2026-11-13T08:30:36Z · scans 1520 · universe 110 coins (USD pairs with ≥ $100k 24-h volume) · fees 0.9% taker each way · start $4.00
 
 ## Books (one position at a time, all-in every hop)
 
 | profile | bankroll | vs start | peak | hops | win % | avg net/hop | fees paid | open |
 |---|---|---|---|---|---|---|---|---|
-| aggressive | $1.26 | -68.5% | $4.00 | 35 | 23% | -3.17% | $1.502 | — |
-| standard | $2.02 | -49.5% | $4.00 | 30 | 20% | -2.25% | $1.540 | USELESS-USD @ 0.13121 |
+| aggressive | $1.24 | -69.0% | $4.00 | 35 | 23% | -3.17% | $1.514 | BARD-USD @ 0.1454 |
+| standard | $2.03 | -49.3% | $4.00 | 30 | 20% | -2.25% | $1.540 | USELESS-USD @ 0.13121 |
 | aggressive_swap | $0.99 | -75.3% | $4.02 | 44 | 18% | -3.02% | $2.059 | — |
 
 ## Signal forward returns (every signal, whether or not a book took it)
 
 | profile | signals | scored | median +15m | median +1h | median +4h | % beat 1.8% at +1h | median 4%-trail hop net | max run-up (med) | max drawdown (med) |
 |---|---|---|---|---|---|---|---|---|---|
-| aggressive | 236 | 193 | -0.93% | -1.87% | -3.58% | 27% | -4.37% | +6.38% | -8.42% |
-| standard | 242 | 189 | -0.39% | -0.55% | -1.23% | 18% | -2.55% | +3.01% | -4.92% |
+| aggressive | 237 | 193 | -0.93% | -1.87% | -3.58% | 27% | -4.37% | +6.38% | -8.42% |
+| standard | 243 | 189 | -0.39% | -0.55% | -1.23% | 18% | -2.55% | +3.01% | -4.92% |
 
 ## Aggressive signals by BTC regime (BTC's own move in the hour before the signal)
 
@@ -27,7 +27,7 @@ Updated 2026-11-13T08:20:36Z · scans 1518 · universe 110 coins (USD pairs with
 
 ## Verdict
 
-Median 4%-trail hop nets -4.37% after fees across 193 signals; the aggressive book is -68.5% after 35 hops. **No edge after fees. Do not fund.**
+Median 4%-trail hop nets -4.37% after fees across 193 signals; the aggressive book is -100.0% after 35 hops. **No edge after fees. Do not fund.**
 
 ## Last 20 hops
 
@@ -58,8 +58,6 @@ Median 4%-trail hop nets -4.37% after fees across 193 signals; the aggressive bo
 
 | time (UTC) | profile | coin | impulse | vol× | >2h high | spread | taken | +1h | +4h |
 |---|---|---|---|---|---|---|---|---|---|
-| 11-13T04:05 | aggressive | BARD | +3.8% | 3.3 | n | 1.48% | spread | +8.1% | +7.4% |
-| 11-13T04:05 | aggressive | RITUAL | +3.0% | 8.1 | n | 0.09% | y | -6.0% | -1.5% |
 | 11-13T05:15 | aggressive | MEZO | +6.3% | 62.0 | y | 0.40% | y | … | … |
 | 11-13T05:15 | aggressive | RITUAL | +2.1% | 4.4 | n | 0.09% | in_position | … | … |
 | 11-13T05:15 | standard | MEZO | +6.3% | 62.0 | y | 0.40% | y | … | … |
@@ -73,3 +71,5 @@ Median 4%-trail hop nets -4.37% after fees across 193 signals; the aggressive bo
 | 11-13T07:10 | standard | FARTCOIN | +1.0% | 3.5 | y | 0.15% | in_position | … | … |
 | 11-13T07:20 | standard | RITUAL | +1.7% | 5.7 | y | 0.09% | in_position | … | … |
 | 11-13T07:25 | standard | BAT | +1.2% | 19.3 | y | 0.15% | in_position | … | … |
+| 11-13T08:25 | aggressive | BARD | +4.1% | 9.5 | y | 0.28% | y | … | … |
+| 11-13T08:25 | standard | BARD | +4.1% | 9.5 | y | 0.28% | in_position | … | … |

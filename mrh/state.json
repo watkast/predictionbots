@@ -2,12 +2,25 @@
  "books": {
   "aggressive": {
    "name": "aggressive",
-   "bankroll": 1.2616803316223892,
+   "bankroll": 0.0,
    "peak": 4.0,
-   "pos": null,
+   "pos": {
+    "pid": "BARD-USD",
+    "entry_px": 0.1454,
+    "qty": 8.599210513327288,
+    "cost": 1.2616803316223892,
+    "hw": 0.1454,
+    "t_in": "2026-11-13T08:25:15Z",
+    "signal": {
+     "impulse": 0.0407,
+     "vol_mult": 9.52,
+     "above_2h_high": true
+    },
+    "hw_t": "2026-11-13T08:25:15Z"
+   },
    "hops": 35,
    "wins": 8,
-   "fees": 1.5021605432628937
+   "fees": 1.5135156662474951
   },
   "standard": {
    "name": "standard",
@@ -594,7 +607,7 @@
   }
  ],
  "universe_t": "2026-11-13T07:45:15Z",
- "scans": 1518,
+ "scans": 1520,
  "started": "2026-11-06T22:20:22Z",
- "last_scan": "2026-11-13T08:20:15Z"
+ "last_scan": "2026-11-13T08:30:15Z"
 }
