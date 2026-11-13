@@ -1,6 +1,6 @@
 # Weather calibration — Kalshi daily highs vs. the NWS forecast
 
-Updated 2026-11-13 16:15 UTC. 690 settled contracts, each scored on its last snapshot at least 12 hours before the day ended.
+Updated 2026-11-13 17:35 UTC. 690 settled contracts, each scored on its last snapshot at least 12 hours before the day ended.
 
 | Measure | Market price | NWS-based probability |
 | --- | --- | --- |
