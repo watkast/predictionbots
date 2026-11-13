@@ -66820,7 +66820,8 @@
 "up_ask": 0.48
 }
 ],
-"entry": null
+"entry": null,
+"settled": "no_entry"
 },
 "cpc-btc-updown-15m-2026-11-13-1045z": {
 "slug": "cpc-btc-updown-15m-2026-11-13-1045z",
@@ -66839,6 +66840,20 @@
 "short_px": 0.37,
 "up_bid": 0.61,
 "up_ask": 0.62
+},
+{
+"at": 180,
+"t": 180.0,
+"latency_s": 0.021,
+"ok": true,
+"tries": 1,
+"state": "MARKET_STATE_OPEN",
+"fav": "Up",
+"fav_ask": 0.68,
+"long_px": 0.67,
+"short_px": 0.33,
+"up_bid": 0.67,
+"up_ask": 0.68
 }
 ],
 "entry": null
