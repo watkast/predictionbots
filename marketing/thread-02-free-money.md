@@ -1,6 +1,6 @@
 # X thread — post 2: "We found free money in our own data. Then we tested it live."
 
-Post from @predictionbots when the site is live. Attach `site/posts/img/free-money-snapshot-vs-live.png` to tweet 1.
+Post from the PredictMeNot account when the site is live. Attach `site/posts/img/free-money-snapshot-vs-live.png` to tweet 1.
 Link to the post in tweet 9 only (links in tweet 1 get down-ranked). Reply to our own tweet 1 with the link too.
 
 ---

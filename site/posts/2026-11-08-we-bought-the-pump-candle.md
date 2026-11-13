@@ -48,6 +48,6 @@ A 5-minute candle closing up 2% is the footprint of all three having already act
 
 Everything here is public. The replay is `scripts/mrh_backtest.py` in [github.com/watkast/predictionbots](https://github.com/watkast/predictionbots); the full report, every signal with its forward returns, and the live bot's book are on the repo's `data` branch (`mrh-backtest/BACKTEST.md`, `mrh-backtest/backtest_signals.jsonl`, `mrh-live/LIVE.md`). The fee model is Coinbase Advanced's intro tier; the spread gate (≤0.6%) is not modelled, so live is slightly worse than the table.
 
-If you trade prediction markets or run bots on them, we are building the research and execution terminal we wished we had this week — live scanners for decided markets, final-second candidates and cross-venue locks, with every trade published. [Join the waitlist](/#waitlist).
+We stopped trading on 8 November 2026 and measure instead: [what the fees cost](/#truecost), [which bots survive their own published rule](/#benchmark), and [every round trip our own bots made](/#ledger). [Get the next post](/#waitlist).
 
 *Nothing here is investment advice. It is a record of what a rule did, with the code to check it.*

@@ -1,6 +1,6 @@
 # X thread — Polymarket US fee increase (Prediction News item 1)
 
-Post from @predictionbots. No link in tweet 1; link in the last tweet and in a reply.
+Post from the PredictMeNot account. No link in tweet 1; link in the last tweet and in a reply.
 
 **1/**
 Polymarket US changed its fee schedule on Nov 6.

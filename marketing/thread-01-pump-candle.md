@@ -1,4 +1,4 @@
-# X thread — launch post #1 (post from @predictionbots once the site is live; attach the two charts)
+# X thread — launch post #1 (post from the PredictMeNot account once the site is live; attach the two charts)
 
 1/ We built a bot to buy coins the moment they spike — the most popular idea in retail crypto — then replayed the exact rule over 30 days of Coinbase data. 112 coins. 1,172 spikes.
 
@@ -32,4 +32,4 @@ Next post: what 4 days of recording Polymarket at 1-second resolution found in t
 predictmenot.com
 github.com/watkast/predictionbots
 
-We're building the terminal we wished we had this week. Waitlist on the site.
+We stopped trading and measure instead: fees, bots, and our own full ledger. predictmenot.com

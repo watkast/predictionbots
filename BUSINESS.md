@@ -98,6 +98,12 @@ stated on every row. The accounts at both venues stay open for API keys only; ba
 - The home box or the home connection goes down: Actions stays as the backstop runner.
 - We mistake luck for signal: every claim ships with its sample size and data file; our own failures are published first.
 - The AI subscription lapses: the sequence reaches for the first dollar early; code and docs are readable without it.
+- Everything runs on one free GitHub account: the recorder, the benchmark and the deploy are all Actions jobs, the
+  Dell is not recording yet, and GitHub runs our hourly schedules only a few times a day. A paused or throttled account
+  stops the data and the site at once. The Dell as the recorder's first home is the fix; until then it is one point of
+  failure, and the site says "several times a day", not "hourly".
+- We overstate our own honesty: the ledger said "every trade" over 6 of 269 rows for five days (see 13 Nov). Any claim
+  of completeness ships with a script that fails when it is not complete.
 
 ## Decisions log
 
@@ -186,3 +192,18 @@ stated on every row. The accounts at both venues stay open for API keys only; ba
   edge is latency, not the rule — the same lesson as Mr T. Benchmark now replays with a 10 s index lag by default and
   reports a 95% interval and a plain verdict (wins/loses only with ≥100 trades and a clean interval). Candidate post 4:
   "The bot's edge is your ping."
+- 2026-11-13 — Ledger corrected, found in a status check, not by a reader. The home page listed Mr H's 6 trades (−$0.53)
+  under "every trade"; the bots' own public logs hold 269 round trips: Mr E 260 (ETH 161, BTC 99), Mr P 3, Mr H 6, net
+  −$32.31 on $400.83 staked, 8.1¢ per dollar, with two round trips in three winning. Rebuilt from the logs by
+  scripts/ledger_build.py into site/data/bot_trades.json (selfcheck against the bots' own totals; tests tie the home
+  page's figures to the file). Nine Mr E rounds the bot never finished writing (restarts) are settled from the venue's
+  record and our recorder's books, marked, and counted: −$9.91 of the total. A dated correction sits under the table.
+  The finding worth a post: we won 66% of the time and lost 8 cents on the dollar, close to the 9 to 10 the 45/70 rule loses.
+- 2026-11-13 — The build read its caches from predictionbots.io, a domain we never registered (the pre-rename name):
+  whoever registered it could have written into every market page. Inputs now come only from predictmenot.com and this
+  repo's branches, and only if they parse as JSON. The same dead URL would have made the Odds API key re-buy all 8
+  leagues on every build; the cadence now fits the free 500 a month (12-hour snapshot, in-season leagues only, the
+  account's own usage counters, snapshot kept in the Actions cache and on mrp-data). ODDS_API_KEY is safe to add.
+- 2026-11-13 — Home page says what is true today: market pages rebuild several times a day (GitHub fires the hourly
+  schedule 2 to 3 times a day), and the data API is built but not live (no wallet address or deployment yet). The
+  pump-candle post no longer pitches the shelved terminal. Phone header fixed (it pushed every page 29px sideways).
