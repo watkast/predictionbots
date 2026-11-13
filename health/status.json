@@ -1,5 +1,5 @@
 {
- "generated": "2026-11-13T14:36:46Z",
+ "generated": "2026-11-13T18:10:18Z",
  "ok": true,
  "checks": [
   {
@@ -7,9 +7,9 @@
    "bot": "site-deploy",
    "kind": "freshness",
    "ok": true,
-   "age_h": 0.7,
+   "age_h": 1.6,
    "max_h": 14,
-   "last": "2026-11-13T13:54:49Z",
+   "last": "2026-11-13T16:31:42Z",
    "what": "mrp-data:site-preview/sitemap.xml",
    "meaning": "site build and deploy (the preview is published only after a deploy succeeds)"
   },
@@ -18,9 +18,9 @@
    "bot": "mrp-record",
    "kind": "freshness",
    "ok": true,
-   "age_h": 0.1,
+   "age_h": 0.2,
    "max_h": 3,
-   "last": "2026-11-13T14:30:03Z",
+   "last": "2026-11-13T17:59:53Z",
    "what": "mrp-data:mrp/data",
    "meaning": "order-book recorder (publishes about every 20 min; the data is the product)"
   },
@@ -29,9 +29,9 @@
    "bot": "benchmark",
    "kind": "freshness",
    "ok": true,
-   "age_h": 20.6,
+   "age_h": 0.6,
    "max_h": 40,
-   "last": "2026-11-12T18:00:02Z",
+   "last": "2026-11-13T17:35:55Z",
    "what": "mrp-data:benchmark/benchmark.json",
    "meaning": "daily bot-benchmark replay"
   },
@@ -40,7 +40,7 @@
    "bot": "trend",
    "kind": "freshness",
    "ok": true,
-   "age_h": 11.9,
+   "age_h": 15.4,
    "max_h": 80,
    "last": "2026-11-13T02:45:06Z",
    "what": "main:reports/trend_paper.json",
@@ -51,9 +51,9 @@
    "bot": "site-deploy",
    "kind": "content",
    "ok": true,
-   "age_h": 0.7,
+   "age_h": 1.7,
    "max_h": 14,
-   "last": "2026-11-13T13:53:00Z",
+   "last": "2026-11-13T16:30:00Z",
    "what": "build time shown on the live site (predictmenot.com/markets/)",
    "meaning": "build time shown on the live site (predictmenot.com/markets/)",
    "error": null
