@@ -1,4 +1,4 @@
-series cache: 5371 entries from cache/series_meta.json
+series cache: 5390 entries from cache/series_meta.json
   https://external-api.kalshi.com/trade-api/v2/markets -> 429; retry
   https://external-api.kalshi.com/trade-api/v2/markets -> 429; retry
   https://external-api.kalshi.com/trade-api/v2/markets -> 429; retry
@@ -11,11 +11,11 @@ series cache: 5371 entries from cache/series_meta.json
   https://external-api.kalshi.com/trade-api/v2/markets -> 429; retry
   https://external-api.kalshi.com/trade-api/v2/markets -> 429; retry
   https://external-api.kalshi.com/trade-api/v2/markets -> 429; retry
-kalshi: 203104 open markets in 204 pages
-kalshi: 4809 series, 19 to fetch (4790 cached)
+kalshi: 203088 open markets in 204 pages
+kalshi: 4809 series, 0 to fetch (4809 cached)
 nws: forecasts for 23 of 23 stations
 odds: no ODDS_API_KEY; sports real-world odds off
 pmus market keys: ['active', 'archived', 'assetPriceTerms', 'bestAskQuote', 'bestBidQuote', 'category', 'closed', 'color', 'comboEnabled', 'createdAt', 'description', 'endDate', 'ep3Status', 'ep3SyncedAt', 'eventSubcategory', 'feeCoefficient', 'gameStartTime', 'hidden', 'id', 'image', 'manualActivation', 'marketSides', 'marketType', 'minimumTradeQty', 'orderPriceMinTickSize', 'outcomePrices', 'outcomes', 'politics', 'question', 'singlesRfqConfig', 'slug', 'sportsMarketType', 'sportsMarketTypeV2', 'startDate', 'status', 'subtitle', 'tags', 'title', 'titleShort', 'updatedAt']
-pmus: 75513 markets in 153 pages
-wrote 11970 series pages + index + sitemap to site/dist/markets
+pmus: 75518 markets in 153 pages
+wrote 11960 series pages + index + sitemap to site/dist/markets
 weather: 276 contracts with market and forecast probabilities
