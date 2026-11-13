@@ -12,3 +12,4 @@ download the asset from the release and `tar -xf` it; the paths inside are the p
 | [books-2026-11-01](books-2026-11-01.tsv) | `mrp-data` | `books-2026-11` | 75 | 232344131 | 2026-11-13 |
 | [books-2026-11-02](books-2026-11-02.tsv) | `mrp-data` | `books-2026-11` | 65 | 219486964 | 2026-11-13 |
 | [books-2026-11-03](books-2026-11-03.tsv) | `mrp-data` | `books-2026-11` | 59 | 200337696 | 2026-11-13 |
+| [books-2026-11-04](books-2026-11-04.tsv) | `mrp-data` | `books-2026-11` | 33 | 107306945 | 2026-11-13 |
