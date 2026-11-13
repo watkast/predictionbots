@@ -6,43 +6,30 @@
    "peak": 4.0,
    "pos": {
     "pid": "MEZO-USD",
-    "entry_px": 0.004018,
-    "qty": 337.340867072406,
-    "cost": 1.3677453117022476,
-    "hw": 0.00435,
-    "t_in": "2026-11-13T05:15:15Z",
+    "entry_px": 0.00412,
+    "qty": 324.8631229476591,
+    "cost": 1.3505913890457677,
+    "hw": 0.00412,
+    "t_in": "2026-11-13T05:30:15Z",
     "signal": {
-     "impulse": 0.0629,
-     "vol_mult": 61.98,
-     "above_2h_high": true
+     "impulse": 0.0332,
+     "vol_mult": 51.26,
+     "above_2h_high": false
     },
-    "hw_t": "2026-11-13T05:20:15Z"
+    "hw_t": "2026-11-13T05:30:15Z"
    },
-   "hops": 33,
+   "hops": 34,
    "wins": 8,
-   "fees": 1.4662812596252424
+   "fees": 1.4907022960534069
   },
   "standard": {
    "name": "standard",
-   "bankroll": 0.0,
+   "bankroll": 1.9833422715239635,
    "peak": 4.0,
-   "pos": {
-    "pid": "MEZO-USD",
-    "entry_px": 0.004018,
-    "qty": 495.38476774234533,
-    "cost": 2.008532791915987,
-    "hw": 0.00435,
-    "t_in": "2026-11-13T05:15:15Z",
-    "signal": {
-     "impulse": 0.0629,
-     "vol_mult": 61.98,
-     "above_2h_high": true
-    },
-    "hw_t": "2026-11-13T05:20:15Z"
-   },
-   "hops": 29,
+   "pos": null,
+   "hops": 30,
    "wins": 6,
-   "fees": 1.504238662136165
+   "fees": 1.5222508522912765
   },
   "aggressive_swap": {
    "name": "aggressive_swap",
@@ -607,7 +594,7 @@
   }
  ],
  "universe_t": "2026-11-13T05:20:15Z",
- "scans": 1494,
+ "scans": 1496,
  "started": "2026-11-06T22:20:22Z",
- "last_scan": "2026-11-13T05:20:15Z"
+ "last_scan": "2026-11-13T05:30:15Z"
 }
