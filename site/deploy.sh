@@ -28,4 +28,10 @@ cat wrangler.toml
 if [ -n "$D1" ]; then $W d1 execute floor --remote --file=schema.sql >/dev/null && echo "schema applied"; fi
 # the project must exist before the first deploy; create is a no-op error if it does
 $W pages project create "$PROJECT" --production-branch main >/dev/null 2>&1 || true
-$W pages deploy dist --project-name="$PROJECT" --commit-dirty=true --branch main
+# Cloudflare's API answers 5xx now and then (13 Nov 2026: a 503 on the project lookup failed a whole deploy, and the
+# next one was hours away): three tries before the run goes red.
+for try in 1 2 3; do
+  if $W pages deploy dist --project-name="$PROJECT" --commit-dirty=true --branch main; then exit 0; fi
+  echo "deploy try $try failed"; [ "$try" = 3 ] || sleep $((30 * try))
+done
+echo "the deploy failed three times"; exit 1
