@@ -1,7 +1,7 @@
 {
  "asof": "2026-11-13",
- "tbill_4w": 0.0398,
- "tbill_4w_date": "2026-11-12",
+ "tbill_4w": 0.039900000000000005,
+ "tbill_4w_date": "2026-11-13",
  "ibond": 0.055099999999999996,
  "ibond_period": "November 1, 2026 to April 30, 2027",
  "sources": {
