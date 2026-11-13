@@ -25,6 +25,14 @@ def check(cond: bool, msg: str, fails: list[str]) -> None:
         fails.append(msg)
 
 
+def balance_note(bal: dict) -> str:
+    """What this log may say about the signed balance call: which fields came back, never an amount.
+
+    The output of this script is public three times over: the Actions log, the smoke-live-log artifact and
+    logs/smoke_live_*.log on the data branch. Until 13 Nov 2026 the whole answer was printed on every push."""
+    return "kalshi auth balance call answered (fields: " + ", ".join(sorted(map(str, bal))[:8]) + ")"
+
+
 async def kalshi(fails: list[str]) -> None:
     from pb.venues import kalshi as K
 
@@ -58,7 +66,7 @@ async def kalshi(fails: list[str]) -> None:
             print("     historical cutoff unavailable:", e)
         if c.auth is not None:
             bal = await c.get_balance()
-            check("balance" in bal or "balance_dollars" in bal, f"kalshi auth balance {bal}", fails)
+            check("balance" in bal or "balance_dollars" in bal, balance_note(bal), fails)
             ws = K.KalshiWS([t.market_id], auth=c.auth)
             got = []
             async def run():

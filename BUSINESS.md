@@ -227,3 +227,9 @@ stated on every row. The accounts at both venues stay open for API keys only; ba
   in 55 hours, about a fifth of the time, mostly after GitHub killed a run at its 6-hour limit and the next one waited
   for the schedule. That is the coverage the benchmark rows report (84 to 94%). The Dell is the fix and is now the
   first infrastructure task: the data is the product.
+- 2026-11-13 — Account data in public logs, closed out. The logs of the five 3 Nov audit runs are deleted (Noah's
+  word; the run records stay, their logs answer 404). A sweep of all 1,656 runs then found one more path: CI's live
+  smoke test printed the whole answer of Kalshi's signed balance call on every push since 29 Oct, into the Actions
+  log, an artifact and logs/ on the data branch. Every copy shows an empty account, so they stay; the test now prints
+  the field names and never an amount (tests/test_smoke_redaction.py). Public on purpose and unchanged: the bots' own
+  trade logs and the account balance their reports print on mrp-data; the ledger is built from them.
