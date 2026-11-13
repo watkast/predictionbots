@@ -1,0 +1,722 @@
+{
+ "runs": [
+  {
+   "at": "2026-10-20T11:50:14+00:00",
+   "jobs": [
+    {
+     "clone_url": "https://github.com/kubernetes/kubernetes.git",
+     "dry_run": true,
+     "error": null,
+     "file": "data/bounty/kubernetes/github.com__kubernetes__kubernetes-20261020T115014Z.json",
+     "findings": null,
+     "paths": [
+      "pkg",
+      "cmd",
+      "staging/src/k8s.io/apiserver"
+     ],
+     "repo": "github.com/kubernetes/kubernetes",
+     "rulesets": [
+      "p/security-audit",
+      "p/secrets",
+      "p/owasp-top-ten",
+      "p/command-injection",
+      "p/sql-injection",
+      "p/xss",
+      "p/golang"
+     ],
+     "stamp": "20261020T115014Z",
+     "target": "kubernetes"
+    },
+    {
+     "clone_url": "https://gitlab.com/gitlab-org/gitlab.git",
+     "dry_run": true,
+     "error": null,
+     "file": "data/bounty/gitlab/gitlab.com__gitlab-org__gitlab-20261020T115014Z.json",
+     "findings": null,
+     "paths": [
+      "app",
+      "lib"
+     ],
+     "repo": "gitlab.com/gitlab-org/gitlab",
+     "rulesets": [
+      "p/security-audit",
+      "p/secrets",
+      "p/owasp-top-ten",
+      "p/command-injection",
+      "p/sql-injection",
+      "p/xss",
+      "p/ruby",
+      "p/javascript",
+      "p/nodejs"
+     ],
+     "stamp": "20261020T115014Z",
+     "target": "gitlab"
+    },
+    {
+     "clone_url": "https://github.com/nextcloud/server.git",
+     "dry_run": true,
+     "error": null,
+     "file": "data/bounty/nextcloud/github.com__nextcloud__server-20261020T115014Z.json",
+     "findings": null,
+     "paths": [
+      "lib",
+      "apps",
+      "core"
+     ],
+     "repo": "github.com/nextcloud/server",
+     "rulesets": [
+      "p/security-audit",
+      "p/secrets",
+      "p/owasp-top-ten",
+      "p/command-injection",
+      "p/sql-injection",
+      "p/xss",
+      "p/php",
+      "p/javascript",
+      "p/nodejs"
+     ],
+     "stamp": "20261020T115014Z",
+     "target": "nextcloud"
+    },
+    {
+     "clone_url": "https://github.com/nextcloud/text.git",
+     "dry_run": true,
+     "error": null,
+     "file": "data/bounty/nextcloud/github.com__nextcloud__text-20261020T115014Z.json",
+     "findings": null,
+     "paths": [
+      "lib",
+      "apps",
+      "core"
+     ],
+     "repo": "github.com/nextcloud/text",
+     "rulesets": [
+      "p/security-audit",
+      "p/secrets",
+      "p/owasp-top-ten",
+      "p/command-injection",
+      "p/sql-injection",
+      "p/xss",
+      "p/php",
+      "p/javascript",
+      "p/nodejs"
+     ],
+     "stamp": "20261020T115014Z",
+     "target": "nextcloud"
+    },
+    {
+     "clone_url": "https://github.com/nextcloud/user_saml.git",
+     "dry_run": true,
+     "error": null,
+     "file": "data/bounty/nextcloud/github.com__nextcloud__user_saml-20261020T115014Z.json",
+     "findings": null,
+     "paths": [
+      "lib",
+      "apps",
+      "core"
+     ],
+     "repo": "github.com/nextcloud/user_saml",
+     "rulesets": [
+      "p/security-audit",
+      "p/secrets",
+      "p/owasp-top-ten",
+      "p/command-injection",
+      "p/sql-injection",
+      "p/xss",
+      "p/php",
+      "p/javascript",
+      "p/nodejs"
+     ],
+     "stamp": "20261020T115014Z",
+     "target": "nextcloud"
+    },
+    {
+     "clone_url": "https://github.com/nextcloud/twofactor_totp.git",
+     "dry_run": true,
+     "error": null,
+     "file": "data/bounty/nextcloud/github.com__nextcloud__twofactor_totp-20261020T115014Z.json",
+     "findings": null,
+     "paths": [
+      "lib",
+      "apps",
+      "core"
+     ],
+     "repo": "github.com/nextcloud/twofactor_totp",
+     "rulesets": [
+      "p/security-audit",
+      "p/secrets",
+      "p/owasp-top-ten",
+      "p/command-injection",
+      "p/sql-injection",
+      "p/xss",
+      "p/php",
+      "p/javascript",
+      "p/nodejs"
+     ],
+     "stamp": "20261020T115014Z",
+     "target": "nextcloud"
+    },
+    {
+     "clone_url": "https://github.com/grafana/grafana.git",
+     "dry_run": true,
+     "error": null,
+     "file": "data/bounty/grafana/github.com__grafana__grafana-20261020T115014Z.json",
+     "findings": null,
+     "paths": [
+      "pkg",
+      "public/app"
+     ],
+     "repo": "github.com/grafana/grafana",
+     "rulesets": [
+      "p/security-audit",
+      "p/secrets",
+      "p/owasp-top-ten",
+      "p/command-injection",
+      "p/sql-injection",
+      "p/xss",
+      "p/golang",
+      "p/typescript"
+     ],
+     "stamp": "20261020T115014Z",
+     "target": "grafana"
+    },
+    {
+     "clone_url": "https://github.com/mattermost/mattermost.git",
+     "dry_run": true,
+     "error": null,
+     "file": "data/bounty/mattermost/github.com__mattermost__mattermost-20261020T115014Z.json",
+     "findings": null,
+     "paths": [
+      "server/channels",
+      "server/platform"
+     ],
+     "repo": "github.com/mattermost/mattermost",
+     "rulesets": [
+      "p/security-audit",
+      "p/secrets",
+      "p/owasp-top-ten",
+      "p/command-injection",
+      "p/sql-injection",
+      "p/xss",
+      "p/golang",
+      "p/typescript"
+     ],
+     "stamp": "20261020T115014Z",
+     "target": "mattermost"
+    },
+    {
+     "clone_url": "https://github.com/wordpress/wordpress-develop.git",
+     "dry_run": true,
+     "error": null,
+     "file": "data/bounty/wordpress/github.com__wordpress__wordpress-develop-20261020T115014Z.json",
+     "findings": null,
+     "paths": [
+      "src/wp-includes",
+      "src/wp-admin"
+     ],
+     "repo": "github.com/wordpress/wordpress-develop",
+     "rulesets": [
+      "p/security-audit",
+      "p/secrets",
+      "p/owasp-top-ten",
+      "p/command-injection",
+      "p/sql-injection",
+      "p/xss",
+      "p/php"
+     ],
+     "stamp": "20261020T115014Z",
+     "target": "wordpress"
+    },
+    {
+     "clone_url": "https://github.com/dotnet/aspnetcore.git",
+     "dry_run": true,
+     "error": null,
+     "file": "data/bounty/dotnet/github.com__dotnet__aspnetcore-20261020T115014Z.json",
+     "findings": null,
+     "paths": [
+      "src/Http",
+      "src/Security",
+      "src/Middleware"
+     ],
+     "repo": "github.com/dotnet/aspnetcore",
+     "rulesets": [
+      "p/security-audit",
+      "p/secrets",
+      "p/owasp-top-ten",
+      "p/command-injection",
+      "p/sql-injection",
+      "p/xss",
+      "p/csharp"
+     ],
+     "stamp": "20261020T115014Z",
+     "target": "dotnet"
+    },
+    {
+     "clone_url": "https://github.com/dotnet/runtime.git",
+     "dry_run": true,
+     "error": null,
+     "file": "data/bounty/dotnet/github.com__dotnet__runtime-20261020T115014Z.json",
+     "findings": null,
+     "paths": [
+      "src/Http",
+      "src/Security",
+      "src/Middleware"
+     ],
+     "repo": "github.com/dotnet/runtime",
+     "rulesets": [
+      "p/security-audit",
+      "p/secrets",
+      "p/owasp-top-ten",
+      "p/command-injection",
+      "p/sql-injection",
+      "p/xss",
+      "p/csharp"
+     ],
+     "stamp": "20261020T115014Z",
+     "target": "dotnet"
+    },
+    {
+     "clone_url": "https://github.com/keras-team/keras.git",
+     "dry_run": true,
+     "error": null,
+     "file": "data/bounty/huntr_model_formats/github.com__keras-team__keras-20261020T115014Z.json",
+     "findings": null,
+     "paths": [
+      "keras/src/saving",
+      "bindings/python",
+      "onnx"
+     ],
+     "repo": "github.com/keras-team/keras",
+     "rulesets": [
+      "p/security-audit",
+      "p/secrets",
+      "p/owasp-top-ten",
+      "p/command-injection",
+      "p/sql-injection",
+      "p/xss",
+      "p/python",
+      "p/c"
+     ],
+     "stamp": "20261020T115014Z",
+     "target": "huntr_model_formats"
+    },
+    {
+     "clone_url": "https://github.com/huggingface/safetensors.git",
+     "dry_run": true,
+     "error": null,
+     "file": "data/bounty/huntr_model_formats/github.com__huggingface__safetensors-20261020T115014Z.json",
+     "findings": null,
+     "paths": [
+      "keras/src/saving",
+      "bindings/python",
+      "onnx"
+     ],
+     "repo": "github.com/huggingface/safetensors",
+     "rulesets": [
+      "p/security-audit",
+      "p/secrets",
+      "p/owasp-top-ten",
+      "p/command-injection",
+      "p/sql-injection",
+      "p/xss",
+      "p/python",
+      "p/c"
+     ],
+     "stamp": "20261020T115014Z",
+     "target": "huntr_model_formats"
+    },
+    {
+     "clone_url": "https://github.com/onnx/onnx.git",
+     "dry_run": true,
+     "error": null,
+     "file": "data/bounty/huntr_model_formats/github.com__onnx__onnx-20261020T115014Z.json",
+     "findings": null,
+     "paths": [
+      "keras/src/saving",
+      "bindings/python",
+      "onnx"
+     ],
+     "repo": "github.com/onnx/onnx",
+     "rulesets": [
+      "p/security-audit",
+      "p/secrets",
+      "p/owasp-top-ten",
+      "p/command-injection",
+      "p/sql-injection",
+      "p/xss",
+      "p/python",
+      "p/c"
+     ],
+     "stamp": "20261020T115014Z",
+     "target": "huntr_model_formats"
+    }
+   ]
+  },
+  {
+   "at": "2026-10-20T12:14:29+00:00",
+   "jobs": [
+    {
+     "clone_url": "https://github.com/kubernetes/kubernetes.git",
+     "commit": "03c32288ae51ef642f5a3145ce3e2ea0725fdd89",
+     "error": "semgrep rc=0:                                                            \n                                                                                                                        \n                \n                \n\u250c\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2510\n\u2502 Scan Summary \u2502\n\u2514\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2518\n\u2705 Scan completed successfully.\n \u2022 Findings: 3065 (3065 blocking)\n \u2022 Rules run: 120\n \u2022 Targets scanned: 4053\n \u2022 Parsed lines: ~99.9%\n \u2022 Scan skipped: \n   \u25e6 Files larger than  files 2.0 MB: 1\n   \u25e6 Files matching .semgrepignore patterns: 1532\n \u2022 Scan was limited to files tracked by git\n \u2022 For a detailed list of skipped files and lines, run semgrep with the --verbose flag\nRan 120 rules on 4053 files: 3065 findings.\n\n\ud83d\udce2 Too many findings? Try Semgrep Pro for more powerful queries and less noise.\n   See https://sg.run/false-positives.\n",
+     "file": "data/bounty/kubernetes/github.com__kubernetes__kubernetes-20261020T115211Z.json",
+     "findings": null,
+     "paths": [
+      "pkg",
+      "cmd",
+      "staging/src/k8s.io/apiserver"
+     ],
+     "repo": "github.com/kubernetes/kubernetes",
+     "rulesets": [
+      "p/security-audit",
+      "p/secrets",
+      "p/owasp-top-ten",
+      "p/command-injection",
+      "p/sql-injection",
+      "p/xss",
+      "p/golang"
+     ],
+     "seconds": 104.9,
+     "stamp": "20261020T115211Z",
+     "target": "kubernetes"
+    },
+    {
+     "clone_url": "https://gitlab.com/gitlab-org/gitlab.git",
+     "commit": "dbab262d76518a51d1984fae649860c906522959",
+     "error": "semgrep rc=0:                                                              \n                                                                                                                        \n                \n                \n\u250c\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2510\n\u2502 Scan Summary \u2502\n\u2514\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2518\n\u2705 Scan completed successfully.\n \u2022 Findings: 211 (211 blocking)\n \u2022 Rules run: 223\n \u2022 Targets scanned: 21152\n \u2022 Parsed lines: ~100.0%\n \u2022 Scan skipped: \n   \u25e6 Files larger than  files 2.0 MB: 2\n   \u25e6 Files matching .semgrepignore patterns: 68\n \u2022 Scan was limited to files tracked by git\n \u2022 For a detailed list of skipped files and lines, run semgrep with the --verbose flag\nRan 223 rules on 21152 files: 211 findings.\n\n\ud83d\udce2 Too many findings? Try Semgrep Pro for more powerful queries and less noise.\n   See https://sg.run/false-positives.\n",
+     "file": "data/bounty/gitlab/gitlab.com__gitlab-org__gitlab-20261020T115356Z.json",
+     "findings": null,
+     "paths": [
+      "app",
+      "lib"
+     ],
+     "repo": "gitlab.com/gitlab-org/gitlab",
+     "rulesets": [
+      "p/security-audit",
+      "p/secrets",
+      "p/owasp-top-ten",
+      "p/command-injection",
+      "p/sql-injection",
+      "p/xss",
+      "p/ruby",
+      "p/javascript",
+      "p/nodejs"
+     ],
+     "seconds": 275.3,
+     "stamp": "20261020T115356Z",
+     "target": "gitlab"
+    },
+    {
+     "clone_url": "https://github.com/nextcloud/server.git",
+     "commit": "83d7ed1f78f2027c927db76ab3427b429dc64339",
+     "error": "semgrep rc=0:                                                                                                          \n                \n                \n\u250c\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2510\n\u2502 Scan Summary \u2502\n\u2514\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2518\n\u2705 Scan completed successfully.\n \u2022 Findings: 0 (0 blocking)\n \u2022 Rules run: 161\n \u2022 Targets scanned: 9878\n \u2022 Parsed lines: ~99.9%\n \u2022 Scan skipped: \n   \u25e6 Files larger than  files 2.0 MB: 7\n   \u25e6 Files matching .semgrepignore patterns: 767\n \u2022 Scan was limited to files tracked by git\n \u2022 For a detailed list of skipped files and lines, run semgrep with the --verbose flag\nRan 161 rules on 9878 files: 0 findings.\n(need more rules? `semgrep login` for additional free Semgrep Registry rules)\n\nIf Semgrep missed a finding, please send us feedback to let us know!\nSee https://semgrep.dev/docs/reporting-false-negatives/\n",
+     "file": "data/bounty/nextcloud/github.com__nextcloud__server-20261020T115832Z.json",
+     "findings": null,
+     "paths": [
+      "lib",
+      "apps",
+      "core"
+     ],
+     "repo": "github.com/nextcloud/server",
+     "rulesets": [
+      "p/security-audit",
+      "p/secrets",
+      "p/owasp-top-ten",
+      "p/command-injection",
+      "p/sql-injection",
+      "p/xss",
+      "p/php",
+      "p/javascript",
+      "p/nodejs"
+     ],
+     "seconds": 117.1,
+     "stamp": "20261020T115832Z",
+     "target": "nextcloud"
+    },
+    {
+     "clone_url": "https://github.com/nextcloud/text.git",
+     "commit": "97a107f4b9535a88867c9d9f0f4b9f3020c3e050",
+     "error": "semgrep rc=0:    92                                                                                           \n                                                                                                                        \n                \n                \n\u250c\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2510\n\u2502 Scan Summary \u2502\n\u2514\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2518\n\u2705 Scan completed successfully.\n \u2022 Findings: 0 (0 blocking)\n \u2022 Rules run: 62\n \u2022 Targets scanned: 92\n \u2022 Parsed lines: ~100.0%\n \u2022 Scan was limited to files tracked by git\n \u2022 For a detailed list of skipped files and lines, run semgrep with the --verbose flag\nRan 62 rules on 92 files: 0 findings.\n(need more rules? `semgrep login` for additional free Semgrep Registry rules)\n\nIf Semgrep missed a finding, please send us feedback to let us know!\nSee https://semgrep.dev/docs/reporting-false-negatives/\n",
+     "file": "data/bounty/nextcloud/github.com__nextcloud__text-20261020T120029Z.json",
+     "findings": null,
+     "paths": [
+      "lib",
+      "apps",
+      "core"
+     ],
+     "repo": "github.com/nextcloud/text",
+     "rulesets": [
+      "p/security-audit",
+      "p/secrets",
+      "p/owasp-top-ten",
+      "p/command-injection",
+      "p/sql-injection",
+      "p/xss",
+      "p/php",
+      "p/javascript",
+      "p/nodejs"
+     ],
+     "seconds": 7.8,
+     "stamp": "20261020T120029Z",
+     "target": "nextcloud"
+    },
+    {
+     "clone_url": "https://github.com/nextcloud/user_saml.git",
+     "commit": "a62984eb80225ca43e300acfc3f7abdb935b7a3c",
+     "error": "semgrep rc=0:    54                                                                                           \n                                                                                                                        \n                \n                \n\u250c\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2510\n\u2502 Scan Summary \u2502\n\u2514\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2518\n\u2705 Scan completed successfully.\n \u2022 Findings: 0 (0 blocking)\n \u2022 Rules run: 62\n \u2022 Targets scanned: 54\n \u2022 Parsed lines: ~100.0%\n \u2022 Scan was limited to files tracked by git\n \u2022 For a detailed list of skipped files and lines, run semgrep with the --verbose flag\nRan 62 rules on 54 files: 0 findings.\n(need more rules? `semgrep login` for additional free Semgrep Registry rules)\n\nIf Semgrep missed a finding, please send us feedback to let us know!\nSee https://semgrep.dev/docs/reporting-false-negatives/\n",
+     "file": "data/bounty/nextcloud/github.com__nextcloud__user_saml-20261020T120036Z.json",
+     "findings": null,
+     "paths": [
+      "lib",
+      "apps",
+      "core"
+     ],
+     "repo": "github.com/nextcloud/user_saml",
+     "rulesets": [
+      "p/security-audit",
+      "p/secrets",
+      "p/owasp-top-ten",
+      "p/command-injection",
+      "p/sql-injection",
+      "p/xss",
+      "p/php",
+      "p/javascript",
+      "p/nodejs"
+     ],
+     "seconds": 4.7,
+     "stamp": "20261020T120036Z",
+     "target": "nextcloud"
+    },
+    {
+     "clone_url": "https://github.com/nextcloud/twofactor_totp.git",
+     "commit": "3bc1cb48b32ae23381abb542a60faaa5a8f0541e",
+     "error": "semgrep rc=0:    24                                                                                           \n                                                                                                                        \n                \n                \n\u250c\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2510\n\u2502 Scan Summary \u2502\n\u2514\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2518\n\u2705 Scan completed successfully.\n \u2022 Findings: 0 (0 blocking)\n \u2022 Rules run: 62\n \u2022 Targets scanned: 24\n \u2022 Parsed lines: ~100.0%\n \u2022 Scan was limited to files tracked by git\n \u2022 For a detailed list of skipped files and lines, run semgrep with the --verbose flag\nRan 62 rules on 24 files: 0 findings.\n(need more rules? `semgrep login` for additional free Semgrep Registry rules)\n\nIf Semgrep missed a finding, please send us feedback to let us know!\nSee https://semgrep.dev/docs/reporting-false-negatives/\n",
+     "file": "data/bounty/nextcloud/github.com__nextcloud__twofactor_totp-20261020T120041Z.json",
+     "findings": null,
+     "paths": [
+      "lib",
+      "apps",
+      "core"
+     ],
+     "repo": "github.com/nextcloud/twofactor_totp",
+     "rulesets": [
+      "p/security-audit",
+      "p/secrets",
+      "p/owasp-top-ten",
+      "p/command-injection",
+      "p/sql-injection",
+      "p/xss",
+      "p/php",
+      "p/javascript",
+      "p/nodejs"
+     ],
+     "seconds": 4.4,
+     "stamp": "20261020T120041Z",
+     "target": "nextcloud"
+    },
+    {
+     "clone_url": "https://github.com/grafana/grafana.git",
+     "commit": "98f61fe4eb8450852bf20ef64e19e0ff05f4256b",
+     "error": "semgrep rc=0: 2       1                                                                                           \n                                                                                                                        \n                \n                \n\u250c\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2510\n\u2502 Scan Summary \u2502\n\u2514\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2518\n\u2705 Scan completed successfully.\n \u2022 Findings: 200 (200 blocking)\n \u2022 Rules run: 325\n \u2022 Targets scanned: 12464\n \u2022 Parsed lines: ~99.9%\n \u2022 Scan skipped: \n   \u25e6 Files matching .semgrepignore patterns: 2787\n \u2022 Scan was limited to files tracked by git\n \u2022 For a detailed list of skipped files and lines, run semgrep with the --verbose flag\nRan 325 rules on 12464 files: 200 findings.\n\n\ud83d\udce2 Too many findings? Try Semgrep Pro for more powerful queries and less noise.\n   See https://sg.run/false-positives.\n",
+     "file": "data/bounty/grafana/github.com__grafana__grafana-20261020T120046Z.json",
+     "findings": null,
+     "paths": [
+      "pkg",
+      "public/app"
+     ],
+     "repo": "github.com/grafana/grafana",
+     "rulesets": [
+      "p/security-audit",
+      "p/secrets",
+      "p/owasp-top-ten",
+      "p/command-injection",
+      "p/sql-injection",
+      "p/xss",
+      "p/golang",
+      "p/typescript"
+     ],
+     "seconds": 273.5,
+     "stamp": "20261020T120046Z",
+     "target": "grafana"
+    },
+    {
+     "clone_url": "https://github.com/mattermost/mattermost.git",
+     "commit": "be207f89725df343da628e859d1ef25acde02fbc",
+     "error": "semgrep rc=0:       3       9                                                                                           \n                                                                                                                        \n                \n                \n\u250c\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2510\n\u2502 Scan Summary \u2502\n\u2514\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2518\n\u2705 Scan completed successfully.\n \u2022 Findings: 55 (55 blocking)\n \u2022 Rules run: 120\n \u2022 Targets scanned: 1439\n \u2022 Parsed lines: ~99.9%\n \u2022 Scan skipped: \n   \u25e6 Files matching .semgrepignore patterns: 604\n \u2022 Scan was limited to files tracked by git\n \u2022 For a detailed list of skipped files and lines, run semgrep with the --verbose flag\nRan 120 rules on 1439 files: 55 findings.\n\n\ud83d\udce2 Too many findings? Try Semgrep Pro for more powerful queries and less noise.\n   See https://sg.run/false-positives.\n",
+     "file": "data/bounty/mattermost/github.com__mattermost__mattermost-20261020T120519Z.json",
+     "findings": null,
+     "paths": [
+      "server/channels",
+      "server/platform"
+     ],
+     "repo": "github.com/mattermost/mattermost",
+     "rulesets": [
+      "p/security-audit",
+      "p/secrets",
+      "p/owasp-top-ten",
+      "p/command-injection",
+      "p/sql-injection",
+      "p/xss",
+      "p/golang",
+      "p/typescript"
+     ],
+     "seconds": 67.6,
+     "stamp": "20261020T120519Z",
+     "target": "mattermost"
+    },
+    {
+     "clone_url": "https://github.com/wordpress/wordpress-develop.git",
+     "commit": "147200e52f34afd1816e5c2c685b82c8a0e7b838",
+     "error": "semgrep rc=0:      3     119                                                                                           \n                                                                                                                        \n                \n                \n\u250c\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2510\n\u2502 Scan Summary \u2502\n\u2514\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2518\n\u2705 Scan completed successfully.\n \u2022 Findings: 202 (202 blocking)\n \u2022 Rules run: 66\n \u2022 Targets scanned: 1606\n \u2022 Parsed lines: ~100.0%\n \u2022 Scan skipped: \n   \u25e6 Files matching .semgrepignore patterns: 25\n \u2022 Scan was limited to files tracked by git\n \u2022 For a detailed list of skipped files and lines, run semgrep with the --verbose flag\nRan 66 rules on 1606 files: 202 findings.\n\n\ud83d\udce2 Too many findings? Try Semgrep Pro for more powerful queries and less noise.\n   See https://sg.run/false-positives.\n",
+     "file": "data/bounty/wordpress/github.com__wordpress__wordpress-develop-20261020T120627Z.json",
+     "findings": null,
+     "paths": [
+      "src/wp-includes",
+      "src/wp-admin"
+     ],
+     "repo": "github.com/wordpress/wordpress-develop",
+     "rulesets": [
+      "p/security-audit",
+      "p/secrets",
+      "p/owasp-top-ten",
+      "p/command-injection",
+      "p/sql-injection",
+      "p/xss",
+      "p/php"
+     ],
+     "seconds": 61.8,
+     "stamp": "20261020T120627Z",
+     "target": "wordpress"
+    },
+    {
+     "clone_url": "https://github.com/dotnet/aspnetcore.git",
+     "commit": "3595620ce66db77d795b5435ba44687dc94cf3ef",
+     "error": "semgrep rc=0:                                                                   \n  bash              1       5                                                                                           \n                                                                                                                        \n                \n                \n\u250c\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2510\n\u2502 Scan Summary \u2502\n\u2514\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2518\n\u2705 Scan completed successfully.\n \u2022 Findings: 7 (7 blocking)\n \u2022 Rules run: 155\n \u2022 Targets scanned: 2308\n \u2022 Parsed lines: ~99.7%\n \u2022 Scan skipped: \n   \u25e6 Files larger than  files 2.0 MB: 1\n   \u25e6 Files matching .semgrepignore patterns: 1034\n \u2022 Scan was limited to files tracked by git\n \u2022 For a detailed list of skipped files and lines, run semgrep with the --verbose flag\nRan 155 rules on 2308 files: 7 findings.\n",
+     "file": "data/bounty/dotnet/github.com__dotnet__aspnetcore-20261020T120728Z.json",
+     "findings": null,
+     "paths": [
+      "src/Http",
+      "src/Security",
+      "src/Middleware"
+     ],
+     "repo": "github.com/dotnet/aspnetcore",
+     "rulesets": [
+      "p/security-audit",
+      "p/secrets",
+      "p/owasp-top-ten",
+      "p/command-injection",
+      "p/sql-injection",
+      "p/xss",
+      "p/csharp"
+     ],
+     "seconds": 24.1,
+     "stamp": "20261020T120728Z",
+     "target": "dotnet"
+    },
+    {
+     "clone_url": "https://github.com/dotnet/runtime.git",
+     "commit": "032b849d22cbf2eee40f63eb2c6156c2f54846e5",
+     "error": "semgrep rc=0:                                                            \n                                                                                                                        \n                \n                \n\u250c\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2510\n\u2502 Scan Summary \u2502\n\u2514\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2518\n\u2705 Scan completed successfully.\n \u2022 Findings: 198 (198 blocking)\n \u2022 Rules run: 474\n \u2022 Targets scanned: 26060\n \u2022 Parsed lines: ~99.1%\n \u2022 Scan skipped: \n   \u25e6 Files larger than  files 2.0 MB: 2\n   \u25e6 Files matching .semgrepignore patterns: 32362\n \u2022 Scan was limited to files tracked by git\n \u2022 For a detailed list of skipped files and lines, run semgrep with the --verbose flag\nRan 474 rules on 26060 files: 198 findings.\n\n\ud83d\udce2 Too many findings? Try Semgrep Pro for more powerful queries and less noise.\n   See https://sg.run/false-positives.\n",
+     "file": "data/bounty/dotnet/github.com__dotnet__runtime-20261020T120753Z.json",
+     "findings": null,
+     "paths": [
+      "src/Http",
+      "src/Security",
+      "src/Middleware"
+     ],
+     "repo": "github.com/dotnet/runtime",
+     "rulesets": [
+      "p/security-audit",
+      "p/secrets",
+      "p/owasp-top-ten",
+      "p/command-injection",
+      "p/sql-injection",
+      "p/xss",
+      "p/csharp"
+     ],
+     "seconds": 370.0,
+     "stamp": "20261020T120753Z",
+     "target": "dotnet"
+    },
+    {
+     "clone_url": "https://github.com/keras-team/keras.git",
+     "commit": "723ee45dceeb0f5c05c5e056d0216ee2c0283bce",
+     "error": "semgrep rc=0:  13                                                                                           \n                                                                                                                        \n                \n                \n\u250c\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2510\n\u2502 Scan Summary \u2502\n\u2514\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2518\n\u2705 Scan completed successfully.\n \u2022 Findings: 0 (0 blocking)\n \u2022 Rules run: 232\n \u2022 Targets scanned: 13\n \u2022 Parsed lines: ~100.0%\n \u2022 Scan was limited to files tracked by git\n \u2022 For a detailed list of skipped files and lines, run semgrep with the --verbose flag\nRan 232 rules on 13 files: 0 findings.\n(need more rules? `semgrep login` for additional free Semgrep Registry rules)\n\nIf Semgrep missed a finding, please send us feedback to let us know!\nSee https://semgrep.dev/docs/reporting-false-negatives/\n",
+     "file": "data/bounty/huntr_model_formats/github.com__keras-team__keras-20261020T121403Z.json",
+     "findings": null,
+     "paths": [
+      "keras/src/saving",
+      "bindings/python",
+      "onnx"
+     ],
+     "repo": "github.com/keras-team/keras",
+     "rulesets": [
+      "p/security-audit",
+      "p/secrets",
+      "p/owasp-top-ten",
+      "p/command-injection",
+      "p/sql-injection",
+      "p/xss",
+      "p/python",
+      "p/c"
+     ],
+     "seconds": 7.5,
+     "stamp": "20261020T121403Z",
+     "target": "huntr_model_formats"
+    },
+    {
+     "clone_url": "https://github.com/huggingface/safetensors.git",
+     "commit": "e246a2560645b7525f5775669ed816eb57c5bcc8",
+     "error": "semgrep rc=0:                             \n                                                                                                                        \n                \n                \n\u250c\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2510\n\u2502 Scan Summary \u2502\n\u2514\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2518\n\u2705 Scan completed successfully.\n \u2022 Findings: 0 (0 blocking)\n \u2022 Rules run: 232\n \u2022 Targets scanned: 36\n \u2022 Parsed lines: ~100.0%\n \u2022 Scan skipped: \n   \u25e6 Files matching .semgrepignore patterns: 12\n \u2022 Scan was limited to files tracked by git\n \u2022 For a detailed list of skipped files and lines, run semgrep with the --verbose flag\nRan 232 rules on 36 files: 0 findings.\n(need more rules? `semgrep login` for additional free Semgrep Registry rules)\n\nIf Semgrep missed a finding, please send us feedback to let us know!\nSee https://semgrep.dev/docs/reporting-false-negatives/\n",
+     "file": "data/bounty/huntr_model_formats/github.com__huggingface__safetensors-20261020T121410Z.json",
+     "findings": null,
+     "paths": [
+      "keras/src/saving",
+      "bindings/python",
+      "onnx"
+     ],
+     "repo": "github.com/huggingface/safetensors",
+     "rulesets": [
+      "p/security-audit",
+      "p/secrets",
+      "p/owasp-top-ten",
+      "p/command-injection",
+      "p/sql-injection",
+      "p/xss",
+      "p/python",
+      "p/c"
+     ],
+     "seconds": 5.1,
+     "stamp": "20261020T121410Z",
+     "target": "huntr_model_formats"
+    },
+    {
+     "clone_url": "https://github.com/onnx/onnx.git",
+     "commit": "18fb3cfb3b7b2c3f3b05ba9bd3829333432c095d",
+     "error": "semgrep rc=0:        193     291                                                                                           \n  c                 9     111                                                                                           \n                                                                                                                        \n                \n                \n\u250c\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2510\n\u2502 Scan Summary \u2502\n\u2514\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2518\n\u2705 Scan completed successfully.\n \u2022 Findings: 2 (2 blocking)\n \u2022 Rules run: 241\n \u2022 Targets scanned: 502\n \u2022 Parsed lines: ~99.9%\n \u2022 Scan skipped: \n   \u25e6 Files matching .semgrepignore patterns: 709\n \u2022 Scan was limited to files tracked by git\n \u2022 For a detailed list of skipped files and lines, run semgrep with the --verbose flag\nRan 241 rules on 502 files: 2 findings.\n",
+     "file": "data/bounty/huntr_model_formats/github.com__onnx__onnx-20261020T121415Z.json",
+     "findings": null,
+     "paths": [
+      "keras/src/saving",
+      "bindings/python",
+      "onnx"
+     ],
+     "repo": "github.com/onnx/onnx",
+     "rulesets": [
+      "p/security-audit",
+      "p/secrets",
+      "p/owasp-top-ten",
+      "p/command-injection",
+      "p/sql-injection",
+      "p/xss",
+      "p/python",
+      "p/c"
+     ],
+     "seconds": 13.8,
+     "stamp": "20261020T121415Z",
+     "target": "huntr_model_formats"
+    }
+   ]
+  }
+ ]
+}

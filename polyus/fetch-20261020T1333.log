@@ -1,0 +1,16 @@
+  /v1/market/slug/cpc-btc-updown-15m-2026-10-15-1145z None -> 404 {"code":5,"message":"The server was unable to process your request.","details":[]}
+  /v1/market/slug/cpc-btc-updown-15m-2026-10-15-1130z None -> 404 {"code":5, "message":"The server was unable to process your request.", "details":[]}
+  /v1/market/slug/cpc-btc-updown-15m-2026-10-15-1115z None -> 404 {"code":5, "message":"The server was unable to process your request.", "details":[]}
+  /v1/market/slug/cpc-btc-updown-15m-2026-10-08-1145z None -> 404 {"code":5, "message":"The server was unable to process your request.", "details":[]}
+  /v1/market/slug/cpc-btc-updown-15m-2026-10-08-1130z None -> 404 {"code":5, "message":"The server was unable to process your request.", "details":[]}
+  /v1/market/slug/cpc-btc-updown-15m-2026-10-08-1115z None -> 404 {"code":5,"message":"The server was unable to process your request.","details":[]}
+  /v1/market/slug/cpc-btc-updown-15m-2026-10-08-1100z None -> 404 {"code":5, "message":"The server was unable to process your request.", "details":[]}
+  /v1/market/slug/cpc-btc-updown-15m-2026-10-08-1045z None -> 404 {"code":5, "message":"The server was unable to process your request.", "details":[]}
+  /v1/market/slug/cpc-btc-updown-15m-2026-10-08-1030z None -> 404 {"code":5,"message":"The server was unable to process your request.","details":[]}
+  /v1/market/slug/cpc-btc-updown-15m-2026-10-08-1015z None -> 404 {"code":5,"message":"The server was unable to process your request.","details":[]}
+  /v1/market/slug/cpc-btc-updown-15m-2026-10-08-1000z None -> 404 {"code":5, "message":"The server was unable to process your request.", "details":[]}
+  slug walk: 26 markets fetched
+markets: 26 fetched, 1380 total
+price history: 25 markets fetched
+BRTI 1m candles: 5415
+BRTI 1s candles: 3606

@@ -1,0 +1,16 @@
+ok   kalshi /markets parse
+ok   kalshi close_ts sane (KXMVECROSSCATEGORY-S2026MQUMCLFONO7OSXCA-5RRYG6WZJ)
+ok   kalshi series fee schedule KXMVECROSSCATEGORY: FeeSchedule(taker_rate=0.07, maker_rate=0.0175, maker_rebate_frac=0.0, round_up_cents=True)
+ok   kalshi orderbook parse
+ok   kalshi trades parse (0)
+ok   kalshi candlesticks parse (0)
+     historical cutoff: {"market_positions_last_updated_ts": "2026-08-23T00:00:00Z", "market_settled_ts": "2026-08-23T00:00:00Z", "orders_updated_ts": "2026-10-08T00:00:00Z", "trades_created_ts": "2026-08-23T00:00:00Z"}
+ok   gamma /markets parse
+ok   clobTokenIds parsed (2026 Balance of Power: R Senate, R House)
+ok   clob /book parse
+ok   clob midpoint 0.075
+ok   clob prices-history (20)
+ok   data-api trades parse (20)
+ok   polymarket WS book (2 events)
+
+ALL OK

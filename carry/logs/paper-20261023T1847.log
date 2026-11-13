@@ -1,0 +1,108 @@
+2026-10-23 18:47:50,569 httpx INFO HTTP Request: GET https://api.coinbase.com/api/v3/brokerage/market/products/BIP-20DEC30-CDE "HTTP/1.1 200 OK"
+2026-10-23 18:47:51,168 httpx INFO HTTP Request: GET https://api.coinbase.com/api/v3/brokerage/market/products?product_type=FUTURE "HTTP/1.1 200 OK"
+2026-10-23 18:47:51,226 httpx INFO HTTP Request: GET https://api.coinbase.com/api/v3/brokerage/market/products/ETP-20DEC30-CDE "HTTP/1.1 200 OK"
+2026-10-23 18:47:51,362 httpx INFO HTTP Request: GET https://bitnomial.com/exchange/api/v1/funding-rates/?base_symbol=BTCUC&limit=3&order=desc "HTTP/1.1 200 OK"
+2026-10-23 18:47:51,387 httpx INFO HTTP Request: GET https://bitnomial.com/exchange/api/v1/funding-rates/?base_symbol=ETHUI&limit=3&order=desc "HTTP/1.1 200 OK"
+2026-10-23 18:47:51,581 httpx INFO HTTP Request: GET https://fapi.binance.com/fapi/v1/fundingRate?symbol=BTCUSDT&limit=3 "HTTP/1.1 451 "
+2026-10-23 18:47:51,581 pb.carry.paper WARNING fetch binance BTC: Client error '451 ' for url 'https://fapi.binance.com/fapi/v1/fundingRate?symbol=BTCUSDT&limit=3'
+For more information check: https://developer.mozilla.org/en-US/docs/Web/HTTP/Status/451
+2026-10-23 18:47:51,587 httpx INFO HTTP Request: GET https://fapi.binance.com/fapi/v1/fundingRate?symbol=ETHUSDT&limit=3 "HTTP/1.1 451 "
+2026-10-23 18:47:51,587 pb.carry.paper WARNING fetch binance ETH: Client error '451 ' for url 'https://fapi.binance.com/fapi/v1/fundingRate?symbol=ETHUSDT&limit=3'
+For more information check: https://developer.mozilla.org/en-US/docs/Web/HTTP/Status/451
+2026-10-23 18:47:51,646 httpx INFO HTTP Request: GET https://api.bybit.com/v5/market/funding/history?category=linear&symbol=BTCUSDT&limit=3 "HTTP/1.1 403 Forbidden"
+2026-10-23 18:47:51,646 pb.carry.paper WARNING fetch bybit BTC: Client error '403 Forbidden' for url 'https://api.bybit.com/v5/market/funding/history?category=linear&symbol=BTCUSDT&limit=3'
+For more information check: https://developer.mozilla.org/en-US/docs/Web/HTTP/Status/403
+2026-10-23 18:47:51,650 httpx INFO HTTP Request: GET https://api.bybit.com/v5/market/funding/history?category=linear&symbol=ETHUSDT&limit=3 "HTTP/1.1 403 Forbidden"
+2026-10-23 18:47:51,650 pb.carry.paper WARNING fetch bybit ETH: Client error '403 Forbidden' for url 'https://api.bybit.com/v5/market/funding/history?category=linear&symbol=ETHUSDT&limit=3'
+For more information check: https://developer.mozilla.org/en-US/docs/Web/HTTP/Status/403
+2026-10-23 18:47:51,954 httpx INFO HTTP Request: GET https://www.okx.com/api/v5/public/funding-rate-history?instId=BTC-USDT-SWAP&limit=3 "HTTP/1.1 200 OK"
+2026-10-23 18:47:52,149 httpx INFO HTTP Request: GET https://www.okx.com/api/v5/public/funding-rate-history?instId=ETH-USDT-SWAP&limit=3 "HTTP/1.1 200 OK"
+{
+ "observed": {
+  "coinbase/BTC": {
+   "rate": 1.2e-05,
+   "interval_hours": 1.0,
+   "interval_ts": 1792778400.0,
+   "mark": 81350.0,
+   "product_id": "BIP-20DEC30-CDE"
+  },
+  "coinbase/ETH": {
+   "rate": 1.1e-05,
+   "interval_hours": 1.0,
+   "interval_ts": 1792778400.0,
+   "mark": 2398.0,
+   "product_id": "ETP-20DEC30-CDE"
+  },
+  "bitnomial/BTC": {
+   "rate": 0.0001,
+   "interval_hours": 8.0,
+   "interval_ts": 1792771200.0,
+   "mark": 16333.0,
+   "product_id": 5614
+  },
+  "bitnomial/ETH": {
+   "rate": 0.0001,
+   "interval_hours": 8.0,
+   "interval_ts": 1792771200.0,
+   "mark": 12020.0,
+   "product_id": 5608
+  },
+  "okx/BTC": {
+   "rate": 6.85721961385e-05,
+   "interval_hours": 8.0,
+   "interval_ts": 1792771200.0,
+   "mark": null,
+   "product_id": "BTC-USDT-SWAP"
+  },
+  "okx/ETH": {
+   "rate": 5.1465497723e-05,
+   "interval_hours": 8.0,
+   "interval_ts": 1792771200.0,
+   "mark": null,
+   "product_id": "ETH-USDT-SWAP"
+  }
+ },
+ "entries": {
+  "kraken-BTC": {
+   "signal": 0.1095,
+   "in_pos": true,
+   "realized": -4.269227470440483,
+   "funding_open": 1.3,
+   "trades": 1
+  },
+  "kraken-ETH": {
+   "signal": 0.1095,
+   "in_pos": true,
+   "realized": -4.2018772323282665,
+   "funding_open": 1.3,
+   "trades": 1
+  },
+  "coinbase-BTC": {
+   "signal": 0.07044500000000001,
+   "in_pos": true,
+   "realized": -8.281214134702507,
+   "funding_open": 0.12200000000000001,
+   "trades": 1
+  },
+  "coinbase-ETH": {
+   "signal": 0.079935,
+   "in_pos": true,
+   "realized": -8.728272251308901,
+   "funding_open": 0.024,
+   "trades": 1
+  },
+  "binance-ref-BTC": {
+   "signal": null,
+   "in_pos": false,
+   "realized": 0.0,
+   "funding_open": 0.0,
+   "trades": 0
+  }
+ },
+ "errors": {
+  "binance/BTC": "HTTPStatusError(\"Client error '451 ' for url 'https://fapi.binance.com/fapi/v1/fundingRate?symbol=BTCUSDT&limit=3'\\nFor more information check: https://developer.mozilla.org/en-US/docs/Web/HTTP/Status/451\")",
+  "binance/ETH": "HTTPStatusError(\"Client error '451 ' for url 'https://fapi.binance.com/fapi/v1/fundingRate?symbol=ETHUSDT&limit=3'\\nFor more information check: https://developer.mozilla.org/en-US/docs/Web/HTTP/Status/451\")",
+  "bybit/BTC": "HTTPStatusError(\"Client error '403 Forbidden' for url 'https://api.bybit.com/v5/market/funding/history?category=linear&symbol=BTCUSDT&limit=3'\\nFor more information check: https://developer.mozilla.org/en-US/docs/Web/HTTP/Status/403\")",
+  "bybit/ETH": "HTTPStatusError(\"Client error '403 Forbidden' for url 'https://api.bybit.com/v5/market/funding/history?category=linear&symbol=ETHUSDT&limit=3'\\nFor more information check: https://developer.mozilla.org/en-US/docs/Web/HTTP/Status/403\")"
+ }
+}
