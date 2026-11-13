@@ -1,13 +1,13 @@
 # Mr. H — Coinbase hopper, PAPER
 
-Updated 2026-11-13T10:20:36Z · scans 1542 · universe 110 coins (USD pairs with ≥ $100k 24-h volume) · fees 0.9% taker each way · start $4.00
+Updated 2026-11-13T10:30:37Z · scans 1544 · universe 110 coins (USD pairs with ≥ $100k 24-h volume) · fees 0.9% taker each way · start $4.00
 
 ## Books (one position at a time, all-in every hop)
 
 | profile | bankroll | vs start | peak | hops | win % | avg net/hop | fees paid | open |
 |---|---|---|---|---|---|---|---|---|
 | aggressive | $1.25 | -68.7% | $4.00 | 36 | 22% | -3.10% | $1.525 | — |
-| standard | $1.97 | -50.8% | $4.00 | 31 | 19% | -2.18% | $1.576 | STX-USD @ 0.2894 |
+| standard | $1.96 | -50.9% | $4.00 | 31 | 19% | -2.18% | $1.576 | STX-USD @ 0.2894 |
 | aggressive_swap | $0.99 | -75.3% | $4.02 | 44 | 18% | -3.02% | $2.059 | — |
 
 ## Signal forward returns (every signal, whether or not a book took it)
@@ -15,7 +15,7 @@ Updated 2026-11-13T10:20:36Z · scans 1542 · universe 110 coins (USD pairs with
 | profile | signals | scored | median +15m | median +1h | median +4h | % beat 1.8% at +1h | median 4%-trail hop net | max run-up (med) | max drawdown (med) |
 |---|---|---|---|---|---|---|---|---|---|
 | aggressive | 238 | 197 | -0.93% | -1.87% | -3.58% | 26% | -4.48% | +6.38% | -8.39% |
-| standard | 247 | 191 | -0.39% | -0.56% | -1.33% | 18% | -2.55% | +3.01% | -4.92% |
+| standard | 248 | 191 | -0.39% | -0.56% | -1.33% | 18% | -2.55% | +3.01% | -4.92% |
 
 ## Aggressive signals by BTC regime (BTC's own move in the hour before the signal)
 
@@ -58,7 +58,6 @@ Median 4%-trail hop nets -4.48% after fees across 197 signals; the aggressive bo
 
 | time (UTC) | profile | coin | impulse | vol× | >2h high | spread | taken | +1h | +4h |
 |---|---|---|---|---|---|---|---|---|---|
-| 11-13T05:30 | aggressive | MEZO | +3.3% | 51.3 | n | 0.24% | y | -3.4% | -4.9% |
 | 11-13T06:41 | standard | USELESS | +1.6% | 15.6 | y | 0.11% | y | … | … |
 | 11-13T07:00 | standard | STRK | +1.4% | 29.9 | y | 0.11% | in_position | … | … |
 | 11-13T07:05 | standard | USELESS | +1.1% | 8.9 | y | 0.13% | in_position | … | … |
@@ -73,3 +72,4 @@ Median 4%-trail hop nets -4.48% after fees across 197 signals; the aggressive bo
 | 11-13T09:05 | standard | INJ | +1.0% | 6.1 | y | 0.08% | in_position | … | … |
 | 11-13T10:00 | standard | STX | +1.9% | 5.6 | y | 0.21% | y | … | … |
 | 11-13T10:05 | standard | STX | +1.2% | 3.1 | y | 0.14% | in_position | … | … |
+| 11-13T10:25 | standard | PLUME | +1.0% | 29.9 | y | 0.15% | in_position | … | … |
