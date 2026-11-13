@@ -14,5 +14,6 @@ download the asset from the release and `tar -xf` it; the paths inside are the p
 | [books-2026-11-03](books-2026-11-03.tsv) | `mrp-data` | `books-2026-11` | 59 | 200337696 | 2026-11-13 |
 | [books-2026-11-04](books-2026-11-04.tsv) | `mrp-data` | `books-2026-11` | 33 | 107306945 | 2026-11-13 |
 | [books-2026-11-05](books-2026-11-05.tsv) | `mrp-data` | `books-2026-11` | 72 | 215870628 | 2026-11-13 |
+| [books-2026-11-06](books-2026-11-06.tsv) | `mrp-data` | `books-2026-11` | 75 | 241776942 | 2026-11-13 |
 | [research-nfl-comeback](research-nfl-comeback.tsv) | `mrp-data` | `retired-2026-11` | 1497 | 272984842 | 2026-11-13 |
 | [sports-radar](sports-radar.tsv) | `mrp-data` | `retired-2026-11` | 599 | 1463899867 | 2026-11-13 |
