@@ -50,6 +50,11 @@
     if (ev) ev.innerHTML = d.rows.filter(function (r) { return r.f; }).map(function (r) {
       return '<li>' + esc(fmtT(r.t)) + ', ' + esc(d.bots[r.b].bot) + ', ' + esc(r.s) + ' at ' + fmtPx(r.i, r.u) + ': ' + esc(r.w) + ', ' + money(r.n) + '. ' + esc(r.e) + '</li>';
     }).join('');
+    var gaps = $('ledger-gaps');
+    if (gaps && d.gaps) gaps.innerHTML = d.gaps.windows.map(function (g) {
+      return '<li>' + esc(g.market) + ', round starting ' + esc(g.round.slice(11, 16)) + ' UTC on ' + +g.round.slice(8, 10) + ' ' + MON[+g.round.slice(5, 7) - 1] + ': twelve one-share buys rested at ' +
+             esc(g.rested) + '; what was left was cancelled at ' + esc(g.cleared) + '. ' + esc(g.seen) + ' The round settled ' + esc(g.settled) + '.</li>';
+    }).join('');
     var more = $('ledger-more');
     if (more) more.addEventListener('click', function () { all = !all; renderRows(); });
     renderRows();

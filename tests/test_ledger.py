@@ -47,10 +47,12 @@ def test_home_page_quotes_the_file(data):
     html = (ROOT / "site" / "index.html").read_text()
     t = data["total"]
     faq = re.search(r"<h3>Did your own bots make money\?</h3><p>(.*?)</p>", html).group(1)
-    assert f"{t['trips']} round trips" in faq and f"${abs(t['net']):.2f}" in faq
+    assert f"{t['trips']} logged round trips" in faq and f"${abs(t['net']):.2f}" in faq
     assert "two out of three" in faq and 0.62 < t["won"] / t["trips"] < 0.71
     assert "about 8 cents on every dollar" in faq and 0.075 <= abs(t["net"]) / t["staked"] < 0.085
-    assert "/data/bot_trades.json" in html and 'id="ledger-bots"' in html and 'id="ledger-unlogged"' in html
+    assert "/data/bot_trades.json" in html and 'id="ledger-bots"' in html and 'id="ledger-unlogged"' in html and 'id="ledger-gaps"' in html
+    g = data["gaps"]                                           # what no log shows is stated, with its bounds, not left out
+    assert len(g["windows"]) == 3 and 0 < g["low"] < g["high"] and "roughly $3 to $9" in html and round(g["low"]) == 3 and round(g["high"]) == 9
     assert "Every trade is below" not in html                  # the old claim, made over six of 269 rows
 
 

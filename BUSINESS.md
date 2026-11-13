@@ -199,6 +199,13 @@ stated on every row. The accounts at both venues stay open for API keys only; ba
   page's figures to the file). Nine Mr E rounds the bot never finished writing (restarts) are settled from the venue's
   record and our recorder's books, marked, and counted: −$9.91 of the total. A dated correction sits under the table.
   The finding worth a post: we won 66% of the time and lost 8 cents on the dollar, close to the 9 to 10 the 45/70 rule loses.
+- 2026-11-13 — What the logs cannot show, stated on the page instead of left out: three times on 3 Nov a run was stopped
+  seconds after resting a full ladder, and the orders sat unwatched for 8 to 10 minutes. Our recorded books and three
+  of the exchange's own order records show some filled; every combination the evidence allows comes out ahead, by $2.94
+  to $9.00 in all, so the true loss is about $23 to $29 and the page says the total overstates it. Lesson from the
+  check itself: 16-second book samples missed a 15-second spike that filled three orders, so a public book cannot
+  prove an absence. Exact rows need the exchange's account history (Noah's export; never an audit job that prints to a
+  public log again: the 3 Nov audit runs put account balances and trades in public Actions logs).
 - 2026-11-13 — The build read its caches from predictionbots.io, a domain we never registered (the pre-rename name):
   whoever registered it could have written into every market page. Inputs now come only from predictmenot.com and this
   repo's branches, and only if they parse as JSON. The same dead URL would have made the Odds API key re-buy all 8

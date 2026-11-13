@@ -176,7 +176,7 @@
 
   <section id="ledger">
     <h2>Our ledger: we played too</h2>
-    <p class="sub">From 2 to 8 November 2026 our bots traded real money at tiny size to test ideas. Every round trip they made is below, built from the bots' public log files on GitHub. We stopped on 8 November when the last idea failed its live test. The record stays up because it is the point.</p>
+    <p class="sub">From 2 to 8 November 2026 our bots traded real money at tiny size to test ideas. Every round trip in the bots' logs is below, built from their public log files on GitHub. We stopped on 8 November when the last idea failed its live test. The record stays up because it is the point.</p>
     <div class="ledger-sum" id="ledger-sum"></div>
     <div class="ledger-wrap" tabindex="0" role="region" aria-label="The record, bot by bot (scrolls sideways on a small screen)">
       <table class="ledger cells ledger-bots">
@@ -185,9 +185,9 @@
         <tbody id="ledger-bots"><tr><td colspan="6">Loading the record…</td></tr></tbody>
       </table>
     </div>
-    <div class="ledger-wrap" tabindex="0" role="region" aria-label="Every round trip our bots made (scrolls sideways on a small screen)">
+    <div class="ledger-wrap" tabindex="0" role="region" aria-label="Every logged round trip (scrolls sideways on a small screen)">
       <table class="ledger" aria-describedby="ledger-note">
-        <caption>Every round trip our bots made, newest first</caption>
+        <caption>Every logged round trip, newest first</caption>
         <thead><tr><th scope="col">Settled</th><th scope="col">Bot</th><th scope="col">Market</th><th scope="col">Side</th><th scope="col" class="num">In</th><th scope="col" class="num">Out</th><th scope="col" class="num">Net</th><th scope="col">Why it closed</th></tr></thead>
         <tbody id="ledger-body"><tr><td colspan="8">Loading the record…</td></tr></tbody>
       </table>
@@ -199,7 +199,12 @@
       <p>In nine Mr E rounds the bot bought and was then restarted before it wrote the result. They are in the table and in the totals. The position comes from the bot's own log; the result comes from the venue's settlement record, and where a sell was still resting, from the order books our recorder stored for that round.</p>
       <ul id="ledger-unlogged"></ul>
     </details>
-    <p class="ledger-note"><b>Correction, 13 November 2026.</b> Until today this table listed only Mr H's six trades, a net of −$0.53. It left out Mr E and Mr P, which traded on Polymarket US from 2 to 4 November. The full record is above.</p>
+    <details class="ledger-note">
+      <summary>‡ Not in the logs: three ladders left resting</summary>
+      <p>On 3 November a run was stopped three times just after it had rested its buy orders, and nothing watched them for 8 to 10 minutes until the next run cancelled what was left. Whatever filled in between is in no log, so it is in no row and no total above. Public records show that some of those orders did fill and that, together, they came out ahead by roughly $3 to $9. The true loss is therefore somewhat smaller than the total above. Exact rows need the exchange's own account history; they will be added here once we have reconciled against it.</p>
+      <ul id="ledger-gaps"></ul>
+    </details>
+    <p class="ledger-note"><b>Correction, 13 November 2026.</b> Until today this table listed only Mr H's six trades, a net of −$0.53. It left out Mr E and Mr P, which traded on Polymarket US from 2 to 4 November. Their round trips are now above.</p>
   </section>
 
   <section id="data">
@@ -252,7 +257,7 @@
     <div class="two faq">
       <div><h3>Are you telling me not to trade?</h3><p>We're telling you what it costs and how often people win. Most lose. If you still want to, the deal section shows exactly what happens, including whether we get paid.</p></div>
       <div><h3>You plan to take referral money. Why trust you?</h3><p>Because the fees and the odds sit above every button, the rate we're paid is published, and the block disappears before the warning ever would. Members and data buyers pay us to keep it that way.</p></div>
-      <div><h3>Did your own bots make money?</h3><p>No. The ledger is the full record: 269 round trips, two out of three of them winners, and a net loss of $32.31, about 8 cents on every dollar staked. We published it and stopped.</p></div>
+      <div><h3>Did your own bots make money?</h3><p>No. The ledger is the record: 269 logged round trips, two out of three of them winners, and a net loss of $32.31, about 8 cents on every dollar staked. We published it, including the part our own logs missed, and stopped.</p></div>
       <div><h3>Which venues?</h3><p>Polymarket US and Kalshi, the two US-regulated exchanges. Not the international Polymarket book.</p></div>
       <div><h3>Can I check your numbers?</h3><p>Yes. Every post links its data file and script, every ledger row is built from the bots' public log files, every fee figure follows the venue's schedule, and the code is public on GitHub.</p></div>
       <div><h3>Is this financial advice?</h3><p>No. It is a record of what rules say, what markets showed, and what fees cost. You make your own decisions.</p></div>

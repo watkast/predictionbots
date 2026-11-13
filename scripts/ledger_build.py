@@ -23,6 +23,9 @@ How each number is made (nothing is typed in except the UNLOGGED table below, wh
            (already net of the fee), exactly as scripts/pm15_live.js books a trade.
     Nine Mr E rounds have a buy on record and no result: the run was restarted or ended first. They are settled here
     from what the log does show (a sale, or the position held with seconds left) and the venue's own result.
+
+What is not here: fills on three ladders left resting when a run was stopped (see GAPS). No log has them. The file
+carries what public records prove about them; the exact rows need the exchange's account history.
 """
 from __future__ import annotations
 
@@ -65,6 +68,29 @@ UNLOGGED = {
     "cpc-btc-updown-15m-2026-11-03-0800z": {"result": "DOWN", "ptb": 76699.50, "settle": 76664.90,
         "how": "its 60¢ sell never filled: after the buys the best bid for Up was 27¢ (recorded books)"},
     "cpc-btc-updown-15m-2026-11-04-0415z": {"result": "DOWN", "ptb": 76756.76, "settle": 76670.93, "how": "held with 2 seconds left (log)"},
+}
+
+
+# What the logs cannot show. Three times on 3 Nov a run was stopped seconds after resting a full ladder (six one-share
+# buys at 25 to 30¢ on each side) and nothing watched those orders until the next run cancelled what was left. Fills in
+# between are in no log, so they are in no row and no total here. `seen` is what public records prove about each window:
+# the order books our recorder stored (mrp-data, mrp/data/run-20261103T0336-41573219246/2026-11-03/07*.jsonl.gz and
+# 08*.jsonl.gz, sampled about every 16 s, so a fast spike can fall between samples) and, for the third, the exchange's
+# own order records as read by our account audit of 3 Nov. `low`/`high` bound the combined result of the fills those
+# records allow, at each round's venue settlement: every case comes out ahead, so the totals here overstate the loss.
+GAPS = {
+    "low": 2.94, "high": 9.00,
+    "windows": [
+        {"market": "ETH 15m", "round": "2026-11-03T07:00:00Z", "rested": "07:00:05", "cleared": "07:09:36", "settled": "Up",
+         "seen": "Up traded down through 29¢ by 07:05:09 (recorded books), so at least the 30¢ and 29¢ Up buys filled. "
+                 "Whether more Up buys, or any Down buys, filled is not provable from the books."},
+        {"market": "BTC 15m", "round": "2026-11-03T07:30:00Z", "rested": "07:30:06", "cleared": "07:40:37", "settled": "Down",
+         "seen": "Up was bid at 77¢ at 07:32:49 and had traded at 18¢ by 07:38 (recorded books), so all six Down buys and all "
+                 "six Up buys filled: matched pairs, +$2.70 whichever side won."},
+        {"market": "ETH 15m", "round": "2026-11-03T08:15:00Z", "rested": "08:15:06", "cleared": "08:22:53", "settled": "Down",
+         "seen": "The exchange's order records show the Down buys at 30, 29 and 28¢ filled within 15 seconds; the recorded "
+                 "books show Up fell through 25¢ by 08:22, so all six Up buys filled."},
+    ],
 }
 
 
@@ -222,7 +248,7 @@ def build(read) -> dict:
     return {"window": ["2026-11-02", "2026-11-08"], "closed": "2026-11-08",
             "method": "Built by scripts/ledger_build.py from the bots' own log and state files on this repository's public data branches. "
                       "One row is one round trip: a position opened and closed. Net is after venue fees.",
-            "repo": "https://github.com/watkast/predictionbots", "bots": bots, "total": total, "rows": rows}
+            "repo": "https://github.com/watkast/predictionbots", "bots": bots, "total": total, "gaps": GAPS, "rows": rows}
 
 
 def selfcheck(d: dict) -> None:
