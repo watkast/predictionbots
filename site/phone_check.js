@@ -99,7 +99,7 @@ function measure() {
         if (m.bodyFont < 15) bad.push(`body text is ${m.bodyFont}px`);
         rows.push({ device: d.name, engine, page: p, vw: m.vw, headerH: m.headerH, navRows: m.navRows, ok: !bad.length, bad });
         for (const b of bad) fails.push(`${d.name} (${engine}) ${p}: ${b}`);
-        await page.screenshot({ path: path.join(out, `${d.name}-${slug}.png`), fullPage: p === '/' && d.name === 'iphone' });
+        await page.screenshot({ path: path.join(out, `${d.name}-${slug}.png`) });      // the first screen; the home page is too long for one image
       } catch (e) {
         fails.push(`${d.name} (${engine}) ${p}: ${String(e.message).split('\n')[0]}`);
       }
