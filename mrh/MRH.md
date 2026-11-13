@@ -1,13 +1,13 @@
 # Mr. H — Coinbase hopper, PAPER
 
-Updated 2026-11-13T09:00:36Z · scans 1526 · universe 110 coins (USD pairs with ≥ $100k 24-h volume) · fees 0.9% taker each way · start $4.00
+Updated 2026-11-13T09:10:36Z · scans 1528 · universe 110 coins (USD pairs with ≥ $100k 24-h volume) · fees 0.9% taker each way · start $4.00
 
 ## Books (one position at a time, all-in every hop)
 
 | profile | bankroll | vs start | peak | hops | win % | avg net/hop | fees paid | open |
 |---|---|---|---|---|---|---|---|---|
 | aggressive | $1.25 | -68.7% | $4.00 | 36 | 22% | -3.10% | $1.525 | — |
-| standard | $2.01 | -49.8% | $4.00 | 30 | 20% | -2.25% | $1.540 | USELESS-USD @ 0.13121 |
+| standard | $2.01 | -49.7% | $4.00 | 30 | 20% | -2.25% | $1.540 | USELESS-USD @ 0.13121 |
 | aggressive_swap | $0.99 | -75.3% | $4.02 | 44 | 18% | -3.02% | $2.059 | — |
 
 ## Signal forward returns (every signal, whether or not a book took it)
@@ -15,7 +15,7 @@ Updated 2026-11-13T09:00:36Z · scans 1526 · universe 110 coins (USD pairs with
 | profile | signals | scored | median +15m | median +1h | median +4h | % beat 1.8% at +1h | median 4%-trail hop net | max run-up (med) | max drawdown (med) |
 |---|---|---|---|---|---|---|---|---|---|
 | aggressive | 238 | 193 | -0.93% | -1.87% | -3.58% | 27% | -4.37% | +6.38% | -8.42% |
-| standard | 244 | 189 | -0.39% | -0.55% | -1.23% | 18% | -2.55% | +3.01% | -4.92% |
+| standard | 245 | 189 | -0.39% | -0.55% | -1.23% | 18% | -2.55% | +3.01% | -4.92% |
 
 ## Aggressive signals by BTC regime (BTC's own move in the hour before the signal)
 
@@ -58,7 +58,6 @@ Median 4%-trail hop nets -4.37% after fees across 193 signals; the aggressive bo
 
 | time (UTC) | profile | coin | impulse | vol× | >2h high | spread | taken | +1h | +4h |
 |---|---|---|---|---|---|---|---|---|---|
-| 11-13T05:15 | standard | MEZO | +6.3% | 62.0 | y | 0.40% | y | … | … |
 | 11-13T05:20 | aggressive | MEZO | +8.9% | 74.2 | y | 0.25% | in_position | … | … |
 | 11-13T05:20 | standard | MEZO | +8.9% | 74.2 | y | 0.25% | in_position | … | … |
 | 11-13T05:30 | aggressive | MEZO | +3.3% | 51.3 | n | 0.24% | y | … | … |
@@ -73,3 +72,4 @@ Median 4%-trail hop nets -4.37% after fees across 193 signals; the aggressive bo
 | 11-13T08:25 | standard | BARD | +4.1% | 9.5 | y | 0.28% | in_position | … | … |
 | 11-13T08:50 | aggressive | BARD | +14.9% | 5.1 | y | 3.44% | spread | … | … |
 | 11-13T08:50 | standard | BARD | +14.9% | 5.1 | y | 3.44% | spread | … | … |
+| 11-13T09:05 | standard | INJ | +1.0% | 6.1 | y | 0.08% | in_position | … | … |
