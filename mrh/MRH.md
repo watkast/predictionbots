@@ -1,6 +1,6 @@
 # Mr. H — Coinbase hopper, PAPER
 
-Updated 2026-11-13T04:50:39Z · scans 1488 · universe 110 coins (USD pairs with ≥ $100k 24-h volume) · fees 0.9% taker each way · start $4.00
+Updated 2026-11-13T05:00:36Z · scans 1490 · universe 110 coins (USD pairs with ≥ $100k 24-h volume) · fees 0.9% taker each way · start $4.00
 
 ## Books (one position at a time, all-in every hop)
 
@@ -14,7 +14,7 @@ Updated 2026-11-13T04:50:39Z · scans 1488 · universe 110 coins (USD pairs with
 
 | profile | signals | scored | median +15m | median +1h | median +4h | % beat 1.8% at +1h | median 4%-trail hop net | max run-up (med) | max drawdown (med) |
 |---|---|---|---|---|---|---|---|---|---|
-| aggressive | 232 | 186 | -0.85% | -1.66% | -3.71% | 27% | -4.35% | +6.40% | -8.52% |
+| aggressive | 232 | 187 | -0.93% | -1.44% | -3.67% | 27% | -4.37% | +6.40% | -8.45% |
 | standard | 233 | 186 | -0.40% | -0.49% | -1.11% | 18% | -2.51% | +3.08% | -4.74% |
 
 ## Aggressive signals by BTC regime (BTC's own move in the hour before the signal)
@@ -22,12 +22,12 @@ Updated 2026-11-13T04:50:39Z · scans 1488 · universe 110 coins (USD pairs with
 | BTC 1h | signals | median +1h | median 4%-trail hop net | % beat 1.8% at +1h |
 |---|---|---|---|---|
 | ≤ −0.5% (downdraft) | 15 | +0.06% | -5.18% | 47% |
-| −0.5% … +0.5% (flat) | 146 | -2.12% | -4.59% | 25% |
+| −0.5% … +0.5% (flat) | 147 | -2.09% | -4.70% | 25% |
 | ≥ +0.5% (bid under the market) | 13 | +0.74% | -1.68% | 31% |
 
 ## Verdict
 
-Median 4%-trail hop nets -4.35% after fees across 186 signals; the aggressive book is -65.8% after 33 hops. **No edge after fees. Do not fund.**
+Median 4%-trail hop nets -4.37% after fees across 187 signals; the aggressive book is -65.8% after 33 hops. **No edge after fees. Do not fund.**
 
 ## Last 20 hops
 
@@ -63,7 +63,7 @@ Median 4%-trail hop nets -4.35% after fees across 186 signals; the aggressive bo
 | 11-12T23:15 | standard | RITUAL | +1.6% | 8.8 | y | 0.09% | in_position | -3.6% | -3.3% |
 | 11-13T00:01 | aggressive | BARD | +3.5% | 5.7 | n | 2.63% | spread | -2.5% | -4.8% |
 | 11-13T00:05 | aggressive | RITUAL | +5.3% | 6.4 | n | 0.09% | y | -1.0% | +2.0% |
-| 11-13T00:50 | aggressive | MEZO | +2.5% | 9.4 | n | 0.56% | in_position | … | … |
+| 11-13T00:50 | aggressive | MEZO | +2.5% | 9.4 | n | 0.56% | in_position | -1.3% | -3.5% |
 | 11-13T01:10 | standard | USELESS | +1.2% | 6.1 | y | 0.12% | in_position | … | … |
 | 11-13T01:45 | aggressive | BARD | +4.2% | 3.2 | n | 0.56% | in_position | … | … |
 | 11-13T01:50 | aggressive | BARD | +3.8% | 7.8 | y | 0.49% | in_position | … | … |
