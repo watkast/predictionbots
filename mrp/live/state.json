@@ -1,0 +1,16 @@
+{
+ "startedAt": 1793624167078,
+ "capital": 2,
+ "mode": "live",
+ "trades": [],
+ "cmds": 0,
+ "skips": {},
+ "errors": 0,
+ "balanceStart": 16.7232,
+ "balanceNow": 17.2456,
+ "pos": null,
+ "order": null,
+ "shortConv": null,
+ "cashStart": 16.7232,
+ "cashNow": 17.2456
+}
