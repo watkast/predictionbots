@@ -1,5 +1,5 @@
 {
- "generated": "2026-11-16T22:33:27Z",
+ "generated": "2026-11-17T04:48:54Z",
  "ok": true,
  "checks": [
   {
@@ -7,9 +7,9 @@
    "bot": "trend",
    "kind": "freshness",
    "ok": true,
-   "age_h": 68.0,
+   "age_h": 0.2,
    "max_h": 80,
-   "last": "2026-11-14T02:31:11Z",
+   "last": "2026-11-17T04:38:52Z",
    "what": "main:reports/trend_paper.json",
    "meaning": "weekday trend paper tick (22:23 UTC)"
   },
@@ -20,7 +20,7 @@
    "ok": true,
    "age_h": 0.0,
    "max_h": 3,
-   "last": "2026-11-16T22:31:45Z",
+   "last": "2026-11-17T04:47:28Z",
    "what": "order-book recorder (rewrites mrp/REPORT.md about every 14 min; the data is the product)",
    "meaning": "order-book recorder (rewrites mrp/REPORT.md about every 14 min; the data is the product)",
    "error": null
@@ -30,7 +30,7 @@
    "bot": "benchmark",
    "kind": "content",
    "ok": true,
-   "age_h": 2.6,
+   "age_h": 8.9,
    "max_h": 40,
    "last": "2026-11-16T19:56:00Z",
    "what": "daily bot-benchmark replay (generated time in benchmark.json)",
@@ -42,9 +42,9 @@
    "bot": "site-deploy",
    "kind": "content",
    "ok": true,
-   "age_h": 0.4,
+   "age_h": 0.3,
    "max_h": 14,
-   "last": "2026-11-16T22:10:00Z",
+   "last": "2026-11-17T04:33:00Z",
    "what": "site build and deploy (the preview on mrp-data is published only after a deploy succeeds)",
    "meaning": "site build and deploy (the preview on mrp-data is published only after a deploy succeeds)",
    "error": null
@@ -54,9 +54,9 @@
    "bot": "site-deploy",
    "kind": "content",
    "ok": true,
-   "age_h": 0.4,
+   "age_h": 0.3,
    "max_h": 14,
-   "last": "2026-11-16T22:10:00Z",
+   "last": "2026-11-17T04:33:00Z",
    "what": "build time shown on the live site (predictmenot.com/markets/)",
    "meaning": "build time shown on the live site (predictmenot.com/markets/)",
    "error": null
@@ -66,9 +66,9 @@
    "bot": "site-deploy",
    "kind": "content",
    "ok": true,
-   "age_h": 0.4,
+   "age_h": 0.3,
    "max_h": 14,
-   "last": "2026-11-16T22:10:00Z",
+   "last": "2026-11-17T04:33:00Z",
    "what": "the same build time, reached at www.predictmenot.com",
    "meaning": "the same build time, reached at www.predictmenot.com",
    "error": null
