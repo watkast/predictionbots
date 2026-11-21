@@ -1,6 +1,6 @@
 # Trend paper book (signals only, no orders)
 
-generated 2026-11-21T03:17:36.911361+00:00
+generated 2026-11-21T12:58:23.457321+00:00
 
 | strategy | ticks | rebalances | NAV $ | pnl $ | costs $ | max DD | drift | price date | stale days | since |
 |---|---|---|---|---|---|---|---|---|---|---|

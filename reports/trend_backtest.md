@@ -1,8 +1,8 @@
 # Trend / momentum backtest (monthly ETF, overnight holds only)
 
-generated 2026-11-14T11:42:50.095210+00:00  synthetic=False
+generated 2026-11-21T12:57:47.754222+00:00  synthetic=False
 
-Daily closes 1993-01-29 .. 2026-11-13 (8507 days); cash sleeve earns fred. Costs: 1 bp spread + 2 bp slippage per trade, zero commission; signal at month-end close, executed next close.
+Daily closes 1993-01-29 .. 2026-11-20 (8512 days); cash sleeve earns fred. Costs: 1 bp spread + 2 bp slippage per trade, zero commission; signal at month-end close, executed next close.
 
 | symbol | first date | source | dividend-adjusted |
 |---|---|---|---|
@@ -19,12 +19,12 @@ Daily closes 1993-01-29 .. 2026-11-13 (8507 days); cash sleeve earns fred. Costs
 
 | name | cagr | ann_vol | sharpe | max_drawdown | worst_year | worst_year_ret | annual_turnover | cost_drag_ann | avg_cash_weight | start | end |
 |---|---|---|---|---|---|---|---|---|---|---|---|
-| tsmom | 0.0793 | 0.1157 | 0.4957 | -0.3249 | 2000 | -0.2463 | 1.3615 | 0.0004 | 0.3448 | 1993-02-01 | 2026-11-13 |
-| sma | 0.0760 | 0.1085 | 0.4936 | -0.2933 | 2000 | -0.1359 | 1.9114 | 0.0006 | 0.3172 | 1993-02-01 | 2026-11-13 |
-| gem | 0.0998 | 0.1515 | 0.5352 | -0.3372 | 2022 | -0.1660 | 2.5748 | 0.0008 | 0.1273 | 1993-02-01 | 2026-11-13 |
-| ensemble | 0.0748 | 0.0899 | 0.5629 | -0.1926 | 2022 | -0.0853 | 1.8586 | 0.0006 | 0.3581 | 1993-02-01 | 2026-11-13 |
-| spy_bh | 0.1071 | 0.1853 | 0.5040 | -0.5519 | 2008 | -0.3680 | 0.0296 | 0.0000 | 0.0000 | 1993-02-01 | 2026-11-13 |
-| sixty_forty | 0.0826 | 0.1059 | 0.5604 | -0.3218 | 2008 | -0.1770 | 0.2230 | 0.0001 | 0.1125 | 1993-02-01 | 2026-11-13 |
+| tsmom | 0.0773 | 0.1158 | 0.4792 | -0.3249 | 2000 | -0.2463 | 1.3608 | 0.0004 | 0.3448 | 1993-02-01 | 2026-11-20 |
+| sma | 0.0746 | 0.1086 | 0.4811 | -0.2933 | 2000 | -0.1359 | 1.9103 | 0.0006 | 0.3172 | 1993-02-01 | 2026-11-20 |
+| gem | 0.0972 | 0.1516 | 0.5188 | -0.3372 | 2022 | -0.1660 | 2.5733 | 0.0008 | 0.1272 | 1993-02-01 | 2026-11-20 |
+| ensemble | 0.0728 | 0.0900 | 0.5413 | -0.1926 | 2022 | -0.0853 | 1.8575 | 0.0006 | 0.3581 | 1993-02-01 | 2026-11-20 |
+| spy_bh | 0.1042 | 0.1854 | 0.4891 | -0.5519 | 2008 | -0.3679 | 0.0296 | 0.0000 | 0.0000 | 1993-02-01 | 2026-11-20 |
+| sixty_forty | 0.0811 | 0.1060 | 0.5468 | -0.3218 | 2008 | -0.1770 | 0.2229 | 0.0001 | 0.1124 | 1993-02-01 | 2026-11-20 |
 
 ## Walk-forward (ensemble; 27 grid points, chosen on the prior train window by Sharpe)
 
@@ -46,20 +46,20 @@ Daily closes 1993-01-29 .. 2026-11-13 (8507 days); cash sleeve earns fred. Costs
 | 2016 | 2006-2015 | {'tsmom_lookback': 12, 'sma_months': 12, 'target_vol': 0.1} | 0.56 | 0.0260 | 0.37 | -0.0441 |
 | 2017 | 2007-2016 | {'tsmom_lookback': 12, 'sma_months': 10, 'target_vol': 0.1} | 0.47 | 0.1564 | 2.70 | -0.0175 |
 | 2018 | 2008-2017 | {'tsmom_lookback': 12, 'sma_months': 10, 'target_vol': 0.08} | 0.62 | -0.0443 | -0.65 | -0.1140 |
-| 2019 | 2009-2018 | {'tsmom_lookback': 12, 'sma_months': 8, 'target_vol': 0.12} | 0.53 | 0.1288 | 1.67 | -0.0341 |
+| 2019 | 2009-2018 | {'tsmom_lookback': 9, 'sma_months': 10, 'target_vol': 0.1} | 0.53 | 0.1338 | 1.75 | -0.0314 |
 | 2020 | 2010-2019 | {'tsmom_lookback': 9, 'sma_months': 10, 'target_vol': 0.08} | 0.60 | -0.0126 | -0.04 | -0.1926 |
 | 2021 | 2011-2020 | {'tsmom_lookback': 9, 'sma_months': 8, 'target_vol': 0.12} | 0.50 | 0.1826 | 1.74 | -0.0386 |
 | 2022 | 2012-2021 | {'tsmom_lookback': 9, 'sma_months': 10, 'target_vol': 0.12} | 0.71 | -0.0903 | -1.50 | -0.1035 |
 | 2023 | 2013-2022 | {'tsmom_lookback': 9, 'sma_months': 8, 'target_vol': 0.12} | 0.53 | 0.0313 | -0.31 | -0.0730 |
 | 2024 | 2014-2023 | {'tsmom_lookback': 9, 'sma_months': 8, 'target_vol': 0.12} | 0.39 | 0.1421 | 0.91 | -0.0598 |
 | 2025 | 2015-2024 | {'tsmom_lookback': 9, 'sma_months': 8, 'target_vol': 0.12} | 0.40 | 0.1448 | 0.90 | -0.1155 |
-| 2026 | 2016-2025 | {'tsmom_lookback': 9, 'sma_months': 8, 'target_vol': 0.12} | 0.56 | 0.0769 | 0.47 | -0.0758 |
+| 2026 | 2016-2025 | {'tsmom_lookback': 9, 'sma_months': 8, 'target_vol': 0.12} | 0.56 | 0.0208 | -0.07 | -0.0930 |
 
-OOS chained: CAGR 0.0683, vol 0.0897, Sharpe 0.58, max DD -0.1926, worst year 2022 (-0.0903), 83% of years positive, years 2003-2026
+OOS chained: CAGR 0.0661, vol 0.0898, Sharpe 0.56, max DD -0.1926, worst year 2022 (-0.0903), 83% of years positive, years 2003-2026
 
 ## Reality
 
-* Post-publication decay: published trend/momentum Sharpe roughly halves out of sample (McLean & Pontiff; arxiv 2105.01380). OOS Sharpe 0.58 -> expect ~0.29; OOS CAGR 0.0683 vs mean cash yield 0.0383 -> haircut excess ~0.0150/yr.
+* Post-publication decay: published trend/momentum Sharpe roughly halves out of sample (McLean & Pontiff; arxiv 2105.01380). OOS Sharpe 0.56 -> expect ~0.28; OOS CAGR 0.0661 vs mean cash yield 0.0383 -> haircut excess ~0.0139/yr.
 * On a $10k account that excess is tens to a few hundred dollars a year; the drawdowns are not haircut.
 
 ## Reading this
