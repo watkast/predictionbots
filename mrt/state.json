@@ -1,0 +1,80 @@
+{
+ "started": "2026-11-07T23:33:06.996Z",
+ "attempts": 68,
+ "fills": 0,
+ "trades": 0,
+ "wins": 0,
+ "losses": 0,
+ "pnl": 0.0,
+ "fees": 0.0,
+ "streak_losses": 0,
+ "trades_by_day": {},
+ "halted": null,
+ "open": {},
+ "fired": [
+  "cpcxrp-xrp-updown-5m-2026-11-08-0020z",
+  "cpcxrp-xrp-updown-15m-2026-11-08-0030z",
+  "cpcxrp-xrp-updown-5m-2026-11-08-0040z",
+  "cpcxrp-xrp-updown-5m-2026-11-08-0105z",
+  "cpcxrp-xrp-updown-5m-2026-11-08-0115z",
+  "cpcxrp-xrp-updown-15m-2026-11-08-0115z",
+  "cpcxrp-xrp-updown-15m-2026-11-08-0130z",
+  "cpcxrp-xrp-updown-5m-2026-11-08-0140z",
+  "cpcxrp-xrp-updown-5m-2026-11-08-0150z",
+  "cpcxrp-xrp-updown-15m-2026-11-08-0145z",
+  "cpcxrp-xrp-updown-5m-2026-11-08-0200z",
+  "cpcxrp-xrp-updown-5m-2026-11-08-0205z",
+  "cpcxrp-xrp-updown-15m-2026-11-08-0200z",
+  "cpcsol-sol-updown-5m-2026-11-08-0210z",
+  "cpcxrp-xrp-updown-5m-2026-11-08-0215z",
+  "cpcxrp-xrp-updown-15m-2026-11-08-0215z",
+  "cpcxrp-xrp-updown-5m-2026-11-08-0225z",
+  "cpcxrp-xrp-updown-5m-2026-11-08-0250z",
+  "cpcxrp-xrp-updown-5m-2026-11-08-0305z",
+  "cpcxrp-xrp-updown-5m-2026-11-08-0320z",
+  "cpcxrp-xrp-updown-15m-2026-11-08-0315z",
+  "cpcxrp-xrp-updown-5m-2026-11-08-0325z",
+  "cpcxrp-xrp-updown-5m-2026-11-08-0330z",
+  "cpcsol-sol-updown-15m-2026-11-08-0330z",
+  "cpcxrp-xrp-updown-5m-2026-11-08-0350z",
+  "cpcxrp-xrp-updown-5m-2026-11-08-0400z",
+  "cpcxrp-xrp-updown-5m-2026-11-08-0415z",
+  "cpcxrp-xrp-updown-5m-2026-11-08-0420z",
+  "cpcxrp-xrp-updown-15m-2026-11-08-0415z",
+  "cpcxrp-xrp-updown-5m-2026-11-08-0425z",
+  "cpcxrp-xrp-updown-5m-2026-11-08-0445z",
+  "cpcsol-sol-updown-5m-2026-11-08-0455z",
+  "cpcxrp-xrp-updown-5m-2026-11-08-0505z",
+  "cpcxrp-xrp-updown-5m-2026-11-08-0510z",
+  "cpcxrp-xrp-updown-5m-2026-11-08-0525z"
+ ],
+ "qualified": 1465,
+ "last": {
+  "cash": 0.0196,
+  "t": "2026-11-08T06:50:38.213Z",
+  "markets": 20,
+  "books": 4,
+  "prints": {
+   "sol": 291,
+   "btc": 291,
+   "eth": 290,
+   "xrp": 290
+  },
+  "idx_eth": [
+   1794120638,
+   2229.86
+  ],
+  "idx_sol": [
+   1794120638,
+   88.87
+  ],
+  "idx_btc": [
+   1794120638,
+   75707.21
+  ],
+  "idx_xrp": [
+   1794120638,
+   1.16273
+  ]
+ }
+}
