@@ -1,7 +1,7 @@
 {
  "entries": {
   "ensemble": {
-   "ticks": 29,
+   "ticks": 30,
    "rebalances": 2,
    "first": "2026-10-16",
    "last": "2026-11-25",
@@ -30,7 +30,7 @@
     "VNQ": 0.033333
    },
    "last_drift": 0.013609372461044072,
-   "stale_days": 1,
+   "stale_days": 2,
    "sources": {
     "SPY": "yfinance",
     "QQQ": "yfinance",
